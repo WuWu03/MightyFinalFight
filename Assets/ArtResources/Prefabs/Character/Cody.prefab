@@ -1,0 +1,218 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1252374912490060943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5143155852912950767}
+  - component: {fileID: 4503809122515098899}
+  - component: {fileID: 2687793872227647626}
+  m_Layer: 0
+  m_Name: root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5143155852912950767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252374912490060943}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0769, y: -0.011299999, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8815589085709238872}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &4503809122515098899
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252374912490060943}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: ed26f3b916690dc489d84499de6719a1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &2687793872227647626
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252374912490060943}
+  m_Mesh: {fileID: 0}
+--- !u!1 &4819333627339906422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8815589085709238872}
+  - component: {fileID: 5485198288819796240}
+  - component: {fileID: 7468302712004895569}
+  - component: {fileID: 6111667970060638749}
+  m_Layer: 0
+  m_Name: Cody
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8815589085709238872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819333627339906422}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5143155852912950767}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5485198288819796240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819333627339906422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f825bb5ce93d6ab429dfa508444119b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityData: {fileID: 11400000, guid: 9ef58e90c95ac4844a3cef833fd82df9, type: 2}
+  armatureName: Cody
+  isUGUI: 0
+  debugDraw: 0
+  animationName: Skill1
+  _playTimes: 0
+  _timeScale: 0.05
+  _sortingMode: 0
+  _sortingLayerName: Default
+  _sortingOrder: 0
+  _zSpace: 0
+  _flipX: 0
+  _flipY: 0
+  _closeCombineMeshs: 0
+--- !u!114 &7468302712004895569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819333627339906422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dfe11beb597d1a40a892f995bd31b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNames: []
+  dirty: 0
+--- !u!114 &6111667970060638749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819333627339906422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Move
+    Offest: {x: -0.0022748597, y: 0.0022411048}
+    Size: {x: 0.17084223, y: 0.32879406}
+  - AnimName: Idle
+    Offest: {x: 0.0011122301, y: 0.0022411048}
+    Size: {x: 0.24084197, y: 0.32879406}
+  - AnimName: Attack1
+    Offest: {x: 0.04473853, y: 0.002833277}
+    Size: {x: 0.32870704, y: 0.31996173}
+  - AnimName: Attack2
+    Offest: {x: 0.04473853, y: 0.002833277}
+    Size: {x: 0.32870704, y: 0.31996173}
+  - AnimName: Attack3
+    Offest: {x: 0.04473853, y: 0.002833277}
+    Size: {x: 0.32870704, y: 0.31996173}
+  - AnimName: Attack4
+    Offest: {x: 0.04473853, y: 0.002833277}
+    Size: {x: 0.32870704, y: 0.31996173}
+  - AnimName: JumpUp
+    Offest: {x: 0.0026434362, y: 0.0022016466}
+    Size: {x: 0.18905827, y: 0.35829216}
+  - AnimName: JumpDown
+    Offest: {x: -0.0018643439, y: 0.0041335225}
+    Size: {x: 0.18004271, y: 0.3544284}
+  - AnimName: JumpMove
+    Offest: {x: 0, y: 0}
+    Size: {x: 0, y: 0}
+  - AnimName: Hurt
+    Offest: {x: -0.0012203753, y: 0.001557678}
+    Size: {x: 0.27663797, y: 0.31579024}
+  - AnimName: SmoonUp
+    Offest: {x: 0, y: 0}
+    Size: {x: 0, y: 0}
+  - AnimName: SmoonDown
+    Offest: {x: 0, y: 0}
+    Size: {x: 0, y: 0}
+  - AnimName: Awaken
+    Offest: {x: 0, y: 0}
+    Size: {x: 0, y: 0}
+  - AnimName: Dead
+    Offest: {x: 0, y: 0}
+    Size: {x: 0, y: 0}
+  - AnimName: JumpAttack1
+    Offest: {x: 0.0047837794, y: -0.016743422}
+    Size: {x: 0.33983523, y: 0.28721333}
+  - AnimName: JumpAttack2
+    Offest: {x: 0.0067573786, y: 0.0067572296}
+    Size: {x: 0.2747128, y: 0.3197618}
+  - AnimName: Skill1
+    Offest: {x: 0.041298673, y: -0.002050072}
+    Size: {x: 0.3146886, y: 0.32348424}

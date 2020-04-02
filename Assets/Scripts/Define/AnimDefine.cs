@@ -1,0 +1,14 @@
+﻿public struct AnimName
+{
+    public const string Attack = "Attack";
+    public const string Idle = "Idle";
+    public const string Move = "Move";
+    public const string JumpUp = "JumpUp";
+    public const string JumpDown = "JumpDown";
+    public const string JumpAttack = "JumpAttack";
+    public const string Hurt = "Hurt";
+    public const string SmoonUp = "SmoonUp";
+    public const string SmoonDown = "SmoonDown";
+    public const string Awaken = "Awaken";
+    public const string Dead = "Dead";
+}

@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17090eaeff3a3c641adf68f79f4af885, type: 3}
+  m_Name: SkillData
+  m_EditorClassIdentifier: 
+  Datas:
+  - ID: 1001
+    Level: 0
+    Name: CodyAttack1
+    AnimationName: Attack1
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 0, y: 0}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 0
+  - ID: 1002
+    Level: 0
+    Name: CodyAttack2
+    AnimationName: Attack2
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 0, y: 0}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 0
+  - ID: 1003
+    Level: 0
+    Name: CodyAttack3
+    AnimationName: Attack3
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 0, y: 0}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 0
+  - ID: 1004
+    Level: 0
+    Name: CodyAttack4
+    AnimationName: Attack4
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 40, y: 120}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 1
+  - ID: 1005
+    Level: 0
+    Name: CodyJumpAttack1
+    AnimationName: JumpAttack1
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 40, y: 120}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 1
+  - ID: 1006
+    Level: 0
+    Name: CodyJumpAttack2
+    AnimationName: JumpAttack2
+    SelectorType: 1
+    EffectorTypes: 01000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 0, y: 0}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 0
+  - ID: 1007
+    Level: 0
+    Name: CodySkill1
+    AnimationName: Skill1
+    SelectorType: 2
+    EffectorTypes: 02000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 40, y: 100}
+    AddSelfForce: {x: 0, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 0
+    Gravity: 0
+    Bullets:
+    - Name: CodyBullet
+      Dir: {x: 1, y: 0}
+      Pos: {x: 0.226, y: -0.039}
+      Velocity: {x: 8, y: 0}
+      HitRange: 0.5
+      Drag: 20
+      TriggerOffest: {x: -0.0008981675, y: -0.00000008940697}
+      TriggerSize: {x: 0.09997848, y: 0.2383053}
+    IsSmoon: 1
+  - ID: 1008
+    Level: 0
+    Name: CodySkill2
+    AnimationName: Attack1
+    SelectorType: 1
+    EffectorTypes: 03000000
+    SelectorOffest: {x: 0, y: 0}
+    SelectorAngle: 0
+    AddTargetForce: {x: 40, y: 50}
+    AddSelfForce: {x: 100, y: 0}
+    AddSelfDrag: 0
+    MoveDistance: 1
+    Gravity: 0
+    Bullets: []
+    IsSmoon: 0

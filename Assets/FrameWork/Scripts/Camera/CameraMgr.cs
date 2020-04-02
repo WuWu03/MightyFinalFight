@@ -1,0 +1,112 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace FrameWork.Camera
+{
+    public struct MaskName
+    {
+        public const string UI = "UI";
+        public const string Map = "Map";
+        public const string Unit = "Unit";
+    }
+
+    public class CameraMgr : BaseMgr<CameraMgr>
+    {
+        public struct CameraDepthDefine
+        {
+            public const int MapCamera = 0;
+            public const int RoleCamera = 1;
+        }
+
+        public GameObject CameraRoot
+        {
+            get
+            {
+                return m_CameraRoot;
+            }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            m_ListCamera = new List<UnityEngine.Camera>();
+            m_CameraRoot = new GameObject("CameraRoot");
+
+            m_CameraFollow = m_CameraRoot.AddComponent<CameraFollow>();
+
+            m_ListCamera.Add(InitCamera("MapCamera", CameraDepthDefine.MapCamera, "MainCamera", MaskName.Map));
+            m_ListCamera.Add(InitCamera("RoleCamera", CameraDepthDefine.RoleCamera, maskName: MaskName.Unit));
+
+            m_CameraFollow.MainCamera = UnityEngine.Camera.main;
+            DontDestroyOnLoad(m_CameraRoot);
+        }
+
+        public void SetTarget(Transform target)
+        {
+            m_CameraFollow.SetTarget(target);
+        }
+
+        public void StartFollow(int width,int height)
+        {
+            m_CameraFollow.StartFollow(width, height);
+        }
+
+        public Vector2[] GetVision()
+        {
+            return m_CameraFollow.GetVision();
+        }
+
+        public void EndFollow()
+        {
+            m_CameraFollow.EndFollow();
+        }
+
+        private void LateUpdate()
+        {
+
+        }
+
+        private UnityEngine.Camera InitCamera(string name, int depth, string tag = "Untagged", params string[] maskName)
+        {
+            UnityEngine.Camera camera = new GameObject(name).AddComponent<UnityEngine.Camera>();
+            camera.transform.SetParent(m_CameraRoot.transform, false);
+            camera.transform.localPosition = Vector3.forward * -50;
+
+            camera.tag = tag;
+            camera.orthographic = true;
+            camera.orthographicSize = GetOrthgraphicSize();
+            camera.nearClipPlane = -500;
+            camera.farClipPlane = 500;
+            camera.depth = depth;
+            camera.clearFlags = CameraClearFlags.Depth;
+            camera.cullingMask = LayerMask.GetMask(maskName);
+
+            return camera;
+        }
+
+        public float GetOrthgraphicSize()
+        {
+            float cameraRate = (float)Screen.width / Screen.height;
+            float sizeRate = cameraRate / m_NormalRate;
+
+            if (sizeRate > 1)
+            {
+                sizeRate = m_NormalSize / cameraRate;
+            }
+
+            return sizeRate * m_NormalSize / 100;
+        }
+
+        public override void ShutDown()
+        {
+
+        }
+
+        private const float m_NormalRate = 1280f / 720f;
+        private const float m_NormalSize = 150f / 2;
+
+        private List<UnityEngine.Camera> m_ListCamera = null;
+        private CameraFollow m_CameraFollow = null;
+        private GameObject m_CameraRoot = null;
+    }
+}
