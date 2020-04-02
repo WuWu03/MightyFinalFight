@@ -11,7 +11,7 @@ namespace FrameWork.Pool
 {
     public class ResPool : BaseMgr<ResPool>
     {
-        protected override void Awake()
+        private void Awake()
         {
             m_PoolRoot = new GameObject("ResPool").transform;
             m_PoolRoot.SetParent(transform, false);
@@ -93,7 +93,7 @@ namespace FrameWork.Pool
             return pool;
         }
 
-        protected override void OnDestroy()
+        private void OnDestroy()
         {
             m_DicPool.Clear();
             m_DicLoadCallback.Clear();

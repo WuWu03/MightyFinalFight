@@ -6,11 +6,11 @@ namespace FrameWork.Input
 {
     public class InputMgr : BaseMgr<InputMgr>
     {
-        protected override void Awake()
+        private void Awake()
         {
             m_ListKey = new List<KeyCodeType>();
         }
-        protected override void Update()
+        private void Update()
         {
             //UpdateKey();
 
@@ -65,53 +65,53 @@ namespace FrameWork.Input
 
         private void UpdateKey()
         {
-            //m_AnyKeyDown = false;
+            m_AnyKeyDown = false;
             float x = UnityEngine.Input.GetAxis("Horizontal");
             float y = UnityEngine.Input.GetAxis("Vertical");
 
             if (x != 0 && y == 0)
             {
                 m_CurrKey = x > 0 ? KeyCodeType.Rigth : KeyCodeType.Left;
-                //m_AnyKeyDown = true;
+                m_AnyKeyDown = true;
             }
 
             if (y != 0 && x == 0)
             {
                 m_CurrKey = y > 0 ? KeyCodeType.Up : KeyCodeType.Down;
-                //m_AnyKeyDown = true;
+                m_AnyKeyDown = true;
             }
 
             if (UnityEngine.Input.GetButtonDown("A"))
             {
                 m_CurrKey = KeyCodeType.Attack;
-                //m_AnyKeyDown = true;
+                m_AnyKeyDown = true;
             }
 
             if (UnityEngine.Input.GetButtonDown("B"))
             {
                 m_CurrKey = KeyCodeType.Jump;
-                //m_AnyKeyDown = true;
+                m_AnyKeyDown = true;
             }
         }
 
         private void ResetKey()
         {
             m_ListKey.Clear();
-            //m_CurrFrame = 0;
-            //m_IsStart = false;
-            //m_AnyKeyDown = false;
+            m_CurrFrame = 0;
+            m_IsStart = false;
+            m_AnyKeyDown = false;
         }
 
         public override void ShutDown()
         {
-            
+            throw new System.NotImplementedException();
         }
 
         private List<KeyCodeType> m_ListKey = null;
         private KeyCodeType m_CurrKey;
-        //private bool m_AnyKeyDown = false;
-        //private bool m_IsStart = false;
-        //private int m_CurrFrame = 0;
+        private bool m_AnyKeyDown = false;
+        private bool m_IsStart = false;
+        private int m_CurrFrame = 0;
         private const int SaveFrame = 1;
         private const int KeyFrame = 4;
     }

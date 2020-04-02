@@ -6,9 +6,8 @@ namespace FrameWork.Sound
     public class SoundMgr : BaseMgr<SoundMgr>
     {
         private AudioSource m_Source = null;
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             m_Root = new GameObject("SoundMgr");
             m_Source = m_Root.GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();

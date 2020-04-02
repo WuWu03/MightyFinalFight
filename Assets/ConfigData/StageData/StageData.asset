@@ -19,4 +19,9 @@ MonoBehaviour:
     Width: 1016
     Height: 152
     SceneObjIDs: 
+    InitPos: {x: -420, y: -53}
+    MoveArea:
+    - Pos: {x: 0, y: -40}
+      Width: 1016
+      Height: 45
     Areas: []

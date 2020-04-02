@@ -41,7 +41,7 @@ namespace FrameWork.Event
             return 0;
         }
 
-        public void Update()//float elapseSeconds, float realElapseSeconds)
+        public void Update(float elapseSeconds, float realElapseSeconds)
         {
             while (this.m_Events.Count > 0)
             {
@@ -69,6 +69,7 @@ namespace FrameWork.Event
             {
                 eventList = new List<EventHandler<T>>();
                 m_EventHandlers.Add(id, eventList);
+                return;
             }
 
             if (eventList.Contains(handler))

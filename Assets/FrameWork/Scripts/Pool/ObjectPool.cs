@@ -8,9 +8,8 @@ namespace FrameWork.Pool
 {
     public class ObjectPool : BaseMgr<ObjectPool>
     {
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             m_PoolRoot = new GameObject("PoolManager").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);

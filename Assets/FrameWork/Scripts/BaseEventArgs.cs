@@ -5,7 +5,7 @@ namespace FrameWork
     public abstract class BaseEventArgs:EventArgs
     {
         public int ID { get; set; }
-        public abstract void Clear();
-        public abstract BaseEventArgs Clone();
+        public virtual void Clear() { }
+        public virtual BaseEventArgs Clone() { return null; }
     }
 }

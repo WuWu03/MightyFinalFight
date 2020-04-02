@@ -34,7 +34,7 @@ namespace FrameWork.Camera
             return m_Vision;
         }
 
-        public void StartFollow(int width, int height, float orthographicSize = 0)
+        public void InitFollow(int width, int height, float orthographicSize = 0)
         {
             if (m_Target == null)
             {
@@ -56,10 +56,17 @@ namespace FrameWork.Camera
             m_YBorder.left = (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
             m_YBorder.right = (float)(-height + Screen.height * m_CurrAspectRate) / 100 / 2;
 
-            if (m_Target != null) transform.position = GetClampPos(m_Target.position);
-            m_IsStart = m_Target != null;
+            if (m_Target != null)
+            {
+                transform.position = GetClampPos(m_Target.position);
+                m_IsStart = m_Target != null;
+            }
         }
 
+        public void StartFollow()
+        {
+            m_IsStart = m_Target != null;
+        }
         public void EndFollow()
         {
             m_IsStart = false;

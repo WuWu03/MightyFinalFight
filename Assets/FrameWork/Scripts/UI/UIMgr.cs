@@ -19,7 +19,7 @@ namespace FrameWork.UI
             ThirdLevel,
         }
 
-        protected override void Awake()
+        private void Awake()
         {
             m_DicSprite = new Dictionary<string, Sprite>();
             m_QueueOpenPanel = new Queue<BasePanel>();
@@ -142,7 +142,7 @@ namespace FrameWork.UI
             ResMgr.Ins.LoadAsset(loadPath, action, true, typeof(Sprite));
         }
 
-        protected override void Update()
+        private void Update()
         {
 
         }

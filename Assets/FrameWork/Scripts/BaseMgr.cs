@@ -3,25 +3,42 @@ using UnityEngine;
 
 namespace FrameWork
 {
-    public abstract class BaseMgr<T>:MonoSingleton<T> where T:BaseMgr<T>,new()
+    public abstract class BaseMgr<T>: MonoBehaviour where T:BaseMgr<T>,new()
     {
+        public static T Ins
+        {
+            get
+            {
+                if (m_Ins == null)
+                {
+                    Logger.LogError(string.Format("The instance that Type of {0} must be init", typeof(T).Name));
+                    return null;
+                }
+
+                return m_Ins;
+            }
+        }
+
         public static void Init()
         {
             if (m_Ins != null)
             {
-                Logger.LogError(string.Format("The instance that Type of {0} must be init", typeof(T).Name));
+                Logger.LogError(string.Format("The instance that Type of {0} has already init", typeof(T).Name));
                 return;
             }
 
-            GameObject go = GameObject.Find("GameManager");
-
-            if (go == null)
+            if(m_Manager == null)
             {
-                go = new GameObject("GameManager");
-                DontDestroyOnLoad(go);
+                m_Manager = GameObject.Find("GameManager");
+
+                if (m_Manager == null)
+                {
+                    m_Manager = new GameObject("GameManager");
+                    DontDestroyOnLoad(m_Manager);
+                }
             }
 
-            m_Ins = go.GetOrAddComponent<T>();
+            m_Ins = m_Manager.GetOrAddComponent<T>();
         }
 
         internal virtual int Priority
@@ -33,6 +50,7 @@ namespace FrameWork
         }
 
         public abstract void ShutDown();
-        protected new static bool m_IsAutoInstantiate = false;
+        private static T m_Ins = null;
+        private static GameObject m_Manager = null;
     }
 }

@@ -28,7 +28,7 @@ namespace FrameWork.Resources
 
         public delegate void LoadCallBack(object obj);
 
-        protected override void Awake()
+        private void Awake()
         {
             _mResDic = new Dictionary<string, Object>();
 #if UNITY_EDITOR
@@ -45,7 +45,7 @@ namespace FrameWork.Resources
         }
 
         float deltaTime;
-        protected override void Update()
+        private void Update()
         {
             deltaTime += Time.deltaTime;
             if (deltaTime >= UNLOAD_TIME)

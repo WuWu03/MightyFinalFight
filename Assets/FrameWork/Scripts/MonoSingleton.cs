@@ -10,41 +10,30 @@ namespace FrameWork
             {
                 if (m_Ins == null)
                 {
-                    if (!m_IsAutoInstantiate)
-                    {
-                        Logger.LogError(string.Format("The instance that Type of {0} must be init", typeof(T).Name));
-                        return null;
-                    }
 
-                    T[] instance = GameObject.FindObjectsOfType<T>();
+                    T[] instances = GameObject.FindObjectsOfType<T>();
 
-                    if (instance != null && instance.Length > 0)
+                    if (instances != null && instances.Length > 0)
                     {
-                        if (instance.Length > 1)
+                        if (instances.Length > 1)
                         {
                             Logger.LogError(string.Format("The instance that Type of {0} is more than one", typeof(T).Name));
                             return null;
                         }
                         else
                         {
-                            m_Ins = instance[0];
+                            m_Ins = instances[0];
                         }
                     }
                     else
                     {
-                        GameObject instanceObj = GameObject.Find(typeof(T).Name);
-                        if (instanceObj == null) instanceObj = new GameObject(typeof(T).Name);
-                        m_Ins = instanceObj.GetOrAddComponent<T>();
+                        m_Ins = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
+                        DontDestroyOnLoad(m_Ins.gameObject);
                     }
                 }
                 return m_Ins;
             }
         }
-
-        protected virtual void Awake() { }
-        protected virtual void Start() { }
-        protected virtual void Update() { }
-        protected virtual void OnDestroy() { }
 
         protected static T m_Ins;
         protected static bool m_IsAutoInstantiate = true;

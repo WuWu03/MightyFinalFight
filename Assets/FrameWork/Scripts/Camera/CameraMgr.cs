@@ -26,9 +26,8 @@ namespace FrameWork.Camera
             }
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             m_ListCamera = new List<UnityEngine.Camera>();
             m_CameraRoot = new GameObject("CameraRoot");
 
@@ -46,14 +45,14 @@ namespace FrameWork.Camera
             m_CameraFollow.SetTarget(target);
         }
 
-        public void StartFollow(int width,int height)
+        public void InitFollow(int width, int height)
         {
-            m_CameraFollow.StartFollow(width, height);
+            m_CameraFollow.InitFollow(width, height);
         }
 
-        public Vector2[] GetVision()
+        public void StartFollow()
         {
-            return m_CameraFollow.GetVision();
+            m_CameraFollow.StartFollow();
         }
 
         public void EndFollow()
@@ -61,6 +60,13 @@ namespace FrameWork.Camera
             m_CameraFollow.EndFollow();
         }
 
+
+        public Vector2[] GetVision()
+        {
+            return m_CameraFollow.GetVision();
+        }
+
+ 
         private void LateUpdate()
         {
 

@@ -15,13 +15,12 @@ namespace FrameWork.Fsm
             }
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             m_DicFsms = new Dictionary<object, BaseFsm>();
         }
 
-        protected override void Update()
+        private void Update()
         {
             foreach (KeyValuePair<System.Object, BaseFsm> kvp in m_DicFsms)
             {

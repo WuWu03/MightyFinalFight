@@ -20,7 +20,7 @@ namespace FrameWork.Event
             }
         }
 
-        protected override void Awake()
+        private void Awake()
         {
             m_EventPool = new EventPool<GameEventArgs>();
         }
@@ -59,10 +59,6 @@ namespace FrameWork.Event
             m_EventPool.ShutDown();
         }
 
-        protected override void Update()
-        {
-           m_EventPool.Update();
-        }
         private EventPool<GameEventArgs> m_EventPool = null;
     }
 }

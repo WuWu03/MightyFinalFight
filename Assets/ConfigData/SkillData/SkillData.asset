@@ -17,6 +17,7 @@ MonoBehaviour:
     Level: 0
     Name: CodyAttack1
     AnimationName: Attack1
+    Type: 0
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -28,10 +29,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 0
+    IsFloat: 0
   - ID: 1002
     Level: 0
     Name: CodyAttack2
     AnimationName: Attack2
+    Type: 0
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -43,10 +46,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 0
+    IsFloat: 0
   - ID: 1003
     Level: 0
     Name: CodyAttack3
     AnimationName: Attack3
+    Type: 0
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -58,10 +63,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 0
+    IsFloat: 0
   - ID: 1004
     Level: 0
     Name: CodyAttack4
     AnimationName: Attack4
+    Type: 0
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -73,10 +80,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 1
+    IsFloat: 0
   - ID: 1005
     Level: 0
     Name: CodyJumpAttack1
     AnimationName: JumpAttack1
+    Type: 1
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -88,10 +97,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 1
+    IsFloat: 0
   - ID: 1006
     Level: 0
     Name: CodyJumpAttack2
     AnimationName: JumpAttack2
+    Type: 1
     SelectorType: 1
     EffectorTypes: 01000000
     SelectorOffest: {x: 0, y: 0}
@@ -103,10 +114,12 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 0
+    IsFloat: 0
   - ID: 1007
     Level: 0
     Name: CodySkill1
     AnimationName: Skill1
+    Type: 2
     SelectorType: 2
     EffectorTypes: 02000000
     SelectorOffest: {x: 0, y: 0}
@@ -126,10 +139,12 @@ MonoBehaviour:
       TriggerOffest: {x: -0.0008981675, y: -0.00000008940697}
       TriggerSize: {x: 0.09997848, y: 0.2383053}
     IsSmoon: 1
+    IsFloat: 0
   - ID: 1008
     Level: 0
     Name: CodySkill2
     AnimationName: Attack1
+    Type: 2
     SelectorType: 1
     EffectorTypes: 03000000
     SelectorOffest: {x: 0, y: 0}
@@ -141,3 +156,4 @@ MonoBehaviour:
     Gravity: 0
     Bullets: []
     IsSmoon: 0
+    IsFloat: 0
