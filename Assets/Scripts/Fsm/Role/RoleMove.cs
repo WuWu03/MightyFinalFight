@@ -37,7 +37,7 @@ namespace Runtime
                 }
                 else
                 {
-                    CameraMgr.Ins.StartFollow(StageMgr.Ins.Width, StageMgr.Ins.Heigth);
+                    CameraMgr.Ins.StartFollow();
                 }
 
                 Vector2[] vision = CameraMgr.Ins.GetVision();

@@ -29,12 +29,6 @@ namespace Runtime
             set;
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-            GameObject.DontDestroyOnLoad(gameObject);
-        }
-
         public void InitPlayer(int roleID)
         {
             PlayerInfo = StaticConfig.PlayerInfo[roleID];
@@ -47,7 +41,7 @@ namespace Runtime
             m_CurrCtrl.Init(PlayerInfo.AttackWait, PlayerInfo.Skills);
         }
 
-        protected override void Update()
+        private void Update()
         {
             if (m_Player == null || m_CurrCtrl == null) return;
 
@@ -69,12 +63,10 @@ namespace Runtime
                 m_CurrCtrl.Skill(1007);
             }
 
-            if(Input.GetButtonDown("LB"))
+            if (Input.GetButtonDown("LB"))
             {
                 m_CurrCtrl.Skill(1008);
             }
-
-            base.Update();
         }
 
         private AvatarCtrl m_CurrCtrl = null;

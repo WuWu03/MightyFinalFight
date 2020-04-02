@@ -9,16 +9,16 @@ namespace Runtime
         {
             get
             {
-                if(m_Avatar.ActorAnimator.animation.isCompleted)
+                if(m_Owner.ActorAnimator.animation.isCompleted)
                 {
-                    m_Avatar = null;
+                    m_Owner = null;
                     return true;
                 }
                 return false;
             }
         }
 
-        public void Effect(BaseAvatar owner, SkillData skillData, ISkillSelector selector)
+        public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
         {
             for (int i = 0; i < skillData.Bullets.Length; i++)
             {
@@ -26,9 +26,9 @@ namespace Runtime
                 bullet.SetBulletInfo(owner, skillData, skillData.Bullets[i]);
             }
 
-            m_Avatar = owner;
+            m_Owner = owner;
         }
 
-        private BaseAvatar m_Avatar = null;
+        private BaseRole m_Owner = null;
     }
 }

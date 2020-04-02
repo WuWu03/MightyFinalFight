@@ -11,7 +11,7 @@ namespace Runtime
             m_ListTargets = new List<GameObject>();
         }
 
-        public List<GameObject> GetTargets(BaseAvatar owner, SkillData skillData)
+        public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
         {
             m_ListTargets.Clear();
             TriggerTargets trigger = owner.GetComponent<TriggerTargets>();

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Runtime
 {
-    public class StageMgr : BaseMgr<StageMgr>
+    public class StageMgr : MonoSingleton<StageMgr>
     {
         public int CurrID
         {
@@ -32,9 +32,8 @@ namespace Runtime
                 return m_Height;
             }
         }
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             if (m_MapRenderer == null)
             {
                 m_MapRenderer = new GameObject("Map").GetOrAddComponent<SpriteRenderer>();
@@ -43,7 +42,6 @@ namespace Runtime
                 DontDestroyOnLoad(m_MapRenderer.gameObject);
             }
         }
-
 
         public void Enter(int id)
         {
@@ -75,14 +73,12 @@ namespace Runtime
             {
                 return false;
             }
-            pos = pos * 100;
 
             return IsInArea(m_CurrStageData.Areas[m_CurrAreaIndex], pos);
         }
 
         public bool CanMove(Vector2 pos)
         {
-            pos = pos * 100;
             for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
             {
                 if(IsInArea(m_CurrStageData.MoveArea[i],pos))
@@ -90,6 +86,7 @@ namespace Runtime
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -100,6 +97,8 @@ namespace Runtime
             int yLeft = area.Pos.y - area.Height / 2;
             int yRigth = area.Pos.y + area.Height / 2;
 
+            pos = pos * 100;
+
             if (pos.x > xLeft && pos.x < xRigth && pos.y > yLeft && pos.y < yRigth)
             {
                 return true;
@@ -108,18 +107,13 @@ namespace Runtime
             return false;
         }
 
-        public override void ShutDown()
-        {
-
-        }
-
         private void OnLoadComplete(UnityEngine.Object obj)
         {
             Sprite sprite = obj as Sprite;
             m_MapRenderer.sprite = sprite;
- 
+
             PlayerMgr.Ins.Player.SetPos(m_CurrStageData.InitPos);
-            CameraMgr.Ins.StartFollow(m_CurrStageData.Width, m_CurrStageData.Height);
+            CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
         }
 
         private int m_Width;

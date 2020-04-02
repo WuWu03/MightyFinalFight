@@ -12,7 +12,6 @@ namespace Runtime
         {
             ObjectMsgCenter.Init();
             DataHelper.Init();
-            StageMgr.Init();
             StaticConfig.InitConfig();
         }
 

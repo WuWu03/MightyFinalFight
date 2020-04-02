@@ -14,7 +14,7 @@ namespace Runtime
             }
         }
 
-        public void Effect(BaseAvatar owner, SkillData skillData, ISkillSelector skillSelector)
+        public void Effect(BaseRole owner, SkillData skillData, ISkillSelector skillSelector)
         {
             List<GameObject> targets = skillSelector.GetTargets(owner, skillData);
             

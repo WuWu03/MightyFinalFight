@@ -9,7 +9,7 @@ namespace Runtime
 {
     public class SkillBulletSelector : ISkillSelector
     {
-        public List<GameObject> GetTargets(BaseAvatar owner, SkillData skillData)
+        public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
         {
             return null;
         }

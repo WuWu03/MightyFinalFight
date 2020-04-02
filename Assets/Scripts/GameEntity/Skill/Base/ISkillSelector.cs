@@ -9,6 +9,6 @@ namespace Runtime
 {
     public interface ISkillSelector
     {
-        List<GameObject> GetTargets(BaseAvatar owner, SkillData skillData);
+        List<GameObject> GetTargets(BaseRole owner, SkillData skillData);
     }
 }

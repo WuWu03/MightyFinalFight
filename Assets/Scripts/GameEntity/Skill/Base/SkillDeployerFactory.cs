@@ -4,6 +4,26 @@ namespace Runtime
 {
     public class SkillDeployerFactory
     {
+        public static SkillDeployer CreateDeployer(int skillID,BaseRole owner)
+        {
+            SkillDeployer ret = null;
+            SkillData data = StaticConfig.SkillConfig.GetData(skillID);
+
+            switch (data.Type)
+            {
+                case SkillType.NormalAttack:
+                    ret = new SkillNormalAttackDeployer(skillID, owner);
+                    break;
+                case SkillType.JumpAttack:
+                    ret = new SkillJumpAttackDeployer(skillID, owner);
+                    break;
+                case SkillType.SkillAttack:
+                    ret = new SkillSkillAttackDeployer(skillID, owner);
+                    break;
+            }
+
+            return ret;
+        }
         public static ISkillSelector CreateSelector(SkillSelectorType type)
         {
             ISkillSelector ret = null;

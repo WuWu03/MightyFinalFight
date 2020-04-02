@@ -128,7 +128,6 @@ namespace Runtime
         protected override void Update()
         {
             base.Update();
-     
             if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
             {
                 UpdatePos2(transform.localPosition.x, Pos.y);
@@ -138,7 +137,7 @@ namespace Runtime
                     return;
                 }
 
-                if(!IsAnyState(typeof(RoleJumpAttack)))
+                if (!IsAnyState(typeof(RoleJumpAttack)))
                 {
                     OnDropEvent.Invoke();
                 }
@@ -147,29 +146,21 @@ namespace Runtime
 
                 if (IsInGround)
                 {
-                    if (m_Health > 0)
-                    {
-                        OnGroundEvent.Invoke();
-                        OnGroundEvent.RemoveAllListeners();
+                    OnGroundEvent.Invoke();
+                    OnGroundEvent.RemoveAllListeners();
 
-                        if (IsAnyState(typeof(RoleSwoon)))
+                    if (IsAnyState(typeof(RoleSwoon)))
+                    {
+                        if (m_Animator.animation.isCompleted)
                         {
-                            Debug.Log(m_Animator.animation.isCompleted);
-                            Debug.Log(m_Rigidbody.bodyType);
-                           
-                            if (m_Animator.animation.isCompleted)
-                            {                           
-                                ChangeState<RoleAwaken>();
-                            }
-                        }
-                        else
-                        {
-                            ChangeState<RoleIdle>();
+                            m_Rigidbody.velocity = Vector2.zero;
+                            if (m_Health > 0) ChangeState<RoleAwaken>();
+                            else ChangeState<RoleDead>();
                         }
                     }
                     else
                     {
-                        ChangeState<RoleDead>();
+                        ChangeState<RoleIdle>();
                     }
                 }
             }
@@ -236,6 +227,7 @@ namespace Runtime
         public virtual void OnJumpMsg(JumpData data)
         {
             if (data == null) return;
+    
             GetState<RoleJump>().StateParam = data;
             ChangeState<RoleJump>();
         }
@@ -243,11 +235,8 @@ namespace Runtime
         public virtual void OnHurtMsg(HurtData data)
         {
             if (data == null) return;
-            if (!CanBeHit)
-            {
-                return;
-            }
-
+            if (!CanBeHit) return;
+ 
             m_Health -= data.AttackValue;
             m_IsSmoon = data.IsSwoon;
 

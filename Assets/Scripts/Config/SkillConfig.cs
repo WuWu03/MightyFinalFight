@@ -61,9 +61,17 @@ public class SkillData: BaseConfigData
         MoveHitEffect = 3,
     }
 
+    public enum SkillType
+    {
+        NormalAttack,
+        JumpAttack,
+        SkillAttack,
+    }
+
     public int Level;
     public string Name;
     public string AnimationName;
+    public SkillType Type;
     public SkillSelectorType SelectorType;
     public SkillEffectorType[] EffectorTypes;
     public Vector2 SelectorOffest;//选择器偏移

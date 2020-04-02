@@ -17,6 +17,11 @@ public class StageData:BaseConfigData
         public Vector2Int Pos;
         public int Width;
         public int Height;
+    }
+
+    [Serializable]
+    public class EventArea:Area
+    {
         public int[] EnemyIDs;
         public int[] EventIDs;
     }
@@ -28,5 +33,5 @@ public class StageData:BaseConfigData
     public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）
     public Vector2Int InitPos;
     public Area[] MoveArea;//可行走区域
-    public Area[] Areas;//每个关卡的区域
+    public EventArea[] Areas;//每个关卡的区域
 }

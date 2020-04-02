@@ -1,22 +1,23 @@
 ﻿
 namespace Runtime
 {
-    public class SkillDeployer
+    public abstract class SkillDeployer
     {
         public int SkillID { get; private set; }
-        public SkillDeployer(int skillID)
+        public SkillDeployer(int skillID,BaseRole owner)
         {
             SkillID = skillID;
+            m_Owner = owner;
             m_SkillData = StaticConfig.SkillConfig.GetData(skillID);
             m_SkillSelector = SkillDeployerFactory.CreateSelector(m_SkillData.SelectorType);
             m_SkillEffects = SkillDeployerFactory.CreateEffects(m_SkillData.EffectorTypes);
         }
 
-        public virtual void DeployeSkill(BaseAvatar owner)
+        public virtual void DeploySkill()
         {
             for (int i = 0; i < m_SkillEffects.Length; i++)
             {
-                m_SkillEffects[i].Effect(owner, m_SkillData, m_SkillSelector);
+                m_SkillEffects[i].Effect(m_Owner, m_SkillData, m_SkillSelector);
             }
         }
 
@@ -33,7 +34,10 @@ namespace Runtime
             return true;
         }
 
-        private SkillData m_SkillData = null;
+        public virtual void Update() { }
+
+        protected BaseRole m_Owner = null;
+        protected SkillData m_SkillData = null;
         private ISkillSelector m_SkillSelector = null;
         private ISkillEffect[] m_SkillEffects = null;
     }

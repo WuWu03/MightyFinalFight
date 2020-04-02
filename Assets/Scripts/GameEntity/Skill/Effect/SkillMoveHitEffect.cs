@@ -21,7 +21,7 @@ namespace Runtime
             }
         }
 
-        public void Effect(BaseAvatar owner, SkillData skillData, ISkillSelector selector)
+        public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
         {
             m_Owner = owner;
             m_SkillData = skillData;     
@@ -86,7 +86,7 @@ namespace Runtime
 
         private bool m_IsCompleted = false;
         private SkillData m_SkillData = null;
-        private BaseAvatar m_Owner = null;
+        private BaseRole m_Owner = null;
         private Vector3 m_StartPos = Vector3.zero;
         private ISkillSelector m_Selector = null;
         private float m_OriginalGravity = 0;

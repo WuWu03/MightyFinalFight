@@ -7,9 +7,8 @@ namespace Runtime
     public delegate void MsgHandle(BaseData data);
     public class ObjectMsgCenter:BaseMgr<ObjectMsgCenter>
     {
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             m_DicObjectMsg = new Dictionary<string, List<ObjectMsg>>();
         }
 
