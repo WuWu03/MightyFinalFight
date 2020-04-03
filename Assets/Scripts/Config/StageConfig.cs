@@ -4,13 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class StageConfig : BaseScriptableObject<StageData>
+namespace Runtime.Config
 {
-}
+    public class StageConfig : BaseScriptableObject<StageData>
+    {
+    }
 
-[Serializable]
-public class StageData:BaseConfigData
-{
+    [Serializable]
+    public class StageData : BaseConfigData
+    {
+        [Serializable]
+        public class EventArea : Area
+        {
+            public int[] EnemyIDs;
+            public int[] EventIDs;
+        }
+
+        public string Name;
+        public string AssetName;
+        public int Width;
+        public int Height;
+        public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）
+        public Vector2Int InitPos;
+        public Area[] MoveArea;//可行走区域
+        public EventArea[] Areas;//每个关卡的区域
+    }
+
     [Serializable]
     public class Area
     {
@@ -18,20 +37,4 @@ public class StageData:BaseConfigData
         public int Width;
         public int Height;
     }
-
-    [Serializable]
-    public class EventArea:Area
-    {
-        public int[] EnemyIDs;
-        public int[] EventIDs;
-    }
-
-    public string Name;
-    public string AssetName;
-    public int Width;
-    public int Height;
-    public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）
-    public Vector2Int InitPos;
-    public Area[] MoveArea;//可行走区域
-    public EventArea[] Areas;//每个关卡的区域
 }

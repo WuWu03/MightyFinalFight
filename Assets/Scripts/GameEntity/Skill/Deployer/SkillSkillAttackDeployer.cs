@@ -11,9 +11,10 @@ namespace Runtime
 
         public override void DeploySkill()
         {
+            Debug.Log("Deploy");
             m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
             m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
-            m_Owner.OnSkillMsg(SkillID);
+            m_Owner.OnSkillMsg(m_SkillData);
         }
 
         public override bool IsAllComplete()

@@ -20,7 +20,6 @@ namespace Runtime
             PlayerMgr.Ins.InitPlayer(0);
             CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
             StageMgr.Ins.Enter(1001);
-            //SoundMgr.Ins.PlayBGM("bgm01_Start");
         }
     }
 }

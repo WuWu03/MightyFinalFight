@@ -1,5 +1,5 @@
 ﻿using FrameWork.Pool;
-
+using Runtime.Config;
 
 namespace Runtime
 {
@@ -9,7 +9,7 @@ namespace Runtime
         {
             get
             {
-                if(m_Owner.ActorAnimator.animation.isCompleted)
+                if(m_Owner != null && m_Owner.ActorAnimator.animation.isCompleted)
                 {
                     m_Owner = null;
                     return true;
@@ -20,6 +20,7 @@ namespace Runtime
 
         public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
         {
+            
             for (int i = 0; i < skillData.Bullets.Length; i++)
             {
                 Bullet bullet = ObjectPool.Ins.Get<Bullet>(skillData.Bullets[i].Name);

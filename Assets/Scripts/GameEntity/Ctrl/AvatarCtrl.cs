@@ -42,7 +42,7 @@ namespace Runtime
         {
             if (!m_Owner.CanAttack) return;
 
-            bool isJump = m_Owner.IsAnyState(typeof(RoleJump), typeof(RoleJumpDown));
+            bool isJump = m_Owner.IsAnyState(typeof(RoleJump), typeof(RoleDropTrag));
 
             if (isJump)
             {

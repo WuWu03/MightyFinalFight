@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using Runtime.Config;
 
 namespace Runtime
 {
@@ -8,6 +9,7 @@ namespace Runtime
         public static PlayerInfo[] PlayerInfo = new PlayerInfo[1];
         public static SkillConfig SkillConfig = null;
         public static StageConfig StageConfig = null;
+        public static SceneObjectConfig SceneObjectConfig = null;
         public static void InitConfig()
         {
             PlayerInfo[0] = new PlayerInfo();
@@ -35,8 +37,9 @@ namespace Runtime
             PlayerInfo[0].Skills[5] = 1006;
             PlayerInfo[0].Skills[6] = 1007;
             PlayerInfo[0].Skills[7] = 1008;
-            SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>("Assets/ConfigData/SkillData/SkillData.asset");
-            StageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>("Assets/ConfigData/StageData/StageData.asset");
+            SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>("Assets/ConfigData/SkillData.asset");
+            StageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>("Assets/ConfigData/StageData.asset");
+            SceneObjectConfig = AssetDatabase.LoadAssetAtPath<SceneObjectConfig>("Assets/ConfigData/SceneObjectData.asset");
         }
     }
 }

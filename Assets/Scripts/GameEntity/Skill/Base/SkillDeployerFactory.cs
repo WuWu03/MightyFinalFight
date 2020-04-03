@@ -1,4 +1,5 @@
-﻿using static SkillData;
+﻿using Runtime.Config;
+using static Runtime.Config.SkillData;
 
 namespace Runtime
 {

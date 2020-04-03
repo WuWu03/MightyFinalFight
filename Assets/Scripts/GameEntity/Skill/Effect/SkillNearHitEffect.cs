@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Runtime.Config;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

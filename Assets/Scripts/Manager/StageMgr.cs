@@ -2,6 +2,8 @@
 using FrameWork.Camera;
 using FrameWork.Pool;
 using FrameWork.Resources;
+using FrameWork.Sound;
+using Runtime.Config;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +34,7 @@ namespace Runtime
                 return m_Height;
             }
         }
+
         private void Awake()
         {
             if (m_MapRenderer == null)
@@ -56,16 +59,19 @@ namespace Runtime
             for (int i = 0; i < 5; i++)
             {
                 x += 0.2f * (float)i;
-                BaseEnemy enemy = ObjectPool.Ins.Get<BaseEnemy>("Monster");
+                BaseEnemy enemy = ObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
                 enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, "Cody"));
                 enemy.SetObjectType(ObjectType.Monster);
                 enemy.SetPos2(x, -0.35f);
             }
 
+            CreateSceneObject();
             CameraMgr.Ins.EndFollow();
             string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
             ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
         }
+
+
 
         public bool IsOutArea(Vector2 pos)
         {
@@ -90,7 +96,7 @@ namespace Runtime
             return false;
         }
 
-        private bool IsInArea(StageData.Area area, Vector2 pos)
+        private bool IsInArea(Area area, Vector2 pos)
         {
             int xLeft = area.Pos.x - area.Width / 2;
             int xRigth = area.Pos.x + area.Width / 2;
@@ -114,6 +120,29 @@ namespace Runtime
 
             PlayerMgr.Ins.Player.SetPos(m_CurrStageData.InitPos);
             CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
+            SoundMgr.Ins.PlayBGM("bgm01_Start");
+        }
+
+        private void CreateSceneObject()
+        {
+            for (int i = 0; i < m_CurrStageData.SceneObjIDs.Length; i++)
+            {
+                int id = m_CurrStageData.SceneObjIDs[i];
+                SceneObjectData data = StaticConfig.SceneObjectConfig.GetData(id);
+
+                if (data == null) continue;
+                switch (data.Type)
+                {
+                    case SceneObjectData.SceneObjectType.Trag:
+                        Trag trag = ObjectPool.Ins.Get<Trag>("Trag_" + i);
+                        trag.SetTragData(data);
+                        break;
+                    case SceneObjectData.SceneObjectType.Drop:
+                        break;
+                    case SceneObjectData.SceneObjectType.Obstacle:
+                        break;
+                }
+            }
         }
 
         private int m_Width;

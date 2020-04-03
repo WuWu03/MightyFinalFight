@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Runtime.Config;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Runtime
@@ -73,7 +74,7 @@ namespace Runtime
                 return IsAnyState(typeof(RoleIdle),
                                   typeof(RoleMove),
                                   typeof(RoleJump),
-                                  typeof(RoleJumpDown),
+                                  typeof(RoleDropTrag),
                                   typeof(RoleAttack));
             }
         }
@@ -103,7 +104,7 @@ namespace Runtime
             AddState<RoleIdle>();
             AddState<RoleMove>();
             AddState<RoleJump>();
-            AddState<RoleJumpDown>();
+            AddState<RoleDropTrag>();
             AddState<RoleAttack>();
             AddState<RoleJumpAttack>();
             AddState<RoleHurt>();
@@ -128,6 +129,9 @@ namespace Runtime
         protected override void Update()
         {
             base.Update();
+            if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
+            if (IsAnyState(typeof(RoleDropTrag))) return;
+
             if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
             {
                 UpdatePos2(transform.localPosition.x, Pos.y);
@@ -183,11 +187,8 @@ namespace Runtime
             PlayAnimation(data.AnimationName, 1, m_AttackSpeed);
         }
 
-        public virtual void OnSkillMsg(int skillID)
+        public virtual void OnSkillMsg(SkillData skillData)
         {
-            SkillData skillData = StaticConfig.SkillConfig.GetData(skillID);
-            if (skillData == null) return;
-
             ChangeState<RoleSkill>();
             SetTrigger(skillData.AnimationName);
             PlayAnimation(skillData.AnimationName, 1, 0.4f);
@@ -250,6 +251,13 @@ namespace Runtime
                 GetState<RoleHurt>().StateParam = data;
                 ChangeState<RoleHurt>();
             }
+        }
+
+        public void OnDropMsg(DropTragData data)
+        {
+            if (data == null) return;
+            GetState<RoleDropTrag>().StateParam = data;
+            ChangeState<RoleDropTrag>();
         }
 
         protected bool m_IsSmoon = false;

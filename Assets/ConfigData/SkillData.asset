@@ -132,7 +132,7 @@ MonoBehaviour:
     Bullets:
     - Name: CodyBullet
       Dir: {x: 1, y: 0}
-      Pos: {x: 0.226, y: -0.039}
+      Pos: {x: 0.2, y: -0.039}
       Velocity: {x: 8, y: 0}
       HitRange: 0.5
       Drag: 20

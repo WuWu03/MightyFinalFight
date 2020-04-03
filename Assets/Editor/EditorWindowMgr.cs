@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
+using Runtime.Config;
 public class EditorWindowMgr : MonoBehaviour
 {
     [MenuItem("Tools/CharacterTriggerEditor")]
@@ -11,40 +12,43 @@ public class EditorWindowMgr : MonoBehaviour
         EditorWindow.GetWindow<CharacterTriggerEditor>(false, "CharacterTriggerEditor", false).Show();
     }
 
-    [MenuItem("Assets/CreateSkillData")]
+    [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
-        if(File.Exists(Application.dataPath+ "/ConfigData/SkillData/SkillData.asset"))
-        {
-            return;
-        }
+        CreateConfigData<SkillConfig, SkillData>("StageData", ".asset");
+    }
 
-        if (!Directory.Exists(Application.dataPath + "/ConfigData/SkillData"))
-        {
-            Directory.CreateDirectory(Application.dataPath + "/ConfigData/SkillData");
-        }
+    [MenuItem("Assets/Config/CreateStageData")]
+    public static void CreateStageData()
+    {
+        CreateConfigData<StageConfig, StageData>("StageData", ".asset");
+    }
 
-        SkillConfig data = ScriptableObject.CreateInstance<SkillConfig>();
-        AssetDatabase.CreateAsset(data, "Assets/ConfigData/SkillData/SkillData.asset");
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+    [MenuItem("Assets/Config/CreateSceneObjectData")]
+    public static void CreateSceneObjectData()
+    {
+        CreateConfigData<SceneObjectConfig, SceneObjectData>("SceneObjectData", ".asset");
     }
 
 
-    [MenuItem("Assets/CreateStageData")]
-    public static void CreateStageData()
+    private static void CreateConfigData<T,P>(string name,string ext)
+        where T: BaseScriptableObject<P>
+        where P:BaseConfigData
     {
-        if (File.Exists(Application.dataPath + "/ConfigData/StageData/StageData.asset"))
+        string directory = Application.dataPath + "/ConfigData/";
+        string fileName = directory + name + ext;
+        if (File.Exists(fileName))
         {
             return;
         }
 
-        if(!Directory.Exists(Application.dataPath + "/ConfigData/StageData"))
+        if (!Directory.Exists(directory))
         {
-            Directory.CreateDirectory(Application.dataPath + "/ConfigData/StageData");
+            Directory.CreateDirectory(directory);
         }
-        StageConfig data = ScriptableObject.CreateInstance<StageConfig>();
-        AssetDatabase.CreateAsset(data, "Assets/ConfigData/StageData/StageData.asset");
+
+        T data = ScriptableObject.CreateInstance<T>();
+        AssetDatabase.CreateAsset(data, "Assets/ConfigData/" + name + ext);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

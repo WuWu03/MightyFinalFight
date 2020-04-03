@@ -1,22 +1,33 @@
 ﻿using FrameWork;
 using FrameWork.GameEntity;
+using Runtime.Config;
 using UnityEngine;
 
 namespace Runtime
 {
     public class Bullet : BaseObject
     {
-        public void SetBulletInfo(BaseAvatar owner, SkillData skillData, SkillData.Bullet bulletData)
+        public override void Init(int id, string name)
         {
+            base.Init(id, name);
             m_Rigidbody = gameObject.GetOrAddComponent<Rigidbody2D>();
             m_Rigidbody.gravityScale = 0;
             m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+
+            m_BoxCollider = gameObject.GetOrAddComponent<BoxCollider2D>();
+            m_BoxCollider.enabled = true;
+            m_BoxCollider.isTrigger = true;
+            m_IsHit = false;
+
+        }
+        public void SetBulletInfo(BaseRole owner, SkillData skillData, SkillData.Bullet bulletData)
+        {      
             m_Rigidbody.drag = bulletData.Drag;
             m_Rigidbody.velocity = new Vector2(bulletData.Velocity.x * owner.Dir, bulletData.Velocity.y);
-            m_BoxCollider = gameObject.GetOrAddComponent<BoxCollider2D>();
+            
             m_BoxCollider.offset = bulletData.TriggerOffest;
             m_BoxCollider.size = bulletData.TriggerSize;
-            m_BoxCollider.isTrigger = true;
+
             m_Owner = owner;
             m_SkillData = skillData;
             m_BulletData = bulletData;
@@ -33,16 +44,21 @@ namespace Runtime
             base.Update();
             if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
             {
+                Debug.Log("release");
                 this.Release();
             }
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
-            BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
+            if (m_IsHit) return;
 
             if (!collision.gameObject.Equals(m_Owner.gameObject))
             {
+                Debug.Log(collision.gameObject.name);
+                ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+                BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
+
                 bool canBeHit = hit != null && hit.CanBeHit;
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
 
@@ -55,6 +71,7 @@ namespace Runtime
                         AttackValue = 1,
                     });
 
+                    m_IsHit = true;
                     this.Release();
                 }
             }
@@ -67,7 +84,7 @@ namespace Runtime
             m_Animator.animation.Play(m_BulletData.Name, 1);
         }
 
-
+        private bool m_IsHit = false;
         private DragonBones.UnityArmatureComponent m_Animator = null;
         private BaseObject m_Owner = null;
         private SkillData m_SkillData = null;

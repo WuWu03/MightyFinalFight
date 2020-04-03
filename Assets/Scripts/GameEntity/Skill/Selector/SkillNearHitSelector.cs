@@ -1,4 +1,5 @@
 ﻿using FrameWork.GameEntity;
+using Runtime.Config;
 using System.Collections.Generic;
 using UnityEngine;
 

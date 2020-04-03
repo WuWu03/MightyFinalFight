@@ -60,6 +60,12 @@ namespace FrameWork.Camera
             m_CameraFollow.EndFollow();
         }
 
+        public bool IsOutVision(Vector2 targetPos)
+        {
+            Vector2[] vision = GetVision();
+            return targetPos.x - 0.1 <= vision[0].x || targetPos.x + 0.1 >= vision[1].x ||
+                               targetPos.y - 0.1 <= vision[0].y || targetPos.y + 0.1 >= vision[1].y;
+        }
 
         public Vector2[] GetVision()
         {
@@ -95,9 +101,14 @@ namespace FrameWork.Camera
             float cameraRate = (float)Screen.width / Screen.height;
             float sizeRate = cameraRate / m_NormalRate;
 
+            if(sizeRate < 1)
+            {
+                sizeRate = 1;
+            }
+
             if (sizeRate > 1)
             {
-                sizeRate = m_NormalSize / cameraRate;
+                sizeRate = m_NormalRate / cameraRate;
             }
 
             return sizeRate * m_NormalSize / 100;

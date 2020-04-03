@@ -174,7 +174,7 @@ namespace Runtime
         public bool IsAnyState(params Type[] stateTypes)
         {
             bool isInState = false;
-
+    
             if (stateTypes != null)
             {
                 for (int i = 0; i < stateTypes.Length; i++)
