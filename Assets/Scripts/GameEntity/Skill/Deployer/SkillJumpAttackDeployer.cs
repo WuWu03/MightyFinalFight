@@ -14,7 +14,6 @@ namespace Runtime
 
         public override void DeploySkill()
         {
-            m_AttackMsgData.AttackType = AttackType.JumpAttack;
             m_AttackMsgData.Dir = m_Owner.Dir;
             m_AttackMsgData.CanChangeDir = false;
             m_AttackMsgData.AnimationName = m_SkillData.AnimationName;

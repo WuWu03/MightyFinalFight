@@ -15,12 +15,6 @@ namespace Runtime
 
         public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
         {
-            m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
-
-            if (m_Owner.IsInGround)
-            {
-                ChangeState<RoleIdle>(fsm);
-            }
         }
 
         public override void OnExit(BaseFsm fsm, bool isShutdown)

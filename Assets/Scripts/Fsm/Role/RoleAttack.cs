@@ -23,11 +23,13 @@ namespace Runtime
 
         public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
         {
-            float angleY = m_Owner.transform.localRotation.eulerAngles.y;
-
-            if (StateParam.Dir > 0) angleY = 0;
-            else if (StateParam.Dir < 0) angleY = 180f;
-            m_Owner.transform.localRotation = Quaternion.Euler(0, angleY, 0);
+            if (StateParam.CanChangeDir)
+            {
+                float angleY = m_Owner.transform.localRotation.eulerAngles.y;
+                if (StateParam.Dir > 0) angleY = 0;
+                else if (StateParam.Dir < 0) angleY = 180f;
+                m_Owner.transform.localRotation = Quaternion.Euler(0, angleY, 0);
+            }
         }
 
         public override void OnExit(BaseFsm fsm, bool isShutdown)

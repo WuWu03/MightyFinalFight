@@ -56,7 +56,7 @@ namespace Runtime
             m_CurrAreaIndex = 0;
 
             float x = -1f;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 1; i++)
             {
                 x += 0.2f * (float)i;
                 BaseEnemy enemy = ObjectPool.Ins.Get<BaseEnemy>("Monster" + i);

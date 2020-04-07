@@ -17,22 +17,22 @@ namespace FrameWork.Sound
 
         public void PlaySound(string name)
         {
-            string resPath = string.Format("{0}/Sound/{1}", ResDefine.AUDIO_CLIP_PATH, name);
-            ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
-            {
-                m_Source.PlayOneShot(obj as AudioClip);
-            }, true, typeof(AudioClip));
+            //string resPath = string.Format("{0}/Sound/{1}", ResDefine.AUDIO_CLIP_PATH, name);
+            //ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
+            //{
+            //    m_Source.PlayOneShot(obj as AudioClip);
+            //}, true, typeof(AudioClip));
         }
 
         public void PlayBGM(string name)
         {
-            string resPath = string.Format("{0}/BGM/{1}", ResDefine.AUDIO_CLIP_PATH, name);
-            ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
-            {
-                m_Source.clip = obj as AudioClip;
-                m_Source.loop = true;
-                m_Source.Play();
-            }, true, typeof(AudioClip));
+            //string resPath = string.Format("{0}/BGM/{1}", ResDefine.AUDIO_CLIP_PATH, name);
+            //ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
+            //{
+            //    m_Source.clip = obj as AudioClip;
+            //    m_Source.loop = true;
+            //    m_Source.Play();
+            //}, true, typeof(AudioClip));
         }
 
         public override void ShutDown()

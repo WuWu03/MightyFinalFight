@@ -29,6 +29,7 @@ namespace Runtime
                     hurtTarget = true;
                     hit.OnHurtMsg(new HurtData()
                     {
+                        AttackerDir = owner.Dir,
                         AttackForce = new Vector2(skillData.AddTargetForce.x * owner.Dir, skillData.AddTargetForce.y),
                         IsSwoon = skillData.IsSmoon,
                         AttackerID = owner.ID,
@@ -39,7 +40,7 @@ namespace Runtime
 
             m_Complete = true;
 
-            if(owner.ObjectType == ObjectType.Player)
+            if (owner.ObjectType == ObjectType.Player)
             {
                 owner.GetComponent<AvatarCtrl>().AttackSuccess = hurtTarget;
             }

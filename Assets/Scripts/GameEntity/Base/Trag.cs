@@ -16,6 +16,7 @@ namespace Runtime
             m_BoxCollider = gameObject.GetOrAddComponent<BoxCollider2D>();
             m_BoxCollider.enabled = true;
             m_BoxCollider.isTrigger = true;
+            m_ListDrops = new List<BaseRole>();
         }
 
         public void SetTragData(SceneObjectData sceneObjectData)
@@ -29,28 +30,34 @@ namespace Runtime
             SetPos2(posX, posY);
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-       {
+        private void OnTriggerStay2D(Collider2D collision)
+        {
             BaseRole target = collision.gameObject.GetComponent<BaseRole>();
-            if (target == null) return;
+            if (target == null || target.IsDropTrag) return;
 
+            float width = m_BoxCollider.size.x;
+            float boundsLeft = target.Pos.x - 0.1f;
+            float boundsRight = target.Pos.x + 0.1f;
+            float selfLeft = m_Pos.x - width/2;
+            float selfRight = m_Pos.x + width/2;
+
+            bool isEnter = boundsLeft >= selfLeft && boundsRight <= selfRight;
+
+            if (!isEnter) return;
             Vector2 rebirthPos = Vector2.zero;
-            float width = (float)m_SceneObjectData.Area.Width / 100;
-
             if (target.Pos.x < m_Pos.x)
                 rebirthPos = new Vector2(m_Pos.x - width - 0.1f, target.Pos.y);
             else
                 rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.Pos.y);
 
-            target.OnDropMsg(new DropTragData() 
+            target.OnDropTragMsg(new DropTragData()
             {
-                IsJustDead = target is BaseEnemy,
                 InitPos = rebirthPos,
                 AttackValue = 1,
             });
-            
         }
 
+        private List<BaseRole> m_ListDrops = null;
         private SceneObjectData m_SceneObjectData = null;
         private BoxCollider2D m_BoxCollider = null;
     }

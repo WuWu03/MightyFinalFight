@@ -41,7 +41,7 @@ namespace Runtime
                 }
 
                 Vector2[] vision = CameraMgr.Ins.GetVision();
-                bool isOutVision = ownerPos.x - 0.1 <= vision[0].x || ownerPos.x + 0.1 >= vision[1].x;
+                bool isOutVision = ownerPos.x - 0.1f <= vision[0].x || ownerPos.x + 0.1f >= vision[1].x;
                 if (!m_Owner.CanMove || !StageMgr.Ins.CanMove(ownerPos) || isOutVision) return;
             }
             m_Owner.SetPos(ownerPos);

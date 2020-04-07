@@ -114,6 +114,7 @@ namespace Runtime
 
             m_Rigidbody = gameObject.GetOrAddComponent<Rigidbody2D>();
             m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            m_Rigidbody.sleepMode = RigidbodySleepMode2D.NeverSleep;
             m_Rigidbody.freezeRotation = true;
         }
 
@@ -219,6 +220,6 @@ namespace Runtime
         protected BoxCollider2D m_Collider = null;
         protected FsmMachine m_FsmMachine = null;
         protected DragonBones.UnityArmatureComponent m_Animator;
-        protected BaseCtrl m_Ctrl = null;
+        protected AvatarCtrl m_Ctrl = null;
     }
 }

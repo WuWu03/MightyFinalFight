@@ -25,6 +25,8 @@ public class TriggerTargets:MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.Equals(gameObject)) return;
+
         if (!Targets.Contains(collision.gameObject))
         {
             Targets.Add(collision.gameObject);

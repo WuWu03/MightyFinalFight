@@ -44,7 +44,6 @@ namespace Runtime
             base.Update();
             if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
             {
-                Debug.Log("release");
                 this.Release();
             }
         }
@@ -67,6 +66,7 @@ namespace Runtime
                     hit.OnHurtMsg(new HurtData()
                     {
                         IsSwoon = m_SkillData.IsSmoon,
+                        AttackerDir = m_Owner.Dir,
                         AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
                         AttackValue = 1,
                     });
@@ -82,6 +82,14 @@ namespace Runtime
             base.OnResComplete(go);
             m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
             m_Animator.animation.Play(m_BulletData.Name, 1);
+        }
+
+        public override void Release()
+        {
+            base.Release();
+            m_Owner = null;
+            m_SkillData = null;
+            m_BulletData = null;
         }
 
         private bool m_IsHit = false;

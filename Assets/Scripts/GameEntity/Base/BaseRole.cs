@@ -1,4 +1,5 @@
-﻿using Runtime.Config;
+﻿using FrameWork.Camera;
+using Runtime.Config;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -59,22 +60,20 @@ namespace Runtime
         {
             get
             {
-                return IsAnyState(typeof(RoleIdle),
+                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle),
                                   typeof(RoleMove),
                                   typeof(RoleAttack),
                                   typeof(RoleJump));
             }
-
         }
 
         public virtual bool CanAttack
         {
             get
             {
-                return IsAnyState(typeof(RoleIdle),
+                return !m_IsDropTrag && !m_IsJumpAttack && IsAnyState(typeof(RoleIdle),
                                   typeof(RoleMove),
                                   typeof(RoleJump),
-                                  typeof(RoleDropTrag),
                                   typeof(RoleAttack));
             }
         }
@@ -83,7 +82,7 @@ namespace Runtime
         {
             get
             {
-                return IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
             }
         }
 
@@ -91,7 +90,15 @@ namespace Runtime
         {
             get
             {
-                return IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+            }
+        }
+
+        public bool IsDropTrag
+        {
+            get
+            {
+                return m_IsDropTrag;
             }
         }
 
@@ -130,68 +137,44 @@ namespace Runtime
         {
             base.Update();
             if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
-            if (IsAnyState(typeof(RoleDropTrag))) return;
+            if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
 
-            if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
+            UpdatePos2(transform.localPosition.x, Pos.y);
+
+            if (IsFloat)
             {
-                UpdatePos2(transform.localPosition.x, Pos.y);
-
-                if (IsFloat)
-                {
-                    return;
-                }
-
-                if (!IsAnyState(typeof(RoleJumpAttack)))
-                {
-                    OnDropEvent.Invoke();
-                }
-
-                OnDropEvent.RemoveAllListeners();
-
-                if (IsInGround)
-                {
-                    OnGroundEvent.Invoke();
-                    OnGroundEvent.RemoveAllListeners();
-
-                    if (IsAnyState(typeof(RoleSwoon)))
-                    {
-                        if (m_Animator.animation.isCompleted)
-                        {
-                            m_Rigidbody.velocity = Vector2.zero;
-                            if (m_Health > 0) ChangeState<RoleAwaken>();
-                            else ChangeState<RoleDead>();
-                        }
-                    }
-                    else
-                    {
-                        ChangeState<RoleIdle>();
-                    }
-                }
+                return;
             }
+
+            if(!m_IsJumpAttack)
+            {
+                OnDropEvent.Invoke();
+            }
+
+            OnDropEvent.RemoveAllListeners();
+
+            CheckDropTrag();
+            CheckGround();
         }
 
         public virtual void OnAttackMsg(AttackData data)
         {
             if (data == null) return;
-            if (data.AttackType == AttackType.JumpAttack)
-            {
-                ChangeState<RoleJumpAttack>();
-            }
-            else if (data.AttackType == AttackType.Attack)
-            {
-                GetState<RoleAttack>().StateParam = data;
-                ChangeState<RoleAttack>();
-            }
+
+            m_IsJumpAttack = IsAnyState(typeof(RoleJump));
+            GetState<RoleAttack>().StateParam = data;
+            ChangeState<RoleAttack>();
 
             SetTrigger(data.AnimationName);
             PlayAnimation(data.AnimationName, 1, m_AttackSpeed);
         }
 
-        public virtual void OnSkillMsg(SkillData skillData)
+        public virtual void OnSkillMsg(SkillData data)
         {
+            if (data == null) return;
             ChangeState<RoleSkill>();
-            SetTrigger(skillData.AnimationName);
-            PlayAnimation(skillData.AnimationName, 1, 0.4f);
+            SetTrigger(data.AnimationName);
+            PlayAnimation(data.AnimationName, 1, 0.4f);
         }
 
         public virtual void OnMoveMsg(MoveData data)
@@ -228,7 +211,7 @@ namespace Runtime
         public virtual void OnJumpMsg(JumpData data)
         {
             if (data == null) return;
-    
+
             GetState<RoleJump>().StateParam = data;
             ChangeState<RoleJump>();
         }
@@ -253,17 +236,78 @@ namespace Runtime
             }
         }
 
-        public void OnDropMsg(DropTragData data)
+        public void OnDropTragMsg(DropTragData data)
         {
             if (data == null) return;
-            GetState<RoleDropTrag>().StateParam = data;
-            ChangeState<RoleDropTrag>();
+            if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump))&&!m_IsJumpAttack) return;
+
+            if (IsAnyState(typeof(RoleMove), typeof(RoleIdle)))
+            {
+                PlayAnimation(AnimName.JumpDown);
+            }
+
+            m_DropTragData = data;
+            m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            m_IsDropTrag = true;
+
+            if (ObjectType == ObjectType.Player)
+                CameraMgr.Ins.EndFollow();
+        }
+
+        private void CheckDropTrag()
+        {
+            if (!m_IsDropTrag) return;
+
+            Vector2[] vision = CameraMgr.Ins.GetVision();
+
+            if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < vision[0].y)
+            {   
+                if (m_ObjectType == ObjectType.Player)
+                {
+                    SetPos(m_DropTragData.InitPos);
+                    ChangeState<RoleIdle>();
+                    CameraMgr.Ins.StartFollow();
+                }
+                else
+                {
+                    Release();
+                }
+
+                m_DropTragData = null;
+                m_IsDropTrag = false;
+            }
+        }
+
+        private void CheckGround()
+        {
+            if (!IsInGround || m_IsDropTrag) return;
+
+            OnGroundEvent.Invoke();
+            OnGroundEvent.RemoveAllListeners();
+            m_IsJumpAttack = false;
+
+            if (IsAnyState(typeof(RoleSwoon)))
+            {
+                if (m_Animator.animation.isCompleted)
+                {
+                    m_Rigidbody.velocity = Vector2.zero;
+                    if (m_Health > 0) ChangeState<RoleAwaken>();
+                    else ChangeState<RoleDead>();
+                }
+            }
+            else
+            {
+                ChangeState<RoleIdle>();
+            }
         }
 
         protected bool m_IsSmoon = false;
         protected float m_Attack = 100;
         protected float m_AttackSpeed = 0.8f;
         protected float m_AttackRange = 0.25f;
+        protected bool m_IsJumpAttack = false;
+        protected bool m_IsDropTrag = false;
+        protected DropTragData m_DropTragData = null;
         protected Vector2 m_JumpForce = new Vector2(40f, 150f);
     }
 }
