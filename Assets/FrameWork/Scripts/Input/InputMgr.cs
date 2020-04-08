@@ -118,7 +118,7 @@ namespace FrameWork.Input
             }
         }
 
-        public void RemoveAllEvent()
+        public void RemoveAllKeyEvent()
         {
             GetDirFunc = null;
             m_ListEvent.Clear();

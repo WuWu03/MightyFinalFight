@@ -61,7 +61,7 @@ namespace Runtime
             if(Life < 1)
             {
                 CameraMgr.Ins.EndFollow();
-                InputMgr.Ins.RemoveAllEvent();
+                InputMgr.Ins.RemoveAllKeyEvent();
                 
                 m_Player.Release();
                 m_Player = null;
