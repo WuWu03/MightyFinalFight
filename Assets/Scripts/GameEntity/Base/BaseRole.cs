@@ -87,7 +87,7 @@ namespace Runtime
         {
             get
             {
-                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump));
             }
         }
 

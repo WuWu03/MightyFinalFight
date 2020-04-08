@@ -1,8 +1,8 @@
-﻿namespace Runtime
+﻿using FrameWork;
+
+namespace Runtime
 {
-    public class IdleData : BaseData
+    public class IdleData : BaseEventArgs
     {
-        public IdleData() : base("IdleData") { }
-        public IdleData(string sender, string receiver) : base("IdleData", sender, receiver) { }
     }
 }

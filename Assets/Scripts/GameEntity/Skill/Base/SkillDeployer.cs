@@ -25,15 +25,18 @@ namespace Runtime
 
         public virtual bool IsAllComplete()
         {
+            bool ret = true;
+
             for (int i = 0; i < m_SkillEffects.Length; i++)
             {
-                if(!m_SkillEffects[i].IsCompleted)
+                if (m_SkillEffects[i].IsCompleted)
                 {
-                    return false;
+                    m_SkillEffects[i].Reset();
                 }
+                else ret = false;
             }
 
-            return true;
+            return ret;
         }
 
         public virtual void Update() { }

@@ -37,12 +37,20 @@ namespace Runtime
         public void InitPlayer(int roleID)
         {
             m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
-            m_Player = ObjectPool.Ins.Get<BaseHero>();
+            m_Player = ObjectPool.Ins.Get<BaseHero>("Player");
             m_Player.SetObjectType(ObjectType.Player);
             m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
             m_Player.InitValue(3, m_HeroData.AttackSpeed, 1, 1, m_HeroData.JumpForce, m_HeroData.MoveSpeed);
             m_CurrCtrl = m_Player.gameObject.GetOrAddComponent<AvatarCtrl>();
             m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills,0.11f);
+
+            InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
+
+            for (int i = 6; i < m_HeroData.Skills.Length; i++)
+            {
+                Config.SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
+                InputMgr.Ins.AddKeyEvent(skillData.SkillKeys, skillData.ID, OnComboKeyEvent);
+            }
             Life = 5;
         }
 
@@ -52,8 +60,9 @@ namespace Runtime
 
             if(Life < 1)
             {
-                Debug.Log("你死光了");
                 CameraMgr.Ins.EndFollow();
+                InputMgr.Ins.RemoveAllEvent();
+                
                 m_Player.Release();
                 m_Player = null;
                 m_CurrCtrl = null;
@@ -64,7 +73,7 @@ namespace Runtime
             m_Player.OnRebirthMsg();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             if (m_Player == null || m_CurrCtrl == null) return;
 
@@ -78,20 +87,15 @@ namespace Runtime
                 m_CurrCtrl.Attack(InputMgr.GetAxis());
             }
 
-            if (Input.GetButtonDown("B"))
+            if (Input.GetButtonDown("B")|| Input.GetButton("Y"))
             {
                 m_CurrCtrl.Jump(InputMgr.GetAxis());
             }
+        }
 
-            if(Input.GetButtonDown("Y"))
-            {
-                m_CurrCtrl.Skill(1007);
-            }
-
-            if (Input.GetButtonDown("LB"))
-            {
-                m_CurrCtrl.Skill(1008);
-            }
+        private void OnComboKeyEvent(int id,bool isTrigger)
+        {
+            m_CurrCtrl.Skill(id);
         }
 
         private AvatarCtrl m_CurrCtrl = null;

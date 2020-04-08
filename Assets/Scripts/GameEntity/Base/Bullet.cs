@@ -44,15 +44,14 @@ namespace Runtime
             base.Update();
             if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
             {
-                this.Release();
+                Release();
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnTriggerStay2D(Collider2D collision)
         {
-            if (m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
+            if (m_ResGO == null || m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
 
-            Debug.Log(collision.gameObject.name);
             ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
             BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
 
@@ -70,7 +69,7 @@ namespace Runtime
                 });
 
                 m_IsHit = true;
-                this.Release();
+                Release();
             }
         }
 
@@ -78,7 +77,6 @@ namespace Runtime
         {
             base.OnResComplete(go);
             m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
-            Debug.Log(m_Animator);
             m_Animator.animation.Play(m_BulletData.Name, 1);
         }
 

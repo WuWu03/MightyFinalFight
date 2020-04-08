@@ -1,19 +1,20 @@
-﻿using UnityEngine;
+﻿using FrameWork;
+using System;
+using UnityEngine;
 
 namespace Runtime
 {
-    public class JumpData:BaseData
-    {
-        public JumpData():base("JumpData"){}
-
-        public JumpData(string sender, string receiver) : base("JumpData", sender, receiver) { }
-        
+    public class JumpData: BaseEventArgs
+    {      
         public Vector2 Dir 
         {
             get; 
             set; 
         }
 
-        public bool IsToAttack { get; set; }
+        public override BaseEventArgs Clone()
+        {
+            return Activator.CreateInstance<AttackData>();
+        }
     }
 }

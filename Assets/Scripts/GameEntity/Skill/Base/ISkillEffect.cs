@@ -8,5 +8,6 @@ namespace Runtime
     {
         bool IsCompleted { get; }
         void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector);
+        void Reset();
     }
 }

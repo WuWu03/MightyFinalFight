@@ -1,13 +1,17 @@
-﻿namespace Runtime
+﻿using FrameWork;
+using System;
+
+namespace Runtime
 {
-    public class AttackData:BaseData
+    public class AttackData: BaseEventArgs
     {
-        public AttackData():base("AttackData") {}
-
-        public AttackData(string sender, string receiver) : base("AttackData", sender, receiver) { }
-
         public string AnimationName { get; set; }
         public float Dir { get; set; }
         public bool CanChangeDir { get; set; }
+
+        public override BaseEventArgs Clone()
+        {
+            return Activator.CreateInstance<AttackData>();
+        }
     }
 }

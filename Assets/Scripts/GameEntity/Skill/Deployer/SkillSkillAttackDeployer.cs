@@ -11,7 +11,7 @@ namespace Runtime
 
         public override void DeploySkill()
         {
-            Debug.Log("Deploy");
+            Debug.Log("adddskilllll");
             m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
             m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.OnSkillMsg(m_SkillData);
@@ -22,6 +22,7 @@ namespace Runtime
             bool isComplete = base.IsAllComplete();
             if (isComplete)
             {
+                Debug.Log("removeskilllll");
                 m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
                 m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
             }
@@ -31,6 +32,7 @@ namespace Runtime
 
         private void SkillEvent(string type, DragonBones.EventObject eventObject)
         {
+            Debug.Log("skilllll");
             base.DeploySkill();
         }
 

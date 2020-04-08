@@ -39,6 +39,7 @@ namespace Runtime
 
         private void OnUpdate()
         {
+            if (m_Owner == null) return;
             m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.transform.localPosition.y);
             List<GameObject> targets = m_Selector.GetTargets(m_Owner, m_SkillData);
             bool hasHit = false;
@@ -63,19 +64,19 @@ namespace Runtime
 
             if(hasHit)
             {
-                Reset();
+                Complete();
                 return;
             }
 
             float dis = Mathf.Abs(m_SkillData.MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
             if (dis <= 0.1f)
             {
-                Reset();
+                Complete();
                 return;
             }
         }
 
-        private void Reset()
+        private void Complete()
         {
             m_Owner.Rigidbody.velocity = Vector2.zero;
             m_Owner.Rigidbody.gravityScale = m_OriginalGravity;
@@ -86,6 +87,10 @@ namespace Runtime
             m_Selector = null;
         }
 
+        public void Reset()
+        {
+            m_IsCompleted = false;
+        }
 
         private bool m_IsCompleted = false;
         private SkillData m_SkillData = null;

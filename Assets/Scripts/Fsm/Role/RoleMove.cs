@@ -28,6 +28,7 @@ namespace Runtime
             Vector3 ownerPos = m_Owner.transform.localPosition;
             m_Owner.transform.localRotation = Quaternion.Euler(0, angleY, 0);
             ownerPos += new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
+            bool isOutVision = false;
 
             if (m_Owner.ObjectType == ObjectType.Player)
             {
@@ -41,9 +42,10 @@ namespace Runtime
                 }
 
                 Vector2[] vision = CameraMgr.Ins.GetVision();
-                bool isOutVision = ownerPos.x - 0.1f <= vision[0].x || ownerPos.x + 0.1f >= vision[1].x;
-                if (!m_Owner.CanMove || !StageMgr.Ins.CanMove(ownerPos) || isOutVision) return;
+                isOutVision = ownerPos.x - 0.1f <= vision[0].x || ownerPos.x + 0.1f >= vision[1].x;              
             }
+
+            if (!m_Owner.CanMove || !StageMgr.Ins.CanMove(ownerPos) || isOutVision) return;
             m_Owner.SetPos(ownerPos);
         }
 

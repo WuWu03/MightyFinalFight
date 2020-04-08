@@ -46,6 +46,11 @@ namespace Runtime
             }
         }
 
+        public void Reset()
+        {
+            m_Complete = false;
+        }
+
         private bool m_Complete = false;
     }
 }

@@ -9,7 +9,7 @@ namespace Runtime
         {
             get
             {
-                if(m_Owner != null && m_Owner.ActorAnimator.animation.isCompleted)
+                if(m_Owner != null && m_Owner.IsPlayComplete())
                 {
                     m_Owner = null;
                     return true;
@@ -20,7 +20,6 @@ namespace Runtime
 
         public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
         {
-            
             for (int i = 0; i < skillData.Bullets.Length; i++)
             {
                 Bullet bullet = ObjectPool.Ins.Get<Bullet>(skillData.Bullets[i].Name);
@@ -30,6 +29,11 @@ namespace Runtime
             m_Owner = owner;
         }
 
+        public void Reset()
+        {
+
+
+        }
         private BaseRole m_Owner = null;
     }
 }

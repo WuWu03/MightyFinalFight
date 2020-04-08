@@ -53,6 +53,7 @@ namespace Runtime.Config
         public SkillType Type;
         public SkillSelectorType SelectorType;
         public SkillEffectorType[] EffectorTypes;
+        public FrameWork.Input.KeyType[] SkillKeys;
         public Vector2 SelectorOffest;//选择器偏移
         public float SelectorAngle;//选择器角度
         public Vector2 AddTargetForce;//对目标施加力

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
 using FrameWork.Camera;
+using FrameWork.Input;
 
 namespace Runtime
 {
