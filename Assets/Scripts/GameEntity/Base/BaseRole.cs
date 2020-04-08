@@ -7,44 +7,41 @@ namespace Runtime
 {
     public class BaseRole : BaseAvatar, ICanBeHit
     {
+        public float AttackValue
+        {
+            get { return m_AttackValue; }
+            set { m_AttackValue = value; }
+        }
+
         public float AttackSpeed
         {
-            get
-            {
-                return m_AttackSpeed;
-            }
-            set
-            {
-                m_AttackSpeed = value;
-            }
+            get { return m_AttackSpeed; }
+            set { m_AttackValue = value; }
         }
 
         public Vector2 JumpForce
         {
-            get
-            {
-                return m_JumpForce;
-            }
-            set
-            {
-                m_JumpForce = value;
-            }
+            get { return m_JumpForce; }
+            set { m_JumpForce = value; }
         }
 
-        public float AttackValue
+        public float Defense
         {
-            get;
-            set;
+            get { return m_Defense; }
+            set { m_Defense = value; }
         }
 
-        public float AttackRange
+        public Rect Bound
         {
             get
             {
-                return m_AttackRange;
+                m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x;
+                m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x;
+                m_Bound.yMin = m_Pos.y + m_Collider.offset.y + m_Collider.size.x;
+                m_Bound.yMax = m_Pos.y + m_Collider.offset.y - m_Collider.size.x;
+                return m_Bound;
             }
         }
-
         public virtual bool CanBeHit
         {
             get
@@ -119,6 +116,17 @@ namespace Runtime
             AddState<RoleDead>();
             AddState<RoleAwaken>();
             AddState<RoleSkill>();
+        }
+
+        //初始化基本数值
+        public virtual void InitValue(float health, float atkSpeed, float atkVal,float def, Vector2 jumpForce, float moveSpeed)
+        {
+            m_Health = health;
+            m_AttackSpeed = atkSpeed;
+            m_AttackValue = atkVal;
+            m_Defense = def;
+            m_JumpForce = jumpForce;
+            m_MoveSpeed = moveSpeed;
         }
 
         public override void Release()
@@ -302,12 +310,13 @@ namespace Runtime
         }
 
         protected bool m_IsSmoon = false;
-        protected float m_Attack = 100;
         protected float m_AttackSpeed = 0.8f;
-        protected float m_AttackRange = 0.25f;
+        protected float m_AttackValue = 0;
+        protected float m_Defense = 0;
         protected bool m_IsJumpAttack = false;
         protected bool m_IsDropTrag = false;
         protected DropTragData m_DropTragData = null;
-        protected Vector2 m_JumpForce = new Vector2(40f, 150f);
+        protected Rect m_Bound = Rect.zero;
+        protected Vector2 m_JumpForce = Vector2.zero;
     }
 }

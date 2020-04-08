@@ -56,7 +56,7 @@ namespace FrameWork.Event
 
         public override void ShutDown()
         {
-            m_EventPool.ShutDown();
+            
         }
 
         private EventPool<GameEventArgs> m_EventPool = null;

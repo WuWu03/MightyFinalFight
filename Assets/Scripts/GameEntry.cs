@@ -11,13 +11,12 @@ namespace Runtime
         protected override void OnInit()
         {
             ObjectMsgCenter.Init();
-            DataHelper.Init();
             StaticConfig.InitConfig();
         }
 
         protected override void OnStartGame()
         {
-            PlayerMgr.Ins.InitPlayer(0);
+            PlayerMgr.Ins.InitPlayer(1001);
             CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
             StageMgr.Ins.Enter(1001);
         }

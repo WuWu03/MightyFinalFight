@@ -35,6 +35,18 @@ namespace FrameWork
             OnStartGame();
         }
 
+        protected virtual void OnApplicationQuit()
+        {
+            UIMgr.Ins.ShutDown();
+            InputMgr.Ins.ShutDown();
+            ResMgr.Ins.ShutDown();
+            ResPool.Ins.ShutDown();
+            ObjectPool.Ins.ShutDown();
+            FsmMgr.Ins.ShutDown();
+            CameraMgr.Ins.ShutDown();
+            SoundMgr.Ins.ShutDown();
+            EventManager.Ins.ShutDown();
+        }
         protected abstract void OnInit();
         protected abstract void OnStartGame();
     }

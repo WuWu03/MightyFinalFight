@@ -22,6 +22,7 @@ namespace Runtime.Config
 
         public string Name;
         public string AssetName;
+        public string AudioName;
         public int Width;
         public int Height;
         public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）

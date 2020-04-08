@@ -50,30 +50,27 @@ namespace Runtime
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (m_IsHit) return;
+            if (m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
 
-            if (!collision.gameObject.Equals(m_Owner.gameObject))
+            Debug.Log(collision.gameObject.name);
+            ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+            BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
+
+            bool canBeHit = hit != null && hit.CanBeHit;
+            bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
+
+            if (isInRange && canBeHit)
             {
-                Debug.Log(collision.gameObject.name);
-                ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
-                BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
-
-                bool canBeHit = hit != null && hit.CanBeHit;
-                bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
-
-                if (isInRange && canBeHit)
+                hit.OnHurtMsg(new HurtData()
                 {
-                    hit.OnHurtMsg(new HurtData()
-                    {
-                        IsSwoon = m_SkillData.IsSmoon,
-                        AttackerDir = m_Owner.Dir,
-                        AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
-                        AttackValue = 1,
-                    });
+                    IsSwoon = m_SkillData.IsSmoon,
+                    AttackerDir = m_Owner.Dir,
+                    AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
+                    AttackValue = 1,
+                });
 
-                    m_IsHit = true;
-                    this.Release();
-                }
+                m_IsHit = true;
+                this.Release();
             }
         }
 
@@ -81,6 +78,7 @@ namespace Runtime
         {
             base.OnResComplete(go);
             m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
+            Debug.Log(m_Animator);
             m_Animator.animation.Play(m_BulletData.Name, 1);
         }
 

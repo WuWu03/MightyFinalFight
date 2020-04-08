@@ -50,6 +50,7 @@ namespace Runtime
                 {
                     hit.OnHurtMsg(new HurtData()
                     {
+                        AttackerID = m_Owner.ID,
                         AttackerDir = m_Owner.Dir,
                         AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
                         IsSwoon = m_SkillData.IsSmoon,

@@ -80,7 +80,7 @@ namespace FrameWork.Pool
 
         public override void ShutDown()
         {
-            throw new NotImplementedException();
+            
         }
 
         private Transform m_PoolRoot = null;

@@ -16,6 +16,7 @@ public class TriggerTargets:MonoBehaviour
     public void Release()
     {
         Targets.Clear();
+        Targets = null;
     }
 
     private void Awake()

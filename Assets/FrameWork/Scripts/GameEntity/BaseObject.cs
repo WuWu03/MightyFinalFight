@@ -45,7 +45,6 @@ namespace FrameWork.GameEntity
             }
         }
 
-
         public float Dir//物体朝向 1右 -1左 不能为0
         {
             get
@@ -53,6 +52,7 @@ namespace FrameWork.GameEntity
                 return m_Dir;
             }
         }
+
         public string Layer 
         {
             get 
@@ -67,6 +67,12 @@ namespace FrameWork.GameEntity
             {
                 return Mathf.Abs(transform.localPosition.y - m_Pos.y) < 0.03f;
             }
+        }
+
+        public float Health
+        {
+            get { return m_Health; }
+            set { m_Health = value; }
         }
 
         public virtual void Init(int id, string name)
@@ -179,7 +185,6 @@ namespace FrameWork.GameEntity
             SetLayer(m_Layer);
         }
 
-
         protected int m_ID = 0;
         protected string m_Name = string.Empty;
         protected string m_Layer = "Unit";
@@ -188,5 +193,6 @@ namespace FrameWork.GameEntity
         protected Vector2 m_Pos = Vector2.zero;
         protected ObjectType m_ObjectType = ObjectType.NONE;
         protected float m_Dir = 1;
+        protected float m_Health = 0;
     }
 }

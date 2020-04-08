@@ -63,6 +63,31 @@ namespace FrameWork.Input
             return new Vector2(x, y);
         }
 
+        public static Vector2 TestAxis()
+        {
+            Vector2 axis = Vector2.zero;
+            if(UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+            {
+                axis.x = -1;
+            }
+
+            if(UnityEngine.Input.GetKey(KeyCode.RightArrow))
+            {
+                axis.x = 1;
+            }
+
+            if (UnityEngine.Input.GetKey(KeyCode.UpArrow))
+            {
+                axis.y = 1;
+            }
+
+            if (UnityEngine.Input.GetKey(KeyCode.DownArrow))
+            {
+                axis.y = -1;
+            }
+
+            return axis;
+        }
         private void UpdateKey()
         {
             m_AnyKeyDown = false;
@@ -104,7 +129,7 @@ namespace FrameWork.Input
 
         public override void ShutDown()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         private List<KeyCodeType> m_ListKey = null;

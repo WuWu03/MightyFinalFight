@@ -19,10 +19,20 @@ namespace Runtime
             m_Owner = base.m_Owner as BaseRole;
         }
 
-        public void Init(float[] attackWaitTime, int[] skillIDs)
+        public override void Release()
         {
-            m_AttackWaitTime = attackWaitTime;
+            base.Release();
+           
+            m_SkillManager.Release();
+            m_AttackWaitTime = null;
+            m_SkillManager = null;
+
+        }
+        public void Init(float[] attackWaitTime, int[] skillIDs,float attackNextTime)
+        {
+            m_AttackWaitTime = attackWaitTime == null ? new float[1] { 0.2f } : attackWaitTime;
             m_SkillManager = new SkillManager(m_Owner, skillIDs);
+            m_AttackNextTime = attackNextTime;
             m_Owner = GetComponent<BaseRole>();
         }
 
@@ -76,15 +86,18 @@ namespace Runtime
 
         protected override void Update()
         {
+            if (m_Owner == null || m_Owner.ResGO == null) return;
             m_SkillManager.Update();
-            if (m_Owner.ResGO == null) return;
  
             if (m_AttackTimer > 0)
             {
-                float currWait = m_AttackWaitTime[m_AttackIndex - 1 <= 0 ? 1 : m_AttackIndex - 1];
+                float currWait = m_AttackWaitTime[0];
+                if (m_AttackWaitTime.Length > 1)
+                    currWait = m_AttackWaitTime[m_AttackIndex - 1 <= 0 ? 1 : m_AttackIndex - 1];
+
                 if (currWait < 0)
                 {
-                    if (m_Owner.ActorAnimator.animation.isCompleted)
+                    if (m_Owner.IsPlayComplete())
                     {
                         m_AttackIndex = 0;
                         m_AttackTimer = 0;
@@ -109,16 +122,11 @@ namespace Runtime
         private void NormalAttack()
         {
             if (m_AttackWaitTime == null || m_AttackWaitTime.Length < 1) return;
-
             if (m_AttackIndex >= m_AttackWaitTime.Length) return;
+            if (m_AttackTimer > 0 && Time.time - m_AttackTimer < m_AttackNextTime) return;
 
-            if (m_AttackTimer > 0 && Time.time - m_AttackTimer < 0.15f) return;
-
-            if (m_AttackIndex == 0)
-                AttackSuccess = true;
-
-            if (AttackSuccess)
-                m_AttackIndex++;
+            if (m_AttackIndex == 0) AttackSuccess = true;
+            if (AttackSuccess) m_AttackIndex++;
             else m_AttackIndex = 1;
 
             m_AttackTimer = Time.time;
@@ -139,5 +147,6 @@ namespace Runtime
         private float m_AttackTimer = 0;
         private int m_AttackIndex = 0;
         private int m_CurrSkillID = 0;
+        private float m_AttackNextTime = 0;
     }
 }

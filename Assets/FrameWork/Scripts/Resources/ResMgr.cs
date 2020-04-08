@@ -305,7 +305,7 @@ namespace FrameWork.Resources
 
         public override void ShutDown()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

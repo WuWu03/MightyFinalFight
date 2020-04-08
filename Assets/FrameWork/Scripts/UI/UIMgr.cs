@@ -149,7 +149,7 @@ namespace FrameWork.UI
 
         public override void ShutDown()
         {
-            throw new NotImplementedException();
+            
         }
 
         private UILayer[] m_MutexLayers = new UILayer[]

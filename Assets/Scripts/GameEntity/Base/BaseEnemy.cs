@@ -14,34 +14,27 @@ namespace Runtime
         public override void Init(int id, string name)
         {
             base.Init(id, name);
-            m_Ctrl = gameObject.GetOrAddComponent<AvatarCtrl>();
-            m_Ctrl.Init(StaticConfig.PlayerInfo[0].AttackWait, StaticConfig.PlayerInfo[0].Skills);
+            m_AvatarCtrl = gameObject.GetOrAddComponent<AvatarCtrl>();
+            m_AvatarCtrl.Init(null, new int[1] { 1001 },0.5f);
         }
         protected override void Update()
         {
             if (ResGO == null) return;
-            m_Ctrl.Move(InputMgr.GetAxis());
+            m_AvatarCtrl.Move(InputMgr.TestAxis());
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.Keypad1))
             {
-                m_Ctrl.Attack(InputMgr.GetAxis());
+                m_AvatarCtrl.Attack(InputMgr.TestAxis());
             }
 
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (Input.GetKeyDown(KeyCode.Keypad2))
             {
-                m_Ctrl.Jump(InputMgr.GetAxis());
+                m_AvatarCtrl.Jump(InputMgr.TestAxis());
             }
 
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                m_Ctrl.Skill(1007);
-            }
-
-            //if (Input.GetButtonDown"))
-            //{
-            //    m_Ctrl.Skill(1008);
-            //}
             base.Update();
         }
+
+        protected AvatarCtrl m_AvatarCtrl = null;
     }
 }

@@ -6,8 +6,13 @@ using FrameWork;
 
 namespace Runtime
 {
-    public class BaseAvatar : BaseObject
+    public abstract class BaseAvatar : BaseObject
     {
+        public float MoveSpeed
+        {
+            get { return m_MoveSpeed; }
+            set { m_MoveSpeed = value; }
+        }
         public bool IsFloat
         {
             get
@@ -28,18 +33,6 @@ namespace Runtime
             get
             {
                 return m_MoveDir;
-            }
-        }
-
-        public float MoveSpeed
-        {
-            get
-            {
-                return m_MoveSpeed;
-            }
-            set
-            {
-                m_MoveSpeed = value;
             }
         }
 
@@ -83,18 +76,6 @@ namespace Runtime
             }
         }
 
-        public float Health
-        {
-            get
-            {
-                return m_Health;
-            }
-            set
-            {
-                m_Health = value;
-            }
-        }
-
         public TriggerTargets TriggerTargets
         {
             get
@@ -123,6 +104,7 @@ namespace Runtime
             base.Release();
             m_FsmMachine.ShutDown();
             m_TriggerTargets.Release();
+            m_TriggerTargets = null;
             m_FsmMachine = null;
         }
 
@@ -210,7 +192,6 @@ namespace Runtime
             m_FsmMachine.RemoveState<T>();
         }
 
-        protected float m_Health = 400;
         protected float m_MoveSpeed = 0.8f;
         protected Vector2 m_MoveToPoint = Vector2.zero;
         protected Vector2 m_MoveDir = Vector2.zero;
@@ -220,6 +201,5 @@ namespace Runtime
         protected BoxCollider2D m_Collider = null;
         protected FsmMachine m_FsmMachine = null;
         protected DragonBones.UnityArmatureComponent m_Animator;
-        protected AvatarCtrl m_Ctrl = null;
     }
 }

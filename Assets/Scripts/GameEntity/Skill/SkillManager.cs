@@ -54,7 +54,7 @@ namespace Runtime
             }
         }
 
-        public void Destroy()
+        public void Release()
         {
             m_Owner = null;
             m_SkillDeployers = null;

@@ -22,6 +22,11 @@ namespace Runtime
 
         }
 
+        public virtual void Release()
+        {
+            m_Owner = null;
+        }
+
         protected BaseObject m_Owner = null;
     }
 }

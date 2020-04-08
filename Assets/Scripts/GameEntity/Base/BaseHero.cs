@@ -6,14 +6,10 @@ namespace Runtime
 {
     public class BaseHero : BaseRole
     {
-        class AttackerToSmoon
-        {
-            public BaseObject Attacker = null;
-            public int HitTime = 0;
-        }
         public override void Init(int id, string name)
         {
             base.Init(id,name);
+            AddState<HeroRebirth>();
             m_DicAttacker = new Dictionary<int, int>();
         }
 
@@ -64,6 +60,11 @@ namespace Runtime
             }
 
             base.OnHurtMsg(data);
+        }
+
+        public void OnRebirthMsg()
+        {
+            ChangeState<HeroRebirth>();
         }
 
         private float m_HitTime = -1f;

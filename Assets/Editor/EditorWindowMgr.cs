@@ -30,6 +30,11 @@ public class EditorWindowMgr : MonoBehaviour
         CreateConfigData<SceneObjectConfig, SceneObjectData>("SceneObjectData", ".asset");
     }
 
+    [MenuItem("Assets/Config/CreateHeroData")]
+    public static void CreatePlayerData()
+    {
+        CreateConfigData<HeroConfig, HeroData>("HeroData", ".asset");
+    }
 
     private static void CreateConfigData<T,P>(string name,string ext)
         where T: BaseScriptableObject<P>

@@ -61,6 +61,7 @@ namespace Runtime
                 x += 0.2f * (float)i;
                 BaseEnemy enemy = ObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
                 enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, "Cody"));
+                enemy.InitValue(100, 0.8f, 1, 1, Vector2.zero, 1);
                 enemy.SetObjectType(ObjectType.Monster);
                 enemy.SetPos2(x, -0.35f);
             }

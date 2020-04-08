@@ -49,7 +49,11 @@ namespace FrameWork
             }
         }
 
-        public abstract void ShutDown();
+        public virtual void ShutDown()
+        {
+            m_Ins = null;
+        }
+
         private static T m_Ins = null;
         private static GameObject m_Manager = null;
     }
