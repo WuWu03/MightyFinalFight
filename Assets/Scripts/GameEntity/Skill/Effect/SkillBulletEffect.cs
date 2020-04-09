@@ -34,6 +34,7 @@ namespace Runtime
 
 
         }
+
         private BaseRole m_Owner = null;
     }
 }

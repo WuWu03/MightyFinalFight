@@ -204,7 +204,7 @@ namespace FrameWork.Input
             if (m_ListKeyType.Count < 1) return;
             for (int i = 0; i < m_ListEvent.Count; i++)
             {
-                if (m_ListKeyType.Count < m_ListEvent[i].Keys.Length) continue;
+                if (m_ListEvent[i].Keys.Length < 1 || m_ListKeyType.Count < m_ListEvent[i].Keys.Length) continue;
 
                 bool isMatch = true;
 
@@ -222,6 +222,8 @@ namespace FrameWork.Input
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
             }
         }
+
+
 
         private void ResetKeys()
         {
@@ -251,7 +253,7 @@ namespace FrameWork.Input
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;
 
-        private const float KEY_DOWN_TIME = 0.2f;
+        private const float KEY_DOWN_TIME = 0.05f;
 
         private List<KeyType> m_ListKeyType = null;
         private List<ComboKeyEvent> m_ListEvent = null;

@@ -6,6 +6,13 @@ namespace Runtime
 {
     public class BaseHero : BaseRole
     {
+        public override bool CanMove
+        {
+            get
+            {
+                return base.CanMove && !m_IsCatch;
+            }
+        }
         public override void Init(int id, string name)
         {
             base.Init(id,name);
@@ -23,13 +30,20 @@ namespace Runtime
         protected override void Update()
         {
             base.Update();
-            if(m_HitTime < 0)return;
+            CheckCatch();
+
+            if (m_HitTime < 0)return;
 
             if(Time.time - m_HitTime > 1.0f)
             {
                 m_DicAttacker.Clear();
                 m_HitTime = -1f;
             }
+        }
+
+        public override void OnAttackMsg(AttackData data)
+        {
+            base.OnAttackMsg(data);
         }
 
         public override void OnHurtMsg(HurtData data)
@@ -67,6 +81,15 @@ namespace Runtime
             ChangeState<HeroRebirth>();
         }
 
+        private void CheckCatch()
+        {
+            if (!CanMove || m_TriggerTargets.Targets.Count < 1)
+            {
+                return;
+            }
+        }
+
+        private bool m_IsCatch = false;
         private float m_HitTime = -1f;
         private Dictionary<int,int> m_DicAttacker = null;
     }

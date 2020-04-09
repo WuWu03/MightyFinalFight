@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace FrameWork.Camera
 {
@@ -60,6 +61,10 @@ namespace FrameWork.Camera
             m_CameraFollow.EndFollow();
         }
 
+        public void Shake(float time = 0.3f)
+        {
+            m_CameraRoot.transform.DOShakePosition(time,0.1f,20,100);
+        }
         public bool IsOutVision(Vector2 targetPos)
         {
             Vector2[] vision = GetVision();

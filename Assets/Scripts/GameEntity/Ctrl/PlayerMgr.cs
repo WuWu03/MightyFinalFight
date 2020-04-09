@@ -49,7 +49,10 @@ namespace Runtime
             for (int i = 6; i < m_HeroData.Skills.Length; i++)
             {
                 Config.SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
-                InputMgr.Ins.AddKeyEvent(skillData.SkillKeys, skillData.ID, OnComboKeyEvent);
+                if(skillData.Type == Config.SkillData.SkillType.SkillAttack)
+                {
+                    InputMgr.Ins.AddKeyEvent(skillData.SkillKeys, skillData.ID, OnComboKeyEvent);
+                }
             }
             Life = 5;
         }

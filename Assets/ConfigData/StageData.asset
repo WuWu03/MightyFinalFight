@@ -15,7 +15,8 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Name: 1001
-    AssetName: Round/1001
+    AssetName: Stage/1001
+    AudioName: 
     Width: 1016
     Height: 152
     SceneObjIDs: 

@@ -21,6 +21,7 @@ namespace Runtime
         {
             m_Owner.OnGroundEvent.AddListener(OnGround);
             m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            m_Owner.Rigidbody.velocity = Vector2.zero;
             m_Owner.Rigidbody.AddForce(Force);
             m_Owner.PlayAnimation(AnimName.SmoonUp);
         }

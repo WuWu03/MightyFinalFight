@@ -1,4 +1,5 @@
-﻿using Runtime.Config;
+﻿using FrameWork.Camera;
+using Runtime.Config;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,25 @@ namespace Runtime
         {
             get
             {
+                if (m_SkillData != null && m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
+                {
+                    m_Complete = m_Owner.IsPlayComplete();
+                }
+
                 return m_Complete;
             }
         }
 
         public void Effect(BaseRole owner, SkillData skillData, ISkillSelector skillSelector)
         {
+            m_Owner = owner;
+            m_SkillData = skillData;
+
             List<GameObject> targets = skillSelector.GetTargets(owner, skillData);
             
             bool hurtTarget = false;
             m_Complete = false;
+
             for (int i = 0; i < targets.Count; i++)
             {
                 ICanBeHit hit = targets[i].GetComponent<ICanBeHit>();
@@ -35,12 +45,17 @@ namespace Runtime
                         AttackerID = owner.ID,
                         AttackValue = 1,
                     });
+
+                    if(skillData.IsShakeCamera)
+                    {
+                        CameraMgr.Ins.Shake();
+                    }
                 }
             }
 
             m_Complete = true;
 
-            if (owner.ObjectType == ObjectType.Player)
+            if (skillData.Type != SkillData.SkillType.SkillAttack)
             {
                 owner.GetComponent<AvatarCtrl>().AttackSuccess = hurtTarget;
             }
@@ -49,8 +64,12 @@ namespace Runtime
         public void Reset()
         {
             m_Complete = false;
+            m_Owner = null;
+            m_SkillData = null;
         }
 
+        private BaseRole m_Owner = null;
+        private SkillData m_SkillData = null;
         private bool m_Complete = false;
     }
 }

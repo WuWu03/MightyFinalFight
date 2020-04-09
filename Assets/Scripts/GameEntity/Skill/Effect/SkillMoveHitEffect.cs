@@ -30,20 +30,20 @@ namespace Runtime
             m_OriginalGravity = owner.Rigidbody.gravityScale;
             m_Selector = selector;
             m_IsCompleted = false;
-
             owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
             owner.Rigidbody.AddForce(new Vector2(skillData.AddSelfForce.x * owner.Dir, skillData.AddSelfForce.y));
-            owner.Rigidbody.drag = skillData.AddSelfDrag;    
+            owner.Rigidbody.drag = skillData.AddSelfDrag;
             owner.Rigidbody.gravityScale = skillData.Gravity;
         }
 
         private void OnUpdate()
         {
             if (m_Owner == null) return;
-            m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.transform.localPosition.y);
+            m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
             List<GameObject> targets = m_Selector.GetTargets(m_Owner, m_SkillData);
             bool hasHit = false;
 
+            Debug.Log(targets.Count);
             for (int i = 0; i < targets.Count; i++)
             {
                 ICanBeHit hit = targets[i].GetComponent<ICanBeHit>();
@@ -78,9 +78,9 @@ namespace Runtime
 
         private void Complete()
         {
-            m_Owner.Rigidbody.velocity = Vector2.zero;
-            m_Owner.Rigidbody.gravityScale = m_OriginalGravity;
-            m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            //m_Owner.Rigidbody.velocity = Vector2.zero;
+            //m_Owner.Rigidbody.gravityScale = m_OriginalGravity;
+            //m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
             m_IsCompleted = true;
             m_SkillData = null;
             m_Owner = null;

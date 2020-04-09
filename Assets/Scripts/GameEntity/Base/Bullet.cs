@@ -48,7 +48,17 @@ namespace Runtime
             }
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            CheckHit(collision);
+        }
+
         private void OnTriggerStay2D(Collider2D collision)
+        {
+            CheckHit(collision);
+        }
+
+        private void CheckHit(Collider2D collision)
         {
             if (m_ResGO == null || m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
 

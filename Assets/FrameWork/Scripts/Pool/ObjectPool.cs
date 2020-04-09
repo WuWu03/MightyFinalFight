@@ -29,6 +29,7 @@ namespace FrameWork.Pool
             if(obj == null)
             {
                 obj = new GameObject().GetOrAddComponent<T>();
+                DontDestroyOnLoad(obj);
             }
 
             m_ListUsingObj.Add(obj);

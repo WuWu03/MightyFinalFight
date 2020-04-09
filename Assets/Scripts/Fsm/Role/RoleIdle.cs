@@ -15,6 +15,7 @@ namespace Runtime
         public override void OnEnter(BaseFsm fsm)
         {
             m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            m_Owner.Rigidbody.gravityScale = 1;
             m_Owner.Rigidbody.velocity = Vector2.zero;
             m_Owner.SetPos(m_Owner.Pos);
             m_Owner.PlayAnimation(AnimName.Idle, -1, 1);

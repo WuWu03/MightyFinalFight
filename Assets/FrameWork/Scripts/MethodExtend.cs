@@ -39,6 +39,25 @@ namespace FrameWork
             }
         }
 
+        public static T FindComponentInParents<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject == null) return null;
+
+            T comp = gameObject.GetComponent<T>();
+
+            if (comp == null)
+            {
+                Transform t = gameObject.transform.parent;
+
+                while (t != null && comp == null)
+                {
+                    comp = t.gameObject.GetComponent<T>();
+                    t = t.parent;
+                }
+            }
+
+            return comp;
+        }
 
         public static int ToInt(this string value)
         {

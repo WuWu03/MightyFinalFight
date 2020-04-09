@@ -156,21 +156,20 @@ namespace Runtime
 
         public bool IsAnyState(params Type[] stateTypes)
         {
-            bool isInState = false;
-    
-            if (stateTypes != null)
+            if (!m_FsmMachine.IsRunning || stateTypes == null || stateTypes.Length < 1)
             {
-                for (int i = 0; i < stateTypes.Length; i++)
+                return false;
+            }
+
+            for (int i = 0; i < stateTypes.Length; i++)
+            {
+                if (m_FsmMachine.CurrStateType.Equals(stateTypes[i]))
                 {
-                    if (m_FsmMachine.CurrStateType.Equals(stateTypes[i]))
-                    {
-                        isInState = true;
-                        break;
-                    }
+                    return true;
                 }
             }
 
-            return isInState;
+            return false;
         }
 
         protected void AddState<T>() where T : BaseFsmState, new()

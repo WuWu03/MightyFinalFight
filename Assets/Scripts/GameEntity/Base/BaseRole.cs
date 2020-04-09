@@ -57,10 +57,11 @@ namespace Runtime
         {
             get
             {
-                return !m_IsDropTrag && IsAnyState(typeof(RoleIdle),
-                                  typeof(RoleMove),
-                                  typeof(RoleAttack),
-                                  typeof(RoleJump));
+                return !m_IsDropTrag && 
+                    IsAnyState(typeof(RoleIdle),
+                    typeof(RoleMove),
+                    typeof(RoleAttack),
+                    typeof(RoleJump));
             }
         }
 
@@ -68,10 +69,11 @@ namespace Runtime
         {
             get
             {
-                return !m_IsDropTrag && !m_IsJumpAttack && IsAnyState(typeof(RoleIdle),
-                                  typeof(RoleMove),
-                                  typeof(RoleJump),
-                                  typeof(RoleAttack));
+                return !m_IsDropTrag && !m_IsJumpAttack && 
+                    IsAnyState(typeof(RoleIdle),
+                    typeof(RoleMove),
+                    typeof(RoleJump),
+                    typeof(RoleAttack));
             }
         }
 
@@ -146,7 +148,6 @@ namespace Runtime
             base.Update();
             if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
             if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
-
             UpdatePos2(transform.localPosition.x, Pos.y);
 
             if (IsFloat)
@@ -154,7 +155,7 @@ namespace Runtime
                 return;
             }
 
-            if(!m_IsJumpAttack)
+            if (!m_IsJumpAttack)
             {
                 OnDropEvent.Invoke();
             }
@@ -168,7 +169,6 @@ namespace Runtime
         public virtual void OnAttackMsg(AttackData data)
         {
             if (data == null) return;
-
             m_IsJumpAttack = IsAnyState(typeof(RoleJump));
             GetState<RoleAttack>().StateParam = data;
             ChangeState<RoleAttack>();
@@ -182,7 +182,7 @@ namespace Runtime
             if (data == null) return;
             ChangeState<RoleSkill>();
             SetTrigger(data.AnimationName);
-            PlayAnimation(data.AnimationName, 1, 0.4f);
+            PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
         }
 
         public virtual void OnMoveMsg(MoveData data)
@@ -244,7 +244,7 @@ namespace Runtime
             }
         }
 
-        public void OnDropTragMsg(DropTragData data)
+        public virtual void OnDropTragMsg(DropTragData data)
         {
             if (data == null) return;
             if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump))&&!m_IsJumpAttack) return;
@@ -293,6 +293,8 @@ namespace Runtime
             OnGroundEvent.Invoke();
             OnGroundEvent.RemoveAllListeners();
             m_IsJumpAttack = false;
+            m_Animator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, null);
+            m_Animator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, null);
 
             if (IsAnyState(typeof(RoleSwoon)))
             {

@@ -10,6 +10,7 @@ namespace Runtime
         public float AttackValue { get; set; }
         public int AttackerID {get;set;}
         public bool IsSwoon { get; set; }//是否击飞
+        public bool IsCatch { get; set; }//是否被抓住
         public float AttackerDir { get; set; }
 
         public override BaseEventArgs Clone()

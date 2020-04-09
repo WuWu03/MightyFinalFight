@@ -45,7 +45,7 @@ namespace Runtime
             if (m_CurrSkillDeployer.IsAllComplete())
             {
                 m_CurrSkillDeployer = null;
-                if (!m_Owner.IsAnyState(typeof(RoleAttack), typeof(RoleJumpAttack)))
+                if (!m_Owner.IsAnyState(typeof(RoleAttack)) && m_Owner.IsInGround)
                     m_Owner.FsmMachine.ChangeDefaultState();
             }
             else
