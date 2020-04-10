@@ -9,14 +9,22 @@ using UnityEngine.UI;
 namespace FrameWork.UI
 {
     public class UIMgr : BaseMgr<UIMgr>
-    {
-        public enum UILayer
+    {    
+        public enum Layer
         {
             BG,
             MainPanel,
             FirstLevel,
             SecondLevel,
             ThirdLevel,
+        }
+
+        public enum CloseMode
+        {
+            Always = 1,         // UI常驻场景, 此类UI关闭达到一定数量后, 会摧毁最先关闭的
+            Destroy = 2,        //关闭时立即销毁
+            DelayDestroy = 3,   // 延迟一段时间销毁
+            Eternal = 4,        // 总是存于场景中, 除非主动销毁
         }
 
         private void Awake()
@@ -58,13 +66,13 @@ namespace FrameWork.UI
 
             m_UIRoot.SetLayer("UI");
 
-            Array layers = Enum.GetValues(typeof(UILayer));
+            Array layers = Enum.GetValues(typeof(Layer));
 
             m_UILayerTransform = new RectTransform[layers.Length];
 
             for (int i = 0; i < layers.Length; i++)
             {
-                m_UILayerTransform[i] = new GameObject(Enum.GetValues(typeof(UILayer)).GetValue(i).ToString()).AddComponent<RectTransform>();
+                m_UILayerTransform[i] = new GameObject(Enum.GetValues(typeof(Layer)).GetValue(i).ToString()).AddComponent<RectTransform>();
                 m_UILayerTransform[i].anchoredPosition = Vector3.zero;
                 m_UILayerTransform[i].sizeDelta = Vector2.zero;
                 m_UILayerTransform[i].anchorMin = new Vector2(0, 0);
@@ -76,7 +84,7 @@ namespace FrameWork.UI
             GameObject.DontDestroyOnLoad(m_UIRoot);
         }
 
-        public void AddPanel(BasePanel panel)
+        public void AddPanel<T,P>(BasePanel panel)
         {
             if(m_QueueOpenPanel.Contains(panel))
             {
@@ -85,7 +93,7 @@ namespace FrameWork.UI
 
             for (int i = 0; i < m_MutexLayers.Length; i++)
             {
-                if (panel.PanelLayer.Equals(m_MutexLayers))
+                if (panel.PanelLayer == m_MutexLayers[i])
                 {
                     m_QueueOpenPanel.Enqueue(panel);
                     break;
@@ -104,16 +112,11 @@ namespace FrameWork.UI
             
             if(m_QueueOpenPanel.Count >0)
             {
-                m_QueueOpenPanel.Peek().Open();
+                m_QueueOpenPanel.Peek().Open?.Invoke(null);
             }
         }
 
-        public BasePanel GetCurrPanel()
-        {
-            return m_QueueOpenPanel.Peek();
-        }
-
-        public Transform GetUILayer(UILayer layer)
+        public Transform GetUILayer(Layer layer)
         {
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
@@ -152,9 +155,9 @@ namespace FrameWork.UI
             
         }
 
-        private UILayer[] m_MutexLayers = new UILayer[]
+        private Layer[] m_MutexLayers = new Layer[]
         {
-            UILayer.FirstLevel
+            Layer.FirstLevel
         };
 
         private Queue<BasePanel> m_QueueOpenPanel = null;

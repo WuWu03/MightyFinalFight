@@ -176,7 +176,7 @@ namespace FrameWork.GameEntity
 
         }
 
-        protected virtual void OnResComplete(GameObject go)
+        protected virtual void OnResComplete(GameObject go,string resPath)
         {
             m_ResGO = go;
             m_ResGO.transform.SetParent(this.transform, false);

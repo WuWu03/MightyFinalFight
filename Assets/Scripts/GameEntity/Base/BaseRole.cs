@@ -136,9 +136,9 @@ namespace Runtime
             base.Release();
         }
 
-        protected override void OnResComplete(GameObject go)
+        protected override void OnResComplete(GameObject go, string resPath)
         {
-            base.OnResComplete(go);
+            base.OnResComplete(go,resPath);
             m_MoveDir = Vector2.right;
             m_FsmMachine.Start<RoleIdle>();
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
 using FrameWork.Camera;
-using FrameWork.Input;
 
 namespace Runtime
 {
@@ -17,9 +16,10 @@ namespace Runtime
 
         protected override void OnStartGame()
         {
-            PlayerMgr.Ins.InitPlayer(1001);
-            CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
-            StageMgr.Ins.Enter(1001);
+            //PlayerMgr.Ins.InitPlayer (1001);
+            //CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
+            //StageMgr.Ins.Enter(1001);
+            RoleSelectPanelCtrl.Ins.Open();
         }
     }
 }

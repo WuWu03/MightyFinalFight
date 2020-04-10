@@ -7,9 +7,6 @@ using UnityEngine;
 [CustomEditor(typeof(UIRef))]
 public class UIRefEditor : Editor
 {
-    private UIRef m_Target;
-    private string m_PrevName = string.Empty;
-
     public void OnEnable()
     {
         this.m_Target = (target as UIRef);
@@ -22,16 +19,16 @@ public class UIRefEditor : Editor
     public override void OnInspectorGUI()
     {
         GUI.color = Color.green;
-        EditorGUILayout.LabelField(this.m_Target.GetName(), new GUILayoutOption[0]);
+        EditorGUILayout.LabelField(m_Target.GetName(), new GUILayoutOption[0]);
         GUI.color = Color.white;
         EditorGUI.BeginChangeCheck();
-        this.m_Target.UseObjName = EditorGUILayout.Toggle("使用默认字段名", this.m_Target.UseObjName, new GUILayoutOption[0]);
+        m_Target.UseObjName = EditorGUILayout.Toggle("使用默认字段名", this.m_Target.UseObjName, new GUILayoutOption[0]);
         if (EditorGUI.EndChangeCheck())
         {
-            if (this.m_Target.UseObjName)
+            if (m_Target.UseObjName)
             {
-                this.m_Target.SetObjName(this.m_Target.gameObject.name);
-                foreach (UIRef current in UIRefEditor.GetOtherRef(this.m_Target))
+                m_Target.SetObjName(this.m_Target.gameObject.name);
+                foreach (UIRef current in GetOtherRef(m_Target))
                 {
                     if (current.UseObjName)
                     {
@@ -43,7 +40,7 @@ public class UIRefEditor : Editor
             }
             else
             {
-                this.m_Target.SetName(this.m_Target.gameObject.name);
+                m_Target.SetName(this.m_Target.gameObject.name);
             }
             EditorUtility.SetDirty(this.m_Target);
         }
@@ -85,7 +82,7 @@ public class UIRefEditor : Editor
             EditorUtility.SetDirty(this.m_Target);
         }
         EditorGUI.BeginChangeCheck();
-        this.m_Target.OutputClipBoard = EditorGUILayout.Toggle("引用代码输出到剪切板", this.m_Target.OutputClipBoard, new GUILayoutOption[0]);
+        this.m_Target.IsCopyRefStr = EditorGUILayout.Toggle("引用代码输出到剪切板", this.m_Target.IsCopyRefStr, new GUILayoutOption[0]);
         if (EditorGUI.EndChangeCheck())
         {
             EditorUtility.SetDirty(this.m_Target);
@@ -104,7 +101,6 @@ public class UIRefEditor : Editor
         int num = 1;
         string text = name;
 
-
         foreach (string current in array)
         {
             if (current == text)
@@ -115,4 +111,7 @@ public class UIRefEditor : Editor
  
         return text;
     }
+
+    private UIRef m_Target;
+    private string m_PrevName = string.Empty;
 }

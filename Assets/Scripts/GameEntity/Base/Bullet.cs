@@ -83,9 +83,9 @@ namespace Runtime
             }
         }
 
-        protected override void OnResComplete(GameObject go)
+        protected override void OnResComplete(GameObject go, string resPath)
         {
-            base.OnResComplete(go);
+            base.OnResComplete(go,resPath);
             m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
             m_Animator.animation.Play(m_BulletData.Name, 1);
         }

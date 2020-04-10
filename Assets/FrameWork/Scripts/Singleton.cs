@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace FrameWork
 {
-    public abstract class Singleton<T> where T : Singleton<T>
+    public abstract class Singleton<T> where T : Singleton<T>,new()
     {
         public static T Ins
         {

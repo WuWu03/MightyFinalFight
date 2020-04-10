@@ -7,58 +7,57 @@ public static class UIRefEx
 {
     public static void SetName(this UIRef uiRef, string name)
     {
-        UIRefRoot uIRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();
-        if (uIRefRoot == null)
+        UIRefRoot uiRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();
+        if (uiRefRoot == null)
         {
             Debug.LogError("没有 mUIRefSetting 组件");
+            return;
         }
-        else
+
+        List<string> list = new List<string>();
+        UIRef[] components = uiRefRoot.GetComponentsInChildren<UIRef>(true);
+
+        for (int i = 0; i < components.Length; i++)
         {
-            List<string> list = new List<string>();
-            UIRef[] componentsInChildren = uIRefRoot.GetComponentsInChildren<UIRef>(true);
-            UIRef[] array = componentsInChildren;
-            for (int i = 0; i < array.Length; i++)
+            UIRef component = components[i];
+            if (component != uiRef && component.IsCopyRefStr == uiRef.IsCopyRefStr)
             {
-                UIRef uIRef = array[i];
-                if (!(uIRef == uiRef) && uIRef.OutputClipBoard == uiRef.OutputClipBoard)
-                {
-                    list.Add(uIRef.UseObjName ? uIRef.gameObject.name : uIRef.Name);
-                }
+                list.Add(component.UseObjName ? component.gameObject.name : component.Name);
             }
-            uiRef.Name = UIRefEditor.GetUniqueName(name.Trim(), list);
         }
+
+        uiRef.Name = UIRefEditor.GetUniqueName(name.Trim(), list);
     }
 
     public static string GetName(this UIRef uiRef)
     {
         string str = string.Empty;
-        if (string.IsNullOrEmpty(uiRef.ComponentName) || uiRef.ComponentName == typeof(Transform).Name || uiRef.ComponentName == typeof(RectTransform).Name)
+        if (string.IsNullOrEmpty(uiRef.ComponentName) || uiRef.ComponentName == typeof(Transform).Name)
         {
             str = "Trans";
         }
+        else if (uiRef.ComponentName == typeof(RectTransform).Name)
+        {
+            str = "Rect";
+        }
         else if (uiRef.ComponentName == typeof(GameObject).Name)
         {
-            str = "Obj";
-        }
-        string text;
-        if (uiRef.UseObjName)
-        {
-            text = uiRef.gameObject.name;
-        }
-        else
-        {
-            text = uiRef.Name;
+            str = "GO";
         }
 
-        if (string.IsNullOrEmpty(text))
-            return "m" + str;
+        string text;
+        if (uiRef.UseObjName) text = uiRef.gameObject.name;
+        else text = uiRef.Name;
+
+
+        if (string.IsNullOrEmpty(text)) return str;
 
         text = text.Replace(" ", "_").Replace("(", "_").Replace(")", "_");
         if (text[0] > 'a' && text[0] < 'z')
         {
 			text = (char)(text[0] - ' ') + text.Substring(1);
         }
-        return "m" + text + str;
+        return text + str;
     }
 
     public static void SetObjName(this UIRef uiRef, string name)
@@ -76,7 +75,7 @@ public static class UIRefEx
         for (int i = 0; i < children.Length; i++)
         {
             UIRef child = children[i];
-            if (child != uiRef && child.OutputClipBoard == uiRef.OutputClipBoard && child.UseObjName)
+            if (child != uiRef && child.IsCopyRefStr == uiRef.IsCopyRefStr && child.UseObjName)
             {
                 hashSet.Add(child.gameObject.name);
             }

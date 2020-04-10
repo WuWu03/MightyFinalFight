@@ -126,9 +126,9 @@ namespace Runtime
             m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
-        protected override void OnResComplete(GameObject go)
+        protected override void OnResComplete(GameObject go,string resPath)
         {
-            base.OnResComplete(go);
+            base.OnResComplete(go, resPath);
             m_Animator = m_ResGO.GetComponent<DragonBones.UnityArmatureComponent>();
             m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
         }

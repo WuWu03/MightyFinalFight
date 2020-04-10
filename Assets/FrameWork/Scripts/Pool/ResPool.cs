@@ -17,37 +17,37 @@ namespace FrameWork.Pool
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
             m_DicPool = new Dictionary<string, Queue<GameObject>>();
-            m_DicLoadCallback = new Dictionary<string, List<Action<GameObject>>>();
+            m_DicLoadCallback = new Dictionary<string, List<Action<GameObject,string>>>();
         }
 
-        public void Get(string resPath, Action<GameObject> call)
+        public void Get(string resPath, Action<GameObject,string> call)
         {
             if (string.IsNullOrEmpty(resPath) || call == null) return;
             Queue<GameObject> pool = this.GetOrCreatePool(resPath);
             if (pool.Count > 0)
             {
                 GameObject go = pool.Dequeue();
-                call(go);
+                call(go,resPath);
             }
             else
             {
-                List<Action<GameObject>> loadList = null;
+                List<Action<GameObject,string>> loadList = null;
                 if (!m_DicLoadCallback.TryGetValue(resPath, out loadList))
                 {
-                    loadList = new List<Action<GameObject>>();
+                    loadList = new List<Action<GameObject,string>>();
                 }
 
                 loadList.Add(call);
                 m_DicLoadCallback[resPath] = loadList;
                 ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
                 {
-                    List<Action<GameObject>> loadListCurr = null;
+                    List<Action<GameObject,string>> loadListCurr = null;
                     if (m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
                     {
                         for (int i = 0; i < loadListCurr.Count; i++)
                         {
                             GameObject go = GameObject.Instantiate(obj) as GameObject;
-                            loadListCurr[i](go);
+                            loadListCurr[i](go,resPath);
                         }
 
                         m_DicLoadCallback.Remove(resPath);
@@ -107,6 +107,6 @@ namespace FrameWork.Pool
 
         private Transform m_PoolRoot = null;
         private Dictionary<string, Queue<GameObject>> m_DicPool = null;
-        private Dictionary<string, List<Action<GameObject>>> m_DicLoadCallback = null;
+        private Dictionary<string, List<Action<GameObject,string>>> m_DicLoadCallback = null;
     }
 }

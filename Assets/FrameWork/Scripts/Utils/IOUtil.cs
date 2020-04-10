@@ -40,7 +40,7 @@ namespace FrameWork.Utils
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
-                    sw.Write(content.ToString());
+                    sw.Write(content);
                 }
             }
         }
@@ -105,5 +105,16 @@ namespace FrameWork.Utils
             }
         }
         #endregion
+
+        public static bool VerifyDirectory(string dirPath)
+        {
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+                return false;
+            }
+
+            return true;
+        }
     }
 }

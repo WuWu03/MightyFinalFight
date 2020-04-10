@@ -27,6 +27,6 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 输出到剪切板
     /// </summary>
-    public bool OutputClipBoard { get; set; }
+    public bool IsCopyRefStr { get; set; }
 }
 #endif
