@@ -16,7 +16,8 @@ public class RoleSelectPanelCtrl : BasePanelCtrl<RoleSelectPanel,RoleSelectPanel
 
 	protected override void OnOpen()
 	{
-		Debug.Log(Panel.ImgSelect);
+		Panel.TxtRoleName.text = "sdfsdf111";
+		Panel.ImgSelectGO.SetActive(false);
 	}
 
 	protected override void OnUpdate()
@@ -55,7 +56,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl<RoleSelectPanel,RoleSelectPanel
 			if (isSelect)
 			{
 				Vector3 selectPos = m_BtnRoleIcon.transform.position;
-				Panel.ImgSelect.transform.position = selectPos;
+				//Panel.ImgSelect.transform.position = selectPos;
 				m_BtnRoleIcon.Select();
 			}
 		}

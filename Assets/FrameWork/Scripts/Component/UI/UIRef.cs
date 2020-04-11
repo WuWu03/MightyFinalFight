@@ -7,26 +7,50 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 使用GameObject的名字
     /// </summary>
-    public bool UseObjName { get; set; }
+    [SerializeField] private bool m_UseObjName;
+    public bool UseObjName
+    {
+        get { return m_UseObjName; }
+        set { m_UseObjName = value;}
+    }
 
     /// <summary>
     /// 字段名称
     /// </summary>
-    public string Name { get; set; }
-
+    [SerializeField] private string m_RefName;
+    public string Name
+    {
+        get { return m_RefName; }
+        set { m_RefName = value; }
+    }
     /// <summary>
     /// 引用组件的名称
     /// </summary>
-    public string ComponentName { get; set; }
+    [SerializeField] private string m_ComponentName;
+    public string ComponentName 
+    { 
+        get { return m_ComponentName; }
+        set { m_ComponentName = value; }
+    }
 
     /// <summary>
     /// 描述
     /// </summary>
-    public string Desc { get; set; }
+    [SerializeField] private string m_Desc;
+    public string Desc 
+    {
+        get { return m_Desc; }
+        set { m_Desc = value; }
+    }
 
     /// <summary>
     /// 输出到剪切板
     /// </summary>
-    public bool IsCopyRefStr { get; set; }
+    [SerializeField] private bool m_IsCopyRefStr;
+    public bool IsCopyRefStr
+    {
+        get { return m_IsCopyRefStr; }
+        set { m_IsCopyRefStr = value; }
+    }
 }
 #endif

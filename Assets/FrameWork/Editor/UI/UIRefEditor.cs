@@ -9,91 +9,89 @@ public class UIRefEditor : Editor
 {
     public void OnEnable()
     {
-        this.m_Target = (target as UIRef);
-        if (string.IsNullOrEmpty(this.m_PrevName))
+        m_ListCompName.Clear();
+        m_UIRef = (target as UIRef);
+        Component[] components = m_UIRef.GetComponents<Component>();
+        m_ListCompName.Add(typeof(GameObject).Name);
+        for (int i = 0; i < components.Length; i++)
         {
-            this.m_PrevName = this.m_Target.Name;
+            if (components[i] is UIRef) continue;
+            m_ListCompName.Add(components[i].GetType().Name);
         }
     }
 
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
         GUI.color = Color.green;
-        EditorGUILayout.LabelField(m_Target.GetName(), new GUILayoutOption[0]);
+        EditorGUILayout.LabelField(m_UIRef.GetName(), new GUILayoutOption[0]);
         GUI.color = Color.white;
         EditorGUI.BeginChangeCheck();
-        m_Target.UseObjName = EditorGUILayout.Toggle("使用默认字段名", this.m_Target.UseObjName, new GUILayoutOption[0]);
-        if (EditorGUI.EndChangeCheck())
+
+        SerializedProperty useObjName = FrameWorkEditorMgr.DrawProperty("使用默认字段名", serializedObject, "m_UseObjName", new GUILayoutOption[0]);
+        if(m_UIRef.UseObjName != useObjName.boolValue)
         {
-            if (m_Target.UseObjName)
-            {
-                m_Target.SetObjName(this.m_Target.gameObject.name);
-                foreach (UIRef current in GetOtherRef(m_Target))
-                {
-                    if (current.UseObjName)
-                    {
-                        current.UseObjName = false;
-                        current.SetName(this.m_Target.gameObject.name);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                m_Target.SetName(this.m_Target.gameObject.name);
-            }
-            EditorUtility.SetDirty(this.m_Target);
+            m_UIRef.UseObjName = useObjName.boolValue;
+            EditorUtility.SetDirty(this.m_UIRef);
         }
 
-        if (!this.m_Target.UseObjName)
+        if (useObjName.boolValue)
         {
-            EditorGUI.BeginChangeCheck();
-            string name = EditorGUILayout.TextField("字段名称", this.m_Target.Name, new GUILayoutOption[0]);
-            if (EditorGUI.EndChangeCheck())
+            m_UIRef.SetObjName(m_UIRef.gameObject.name);
+            foreach (UIRef current in GetOtherRef(m_UIRef))
             {
-                this.m_Target.SetName(name);
-                EditorUtility.SetDirty(this.m_Target);
+                if (current == m_UIRef || !current.UseObjName) continue;
+
+                current.UseObjName = false;
+                current.SetName(m_UIRef.gameObject.name);
+                break;
             }
         }
-
-        Component[] components = this.m_Target.GetComponents<Component>();
-        List<string> list = new List<string>(components.Length);
-        list.Add(typeof(GameObject).Name);
-
-        for (int i = 0; i < components.Length; i++)
+        else
         {
-            Component component = components[i];
-            if (!(component is UIRef))
+            if(string.IsNullOrEmpty(m_UIRef.Name))
             {
-                list.Add(component.GetType().Name);
+                m_UIRef.SetName(m_UIRef.gameObject.name);
             }
+
+            string name = EditorGUILayout.TextField("字段名称", m_UIRef.Name, new GUILayoutOption[0]);
+            if(m_UIRef.Name != name)
+            {
+                EditorUtility.SetDirty(this.m_UIRef);
+            }
+            m_UIRef.SetName(name);
         }
-        EditorGUI.BeginChangeCheck();
-        int index = EditorGUILayout.Popup("引用的组件", list.IndexOf(this.m_Target.ComponentName), list.ToArray(), new GUILayoutOption[0]);
-        if (EditorGUI.EndChangeCheck())
+        
+        int currIndex = m_ListCompName.IndexOf(m_UIRef.ComponentName);
+        if (currIndex < 0) currIndex = 0;
+        int index = EditorGUILayout.Popup("引用的组件", currIndex, m_ListCompName.ToArray(), new GUILayoutOption[0]);
+        if(currIndex != index)
         {
-            this.m_Target.ComponentName = list[index];
-            EditorUtility.SetDirty(this.m_Target);
+            EditorUtility.SetDirty(m_UIRef);
+            m_UIRef.ComponentName = m_ListCompName[index];
         }
-        EditorGUI.BeginChangeCheck();
-        this.m_Target.Desc = EditorGUILayout.TextField("描述", this.m_Target.Desc, new GUILayoutOption[0]);
-        if (EditorGUI.EndChangeCheck())
+
+        string desc = EditorGUILayout.TextField("描述", m_UIRef.Desc, new GUILayoutOption[0]);
+        if(m_UIRef.Desc!=desc)
         {
-            EditorUtility.SetDirty(this.m_Target);
+            EditorUtility.SetDirty(this.m_UIRef);
+            m_UIRef.Desc = desc;
         }
-        EditorGUI.BeginChangeCheck();
-        this.m_Target.IsCopyRefStr = EditorGUILayout.Toggle("引用代码输出到剪切板", this.m_Target.IsCopyRefStr, new GUILayoutOption[0]);
-        if (EditorGUI.EndChangeCheck())
+
+        SerializedProperty isCopyRefStr = FrameWorkEditorMgr.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
+        if(m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)
         {
-            EditorUtility.SetDirty(this.m_Target);
+            EditorUtility.SetDirty(m_UIRef);
+            m_UIRef.IsCopyRefStr = isCopyRefStr.boolValue;
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 
-    public static IEnumerable<UIRef> GetOtherRef(UIRef uiref)
+    public static UIRef[] GetOtherRef(UIRef uiref)
     {
-        List<UIRef> list = uiref.gameObject.GetComponents<UIRef>().ToList<UIRef>();
-        list.Remove(uiref);
-        return list;
+        UIRef[] ret = uiref.gameObject.GetComponents<UIRef>();
+        return ret;
     }
 
     public static string GetUniqueName(string name, IEnumerable<string> array)
@@ -108,10 +106,10 @@ public class UIRefEditor : Editor
                 text = string.Format("{0} {1}", name, num++);
             }
         }
- 
+
         return text;
     }
 
-    private UIRef m_Target;
-    private string m_PrevName = string.Empty;
+    private List<string> m_ListCompName = new List<string>();
+    private UIRef m_UIRef;
 }

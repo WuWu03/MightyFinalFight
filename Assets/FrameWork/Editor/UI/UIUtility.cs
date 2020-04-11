@@ -14,42 +14,6 @@ using FrameWork.Utils;
 [InitializeOnLoad]
 public class UIUtility
 {
-    private static string PanelContent =
-@"local $LuaClass = BaseClass(BasePanel)
-
---------------------------------------------------------------------
---------- 以下是自动生成的代码，所有手动更改都是无效的---------------------
-function $LuaClass:OnInit(go)
-    local targetObject = go:GetComponent(""UIRefRoot"").Objects
-$RefContent
-    self:InnerInit()
-end
---- END ------------------------------------------------------------
---------------------------------------------------------------------
-
-function $LuaClass:InnerInit()
-
-end
-
-return $LuaClass.New($Params)";
-
-    private static string PanelRefContent =
-@"    local targetObject = go:GetComponent(""UIRefRoot"").Objects
-$RefContent
-    self:InnerInit()
-end";
-
-    private static string CtrlContent =
-@"local $PanelLuaClass = require ""$PanelLuaPath""
-
-local $LuaClass = BaseCtrl.New($PanelLuaClass)
-
-function $LuaClass:OnInit(obj)
-
-end
-
-return $LuaClass";
-
     private static Scene scene { get { return SceneManager.GetActiveScene(); } }
 
     private static UIRefSetting m_UIRefSetting;
@@ -251,13 +215,20 @@ return $LuaClass";
 
     private static void AddUIRef(GameObject obj)
     {
-        if (obj != null)
-        {
-            UIRef uiRef = obj.GetOrAddComponent<UIRef>();
-            uiRef.ComponentName = typeof(GameObject).Name;
+        if (obj == null) return;
 
+        UIRef[] components = obj.GetComponents<UIRef>();
+        UIRef uiRef = obj.AddComponent<UIRef>();
+        uiRef.ComponentName = typeof(GameObject).Name;
+        if (components.Length == 0)
+        {
             uiRef.UseObjName = true;
             uiRef.SetObjName(obj.name);
+        }
+        else
+        {
+            uiRef.UseObjName = false;
+            uiRef.SetName(obj.name);
         }
     }
 
@@ -367,7 +338,10 @@ return $LuaClass";
         GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
         IOUtil.VerifyDirectory(Path.GetDirectoryName(path));
 
-        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path);
+        bool isSuccess;
+        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out isSuccess);
+
+        if (!isSuccess) return null;
 
         UIRef[] components = prefab.GetComponentsInChildren<UIRef>(true);
 

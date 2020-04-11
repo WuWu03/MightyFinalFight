@@ -179,59 +179,6 @@ public class UIRefSetting : MonoBehaviour
         PanelPrefabPath = string.Format(m_PrefabFolder + "{0}.prefab", m_PanelName);
     }
 
-
-    public string CreateParameters()
-    {
-        System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-        sb.Append("\"" + PanelName + "\"");
-        sb.Append(", ");
-
-        if (PanelType == Type.Root)
-        {
-            sb.Append("1, UIManager.Type.Root, true, UIManager.CloseStrategy.Eternal");
-        }
-        else
-        {
-            sb.AppendInt(IsCustomLayer ? (int)PanelLayer : 2);
-            sb.Append(", ");
-
-            sb.Append("UIManager.Type." + PanelType.ToString());
-            sb.Append(", ");
-
-            sb.AppendInt((int)PanelPreLoadType);
-            sb.Append(", ");
-
-            if (PanelCloseMode == CloseMode.DelayDestroy)
-            {
-                sb.Append("UIManager.CloseStrategy.DelayDestroy");
-                sb.Append(", ");
-
-                sb.Append(UnLoadTime.ToString("0.00"));
-            }
-            else
-            {
-                sb.Append("UIManager.CloseStrategy." + PanelCloseMode.ToString());
-            }
-        }
-
-        if (!string.IsNullOrEmpty(m_PrefabFolder))
-        {
-            if (PanelCloseMode == CloseMode.DelayDestroy)
-            {
-                sb.Append(", ");
-                sb.Append(string.Format("\"{0}\"", m_PrefabFolder));
-            }
-            else
-            {
-                sb.Append(", 0, ");
-                sb.Append(string.Format("\"{0}\"", m_PrefabFolder));
-            }
-        }
-
-        return sb.ToString();
-    }
-
     private const string DefaultCSharpScriptFolder = "Assets/Scripts/UI/";
     private const string DefaultLuaScriptFolder = "Assets/Lua/UI/";
     private const string DefaultPrefabFolder = "Assets/ArtResources/UI/Prefabs/";
