@@ -14,15 +14,16 @@ namespace FrameWork.UI
         public GameObject gameObject { get; private set; }
         public Transform transform { get; private set; }
         public string ResPath { get; private set; }
+        public BasePanelCtrl PanelCtrl { get; private set; }
         protected UIRefRoot UIRefRoot { get; private set; }
-        public VoidParamT<VoidNotPar> Open { get; private set; }
-        public void Init(GameObject root,string resPath, VoidParamT<VoidNotPar> open)
+
+        public void Init(GameObject root, BasePanelCtrl panelCtrl,string resPath)
         {
             gameObject = root;
             transform = root.transform;
             UIRefRoot = root.GetComponent<UIRefRoot>();
             ResPath = resPath;
-            Open = open;
+            PanelCtrl = panelCtrl;
 
             if (UIRefRoot == null)
             {

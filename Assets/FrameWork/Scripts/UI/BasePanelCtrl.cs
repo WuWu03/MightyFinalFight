@@ -8,10 +8,9 @@ using UnityEngine.UI;
 
 namespace FrameWork.UI
 {
-    public abstract class BasePanelCtrl<T,P> : Singleton<P> where T : BasePanel, new()
-        where P : BasePanelCtrl<T, P>, new()
+    public abstract class BasePanelCtrl
     {
-        public T Panel { get; private set; }
+        public BasePanel Panel { get; private set; }
         
         private enum ResState
         {
@@ -20,11 +19,11 @@ namespace FrameWork.UI
             LOADING = 2,
         }
 
-        public void Open(VoidNotPar callback = null)
+        public void Open(VoidNotPar callback = null,object[] param = null)
         {
             if (!m_IsInit)
             {
-                Init();
+                Init(param);
             }
 
             if (callback != null && !m_ListOpenCallback.Contains(callback))
@@ -44,6 +43,10 @@ namespace FrameWork.UI
             }
         }
 
+        public void Update()
+        {
+            OnUpdate();
+        }
         public void Close(VoidNotPar callback)
         {
             if (!m_IsInit)
@@ -59,7 +62,7 @@ namespace FrameWork.UI
             ShowPanel(false);
         }
 
-        private void Init()
+        private void Init(object[] param)
         {
             if (Panel != null)
             {
@@ -71,13 +74,13 @@ namespace FrameWork.UI
             m_ListCloseCallback = new List<VoidNotPar>();
             m_ResState = ResState.UNLOAD;
             m_IsInit = true;
-            Panel = new T();
-            OnInit();
+            Panel = GetPanel();
+            OnInit(param);
         }
 
         private void LoadViewCallback(GameObject go, string resPath)
         {
-            Panel.Init(go, resPath,Open);
+            Panel.Init(go, this, resPath);
             ShowPanel(true);
         }
 
@@ -98,7 +101,6 @@ namespace FrameWork.UI
                 ResMgr.Ins.UnloadAssetBundle(Panel.ResPath, true);
                 Panel = null;
                 m_IsInit = false;
-                m_Instance = null;
             }
 
             m_ResState = ResState.UNLOAD;
@@ -116,42 +118,35 @@ namespace FrameWork.UI
 
             if (m_IsShow)
             {
+                for (int i = 0; i < m_ListOpenCallback.Count; i++)
+                {
+                    m_ListOpenCallback[i]?.Invoke();
+                }
+                m_ListOpenCallback.Clear();
                 PlayOpenAnim();
+                OnOpen();
             }
             else
             {
+                for (int i = 0; i < m_ListCloseCallback.Count; i++)
+                {
+                    m_ListCloseCallback[i]?.Invoke();
+                }
+                m_ListCloseCallback.Clear();
                 PlayCloseAnim();
+                OnClose();
+                Destroy();
             }
         }
 
-        protected virtual void PlayOpenAnim()
-        {
-            for (int i = 0; i < m_ListOpenCallback.Count; i++)
-            {
-                m_ListOpenCallback[i]?.Invoke();
-            }
-            m_ListOpenCallback.Clear();
-            OnOpen();
-            //UIMgr.Ins.AddPanel(Panel);
-        }
-
-        protected virtual void PlayCloseAnim()
-        {
-            for (int i = 0; i < m_ListCloseCallback.Count; i++)
-            {
-                m_ListCloseCallback[i]?.Invoke();
-            }
-            m_ListCloseCallback.Clear();
-            OnClose();
-            Destroy();
-           // UIMgr.Ins.RemovePanel(Panel);
-        }
-
-        protected abstract void OnInit();
+        protected virtual void PlayOpenAnim(){ }
+        protected virtual void PlayCloseAnim() { }
+        protected abstract void OnInit(object[] param);
         protected abstract void OnOpen();
         protected abstract void OnUpdate();
         protected abstract void OnClose();
         protected abstract void OnDestroy();
+        protected abstract BasePanel GetPanel();
 
         private bool m_IsShow = false;
         private bool m_IsInit = false;

@@ -44,13 +44,12 @@ namespace FrameWork.Resources
             //StartCoroutine(OnTimeRelease());
         }
 
-        float deltaTime;
+        float m_UnLoadTime;
         private void Update()
         {
-            deltaTime += Time.deltaTime;
-            if (deltaTime >= UNLOAD_TIME)
+            if (Time.time - m_UnLoadTime >= UNLOAD_TIME)
             {
-                deltaTime = 0;
+                m_UnLoadTime = Time.time;
                 UnityEngine.Resources.UnloadUnusedAssets();
                 GC.Collect();
             }

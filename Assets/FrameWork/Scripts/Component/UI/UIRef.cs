@@ -44,6 +44,16 @@ public class UIRef : MonoBehaviour
     }
 
     /// <summary>
+    /// 列表格子
+    /// </summary>
+    [SerializeField] private bool m_IsLayoutItem;
+    public bool IsLayoutItem
+    {
+        get { return m_IsLayoutItem; }
+        set { m_IsLayoutItem = value; }
+    }
+
+    /// <summary>
     /// 输出到剪切板
     /// </summary>
     [SerializeField] private bool m_IsCopyRefStr;

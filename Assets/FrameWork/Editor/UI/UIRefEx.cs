@@ -32,19 +32,21 @@ public static class UIRefEx
     public static string GetName(this UIRef uiRef)
     {
         string str = string.Empty;
-        if (string.IsNullOrEmpty(uiRef.ComponentName) || uiRef.ComponentName == typeof(Transform).Name)
+        if (!uiRef.IsLayoutContent())
         {
-            str = "Trans";
+            if (string.IsNullOrEmpty(uiRef.ComponentName) || uiRef.ComponentName == typeof(Transform).Name)
+            {
+                str = "Trans";
+            }
+            else if (uiRef.ComponentName == typeof(RectTransform).Name)
+            {
+                str = "Rect";
+            }
+            else if (uiRef.ComponentName == typeof(GameObject).Name)
+            {
+                str = "GO";
+            }
         }
-        else if (uiRef.ComponentName == typeof(RectTransform).Name)
-        {
-            str = "Rect";
-        }
-        else if (uiRef.ComponentName == typeof(GameObject).Name)
-        {
-            str = "GO";
-        }
-
         string text;
         if (uiRef.UseObjName) text = uiRef.gameObject.name;
         else text = uiRef.Name;
@@ -81,5 +83,11 @@ public static class UIRefEx
             }
         }
         uiRef.gameObject.name = UIRefEditor.GetUniqueName(name.Trim(), hashSet).Replace("(", "_").Replace(")", "_");
+    }
+
+    public static bool IsLayoutContent(this UIRef uiRef)
+    {
+        return uiRef.ComponentName.Contains("LayoutGroup") ||
+               uiRef.GetComponent<UnityEngine.UI.LayoutGroup>() != null;
     }
 }

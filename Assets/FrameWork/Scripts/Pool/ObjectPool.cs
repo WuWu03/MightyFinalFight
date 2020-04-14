@@ -7,7 +7,7 @@ using UnityEngine;
 namespace FrameWork.Pool
 {
     public class ObjectPool : BaseMgr<ObjectPool>
-    {
+    {    
         private void Awake()
         {
             m_PoolRoot = new GameObject("PoolManager").transform;
@@ -81,7 +81,8 @@ namespace FrameWork.Pool
 
         public override void ShutDown()
         {
-            
+            m_ListUsingObj.Clear();
+            m_QueueUnUseObj.Clear();
         }
 
         private Transform m_PoolRoot = null;

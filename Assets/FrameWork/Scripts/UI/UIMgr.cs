@@ -30,7 +30,9 @@ namespace FrameWork.UI
         private void Awake()
         {
             m_DicSprite = new Dictionary<string, Sprite>();
-            m_QueueOpenPanel = new Queue<BasePanel>();
+            m_DicPanelMap = new Dictionary<string, Type>();
+            m_ListOpenPanel = new List<BasePanelCtrl>();
+            m_QueueMutexPanel = new Queue<BasePanelCtrl>();
             m_UIRoot = new GameObject("UIRoot");
             m_UICanvas = new GameObject("UICanvas", typeof(GraphicRaycaster)).GetOrAddComponent<Canvas>();
             m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
@@ -84,36 +86,34 @@ namespace FrameWork.UI
             GameObject.DontDestroyOnLoad(m_UIRoot);
         }
 
-        public void AddPanel<T,P>(BasePanel panel)
+        public void Open<T>(VoidNotPar callback = null,params object[] param) where T:BasePanel,new()
         {
-            if(m_QueueOpenPanel.Contains(panel))
-            {
-                return;
-            }
-
-            for (int i = 0; i < m_MutexLayers.Length; i++)
-            {
-                if (panel.PanelLayer == m_MutexLayers[i])
-                {
-                    m_QueueOpenPanel.Enqueue(panel);
-                    break;
-                } 
-            }
+            InnerOpen(typeof(T).Name,callback, param);
         }
 
-        public void RemovePanel(BasePanel panel)
+        public void Open(string panelName,VoidNotPar callback = null, params object[] param)
         {
-            if (!m_QueueOpenPanel.Contains(panel))
-            {
-                return;
-            }
+            InnerOpen(panelName, callback, param);
+        }
 
-            m_QueueOpenPanel.Dequeue();
-            
-            if(m_QueueOpenPanel.Count >0)
-            {
-                m_QueueOpenPanel.Peek().Open?.Invoke(null);
-            }
+        public BasePanelCtrl GetPanel<T>()
+        {
+            return InnerGet(typeof(T).Name);
+        }
+
+        public BasePanelCtrl GetPanel(string panelName)
+        {
+            return InnerGet(panelName);
+        }
+
+        public void Close<T>(VoidNotPar callback = null)
+        {
+            InnerClose(typeof(T).Name, callback);
+        }
+
+        public void Close(string panelName,VoidNotPar callback = null)
+        {
+            InnerClose(name, callback);
         }
 
         public Transform GetUILayer(Layer layer)
@@ -121,46 +121,116 @@ namespace FrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-        public void SetIconSprite(string path, Image renderer)
+        public void AddPanelMap<T>(string panelName) where T : BasePanelCtrl
         {
-            Sprite sprite = null;
+            m_DicPanelMap.Add(panelName, typeof(T));
+        }
 
-            if (m_DicSprite.TryGetValue(path, out sprite))
+        public void AddPanelMap(string panelName,Type type)
+        {
+            if (typeof(BasePanelCtrl) == type)
+                m_DicPanelMap.Add(panelName, type);
+        }
+
+        private void InnerOpen(string panelName, VoidNotPar callback, object[] param)
+        {
+            Type type = null;
+            
+            if (!m_DicPanelMap.TryGetValue(panelName, out type))
             {
-                renderer.sprite = sprite;
+                Debug.LogError("Panel is invalid!");
                 return;
             }
 
-            Action<UnityEngine.Object> action = delegate (UnityEngine.Object obj)
+            BasePanelCtrl ctrl = InnerGet(panelName);
+
+            if (ctrl == null)
             {
-                renderer.sprite = obj as Sprite;
+                ctrl = Activator.CreateInstance(type) as BasePanelCtrl;
+                m_ListOpenPanel.Add(ctrl);
+            }
 
-                if (!m_DicSprite.ContainsKey(path))
+            ctrl.Open(callback, param);
+           
+            if (IsMutex(ctrl.Panel.PanelLayer))
+            {
+                if(m_QueueMutexPanel.Count > 0)
                 {
-                    m_DicSprite.Add(path, renderer.sprite);
+                    InnerClose(m_QueueMutexPanel.Peek().Panel.PanelName,null);
                 }
-            };
+                m_QueueMutexPanel.Enqueue(ctrl);
+            }
+        }
 
-            string loadPath = string.Format("{0}/{1}", ResDefine.ICON_PATH, path);
-            ResMgr.Ins.LoadAsset(loadPath, action, true, typeof(Sprite));
+        private void InnerClose(string panelName,VoidNotPar callback)
+        {
+            BasePanelCtrl ctrl = InnerGet(panelName);
+
+            if (ctrl == null) return;
+            
+            if (m_QueueMutexPanel.Count > 0 && m_QueueMutexPanel.Contains(ctrl) && IsMutex(ctrl.Panel.PanelLayer))
+            {
+                if (m_QueueMutexPanel.Peek().Panel.PanelLayer != Layer.MainPanel)
+                {
+                    m_QueueMutexPanel.Dequeue();
+                }
+                m_QueueMutexPanel.Peek().Open();
+            }
+
+            ctrl.Close(callback);
+            m_ListOpenPanel.Remove(ctrl);
+        }
+
+        private BasePanelCtrl InnerGet(string panelName)
+        {
+            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            {
+                if (m_ListOpenPanel[i].Panel.PanelName.Equals(panelName))
+                {
+                    return m_ListOpenPanel[i];
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsMutex(Layer layer)
+        {
+            for (int i = 0; i < m_MutexLayers.Length; i++)
+            {
+                if (layer == m_MutexLayers[i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void Update()
         {
-
+            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            {
+                m_ListOpenPanel[i].Update();
+            }
         }
 
         public override void ShutDown()
         {
-            
+            m_DicPanelMap.Clear();
+            m_QueueMutexPanel.Clear();
+            m_ListOpenPanel.Clear();
         }
 
         private Layer[] m_MutexLayers = new Layer[]
         {
+            Layer.MainPanel,
             Layer.FirstLevel
         };
 
-        private Queue<BasePanel> m_QueueOpenPanel = null;
+        private Dictionary<string, Type> m_DicPanelMap = null;
+        private Queue<BasePanelCtrl> m_QueueMutexPanel = null;
+        private List<BasePanelCtrl> m_ListOpenPanel = null;
         private RectTransform[] m_UILayerTransform = null;
         private Dictionary<string, Sprite> m_DicSprite = null;
         private GameObject m_UIRoot = null;

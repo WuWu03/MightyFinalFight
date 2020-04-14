@@ -78,6 +78,13 @@ public class UIRefEditor : Editor
             m_UIRef.Desc = desc;
         }
 
+        SerializedProperty isLayoutItem = FrameWorkEditorMgr.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
+        if(m_UIRef.IsLayoutItem != isLayoutItem.boolValue)
+        {
+            EditorUtility.SetDirty(m_UIRef);
+            m_UIRef.IsLayoutItem = isLayoutItem.boolValue;
+        }
+
         SerializedProperty isCopyRefStr = FrameWorkEditorMgr.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
         if(m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
 using FrameWork.Camera;
+using FrameWork.UI;
 
 namespace Runtime
 {
@@ -12,6 +13,8 @@ namespace Runtime
         {
             ObjectMsgCenter.Init();
             StaticConfig.InitConfig();
+
+            UIMgr.Ins.AddPanelMap<RoleSelectPanelCtrl>("RoleSelectPanel");
         }
 
         protected override void OnStartGame()
@@ -19,7 +22,7 @@ namespace Runtime
             //PlayerMgr.Ins.InitPlayer (1001);
             //CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
             //StageMgr.Ins.Enter(1001);
-            RoleSelectPanelCtrl.Ins.Open();
+            UIMgr.Ins.Open<RoleSelectPanel>();
         }
     }
 }

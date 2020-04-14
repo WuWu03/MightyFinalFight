@@ -1,71 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FrameWork.UI
 {
-    public abstract class LayoutViewItem<T>
+    public abstract class LayoutItem
     {
         public int Index { get; set; }
-        public virtual MyButton SelectButton { get; }
-        public GameObject gameObject { get; set; }
-        public Transform transform { get; set; }
-
-        protected T Panel { get; private set; }
-        public virtual void CreateHandle(T panel)
+        public virtual MyButton SelectButton { get; protected set; }
+        public GameObject gameObject { get; protected set; }
+        public Transform transform { get; protected set; }
+        public RectTransform rectTransform { get; protected set; }
+        public void Create(GameObject go)
         {
-            Panel = panel;
+            gameObject = go;
+            transform = go.transform;
+            rectTransform = go.GetComponent<RectTransform>();
+            OnCreate(go);
         }
-        public virtual void SelectHandle(bool isSelect) { }
-        public abstract void SetData(int index);
+
+        protected abstract void OnCreate(GameObject go);
     }
 
-    public class LayoutGroupView<T, P> where T : LayoutViewItem<P>, new()
-                                   where P : BasePanel, new()
+    public class LayoutGroupView<T> where T : LayoutItem, new()
     {
-        public GameObject Scroll
+        public Action<T> OnItemUpdate;
+        public Action<T,bool> OnItemSelect;
+        
+        public void Init(GameObject parent,GameObject item, int maxCount = 1, ScrollRect scroll = null)
         {
-            get; private set;
-        }
-
-        public ScrollRect ScrollRect
-        {
-            get; private set;
-        }
-
-        private P Panel
-        {
-            get; set;
-        }
-
-        public void Init(P panel, GameObject _scroll, int maxCount = 1, bool isScroll = false)
-        {
-            Scroll = _scroll;
+            m_Parent = parent;
             m_MaxCount = maxCount;
-            ScrollRect = _scroll.GetComponent<ScrollRect>();
-            Panel = panel;
+            m_Item = item;
+            m_ItemParent = parent;
+            m_ScrollRect = scroll;
             m_ListItem = new List<T>();
-
-            if (isScroll)
-            {
-                m_Item = _scroll.transform.Find("ViewPort/Item").gameObject;
-                m_ItemParent = _scroll.transform.Find("ViewPort/Content").gameObject;
-
-                if (ScrollRect == null)
-                {
-                    Debug.LogError("沒有挂载ScrollRect");
-                    return;
-                }
-            }
-            else
-            {
-                m_Item = _scroll.transform.Find("Item").gameObject;
-                m_ItemParent = _scroll;
-            }
 
             for (int i = 0; i < maxCount; i++)
             {
-                GetItem(m_ItemParent.transform, m_Item, i);
+                GetItem(i);
             }
         }
 
@@ -86,16 +60,16 @@ namespace FrameWork.UI
 
                 for (int i = 0; i < diff; i++)
                 {
-                    GetItem(m_ItemParent.transform, m_Item, m_ListItem.Count);
+                    GetItem(m_ListItem.Count);
                 }
 
                 m_MaxCount += diff;
             }
 
-            for (int i = 0; i < m_MaxCount; i++)
+            for (int i = 0; i < count; i++)
             {
                 m_ListItem[i].gameObject.SetActive(true);
-                m_ListItem[i].SetData(i);
+                OnItemUpdate?.Invoke(m_ListItem[i]);
             }
         }
 
@@ -103,29 +77,36 @@ namespace FrameWork.UI
         {
             for (int i = 0; i < m_ListItem.Count; i++)
             {
-                m_ListItem[i].SelectHandle(false);
+                OnItemSelect?.Invoke(m_ListItem[i], false);
             }
 
             if (index >= 0 && index < m_ListItem.Count && m_ListItem[index] != null)
             {
-                m_ListItem[index].SelectHandle(true);
+                OnItemSelect?.Invoke(m_ListItem[index], true);
             }
         }
-
-        private void GetItem(Transform parent, GameObject obj, int index)
+        
+        public T GetItemByIndex(int index)
         {
-            GameObject item = GameObject.Instantiate(obj);
-            item.GetOrAddComponent<ScrollRectDrag>().DragScroll = ScrollRect;
-            item.transform.SetParent(parent, false);
+            if (m_ListItem == null || m_ListItem.Count < 1) return null;
+            if (index >= m_ListItem.Count || index < 1) return null;
+
+            return m_ListItem[index];
+        }
+            
+        private void GetItem(int index)
+        {
+            GameObject item = GameObject.Instantiate(m_Item);
+            item.GetOrAddComponent<ScrollRectDrag>().DragScroll = m_ScrollRect;
+            item.transform.SetParent(m_ItemParent.transform, false);
             item.transform.localPosition = Vector3.zero;
             item.transform.localScale = Vector3.one;
             item.SetActive(false);
 
             T script = new T();
-            script.gameObject = item;
-            script.transform = item.transform;
             script.Index = index;
-            script.CreateHandle(Panel);
+            script.Create(item);
+            OnItemUpdate?.Invoke(script);
 
             if (script.SelectButton != null)
             {
@@ -134,9 +115,11 @@ namespace FrameWork.UI
             m_ListItem.Add(script);
         }
 
-        public List<T> m_ListItem = null;
+        private List<T> m_ListItem = null;
         private int m_MaxCount = 1;
+        private GameObject m_Parent;
         private GameObject m_ItemParent = null;
         private GameObject m_Item = null;
+        private ScrollRect m_ScrollRect;
     }
 }

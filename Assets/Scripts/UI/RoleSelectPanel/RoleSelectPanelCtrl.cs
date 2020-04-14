@@ -7,64 +7,59 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FrameWork.UI;
-public class RoleSelectPanelCtrl : BasePanelCtrl<RoleSelectPanel,RoleSelectPanelCtrl>
+using System;
+
+public class RoleSelectPanelCtrl : BasePanelCtrl
 {
-	protected override void OnInit()
+	private RoleSelectPanel panel = null;
+	protected override void OnInit(object[] param)
 	{
-		m_RoleListView = new LayoutGroupView<RoleSelectItem, RoleSelectPanel>();
+		panel = Panel as RoleSelectPanel;
 	}
 
 	protected override void OnOpen()
 	{
-		Panel.TxtRoleName.text = "sdfsdf111";
-		Panel.ImgSelectGO.SetActive(false);
+		panel.ImgSelectRect.gameObject.SetActive(true);
+		panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
+		panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
+		panel.RoleContentGroupView.Init(panel.RoleContent, panel.ItemGO, 3);
+		panel.RoleContentGroupView.Update(1);
+		panel.RoleContentGroupView.SelectItem(1);
 	}
 
 	protected override void OnUpdate()
 	{
+
 	}
 
 	protected override void OnClose()
 	{
+
 	}
 
 	protected override void OnDestroy()
 	{
 	}
 
-	class RoleSelectItem : LayoutViewItem<RoleSelectPanel>
+	protected override BasePanel GetPanel()
 	{
-		public override void CreateHandle(RoleSelectPanel panel)
-		{
-			base.CreateHandle(panel);
-			m_BtnRoleIcon = transform.Find("_btnRoleIcon").GetComponent<MyButton>();
-			m_TxTName = transform.Find("_txtName").GetComponent<Text>();
-			m_TxTDesc = transform.Find("_txtDesc").GetComponent<Text>();
-			//m_BtnRoleIcon.onClick.AddListener(onClick);
-		}
-
-		public override void SetData(int index)
-		{
-			//RoleData roleData = DataHelper.RoleData[0];
-			//UIMgr.Ins.SetIconSprite(roleData.Icon, m_BtnRoleIcon.GetComponent<Image>());
-			//m_TxTName.text = roleData.Name;
-			//m_TxTDesc.text = roleData.Desc;
-		}
-
-		public override void SelectHandle(bool isSelect)
-		{
-			if (isSelect)
-			{
-				Vector3 selectPos = m_BtnRoleIcon.transform.position;
-				//Panel.ImgSelect.transform.position = selectPos;
-				m_BtnRoleIcon.Select();
-			}
-		}
-
-		private MyButton m_BtnRoleIcon = null;
-		private Text m_TxTName = null;
-		private Text m_TxTDesc = null;
+		return new RoleSelectPanel();
 	}
 
-	private LayoutGroupView<RoleSelectItem, RoleSelectPanel> m_RoleListView = null;
+	private void OnItemUpdate(RoleSelectPanel.RoleContentItem item)
+	{
+		Runtime.Config.HeroData data = Runtime.StaticConfig.HeroConfig.GetData(1001);
+		item.TxtDesc.text = data.Desc;
+		item.TxtName.text = data.Name;
+		UITools.SetIconSprite("Character/Cody", item.BtnRoleIcon.image);
+	}
+
+	private void OnItemSelect(RoleSelectPanel.RoleContentItem item, bool isSelect)
+	{
+		if (isSelect)
+		{
+			panel.ImgSelectRect.SetParent(item.transform, false);
+			panel.ImgSelectRect.localPosition = item.transform.localPosition;
+		}
+	}
 }

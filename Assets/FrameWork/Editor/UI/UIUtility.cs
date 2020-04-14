@@ -276,6 +276,7 @@ public class UIUtility
                 return false;
             }
 
+            if (component.IsLayoutItem) continue;
             if (string.IsNullOrEmpty(component.ComponentName) || component.ComponentName == typeof(Transform).Name)
             {
                 listComponent.Add(component.transform);
@@ -361,7 +362,7 @@ public class UIUtility
 
         int year = DateTime.Now.Year;
         int month = DateTime.Now.Month;
-        int day = DateTime.Now.Month;
+        int day = DateTime.Now.Day;
         int hour = DateTime.Now.Hour;
         int minute = DateTime.Now.Minute;
 
@@ -384,22 +385,62 @@ public class UIUtility
         sb.Append("\tpublic override UIMgr.Layer PanelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\n");
         sb.Append("\tpublic override UIMgr.CloseMode PanelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\n");
 
+        List<UIRef> layoutRefList = new List<UIRef>();
+        List<UIRef> normalRefList = new List<UIRef>();
+
         for (int i = 0; i < uiRefs.Length; i++)
         {
-            sb.Append("\t//").Append(GetComment(uiRefs[i]));
+            if (uiRefs[i].IsLayoutContent())
+            {
+                layoutRefList.Add(uiRefs[i]);
+                normalRefList.Add(uiRefs[i]);
+            }
+            else if (!uiRefs[i].IsLayoutItem)
+            {
+                normalRefList.Add(uiRefs[i]);
+            }
+        }
+
+        for (int i = 0; i < normalRefList.Count; i++)
+        {
+            UIRef uiRef = normalRefList[i];
+            sb.Append("\t//").Append(GetComment(uiRef));
             sb.AppendLine();
-            sb.Append("\tpublic " + string.Format("{0} {1}", uiRefs[i].ComponentName, uiRefs[i].GetName()) + " { get; private set;}\n");
+            sb.AppendFormat("\tpublic {0} {1}", uiRef.ComponentName, uiRef.GetName());
+            sb.Append(" { get; private set;}\n");
+        }
+
+        for (int i = 0; i < layoutRefList.Count; i++)
+        {
+            string itemName = layoutRefList[i].GetName() + "Item";
+            string itemVarableName = layoutRefList[i].GetName() + "GroupView";
+            sb.AppendFormat("\tpublic LayoutGroupView<{0}> {1}",itemName, itemVarableName);
+            sb.Append(" { get; private set;}\n");
         }
 
         sb.AppendLine("\tprotected override void OnInit()");
         sb.AppendLine("\t{");
 
-        for (int i = 0; i < uiRefs.Length; i++)
+        for (int i = 0; i < normalRefList.Count; i++)
         {
-            sb.AppendFormat("\t\t{0} = UIRefRoot.Objects[{1}] as {2};\n", uiRefs[i].GetName(), i, uiRefs[i].ComponentName);
+            UIRef uiRef = normalRefList[i];
+            sb.AppendFormat("\t\t{0} = UIRefRoot.Objects[{1}] as {2};\n", uiRef.GetName(), i, uiRef.ComponentName);
+        }
+
+        for (int i = 0; i < layoutRefList.Count; i++)
+        {
+            string itemName = layoutRefList[i].GetName() + "Item";
+            string itemVarableName = layoutRefList[i].GetName() + "GroupView";
+            sb.AppendFormat("\t\t{0} = new LayoutGroupView<{1}>();\n", itemVarableName, itemName);
         }
 
         sb.AppendLine("\t}");
+
+        for (int i = 0; i < layoutRefList.Count; i++)
+        {
+            GenCSharpLayout(layoutRefList[i], sb);
+        }
+
         sb.Append("}");
         IOUtil.VerifyDirectory(setting.ScriptFolder);
         IOUtil.CreateTextFile(setting.PanelPath, sb.ToString());
@@ -426,6 +467,34 @@ public class UIUtility
         sb.Append("}");
         IOUtil.VerifyDirectory(setting.ScriptFolder);
         IOUtil.CreateTextFile(setting.PanelCtrlPath, sb.ToString());
+    }
+
+    private static void GenCSharpLayout(UIRef uiRef,StringBuilder sb)
+    {
+        sb.AppendLine();
+        UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
+        sb.AppendFormat("\tpublic class {0} : LayoutItem\n", uiRef.GetName() + "Item");
+        sb.AppendLine("\t{");
+
+        for (int i = 0; i < itemRefs.Length; i++)
+        {
+            if (!itemRefs[i].IsLayoutItem) continue;
+            sb.AppendFormat("\t\tpublic {0} {1} = null;\n", itemRefs[i].ComponentName, itemRefs[i].GetName());
+        }
+
+        sb.AppendLine("\t\tprotected override void OnCreate(GameObject go)");
+        sb.AppendLine("\t\t{");
+
+        for (int i = 0; i < itemRefs.Length; i++)
+        {
+            if (!itemRefs[i].IsLayoutItem) continue;
+            string path = FrameWorkEditorMgr.GetHierarchy(itemRefs[i].gameObject);
+            path = path.Substring(path.LastIndexOf("Item") + "Item".Length + 1);
+            sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n", itemRefs[i].GetName(), path, itemRefs[i].ComponentName);
+        }
+
+        sb.AppendLine("\t\t}");
+        sb.AppendLine("\t}");
     }
 
     private static bool ExportLua(UIRef[] uiRefs)
