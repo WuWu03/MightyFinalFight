@@ -1,18 +1,14 @@
-﻿using Runtime.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Runtime
+public class SkillBulletSelector : ISkillSelector
 {
-    public class SkillBulletSelector : ISkillSelector
+    public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
     {
-        public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
-        {
-            return null;
-        }
+        return null;
     }
 }

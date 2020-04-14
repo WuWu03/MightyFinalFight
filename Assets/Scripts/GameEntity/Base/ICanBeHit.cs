@@ -1,11 +1,8 @@
-﻿namespace Runtime
+﻿public interface ICanBeHit
 {
-    public interface ICanBeHit
+    bool CanBeHit
     {
-        bool CanBeHit
-        {
-            get;
-        }
-        void OnHurtMsg(HurtData data);
+        get;
     }
+    void OnHurtMsg(HurtData data);
 }

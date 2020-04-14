@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FrameWork.UI;
 using System;
+using FrameWork.Camera;
 
 public class RoleSelectPanelCtrl : BasePanelCtrl
 {
@@ -24,12 +25,18 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
 		panel.RoleContentGroupView.Init(panel.RoleContent, panel.ItemGO, 3);
 		panel.RoleContentGroupView.Update(1);
-		panel.RoleContentGroupView.SelectItem(1);
+		panel.RoleContentGroupView.SelectItem(0);
 	}
 
 	protected override void OnUpdate()
 	{
-
+		if (Input.GetButtonDown("A") || Input.GetButton("X"))
+		{
+			InnerClose();
+			PlayerMgr.Ins.InitPlayer(1001);
+			CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
+			StageMgr.Ins.Enter(1001);
+		}
 	}
 
 	protected override void OnClose()
@@ -48,7 +55,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 
 	private void OnItemUpdate(RoleSelectPanel.RoleContentItem item)
 	{
-		Runtime.Config.HeroData data = Runtime.StaticConfig.HeroConfig.GetData(1001);
+		HeroData data = StaticConfig.HeroConfig.GetData(1001);
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
 		UITools.SetIconSprite("Character/Cody", item.BtnRoleIcon.image);
@@ -58,8 +65,8 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	{
 		if (isSelect)
 		{
-			panel.ImgSelectRect.SetParent(item.transform, false);
-			panel.ImgSelectRect.localPosition = item.transform.localPosition;
+			panel.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
+			panel.ImgSelectRect.localPosition = Vector3.zero;
 		}
 	}
 }

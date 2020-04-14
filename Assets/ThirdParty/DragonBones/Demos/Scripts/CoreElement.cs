@@ -411,7 +411,7 @@ public class Mecha
         firePoint.z = -0.2f;
 
         var bulletArmatureComonponnet = UnityFactory.factory.BuildArmatureComponent("bullet_01");
-        var bulletComonponnet = bulletArmatureComonponnet.gameObject.AddComponent<Bullet>();
+        var bulletComonponnet = bulletArmatureComonponnet.gameObject.AddComponent<DemoBullet>();
         var radian = _faceDir < 0 ? Mathf.PI - this._aimRadian : this._aimRadian;
         bulletArmatureComonponnet.animation.timeScale = _armatureComponent.animation.timeScale;
         bulletComonponnet.transform.position = firePoint;
@@ -483,7 +483,7 @@ public class Mecha
 }
 
 [RequireComponent(typeof(UnityArmatureComponent))]
-public class Bullet : MonoBehaviour
+public class DemoBullet : MonoBehaviour
 {
     private UnityArmatureComponent _armatureComponent = null;
     private UnityArmatureComponent _effectComponent = null;

@@ -1,13 +1,10 @@
-﻿using Runtime.Config;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runtime
+
+public interface ISkillEffect
 {
-    public interface ISkillEffect
-    {
-        bool IsCompleted { get; }
-        void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector);
-        void Reset();
-    }
+    bool IsCompleted { get; }
+    void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector);
+    void Reset();
 }

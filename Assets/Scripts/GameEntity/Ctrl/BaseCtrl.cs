@@ -1,32 +1,29 @@
 ﻿using FrameWork.GameEntity;
 using UnityEngine;
 
-namespace Runtime
+public abstract class BaseCtrl : MonoBehaviour
 {
-    public abstract class BaseCtrl : MonoBehaviour
+    public BaseObject Owner
     {
-        public BaseObject Owner
+        get
         {
-            get
-            {
-                return m_Owner;
-            }
+            return m_Owner;
         }
-        protected virtual void Awake()
-        {
-            m_Owner = GetComponent<BaseObject>();
-        }
-
-        protected virtual void Update()
-        {
-
-        }
-
-        public virtual void Release()
-        {
-            m_Owner = null;
-        }
-
-        protected BaseObject m_Owner = null;
     }
+    protected virtual void Awake()
+    {
+        m_Owner = GetComponent<BaseObject>();
+    }
+
+    protected virtual void Update()
+    {
+
+    }
+
+    public virtual void Release()
+    {
+        m_Owner = null;
+    }
+
+    protected BaseObject m_Owner = null;
 }

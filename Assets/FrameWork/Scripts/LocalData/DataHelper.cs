@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace FrameWork.LocalData
 {
-    public static class DataHelper
+    public class DataHelper
     {
-        public static T[] LoadData<T>(string fileName) where T : AbstractData, new()
+        public static T[] LoadData<T>(string filePath,string fileName) where T : AbstractData, new()
         {
-            string path = string.Format(ResDefine.ConfigDataPath + "/{0}", fileName);
+            string path = string.Format(filePath + "/{0}", fileName);
             T[] t = null;
             using (GameDataTableParser parser = new GameDataTableParser(path))
             {

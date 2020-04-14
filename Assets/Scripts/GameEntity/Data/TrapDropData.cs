@@ -4,15 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Runtime
+public class DropTragData : BaseEventArgs
 {
-    public class DropTragData : BaseEventArgs
+    public Vector2 InitPos;
+    public float AttackValue;//伤害值
+    public override BaseEventArgs Clone()
     {
-        public Vector2 InitPos;
-        public float AttackValue;//伤害值
-        public override BaseEventArgs Clone()
-        {
-            return Activator.CreateInstance<MoveData>();
-        }
+        return Activator.CreateInstance<MoveData>();
     }
 }

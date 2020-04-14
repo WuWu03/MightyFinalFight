@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
-using Runtime.Config;
 public class EditorWindowMgr : MonoBehaviour
 {
     [MenuItem("Tools/CharacterTriggerEditor")]

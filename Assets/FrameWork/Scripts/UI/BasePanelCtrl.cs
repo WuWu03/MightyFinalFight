@@ -47,6 +47,7 @@ namespace FrameWork.UI
         {
             OnUpdate();
         }
+
         public void Close(VoidNotPar callback)
         {
             if (!m_IsInit)
@@ -60,6 +61,11 @@ namespace FrameWork.UI
             }
 
             ShowPanel(false);
+        }
+
+        protected void InnerClose()
+        {
+            UIMgr.Ins.Close(Panel.PanelName);
         }
 
         private void Init(object[] param)
@@ -94,10 +100,10 @@ namespace FrameWork.UI
 
                 if (Panel == null)
                 {
-                    Debug.LogError("Panel is null!");
-                    GameObject.Destroy(Panel.gameObject);
+                    Debug.LogError("Panel is null!");            
                 }
 
+                GameObject.Destroy(Panel.gameObject);
                 ResMgr.Ins.UnloadAssetBundle(Panel.ResPath, true);
                 Panel = null;
                 m_IsInit = false;

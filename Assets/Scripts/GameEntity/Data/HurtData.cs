@@ -2,20 +2,17 @@
 using FrameWork;
 using System;
 
-namespace Runtime
+public class HurtData : BaseEventArgs
 {
-    public class HurtData: BaseEventArgs
-    {
-        public Vector2 AttackForce { get; set; }
-        public float AttackValue { get; set; }
-        public int AttackerID {get;set;}
-        public bool IsSwoon { get; set; }//是否击飞
-        public bool IsCatch { get; set; }//是否被抓住
-        public float AttackerDir { get; set; }
+    public Vector2 AttackForce { get; set; }
+    public float AttackValue { get; set; }
+    public int AttackerID { get; set; }
+    public bool IsSwoon { get; set; }//是否击飞
+    public bool IsCatch { get; set; }//是否被抓住
+    public float AttackerDir { get; set; }
 
-        public override BaseEventArgs Clone()
-        {
-            return Activator.CreateInstance<HurtData>();
-        }
+    public override BaseEventArgs Clone()
+    {
+        return Activator.CreateInstance<HurtData>();
     }
 }

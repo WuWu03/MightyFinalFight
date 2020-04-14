@@ -1,8 +1,5 @@
 ﻿using FrameWork;
 
-namespace Runtime
+public class IdleData : BaseEventArgs
 {
-    public class IdleData : BaseEventArgs
-    {
-    }
 }

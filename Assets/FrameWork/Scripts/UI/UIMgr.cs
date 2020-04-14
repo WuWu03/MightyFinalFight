@@ -29,7 +29,6 @@ namespace FrameWork.UI
 
         private void Awake()
         {
-            m_DicSprite = new Dictionary<string, Sprite>();
             m_DicPanelMap = new Dictionary<string, Type>();
             m_ListOpenPanel = new List<BasePanelCtrl>();
             m_QueueMutexPanel = new Queue<BasePanelCtrl>();
@@ -113,7 +112,7 @@ namespace FrameWork.UI
 
         public void Close(string panelName,VoidNotPar callback = null)
         {
-            InnerClose(name, callback);
+            InnerClose(panelName, callback);
         }
 
         public Transform GetUILayer(Layer layer)
@@ -174,7 +173,9 @@ namespace FrameWork.UI
                 {
                     m_QueueMutexPanel.Dequeue();
                 }
-                m_QueueMutexPanel.Peek().Open();
+
+                if (m_QueueMutexPanel.Count > 0)
+                    m_QueueMutexPanel.Peek().Open();
             }
 
             ctrl.Close(callback);
@@ -232,7 +233,6 @@ namespace FrameWork.UI
         private Queue<BasePanelCtrl> m_QueueMutexPanel = null;
         private List<BasePanelCtrl> m_ListOpenPanel = null;
         private RectTransform[] m_UILayerTransform = null;
-        private Dictionary<string, Sprite> m_DicSprite = null;
         private GameObject m_UIRoot = null;
         private Canvas m_UICanvas = null;
         private EventSystem m_EventSystem = null;
