@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2020-4-14 11:40****************************************/
+/**2020-4-14 20:2****************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -17,7 +17,7 @@ public class RoleSelectPanel : BasePanel
 	public GameObject RoleContent { get; private set;}
 	//RoleContent/Item,GameObject
 	public GameObject ItemGO { get; private set;}
-	//ImgSelect,RectTransform	
+	//ImgSelect,RectTransform
 	public RectTransform ImgSelectRect { get; private set;}
 	public LayoutGroupView<RoleContentItem> RoleContentGroupView { get; private set;}
 	protected override void OnInit()

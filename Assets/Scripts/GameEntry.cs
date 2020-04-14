@@ -14,6 +14,7 @@ public class GameEntry : FrameWorkEntry
         StaticConfig.InitConfig();
 
         UIMgr.Ins.AddPanelMap<RoleSelectPanelCtrl>("RoleSelectPanel");
+        UIMgr.Ins.AddPanelMap<MainPanelCtrl>("MainPanel");
     }
 
     protected override void OnStartGame()

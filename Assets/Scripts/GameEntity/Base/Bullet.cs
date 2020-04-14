@@ -80,9 +80,9 @@ public class Bullet : BaseObject
         }
     }
 
-    protected override void OnResComplete(GameObject go, string resPath)
+    protected override void OnResComplete(GameObject go)
     {
-        base.OnResComplete(go, resPath);
+        base.OnResComplete(go);
         m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
         m_Animator.animation.Play(m_BulletData.Name, 1);
     }

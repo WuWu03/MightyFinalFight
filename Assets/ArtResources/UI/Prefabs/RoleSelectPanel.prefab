@@ -172,7 +172,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: be29cd68cac09584a8359eb7bfb06aa0, type: 3}
   - {fileID: 21300000, guid: a65be806e16edd340a3aab36bca169b7, type: 3}
   IsLoop: 1
-  FrameRate: 24
+  FrameRate: 12
 --- !u!1 &592375871
 GameObject:
   m_ObjectHideFlags: 0

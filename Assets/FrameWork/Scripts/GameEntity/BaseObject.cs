@@ -65,7 +65,7 @@ namespace FrameWork.GameEntity
         {
             get
             {
-                return Mathf.Abs(transform.localPosition.y - m_Pos.y) < 0.03f;
+                return transform.localPosition.y <= m_Pos.y;
             }
         }
 
@@ -85,7 +85,7 @@ namespace FrameWork.GameEntity
 
         public virtual void Release()
         {
-            ResPool.Ins.Put(m_ResPath, m_ResGO);
+            GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
             ObjectPool.Ins.Put(this);
             m_ResPath = null;
         }
@@ -147,7 +147,7 @@ namespace FrameWork.GameEntity
         {
             if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath)) return;
             m_ResPath = resPath;
-            ResPool.Ins.Get(resPath, OnResComplete);
+            GameObjectPool.Ins.Get(resPath, OnResComplete);
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
@@ -176,7 +176,7 @@ namespace FrameWork.GameEntity
 
         }
 
-        protected virtual void OnResComplete(GameObject go,string resPath)
+        protected virtual void OnResComplete(GameObject go)
         {
             m_ResGO = go;
             m_ResGO.transform.SetParent(this.transform, false);

@@ -1,10 +1,26 @@
-﻿using FrameWork.Resources;
+﻿using FrameWork.Pool;
+using FrameWork.Resources;
+using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace FrameWork.Sound
 {
     public class SoundMgr : BaseMgr<SoundMgr>
     {
+        public class AudioGroup
+        {
+            public string Path;
+            public string Name;
+            public bool IsLoop;
+            public float Volum = 1f;
+            public float LerpTime = 0f;
+            public string GetPath()
+            {
+                return string.Format("{0}/{1}", Path, Name);
+            }
+        }
+
         private AudioSource m_Source = null;
         private void Awake()
         {
@@ -12,27 +28,81 @@ namespace FrameWork.Sound
             m_Source = m_Root.GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();
             m_Root.transform.SetParent(transform, false);
+            m_QueueAudioGroup = new Queue<AudioGroup>();
             DontDestroyOnLoad(m_Root);
         }
 
-        public void PlaySound(string name)
+        public void PlaySound(string path,string name,float volume = 1)
         {
-            //string resPath = string.Format("{0}/Sound/{1}", ResDefine.AUDIO_CLIP_PATH, name);
-            //ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
-            //{
-            //    m_Source.PlayOneShot(obj as AudioClip);
-            //}, true, typeof(AudioClip));
+            string resPath = string.Format("{0}/{1}", path, name);
+            AudioClipPool.Ins.Get(resPath, (AudioClip clip) =>
+            {
+                m_Source.PlayOneShot(clip, volume);
+                AudioClipPool.Ins.Put(resPath, clip);
+            });
         }
 
-        public void PlayBGM(string name)
+        public void PlayBGMGroup(AudioGroup[] audioGroups)
         {
-            //string resPath = string.Format("{0}/BGM/{1}", ResDefine.AUDIO_CLIP_PATH, name);
-            //ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
-            //{
-            //    m_Source.clip = obj as AudioClip;
-            //    m_Source.loop = true;
-            //    m_Source.Play();
-            //}, true, typeof(AudioClip));
+            StopCurrent();
+
+            for (int i = 0; i < audioGroups.Length; i++)
+            {
+                m_QueueAudioGroup.Enqueue(audioGroups[i]);
+            }
+        }
+
+        public void PlayBGM(string path, bool isLoop,float volum = 1, float fadeTime = 0)
+        {
+            StopCurrent();
+            m_QueueAudioGroup.Clear();
+            InnerPlayBGM(path, volum, fadeTime, isLoop);
+        }
+
+        private void Update()
+        {
+            if(m_CurrPlayAudio == null && m_QueueAudioGroup.Count > 0)
+            {
+                m_CurrPlayAudio = m_QueueAudioGroup.Dequeue();
+                m_PlayStamp = Time.time;
+                InnerPlayBGM(m_CurrPlayAudio.GetPath(),
+                             m_CurrPlayAudio.Volum,
+                             m_CurrPlayAudio.LerpTime,
+                             m_CurrPlayAudio.IsLoop);
+            }
+
+            if (m_CurrPlayAudio != null && m_Source.clip != null && !m_CurrPlayAudio.IsLoop)
+            {
+                if (Time.time - m_PlayStamp >= m_Source.clip.length)
+                {
+                    StopCurrent();
+                }
+            }
+        }
+
+        private void InnerPlayBGM(string path,float volum,float fadeTime,bool isLoop)
+        {
+            AudioClipPool.Ins.Get(path, (AudioClip clip) =>
+            {
+                m_Source.clip = clip;
+                m_Source.loop = isLoop;
+                m_Source.volume = fadeTime > 0f ? 0f : 1f;
+                m_Source.Play();
+
+                if (fadeTime > 0f)
+                    m_Source.DOFade(volum, fadeTime);
+            });
+        }
+
+        private void StopCurrent()
+        {
+            if(m_CurrPlayAudio != null)
+            {
+                AudioClipPool.Ins.Put(m_CurrPlayAudio.GetPath(), m_Source.clip);
+                m_CurrPlayAudio = null;
+                m_Source.Stop();
+                m_Source.clip = null;
+            }
         }
 
         public override void ShutDown()
@@ -40,6 +110,9 @@ namespace FrameWork.Sound
 
         }
 
+        private float m_PlayStamp = 0f;
+        private AudioGroup m_CurrPlayAudio = null;
+        private Queue<AudioGroup> m_QueueAudioGroup = null;
         private GameObject m_Root = null;
     }
 }

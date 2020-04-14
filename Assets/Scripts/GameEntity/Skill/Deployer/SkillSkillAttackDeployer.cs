@@ -48,7 +48,7 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     private void SoundEvent(string type, DragonBones.EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(eventObject.name);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
 

@@ -3,6 +3,7 @@ using FrameWork.Camera;
 using FrameWork.Pool;
 using FrameWork.Resources;
 using FrameWork.Sound;
+using FrameWork.UI;
 using UnityEngine;
 
 public class StageMgr : MonoSingleton<StageMgr>
@@ -67,8 +68,6 @@ public class StageMgr : MonoSingleton<StageMgr>
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
     }
 
-
-
     public bool IsOutArea(Vector2 pos)
     {
         if (m_CurrStageData.Areas == null || m_CurrStageData.Areas.Length < 1)
@@ -116,7 +115,23 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         PlayerMgr.Ins.Player.SetPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
-        SoundMgr.Ins.PlayBGM("bgm01_Start");
+        SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
+        {
+            new SoundMgr.AudioGroup()
+            {
+                Path = ResDefine.AUDIO_CLIP_PATH +"/BGM",
+                Name = "bgm01_Start",
+                IsLoop = false,
+            },
+            new SoundMgr.AudioGroup()
+            {
+                Path = ResDefine.AUDIO_CLIP_PATH +"/BGM",
+                Name = "bgm01_Loop",
+                IsLoop = true,
+            },
+        });
+
+        UIMgr.Ins.Open<MainPanel>();
     }
 
     private void CreateSceneObject()

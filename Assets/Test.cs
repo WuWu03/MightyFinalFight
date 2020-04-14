@@ -3,17 +3,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using FrameWork.Event;
+using FrameWork.Sound;
+
 public class Test : MonoBehaviour
 {
+    public AudioClip clip;
+    public AudioSource source;
     public Button btn;
     public Animator anim;
     private void Awake()
     {
         EventTriggerListener.Get(btn.gameObject).onClick.AddListener(onClick);
-        EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
+        //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
         
-        EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
-        EventManager.Init();
+        //EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
+        //EventManager.Init();
         
         //AnimationEvent @event = new AnimationEvent();
         //@event.functionName = "Attack";
@@ -36,13 +40,15 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Ins.Subscribe(1,OnSub);
+        //EventManager.Ins.Subscribe(1,OnSub);
     }
     
     private void onClick(GameObject go, PointerEventData eventData)
     {
-        EventManager.Ins.Dispatch(this,new GameEventArgs(){ID = 1});
-        Debug.Log("OnClcik");
+        //EventManager.Ins.Dispatch(this,new GameEventArgs(){ID = 1});
+        //Debug.Log("OnClcik");
+        //SoundMgr.Ins.PlaySound("CodyBullet");
+        //source.PlayOneShot(UnityEngine.Object.Instantiate(clip));
     }
 
     private void onPress(GameObject go, PointerEventData eventData)

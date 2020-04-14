@@ -124,7 +124,7 @@ namespace FrameWork.Camera
         }
 
         private const float m_NormalRate = 1280f / 720f;
-        private const float m_NormalSize = 150f / 2;
+        private const float m_NormalSize = 200f / 2;
 
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;

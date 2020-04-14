@@ -17,6 +17,7 @@ public class HeroRebirth : BaseFsmState
         float rebirthPosX = vision[0].x + m_Owner.Collider.size.x;
         float rebirthPosY = vision[1].y + m_Owner.Collider.size.y;
         m_Owner.transform.localPosition = new Vector3(rebirthPosX, rebirthPosY, rebirthPosY);
+        m_Owner.Rigidbody.gravityScale = 1;
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.PlayAnimation(AnimName.JumpDown);
     }

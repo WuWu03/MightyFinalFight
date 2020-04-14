@@ -124,9 +124,9 @@ public abstract class BaseAvatar : BaseObject
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
-    protected override void OnResComplete(GameObject go, string resPath)
+    protected override void OnResComplete(GameObject go)
     {
-        base.OnResComplete(go, resPath);
+        base.OnResComplete(go);
         m_Animator = m_ResGO.GetComponent<DragonBones.UnityArmatureComponent>();
         m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
     }

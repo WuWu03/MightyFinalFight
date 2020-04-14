@@ -16,7 +16,11 @@ MonoBehaviour:
   - ID: 1001
     Name: Cody
     AssetName: Cody
-    Desc: sdf
+    Desc: 'A TOUGH STREET
+
+      FIGHTER WHO IS
+
+      SKILLED WITH KNI'
     HeadIcon: sdf
     AttackSpeed: 0.8
     MoveSpeed: 0.8

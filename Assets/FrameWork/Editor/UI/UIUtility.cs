@@ -449,7 +449,7 @@ public class UIUtility
 
         sb.Clear();
         sb.AppendLine("/*******************************************************/");
-        sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}****************************************/\n", year, month, day, hour, minute);
+        sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}**************************************/\n", year, month, day, hour, minute);
         sb.AppendLine("/**Create By GQY****************************************/");
         sb.AppendLine("/*******************************************************/");
         sb.AppendLine("using System.Collections;");

@@ -35,7 +35,7 @@ namespace FrameWork.UI
             {
                 m_ResState = ResState.LOADING;
                 string resPath = string.Format("{0}/{1}", ResDefine.UI_PATH, Panel.PanelName);
-                ResPool.Ins.Get(resPath, LoadViewCallback);
+                GameObjectPool.Ins.Get(resPath, LoadViewCallback);
             }
             else
             {
@@ -84,8 +84,9 @@ namespace FrameWork.UI
             OnInit(param);
         }
 
-        private void LoadViewCallback(GameObject go, string resPath)
+        private void LoadViewCallback(GameObject go)
         {
+            string resPath = string.Format("{0}/{1}", ResDefine.UI_PATH, Panel.PanelName);
             Panel.Init(go, this, resPath);
             ShowPanel(true);
         }

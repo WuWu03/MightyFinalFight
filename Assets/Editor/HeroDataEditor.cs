@@ -17,7 +17,6 @@ public class HeroDataEditor : Editor
     {
         base.OnInspectorGUI();
         //serializedObject.Update();
-       
         for (int i = 0; i < m_Text.Datas.Length; i++)
         {
             EditorGUILayout.LabelField("Desc");

@@ -9,66 +9,64 @@ using UnityEngine;
 
 namespace FrameWork.Pool
 {
-    public class ResPool : BaseMgr<ResPool>
+    public abstract class ResPool<T,P> : BaseMgr<P> where T:UnityEngine.Object
+                                                    where P:ResPool<T,P>,new()
     {
         private void Awake()
         {
             m_PoolRoot = new GameObject("ResPool").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
-            m_DicPool = new Dictionary<string, Queue<GameObject>>();
-            m_DicLoadCallback = new Dictionary<string, List<Action<GameObject,string>>>();
+            m_DicPool = new Dictionary<string, Queue<T>>();
+            m_DicLoadCallback = new Dictionary<string, List<Action<T>>>();
         }
 
-        public void Get(string resPath, Action<GameObject,string> call)
+        public virtual void Get(string resPath, Action<T> call)
         {
             if (string.IsNullOrEmpty(resPath) || call == null) return;
-            Queue<GameObject> pool = this.GetOrCreatePool(resPath);
+            Queue<T> pool = this.GetOrCreatePool(resPath);
             if (pool.Count > 0)
             {
-                GameObject go = pool.Dequeue();
-                call(go,resPath);
+                T go = pool.Dequeue();
+                call(go);
             }
             else
             {
-                List<Action<GameObject,string>> loadList = null;
+                List<Action<T>> loadList = null;
                 if (!m_DicLoadCallback.TryGetValue(resPath, out loadList))
                 {
-                    loadList = new List<Action<GameObject,string>>();
+                    loadList = new List<Action<T>>();
                 }
 
                 loadList.Add(call);
                 m_DicLoadCallback[resPath] = loadList;
                 ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
                 {
-                    List<Action<GameObject,string>> loadListCurr = null;
+                    List<Action<T>> loadListCurr = null;
                     if (m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
                     {
                         for (int i = 0; i < loadListCurr.Count; i++)
                         {
-                            GameObject go = GameObject.Instantiate(obj) as GameObject;
-                            loadListCurr[i](go,resPath);
+                            T go = NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
+                            loadListCurr[i](go);
                         }
 
                         m_DicLoadCallback.Remove(resPath);
                     }
-                });
+                }, true, typeof(T));
             }
         }
 
-        public void Put(string resPath, GameObject go)
+        public virtual void Put(string resPath, T go)
         {
             if (string.IsNullOrEmpty(resPath) || go == null) return;
-            Queue<GameObject> pool = GetOrCreatePool(resPath);
-            go.SetActive(false);
-            go.transform.SetParent(m_PoolRoot, false);
-            go.transform.localPosition = Vector3.zero;
+            Queue<T> pool = GetOrCreatePool(resPath);           
             pool.Enqueue(go);
         }
 
         public int GetCount(string resPath)
         {
-            Queue<GameObject> pool = null;
+            Queue<T> pool = null;
             if (m_DicPool.TryGetValue(resPath, out pool))
             {
                 return pool.Count;
@@ -76,17 +74,17 @@ namespace FrameWork.Pool
             return 0;
         }
 
-        public Queue<GameObject> GetPool(string path)
+        public Queue<T> GetPool(string path)
         {
             return this.GetOrCreatePool(path);
         }
 
-        private Queue<GameObject> GetOrCreatePool(string path)
+        private Queue<T> GetOrCreatePool(string path)
         {
-            Queue<GameObject> pool = null;
+            Queue<T> pool = null;
             if (!m_DicPool.TryGetValue(path, out pool))
             {
-                pool = new Queue<GameObject>();
+                pool = new Queue<T>();
                 m_DicPool.Add(path, pool);
             }
 
@@ -105,8 +103,32 @@ namespace FrameWork.Pool
             m_DicLoadCallback.Clear();
         }
 
-        private Transform m_PoolRoot = null;
-        private Dictionary<string, Queue<GameObject>> m_DicPool = null;
-        private Dictionary<string, List<Action<GameObject,string>>> m_DicLoadCallback = null;
+        protected abstract bool NeedInstantiate { get; }
+        protected Transform m_PoolRoot = null;
+        private Dictionary<string, Queue<T>> m_DicPool = null;
+        private Dictionary<string, List<Action<T>>> m_DicLoadCallback = null;
+    }
+
+    public class GameObjectPool : ResPool<GameObject, GameObjectPool> 
+    {
+        protected override bool NeedInstantiate { get { return true; } }
+
+        public override void Put(string resPath, GameObject go)
+        {
+            go.SetActive(false);
+            go.transform.SetParent(m_PoolRoot, false);
+            go.transform.localPosition = Vector3.zero;
+            base.Put(resPath, go);
+        }
+
+    }
+    public class AudioClipPool : ResPool<AudioClip, AudioClipPool> 
+    {
+        protected override bool NeedInstantiate { get { return true; } }
+    }
+
+    public class SpritePool : ResPool<Sprite, SpritePool> 
+    {
+        protected override bool NeedInstantiate { get { return false; } }
     }
 }

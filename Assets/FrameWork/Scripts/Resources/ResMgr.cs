@@ -32,7 +32,7 @@ namespace FrameWork.Resources
         {
             _mResDic = new Dictionary<string, Object>();
 #if UNITY_EDITOR
-            if (RuntimeEnvironment.Instance.loadResFromAssetBundle)
+            if (RuntimeEnvironment.Instance.loadAB)
 #endif
             {
                 string url = ResDefine.AssetBundlePath + "/StreamingAssets";
@@ -90,7 +90,7 @@ namespace FrameWork.Resources
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = RuntimeEnvironment.Instance.loadResFromAssetBundle;
+            bool isLoadAb = RuntimeEnvironment.Instance.loadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
                 ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t);
@@ -218,7 +218,6 @@ namespace FrameWork.Resources
 
             return true;
         }
-
 
         /// <summary>
         /// 此函数交给外部卸载专用，自己调整是否需要彻底清除AB
