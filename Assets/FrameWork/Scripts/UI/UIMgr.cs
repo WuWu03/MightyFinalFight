@@ -134,7 +134,7 @@ namespace FrameWork.UI
         private void InnerOpen(string panelName, VoidNotPar callback, object[] param)
         {
             Type type = null;
-            
+
             if (!m_DicPanelMap.TryGetValue(panelName, out type))
             {
                 Debug.LogError("Panel is invalid!");
@@ -142,6 +142,7 @@ namespace FrameWork.UI
             }
 
             BasePanelCtrl ctrl = InnerGet(panelName);
+            if (ctrl != null && ctrl.IsOpen) return;
 
             if (ctrl == null)
             {
@@ -150,15 +151,13 @@ namespace FrameWork.UI
             }
 
             ctrl.Open(callback, param);
-           
-            if (IsMutex(ctrl.Panel.PanelLayer))
-            {
-                if(m_QueueMutexPanel.Count > 0)
-                {
-                    InnerClose(m_QueueMutexPanel.Peek().Panel.PanelName,null);
-                }
-                m_QueueMutexPanel.Enqueue(ctrl);
-            }
+
+            if (!IsMutex(ctrl.Panel.PanelLayer)) return;
+            if (m_QueueMutexPanel.Count < 1) return;
+            if (m_QueueMutexPanel.Peek().Equals(ctrl)) return;
+
+            InnerClose(m_QueueMutexPanel.Peek().Panel.PanelName, null);
+            m_QueueMutexPanel.Enqueue(ctrl);
         }
 
         private void InnerClose(string panelName,VoidNotPar callback)
@@ -179,7 +178,9 @@ namespace FrameWork.UI
             }
 
             ctrl.Close(callback);
-            m_ListOpenPanel.Remove(ctrl);
+
+            if (ctrl.Panel.PanelCloseMode == CloseMode.Destroy)
+                m_ListOpenPanel.Remove(ctrl);
         }
 
         private BasePanelCtrl InnerGet(string panelName)

@@ -15,8 +15,16 @@ namespace FrameWork.UI
         private enum ResState
         {
             UNLOAD = 0,
-            COMPLETE = 1,
+            LOADED = 1,
             LOADING = 2,
+        }
+
+        public bool IsOpen 
+        { 
+            get 
+            {
+                return m_IsInit && m_IsShow;
+            } 
         }
 
         public void Open(VoidNotPar callback = null,object[] param = null)
@@ -78,39 +86,20 @@ namespace FrameWork.UI
 
             m_ListOpenCallback = new List<VoidNotPar>();
             m_ListCloseCallback = new List<VoidNotPar>();
-            m_ResState = ResState.UNLOAD;
+
             m_IsInit = true;
+            m_ResState = ResState.UNLOAD;
             Panel = GetPanel();
             OnInit(param);
         }
 
         private void LoadViewCallback(GameObject go)
         {
+            m_ResState = ResState.LOADED;
             string resPath = string.Format("{0}/{1}", ResDefine.UI_PATH, Panel.PanelName);
             Panel.Init(go, this, resPath);
+            OnLoaded();
             ShowPanel(true);
-        }
-
-        private void Destroy()
-        {
-            if (Panel.PanelCloseMode == UIMgr.CloseMode.Always) return;
-
-            if (Panel.PanelCloseMode == UIMgr.CloseMode.Destroy)
-            {
-                OnDestroy();
-
-                if (Panel == null)
-                {
-                    Debug.LogError("Panel is null!");            
-                }
-
-                GameObject.Destroy(Panel.gameObject);
-                ResMgr.Ins.UnloadAssetBundle(Panel.ResPath, true);
-                Panel = null;
-                m_IsInit = false;
-            }
-
-            m_ResState = ResState.UNLOAD;
         }
 
         private void ShowPanel(bool isShow)
@@ -146,9 +135,32 @@ namespace FrameWork.UI
             }
         }
 
+        private void Destroy()
+        {   
+            if (Panel.PanelCloseMode == UIMgr.CloseMode.Always) return;
+
+            if (Panel.PanelCloseMode == UIMgr.CloseMode.Destroy)
+            {
+                OnDestroy();
+
+                if (Panel == null)
+                {
+                    Debug.LogError("Panel is null!");
+                }
+
+                GameObject.Destroy(Panel.gameObject);
+                ResMgr.Ins.UnloadAssetBundle(Panel.ResPath, true);
+                Panel = null;
+                m_IsInit = false;
+            }
+
+            m_ResState = ResState.UNLOAD;
+        }
+
         protected virtual void PlayOpenAnim(){ }
         protected virtual void PlayCloseAnim() { }
         protected abstract void OnInit(object[] param);
+        protected abstract void OnLoaded();
         protected abstract void OnOpen();
         protected abstract void OnUpdate();
         protected abstract void OnClose();

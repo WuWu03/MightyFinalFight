@@ -7,18 +7,19 @@ using FrameWork.Sound;
 
 public class Test : MonoBehaviour
 {
-    public AudioClip clip;
-    public AudioSource source;
-    public Button btn;
-    public Animator anim;
+
+    public Button btn1;
+    public Button btn2;
+
     private void Awake()
     {
-        EventTriggerListener.Get(btn.gameObject).onClick.AddListener(onClick);
+        UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
+        UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
-        
+
         //EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
         //EventManager.Init();
-        
+
         //AnimationEvent @event = new AnimationEvent();
         //@event.functionName = "Attack";
         //@event.objectReferenceParameter = btn;
@@ -40,17 +41,20 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
+
         //EventManager.Ins.Subscribe(1,OnSub);
     }
     
-    private void onClick(GameObject go, PointerEventData eventData)
+    private void onClick1(GameObject go, PointerEventData eventData)
     {
-        //EventManager.Ins.Dispatch(this,new GameEventArgs(){ID = 1});
-        //Debug.Log("OnClcik");
-        //SoundMgr.Ins.PlaySound("CodyBullet");
-        //source.PlayOneShot(UnityEngine.Object.Instantiate(clip));
+        UIMgr.Ins.Open<RoleSelectPanel>();
     }
 
+
+    private void onClick2(GameObject go, PointerEventData eventData)
+    {
+        UIMgr.Ins.Close<RoleSelectPanel>();
+    }
     private void onPress(GameObject go, PointerEventData eventData)
     {
         Debug.Log("OnPress");

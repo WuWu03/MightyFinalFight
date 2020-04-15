@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace FrameWork.UI
 {
-    public sealed class EventTriggerListener :
+    public sealed class UIEventListener :
     MonoBehaviour,
     IPointerClickHandler,
     IPointerDownHandler,
@@ -67,15 +67,15 @@ namespace FrameWork.UI
         public UIEvent<PointerEventData> onScroll = new UIEvent<PointerEventData>();
         public UIEvent<AxisEventData> onMove = new UIEvent<AxisEventData>();
 
-        public static EventTriggerListener Get(GameObject go)
+        public static UIEventListener Get(GameObject go)
         {
             if (go == null)
             {
                 return null;
             }
 
-            EventTriggerListener eventTrigger = go.GetComponent<EventTriggerListener>();
-            if (eventTrigger == null) eventTrigger = go.AddComponent<EventTriggerListener>();
+            UIEventListener eventTrigger = go.GetComponent<UIEventListener>();
+            if (eventTrigger == null) eventTrigger = go.AddComponent<UIEventListener>();
             return eventTrigger;
         }
 

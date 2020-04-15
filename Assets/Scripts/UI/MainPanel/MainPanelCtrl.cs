@@ -14,6 +14,10 @@ public class MainPanelCtrl:BasePanelCtrl
 
 	}
 
+	protected override void OnLoaded()
+	{
+	}
+
 	protected override BasePanel GetPanel()
 	{
 		return new MainPanel();

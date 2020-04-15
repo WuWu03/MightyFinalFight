@@ -18,12 +18,16 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		panel = Panel as RoleSelectPanel;
 	}
 
+	protected override void OnLoaded()
+	{
+		panel.RoleContentGroupView.Init(panel.RoleContent, panel.ItemGO, 3);
+	}
 	protected override void OnOpen()
 	{
 		panel.ImgSelectRect.gameObject.SetActive(true);
 		panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
 		panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
-		panel.RoleContentGroupView.Init(panel.RoleContent, panel.ItemGO, 3);
+
 		panel.RoleContentGroupView.Update(1);
 		panel.RoleContentGroupView.SelectItem(0);
 	}
