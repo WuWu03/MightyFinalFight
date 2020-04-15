@@ -18,13 +18,9 @@ public class RoleMove : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        float angleY = m_Owner.transform.localRotation.eulerAngles.y;
-
-        if (m_Owner.MoveDir.x > 0) angleY = 0;
-        else if (m_Owner.MoveDir.x < 0) angleY = 180;
-
+        m_Owner.SetDir(m_Owner.MoveDir.x);
         Vector3 ownerPos = m_Owner.transform.localPosition;
-        m_Owner.transform.localRotation = Quaternion.Euler(0, angleY, 0);
+
         ownerPos += new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
         bool isOutVision = false;
 

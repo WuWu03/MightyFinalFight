@@ -133,6 +133,20 @@ namespace FrameWork.GameEntity
             transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
         }
 
+        public void SetDir(float dir)
+        {
+            if (dir == 0) return;
+            m_Dir = dir;
+            if (m_Dir > 0) m_Dir = 1;
+            if (m_Dir < 0) m_Dir = -1;
+
+            float angleY = transform.localRotation.eulerAngles.y;
+
+            if (m_Dir > 0) angleY = 0;
+            else if (m_Dir < 0) angleY = 180;
+            transform.localRotation = Quaternion.Euler(0, angleY, 0);
+        }
+
         public bool IsInRange2(Vector2 pos)
         {
             return Vector2.Distance(pos, m_Pos) < 0.03f;
