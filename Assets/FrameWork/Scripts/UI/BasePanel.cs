@@ -9,6 +9,8 @@ namespace FrameWork.UI
     public abstract class BasePanel
     {
         public abstract string PanelName { get; }
+        public abstract float PanelUnLoadTime { get; }
+        public abstract UIMgr.Type PanelType { get; }
         public abstract UIMgr.Layer PanelLayer { get; }
         public abstract UIMgr.CloseMode PanelCloseMode { get; }
         public GameObject gameObject { get; private set; }
@@ -31,7 +33,7 @@ namespace FrameWork.UI
                 return;
             }
 
-            this.transform.SetParent(UIMgr.Ins.GetUILayer(PanelLayer), false);
+            transform.SetParent(UIMgr.Ins.GetUILayer(PanelLayer), false);
             GameObject.DontDestroyOnLoad(gameObject);
             OnInit();
         }

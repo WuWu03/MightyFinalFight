@@ -86,7 +86,7 @@ namespace FrameWork.GameEntity
         public virtual void Release()
         {
             GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
-            ObjectPool.Ins.Put(this);
+            SceneObjectPool.Ins.Put(this);
             m_ResPath = null;
         }
 

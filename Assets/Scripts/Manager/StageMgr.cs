@@ -55,7 +55,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         for (int i = 0; i < 1; i++)
         {
             x += 0.2f * (float)i;
-            BaseEnemy enemy = ObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
+            BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
             enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, "Cody"));
             enemy.InitValue(100, 0.8f, 1, 1, Vector2.zero, 1);
             enemy.SetObjectType(ObjectType.Monster);
@@ -145,7 +145,7 @@ public class StageMgr : MonoSingleton<StageMgr>
             switch (data.Type)
             {
                 case SceneObjectData.SceneObjectType.Trag:
-                    Trag trag = ObjectPool.Ins.Get<Trag>("Trag_" + i);
+                    Trag trag = SceneObjectPool.Ins.Get<Trag>("Trag_" + i);
                     trag.SetTragData(data);
                     break;
                 case SceneObjectData.SceneObjectType.Drop:

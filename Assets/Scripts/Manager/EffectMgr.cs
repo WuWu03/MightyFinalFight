@@ -6,7 +6,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
 {
     public BaseEffect PlayEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease = true, float playTime = -1, VoidNotPar playEndCallback = null)
     {
-        BaseEffect effect = ObjectPool.Ins.Get<BaseEffect>(effectName, parent);
+        BaseEffect effect = SceneObjectPool.Ins.Get<BaseEffect>(effectName, parent);
         effect.transform.localPosition = pos;
         effect.transform.localRotation = Quaternion.Euler(angles);
         effect.PlayTime = playTime;
@@ -24,7 +24,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
     public void PutEffect(BaseEffect effect)
     {
         effect.Release();
-        ObjectPool.Ins.Put(effect);
+        SceneObjectPool.Ins.Put(effect);
     }
 
     public override void ShutDown()

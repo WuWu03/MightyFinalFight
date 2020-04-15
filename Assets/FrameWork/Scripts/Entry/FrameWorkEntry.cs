@@ -23,7 +23,7 @@ namespace FrameWork
             GameObjectPool.Init();
             AudioClipPool.Init();
             SpritePool.Init();
-            ObjectPool.Init();
+            SceneObjectPool.Init();
             FsmMgr.Init();
             CameraMgr.Init();
             SoundMgr.Init();
@@ -45,7 +45,7 @@ namespace FrameWork
             GameObjectPool.Ins.ShutDown();
             AudioClipPool.Ins.ShutDown();
             SpritePool.Ins.ShutDown();
-            ObjectPool.Ins.ShutDown();
+            SceneObjectPool.Ins.ShutDown();
             FsmMgr.Ins.ShutDown();
             CameraMgr.Ins.ShutDown();
             SoundMgr.Ins.ShutDown();

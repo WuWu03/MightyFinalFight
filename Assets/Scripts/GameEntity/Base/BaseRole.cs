@@ -83,7 +83,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public bool CanSkill
+    public virtual bool CanSkill
     {
         get
         {

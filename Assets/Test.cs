@@ -7,14 +7,14 @@ using FrameWork.Sound;
 
 public class Test : MonoBehaviour
 {
-
     public Button btn1;
     public Button btn2;
-
+    public Button btn3;
     private void Awake()
     {
         UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
         UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
+        UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
 
         //EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
@@ -54,6 +54,11 @@ public class Test : MonoBehaviour
     private void onClick2(GameObject go, PointerEventData eventData)
     {
         UIMgr.Ins.Close<RoleSelectPanel>();
+    }
+
+    private void onClick3(GameObject go, PointerEventData eventData)
+    {
+        UIMgr.Ins.Open<MainPanel>();
     }
     private void onPress(GameObject go, PointerEventData eventData)
     {

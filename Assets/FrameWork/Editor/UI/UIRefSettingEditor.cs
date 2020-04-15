@@ -3,7 +3,7 @@ using System.Text;
 using UnityEditor;
 
 [CustomEditor(typeof(UIRefSetting))]
-public class UISettingEditor : Editor
+public class UIRefSettingEditor : Editor
 {
     private void OnEnable()
     {
@@ -38,6 +38,20 @@ public class UISettingEditor : Editor
             m_UIRefSetting.PrefabFolder = prefabFolder;
         }
 
+        UIRefSetting.ExoprtScriptType scriptType = (UIRefSetting.ExoprtScriptType)EditorGUILayout.EnumPopup("Script Type", m_UIRefSetting.ScriptType);
+        if (m_UIRefSetting.ScriptType != scriptType)
+        {
+            FrameWorkEditorMgr.RegisterUndo(target, "Change UIRefSetting Script Type");
+            m_UIRefSetting.ScriptType = scriptType;
+        }
+
+        UIRefSetting.Type panelType = (UIRefSetting.Type)EditorGUILayout.EnumPopup("Panel Type", m_UIRefSetting.PanelType);
+        if (m_UIRefSetting.PanelType != panelType)
+        {
+            FrameWorkEditorMgr.RegisterUndo(target, "Change UIRefSetting Panel Type");
+            m_UIRefSetting.PanelType = panelType;
+        }
+
         if (!string.IsNullOrEmpty(panelName))
         {
             m_SBHelp.AppendLine("1.View and Controller will be Created at:");
@@ -52,10 +66,7 @@ public class UISettingEditor : Editor
             EditorGUILayout.HelpBox("Empty Panel Name", MessageType.Error);
         }
 
-        SerializedProperty type = FrameWorkEditorMgr.DrawProperty("Panel Type", serializedObject, "PanelType");
-        SerializedProperty scripType = FrameWorkEditorMgr.DrawProperty("Script Type", serializedObject, "ScriptType");
-
-        if (type.intValue != (int)UIRefSetting.Type.Root)
+        if (panelType != UIRefSetting.Type.Root)
         {
             EditorGUILayout.BeginHorizontal();
             SerializedProperty isCustom = FrameWorkEditorMgr.DrawProperty(null, serializedObject, "IsCustomLayer");
@@ -66,17 +77,12 @@ public class UISettingEditor : Editor
             }
             else
             {
-                UIRefSetting.Layer layer = type.intValue == 1 ? UIRefSetting.Layer.MainPanel : UIRefSetting.Layer.FirstLevel;
-                m_SBHelp.AppendLine("Panel Layer: " + layer);
+                if (panelType == UIRefSetting.Type.Root) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.MainPanel;
+                if (panelType == UIRefSetting.Type.Normal) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.FirstLevel;
+                if (panelType == UIRefSetting.Type.Pop) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.SecondLevel;
+                m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.PanelLayer);
             }
             EditorGUILayout.EndHorizontal();
-
-            UIRefSetting.ExoprtScriptType scriptType = (UIRefSetting.ExoprtScriptType)EditorGUILayout.EnumPopup("Script Type", m_UIRefSetting.ScriptType);
-            if (m_UIRefSetting.ScriptType != scriptType)
-            {
-                FrameWorkEditorMgr.RegisterUndo(target, "Change UIRefSetting Script Type");
-                m_UIRefSetting.ScriptType = scriptType;
-            }
 
             UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.PanelCloseMode);
             if (m_UIRefSetting.PanelCloseMode != closeMode)
@@ -85,7 +91,6 @@ public class UISettingEditor : Editor
                 m_UIRefSetting.PanelCloseMode = closeMode;
             }
 
-
             FrameWorkEditorMgr.DrawProperty("PreLoad Type", serializedObject, "PanelPreLoadType");
 
             m_SBHelp.AppendLine("PreLoad Type: " + m_UIRefSetting.PanelPreLoadType);
@@ -93,15 +98,23 @@ public class UISettingEditor : Editor
 
             if (m_UIRefSetting.PanelCloseMode == UIRefSetting.CloseMode.DelayDestroy)
             {
-                FrameWorkEditorMgr.DrawProperty("UnLoad Time", serializedObject, "UnLoadTime");
+                if (m_UIRefSetting.UnLoadTime == 0) m_UIRefSetting.UnLoadTime = 10f;
+                SerializedProperty unLoadTime = FrameWorkEditorMgr.DrawProperty("UnLoad Time", serializedObject, "UnLoadTime");
                 m_SBHelp.Append("UnLoad Time: " + m_UIRefSetting.UnLoadTime);
+            }
+            else
+            {
+                m_UIRefSetting.UnLoadTime = 0f;
             }
         }
         else
         {
-            m_SBHelp.AppendLine("UI Layer: Root");
+            m_SBHelp.AppendLine("UI Layer: MainPanel");
             m_SBHelp.AppendLine("Pre Load: True");
             m_SBHelp.Append("Close Mode: Eternal");
+            m_UIRefSetting.PanelCloseMode = UIRefSetting.CloseMode.Eternal;
+            m_UIRefSetting.PanelLayer = UIRefSetting.Layer.MainPanel;
+            m_UIRefSetting.UnLoadTime = 0f;
         }
 
         EditorGUILayout.HelpBox(m_SBHelp.ToString(), MessageType.None);

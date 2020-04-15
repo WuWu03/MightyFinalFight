@@ -154,7 +154,7 @@ public abstract class BaseAvatar : BaseObject
 
     public bool IsAnyState(params Type[] stateTypes)
     {
-        if (!m_FsmMachine.IsRunning || stateTypes == null || stateTypes.Length < 1)
+        if (m_FsmMachine == null || !m_FsmMachine.IsRunning || stateTypes == null || stateTypes.Length < 1)
         {
             return false;
         }

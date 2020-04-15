@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace FrameWork.Pool
 {
-    public class ObjectPool : BaseMgr<ObjectPool>
+    public class SceneObjectPool : BaseMgr<SceneObjectPool>
     {    
         private void Awake()
         {

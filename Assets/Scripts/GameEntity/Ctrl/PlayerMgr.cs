@@ -35,7 +35,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void InitPlayer(int roleID)
     {
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
-        m_Player = ObjectPool.Ins.Get<BaseHero>("Player");
+        m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
         m_Player.InitValue(3, m_HeroData.AttackSpeed, 1, 1, m_HeroData.JumpForce, m_HeroData.MoveSpeed);

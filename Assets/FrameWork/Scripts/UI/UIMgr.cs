@@ -9,7 +9,14 @@ using UnityEngine.UI;
 namespace FrameWork.UI
 {
     public class UIMgr : BaseMgr<UIMgr>
-    {    
+    {
+        public enum Type
+        {
+            Root,
+            Normal,
+            Pop,
+        }
+
         public enum Layer
         {
             BG,
@@ -29,9 +36,9 @@ namespace FrameWork.UI
 
         private void Awake()
         {
-            m_DicPanelMap = new Dictionary<string, Type>();
+            m_DicPanelMap = new Dictionary<string, System.Type>();
             m_ListOpenPanel = new List<BasePanelCtrl>();
-            m_QueueMutexPanel = new Queue<BasePanelCtrl>();
+            m_StackMutexPanel = new Stack<BasePanelCtrl>();
             m_UIRoot = new GameObject("UIRoot");
             m_UICanvas = new GameObject("UICanvas", typeof(GraphicRaycaster)).GetOrAddComponent<Canvas>();
             m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
@@ -125,7 +132,7 @@ namespace FrameWork.UI
             m_DicPanelMap.Add(panelName, typeof(T));
         }
 
-        public void AddPanelMap(string panelName,Type type)
+        public void AddPanelMap(string panelName, System.Type type)
         {
             if (typeof(BasePanelCtrl) == type)
                 m_DicPanelMap.Add(panelName, type);
@@ -133,7 +140,7 @@ namespace FrameWork.UI
 
         private void InnerOpen(string panelName, VoidNotPar callback, object[] param)
         {
-            Type type = null;
+            System.Type type = null;
 
             if (!m_DicPanelMap.TryGetValue(panelName, out type))
             {
@@ -152,35 +159,42 @@ namespace FrameWork.UI
 
             ctrl.Open(callback, param);
 
-            if (!IsMutex(ctrl.Panel.PanelLayer)) return;
-            if (m_QueueMutexPanel.Count < 1) return;
-            if (m_QueueMutexPanel.Peek().Equals(ctrl)) return;
+            if (ctrl.Panel.PanelType == Type.Pop) return;
 
-            InnerClose(m_QueueMutexPanel.Peek().Panel.PanelName, null);
-            m_QueueMutexPanel.Enqueue(ctrl);
+            if (m_StackMutexPanel.Count > 0)
+            {
+                m_StackMutexPanel.Peek().Close(null);
+            }
+
+            m_StackMutexPanel.Push(ctrl);
         }
 
-        private void InnerClose(string panelName,VoidNotPar callback)
+        private void InnerClose(string panelName, VoidNotPar callback)
         {
             BasePanelCtrl ctrl = InnerGet(panelName);
 
             if (ctrl == null) return;
-            
-            if (m_QueueMutexPanel.Count > 0 && m_QueueMutexPanel.Contains(ctrl) && IsMutex(ctrl.Panel.PanelLayer))
-            {
-                if (m_QueueMutexPanel.Peek().Panel.PanelLayer != Layer.MainPanel)
-                {
-                    m_QueueMutexPanel.Dequeue();
-                }
-
-                if (m_QueueMutexPanel.Count > 0)
-                    m_QueueMutexPanel.Peek().Open();
-            }
 
             ctrl.Close(callback);
 
             if (ctrl.Panel.PanelCloseMode == CloseMode.Destroy)
+            {
                 m_ListOpenPanel.Remove(ctrl);
+            }
+
+            if (ctrl.Panel.PanelType == Type.Pop) return;
+            if (m_StackMutexPanel.Count < 1) return;
+
+            BasePanelCtrl top = m_StackMutexPanel.Pop();
+
+            if (m_StackMutexPanel.Count < 1)
+            {
+                if (top.Panel.PanelType == Type.Root)
+                    m_StackMutexPanel.Push(top);
+                return;
+            }
+
+            m_StackMutexPanel.Peek().Open();
         }
 
         private BasePanelCtrl InnerGet(string panelName)
@@ -196,42 +210,24 @@ namespace FrameWork.UI
             return null;
         }
 
-        private bool IsMutex(Layer layer)
-        {
-            for (int i = 0; i < m_MutexLayers.Length; i++)
-            {
-                if (layer == m_MutexLayers[i])
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private void Update()
         {
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                m_ListOpenPanel[i].Update();
+                if (m_ListOpenPanel[i].IsOpen)
+                    m_ListOpenPanel[i].Update();
             }
         }
 
         public override void ShutDown()
         {
             m_DicPanelMap.Clear();
-            m_QueueMutexPanel.Clear();
+            m_StackMutexPanel.Clear();
             m_ListOpenPanel.Clear();
         }
 
-        private Layer[] m_MutexLayers = new Layer[]
-        {
-            Layer.MainPanel,
-            Layer.FirstLevel
-        };
-
-        private Dictionary<string, Type> m_DicPanelMap = null;
-        private Queue<BasePanelCtrl> m_QueueMutexPanel = null;
+        private Dictionary<string, System.Type> m_DicPanelMap = null;
+        private Stack<BasePanelCtrl> m_StackMutexPanel = null;
         private List<BasePanelCtrl> m_ListOpenPanel = null;
         private RectTransform[] m_UILayerTransform = null;
         private GameObject m_UIRoot = null;

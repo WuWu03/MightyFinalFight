@@ -11,6 +11,15 @@ public class BaseHero : BaseRole
             return base.CanMove && !m_IsCatch;
         }
     }
+
+    public override bool CanSkill
+    {
+        get
+        {
+            return base.CanSkill && !m_IsCatch;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -79,12 +88,11 @@ public class BaseHero : BaseRole
         ChangeState<HeroRebirth>();
     }
 
-    private void CheckCatch()
+    protected virtual void CheckCatch()
     {
-        if (!CanMove || m_TriggerTargets.Targets.Count < 1)
-        {
-            return;
-        }
+        if (!CanMove || m_TriggerTargets.Targets.Count < 1) return;
+        m_IsCatch = true;
+        Debug.Log("catch");
     }
 
     private bool m_IsCatch = false;

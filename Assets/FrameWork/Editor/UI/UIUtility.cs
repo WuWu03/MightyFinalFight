@@ -368,6 +368,8 @@ public class UIUtility
 
         string layerName = Enum.GetName(typeof(UIRefSetting.Layer), setting.PanelLayer);
         string closeModeName = Enum.GetName(typeof(UIRefSetting.CloseMode), setting.PanelCloseMode);
+        string typeName = Enum.GetName(typeof(UIRefSetting.Type), setting.PanelType);
+        float unLoadTime = setting.UnLoadTime;
 
         sb.AppendLine("/*******************************************************/");
         sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}****************************************/\n", year, month, day, hour, minute);
@@ -381,7 +383,9 @@ public class UIUtility
         sb.AppendLine();
         sb.AppendFormat("public class {0} : BasePanel", setting.PanelName);
         sb.AppendLine("\n{");
-        sb.Append("\tpublic override string PanelName { get {" + string.Format("return \"{0}\"", setting.PanelName) + "; } }\n");
+        sb.Append("\tpublic override string PanelName { get { " + string.Format("return \"{0}\"", setting.PanelName) + "; } }\n");
+        sb.Append("\tpublic override float PanelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\n");
+        sb.Append("\tpublic override UIMgr.Type PanelType { get { " + string.Format("return UIMgr.Type.{0}", typeName) + "; } }\n");
         sb.Append("\tpublic override UIMgr.Layer PanelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\n");
         sb.Append("\tpublic override UIMgr.CloseMode PanelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\n");
 
