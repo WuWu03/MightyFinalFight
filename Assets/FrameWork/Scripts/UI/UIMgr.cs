@@ -40,10 +40,9 @@ namespace FrameWork.UI
             m_ListOpenPanel = new List<BasePanelCtrl>();
             m_StackMutexPanel = new Stack<BasePanelCtrl>();
             m_UIRoot = new GameObject("UIRoot");
-            m_UICanvas = new GameObject("UICanvas", typeof(GraphicRaycaster)).GetOrAddComponent<Canvas>();
+            m_UICanvas = new GameObject("UICanvas").GetOrAddComponent<Canvas>();
             m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
             m_EventSystem = new GameObject("EventSystem").GetOrAddComponent<EventSystem>();
-            m_UICanvas.gameObject.AddComponent<GraphicRaycaster>();
 
             CanvasScaler canvasScaler = m_UICanvas.gameObject.GetOrAddComponent<CanvasScaler>();
             UICanvasScaleAdapt canvasScaleAdapt = m_UICanvas.gameObject.GetOrAddComponent<UICanvasScaleAdapt>();
@@ -81,12 +80,16 @@ namespace FrameWork.UI
             for (int i = 0; i < layers.Length; i++)
             {
                 m_UILayerTransform[i] = new GameObject(Enum.GetValues(typeof(Layer)).GetValue(i).ToString()).AddComponent<RectTransform>();
+                m_UILayerTransform[i].gameObject.GetOrAddComponent<Canvas>().overrideSorting = true;
+                m_UILayerTransform[i].gameObject.GetOrAddComponent<Canvas>().sortingOrder = i * 1000;
+                m_UILayerTransform[i].gameObject.GetOrAddComponent<GraphicRaycaster>();
                 m_UILayerTransform[i].anchoredPosition = Vector3.zero;
                 m_UILayerTransform[i].sizeDelta = Vector2.zero;
                 m_UILayerTransform[i].anchorMin = new Vector2(0, 0);
                 m_UILayerTransform[i].anchorMax = new Vector2(1, 1);
                 m_UILayerTransform[i].pivot = new Vector2(0.5f, 0.5f);
                 m_UILayerTransform[i].SetParent(m_UICanvas.transform, false);
+                m_UILayerTransform[i].gameObject.SetLayer("UI");
             }
 
             GameObject.DontDestroyOnLoad(m_UIRoot);

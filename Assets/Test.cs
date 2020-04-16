@@ -44,7 +44,7 @@ public class Test : MonoBehaviour
 
         //EventManager.Ins.Subscribe(1,OnSub);
     }
-    
+
     private void onClick1(GameObject go, PointerEventData eventData)
     {
         UIMgr.Ins.Open<RoleSelectPanel>();
@@ -75,7 +75,7 @@ public class Test : MonoBehaviour
         Debug.Log("草年末" + "," + (data is Button));
     }
 
-    private void OnSub(object seneder,GameEventArgs args)
+    private void OnSub(object seneder, GameEventArgs args)
     {
         Debug.Log(args.ID);
     }

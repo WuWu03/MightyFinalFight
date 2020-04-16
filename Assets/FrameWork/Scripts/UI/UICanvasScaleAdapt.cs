@@ -36,6 +36,7 @@ namespace FrameWork.UI
         private void Awake()
         {
             m_CanvasScale = GetComponent<CanvasScaler>();
+            m_CanvasScale.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             m_CanvasScale.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             UpdateScaleType();
         }

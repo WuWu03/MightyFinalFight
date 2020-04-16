@@ -100,15 +100,15 @@ public class BaseHero : BaseRole
                 if (temp == null || !temp.CanBeHit) continue;
                 BaseObject targetObj = m_TriggerTargets.Targets[i].GetComponent<BaseObject>();
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.05f &&
-                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.1f &&
+                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.15f &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;
                 if (isInRange)
                 {
+                    targetObj.SetDir(m_Dir * -1);
                     m_CatchTarget = temp;
                     break;
                 }
             }
-
 
             if(m_CatchTarget != null)
             {
