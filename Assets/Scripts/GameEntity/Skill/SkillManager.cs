@@ -44,7 +44,7 @@ public class SkillManager
         if (m_CurrSkillDeployer.IsAllComplete())
         {
             m_CurrSkillDeployer = null;
-            if (!m_Owner.IsAnyState(typeof(RoleAttack)) && m_Owner.IsInGround)
+            if (m_Owner.CanChangeDefaultState)
                 m_Owner.FsmMachine.ChangeDefaultState();
         }
         else

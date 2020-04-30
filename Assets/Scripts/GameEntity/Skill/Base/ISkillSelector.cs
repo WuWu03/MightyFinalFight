@@ -7,5 +7,5 @@ using UnityEngine;
 
 public interface ISkillSelector
 {
-    List<GameObject> GetTargets(BaseRole owner, SkillData skillData);
+    List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData);
 }

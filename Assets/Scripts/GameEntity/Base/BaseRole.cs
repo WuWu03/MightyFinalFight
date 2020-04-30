@@ -1,4 +1,6 @@
-﻿using FrameWork.Camera;
+﻿using FrameWork;
+using FrameWork.Camera;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -51,12 +53,20 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public virtual bool IsBeCatch
+    {
+        get
+        {
+            return m_IsBeCatch;
+        }
+    }
+
     public virtual bool CanMove
     {
         get
         {
             return !m_IsDropTrag &&
-                IsAnyState(typeof(RoleIdle),
+                   !m_IsBeCatch && IsAnyState(typeof(RoleIdle),
                 typeof(RoleMove),
                 typeof(RoleAttack),
                 typeof(RoleJump));
@@ -68,7 +78,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         get
         {
             return !m_IsDropTrag && !m_IsJumpAttack &&
-                IsAnyState(typeof(RoleIdle),
+                   !m_IsBeCatch && IsAnyState(typeof(RoleIdle),
                 typeof(RoleMove),
                 typeof(RoleJump),
                 typeof(RoleAttack));
@@ -79,7 +89,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
         }
     }
 
@@ -87,7 +97,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump));
+            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump));
         }
     }
 
@@ -96,6 +106,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         get
         {
             return m_IsDropTrag;
+        }
+    }
+
+
+    public virtual bool CanChangeDefaultState
+    {
+        get
+        {
+            return !IsAnyState(typeof(RoleAttack)) && IsInGround;
         }
     }
 
@@ -129,8 +148,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_MoveSpeed = moveSpeed;
     }
 
+    public T AddCtrl<T>() where T : AvatarCtrl
+    {
+        m_CurrCtrl = gameObject.GetOrAddComponent<T>();
+        return m_CurrCtrl as T;
+    }
+
     public override void Release()
     {
+        m_CurrCtrl = null;
         base.Release();
     }
 
@@ -260,6 +286,24 @@ public class BaseRole : BaseAvatar, ICanBeHit
             CameraMgr.Ins.EndFollow();
     }
 
+    public virtual void SetCatch(bool value)
+    {
+        m_IsBeCatch = value;
+    }
+
+    public virtual List<ICanBeHit> OnHitStart()
+    {
+        return null;
+    }
+
+    public virtual void OnHitEnd(SkillData skillData,bool isHurtTarget) 
+    {
+        if (skillData.Type != SkillData.SkillType.SkillAttack && m_CurrCtrl != null)
+        {
+            m_CurrCtrl.AttackSuccess = isHurtTarget;
+        }
+    }
+
     private void CheckDropTrag()
     {
         if (!m_IsDropTrag) return;
@@ -315,6 +359,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected float m_Defense = 0;
     protected bool m_IsJumpAttack = false;
     protected bool m_IsDropTrag = false;
+    protected bool m_IsBeCatch = false;
+    protected AvatarCtrl m_CurrCtrl = null;
     protected DropTragData m_DropTragData = null;
     protected Rect m_Bound = Rect.zero;
     protected Vector2 m_JumpForce = Vector2.zero;

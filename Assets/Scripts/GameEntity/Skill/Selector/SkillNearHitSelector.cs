@@ -7,10 +7,10 @@ public class SkillNearHitSelector : ISkillSelector
 {
     public SkillNearHitSelector()
     {
-        m_ListTargets = new List<GameObject>();
+        m_ListTargets = new List<ICanBeHit>();
     }
 
-    public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
+    public List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData)
     {
         m_ListTargets.Clear();
         TriggerTargets trigger = owner.GetComponent<TriggerTargets>();
@@ -18,7 +18,7 @@ public class SkillNearHitSelector : ISkillSelector
 
         for (int i = 0; i < trigger.Targets.Count; i++)
         {
-            ICanBeHit hit = trigger.GetComponent<ICanBeHit>();
+            ICanBeHit hit = trigger.Targets[i].GetComponent<ICanBeHit>();
             BaseObject targetObj = trigger.Targets[i].GetComponent<BaseObject>();
 
             bool canBeHit = hit != null && hit.CanBeHit;
@@ -31,12 +31,12 @@ public class SkillNearHitSelector : ISkillSelector
 
             if (isInRange && canBeHit)
             {
-                m_ListTargets.Add(trigger.Targets[i]);
+                m_ListTargets.Add(hit);
             }
         }
 
         return m_ListTargets;
     }
 
-    private List<GameObject> m_ListTargets = null;
+    private List<ICanBeHit> m_ListTargets = null;
 }

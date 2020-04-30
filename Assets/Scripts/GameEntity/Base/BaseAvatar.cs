@@ -189,6 +189,11 @@ public abstract class BaseAvatar : BaseObject
         m_FsmMachine.RemoveState<T>();
     }
 
+    protected void SetDefaultState<T>() where T : BaseFsmState
+    {
+        m_FsmMachine.SetDefaultState<T>();
+    }
+
     protected float m_MoveSpeed = 0.8f;
     protected Vector2 m_MoveToPoint = Vector2.zero;
     protected Vector2 m_MoveDir = Vector2.zero;

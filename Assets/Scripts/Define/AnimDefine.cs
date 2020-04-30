@@ -11,4 +11,6 @@
     public const string SmoonDown = "SmoonDown";
     public const string Awaken = "Awaken";
     public const string Dead = "Dead";
+    public const string Catch = "Catch";
+    public const string Knee = "Knee";
 }

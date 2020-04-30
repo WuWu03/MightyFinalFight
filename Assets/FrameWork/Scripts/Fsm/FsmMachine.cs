@@ -228,7 +228,19 @@ namespace FrameWork.Fsm
             m_DicStates.Clear();
             m_IsDestroyed = true;
         }
-    
+
+        public override void SetDefaultState<T>()
+        {
+            BaseFsmState state = this.GetState<T>();
+
+            if (state == null)
+            {
+                throw new Exception("Fsm State Is Null");
+            }
+
+            DefaultState = state;
+        }
+
         private readonly Dictionary<Type, BaseFsmState> m_DicStates;
         private BaseFsmState m_CurrentState;
         private float m_CurrentStateTime;

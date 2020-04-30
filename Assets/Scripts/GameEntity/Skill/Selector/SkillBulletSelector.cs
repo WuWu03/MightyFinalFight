@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SkillBulletSelector : ISkillSelector
 {
-    public List<GameObject> GetTargets(BaseRole owner, SkillData skillData)
+    public List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData)
     {
         return null;
     }

@@ -39,7 +39,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
         m_Player.InitValue(3, m_HeroData.AttackSpeed, 1, 1, m_HeroData.JumpForce, m_HeroData.MoveSpeed);
-        m_CurrCtrl = m_Player.gameObject.GetOrAddComponent<AvatarCtrl>();
+        m_CurrCtrl = m_Player.AddCtrl<HeroCtrl>();
         m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills, 0.11f);
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };

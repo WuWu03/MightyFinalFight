@@ -8,7 +8,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanMove && m_CatchTarget == null;
+            return base.CanMove && !HasCatch();
         }
     }
 
@@ -16,21 +16,58 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanSkill && m_CatchTarget == null;
+            return base.CanSkill && !HasCatch();
         }
     }
-    
+
+    public override bool CanAttack
+    {
+        get
+        {
+            return base.CanAttack || HasCatch();
+        }
+    }
+
+
+    public override bool CanJump
+    {
+        get
+        {
+            return base.CanJump || HasCatch();
+        }
+    }
+
+    public bool IsCatch
+    {
+        get
+        {
+            return HasCatch();
+        }
+    }
+
+    public override bool CanChangeDefaultState
+    {
+        get
+        {
+            return base.CanChangeDefaultState || HasCatch();
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
         AddState<HeroRebirth>();
+        AddState<HeroCatch>();
         m_DicAttacker = new Dictionary<int, int>();
+        m_ListCatchTarget = new List<ICanBeHit>();
     }
 
     public override void Release()
     {
         base.Release();
         m_DicAttacker.Clear();
+        m_ListCatchTarget.Clear();
+        m_ListCatchTarget = null;
         m_DicAttacker = null;
     }
 
@@ -48,9 +85,48 @@ public class BaseHero : BaseRole
         }
     }
 
+    public override List<ICanBeHit> OnHitStart()
+    {
+        if (m_ListCatchTarget.Count < 1) return null;
+        return m_ListCatchTarget;
+    }
+
+    public override void OnHitEnd(SkillData skillData,bool isHurtTarget)
+    {
+        base.OnHitEnd(skillData, isHurtTarget);
+        if (m_ListCatchTarget.Count < 1 || !isHurtTarget) return;
+        m_CatchAttackCount++;
+
+        if (m_CatchAttackCount >= 3)
+        {
+            m_ListCatchTarget[0].OnHurtMsg(new HurtData()
+            {
+                AttackerDir = m_Dir,
+                AttackValue = 0,
+                IsSwoon = true,
+                AttackForce = new Vector2(40f * m_Dir, 150f),
+
+            });
+
+            ResetCatch();
+        }
+    }
+
     public override void OnAttackMsg(AttackData data)
     {
+        if(m_ListCatchTarget != null)
+        {
+            m_CatchStamp = Time.time;
+        }
+
         base.OnAttackMsg(data);
+    }
+
+    public override void OnJumpMsg(JumpData data)
+    {
+        if (HasCatch())
+            ResetCatch();
+        base.OnJumpMsg(data);
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -90,7 +166,7 @@ public class BaseHero : BaseRole
 
     protected virtual void CheckCatch()
     {    
-        if (m_CatchTarget == null)
+        if (m_ListCatchTarget.Count < 1)
         {
             if (!IsAnyState(typeof(RoleMove)) || m_TriggerTargets.Targets.Count < 1) return;
 
@@ -99,18 +175,22 @@ public class BaseHero : BaseRole
                 ICanBeHit temp = m_TriggerTargets.Targets[i].GetComponent<ICanBeHit>();
                 if (temp == null || !temp.CanBeHit) continue;
                 BaseObject targetObj = m_TriggerTargets.Targets[i].GetComponent<BaseObject>();
-                bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.05f &&
-                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.15f &&
+                bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
+                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.17f &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;
                 if (isInRange)
                 {
                     targetObj.SetDir(m_Dir * -1);
-                    m_CatchTarget = temp;
+                    targetObj.SetPos2(m_Pos.x + 0.17f * m_Dir, m_Pos.y);
+                    temp.SetCatch(true);
+                    ChangeState<HeroCatch>();
+                    SetDefaultState<HeroCatch>();
+                    m_ListCatchTarget.Add(temp);
                     break;
                 }
             }
 
-            if(m_CatchTarget != null)
+            if(m_ListCatchTarget.Count > 0)
             {
                 m_CatchStamp = Time.time;
             }
@@ -120,16 +200,30 @@ public class BaseHero : BaseRole
 
         if (Time.time - m_CatchStamp >= m_CatchTime)
         {
-            m_CatchTarget = null;
-            m_CatchStamp = 0f;
-            ChangeState<RoleIdle>();
+            ResetCatch();
             return;
         }
     }
 
-    private ICanBeHit m_CatchTarget = null;
+    private void ResetCatch()
+    {
+        m_ListCatchTarget[0].SetCatch(false);
+        m_ListCatchTarget.Clear();
+        m_CatchStamp = 0f;
+        m_CatchAttackCount = 0;
+        ChangeState<RoleIdle>();
+        SetDefaultState<RoleIdle>();
+    }
+
+    private bool HasCatch()
+    {
+        return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0;
+    }
+
+    private List<ICanBeHit> m_ListCatchTarget = null;
     private float m_CatchStamp = 0f;
     protected float m_CatchTime = 2f;
     private float m_HitTime = -1f;
+    private int m_CatchAttackCount = 0;
     private Dictionary<int, int> m_DicAttacker = null;
 }

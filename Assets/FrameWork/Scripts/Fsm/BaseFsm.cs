@@ -45,6 +45,7 @@ namespace FrameWork.Fsm
         public abstract void ChangeState<T>() where T : BaseFsmState;
         public abstract bool HasState<T>() where T : BaseFsmState;
         public abstract T GetState<T>() where T : BaseFsmState;
+        public abstract void SetDefaultState<T>() where T : BaseFsmState;
         public abstract BaseFsmState[] GetAllStates();
         public abstract void Update(float deltaTime, float unscaleDeltaTime);
         public abstract void ShutDown();

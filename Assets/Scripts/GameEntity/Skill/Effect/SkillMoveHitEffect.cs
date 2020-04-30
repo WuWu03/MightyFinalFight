@@ -37,16 +37,14 @@ public class SkillMoveHitEffect : ISkillEffect
     {
         if (m_Owner == null) return;
         m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
-        List<GameObject> targets = m_Selector.GetTargets(m_Owner, m_SkillData);
+        List<ICanBeHit> targets = m_Selector.GetTargets(m_Owner, m_SkillData);
         bool hasHit = false;
 
-        Debug.Log(targets.Count);
         for (int i = 0; i < targets.Count; i++)
         {
-            ICanBeHit hit = targets[i].GetComponent<ICanBeHit>();
-            if (hit != null && hit.CanBeHit)
+            if (targets[i].CanBeHit)
             {
-                hit.OnHurtMsg(new HurtData()
+                targets[i].OnHurtMsg(new HurtData()
                 {
                     AttackerID = m_Owner.ID,
                     AttackerDir = m_Owner.Dir,

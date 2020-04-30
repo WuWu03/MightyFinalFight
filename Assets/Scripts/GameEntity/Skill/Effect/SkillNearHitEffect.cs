@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class SkillNearHitEffect : ISkillEffect
 {
+    public SkillNearHitEffect()
+    {
+        m_HurtData = new HurtData();
+    }
+
     public bool IsCompleted
     {
         get
@@ -22,40 +27,49 @@ public class SkillNearHitEffect : ISkillEffect
     {
         m_Owner = owner;
         m_SkillData = skillData;
-
-        List<GameObject> targets = skillSelector.GetTargets(owner, skillData);
-
-        bool hurtTarget = false;
         m_Complete = false;
 
+        bool hurtTarget = false;
+        List<ICanBeHit> targets = m_Owner.OnHitStart();
+        
+        if(targets == null)
+        {
+            targets = skillSelector.GetTargets(owner, skillData);
+        }
+        
         for (int i = 0; i < targets.Count; i++)
         {
-            ICanBeHit hit = targets[i].GetComponent<ICanBeHit>();
-            if (hit != null && hit.CanBeHit)
+            if(Hit(targets[i],owner,skillData))
             {
                 hurtTarget = true;
-                hit.OnHurtMsg(new HurtData()
-                {
-                    AttackerDir = owner.Dir,
-                    AttackForce = new Vector2(skillData.AddTargetForce.x * owner.Dir, skillData.AddTargetForce.y),
-                    IsSwoon = skillData.IsSmoon,
-                    AttackerID = owner.ID,
-                    AttackValue = 1,
-                });
-
-                if (skillData.IsShakeCamera)
-                {
-                    CameraMgr.Ins.Shake();
-                }
             }
         }
 
+        owner.OnHitEnd(skillData, hurtTarget);
         m_Complete = true;
+    }
 
-        if (skillData.Type != SkillData.SkillType.SkillAttack)
+    private bool Hit(ICanBeHit hit,BaseRole owner,SkillData skillData)
+    {
+        if (hit != null && hit.CanBeHit)
         {
-            owner.GetComponent<AvatarCtrl>().AttackSuccess = hurtTarget;
+            m_HurtData.AttackerDir = owner.Dir;
+            m_HurtData.AttackForce = new Vector2(skillData.AddTargetForce.x * owner.Dir, skillData.AddTargetForce.y);
+            m_HurtData.IsSwoon = skillData.IsSmoon;
+            m_HurtData.AttackerID = owner.ID;
+            m_HurtData.AttackValue = 1;
+
+            hit.OnHurtMsg(m_HurtData);
+
+            if (skillData.IsShakeCamera)
+            {
+                CameraMgr.Ins.Shake();
+            }
+
+            return true;
         }
+
+        return false;
     }
 
     public void Reset()
@@ -65,6 +79,7 @@ public class SkillNearHitEffect : ISkillEffect
         m_SkillData = null;
     }
 
+    private HurtData m_HurtData = null;
     private BaseRole m_Owner = null;
     private SkillData m_SkillData = null;
     private bool m_Complete = false;

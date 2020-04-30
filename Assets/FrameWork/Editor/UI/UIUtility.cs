@@ -461,13 +461,15 @@ public class UIUtility
         sb.AppendLine("using UnityEngine;");
         sb.AppendLine("using UnityEngine.UI;");
         sb.AppendLine("using FrameWork.UI;");
-        sb.AppendLine("public class " + string.Format("{0}Ctrl:BasePanelCtrl<{0}>", setting.PanelName));
+        sb.AppendLine("public class " + string.Format("{0}Ctrl:BasePanelCtrl", setting.PanelName));
         sb.AppendLine("{");
-        sb.AppendLine("\tprotected override void OnInit()\n\t{\n\t}\n");
+        sb.AppendLine("\tprotected override void OnInit(object[] param)\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnOpen()\n\t{\n\t}\n");
+        sb.AppendLine("\tprotected override void OnLoaded()\n\t{\n\t}");
         sb.AppendLine("\tprotected override void OnUpdate()\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnClose()\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnDestroy()\n\t{\n\t}");
+        sb.AppendLine("\tprotected override BasePanel GetPanel()\n\t{\n" + string.Format("\t\treturn new {0}();", setting.PanelName) + "\n\t}");
         sb.Append("}");
         IOUtil.VerifyDirectory(setting.ScriptFolder);
         IOUtil.CreateTextFile(setting.PanelCtrlPath, sb.ToString());

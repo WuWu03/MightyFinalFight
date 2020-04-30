@@ -23,8 +23,8 @@ public class AvatarCtrl : BaseCtrl
         m_SkillManager.Release();
         m_AttackWaitTime = null;
         m_SkillManager = null;
-
     }
+
     public void Init(float[] attackWaitTime, int[] skillIDs, float attackNextTime)
     {
         m_AttackWaitTime = attackWaitTime == null ? new float[1] { 0.2f } : attackWaitTime;
@@ -116,7 +116,7 @@ public class AvatarCtrl : BaseCtrl
         }
     }
 
-    private void NormalAttack()
+    protected virtual void NormalAttack()
     {
         if (m_AttackWaitTime == null || m_AttackWaitTime.Length < 1) return;
         if (m_AttackIndex >= m_AttackWaitTime.Length) return;
@@ -131,14 +131,14 @@ public class AvatarCtrl : BaseCtrl
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
-    private void JumpAttack(Vector2 dir)
+    protected virtual void JumpAttack(Vector2 dir)
     {
         AttackSuccess = false;
         m_CurrSkillID = 1004 + (dir.y < 0 ? 2 : 1);
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
-    private SkillManager m_SkillManager = null;
+    protected SkillManager m_SkillManager = null;
     private float[] m_AttackWaitTime = null;
     protected new BaseRole m_Owner = null;
     private float m_AttackTimer = 0;
