@@ -108,26 +108,26 @@ namespace FrameWork.GameEntity
 
         public void UpdatePos2(float x, float y)
         {
-            m_Pos = new Vector2(x, y);
+            UpdatePos(new Vector2(x, y));
         }
 
-        public void UpdatePos(Vector2 pos)
+        public virtual void UpdatePos(Vector2 pos)
         {
             m_Pos = pos;
         }
 
         public void SetPos2(float x, float y)
         {
-            m_Pos = new Vector2(x, y);
-            transform.localPosition = new Vector3(x, y, y);
+            SetPos(new Vector2(x, y));
         }
 
-        public void SetPos(Vector2Int pos)
+        public void SetMapPos(Vector2Int pos)
         {
-            SetPos(new Vector2((float)pos.x / 100, (float)pos.y / 100));
+            m_Pos = new Vector2((float)pos.x / 100, (float)pos.y / 100);
+            transform.localPosition = new Vector3(m_Pos.x, m_Pos.y, m_Pos.y);
         }
 
-        public void SetPos(Vector2 pos)
+        public virtual void SetPos(Vector2 pos)
         {
             m_Pos = pos;
             transform.localPosition = new Vector3(pos.x, pos.y, pos.y);

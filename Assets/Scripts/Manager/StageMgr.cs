@@ -113,7 +113,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         Sprite sprite = obj as Sprite;
         m_MapRenderer.sprite = sprite;
 
-        PlayerMgr.Ins.Player.SetPos(m_CurrStageData.InitPos);
+        PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
         SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
         {

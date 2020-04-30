@@ -1,4 +1,5 @@
-﻿using FrameWork.GameEntity;
+﻿using FrameWork.Camera;
+using FrameWork.GameEntity;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -75,6 +76,14 @@ public class BaseHero : BaseRole
     {
         base.Update();
         CheckCatch();
+
+        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
+        {
+            if (IsOutVersion(transform.localPosition) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            {
+                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+            }
+        }
 
         if (m_HitTime < 0) return;
 
@@ -159,6 +168,24 @@ public class BaseHero : BaseRole
         base.OnHurtMsg(data);
     }
 
+    public override void SetPos(Vector2 pos)
+    {
+        if (IsAnyState(typeof(RoleMove)))
+        {
+            if (StageMgr.Ins.IsOutArea(pos))
+            {
+                CameraMgr.Ins.EndFollow();
+            }
+            else
+            {
+                CameraMgr.Ins.StartFollow();
+            }
+
+            if (!CanMove || !StageMgr.Ins.CanMove(pos) || IsOutVersion(pos)) return;
+        }
+        base.SetPos(pos);
+    }
+
     public void OnRebirthMsg()
     {
         ChangeState<HeroRebirth>();
@@ -218,6 +245,12 @@ public class BaseHero : BaseRole
     private bool HasCatch()
     {
         return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0;
+    }
+
+    private bool IsOutVersion(Vector3 pos)
+    {
+        Vector2[] vision = CameraMgr.Ins.GetVision();
+        return pos.x - 0.1f <= vision[0].x || pos.x + 0.1f >= vision[1].x;
     }
 
     private List<ICanBeHit> m_ListCatchTarget = null;

@@ -19,27 +19,7 @@ public class RoleMove : BaseFsmState
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         m_Owner.SetDir(m_Owner.MoveDir.x);
-        Vector3 ownerPos = m_Owner.transform.localPosition;
-
-        ownerPos += new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
-        bool isOutVision = false;
-
-        if (m_Owner.ObjectType == ObjectType.Player)
-        {
-            if (StageMgr.Ins.IsOutArea(ownerPos))
-            {
-                CameraMgr.Ins.EndFollow();
-            }
-            else
-            {
-                CameraMgr.Ins.StartFollow();
-            }
-
-            Vector2[] vision = CameraMgr.Ins.GetVision();
-            isOutVision = ownerPos.x - 0.1f <= vision[0].x || ownerPos.x + 0.1f >= vision[1].x;
-        }
-
-        if (!m_Owner.CanMove || !StageMgr.Ins.CanMove(ownerPos) || isOutVision) return;
+        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
         m_Owner.SetPos(ownerPos);
     }
 
