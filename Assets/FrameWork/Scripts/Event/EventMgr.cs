@@ -1,8 +1,9 @@
 ﻿using System;
+using UnityEngine;
 
 namespace FrameWork.Event
 {
-    public class EventManager:BaseMgr<EventManager>
+    public class EventMgr:BaseMgr<EventMgr>
     {
         public int EventHandlerCount
         {
@@ -23,6 +24,11 @@ namespace FrameWork.Event
         private void Awake()
         {
             m_EventPool = new EventPool<GameEventArgs>();
+        }
+
+        private void Update()
+        {
+            m_EventPool.Update(Time.time, Time.unscaledTime);
         }
 
         public void Subscribe(int id, EventHandler<GameEventArgs> handler)
@@ -56,7 +62,8 @@ namespace FrameWork.Event
 
         public override void ShutDown()
         {
-            
+            m_EventPool.ShutDown();
+            m_EventPool = null;
         }
 
         private EventPool<GameEventArgs> m_EventPool = null;

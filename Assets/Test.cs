@@ -10,11 +10,32 @@ public class Test : MonoBehaviour
     public Button btn1;
     public Button btn2;
     public Button btn3;
+    public GameObject parent;
+    public GameObject item;
+    public ScrollRect scroll;
+    class TestView : LayoutGroupViewItem
+    {
+        public Text t;
+        protected override void OnCreate(GameObject go)
+        {
+            t = go.transform.Find("Text").GetComponent<Text>();
+        }
+    }
+
+    //public BaseLayoutGroupList wrap;
+    private LayoutGroupLoopView<TestView> layout = new LayoutGroupLoopView<TestView>();
     private void Awake()
     {
+        //wrap.Init(100, 0, null, null);
+        layout.OnItemUpdate = delegate (TestView view) 
+        {
+            view.t.text = view.Index.ToString();
+        };
+
+        layout.Init(parent, item, 50, scroll);
         UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
-        UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
-        UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
+        //UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
+        //UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
 
         //EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
@@ -47,7 +68,8 @@ public class Test : MonoBehaviour
 
     private void onClick1(GameObject go, PointerEventData eventData)
     {
-        UIMgr.Ins.Open<RoleSelectPanel>();
+        //wrap.SetItemCount(10);
+        //UIMgr.Ins.Open<RoleSelectPanel>();
     }
 
 

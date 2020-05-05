@@ -34,7 +34,7 @@ public class SkillManager
             deployer.DeploySkill();
             m_CurrSkillDeployer = deployer;
         }
-        else Logger.LogError("Skill not found id:", id);
+        else FrameWork.Log.Debugger.LogError("Skill not found id:", id);
     }
 
     public void Update()

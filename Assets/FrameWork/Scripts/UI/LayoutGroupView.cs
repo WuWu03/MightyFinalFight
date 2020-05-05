@@ -5,25 +5,7 @@ using UnityEngine.UI;
 
 namespace FrameWork.UI
 {
-    public abstract class LayoutItem
-    {
-        public int Index { get; set; }
-        public virtual MyButton SelectButton { get; protected set; }
-        public GameObject gameObject { get; protected set; }
-        public Transform transform { get; protected set; }
-        public RectTransform rectTransform { get; protected set; }
-        public void Create(GameObject go)
-        {
-            gameObject = go;
-            transform = go.transform;
-            rectTransform = go.GetComponent<RectTransform>();
-            OnCreate(go);
-        }
-
-        protected abstract void OnCreate(GameObject go);
-    }
-
-    public class LayoutGroupView<T> where T : LayoutItem, new()
+    public class LayoutGroupView<T> where T : LayoutGroupViewItem, new()
     {
         public Action<T> OnItemUpdate;
         public Action<T,bool> OnItemSelect;
@@ -31,16 +13,11 @@ namespace FrameWork.UI
         public void Init(GameObject parent,GameObject item, int maxCount = 1, ScrollRect scroll = null)
         {
             m_Parent = parent;
-            m_MaxCount = maxCount;
             m_Item = item;
             m_ItemParent = parent;
             m_ScrollRect = scroll;
             m_ListItem = new List<T>();
-
-            for (int i = 0; i < maxCount; i++)
-            {
-                GetItem(i);
-            }
+            Update(maxCount);
         }
 
         public void Update(int count)
@@ -75,13 +52,11 @@ namespace FrameWork.UI
 
         public void SelectItem(int index)
         {
-            for (int i = 0; i < m_ListItem.Count; i++)
-            {
-                OnItemSelect?.Invoke(m_ListItem[i], false);
-            }
+            OnItemSelect?.Invoke(m_ListItem[m_CurrSelectIndex], false);
 
             if (index >= 0 && index < m_ListItem.Count && m_ListItem[index] != null)
             {
+                m_CurrSelectIndex = index;
                 OnItemSelect?.Invoke(m_ListItem[index], true);
             }
         }
@@ -104,8 +79,7 @@ namespace FrameWork.UI
             item.SetActive(false);
 
             T script = new T();
-            script.Index = index;
-            script.Create(item);
+            script.Create(item, index);
             OnItemUpdate?.Invoke(script);
 
             if (script.SelectButton != null)
@@ -116,10 +90,12 @@ namespace FrameWork.UI
         }
 
         private List<T> m_ListItem = null;
-        private int m_MaxCount = 1;
+        private int m_MaxCount = 0;
         private GameObject m_Parent;
         private GameObject m_ItemParent = null;
         private GameObject m_Item = null;
         private ScrollRect m_ScrollRect;
+
+        private int m_CurrSelectIndex = 0;
     }
 }

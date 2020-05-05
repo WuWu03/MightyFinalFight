@@ -77,18 +77,25 @@ public class UIRefSettingEditor : Editor
             }
             else
             {
-                if (panelType == UIRefSetting.Type.Root) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.MainPanel;
                 if (panelType == UIRefSetting.Type.Normal) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.FirstLevel;
                 if (panelType == UIRefSetting.Type.Pop) m_UIRefSetting.PanelLayer = UIRefSetting.Layer.SecondLevel;
                 m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.PanelLayer);
             }
             EditorGUILayout.EndHorizontal();
 
-            UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.PanelCloseMode);
-            if (m_UIRefSetting.PanelCloseMode != closeMode)
+
+            if (panelType != UIRefSetting.Type.Pop)
             {
-                FrameWorkEditorMgr.RegisterUndo(target, "Change UIRefSetting Close Mode");
-                m_UIRefSetting.PanelCloseMode = closeMode;
+                UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.PanelCloseMode);
+                if (m_UIRefSetting.PanelCloseMode != closeMode)
+                {
+                    FrameWorkEditorMgr.RegisterUndo(target, "Change UIRefSetting Close Mode");
+                    m_UIRefSetting.PanelCloseMode = closeMode;
+                }  
+            }
+            else
+            {
+                m_UIRefSetting.PanelCloseMode = UIRefSetting.CloseMode.Destroy;
             }
 
             FrameWorkEditorMgr.DrawProperty("PreLoad Type", serializedObject, "PanelPreLoadType");

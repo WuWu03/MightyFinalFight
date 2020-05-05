@@ -12,24 +12,23 @@ using FrameWork.Camera;
 
 public class RoleSelectPanelCtrl : BasePanelCtrl
 {
-	private RoleSelectPanel panel = null;
 	protected override void OnInit(object[] param)
 	{
-		panel = Panel as RoleSelectPanel;
+		m_Panel = Panel as RoleSelectPanel;
 	}
 
 	protected override void OnLoaded()
 	{
-		panel.RoleContentGroupView.Init(panel.RoleContent, panel.ItemGO, 3);
+		m_Panel.RoleContentGroupView.Init(m_Panel.RoleContent, m_Panel.ItemGO, 3);
 	}
 	protected override void OnOpen()
 	{
-		panel.ImgSelectRect.gameObject.SetActive(true);
-		panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
-		panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
+		m_Panel.ImgSelectRect.gameObject.SetActive(true);
+		m_Panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
+		m_Panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
 
-		panel.RoleContentGroupView.Update(1);
-		panel.RoleContentGroupView.SelectItem(0);
+		m_Panel.RoleContentGroupView.Update(1);
+		m_Panel.RoleContentGroupView.SelectItem(0);
 	}
 
 	protected override void OnUpdate()
@@ -38,7 +37,6 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		{
 			InnerClose();
 			PlayerMgr.Ins.InitPlayer(1001);
-			CameraMgr.Ins.SetTarget(PlayerMgr.Ins.Player.transform);
 			StageMgr.Ins.Enter(1001);
 		}
 	}
@@ -53,7 +51,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	}
 
 	protected override BasePanel GetPanel()
-	{
+	{		
 		return new RoleSelectPanel();
 	}
 
@@ -69,8 +67,10 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	{
 		if (isSelect)
 		{
-			panel.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
-			panel.ImgSelectRect.localPosition = Vector3.zero;
+			m_Panel.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
+			m_Panel.ImgSelectRect.localPosition = Vector3.zero;
 		}
 	}
+
+	private RoleSelectPanel m_Panel = null;
 }

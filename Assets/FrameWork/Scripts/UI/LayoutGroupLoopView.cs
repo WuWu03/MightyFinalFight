@@ -1,55 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FrameWork.UI
 {
-    public abstract class LayoutLoopViewItem
+    public class LayoutGroupLoopView<T> where T : LayoutGroupViewItem, new()
     {
-        public int Index { get; set; }
-        public virtual MyButton SelectButton { get; }
-        public GameObject gameObject { get; set; }
-        public Transform transform { get; set; }
+        public Action<T> OnItemUpdate;
+        public Action<T, bool> OnItemSelect;
 
-        public abstract void CreateHandle();
-        public virtual void SelectHandle(bool isSelect) { }
-        public abstract void SetData(int index);
-    }
-
-    public class LayoutLoopView<T> where T : LayoutLoopViewItem, new()
-        //where P : BasePanel
-    {
-        public GameObject Scroll
+        public void Init(GameObject parent, GameObject item, int maxCount, ScrollRect scroll)
         {
-            get; private set;
-        }
+            if (scroll == null)
+            {
+                Log.Debugger.LogError("LayoutGroupLoopView initialize failed ScrollRect not found");
+                return;
+            }
 
-        public ScrollRect ScrollRect
-        {
-            get; private set;
-        }
-
-        public void Init(GameObject _scroll, float perSize, float space)
-        {
-            Scroll = _scroll;
-            ScrollRect = _scroll.GetComponent<ScrollRect>();
-            //m_Panel = panel;
-
-            m_PerSize = perSize;
-            m_Space = space;
+            m_ScrollRect = scroll;
             m_ListItem = new List<T>();
-            m_Item = _scroll.transform.Find("ViewPort/Item").gameObject;
-            m_ItemParent = _scroll.transform.Find("ViewPort/Content").gameObject;
-            m_LayoutGroup = m_ItemParent.GetOrAddComponent<HorizontalOrVerticalLayoutGroup>();
-            m_ViewPortSize = _scroll.transform.Find("ViewPort").GetComponent<RectTransform>().sizeDelta;
+            m_Item = item;
+            m_ItemParent = parent;
+            m_LayoutGroup = parent.GetComponent<HorizontalOrVerticalLayoutGroup>();
+            m_ViewPortSize = scroll.viewport.GetComponent<RectTransform>().sizeDelta;
             m_ContentSizeFitter = m_LayoutGroup.gameObject.GetComponent<ContentSizeFitter>();
             m_LayoutRect = m_LayoutGroup.GetComponent<RectTransform>();
 
-            if (ScrollRect == null)
-            {
-                Debug.LogError("沒有挂载ScrollRect");
-                return;
-            }
+            m_Space = m_LayoutGroup.spacing;
 
             if (m_ContentSizeFitter != null)
             {
@@ -60,27 +38,26 @@ namespace FrameWork.UI
 
             if (m_LayoutGroup is HorizontalLayoutGroup)
             {
+                m_PerSize = item.GetComponent<RectTransform>().sizeDelta.x;
                 m_LayoutRect.pivot = new Vector2(0, m_LayoutRect.pivot.y);
                 m_LayoutRect.anchorMin = new Vector2(0f, m_LayoutRect.anchorMin.y);
                 m_LayoutRect.anchorMax = new Vector2(0f, m_LayoutRect.anchorMin.y);
                 m_LayoutRect.anchoredPosition = new Vector2(0, m_LayoutRect.anchoredPosition.y);
-                m_ShowCount = Mathf.CeilToInt(m_ViewPortSize.x / (perSize + space));
+                m_ShowCount = Mathf.CeilToInt(m_ViewPortSize.x / (m_PerSize + m_Space));
             }
             else
             {
+                m_PerSize = item.GetComponent<RectTransform>().sizeDelta.y;
                 m_LayoutRect.pivot = new Vector2(m_LayoutRect.pivot.x, 1f);
                 m_LayoutRect.anchorMin = new Vector2(m_LayoutRect.anchorMin.x, 1f);
                 m_LayoutRect.anchorMax = new Vector2(m_LayoutRect.anchorMax.x, 1f);
                 m_LayoutRect.anchoredPosition = new Vector2(m_LayoutRect.anchoredPosition.x, 0);
-                m_ShowCount = Mathf.CeilToInt(m_ViewPortSize.y / (perSize + space));
+                m_ShowCount = Mathf.CeilToInt(m_ViewPortSize.y / (m_PerSize + m_Space));
             }
 
-            ScrollRect.onValueChanged.AddListener(OnScroll);
-
-            for (int i = 0; i < m_ShowCount; i++)
-            {
-                GetItem(m_ItemParent.transform, m_Item, i);
-            }
+            m_ScrollRect.onValueChanged.AddListener(OnScroll);
+            m_Item.SetActive(false);
+            Update(maxCount);
         }
 
         public void Update(int count)
@@ -122,20 +99,19 @@ namespace FrameWork.UI
             for (int i = 0; i < m_ShowCount + 1; i++)
             {
                 m_ListItem[i].gameObject.SetActive(true);
-                m_ListItem[i].SetData(m_CurrIndex + i);
+                m_ListItem[i].UpdateIndex(m_CurrIndex + i);
+                OnItemUpdate?.Invoke(m_ListItem[i]);
             }
         }
 
         public void SelectItem(int index)
         {
-            for (int i = 0; i < m_ListItem.Count; i++)
-            {
-                m_ListItem[i].SelectHandle(false);
-            }
+            OnItemSelect?.Invoke(m_ListItem[m_CurrSelectIndex], false);
 
             if (index >= 0 && index < m_ListItem.Count && m_ListItem[index] != null)
             {
-                m_ListItem[index].SelectHandle(true);
+                m_CurrSelectIndex = index;
+                OnItemSelect?.Invoke(m_ListItem[index], true);
             }
         }
 
@@ -149,15 +125,15 @@ namespace FrameWork.UI
 
             if (m_LayoutGroup is HorizontalLayoutGroup)
             {
-                velocity = ScrollRect.velocity.x;
+                velocity = m_ScrollRect.velocity.x;
                 anchoredPosition = -m_LayoutRect.anchoredPosition.x;
-                forwardState = velocity < 0 ? 1 : -1;// velocity > 0 ? -1 : 0;
+                forwardState = velocity < 0 ? 1 : -1;
             }
             else if (m_LayoutGroup is VerticalLayoutGroup)
             {
-                velocity = ScrollRect.velocity.y;
+                velocity = m_ScrollRect.velocity.y;
                 anchoredPosition = m_LayoutRect.anchoredPosition.y;
-                forwardState = velocity > 0 ? 1 : -1;//velocity < 0 ? -1 : 0;
+                forwardState = velocity > 0 ? 1 : -1;
             }
 
             if (forwardState == 1)
@@ -185,15 +161,15 @@ namespace FrameWork.UI
                     for (int i = 0; i <= itemIndex; i++)
                     {
                         SetItemPos(m_ListItem[i], m_CurrIndex - itemIndex + i);
-                        m_ListItem[i].Index = m_CurrIndex - itemIndex + i;
-                        m_ListItem[i].SetData(m_CurrIndex - itemIndex + i);
+                        m_ListItem[i].UpdateIndex(m_CurrIndex - itemIndex + i);
+                        OnItemUpdate?.Invoke(m_ListItem[i]);
                     }
                 else
                     for (int i = m_ListItem.Count - 1; i >= itemIndex; i--)
                     {
                         SetItemPos(m_ListItem[i], m_CurrIndex - itemIndex + i);
-                        m_ListItem[i].Index = m_CurrIndex - itemIndex + i;
-                        m_ListItem[i].SetData(m_CurrIndex - itemIndex + i);
+                        m_ListItem[i].UpdateIndex(m_CurrIndex - itemIndex + i);
+                        OnItemUpdate?.Invoke(m_ListItem[i]);
                     }
             }
         }
@@ -201,21 +177,19 @@ namespace FrameWork.UI
         private void GetItem(Transform parent, GameObject obj, int index)
         {
             GameObject item = GameObject.Instantiate(obj);
-            item.GetOrAddComponent<ScrollRectDrag>().DragScroll = ScrollRect;
+            item.GetOrAddComponent<ScrollRectDrag>().DragScroll = m_ScrollRect;
             item.transform.SetParent(parent, false);
             item.transform.localScale = Vector3.one;
             item.SetActive(false);
 
             T script = new T();
-            script.gameObject = item;
-            script.transform = item.transform;
-            script.Index = index;
-            script.CreateHandle();
+            script.Create(item, index);
 
             if (script.SelectButton != null)
             {
                 script.SelectButton.onClick.AddListener(delegate () { SelectItem(index); });
             }
+
             m_ListItem.Add(script);
             SetItemPos(script, index);
         }
@@ -244,6 +218,7 @@ namespace FrameWork.UI
         private int m_ShowCount = 1;
         private int m_ContainCount = 0;
         private int m_CurrIndex = 0;
+        private int m_CurrSelectIndex = 0;
         private Vector2 m_ViewPortSize = Vector2.zero;
         private HorizontalOrVerticalLayoutGroup m_LayoutGroup = null;
         private GameObject m_ItemParent = null;
@@ -251,6 +226,6 @@ namespace FrameWork.UI
         private ContentSizeFitter m_ContentSizeFitter = null;
         private RectTransform m_LayoutRect = null;
         private List<T> m_ListItem = null;
-        //private P m_Panel;
+        private ScrollRect m_ScrollRect;
     }
 }

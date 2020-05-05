@@ -54,6 +54,25 @@ public class UIRef : MonoBehaviour
     }
 
     /// <summary>
+    /// 列表格子
+    /// </summary>
+    [SerializeField] private bool m_IsLayoutItemVariable;
+    public bool IsLayoutItemVariable
+    {
+        get { return m_IsLayoutItemVariable; }
+        set { m_IsLayoutItemVariable = value; }
+    }
+
+    /// <summary>
+    /// 循环列表
+    /// </summary>
+    [SerializeField] private bool m_IsLoopLayout;
+    public bool IsLoopLayout
+    {
+        get { return m_IsLoopLayout; }
+        set { m_IsLoopLayout = value; }
+    }
+    /// <summary>
     /// 输出到剪切板
     /// </summary>
     [SerializeField] private bool m_IsCopyRefStr;

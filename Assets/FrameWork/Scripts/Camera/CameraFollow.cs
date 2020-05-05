@@ -38,7 +38,7 @@ namespace FrameWork.Camera
         {
             if (m_Target == null)
             {
-                Logger.LogError("Don't have target to follow!");
+                FrameWork.Log.Debugger.LogError("Don't have target to follow!");
                 return;
             }
 

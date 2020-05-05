@@ -13,6 +13,11 @@ namespace FrameWork
             go.gameObject.SetActive(value);
         }
 
+        public static T GetOrAddComponent<T>(this Transform transform) where T : Component
+        {
+            return GetOrAddComponent<T>(transform.gameObject);
+        }
+
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
             T ret = go.GetComponent<T>();

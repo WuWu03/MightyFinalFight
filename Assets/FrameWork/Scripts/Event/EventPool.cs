@@ -43,7 +43,7 @@ namespace FrameWork.Event
 
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
-            while (this.m_Events.Count > 0)
+            while (m_Events.Count > 0)
             {
                 EventPool<T>.Event @event = null;
                 Queue<Event> events = m_Events;
@@ -125,7 +125,7 @@ namespace FrameWork.Event
         public void Dispatch(object sender, T args)
         {
             Event item = Event.Create(sender, args);
-            Queue<EventPool<T>.Event> events = this.m_Events;
+            Queue<EventPool<T>.Event> events = m_Events;
             lock (events)
             {
                 m_Events.Enqueue(item);

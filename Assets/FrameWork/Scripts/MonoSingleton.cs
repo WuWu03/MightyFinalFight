@@ -17,7 +17,7 @@ namespace FrameWork
                     {
                         if (instances.Length > 1)
                         {
-                            Logger.LogError(string.Format("The instance that Type of {0} is more than one", typeof(T).Name));
+                            FrameWork.Log.Debugger.LogError(string.Format("The instance that Type of {0} is more than one", typeof(T).Name));
                             return null;
                         }
                         else

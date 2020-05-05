@@ -399,7 +399,7 @@ public class UIUtility
                 layoutRefList.Add(uiRefs[i]);
                 normalRefList.Add(uiRefs[i]);
             }
-            else if (!uiRefs[i].IsLayoutItem)
+            else if (!uiRefs[i].IsLayoutItem && !uiRefs[i].IsLayoutItemVariable)
             {
                 normalRefList.Add(uiRefs[i]);
             }
@@ -418,7 +418,8 @@ public class UIUtility
         {
             string itemName = layoutRefList[i].GetName() + "Item";
             string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-            sb.AppendFormat("\tpublic LayoutGroupView<{0}> {1}",itemName, itemVarableName);
+            string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
+            sb.AppendFormat("\tpublic {0}<{1}> {2}", layoutName, itemName, itemVarableName);
             sb.Append(" { get; private set;}\n");
         }
 
@@ -435,7 +436,8 @@ public class UIUtility
         {
             string itemName = layoutRefList[i].GetName() + "Item";
             string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-            sb.AppendFormat("\t\t{0} = new LayoutGroupView<{1}>();\n", itemVarableName, itemName);
+            string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
+            sb.AppendFormat("\t\t{0} = new {1}<{2}>();\n", itemVarableName, layoutName, itemName);
         }
 
         sb.AppendLine("\t}");
@@ -463,13 +465,14 @@ public class UIUtility
         sb.AppendLine("using FrameWork.UI;");
         sb.AppendLine("public class " + string.Format("{0}Ctrl:BasePanelCtrl", setting.PanelName));
         sb.AppendLine("{");
-        sb.AppendLine("\tprotected override void OnInit(object[] param)\n\t{\n\t}\n");
+        sb.AppendLine("\tprotected override void OnInit(object[] param)\n\t{\n" + string.Format("\t\tm_Panel = Panel as {0};", setting.PanelName) + "\n\t}\n");
+        sb.AppendLine("\tprotected override void OnLoaded()\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnOpen()\n\t{\n\t}\n");
-        sb.AppendLine("\tprotected override void OnLoaded()\n\t{\n\t}");
         sb.AppendLine("\tprotected override void OnUpdate()\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnClose()\n\t{\n\t}\n");
         sb.AppendLine("\tprotected override void OnDestroy()\n\t{\n\t}");
-        sb.AppendLine("\tprotected override BasePanel GetPanel()\n\t{\n" + string.Format("\t\treturn new {0}();", setting.PanelName) + "\n\t}");
+        sb.AppendLine("\tprotected override BasePanel GetPanel()\n\t{\n" + string.Format("\t\treturn new {0}();", setting.PanelName) + "\n\t}\n");
+        sb.AppendFormat("\tprivate {0} m_Panel = null;\n", setting.PanelName);
         sb.Append("}");
         IOUtil.VerifyDirectory(setting.ScriptFolder);
         IOUtil.CreateTextFile(setting.PanelCtrlPath, sb.ToString());
@@ -479,12 +482,23 @@ public class UIUtility
     {
         sb.AppendLine();
         UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
-        sb.AppendFormat("\tpublic class {0} : LayoutItem\n", uiRef.GetName() + "Item");
+        sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\n", uiRef.GetName() + "Item");
         sb.AppendLine("\t{");
+
+        string itemName = string.Empty;
 
         for (int i = 0; i < itemRefs.Length; i++)
         {
-            if (!itemRefs[i].IsLayoutItem) continue;
+            if(itemRefs[i].IsLayoutItem)
+            {
+                itemName = itemRefs[i].name;
+                break;
+            }
+        }
+
+        for (int i = 0; i < itemRefs.Length; i++)
+        {
+            if (!itemRefs[i].IsLayoutItemVariable) continue;
             sb.AppendFormat("\t\tpublic {0} {1} = null;\n", itemRefs[i].ComponentName, itemRefs[i].GetName());
         }
 
@@ -493,9 +507,9 @@ public class UIUtility
 
         for (int i = 0; i < itemRefs.Length; i++)
         {
-            if (!itemRefs[i].IsLayoutItem) continue;
+            if (!itemRefs[i].IsLayoutItemVariable) continue;
             string path = FrameWorkEditorMgr.GetHierarchy(itemRefs[i].gameObject);
-            path = path.Substring(path.LastIndexOf("Item") + "Item".Length + 1);
+            path = path.Substring(path.LastIndexOf(itemName) + itemName.Length + 1).Replace(@"\", "/");
             sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n", itemRefs[i].GetName(), path, itemRefs[i].ComponentName);
         }
 

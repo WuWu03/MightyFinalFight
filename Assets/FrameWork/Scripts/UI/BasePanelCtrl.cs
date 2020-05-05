@@ -27,6 +27,15 @@ namespace FrameWork.UI
             } 
         }
 
+        public bool IsDelayTimeOut
+        {
+            get
+            {
+                return Panel != null && Panel.PanelCloseMode == UIMgr.CloseMode.DelayDestroy &&
+                       m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
+            }
+        }
+
         public void Open(VoidNotPar callback = null,object[] param = null)
         {
             if (!m_IsInit)
@@ -131,15 +140,21 @@ namespace FrameWork.UI
                 m_ListCloseCallback.Clear();
                 PlayCloseAnim();
                 OnClose();
-                Destroy();
+                Destroy(false);
             }
         }
 
-        private void Destroy()
+        public void Destroy(bool isForce)
         {   
             if (Panel.PanelCloseMode == UIMgr.CloseMode.Always) return;
 
-            if (Panel.PanelCloseMode == UIMgr.CloseMode.Destroy)
+            if(!isForce && Panel.PanelCloseMode == UIMgr.CloseMode.DelayDestroy)
+            {
+                m_DelayTime = Time.time;
+                return;
+            }
+
+            if (isForce || Panel.PanelCloseMode == UIMgr.CloseMode.Destroy)
             {
                 OnDestroy();
 
@@ -151,10 +166,10 @@ namespace FrameWork.UI
                 GameObject.Destroy(Panel.gameObject);
                 ResMgr.Ins.UnloadAssetBundle(Panel.ResPath, true);
                 Panel = null;
+                m_DelayTime = 0f;
                 m_IsInit = false;
+                m_ResState = ResState.UNLOAD;
             }
-
-            m_ResState = ResState.UNLOAD;
         }
 
         protected virtual void PlayOpenAnim(){ }
@@ -167,6 +182,7 @@ namespace FrameWork.UI
         protected abstract void OnDestroy();
         protected abstract BasePanel GetPanel();
 
+        private float m_DelayTime = 0f;
         private bool m_IsShow = false;
         private bool m_IsInit = false;
         private List<VoidNotPar> m_ListOpenCallback = null;

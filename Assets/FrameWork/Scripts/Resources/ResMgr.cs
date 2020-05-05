@@ -32,7 +32,7 @@ namespace FrameWork.Resources
         {
             _mResDic = new Dictionary<string, Object>();
 #if UNITY_EDITOR
-            if (RuntimeEnvironment.Instance.loadAB)
+            if (RuntimeEnvironment.Instance.LoadAB)
 #endif
             {
                 string url = ResDefine.AssetBundlePath + "/StreamingAssets";
@@ -90,7 +90,7 @@ namespace FrameWork.Resources
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = RuntimeEnvironment.Instance.loadAB;
+            bool isLoadAb = RuntimeEnvironment.Instance.LoadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
                 ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t);

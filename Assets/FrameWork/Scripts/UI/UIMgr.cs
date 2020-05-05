@@ -12,9 +12,9 @@ namespace FrameWork.UI
     {
         public enum Type
         {
-            Root,
-            Normal,
-            Pop,
+            Root,//根界面（主界面）
+            Normal,//一般界面
+            Pop,//弹出界面
         }
 
         public enum Layer
@@ -39,6 +39,9 @@ namespace FrameWork.UI
             m_DicPanelMap = new Dictionary<string, System.Type>();
             m_ListOpenPanel = new List<BasePanelCtrl>();
             m_StackMutexPanel = new Stack<BasePanelCtrl>();
+            m_QueueDelayDestroy = new Queue<BasePanelCtrl>();
+            m_QueueAlways = new Queue<BasePanelCtrl>();
+
             m_UIRoot = new GameObject("UIRoot");
             m_UICanvas = new GameObject("UICanvas").GetOrAddComponent<Canvas>();
             m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
@@ -180,6 +183,24 @@ namespace FrameWork.UI
 
             ctrl.Close(callback);
 
+            if (ctrl.Panel.PanelCloseMode == CloseMode.DelayDestroy)
+            {
+                Queue<BasePanelCtrl> queue = m_QueueDelayDestroy;
+                lock(queue)
+                {
+                    m_QueueDelayDestroy.Enqueue(ctrl);
+                }
+            }
+
+            if(ctrl.Panel.PanelCloseMode == CloseMode.Always)
+            {
+                Queue<BasePanelCtrl> queue = m_QueueAlways;
+                lock (queue)
+                {
+                    m_QueueAlways.Enqueue(ctrl);
+                }
+            }
+
             if (ctrl.Panel.PanelCloseMode == CloseMode.Destroy)
             {
                 m_ListOpenPanel.Remove(ctrl);
@@ -220,6 +241,32 @@ namespace FrameWork.UI
                 if (m_ListOpenPanel[i].IsOpen)
                     m_ListOpenPanel[i].Update();
             }
+
+            if (m_QueueDelayDestroy.Count > 0 && m_QueueDelayDestroy.Peek().IsDelayTimeOut)
+            {
+                BasePanelCtrl ctrl = null;
+                Queue<BasePanelCtrl> queue = m_QueueDelayDestroy;
+
+                lock (queue)
+                {
+                    ctrl = m_QueueDelayDestroy.Dequeue();
+                    ctrl.Destroy(true);
+                    m_ListOpenPanel.Remove(ctrl);
+                }
+            }
+
+            if(m_QueueAlways.Count > 10)
+            {
+                BasePanelCtrl ctrl = null;
+                Queue<BasePanelCtrl> queue = m_QueueAlways;
+
+                lock (queue)
+                {
+                    ctrl = m_QueueAlways.Dequeue();
+                    ctrl.Destroy(true);
+                    m_ListOpenPanel.Remove(ctrl);
+                }
+            }
         }
 
         public override void ShutDown()
@@ -227,9 +274,13 @@ namespace FrameWork.UI
             m_DicPanelMap.Clear();
             m_StackMutexPanel.Clear();
             m_ListOpenPanel.Clear();
+            m_QueueDelayDestroy.Clear();
+            m_QueueAlways.Clear();
         }
 
         private Dictionary<string, System.Type> m_DicPanelMap = null;
+        private Queue<BasePanelCtrl> m_QueueDelayDestroy = null;
+        private Queue<BasePanelCtrl> m_QueueAlways = null;
         private Stack<BasePanelCtrl> m_StackMutexPanel = null;
         private List<BasePanelCtrl> m_ListOpenPanel = null;
         private RectTransform[] m_UILayerTransform = null;

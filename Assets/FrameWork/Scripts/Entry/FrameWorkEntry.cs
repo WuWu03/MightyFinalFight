@@ -27,7 +27,7 @@ namespace FrameWork
             FsmMgr.Init();
             CameraMgr.Init();
             SoundMgr.Init();
-            EventManager.Init();
+            EventMgr.Init();
 
             OnInit();
         }
@@ -49,7 +49,7 @@ namespace FrameWork
             FsmMgr.Ins.ShutDown();
             CameraMgr.Ins.ShutDown();
             SoundMgr.Ins.ShutDown();
-            EventManager.Ins.ShutDown();
+            EventMgr.Ins.ShutDown();
         }
         protected abstract void OnInit();
         protected abstract void OnStartGame();

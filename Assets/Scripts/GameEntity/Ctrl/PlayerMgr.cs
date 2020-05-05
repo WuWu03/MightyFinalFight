@@ -53,6 +53,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             }
         }
         Life = 5;
+
+        CameraMgr.Ins.SetTarget(m_Player.transform);
     }
 
     public void Rebirth()

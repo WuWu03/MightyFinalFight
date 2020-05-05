@@ -14,7 +14,7 @@ public class RoleSelectPanel : BasePanel
 	public override float PanelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
-	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
+	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.DelayDestroy; } }
 	//RoleContent,GameObject
 	public GameObject RoleContent { get; private set;}
 	//RoleContent/Item,GameObject
@@ -30,7 +30,7 @@ public class RoleSelectPanel : BasePanel
 		RoleContentGroupView = new LayoutGroupView<RoleContentItem>();
 	}
 
-	public class RoleContentItem : LayoutItem
+	public class RoleContentItem : LayoutGroupViewItem
 	{
 		public MyButton BtnRoleIcon = null;
 		public Text TxtName = null;

@@ -37,7 +37,7 @@ public class UIRefEditor : Editor
 
         if (useObjName.boolValue)
         {
-            m_UIRef.SetObjName(m_UIRef.gameObject.name);
+            //m_UIRef.SetObjName(m_UIRef.gameObject.name);
             foreach (UIRef current in GetOtherRef(m_UIRef))
             {
                 if (current == m_UIRef || !current.UseObjName) continue;
@@ -78,12 +78,49 @@ public class UIRefEditor : Editor
             m_UIRef.Desc = desc;
         }
 
-        SerializedProperty isLayoutItem = FrameWorkEditorMgr.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
-        if(m_UIRef.IsLayoutItem != isLayoutItem.boolValue)
+        if (m_UIRef.IsLayoutContent())
         {
-            EditorUtility.SetDirty(m_UIRef);
-            m_UIRef.IsLayoutItem = isLayoutItem.boolValue;
+            SerializedProperty isLoopLayout = FrameWorkEditorMgr.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
+            if (m_UIRef.IsLoopLayout != isLoopLayout.boolValue)
+            {
+                EditorUtility.SetDirty(m_UIRef);
+                m_UIRef.IsLoopLayout = isLoopLayout.boolValue;
+            }
         }
+        else m_UIRef.IsLoopLayout = false;
+
+        UIRef parentLayoutRef = m_UIRef.transform.parent == null ? null : m_UIRef.transform.parent.GetComponent<UIRef>();
+        if (parentLayoutRef != null && parentLayoutRef.IsLayoutContent())
+        {
+            SerializedProperty isLayoutItem = FrameWorkEditorMgr.DrawProperty("列表格子", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
+            if (m_UIRef.IsLayoutItem != isLayoutItem.boolValue)
+            {
+                EditorUtility.SetDirty(m_UIRef);
+                m_UIRef.IsLayoutItem = isLayoutItem.boolValue;
+            }
+        }
+        else m_UIRef.IsLayoutItem = false;
+
+        UIRef[] parentLayoutItemRefs = m_UIRef.transform.parent == null ? null : m_UIRef.GetComponentsInParent<UIRef>();
+        bool isParentLayoutItem = false;
+        for (int i = 1; i < parentLayoutItemRefs.Length; i++)
+        {
+            if (parentLayoutItemRefs[i].IsLayoutItem)
+            {
+                isParentLayoutItem = true;
+                break;
+            }
+        }
+        if (isParentLayoutItem)
+        {
+            SerializedProperty isLayoutItem = FrameWorkEditorMgr.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItemVariable", new GUILayoutOption[0]);
+            if (m_UIRef.IsLayoutItemVariable != isLayoutItem.boolValue)
+            {
+                EditorUtility.SetDirty(m_UIRef);
+                m_UIRef.IsLayoutItemVariable = isLayoutItem.boolValue;
+            }
+        }
+        else m_UIRef.IsLayoutItemVariable = false;
 
         SerializedProperty isCopyRefStr = FrameWorkEditorMgr.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
         if(m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)

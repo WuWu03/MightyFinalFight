@@ -11,7 +11,7 @@ namespace FrameWork
             {
                 if (m_Ins == null)
                 {
-                    Logger.LogError(string.Format("The instance that Type of {0} must be init", typeof(T).Name));
+                    Log.Debugger.LogError(string.Format("The instance that Type of {0} must be init", typeof(T).Name));
                     return null;
                 }
 
@@ -23,7 +23,7 @@ namespace FrameWork
         {
             if (m_Ins != null)
             {
-                Logger.LogError(string.Format("The instance that Type of {0} has already init", typeof(T).Name));
+                Log.Debugger.LogError(string.Format("The instance that Type of {0} has already init", typeof(T).Name));
                 return;
             }
 
