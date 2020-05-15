@@ -72,12 +72,55 @@ namespace FrameWork
             return result;
         }
 
+        public static int[] ToIntArray(this string value, char partten = ',')
+        {
+            string[] valueStr = value.Split(partten);
+            int[] ret = new int[valueStr.Length];
+
+            for (int i = 0; i <= valueStr.Length/2; i++)
+            {
+                int result1 = 0;
+                int result2 = 0;
+                int.TryParse(valueStr[i], out result1);
+                int.TryParse(valueStr[valueStr.Length - i - 1], out result2);
+
+                ret[i] = result1;
+                ret[valueStr.Length - i - 1] = result2;
+            }
+  
+            return ret;
+        }
+
         public static float ToFloat(this string value)
         {
             float result = 0;
             float.TryParse(value, out result);
 
             return result;
+        }
+
+        public static float[] ToFloatArray(this string value, char partten = ',')
+        {
+            string[] valueStr = value.Split(partten);
+            float[] ret = new int[valueStr.Length];
+
+            for (int i = 0; i <= valueStr.Length / 2; i++)
+            {
+                float result1 = 0;
+                float result2 = 0;
+                float.TryParse(valueStr[i], out result1);
+                float.TryParse(valueStr[valueStr.Length - i - 1], out result2);
+
+                ret[i] = result1;
+                ret[valueStr.Length - i - 1] = result2;
+            }
+
+            return ret;
+        }
+
+        public static float[] ToStringArray(this string value,char partten = ',')
+        {
+            return value.Split(partten);
         }
 
         public static bool ToBoolean(this string value)
@@ -88,6 +131,7 @@ namespace FrameWork
             return result;
         }
 
+ 
         public static LitJson.JsonData ToJson(this string value)
         {
             return LitJson.JsonMapper.ToObject(value);
