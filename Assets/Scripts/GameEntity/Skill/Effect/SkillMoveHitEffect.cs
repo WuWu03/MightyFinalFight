@@ -19,6 +19,12 @@ public class SkillMoveHitEffect : ISkillEffect
         }
     }
 
+    public int Index
+    {
+        get;
+        set;
+    }
+
     public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
     {
         m_Owner = owner;
@@ -28,9 +34,9 @@ public class SkillMoveHitEffect : ISkillEffect
         m_Selector = selector;
         m_IsCompleted = false;
         owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        owner.Rigidbody.AddForce(new Vector2(skillData.AddSelfForce.x * owner.Dir, skillData.AddSelfForce.y));
-        owner.Rigidbody.drag = skillData.AddSelfDrag;
-        owner.Rigidbody.gravityScale = skillData.Gravity;
+        owner.Rigidbody.AddForce(new Vector2(skillData.SkillEffects[Index].AddSelfForce.x * owner.Dir, skillData.SkillEffects[Index].AddSelfForce.y));
+        owner.Rigidbody.drag = skillData.SkillEffects[Index].AddSelfDrag;
+        owner.Rigidbody.gravityScale = skillData.SkillEffects[Index].Gravity;
     }
 
     private void OnUpdate()
@@ -48,8 +54,8 @@ public class SkillMoveHitEffect : ISkillEffect
                 {
                     AttackerID = m_Owner.ID,
                     AttackerDir = m_Owner.Dir,
-                    AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
-                    IsSwoon = m_SkillData.IsSmoon,
+                    AttackForce = new Vector2(m_SkillData.SkillEffects[Index].AddTargetForce.x * m_Owner.Dir, m_SkillData.SkillEffects[Index].AddTargetForce.y),
+                    IsSwoon = m_SkillData.SkillEffects[Index].IsSmoon,
                     AttackValue = 1,
                 });
 
@@ -63,7 +69,7 @@ public class SkillMoveHitEffect : ISkillEffect
             return;
         }
 
-        float dis = Mathf.Abs(m_SkillData.MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
+        float dis = Mathf.Abs(m_SkillData.SkillEffects[Index].MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
         if (dis <= 0.1f)
         {
             Complete();

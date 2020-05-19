@@ -47,7 +47,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         for (int i = 6; i < m_HeroData.Skills.Length; i++)
         {
             SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
-            if (skillData.Type == SkillData.SkillType.SkillAttack)
+            if (skillData.Type == SkillData.SkillType.SkillAttack&& skillData.SkillKeys.Length > 0)
             {
                 InputMgr.Ins.AddKeyEvent(skillData.SkillKeys, skillData.ID, OnComboKeyEvent);
             }

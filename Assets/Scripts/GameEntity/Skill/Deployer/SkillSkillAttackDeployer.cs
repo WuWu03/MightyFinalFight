@@ -1,4 +1,5 @@
 ﻿using FrameWork.Sound;
+using UnityEngine;
 using static SkillData;
 
 public class SkillSkillAttackDeployer : SkillDeployer
@@ -43,6 +44,7 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
+        Debug.Log(eventObject.name);
         base.DeploySkill();
     }
 
@@ -65,6 +67,9 @@ public class SkillSkillAttackDeployer : SkillDeployer
                 break;
             case SkillStatus.Ground:
                 ret = m_Owner.IsInGround;
+                break;
+            case SkillStatus.Catch:
+                ret = (m_Owner as BaseHero).IsCatch;
                 break;
         }
 

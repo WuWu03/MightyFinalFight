@@ -7,15 +7,23 @@ public abstract class SkillDeployer
         SkillID = skillID;
         m_Owner = owner;
         m_SkillData = StaticConfig.SkillConfig.GetData(skillID);
-        m_SkillSelector = SkillDeployerFactory.CreateSelector(m_SkillData.SelectorType);
-        m_SkillEffects = SkillDeployerFactory.CreateEffects(m_SkillData.EffectorTypes);
+        m_SkillSelector = SkillDeployerFactory.CreateSelector(m_SkillData.SkillEffects);
+        m_SkillEffects = SkillDeployerFactory.CreateEffects(m_SkillData.SkillEffects);
     }
 
     public virtual void DeploySkill()
     {
-        for (int i = 0; i < m_SkillEffects.Length; i++)
+        if(m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
         {
-            m_SkillEffects[i].Effect(m_Owner, m_SkillData, m_SkillSelector);
+            m_SkillEffects[m_CurrEffectIndex].Effect(m_Owner, m_SkillData, m_SkillSelector[m_CurrEffectIndex]);
+            m_CurrEffectIndex = m_CurrEffectIndex < m_SkillEffects.Length - 1 ? m_CurrEffectIndex + 1 : 0;
+        }
+        else
+        {
+            for (int i = 0; i < m_SkillEffects.Length; i++)
+            {
+                m_SkillEffects[i].Effect(m_Owner, m_SkillData, m_SkillSelector[i]);
+            }
         }
     }
 
@@ -25,11 +33,17 @@ public abstract class SkillDeployer
 
         for (int i = 0; i < m_SkillEffects.Length; i++)
         {
-            if (m_SkillEffects[i].IsCompleted)
+            if (!m_SkillEffects[i].IsCompleted)
             {
-                m_SkillEffects[i].Reset();
+                ret = false;
+                break;
             }
-            else ret = false;
+        }
+
+        if (ret)
+        {
+            for (int i = 0; i < m_SkillEffects.Length; i++)
+                m_SkillEffects[i].Reset();
         }
 
         return ret;
@@ -39,6 +53,7 @@ public abstract class SkillDeployer
 
     protected BaseRole m_Owner = null;
     protected SkillData m_SkillData = null;
-    private ISkillSelector m_SkillSelector = null;
+    private int m_CurrEffectIndex = 0;
+    private ISkillSelector[] m_SkillSelector = null;
     private ISkillEffect[] m_SkillEffects = null;
 }

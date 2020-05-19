@@ -10,6 +10,8 @@ public class SkillNearHitSelector : ISkillSelector
         m_ListTargets = new List<ICanBeHit>();
     }
 
+    public int Index { get; set; }
+
     public List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData)
     {
         m_ListTargets.Clear();
@@ -36,6 +38,11 @@ public class SkillNearHitSelector : ISkillSelector
         }
 
         return m_ListTargets;
+    }
+
+    public List<GameObject> GetTargetsObj(BaseRole owner, SkillData skillData)
+    {
+        return owner.GetComponent<TriggerTargets>().Targets;
     }
 
     private List<ICanBeHit> m_ListTargets = null;

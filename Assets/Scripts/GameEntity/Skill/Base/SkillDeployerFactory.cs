@@ -22,38 +22,44 @@ public class SkillDeployerFactory
 
         return ret;
     }
-    public static ISkillSelector CreateSelector(SkillSelectorType type)
+    public static ISkillSelector[] CreateSelector(SkillData.SkillEffect[] skillEffects)
     {
-        ISkillSelector ret = null;
-        switch (type)
+        ISkillSelector[] ret = new ISkillSelector[skillEffects.Length];
+        for (int i = 0; i < skillEffects.Length; i++)
         {
-            case SkillSelectorType.NearHitSelector:
-                ret = new SkillNearHitSelector();
-                break;
-            case SkillSelectorType.BulletSelector:
-                ret = new SkillBulletSelector();
-                break;
+            switch (skillEffects[i].SelectorType)
+            {
+                case SkillSelectorType.NearHitSelector:
+                    ret[i] = new SkillNearHitSelector() { Index = i };
+                    break;
+                case SkillSelectorType.BulletSelector:
+                    ret[i] = new SkillBulletSelector() { Index = i };
+                    break;
+            }
         }
 
         return ret;
     }
 
-    public static ISkillEffect[] CreateEffects(SkillEffectorType[] types)
+    public static ISkillEffect[] CreateEffects(SkillData.SkillEffect[] skillEffects)
     {
-        ISkillEffect[] ret = new ISkillEffect[types.Length];
+        ISkillEffect[] ret = new ISkillEffect[skillEffects.Length];
 
-        for (int i = 0; i < types.Length; i++)
+        for (int i = 0; i < skillEffects.Length; i++)
         {
-            switch (types[i])
+            switch (skillEffects[i].EffectorType)
             {
                 case SkillEffectorType.NearHitEffect:
-                    ret[i] = new SkillNearHitEffect();
+                    ret[i] = new SkillNearHitEffect() { Index = i };
                     break;
                 case SkillEffectorType.BulletHitEffect:
-                    ret[i] = new SkillBulletEffect();
+                    ret[i] = new SkillBulletEffect() { Index = i };
                     break;
                 case SkillEffectorType.MoveHitEffect:
-                    ret[i] = new SkillMoveHitEffect();
+                    ret[i] = new SkillMoveHitEffect() { Index = i };
+                    break;
+                case SkillEffectorType.MoveTargetEffect:
+                    ret[i] = new SkillMoveTargetEffect() { Index = i };
                     break;
             }
         }

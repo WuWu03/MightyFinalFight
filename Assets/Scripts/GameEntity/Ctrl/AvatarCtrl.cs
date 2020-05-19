@@ -57,7 +57,7 @@ public class AvatarCtrl : BaseCtrl
         }
         else
         {
-            NormalAttack();
+            NormalAttack(dir);
         }
     }
 
@@ -116,7 +116,7 @@ public class AvatarCtrl : BaseCtrl
         }
     }
 
-    protected virtual void NormalAttack()
+    protected virtual void NormalAttack(Vector2 dir)
     {
         if (m_AttackWaitTime == null || m_AttackWaitTime.Length < 1) return;
         if (m_AttackIndex >= m_AttackWaitTime.Length) return;

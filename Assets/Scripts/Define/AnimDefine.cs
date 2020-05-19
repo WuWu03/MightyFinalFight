@@ -13,4 +13,5 @@
     public const string Dead = "Dead";
     public const string Catch = "Catch";
     public const string Knee = "Knee";
+    public const string Throw = "Throw";
 }

@@ -17,7 +17,7 @@ public class Bullet : BaseObject
         m_IsHit = false;
 
     }
-    public void SetBulletInfo(BaseRole owner, SkillData skillData, SkillData.Bullet bulletData)
+    public void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
     {
         m_Rigidbody.drag = bulletData.Drag;
         m_Rigidbody.velocity = new Vector2(bulletData.Velocity.x * owner.Dir, bulletData.Velocity.y);
@@ -26,7 +26,7 @@ public class Bullet : BaseObject
         m_BoxCollider.size = bulletData.TriggerSize;
 
         m_Owner = owner;
-        m_SkillData = skillData;
+        m_SkillEffect = skillEffect;
         m_BulletData = bulletData;
 
         if (owner.Dir > 0) transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -69,9 +69,9 @@ public class Bullet : BaseObject
         {
             hit.OnHurtMsg(new HurtData()
             {
-                IsSwoon = m_SkillData.IsSmoon,
+                IsSwoon = m_SkillEffect.IsSmoon,
                 AttackerDir = m_Owner.Dir,
-                AttackForce = new Vector2(m_SkillData.AddTargetForce.x * m_Owner.Dir, m_SkillData.AddTargetForce.y),
+                AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y),
                 AttackValue = 1,
             });
 
@@ -91,14 +91,14 @@ public class Bullet : BaseObject
     {
         base.Release();
         m_Owner = null;
-        m_SkillData = null;
+        m_SkillEffect = null;
         m_BulletData = null;
     }
 
     private bool m_IsHit = false;
     private DragonBones.UnityArmatureComponent m_Animator = null;
     private BaseObject m_Owner = null;
-    private SkillData m_SkillData = null;
+    private SkillData.SkillEffect m_SkillEffect = null;
     private SkillData.Bullet m_BulletData = null;
     private Rigidbody2D m_Rigidbody = null;
     private BoxCollider2D m_BoxCollider = null;

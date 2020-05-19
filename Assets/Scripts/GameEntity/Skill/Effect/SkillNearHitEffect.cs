@@ -23,6 +23,12 @@ public class SkillNearHitEffect : ISkillEffect
         }
     }
 
+    public int Index
+    {
+        get;
+        set;
+    }
+
     public void Effect(BaseRole owner, SkillData skillData, ISkillSelector skillSelector)
     {
         m_Owner = owner;
@@ -54,14 +60,14 @@ public class SkillNearHitEffect : ISkillEffect
         if (hit != null && hit.CanBeHit)
         {
             m_HurtData.AttackerDir = owner.Dir;
-            m_HurtData.AttackForce = new Vector2(skillData.AddTargetForce.x * owner.Dir, skillData.AddTargetForce.y);
-            m_HurtData.IsSwoon = skillData.IsSmoon;
+            m_HurtData.AttackForce = new Vector2(skillData.SkillEffects[Index].AddTargetForce.x * owner.Dir, skillData.SkillEffects[Index].AddTargetForce.y);
+            m_HurtData.IsSwoon = skillData.SkillEffects[Index].IsSmoon;
             m_HurtData.AttackerID = owner.ID;
             m_HurtData.AttackValue = 1;
 
             hit.OnHurtMsg(m_HurtData);
 
-            if (skillData.IsShakeCamera)
+            if (skillData.SkillEffects[Index].IsShakeCamera)
             {
                 CameraMgr.Ins.Shake();
             }

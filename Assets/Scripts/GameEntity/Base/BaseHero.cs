@@ -103,7 +103,15 @@ public class BaseHero : BaseRole
     public override void OnHitEnd(SkillData skillData,bool isHurtTarget)
     {
         base.OnHitEnd(skillData, isHurtTarget);
+
         if (m_ListCatchTarget.Count < 1 || !isHurtTarget) return;
+
+        if (skillData.Type == SkillData.SkillType.SkillAttack)//捕捉状态下技能攻击不进行次数累积
+        {
+            ResetCatch(false);
+            return;
+        }
+
         m_CatchAttackCount++;
 
         if (m_CatchAttackCount >= 3)
@@ -232,14 +240,19 @@ public class BaseHero : BaseRole
         }
     }
 
-    private void ResetCatch()
+    private void ResetCatch(bool changeState = true)
     {
         m_ListCatchTarget[0].SetCatch(false);
         m_ListCatchTarget.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;
-        ChangeState<RoleIdle>();
+
         SetDefaultState<RoleIdle>();
+
+        if (changeState)
+        {
+            ChangeState<RoleIdle>();
+        }
     }
 
     private bool HasCatch()

@@ -14,12 +14,18 @@ public class SkillBulletEffect : ISkillEffect
         }
     }
 
+    public int Index
+    {
+        get;
+        set;
+    }
+
     public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
     {
-        for (int i = 0; i < skillData.Bullets.Length; i++)
+        for (int i = 0; i < skillData.SkillEffects[Index].Bullets.Length; i++)
         {
-            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(skillData.Bullets[i].Name);
-            bullet.SetBulletInfo(owner, skillData, skillData.Bullets[i]);
+            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(skillData.SkillEffects[Index].Bullets[i].Name);
+            bullet.SetBulletInfo(owner, skillData.SkillEffects[Index], skillData.SkillEffects[Index].Bullets[i]);
         }
 
         m_Owner = owner;

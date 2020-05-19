@@ -102,7 +102,7 @@ namespace FrameWork
         public static float[] ToFloatArray(this string value, char partten = ',')
         {
             string[] valueStr = value.Split(partten);
-            float[] ret = new int[valueStr.Length];
+            float[] ret = new float[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
@@ -118,7 +118,7 @@ namespace FrameWork
             return ret;
         }
 
-        public static float[] ToStringArray(this string value,char partten = ',')
+        public static string[] ToStringArray(this string value,char partten = ',')
         {
             return value.Split(partten);
         }

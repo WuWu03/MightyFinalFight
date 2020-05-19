@@ -25,7 +25,7 @@ MonoBehaviour:
     AttackSpeed: 0.8
     MoveSpeed: 0.8
     JumpForce: {x: 40, y: 150}
-    Skills: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000f1030000
+    Skills: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000f1030000f2030000
     AttackWait:
     - 0.3
     - 0.3
