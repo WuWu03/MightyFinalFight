@@ -124,7 +124,7 @@ MonoBehaviour:
       SelectorType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 120}
+      AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
-      IsSmoon: 0
+      IsSmoon: 1
       IsShakeCamera: 0
     - EffectorType: 1
       SelectorType: 1

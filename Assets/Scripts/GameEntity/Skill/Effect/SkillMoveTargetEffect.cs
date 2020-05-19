@@ -8,6 +8,11 @@ using UnityEngine;
 
 public class SkillMoveTargetEffect : ISkillEffect
 {
+    public SkillMoveTargetEffect()
+    {
+        m_HurtData = new HurtData();
+    }
+
     public bool IsCompleted
     {
         get
@@ -32,11 +37,15 @@ public class SkillMoveTargetEffect : ISkillEffect
             return;
         }
 
-        BaseObject bo = targets[0].GetComponent<BaseObject>();
+        BaseRole bo = targets[0].GetComponent<BaseRole>();
+
         float targetY = bo.Pos.y;
         bo.SetPos2(owner.Pos.x + skillData.SkillEffects[Index].MoveTarget.x * owner.Dir,
                    owner.Pos.y + skillData.SkillEffects[Index].MoveTarget.y);
         bo.UpdatePos2(bo.Pos.x, targetY);
+
+        if (skillData.SkillEffects[Index].IsSmoon)
+            bo.PlayAnimation(AnimName.SmoonUp);
         m_IsCompleted = true;
     }
 
@@ -46,5 +55,6 @@ public class SkillMoveTargetEffect : ISkillEffect
         m_IsCompleted = false;
     }
 
+    private HurtData m_HurtData = null;
     private bool m_IsCompleted = false;
 }
