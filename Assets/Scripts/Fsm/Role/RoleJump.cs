@@ -20,8 +20,7 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
         m_Owner.Rigidbody.AddForce(new Vector2(StateParam.Dir.x * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
         m_Owner.PlayAnimation(AnimName.JumpUp);
         m_HasAddXForce = StateParam.Dir.x != 0;
-        if (StateParam.Dir.x != 0)
-            m_Owner.transform.localRotation = Quaternion.Euler(0, StateParam.Dir.x > 0 ? 0 : 180f, 0);
+        m_Owner.SetDir(StateParam.Dir.x);
         m_Owner.OnGroundEvent.AddListener(OnGround);
         m_Owner.OnDropEvent.AddListener(OnDrop);
     }
@@ -34,7 +33,7 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
             {
                 m_HasAddXForce = true;
                 m_Owner.Rigidbody.AddForce(Vector2.right * StateParam.Dir.x * m_Owner.JumpForce.x, 0f);
-                m_Owner.transform.localRotation = Quaternion.Euler(0, StateParam.Dir.x > 0 ? 0 : 180f, 0);
+                m_Owner.SetDir(StateParam.Dir.x);
             }
         }
     }
