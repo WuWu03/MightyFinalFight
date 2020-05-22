@@ -98,12 +98,12 @@ namespace FrameWork.UI
             GameObject.DontDestroyOnLoad(m_UIRoot);
         }
 
-        public void Open<T>(VoidNotPar callback = null,params object[] param) where T:BasePanel,new()
+        public void Open<T>(VoidNotPar callback = null, params object[] param) where T : BasePanel, new()
         {
-            InnerOpen(typeof(T).Name,callback, param);
+            InnerOpen(typeof(T).Name, callback, param);
         }
 
-        public void Open(string panelName,VoidNotPar callback = null, params object[] param)
+        public void Open(string panelName, VoidNotPar callback = null, params object[] param)
         {
             InnerOpen(panelName, callback, param);
         }
@@ -116,6 +116,18 @@ namespace FrameWork.UI
         public BasePanelCtrl GetPanel(string panelName)
         {
             return InnerGet(panelName);
+        }
+
+        public bool IsPanelOpen<T>()
+        {
+            BasePanelCtrl ctrl = InnerGet(typeof(T).Name);
+            return ctrl != null && ctrl.IsOpen;
+        }
+
+        public bool IsPanelOpen(string panelName)
+        {
+            BasePanelCtrl ctrl = InnerGet(panelName);
+            return ctrl != null && ctrl.IsOpen;
         }
 
         public void Close<T>(VoidNotPar callback = null)
