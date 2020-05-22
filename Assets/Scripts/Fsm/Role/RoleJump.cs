@@ -35,11 +35,17 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
                 m_Owner.Rigidbody.AddForce(Vector2.right * StateParam.Dir.x * m_Owner.JumpForce.x, 0f);
                 m_Owner.SetDir(StateParam.Dir.x);
             }
+
+            if (m_HasAddXForce)
+            {
+                m_Owner.PlayAnimation(AnimName.JumpRoll, -1, 0.5f);
+            }
         }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
+        m_HasAddXForce = false;
         StateParam = null;
         m_Owner.StopAnimation(AnimName.JumpUp);
     }
@@ -56,7 +62,7 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
 
     private void OnDrop()
     {
-        m_Owner.PlayAnimation(AnimName.JumpDown);
+       m_Owner.PlayAnimation(AnimName.JumpDown);
     }
     private bool m_HasAddXForce = false;
     private BaseRole m_Owner = null;

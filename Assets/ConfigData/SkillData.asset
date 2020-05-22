@@ -21,7 +21,7 @@ MonoBehaviour:
     Status: 0
     SkillKeys: 
     DeployeType: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
@@ -45,7 +45,7 @@ MonoBehaviour:
     Status: 0
     SkillKeys: 
     DeployeType: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
@@ -69,7 +69,7 @@ MonoBehaviour:
     Status: 0
     SkillKeys: 
     DeployeType: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
     Status: 0
     SkillKeys: 
     DeployeType: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
     Status: 0
     SkillKeys: 
     DeployeType: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 1
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
@@ -221,7 +221,7 @@ MonoBehaviour:
     Status: 1
     SkillKeys: 05000000
     DeployeType: 1
-    AnimSpeed: 0.2
+    AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1

@@ -198,7 +198,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleAttack>();
 
         SetTrigger(data.AnimationName);
-        PlayAnimation(data.AnimationName, 1, m_AttackSpeed);
+        PlayAnimation(data.AnimationName, 1, data.AnimSpeed * m_AttackSpeed);
     }
 
     public virtual void OnSkillMsg(SkillData data)

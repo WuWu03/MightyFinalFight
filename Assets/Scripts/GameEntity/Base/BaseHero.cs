@@ -77,6 +77,11 @@ public class BaseHero : BaseRole
         base.Update();
         CheckCatch();
 
+        if (m_CatchAttackCount >= 3 && IsPlayComplete())
+        {
+            ResetCatch();
+        }
+
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
             if (IsOutVersion(transform.localPosition) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
@@ -122,10 +127,7 @@ public class BaseHero : BaseRole
                 AttackValue = 0,
                 IsSwoon = true,
                 AttackForce = new Vector2(40f * m_Dir, 150f),
-
             });
-
-            ResetCatch();
         }
     }
 
@@ -268,7 +270,7 @@ public class BaseHero : BaseRole
 
     private List<ICanBeHit> m_ListCatchTarget = null;
     private float m_CatchStamp = 0f;
-    protected float m_CatchTime = 2f;
+    protected float m_CatchTime = 2;
     private float m_HitTime = -1f;
     private int m_CatchAttackCount = 0;
     private Dictionary<int, int> m_DicAttacker = null;

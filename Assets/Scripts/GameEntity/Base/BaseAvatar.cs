@@ -131,15 +131,32 @@ public abstract class BaseAvatar : BaseObject
         m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
     }
 
-    public void PlayAnimation(string animName, int animIndex = -1, float speed = 1f)
+    public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
     {
         if (m_Animator == null)
         {
             Debug.LogError("Animator is invalid!");
             return;
         }
+
+        if(m_Animator.animation.isCompleted)
+        {
+            m_CurrAnimName = string.Empty;
+        }
+
+        if(IsAnim(animName))
+        {
+            return;
+        }
+
+        m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
-        m_Animator.animation.Play(animName, animIndex);
+        m_Animator.animation.Play(animName, playTimes);
+    }
+
+    public bool IsAnim(string animName)
+    {
+        return m_CurrAnimName.Equals(animName);
     }
 
     public void StopAnimation(string animName)
@@ -194,6 +211,7 @@ public abstract class BaseAvatar : BaseObject
         m_FsmMachine.SetDefaultState<T>();
     }
 
+    protected string m_CurrAnimName = string.Empty;
     protected float m_MoveSpeed = 0.8f;
     protected Vector2 m_MoveToPoint = Vector2.zero;
     protected Vector2 m_MoveDir = Vector2.zero;

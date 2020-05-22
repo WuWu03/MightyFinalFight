@@ -13,6 +13,7 @@ public class SkillNormalAttackDeployer : SkillDeployer
         m_AttackMsgData.Dir = m_Owner.Dir;
         m_AttackMsgData.CanChangeDir = true;
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
+        m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(m_AttackMsgData);
