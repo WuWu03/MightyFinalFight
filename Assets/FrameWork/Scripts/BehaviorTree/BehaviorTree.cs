@@ -1,0 +1,73 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace FrameWork.BehaviorTree
+{
+    public class BehaviorTree
+    {
+        public BehaviorTree(BehaviorTreeData data)
+        {
+            m_Root = Load(data);
+        }
+
+        public void Start()
+        {
+            Reset();
+            m_Root.Enter();
+            m_IsRunning = true;
+        }
+
+        public void Update(float deltaTime)
+        {
+            if (!m_IsRunning || m_IsPause) return;
+            m_Root.Update(deltaTime);
+        }
+
+        public void Pasuse(bool value)
+        {
+            m_IsPause = value;
+        }
+
+        public void Stop()
+        {
+            if (!m_IsRunning) return;
+            m_IsRunning = false;
+            m_IsPause = false;
+        }
+
+        private Node Load(BehaviorTreeData data)
+        {
+            Node root = BehaviorFactory.GetNodeByClassType(data.ClassType,data.Args);
+
+            if (data.PreConditions != null && data.PreConditions.Length > 0)
+            {
+                for (int i = 0; i < data.PreConditions.Length; i++)
+                {
+                    root.AddPreCondition(BehaviorFactory.GetNodeByClassType(data.PreConditions[i].ClassType, data.PreConditions[i].Args));
+                }
+            }
+
+            if (data.Childs != null && data.Childs.Length > 0)
+            {
+                for(int i = 0; i < data.Childs.Length; i++)
+                {
+                    root.AddChild(Load(data.Childs[i]));
+                }
+            }
+
+            return root;
+        }
+
+        protected void Reset()
+        {
+            m_IsRunning = false;
+            m_IsPause = false;
+            m_Root.Reset();
+        }
+
+        private bool m_IsPause = false;
+        private bool m_IsRunning = false;
+        private Node m_Root = null;
+    }
+}

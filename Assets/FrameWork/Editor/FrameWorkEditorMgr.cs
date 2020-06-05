@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿using FrameWork;
+using FrameWork.BehaviorTree;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+
 public static class FrameWorkEditorMgr
 {
-    [MenuItem("Tools/UI/创建UI场景", false, 3)]
-    public static void NewUIScene()
-    {
-        UIUtility.NewUIScene();
-    }
+	[MenuItem("Tools/UI/创建UI场景", false, 3)]
+	public static void NewUIScene()
+	{
+		UIUtility.NewUIScene();
+	}
 
 	public static string GetHierarchy(GameObject obj)
 	{
@@ -35,7 +38,7 @@ public static class FrameWorkEditorMgr
 #endif
 	}
 
-	public static SerializedProperty DrawProperty(string label, SerializedObject serializedObject, string property,params GUILayoutOption[] options)
+	public static SerializedProperty DrawProperty(string label, SerializedObject serializedObject, string property, params GUILayoutOption[] options)
 	{
 		SerializedProperty sp = serializedObject.FindProperty(property);
 
@@ -54,7 +57,7 @@ public static class FrameWorkEditorMgr
 	{
 		SerializedProperty sp = obj.FindProperty(property + ".Array.size");
 
-		if (sp != null && DrawHeader(title, title,false))
+		if (sp != null && DrawHeader(title, title, false))
 		{
 			BeginContents();
 			int size = sp.intValue;
@@ -121,5 +124,11 @@ public static class FrameWorkEditorMgr
 		GUILayout.Space(3f);
 	}
 
+
+	[MenuItem("Assets/Config/CreateBehaviorTreeConfigData")]
+	public static void CreateBehaviorConfig()
+	{
+		FrameWork.Utils.Utils.CreateConfigData<BehaviorTreeConfig, BehaviorTreeData>("BehaviorTreeConfigData", ".asset");
+	}
 	private static bool m_EndHorizontal = false;
 }

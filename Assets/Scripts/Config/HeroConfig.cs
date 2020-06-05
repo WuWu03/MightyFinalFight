@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FrameWork;
 
 public class HeroConfig : BaseScriptableObject<HeroData>
 {

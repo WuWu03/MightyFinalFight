@@ -4,6 +4,7 @@ using FrameWork.Pool;
 using FrameWork.Resources;
 using FrameWork.Sound;
 using FrameWork.UI;
+using FrameWork.Utils;
 using UnityEngine;
 
 public class StageMgr : MonoSingleton<StageMgr>
