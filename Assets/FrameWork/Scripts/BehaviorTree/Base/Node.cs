@@ -22,12 +22,11 @@ namespace FrameWork.BehaviorTree
             }
         }
 
-        public Node(string name,string args)
+        public Node(string name,string args,object owner)
         {
-            m_Childs = new List<Node>();
-            m_PreConditions = new List<Node>();
             m_Name = name;
             m_Args = args;
+            m_Owner = owner;
         }
 
         public void Enter()
@@ -40,49 +39,14 @@ namespace FrameWork.BehaviorTree
             OnUpdate(deltaTime);
         }
 
-        public void AddChild(Node node)
-        {
-            if (node == null) return;
-            m_Childs.Add(node);
-        }
+        public virtual void AddChild(Node node) { }
+        public virtual Node GetChild(int index) { return null; }
+        public virtual void AddPreCondition(Node node) { }
+        public virtual bool CheckPreCondition() { return true; }
+        public virtual void Reset() { m_State = BehaviorTreeState.Running; }
+        public virtual bool CanExcute() { return true; }
+        public virtual BehaviorTreeState Excute() { return BehaviorTreeState.None; }
 
-        public void AddPreCondition(Node node)
-        {
-            if (node == null) return;
-            m_PreConditions.Add(node);
-        }
-
-        public Node GetChild(int index)
-        {
-            return m_Childs[index];
-        }
-
-        public virtual bool CheckPreCondition()
-        {
-            for(int i = 0; i < m_PreConditions.Count; i++)
-            {
-                if (!m_PreConditions[i].CheckPreCondition())
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-    
-        public virtual void Reset()
-        {
-            m_State = BehaviorTreeState.Running;
-            for(int i = 0; i < m_Childs.Count; i++)
-            {
-                m_Childs[i].Reset();
-            }
-        }
-
-        public virtual BehaviorTreeState Do()
-        {
-            return BehaviorTreeState.None;
-        }
 
         protected abstract void OnEnter();
         protected abstract void OnUpdate(float deltaTime);
@@ -90,7 +54,6 @@ namespace FrameWork.BehaviorTree
         protected BehaviorTreeState m_State = BehaviorTreeState.None;
         protected string m_Name = string.Empty;
         protected string m_Args = string.Empty;
-        private List<Node> m_PreConditions = null;
-        private List<Node> m_Childs = null;
+        protected object m_Owner = null;
     }
 }

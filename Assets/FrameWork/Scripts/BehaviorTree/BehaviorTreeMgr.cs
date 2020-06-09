@@ -37,7 +37,7 @@ namespace FrameWork.BehaviorTree
             if (m_ListTreeID == null) return;
             m_ListTreeID.Add(id);
             BehaviorTreeData data = m_Config.GetData(id);
-            m_ListTrees.Add(new BehaviorTree(data));
+            m_ListTrees.Add(new BehaviorTree(data, m_Owner));
         }
 
         public void Start(int index = 0)
@@ -84,7 +84,7 @@ namespace FrameWork.BehaviorTree
             for (int i = 0; i < m_ListTreeID.Count; i++)
             {
                 BehaviorTreeData data = m_Config.GetData(m_ListTreeID[i]);
-                m_ListTrees.Add(new BehaviorTree(data));
+                m_ListTrees.Add(new BehaviorTree(data, m_Owner));
             }
         }
 

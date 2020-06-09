@@ -6,9 +6,9 @@ namespace FrameWork.BehaviorTree
 {
     public class BehaviorTree
     {
-        public BehaviorTree(BehaviorTreeData data)
+        public BehaviorTree(BehaviorTreeData data,object owner)
         {
-            m_Root = Load(data);
+            m_Root = Load(data, owner);
         }
 
         public void Start()
@@ -36,15 +36,15 @@ namespace FrameWork.BehaviorTree
             m_IsPause = false;
         }
 
-        private Node Load(BehaviorTreeData data)
+        private Node Load(BehaviorTreeData data,object owner)
         {
-            Node root = BehaviorFactory.GetNodeByClassType(data.ClassType,data.Args);
+            Node root = BehaviorFactory.GetNodeByClassType(data.ClassType,data.Args, owner);
 
             if (data.PreConditions != null && data.PreConditions.Length > 0)
             {
                 for (int i = 0; i < data.PreConditions.Length; i++)
                 {
-                    root.AddPreCondition(BehaviorFactory.GetNodeByClassType(data.PreConditions[i].ClassType, data.PreConditions[i].Args));
+                    root.AddPreCondition(BehaviorFactory.GetNodeByClassType(data.PreConditions[i].ClassType, data.PreConditions[i].Args, owner));
                 }
             }
 
@@ -52,7 +52,7 @@ namespace FrameWork.BehaviorTree
             {
                 for(int i = 0; i < data.Childs.Length; i++)
                 {
-                    root.AddChild(Load(data.Childs[i]));
+                    root.AddChild(Load(data.Childs[i], owner));
                 }
             }
 

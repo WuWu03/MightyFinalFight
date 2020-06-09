@@ -14,16 +14,16 @@ namespace FrameWork.BehaviorTree
             m_DicBehavior.Add(className, type);
         }
 
-        public static Node GetNodeByClassType(string name,string args)
+        public static Node GetNodeByClassType(string name, string args, object owner)
         {
             Type t = null;
-            if(!m_DicBehavior.TryGetValue(name,out t))
+            if (!m_DicBehavior.TryGetValue(name, out t))
             {
                 Debugger.LogError("Behavior entity is invalid!");
                 return null;
             }
 
-            return (Node)System.Activator.CreateInstance(t, name,args);
+            return (Node)System.Activator.CreateInstance(t, name, args, owner);
         }
 
         private static Dictionary<string, Type> m_DicBehavior = new Dictionary<string, Type>();
