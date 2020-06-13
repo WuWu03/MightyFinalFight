@@ -55,7 +55,6 @@ namespace FrameWork.Resources
             }
         }
 
-
         Dictionary<string, string[]> m_Dependencies = new Dictionary<string, string[]>();
         Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
         Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
@@ -78,6 +77,11 @@ namespace FrameWork.Resources
             return abName;
         }
 
+
+        public void LoadAsset<T>(string abName, Action<Object> action = null, bool loadMainAsset = true)
+        {
+            LoadAsset(abName, action, loadMainAsset, typeof(T));
+        }
 
         /// <summary>
         /// 加载资源 csharp调用

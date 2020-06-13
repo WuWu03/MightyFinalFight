@@ -24,6 +24,7 @@ public class SkillData : BaseConfigData
         BulletHitEffect = 2,
         MoveHitEffect = 3,
         MoveTargetEffect = 4,
+        Subtract = 5,
     }
 
     public enum SkillType
@@ -76,7 +77,9 @@ public class SkillData : BaseConfigData
         public float Gravity;//自身重力大小
         public bool IsSmoon;//是否击昏
         public bool IsShakeCamera;//击中敌人是否震屏
+        public string Args;//各种数值效果的参数 每种类型效果自行解析
     }
+
 
     public int Level;
     public string Name;
