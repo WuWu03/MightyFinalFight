@@ -1,5 +1,6 @@
 ﻿using FrameWork;
 using FrameWork.BehaviorTree;
+using FrameWork.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -130,5 +131,15 @@ public static class FrameWorkEditorMgr
 	{
 		FrameWork.Utils.Utils.CreateConfigData<BehaviorTreeConfig, BehaviorTreeData>("BehaviorTreeConfigData", ".asset");
 	}
+
+	[MenuItem("GameObject/UI/EmojiText", priority = 0)]
+	public static void CreateEmojiText()
+	{
+		//GameObject go = new GameObject("EmojiText", typeof(FrameWork.UI.EmojiText));
+		//go.transform.SetParent(Selection.activeTransform, false);
+		//go.GetComponent<EmojiText>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Material/UGUIEmoji");
+		//FrameWork.Utils.Utils.CreateConfigData<BehaviorTreeConfig, BehaviorTreeData>("BehaviorTreeConfigData", ".asset");
+	}
+
 	private static bool m_EndHorizontal = false;
 }

@@ -37,6 +37,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      Args: 
   - ID: 1002
     Level: 0
     Name: CodyAttack2
@@ -61,6 +62,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      Args: 
   - ID: 1003
     Level: 0
     Name: CodyAttack3
@@ -85,6 +87,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      Args: 
   - ID: 1004
     Level: 0
     Name: CodyAttack4
@@ -109,6 +112,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 1
+      Args: 
   - ID: 1005
     Level: 0
     Name: CodyJumpAttack1
@@ -133,6 +137,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      Args: 
   - ID: 1006
     Level: 0
     Name: CodyJumpAttack2
@@ -157,6 +162,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      Args: 
   - ID: 1007
     Level: 0
     Name: CodySkill1
@@ -189,6 +195,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      Args: 
   - ID: 1008
     Level: 0
     Name: CodySkill2
@@ -213,6 +220,7 @@ MonoBehaviour:
       Gravity: 1
       IsSmoon: 1
       IsShakeCamera: 1
+      Args: 
   - ID: 1009
     Level: 0
     Name: CodyKnee
@@ -237,6 +245,7 @@ MonoBehaviour:
       Gravity: 1
       IsSmoon: 0
       IsShakeCamera: 0
+      Args: 
   - ID: 1010
     Level: 0
     Name: CodyThrow
@@ -261,6 +270,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      Args: 
     - EffectorType: 1
       SelectorType: 1
       Bullets: []
@@ -274,3 +284,43 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      Args: 
+  - ID: 1011
+    Level: 0
+    Name: CodySkill3
+    AnimationName: Throw
+    Type: 1
+    Status: 1
+    SkillKeys: 0500000006000000
+    DeployeType: 1
+    AnimSpeed: 0.6
+    AnimTime: 0
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: -0.05, y: 0.15}
+      SelectorAngle: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      Args: 
+    - EffectorType: 5
+      SelectorType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 80, y: 100}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      Args: 
