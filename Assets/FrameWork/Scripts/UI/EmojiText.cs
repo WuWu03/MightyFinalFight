@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
 using UnityEngine.EventSystems;
+using System;
 
 namespace FrameWork.UI
 {
@@ -14,14 +15,11 @@ namespace FrameWork.UI
         /// </summary>
         class HrefInfo
         {
-            public int startIndex;
-            public int newStartIndex;
-
             public int endIndex;
             public int newEndIndex;
-
+            public int startIndex;
+            public int newStartIndex;
             public string name;
-
             public readonly List<Rect> boxes = new List<Rect>();
         }
 
@@ -34,7 +32,7 @@ namespace FrameWork.UI
         }
 
         //超连接点击委托
-        public delegate void VoidOnHrefClick(string hefName);
+        public delegate void VoidOnHrefClick(string hrefName);
         public VoidOnHrefClick onHrefClick;
 
         public override void SetVerticesDirty()
@@ -56,7 +54,7 @@ namespace FrameWork.UI
                 EmojiIndex = new Dictionary<string, EmojiInfo>();
 
                 //load emoji data, and you can overwrite this segment code base on your project.
-                TextAsset emojiContent = UnityEngine.Resources.Load<TextAsset>("emoji");
+                TextAsset emojiContent = Resources.Load<TextAsset>("emoji");
                 string[] lines = emojiContent.text.Split('\n');
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -79,9 +77,9 @@ namespace FrameWork.UI
             if (supportRichText)
             {
 #if UNITY_2019_1_OR_NEWER
-                MatchCollection matches = Regex.Matches(ReplaceRichText(m_Text), "\\[[a-z0-9A-Z]+\\]");//把表情标签全部匹配出来
+                MatchCollection matches = m_EmojiRegex.Matches(ReplaceRichText(m_OutputText));//把表情标签全部匹配出来
 #else
-                MatchCollection matches = Regex.Matches(m_Text, "\\[[a-z0-9A-Z]+\\]");//把表情标签全部匹配出来
+                MatchCollection matches = m_EmojiRegex.Matches(m_OutputText);//把表情标签全部匹配出来
 #endif
                 for (int i = 0; i < matches.Count; i++)
                 {
@@ -98,9 +96,10 @@ namespace FrameWork.UI
             // The end result of cachedTextGenerator will be valid for this instance.
             // Otherwise we can get issues like Case 619238.
             m_DisableFontTextureRebuiltCallback = true;
-
+            
             var orignText = m_Text;
             m_Text = m_OutputText;
+
             Vector2 extents = rectTransform.rect.size;
             var settings = GetGenerationSettings(extents);
             cachedTextGenerator.Populate(m_Text, settings);//重置网格
@@ -152,11 +151,8 @@ namespace FrameWork.UI
                 {
                     EmojiInfo info;
                     int index = i / 4;//每个字符4个顶点
-                    if (emojiDic.TryGetValue(index, out info))
-                    {//这个顶点位置是否为表情开始的index
-
-                        HrefInfosIndexAdjust(i);//矫正一下超链接的Index
-
+                    if (emojiDic.TryGetValue(index, out info))//这个顶点位置是否为表情开始的index
+                    {
                         //compute the distance of '[' and get the distance of emoji 
                         //计算表情标签2个顶点之间的距离， * 3 得出宽度（表情有3位）
                         float charDis = 2 * (verts[i + 1].position.x - verts[i].position.x) * 3;
@@ -177,8 +173,8 @@ namespace FrameWork.UI
                         m_TempVerts[1].position -= new Vector3(fixValue, 0, 0);
 
                         float curRepairDis = 0;
-                        if (verts[i].position.y < repairY)
-                        {// to judge current char in the same line or not
+                        if (verts[i].position.y < repairY)// to judge current char in the same line or not
+                        {
                             repairDistance = repairDistanceHalf;
                             repairDistanceHalf = 0;
                             repairY = verts[i + 3].position.y;
@@ -207,10 +203,9 @@ namespace FrameWork.UI
                             }
                         }
 
-                        //repair its distance
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < 4; j++)//repair its distance
                         {
-                            m_TempVerts[j].position -= new Vector3(curRepairDis, -3f, 0);
+                            m_TempVerts[j].position -= new Vector3(curRepairDis, 0, 0);
                         }
 
                         m_TempVerts[0].position *= unitsPerPixel;
@@ -223,7 +218,6 @@ namespace FrameWork.UI
                         m_TempVerts[1].uv1 = new Vector2(emojiDic[index].x - pixelOffset + emojiDic[index].size, emojiDic[index].y + pixelOffset);
                         m_TempVerts[2].uv1 = new Vector2(emojiDic[index].x - pixelOffset + emojiDic[index].size, emojiDic[index].y - pixelOffset + emojiDic[index].size);
                         m_TempVerts[3].uv1 = new Vector2(emojiDic[index].x + pixelOffset, emojiDic[index].y - pixelOffset + emojiDic[index].size);
-
 
                         toFill.AddUIVertexQuad(m_TempVerts);
 
@@ -248,26 +242,22 @@ namespace FrameWork.UI
             }
 
             if (m_HrefInfos.Count > 0)
-            {
-#if UNITY_2019_1_OR_NEWER
-                bool autoLF = AutoNextLine();
-#endif
-                // 处理超链接包围框  
-                for (int i = 0; i < m_HrefInfos.Count; i++)
+            {           
+                for (int i = 0; i < m_HrefInfos.Count; i++)// 处理超链接包围框  
                 {
                     m_HrefInfos[i].boxes.Clear();
 #if UNITY_2019_1_OR_NEWER
-                    int startIndex = autoLF ? m_HrefInfos[i].startIndex : m_HrefInfos[i].newStartIndex;
-                    int endIndex = autoLF ? m_HrefInfos[i].endIndex : m_HrefInfos[i].newEndIndex;
+                    int startIndex = m_HrefInfos[i].newStartIndex;
+                    int endIndex = m_HrefInfos[i].newEndIndex;
 #else
-                int startIndex = m_HrefInfos[i].startIndex;
-                int endIndex = m_HrefInfos[i].endIndex;
+                    int startIndex = m_HrefInfos[i].startIndex;
+                    int endIndex = m_HrefInfos[i].endIndex;
 #endif
                     if (startIndex >= toFill.currentVertCount)
                         continue;
 
-                    toFill.PopulateUIVertex(ref vert, startIndex);
-                    // 将超链接里面的文本顶点索引坐标加入到包围框  
+                    toFill.PopulateUIVertex(ref vert, startIndex);// 将超链接里面的文本顶点索引坐标加入到包围框  
+
                     var pos = vert.position;
                     var bounds = new Bounds(pos, Vector3.zero);
                     for (int j = startIndex + 1; j < endIndex; j++)
@@ -279,18 +269,16 @@ namespace FrameWork.UI
                         toFill.PopulateUIVertex(ref vert, j);
                         pos = vert.position;
                         if (pos.x < bounds.min.x)
-                        {
-                            // 换行重新添加包围框  
-                            m_HrefInfos[i].boxes.Add(new Rect(bounds.min, bounds.size));
+                        {                     
+                            m_HrefInfos[i].boxes.Add(new Rect(bounds.min, bounds.size)); // 换行重新添加包围框  
                             bounds = new Bounds(pos, Vector3.zero);
                         }
                         else
                         {
                             bounds.Encapsulate(pos); // 扩展包围框  
                         }
-                    }
-                    //添加包围盒
-                    m_HrefInfos[i].boxes.Add(new Rect(bounds.min, bounds.size));
+                    }         
+                    m_HrefInfos[i].boxes.Add(new Rect(bounds.min, bounds.size));//添加包围盒
                 }
             }
 
@@ -313,35 +301,37 @@ namespace FrameWork.UI
 
             int textIndex = 0;
             int newIndex = 0;
-            string part = "";
+            int removeEmojiCount = 0;
 
             foreach (Match match in m_HrefRegex.Matches(outputText))
             {
-                part = outputText.Substring(textIndex, match.Index - textIndex);
-                s_TextBuilder.Append(part);
-                s_TextBuilder.Append("<color=blue>");
+                var hrefInfo = new HrefInfo();
+                string part = outputText.Substring(textIndex, match.Index - textIndex);
+                int removeEmojiCountNew = 0;
+                MatchCollection collection = m_EmojiRegex.Matches(part);
 
-                int removeEmojiVertCount = 0;
-                foreach (Match emojiMatch in GetEmojiMatches(part))//一个表情渲染时按一个字符4(个顶点)算，表情[1]中多出2个字符(8个顶点)
+                foreach (Match emojiMatch in collection)
                 {
-                    removeEmojiVertCount += (emojiMatch.Value.Length - 1) * 4;
+                    removeEmojiCount += 8;
+                    removeEmojiCountNew += 8;
                 }
 
-                int startIndex = s_TextBuilder.Length * 4 - removeEmojiVertCount;
+                s_TextBuilder.Append(part);
+                s_TextBuilder.Append("<color=blue>");
+                int startIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
                 s_TextBuilder.Append(match.Groups[2].Value);
-                int endIndex = s_TextBuilder.Length * 4 - removeEmojiVertCount - 1;
+                int endIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
                 s_TextBuilder.Append("</color>");
-#if UNITY_2019_1_OR_NEWER
-                newIndex += ReplaceRichText(part).Length * 4 - removeEmojiVertCount;//移除超连接前面的表情的顶点
-                int newStartIndex = newIndex;
-                newIndex += match.Groups[2].Value.Length * 4 - removeEmojiVertCount + 8;
-#endif
-                var hrefInfo = new HrefInfo();
+
                 hrefInfo.startIndex = startIndex;// 超链接里的文本起始顶点索引
                 hrefInfo.endIndex = endIndex;
+
 #if UNITY_2019_1_OR_NEWER
+                newIndex = newIndex + ReplaceRichText(part).Length * 4 - removeEmojiCountNew;//移除超连接前面的表情的顶点
+                int newStartIndex = newIndex;
+                newIndex = newIndex + match.Groups[2].Value.Length * 4;
                 hrefInfo.newStartIndex = newStartIndex;
-                hrefInfo.newEndIndex = newIndex - 1;
+                hrefInfo.newEndIndex = newIndex;
 #endif
                 hrefInfo.name = match.Groups[1].Value;
                 m_HrefInfos.Add(hrefInfo);
@@ -350,19 +340,6 @@ namespace FrameWork.UI
 
             s_TextBuilder.Append(outputText.Substring(textIndex, outputText.Length - textIndex));
             return s_TextBuilder.ToString();
-        }
-
-        private bool AutoNextLine()
-        {
-            var settings = GetGenerationSettings(Vector2.zero);
-            float width = cachedTextGeneratorForLayout.GetPreferredWidth(m_OutputText, settings) / pixelsPerUnit;
-#if UNITY_2019_1_OR_NEWER
-            bool result = width <= rectTransform.sizeDelta.x || horizontalOverflow == HorizontalWrapMode.Overflow;
-#else
-            bool result = width < rectTransform.sizeDelta.x || horizontalOverflow == HorizontalWrapMode.Overflow;
-#endif
-            // result &= cachedTextGeneratorForLayout.lineCount <= 1;
-            return !result;
         }
 
         /// <summary>
@@ -384,20 +361,6 @@ namespace FrameWork.UI
             str = str.Replace(" ", "");
 
             return str;
-        }
-        /// <summary>
-        /// 矫正超连接索引
-        /// </summary>
-        private void HrefInfosIndexAdjust(int imgIndex)
-        {
-            foreach (var hrefInfo in m_HrefInfos)//如果后面有超链接，需要把位置往前挪
-            {
-                if (imgIndex < hrefInfo.startIndex)
-                {
-                    hrefInfo.startIndex -= 8;
-                    hrefInfo.endIndex -= 8;
-                }
-            }
         }
 
         /// <summary>
@@ -430,10 +393,11 @@ namespace FrameWork.UI
         private string m_OutputText;//解析之后的文本
         private const bool EMOJI_LARGE = true;
         private static Dictionary<string, EmojiInfo> EmojiIndex = null;
-        private MatchCollection GetEmojiMatches(string value) => Regex.Matches(value, "\\[[a-z0-9A-Z]+\\]");
+
         private readonly UIVertex[] m_TempVerts = new UIVertex[4];
 
         private static readonly Regex m_HrefRegex = new Regex(@"<a href=([^>\n\s]+)>(.*?)(</a>)", RegexOptions.Singleline); // 超链接正则
+        private static readonly Regex m_EmojiRegex = new Regex("\\[[a-z0-9A-Z]+\\]", RegexOptions.Singleline); // 表情正则
 
         private readonly List<HrefInfo> m_HrefInfos = new List<HrefInfo>();// 超链接信息列表
         private static readonly StringBuilder s_TextBuilder = new StringBuilder();// 文本构造器
