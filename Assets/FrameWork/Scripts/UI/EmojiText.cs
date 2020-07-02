@@ -269,7 +269,7 @@ namespace FrameWork.UI
                         toFill.PopulateUIVertex(ref vert, j);
                         pos = vert.position;
                         if (pos.x < bounds.min.x)
-                        {                     
+                        { 
                             m_HrefInfos[i].boxes.Add(new Rect(bounds.min, bounds.size)); // 换行重新添加包围框  
                             bounds = new Bounds(pos, Vector3.zero);
                         }
