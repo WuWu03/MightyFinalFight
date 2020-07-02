@@ -177,6 +177,9 @@ MonoBehaviour:
   Objects:
   - {fileID: 767242336}
   - {fileID: 712527415}
+  - {fileID: 1669707881}
+  - {fileID: 2043417338}
+  - {fileID: 710926879}
   - {fileID: 472813151}
 --- !u!1 &472813150
 GameObject:
@@ -312,6 +315,8 @@ MonoBehaviour:
   m_ComponentName: RectTransform
   m_Desc: 
   m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 0
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &482470323
 GameObject:
@@ -640,7 +645,9 @@ MonoBehaviour:
   m_RefName: _txtDesc
   m_ComponentName: Text
   m_Desc: 
-  m_IsLayoutItem: 1
+  m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 1
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &712527415
 GameObject:
@@ -718,7 +725,9 @@ MonoBehaviour:
   m_RefName: 
   m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
+  m_IsLayoutItem: 1
+  m_IsLayoutItemVariable: 0
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &723186175
 GameObject:
@@ -850,6 +859,8 @@ MonoBehaviour:
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 0
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &767242339
 MonoBehaviour:
@@ -1399,7 +1410,9 @@ MonoBehaviour:
   m_RefName: _btnRoleIcon
   m_ComponentName: MyButton
   m_Desc: 
-  m_IsLayoutItem: 1
+  m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 1
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1882403930
 GameObject:
@@ -1576,5 +1589,7 @@ MonoBehaviour:
   m_RefName: _txtName
   m_ComponentName: Text
   m_Desc: 
-  m_IsLayoutItem: 1
+  m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 1
+  m_IsLoopLayout: 0
   m_IsCopyRefStr: 0

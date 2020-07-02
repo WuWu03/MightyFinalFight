@@ -60,7 +60,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		HeroData data = StaticConfig.HeroConfig.GetData(1001);
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
-		UITools.SetIconSprite(ResDefine.ICON_PATH + "/Character/Cody", item.BtnRoleIcon.image);
+		UITools.LoadSprite("Character", "Cody", item.BtnRoleIcon.image);
 	}
 
 	private void OnItemSelect(RoleSelectPanel.RoleContentItem item, bool isSelect)

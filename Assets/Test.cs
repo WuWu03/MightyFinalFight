@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using FrameWork.Event;
 using FrameWork.Sound;
+using UnityEngine.AI;
 
 public class Test : MonoBehaviour
 {
@@ -13,27 +14,14 @@ public class Test : MonoBehaviour
     public GameObject parent;
     public GameObject item;
     public ScrollRect scroll;
-    class TestView : LayoutGroupViewItem
-    {
-        public Text t;
-        protected override void OnCreate(GameObject go)
-        {
-            t = go.transform.Find("Text").GetComponent<Text>();
-        }
-    }
 
-    //public BaseLayoutGroupList wrap;
-    private LayoutGroupLoopView<TestView> layout = new LayoutGroupLoopView<TestView>();
+
+    public NavMeshAgent agent;
     private void Awake()
     {
-        //wrap.Init(100, 0, null, null);
-        layout.OnItemUpdate = delegate (TestView view) 
-        {
-            view.t.text = view.Index.ToString();
-        };
+        gameObject.GetComponent<ParticleSystemRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
 
-        layout.Init(parent, item, 50, scroll);
-        UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
+        //UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
         //UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
         //UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
@@ -64,6 +52,21 @@ public class Test : MonoBehaviour
     {
 
         //EventManager.Ins.Subscribe(1,OnSub);
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitinfo;
+            bool racast = Physics.Raycast(ray, out hitinfo, 100f, LayerMask.GetMask("Map"));
+
+            if (racast)
+            {
+                agent.destination = hitinfo.point;
+            }
+        }
     }
 
     private void onClick1(GameObject go, PointerEventData eventData)

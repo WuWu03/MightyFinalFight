@@ -101,7 +101,8 @@ public class UIRefEditor : Editor
         }
         else m_UIRef.IsLayoutItem = false;
 
-        UIRef[] parentLayoutItemRefs = m_UIRef.transform.parent == null ? null : m_UIRef.GetComponentsInParent<UIRef>();
+
+        UIRef[] parentLayoutItemRefs = m_UIRef.transform.parent == null ? null : m_UIRef.GetComponentsInParent<UIRef>(true);
         bool isParentLayoutItem = false;
         for (int i = 1; i < parentLayoutItemRefs.Length; i++)
         {
@@ -117,7 +118,7 @@ public class UIRefEditor : Editor
             if (m_UIRef.IsLayoutItemVariable != isLayoutItem.boolValue)
             {
                 EditorUtility.SetDirty(m_UIRef);
-                m_UIRef.IsLayoutItemVariable = isLayoutItem.boolValue;
+                m_UIRef.IsLayoutItemVariable = isLayoutItem.boolValue && isParentLayoutItem;
             }
         }
         else m_UIRef.IsLayoutItemVariable = false;

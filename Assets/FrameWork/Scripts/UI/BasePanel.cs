@@ -19,12 +19,12 @@ namespace FrameWork.UI
         public BasePanelCtrl PanelCtrl { get; private set; }
         protected UIRefRoot UIRefRoot { get; private set; }
 
-        public void Init(GameObject root, BasePanelCtrl panelCtrl,string resPath)
+        public void Init(GameObject root, BasePanelCtrl panelCtrl)
         {
             gameObject = root;
             transform = root.transform;
             UIRefRoot = root.GetComponent<UIRefRoot>();
-            ResPath = resPath;
+            ResPath = UITools.GetUIResPath(PanelName);
             PanelCtrl = panelCtrl;
 
             if (UIRefRoot == null)

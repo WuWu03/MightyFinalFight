@@ -10,6 +10,7 @@ using UnityEditor.SceneManagement;
 using UnityObject = UnityEngine.Object;
 using FrameWork;
 using FrameWork.Utils;
+using System.Linq;
 
 [InitializeOnLoad]
 public class UIUtility
@@ -276,7 +277,7 @@ public class UIUtility
                 return false;
             }
 
-            if (component.IsLayoutItem) continue;
+            //if (component.IsLayoutItem) continue;
             if (string.IsNullOrEmpty(component.ComponentName) || component.ComponentName == typeof(Transform).Name)
             {
                 listComponent.Add(component.transform);
@@ -399,7 +400,7 @@ public class UIUtility
                 layoutRefList.Add(uiRefs[i]);
                 normalRefList.Add(uiRefs[i]);
             }
-            else if (!uiRefs[i].IsLayoutItem && !uiRefs[i].IsLayoutItemVariable)
+            else if (!uiRefs[i].IsLayoutItemVariable)
             {
                 normalRefList.Add(uiRefs[i]);
             }
@@ -428,8 +429,17 @@ public class UIUtility
 
         for (int i = 0; i < normalRefList.Count; i++)
         {
+            int objIndex = i;
             UIRef uiRef = normalRefList[i];
-            sb.AppendFormat("\t\t{0} = UIRefRoot.Objects[{1}] as {2};\n", uiRef.GetName(), i, uiRef.ComponentName);
+            for(int j = 0; j < uiRefs.Length; j++)
+            {
+                if (uiRefs[j] == uiRef)
+                {
+                    objIndex = j;
+                    break;
+                }
+            }
+            sb.AppendFormat("\t\t{0} = UIRefRoot.Objects[{1}] as {2};\n", uiRef.GetName(), objIndex, uiRef.ComponentName);
         }
 
         for (int i = 0; i < layoutRefList.Count; i++)
@@ -480,8 +490,10 @@ public class UIUtility
 
     private static void GenCSharpLayout(UIRef uiRef,StringBuilder sb)
     {
-        sb.AppendLine();
         UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
+   
+
+        sb.AppendLine();
         sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\n", uiRef.GetName() + "Item");
         sb.AppendLine("\t{");
 
@@ -510,7 +522,14 @@ public class UIUtility
             if (!itemRefs[i].IsLayoutItemVariable) continue;
             string path = FrameWorkEditorMgr.GetHierarchy(itemRefs[i].gameObject);
             path = path.Substring(path.LastIndexOf(itemName) + itemName.Length + 1).Replace(@"\", "/");
-            sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n", itemRefs[i].GetName(), path, itemRefs[i].ComponentName);
+            if (itemRefs[i].ComponentName.Equals("GameObject"))
+            {
+                sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").gameObject;\n", itemRefs[i].GetName(), path);
+            }
+            else
+            {
+                sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n", itemRefs[i].GetName(), path, itemRefs[i].ComponentName);
+            }
         }
 
         sb.AppendLine("\t\t}");

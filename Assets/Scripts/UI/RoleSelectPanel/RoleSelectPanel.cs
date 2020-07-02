@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2020-4-15 16:0****************************************/
+/**2020-7-2 16:19****************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -14,7 +14,7 @@ public class RoleSelectPanel : BasePanel
 	public override float PanelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
-	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.DelayDestroy; } }
+	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
 	//RoleContent,GameObject
 	public GameObject RoleContent { get; private set;}
 	//RoleContent/Item,GameObject
@@ -26,7 +26,7 @@ public class RoleSelectPanel : BasePanel
 	{
 		RoleContent = UIRefRoot.Objects[0] as GameObject;
 		ItemGO = UIRefRoot.Objects[1] as GameObject;
-		ImgSelectRect = UIRefRoot.Objects[2] as RectTransform;
+		ImgSelectRect = UIRefRoot.Objects[5] as RectTransform;
 		RoleContentGroupView = new LayoutGroupView<RoleContentItem>();
 	}
 

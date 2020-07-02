@@ -56,6 +56,9 @@ MonoBehaviour:
   Objects:
   - {fileID: 767242336}
   - {fileID: 712527415}
+  - {fileID: 1669707881}
+  - {fileID: 2043417338}
+  - {fileID: 710926879}
   - {fileID: 472813151}
 --- !u!1 &472813150
 GameObject:

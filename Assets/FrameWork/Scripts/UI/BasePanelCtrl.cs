@@ -51,8 +51,7 @@ namespace FrameWork.UI
             if (m_ResState == ResState.UNLOAD)
             {
                 m_ResState = ResState.LOADING;
-                string resPath = string.Format("{0}/{1}", ResDefine.UI_PATH, Panel.PanelName);
-                GameObjectPool.Ins.Get(resPath, LoadViewCallback);
+                UITools.LoadUI(Panel.PanelName, LoadViewCallback);
             }
             else
             {
@@ -104,9 +103,8 @@ namespace FrameWork.UI
 
         private void LoadViewCallback(GameObject go)
         {
-            m_ResState = ResState.LOADED;
-            string resPath = string.Format("{0}/{1}", ResDefine.UI_PATH, Panel.PanelName);
-            Panel.Init(go, this, resPath);
+            m_ResState = ResState.LOADED;     
+            Panel.Init(go, this);
             OnLoaded();
             ShowPanel(true);
         }
