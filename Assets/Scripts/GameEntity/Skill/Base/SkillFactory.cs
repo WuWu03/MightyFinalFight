@@ -1,6 +1,6 @@
 ﻿using static SkillData;
 
-public class SkillDeployerFactory
+public class SkillFactory
 {
     public static SkillDeployer CreateDeployer(int skillID, BaseRole owner)
     {
@@ -62,6 +62,28 @@ public class SkillDeployerFactory
                     ret[i] = new SkillMoveTargetEffect() { Index = i };
                     break;
             }
+        }
+
+        return ret;
+    }
+
+    public static bool CheckStatus(SkillStatus status, BaseRole owner)
+    {
+        bool ret = false;
+        switch (status)
+        {
+            case SkillStatus.None:
+                ret = true;
+                break;
+            case SkillStatus.Float:
+                ret = owner.IsFloat;
+                break;
+            case SkillStatus.Ground:
+                ret = owner.IsInGround;
+                break;
+            case SkillStatus.Catch:
+                ret = (owner as BaseHero).IsCatch;
+                break;
         }
 
         return ret;

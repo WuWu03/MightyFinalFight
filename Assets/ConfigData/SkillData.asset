@@ -19,19 +19,23 @@ MonoBehaviour:
     AnimationName: Attack1
     Type: 0
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -44,19 +48,23 @@ MonoBehaviour:
     AnimationName: Attack2
     Type: 0
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -69,19 +77,23 @@ MonoBehaviour:
     AnimationName: Attack3
     Type: 0
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -94,19 +106,23 @@ MonoBehaviour:
     AnimationName: Attack4
     Type: 0
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -119,19 +135,23 @@ MonoBehaviour:
     AnimationName: JumpAttack1
     Type: 1
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 1
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -144,19 +164,23 @@ MonoBehaviour:
     AnimationName: JumpAttack2
     Type: 1
     Status: 0
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -169,13 +193,16 @@ MonoBehaviour:
     AnimationName: Skill1
     Type: 2
     Status: 1
-    SkillKeys: 0400000005000000
     DeployeType: 1
+    Key:
+      Keys: 0400000005000000
+      AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
     SkillEffects:
     - EffectorType: 2
       SelectorType: 2
+      ForceType: 0
       Bullets:
       - Name: CodyBullet
         Dir: {x: 1, y: 0}
@@ -189,7 +216,8 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -202,19 +230,23 @@ MonoBehaviour:
     AnimationName: Attack4
     Type: 2
     Status: 1
-    SkillKeys: 0100000005000000
     DeployeType: 1
+    Key:
+      Keys: 0100000005000000
+      AddTrigger: 1
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 15
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 1
       Gravity: 1
@@ -227,19 +259,23 @@ MonoBehaviour:
     AnimationName: Knee
     Type: 0
     Status: 1
-    SkillKeys: 05000000
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 0
+      SelectorRadius: 0
       AddSelfDrag: 0
       MoveDistance: 1
       Gravity: 1
@@ -252,19 +288,23 @@ MonoBehaviour:
     AnimationName: Throw
     Type: 2
     Status: 3
-    SkillKeys: 
     DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
     AnimSpeed: 0.6
     AnimTime: 1
     SkillEffects:
     - EffectorType: 4
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: -0.05, y: 0.15}
       SelectorAngle: 0
+      SelectorRadius: 0
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -273,12 +313,14 @@ MonoBehaviour:
       Args: 
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 0
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 80, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 0
+      SelectorRadius: 0
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -288,36 +330,26 @@ MonoBehaviour:
   - ID: 1011
     Level: 0
     Name: CodySkill3
-    AnimationName: Throw
+    AnimationName: Skill2
     Type: 1
     Status: 1
-    SkillKeys: 0500000006000000
-    DeployeType: 1
-    AnimSpeed: 0.6
+    DeployeType: 0
+    Key:
+      Keys: 0500000006000000
+      AddTrigger: 1
+    AnimSpeed: 0.4
     AnimTime: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
+      ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 150}
       MoveTarget: {x: -0.05, y: 0.15}
-      SelectorAngle: 0
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      IsSmoon: 1
-      IsShakeCamera: 0
-      Args: 
-    - EffectorType: 5
-      SelectorType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 80, y: 100}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      SelectorAngle: 0
+      SelectorAngle: 360
+      SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0

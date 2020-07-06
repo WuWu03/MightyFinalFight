@@ -15,6 +15,14 @@ public class SkillJumpAttackDeployer : SkillDeployer
         m_AttackMsgData.Dir = m_Owner.Dir;
         m_AttackMsgData.CanChangeDir = false;
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
+        m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
+        m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
+
+        if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Just)
+        {
+            m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
+        }
+
         m_Owner.ActorAnimator.AddDBEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(m_AttackMsgData);

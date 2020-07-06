@@ -1,4 +1,7 @@
-﻿public interface ICanBeHit
+﻿using FrameWork.GameEntity;
+using UnityEngine;
+
+public interface ICanBeHit
 {
     bool CanBeHit
     {
@@ -6,6 +9,11 @@
     }
 
     bool IsBeCatch
+    {
+        get;
+    }
+
+    Vector2 HurtPos
     {
         get;
     }

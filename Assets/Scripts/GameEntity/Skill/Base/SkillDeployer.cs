@@ -7,8 +7,8 @@ public abstract class SkillDeployer
         SkillID = skillID;
         m_Owner = owner;
         m_SkillData = StaticConfig.SkillConfig.GetData(skillID);
-        m_SkillSelector = SkillDeployerFactory.CreateSelector(m_SkillData.SkillEffects);
-        m_SkillEffects = SkillDeployerFactory.CreateEffects(m_SkillData.SkillEffects);
+        m_SkillSelector = SkillFactory.CreateSelector(m_SkillData.SkillEffects);
+        m_SkillEffects = SkillFactory.CreateEffects(m_SkillData.SkillEffects);
     }
 
     public virtual void DeploySkill()
@@ -20,6 +20,7 @@ public abstract class SkillDeployer
         }
         else
         {
+            m_CurrEffectIndex = 0;
             for (int i = 0; i < m_SkillEffects.Length; i++)
             {
                 m_SkillEffects[i].Effect(m_Owner, m_SkillData, m_SkillSelector[i]);

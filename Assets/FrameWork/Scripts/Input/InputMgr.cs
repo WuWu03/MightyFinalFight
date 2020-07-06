@@ -22,12 +22,16 @@ namespace FrameWork.Input
     public class InputMgr : BaseMgr<InputMgr>
     {
         public delegate float DirFunc();
+        public delegate void AfterTriggerFunc();
         public DirFunc GetDirFunc;
+        public AfterTriggerFunc AfterTrigge;
+
         class ComboKeyEvent
         {
             public KeyType[] Keys;
             public int EventID;
             public VoidParamT2<int, bool> KeyEvent;
+            public BoolParamT<int> Preconditon;
         }
 
         private void Awake()
@@ -54,6 +58,10 @@ namespace FrameWork.Input
             if (CheckKeyDown(KeyType.RB)) m_KeyDownTime = Time.time;
 
             TriggerKeyEvent();
+            if (!m_IsCombo)
+            {
+                AfterTrigge?.Invoke();
+            }
         }
 
         public static Vector2 GetAxis()
@@ -96,13 +104,14 @@ namespace FrameWork.Input
             return axis;
         }
 
-        public void AddKeyEvent(KeyType[] keys,int eventID, VoidParamT2<int, bool> KeyEvent)
+        public void AddKeyEvent(KeyType[] keys,int eventID, VoidParamT2<int, bool> KeyEvent,BoolParamT<int> Preconditon)
         {
             m_ListEvent.Add(new ComboKeyEvent()
             {
                 Keys = keys,
                 EventID = eventID,
                 KeyEvent = KeyEvent,
+                Preconditon = Preconditon,
             });
         }
 
@@ -132,6 +141,8 @@ namespace FrameWork.Input
             {
                 float x = UnityEngine.Input.GetAxisRaw("Horizontal");
                 float y = UnityEngine.Input.GetAxisRaw("Vertical");
+                bool isX = (x > 0 && m_KeyRightAdd) || (x < 0 && m_KeyLeftAdd);
+                bool isY = (y > 0 && m_KeyUpAdd) || (y < 0 && m_KeyDownAdd);
 
                 if (m_CurrDir == 0) m_CurrDir = GetDirFunc != null ? GetDirFunc() : 1;
 
@@ -140,6 +151,7 @@ namespace FrameWork.Input
                     m_ListKeyType.Add(KeyType.Up);
                     m_KeyUpAdd = false;
                 }
+
                 if (y < 0 && m_KeyDownAdd)
                 {
                     m_ListKeyType.Add(KeyType.Down);
@@ -169,14 +181,14 @@ namespace FrameWork.Input
                     m_KeyLeftAdd = false;
                 }
 
-                keyDown = x != 0 || y != 0;
+                keyDown = isX || isY;
             }
             else if (key == KeyType.X || key == KeyType.Y)
             {
                 bool xDown = UnityEngine.Input.GetButton("X");
                 bool yDown = UnityEngine.Input.GetButton("Y");
 
-                if(xDown && m_KeyXAdd)
+                if (xDown && m_KeyXAdd)
                 {
                     m_ListKeyType.Add(KeyType.A);
                     m_KeyXAdd = false;
@@ -190,7 +202,7 @@ namespace FrameWork.Input
 
                 keyDown = xDown || yDown;
             }
-            else if (UnityEngine.Input.GetButtonDown(Enum.GetName(typeof(KeyType),key)))
+            else if (UnityEngine.Input.GetButtonDown(Enum.GetName(typeof(KeyType), key)))
             {
                 keyDown = true;
                 m_ListKeyType.Add(key);
@@ -202,6 +214,7 @@ namespace FrameWork.Input
         private void TriggerKeyEvent()
         {
             if (m_ListKeyType.Count < 1) return;
+
             for (int i = 0; i < m_ListEvent.Count; i++)
             {
                 if (m_ListEvent[i].Keys.Length < 1 || m_ListKeyType.Count < m_ListEvent[i].Keys.Length) continue;
@@ -218,12 +231,12 @@ namespace FrameWork.Input
                 }
 
                 if (!isMatch) continue;
+                if (m_ListEvent[i].Preconditon != null && !m_ListEvent[i].Preconditon.Invoke(m_ListEvent[i].EventID)) continue;
                 ResetKeys();
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
+                m_IsCombo = true;
             }
         }
-
-
 
         private void ResetKeys()
         {
@@ -236,6 +249,7 @@ namespace FrameWork.Input
             m_KeyRightAdd = true;
             m_KeyXAdd = true;
             m_KeyYAdd = true;
+            m_IsCombo = false;
         }
 
         public override void ShutDown()
@@ -249,6 +263,8 @@ namespace FrameWork.Input
         private bool m_KeyRightAdd = true;
         private bool m_KeyXAdd = true;
         private bool m_KeyYAdd = true;
+
+        private bool m_IsCombo = false;
 
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;

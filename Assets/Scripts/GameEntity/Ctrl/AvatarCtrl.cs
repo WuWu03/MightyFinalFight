@@ -84,7 +84,11 @@ public class AvatarCtrl : BaseCtrl
     protected override void Update()
     {
         if (m_Owner == null || m_Owner.ResGO == null) return;
-        m_SkillManager.Update();
+
+        if (m_SkillManager != null)
+        {
+            m_SkillManager.Update();
+        }
 
         if (m_AttackTimer > 0)
         {

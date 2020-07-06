@@ -26,9 +26,12 @@ public class SkillNearHitSelector : ISkillSelector
             bool canBeHit = hit != null && hit.CanBeHit;
             bool isInRange = false;
 
-            if (Mathf.Abs(targetObj.Pos.y - owner.Pos.y) < 0.03f)
+            Vector2 target = (targetObj.Pos - owner.Pos).normalized;
+            Vector2 normal = owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+
+            if (Vector2.Angle(target, normal) <= skillData.SkillEffects[Index].SelectorAngle / 2)
             {
-                isInRange = owner.Dir > 0 ? targetObj.Pos.x >= owner.Pos.x : targetObj.Pos.x <= owner.Pos.x;
+                isInRange = Mathf.Abs(targetObj.Pos.x - owner.Pos.x) <= skillData.SkillEffects[Index].SelectorRadius; //owner.Dir > 0 ? targetObj.Pos.x >= owner.Pos.x : targetObj.Pos.x <= owner.Pos.x;
             }
 
             if (isInRange && canBeHit)

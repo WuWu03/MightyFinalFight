@@ -59,8 +59,13 @@ public class SkillNearHitEffect : ISkillEffect
     {
         if (hit != null && hit.CanBeHit)
         {
+            float dir = hit.HurtPos.x - owner.Pos.x >= 0 ? 1 : -1;
+            if(skillData.SkillEffects[Index].ForceType == SkillData.SkillAddForceType.SelfDir)
+            {
+                dir = owner.Dir;
+            }
             m_HurtData.AttackerDir = owner.Dir;
-            m_HurtData.AttackForce = new Vector2(skillData.SkillEffects[Index].AddTargetForce.x * owner.Dir, skillData.SkillEffects[Index].AddTargetForce.y);
+            m_HurtData.AttackForce = new Vector2(skillData.SkillEffects[Index].AddTargetForce.x * dir, skillData.SkillEffects[Index].AddTargetForce.y);
             m_HurtData.IsSwoon = skillData.SkillEffects[Index].IsSmoon;
             m_HurtData.AttackerID = owner.ID;
             m_HurtData.AttackValue = 1;

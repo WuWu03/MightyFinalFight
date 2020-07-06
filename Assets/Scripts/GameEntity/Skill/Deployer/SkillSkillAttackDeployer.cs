@@ -8,7 +8,7 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     public override void DeploySkill()
     {
-        if (!CheckStatus(m_SkillData.Status))
+        if (!SkillFactory.CheckStatus(m_SkillData.Status,m_Owner))
         {
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
@@ -56,27 +56,5 @@ public class SkillSkillAttackDeployer : SkillDeployer
     {
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
-    }
-
-    private bool CheckStatus(SkillStatus status)
-    {
-        bool ret = false;
-        switch (status)
-        {
-            case SkillStatus.None:
-                ret = true;
-                break;
-            case SkillStatus.Float:
-                ret = m_Owner.IsFloat;
-                break;
-            case SkillStatus.Ground:
-                ret = m_Owner.IsInGround;
-                break;
-            case SkillStatus.Catch:
-                ret = (m_Owner as BaseHero).IsCatch;
-                break;
-        }
-
-        return ret;
     }
 }

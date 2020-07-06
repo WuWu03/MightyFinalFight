@@ -43,15 +43,17 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills, 0.11f);
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
+        InputMgr.Ins.AfterTrigge = Control;
 
         for (int i = 6; i < m_HeroData.Skills.Length; i++)
         {
             SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
-            if (skillData.Type == SkillData.SkillType.SkillAttack && skillData.SkillKeys.Length > 0)
+            if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.Ins.AddKeyEvent(skillData.SkillKeys, skillData.ID, OnComboKeyEvent);
+                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent, GetComboCondition);
             }
         }
+
         Life = 5;
 
         CameraMgr.Ins.SetTarget(m_Player.transform);
@@ -76,7 +78,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.OnRebirthMsg();
     }
 
-    private void LateUpdate()
+    private void Control()
     {
         if (m_Player == null || m_CurrCtrl == null) return;
 
@@ -96,8 +98,15 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
+    private bool GetComboCondition(int id)
+    {
+        SkillData skillData = StaticConfig.SkillConfig.GetData(id);
+        return SkillFactory.CheckStatus(skillData.Status, m_Player);
+    }
+
     private void OnComboKeyEvent(int id, bool isTrigger)
     {
+        if (m_Player.IsCatch) return;
         m_CurrCtrl.Skill(id);
     }
 

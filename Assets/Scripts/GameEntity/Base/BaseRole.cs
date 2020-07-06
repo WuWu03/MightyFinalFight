@@ -19,7 +19,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         set { m_AttackValue = value; }
     }
 
-    public Vector2 JumpForce
+    public UnityEngine.Vector2 JumpForce
     {
         get { return m_JumpForce; }
         set { m_JumpForce = value; }
@@ -109,6 +109,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public UnityEngine.Vector2 HurtPos
+    {
+        get
+        {
+            return m_Pos;
+        }
+    }
 
     public virtual bool CanChangeDefaultState
     {
@@ -138,7 +145,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     }
 
     //初始化基本数值
-    public virtual void InitValue(float health, float atkSpeed, float atkVal, float def, Vector2 jumpForce, float moveSpeed)
+    public virtual void InitValue(float health, float atkSpeed, float atkVal, float def, UnityEngine.Vector2 jumpForce, float moveSpeed)
     {
         m_Health = health;
         m_AttackSpeed = atkSpeed;
@@ -163,7 +170,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-        m_MoveDir = Vector2.right;
+        m_MoveDir = UnityEngine.Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
     }
 
@@ -198,7 +205,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleAttack>();
 
         SetTrigger(data.AnimationName);
-        PlayAnimation(data.AnimationName, 1, data.AnimSpeed * m_AttackSpeed);
+        PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
 
     public virtual void OnSkillMsg(SkillData data)
@@ -231,7 +238,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (data.Dir.Equals(Vector2.zero))
+        if (data.Dir.Equals(UnityEngine.Vector2.zero))
         {
             ChangeState<RoleIdle>();
             return;
@@ -308,9 +315,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (!m_IsDropTrag) return;
 
-        Vector2[] vision = CameraMgr.Ins.GetVision();
+        UnityEngine.Vector2[] vision = CameraMgr.Ins.GetVision();
 
-        if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < vision[0].y)
+        if ((transform.localPosition + UnityEngine.Vector3.up * 0.6f).y + 0.1f < vision[0].y)
         {
             if (m_ObjectType == ObjectType.Player)
             {
@@ -342,7 +349,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_Animator.animation.isCompleted)
             {
-                m_Rigidbody.velocity = Vector2.zero;
+                m_Rigidbody.velocity = UnityEngine.Vector2.zero;
                 if (m_Health > 0) ChangeState<RoleAwaken>();
                 else ChangeState<RoleDead>();
             }
@@ -363,5 +370,5 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected AvatarCtrl m_CurrCtrl = null;
     protected DropTragData m_DropTragData = null;
     protected Rect m_Bound = Rect.zero;
-    protected Vector2 m_JumpForce = Vector2.zero;
+    protected UnityEngine.Vector2 m_JumpForce = UnityEngine.Vector2.zero;
 }

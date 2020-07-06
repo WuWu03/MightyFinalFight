@@ -8,7 +8,7 @@ public class SkillManager
         m_SkillDeployers = new SkillDeployer[skillIDs.Length];
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
-            m_SkillDeployers[i] = SkillDeployerFactory.CreateDeployer(skillIDs[i], owner);
+            m_SkillDeployers[i] = SkillFactory.CreateDeployer(skillIDs[i], owner);
         }
     }
 
@@ -37,15 +37,13 @@ public class SkillManager
     {
         if (m_CurrSkillDeployer == null) return;
 
+        m_CurrSkillDeployer.Update();
+
         if (m_CurrSkillDeployer.IsAllComplete())
         {
             m_CurrSkillDeployer = null;
             if (m_Owner.CanChangeDefaultState)
                 m_Owner.FsmMachine.ChangeDefaultState();
-        }
-        else
-        {
-            m_CurrSkillDeployer.Update();
         }
     }
 
