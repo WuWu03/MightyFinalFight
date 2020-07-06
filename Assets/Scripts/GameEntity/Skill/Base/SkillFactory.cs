@@ -80,6 +80,8 @@ public class SkillFactory
                 break;
             case SkillStatus.Ground:
                 ret = owner.IsInGround;
+                if(owner is BaseHero)
+                    ret = ret && !(owner as BaseHero).IsCatch;
                 break;
             case SkillStatus.Catch:
                 ret = (owner as BaseHero).IsCatch;
