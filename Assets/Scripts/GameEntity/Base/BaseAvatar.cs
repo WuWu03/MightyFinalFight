@@ -139,11 +139,6 @@ public abstract class BaseAvatar : BaseObject
             return;
         }
 
-        if(m_Animator.animation.isCompleted)
-        {
-            m_CurrAnimName = string.Empty;
-        }
-
         if(IsAnim(animName))
         {
             return;
@@ -156,6 +151,11 @@ public abstract class BaseAvatar : BaseObject
 
     public bool IsAnim(string animName)
     {
+        if (m_Animator.animation.isCompleted)
+        {
+            m_CurrAnimName = string.Empty;
+        }
+
         return m_CurrAnimName.Equals(animName);
     }
 

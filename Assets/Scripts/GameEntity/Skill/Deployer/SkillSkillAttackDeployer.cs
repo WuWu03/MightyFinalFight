@@ -33,6 +33,11 @@ public class SkillSkillAttackDeployer : SkillDeployer
     {
         bool isComplete = base.IsAllComplete();
 
+        if(m_SkillData.DeployeType == SkillDeployeType.Animtion)
+        {
+            isComplete = m_Owner.IsPlayComplete();
+        }
+
         if (isComplete)
         {
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
@@ -44,7 +49,6 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
-        Debug.Log(eventObject.name);
         base.DeploySkill();
     }
 

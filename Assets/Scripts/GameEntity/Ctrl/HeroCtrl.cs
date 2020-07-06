@@ -11,8 +11,15 @@ public class HeroCtrl : AvatarCtrl
     {
         if ((m_Owner as BaseHero).IsCatch)
         {
-            if(Mathf.Abs(dir.x) != 0)
+            if (m_Owner.IsAnim(AnimName.Throw))//正在扔出敌人
             {
+                m_CatchAttackTimer = 0;
+                return;
+            }
+
+            if (Mathf.Abs(dir.x) != 0)
+            {
+                m_CatchAttackTimer = 0;
                 m_Owner.SetDir(dir.x);
                 m_SkillManager.DeploySkill(1010);
                 return;
@@ -23,9 +30,11 @@ public class HeroCtrl : AvatarCtrl
                 m_CatchAttackTimer = Time.time;
                 m_SkillManager.DeploySkill(1009);
             }
+
             return;
         }
 
+        m_CatchAttackTimer = 0f;
         base.NormalAttack(dir);
     }
 

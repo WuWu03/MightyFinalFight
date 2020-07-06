@@ -45,7 +45,9 @@ public class SkillMoveTargetEffect : ISkillEffect
         bo.UpdatePos2(bo.Pos.x, targetY);
 
         if (skillData.SkillEffects[Index].IsSmoon)
+        {   
             bo.PlayAnimation(AnimName.SmoonUp);
+        }
         m_IsCompleted = true;
     }
 
