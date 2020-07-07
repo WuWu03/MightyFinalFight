@@ -212,7 +212,7 @@ public class BaseHero : BaseRole
             {
                 ICanBeHit temp = m_TriggerTargets.Targets[i].GetComponent<ICanBeHit>();
                 if (temp == null || !temp.CanBeHit) continue;
-                BaseObject targetObj = m_TriggerTargets.Targets[i].GetComponent<BaseObject>();
+                BaseSceneObject targetObj = m_TriggerTargets.Targets[i].GetComponent<BaseSceneObject>();
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
                                  Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.17f &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;

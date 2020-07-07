@@ -1,7 +1,7 @@
 ﻿using FrameWork.GameEntity;
 using UnityEngine;
 
-public class BaseEffect : BaseObject
+public class BaseEffect : BaseSceneObject
 {
     public float PlayTime
     {

@@ -21,17 +21,16 @@ public class SkillNearHitSelector : ISkillSelector
         for (int i = 0; i < trigger.Targets.Count; i++)
         {
             ICanBeHit hit = trigger.Targets[i].GetComponent<ICanBeHit>();
-            BaseObject targetObj = trigger.Targets[i].GetComponent<BaseObject>();
 
             bool canBeHit = hit != null && hit.CanBeHit;
             bool isInRange = false;
 
-            Vector2 target = (targetObj.Pos - owner.Pos).normalized;
+            Vector2 target = (hit.HurtPos - owner.Pos).normalized;
             Vector2 normal = owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
 
             if (Vector2.Angle(target, normal) <= skillData.SkillEffects[Index].SelectorAngle / 2)
             {
-                isInRange = Mathf.Abs(targetObj.Pos.x - owner.Pos.x) <= skillData.SkillEffects[Index].SelectorRadius; //owner.Dir > 0 ? targetObj.Pos.x >= owner.Pos.x : targetObj.Pos.x <= owner.Pos.x;
+                isInRange = Mathf.Abs(hit.HurtPos.x - owner.Pos.x) <= skillData.SkillEffects[Index].SelectorRadius; //owner.Dir > 0 ? targetObj.Pos.x >= owner.Pos.x : targetObj.Pos.x <= owner.Pos.x;
             }
 
             if (isInRange && canBeHit)

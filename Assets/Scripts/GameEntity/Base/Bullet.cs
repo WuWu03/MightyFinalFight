@@ -2,7 +2,7 @@
 using FrameWork.GameEntity;
 using UnityEngine;
 
-public class Bullet : BaseObject
+public class Bullet : BaseSceneObject
 {
     public override void Init(int id, string name)
     {
@@ -15,8 +15,8 @@ public class Bullet : BaseObject
         m_BoxCollider.enabled = true;
         m_BoxCollider.isTrigger = true;
         m_IsHit = false;
-
     }
+
     public void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
     {
         m_Rigidbody.drag = bulletData.Drag;
@@ -60,7 +60,7 @@ public class Bullet : BaseObject
         if (m_ResGO == null || m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
 
         ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
-        BaseObject targetObj = collision.gameObject.GetComponent<BaseObject>();
+        BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
 
         bool canBeHit = hit != null && hit.CanBeHit;
         bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
@@ -97,7 +97,7 @@ public class Bullet : BaseObject
 
     private bool m_IsHit = false;
     private DragonBones.UnityArmatureComponent m_Animator = null;
-    private BaseObject m_Owner = null;
+    private BaseSceneObject m_Owner = null;
     private SkillData.SkillEffect m_SkillEffect = null;
     private SkillData.Bullet m_BulletData = null;
     private Rigidbody2D m_Rigidbody = null;

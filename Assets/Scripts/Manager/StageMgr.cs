@@ -60,8 +60,8 @@ public class StageMgr : MonoSingleton<StageMgr>
             enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, "Cody"));
             enemy.InitData(new BaseRoleData()
             {
-                Health = 3,
-                MaxHealth = 3,
+                Health = 100,
+                MaxHealth = 100,
                 AttackSpeed = 0.8f,
                 AttackValue = 1,
                 Defense = 1,
