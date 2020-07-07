@@ -102,5 +102,6 @@ public class SkillData : BaseConfigData
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数
+    public bool IsInEffectPlaySound;//效果触发时是否播放声音
     public SkillEffect[] SkillEffects;
 }

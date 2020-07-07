@@ -146,7 +146,6 @@ public abstract class BaseAvatar : BaseObject
 
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
-        Debug.Log("播放动画" + animName + "," + playTimes);
         m_Animator.animation.Play(animName, playTimes);
     }
 

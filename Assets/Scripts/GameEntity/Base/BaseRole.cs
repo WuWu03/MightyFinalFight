@@ -109,7 +109,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public UnityEngine.Vector2 HurtPos
+    public Vector2 HurtPos
     {
         get
         {
@@ -122,6 +122,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         get
         {
             return !IsAnyState(typeof(RoleAttack)) && IsInGround;
+        }
+    }
+
+    public bool HitSuccess
+    {
+        get
+        {
+            return m_CurrCtrl != null && m_CurrCtrl.AttackSuccess;
         }
     }
 
@@ -273,6 +281,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
             GetState<RoleHurt>().StateParam = data;
             ChangeState<RoleHurt>();
         }
+
+        string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "Sound/OnHit02" : data.HurtSound;
+        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, hurtSound);
     }
 
     public virtual void OnDropTragMsg(DropTragData data)

@@ -1,11 +1,13 @@
 ﻿using FrameWork.Sound;
-using System.Diagnostics;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class SkillNormalAttackDeployer : SkillDeployer
 {
     public SkillNormalAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {
         m_AttackMsgData = new AttackData();
+        m_QueueSound = new Queue<string>();
     }
 
     public override void DeploySkill()
@@ -23,21 +25,37 @@ public class SkillNormalAttackDeployer : SkillDeployer
 
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+
         m_Owner.OnAttackMsg(m_AttackMsgData);
     }
 
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         base.DeploySkill();
+        RealPlaySound();
     }
 
     private void SoundEvent(string type, DragonBones.EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
+        m_QueueSound.Enqueue(eventObject.name);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
 
+    private void RealPlaySound()
+    {
+        if (m_QueueSound.Count < 1) return;
+        string soundName = m_QueueSound.Dequeue();
+
+        if (m_Owner.HitSuccess)
+        {
+            if (m_SkillData.IsInEffectPlaySound)
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
+        }
+        else
+            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
+    }
+
+    private Queue<string> m_QueueSound = null;
     private AttackData m_AttackMsgData = null;
 }

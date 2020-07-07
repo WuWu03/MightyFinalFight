@@ -9,6 +9,7 @@ public class HurtData : BaseEventArgs
     public int AttackerID { get; set; }
     public bool IsSwoon { get; set; }//是否击飞
     public float AttackerDir { get; set; }
+    public string HurtSound { get; set; }
 
     public override BaseEventArgs Clone()
     {
