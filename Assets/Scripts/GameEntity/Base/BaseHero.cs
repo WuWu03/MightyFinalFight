@@ -197,7 +197,7 @@ public class BaseHero : BaseRole
         base.SetPos(pos);
     }
 
-    public void OnRebirthMsg()
+    public void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
     }

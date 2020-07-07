@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
-using FrameWork.GameEntity;
 
-public class Trag : BaseObject
+public class Trag : BaseSceneObject
 {
     public override void Init(int id, string name)
     {

@@ -38,7 +38,16 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
-        m_Player.InitValue(3, m_HeroData.AttackSpeed, 1, 1, m_HeroData.JumpForce, m_HeroData.MoveSpeed);
+        m_Player.InitData(new BaseRoleData()
+        {
+            Health = 3,
+            MaxHealth = 3,
+            AttackSpeed = m_HeroData.AttackSpeed,
+            AttackValue = 1,
+            Defense = 1,
+            JumpForce = m_HeroData.JumpForce,
+            MoveSpeed = m_HeroData.MoveSpeed
+        });
         m_CurrCtrl = m_Player.AddCtrl<HeroCtrl>();
         m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills, 0.11f);
 
@@ -60,7 +69,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         CameraMgr.Ins.SetTarget(m_Player.transform);
     }
 
-    public void Rebirth()
+    public void Rebirth(Vector2 rebirthPos)
     {
         Life -= 1;
 
@@ -76,7 +85,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
 
         m_Player.Health = 3;
-        m_Player.OnRebirthMsg();
+        m_Player.OnRebirthMsg(rebirthPos);
     }
 
     private void Control()

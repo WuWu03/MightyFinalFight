@@ -4,7 +4,7 @@ using UnityEngine;
 using FrameWork.GameEntity;
 using FrameWork;
 
-public abstract class BaseAvatar : BaseObject
+public abstract class BaseAvatar : BaseSceneObject
 {
     public float MoveSpeed
     {

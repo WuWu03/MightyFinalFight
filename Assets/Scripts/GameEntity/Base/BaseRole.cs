@@ -152,14 +152,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
     }
 
     //初始化基本数值
-    public virtual void InitValue(float health, float atkSpeed, float atkVal, float def, UnityEngine.Vector2 jumpForce, float moveSpeed)
+    public override void InitData(BaseSceneObjectData data)
     {
-        m_Health = health;
-        m_AttackSpeed = atkSpeed;
-        m_AttackValue = atkVal;
-        m_Defense = def;
-        m_JumpForce = jumpForce;
-        m_MoveSpeed = moveSpeed;
+        base.InitData(data);
+        BaseRoleData baseRoleData = data as BaseRoleData;
+        m_AttackSpeed = baseRoleData.AttackSpeed;
+        m_AttackValue = baseRoleData.AttackValue;
+        m_Defense = baseRoleData.Defense;
+        m_JumpForce = baseRoleData.JumpForce;
+        m_MoveSpeed = baseRoleData.MoveSpeed;
     }
 
     public T AddCtrl<T>() where T : AvatarCtrl
@@ -268,7 +269,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (data == null) return;
         if (!CanBeHit) return;
 
-        m_Health -= data.AttackValue;
+        SubHealth(data.AttackValue);
         m_IsSmoon = data.IsSwoon;
 
         if (m_IsSmoon)
@@ -332,9 +333,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_ObjectType == ObjectType.Player)
             {
-                SetPos(m_DropTragData.InitPos);
-                ChangeState<RoleIdle>();
-                CameraMgr.Ins.StartFollow();
+                SubHealth(m_DropTragData.AttackValue);
+                if (m_Health <= 0)
+                {
+                    GetState<RoleDead>().ReBirthPos = m_DropTragData.InitPos;
+                    ChangeState<RoleDead>();
+                }
+                else
+                {
+                    SetPos(m_DropTragData.InitPos);
+                    ChangeState<RoleIdle>();
+                    CameraMgr.Ins.StartFollow();
+                }
             }
             else
             {

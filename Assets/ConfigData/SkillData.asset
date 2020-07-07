@@ -138,8 +138,8 @@ MonoBehaviour:
     Name: CodyJumpAttack1
     AnimationName: JumpAttack1
     Type: 1
-    Status: 0
-    DeployeType: 1
+    Status: 2
+    DeployeType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
     AnimationName: JumpAttack2
     Type: 1
     Status: 0
-    DeployeType: 1
+    DeployeType: 0
     Key:
       Keys: 
       AddTrigger: 0

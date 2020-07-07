@@ -7,7 +7,7 @@ using UnityEngine;
 public class DropTragData : BaseEventArgs
 {
     public Vector2 InitPos;
-    public float AttackValue;//伤害值
+    public int AttackValue;//伤害值
     public override BaseEventArgs Clone()
     {
         return Activator.CreateInstance<MoveData>();

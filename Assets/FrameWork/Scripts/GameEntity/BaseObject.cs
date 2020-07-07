@@ -61,20 +61,6 @@ namespace FrameWork.GameEntity
             }
         }
 
-        public bool IsInGround
-        {
-            get
-            {
-                return transform.localPosition.y <= m_Pos.y;
-            }
-        }
-
-        public float Health
-        {
-            get { return m_Health; }
-            set { m_Health = value; }
-        }
-
         public virtual void Init(int id, string name)
         {
             m_ID = id;
@@ -207,6 +193,5 @@ namespace FrameWork.GameEntity
         protected Vector2 m_Pos = Vector2.zero;
         protected ObjectType m_ObjectType = ObjectType.NONE;
         protected float m_Dir = 1;
-        protected float m_Health = 0;
     }
 }

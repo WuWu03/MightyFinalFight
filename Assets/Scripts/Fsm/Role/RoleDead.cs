@@ -1,7 +1,9 @@
-﻿using FrameWork.Fsm;
+﻿using DG.Tweening.Plugins.Options;
+using FrameWork.Fsm;
 using UnityEngine;
 public class RoleDead : BaseFsmState
 {
+    public Vector2 ReBirthPos = Vector2.zero;
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -15,22 +17,22 @@ public class RoleDead : BaseFsmState
         m_Owner.PlayAnimation(AnimName.Dead, 1, 1);
     }
 
-    public override void OnExit(BaseFsm fsm, bool isShutdown)
-    {
-
-    }
-
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.IsPlayComplete())
         {
             if (m_Owner.ObjectType == ObjectType.Player)
             {
-                PlayerMgr.Ins.Rebirth();
+                PlayerMgr.Ins.Rebirth(ReBirthPos);              
                 return;
             }
             m_Owner.Release();
         }
+    }
+
+    public override void OnExit(BaseFsm fsm, bool isShutdown)
+    {
+        ReBirthPos = Vector2.zero;
     }
 
     public override void OnDestroy(BaseFsm fsm)
