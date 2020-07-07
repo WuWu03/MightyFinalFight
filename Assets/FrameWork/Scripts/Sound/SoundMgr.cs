@@ -52,11 +52,12 @@ namespace FrameWork.Sound
             }
         }
 
-        public void PlayBGM(string path, bool isLoop,float volum = 1, float fadeTime = 0)
+        public void PlayBGM(string path,string name, bool isLoop,float volum = 1, float fadeTime = 0)
         {
+            string resPath = string.Format("{0}/{1}", path, name);
             StopCurrent();
             m_QueueAudioGroup.Clear();
-            InnerPlayBGM(path, volum, fadeTime, isLoop);
+            InnerPlayBGM(resPath, volum, fadeTime, isLoop);
         }
 
         private void Update()

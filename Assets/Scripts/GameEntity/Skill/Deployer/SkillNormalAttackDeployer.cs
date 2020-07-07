@@ -12,6 +12,9 @@ public class SkillNormalAttackDeployer : SkillDeployer
 
     public override void DeploySkill()
     {
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+
         m_AttackMsgData.Dir = m_Owner.Dir;
         m_AttackMsgData.CanChangeDir = true;
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;

@@ -21,17 +21,15 @@ namespace FrameWork.Input
 
     public class InputMgr : BaseMgr<InputMgr>
     {
-        public delegate float DirFunc();
-        public delegate void AfterTriggerFunc();
-        public DirFunc GetDirFunc;
-        public AfterTriggerFunc AfterTrigge;
+        public FloatNotPar GetDirFunc;
+        public VoidNotPar AfterTriggeFunc;
+        public BoolParamT<int> GetPreconditonFunc;
 
         class ComboKeyEvent
         {
             public KeyType[] Keys;
             public int EventID;
             public VoidParamT2<int, bool> KeyEvent;
-            public BoolParamT<int> Preconditon;
         }
 
         private void Awake()
@@ -60,7 +58,7 @@ namespace FrameWork.Input
             TriggerKeyEvent();
             if (!m_IsCombo)
             {
-                AfterTrigge?.Invoke();
+                AfterTriggeFunc?.Invoke();
             }
         }
 
@@ -104,14 +102,13 @@ namespace FrameWork.Input
             return axis;
         }
 
-        public void AddKeyEvent(KeyType[] keys,int eventID, VoidParamT2<int, bool> KeyEvent,BoolParamT<int> Preconditon)
+        public void AddKeyEvent(KeyType[] keys,int eventID, VoidParamT2<int, bool> KeyEvent)
         {
             m_ListEvent.Add(new ComboKeyEvent()
             {
                 Keys = keys,
                 EventID = eventID,
                 KeyEvent = KeyEvent,
-                Preconditon = Preconditon,
             });
         }
 
@@ -130,6 +127,8 @@ namespace FrameWork.Input
         public void RemoveAllKeyEvent()
         {
             GetDirFunc = null;
+            AfterTriggeFunc = null;
+            GetPreconditonFunc = null;
             m_ListEvent.Clear();
         }
 
@@ -230,8 +229,12 @@ namespace FrameWork.Input
                     }
                 }
 
-                if (!isMatch) continue;
-                if (m_ListEvent[i].Preconditon != null && !m_ListEvent[i].Preconditon.Invoke(m_ListEvent[i].EventID)) continue;
+                if (!isMatch || GetPreconditonFunc == null || !GetPreconditonFunc(m_ListEvent[i].EventID))
+                {
+                    m_IsCombo = false;
+                    continue;
+                }
+
                 ResetKeys();
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
                 m_IsCombo = true;

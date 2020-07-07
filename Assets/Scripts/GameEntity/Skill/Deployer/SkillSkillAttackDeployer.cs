@@ -8,17 +8,16 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     public override void DeploySkill()
     {
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+
         if (!SkillFactory.CheckStatus(m_SkillData.Status,m_Owner))
-        {
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        {         
             return;
         }
 
         if (m_SkillData.DeployeType == SkillDeployeType.Just)
         {
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.OnSkillMsg(m_SkillData);
             base.DeploySkill();
             return;
@@ -32,11 +31,6 @@ public class SkillSkillAttackDeployer : SkillDeployer
     public override bool IsAllComplete()
     {
         bool isComplete = base.IsAllComplete();
-
-        if(m_SkillData.DeployeType == SkillDeployeType.Animtion)
-        {
-            isComplete = m_Owner.IsPlayComplete();
-        }
 
         if (isComplete)
         {

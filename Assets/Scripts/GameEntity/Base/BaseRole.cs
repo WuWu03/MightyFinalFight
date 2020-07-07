@@ -261,6 +261,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         GetState<RoleJump>().StateParam = data;
         ChangeState<RoleJump>();
+        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
     }
 
     public virtual void OnHurtMsg(HurtData data)
@@ -282,8 +283,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
             ChangeState<RoleHurt>();
         }
 
-        string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "Sound/OnHit02" : data.HurtSound;
-        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, hurtSound);
+        string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "OnHit02" : data.HurtSound;
+        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
     }
 
     public virtual void OnDropTragMsg(DropTragData data)
@@ -368,6 +369,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         else
         {
             ChangeState<RoleIdle>();
+            FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
         }
     }
 

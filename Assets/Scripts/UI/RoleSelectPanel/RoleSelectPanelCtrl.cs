@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using FrameWork.UI;
 using System;
 using FrameWork.Camera;
+using FrameWork.Sound;
 
 public class RoleSelectPanelCtrl : BasePanelCtrl
 {
@@ -23,6 +24,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	}
 	protected override void OnOpen()
 	{
+		SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm14Character", true);
 		m_Panel.ImgSelectRect.gameObject.SetActive(true);
 		m_Panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
 		m_Panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
@@ -35,6 +37,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	{
 		if (Input.GetButtonDown("A") || Input.GetButton("X"))
 		{
+			FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelected");
 			InnerClose();
 			PlayerMgr.Ins.InitPlayer(1001);
 			StageMgr.Ins.Enter(1001);

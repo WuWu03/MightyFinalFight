@@ -40,12 +40,14 @@ public class RoleSwoon : BaseFsmState
         m_Owner.Rigidbody.velocity = new Vector2(m_Owner.Rigidbody.velocity.x, -1f);
         m_Owner.StopAnimation(AnimName.SmoonUp);
         m_Owner.PlayAnimation(AnimName.SmoonDown, 1);
+        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.SmoonDown);
         m_IsGround = false;
+        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
     }
 
     public override void OnDestroy(BaseFsm fsm)

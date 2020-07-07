@@ -43,14 +43,15 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills, 0.11f);
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
-        InputMgr.Ins.AfterTrigge = Control;
+        InputMgr.Ins.AfterTriggeFunc = Control;
+        InputMgr.Ins.GetPreconditonFunc = GetComboCondition;
 
         for (int i = 6; i < m_HeroData.Skills.Length; i++)
         {
             SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent, GetComboCondition);
+                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent);
             }
         }
 

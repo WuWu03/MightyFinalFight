@@ -25,6 +25,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -54,6 +55,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -83,6 +85,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -112,6 +115,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -141,6 +145,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 1
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -170,6 +175,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -199,6 +205,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 2
       SelectorType: 2
@@ -236,6 +243,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -265,6 +273,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -294,6 +303,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.6
     AnimTime: 1
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 4
       SelectorType: 1
@@ -339,6 +349,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 0
+    IsInEffectPlaySound: 0
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
