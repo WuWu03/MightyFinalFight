@@ -20,6 +20,7 @@ public class SkillJumpAttackDeployer : SkillDeployer
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
         m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
         m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
+        m_IsComplete = false;
 
         if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Just)
         {
@@ -28,15 +29,18 @@ public class SkillJumpAttackDeployer : SkillDeployer
 
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
         m_Owner.OnAttackMsg(m_AttackMsgData);
     }
 
     public override bool IsAllComplete()
     {
-        bool isComplete = base.IsAllComplete() && m_Owner.IsInGround && !m_Owner.IsFloat;
-
+        bool isComplete = base.IsAllComplete() && m_IsComplete;
+;
         if (isComplete)
         {
+            m_IsComplete = false;
+            m_Owner.OnGroundEvent.RemoveListener(OnGroundEvent);
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         }
@@ -59,5 +63,11 @@ public class SkillJumpAttackDeployer : SkillDeployer
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
     }
 
+    private void OnGroundEvent()
+    {
+        m_IsComplete = true;
+    }
+
+    private bool m_IsComplete = false;
     private AttackData m_AttackMsgData = null;
 }

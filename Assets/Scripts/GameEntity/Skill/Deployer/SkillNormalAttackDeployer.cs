@@ -10,7 +10,7 @@ public class SkillNormalAttackDeployer : SkillDeployer
         m_QueueSound = new Queue<string>();
     }
 
-    public override void DeploySkill()
+    public override void DeploySkill()  
     {
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);

@@ -49,7 +49,7 @@ public class AvatarCtrl : BaseCtrl
     {
         if (!m_Owner.CanAttack) return;
 
-        bool isJump = m_Owner.IsAnyState(typeof(RoleJump), typeof(RoleDropTrag));
+        bool isJump = m_Owner.IsAnyState(typeof(RoleJump));
 
         if (isJump)
         {
