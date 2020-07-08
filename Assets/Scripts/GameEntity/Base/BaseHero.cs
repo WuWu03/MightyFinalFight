@@ -131,14 +131,14 @@ public class BaseHero : BaseRole
         }
     }
 
-    public override void OnAttackMsg(AttackData data)
+    public override void OnAttackMsg(AttackData data,bool isForceJumpAttack = false)
     {
         if(m_ListCatchTarget != null)
         {
             m_CatchStamp = Time.time;
         }
 
-        base.OnAttackMsg(data);
+        base.OnAttackMsg(data, isForceJumpAttack);
     }
 
     public override void OnJumpMsg(JumpData data)
@@ -200,6 +200,7 @@ public class BaseHero : BaseRole
     public void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
+        m_Animator.animation.FadeIn("ReBirth", -1, 0);
     }
 
     protected virtual void CheckCatch()

@@ -30,7 +30,7 @@ public class SkillJumpAttackDeployer : SkillDeployer
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
-        m_Owner.OnAttackMsg(m_AttackMsgData);
+        m_Owner.OnAttackMsg(m_AttackMsgData, true);
     }
 
     public override bool IsAllComplete()

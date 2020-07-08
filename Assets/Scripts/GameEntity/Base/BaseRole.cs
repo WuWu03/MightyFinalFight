@@ -205,10 +205,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         CheckGround();
     }
 
-    public virtual void OnAttackMsg(AttackData data)
+    public virtual void OnAttackMsg(AttackData data,bool forceJumpAttack = false)
     {
         if (data == null) return;
-        m_IsJumpAttack = IsAnyState(typeof(RoleJump));
+        m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
         GetState<RoleAttack>().StateParam = data;
         ChangeState<RoleAttack>();
 
