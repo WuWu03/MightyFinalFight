@@ -26,9 +26,4 @@ public class EffectMgr : BaseMgr<EffectMgr>
         effect.Release();
         SceneObjectPool.Ins.Put(effect);
     }
-
-    public override void ShutDown()
-    {
-
-    }
 }

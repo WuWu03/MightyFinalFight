@@ -14,4 +14,8 @@ public static class StaticConfig
         StageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>("Assets/ConfigData/StageData.asset");
         SceneObjectConfig = AssetDatabase.LoadAssetAtPath<SceneObjectConfig>("Assets/ConfigData/SceneObjectData.asset");
     }
+
+    public static void Clear()
+    {
+    }
 }

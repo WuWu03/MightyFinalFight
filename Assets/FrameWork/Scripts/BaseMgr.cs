@@ -54,6 +54,11 @@ namespace FrameWork
             m_Ins = null;
         }
 
+        private void OnDestroy()
+        {
+            ShutDown();
+        }
+
         private static T m_Ins = null;
         private static GameObject m_Manager = null;
     }

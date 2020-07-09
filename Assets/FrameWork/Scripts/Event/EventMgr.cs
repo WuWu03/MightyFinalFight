@@ -43,7 +43,7 @@ namespace FrameWork.Event
 
         public bool Check(int id, EventHandler<GameEventArgs> handler)
         {
-            return this.m_EventPool.Check(id, handler);
+            return m_EventPool.Check(id, handler);
         }
 
         public int Count(int id)
@@ -63,7 +63,6 @@ namespace FrameWork.Event
         public override void ShutDown()
         {
             m_EventPool.ShutDown();
-            m_EventPool = null;
         }
 
         private EventPool<GameEventArgs> m_EventPool = null;

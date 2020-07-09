@@ -91,12 +91,6 @@ namespace FrameWork.Pool
             return pool;
         }
 
-        private void OnDestroy()
-        {
-            m_DicPool.Clear();
-            m_DicLoadCallback.Clear();
-        }
-
         public override void ShutDown()
         {
             m_DicPool.Clear();

@@ -90,7 +90,15 @@ public class ObjectMsgCenter : BaseMgr<ObjectMsgCenter>
 
     public override void ShutDown()
     {
-        
+        foreach(KeyValuePair<string,List<ObjectMsg>> kvp in m_DicObjectMsg)
+        {
+            foreach(ObjectMsg om in kvp.Value)
+            {
+                om.Destroy();
+            }
+        }
+
+        m_DicObjectMsg.Clear();
     }
 
     private Dictionary<string, List<ObjectMsg>> m_DicObjectMsg = null;

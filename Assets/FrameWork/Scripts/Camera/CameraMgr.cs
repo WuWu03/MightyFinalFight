@@ -120,7 +120,7 @@ namespace FrameWork.Camera
 
         public override void ShutDown()
         {
-
+            m_ListCamera.Clear();
         }
 
         private const float m_NormalRate = 1280f / 720f;

@@ -10,7 +10,6 @@ public class GameEntry : FrameWorkEntry
 {
     protected override void OnInit()
     {
-        ObjectMsgCenter.Init();
         StaticConfig.InitConfig();
 
         UIMgr.Ins.AddPanelMap<RoleSelectPanelCtrl>("RoleSelectPanel");
@@ -20,5 +19,10 @@ public class GameEntry : FrameWorkEntry
     protected override void OnStartGame()
     {
         UIMgr.Ins.Open<RoleSelectPanel>();
+    }
+
+    protected override void OnExit()
+    {
+
     }
 }

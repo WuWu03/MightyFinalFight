@@ -82,7 +82,7 @@ namespace FrameWork.Fsm
 
         public override void ShutDown()
         {
-
+            m_DicFsms.Clear();
         }
 
         private Dictionary<System.Object, BaseFsm> m_DicFsms = null;

@@ -50,8 +50,10 @@ namespace FrameWork
             CameraMgr.Ins.ShutDown();
             SoundMgr.Ins.ShutDown();
             EventMgr.Ins.ShutDown();
+            OnExit();
         }
         protected abstract void OnInit();
         protected abstract void OnStartGame();
+        protected abstract void OnExit();
     }
 }

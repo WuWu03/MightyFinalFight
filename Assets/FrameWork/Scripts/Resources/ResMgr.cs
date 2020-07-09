@@ -21,16 +21,19 @@ namespace FrameWork.Resources
             }
         }
 
-        public const string ExtName = ".assetBundle";                   //素材扩展名
-        public const int UNLOAD_TIME = 60 * 15;
-        private AssetBundleManifest manifest;
-        private Dictionary<string, Object> _mResDic = null;
-
-        public delegate void LoadCallBack(object obj);
+        class LoadAssetRequest
+        {
+            public Action<Object> sharpFunc;
+            public bool loadMainAsset;
+            public Type assetType;
+        }
 
         private void Awake()
         {
-            _mResDic = new Dictionary<string, Object>();
+            m_Dependencies = new Dictionary<string, string[]>();
+            m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
+            m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
+
 #if UNITY_EDITOR
             if (RuntimeEnvironment.Instance.LoadAB)
 #endif
@@ -38,13 +41,13 @@ namespace FrameWork.Resources
                 string url = ResDefine.AssetBundlePath + "/StreamingAssets";
                 byte[] stream = File.ReadAllBytes(url);
                 AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
-                manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+                m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
             }
 
             //StartCoroutine(OnTimeRelease());
         }
 
-        float m_UnLoadTime;
+        
         private void Update()
         {
             if (Time.time - m_UnLoadTime >= UNLOAD_TIME)
@@ -55,39 +58,17 @@ namespace FrameWork.Resources
             }
         }
 
-        Dictionary<string, string[]> m_Dependencies = new Dictionary<string, string[]>();
-        Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
-        Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
-
-        class LoadAssetRequest
-        {
-            public Action<Object> sharpFunc;
-            public bool loadMainAsset;
-            public Type assetType;
-        }
-
-        string GetRealAssetPath(string abName)
-        {
-            abName = abName.ToLower();
-
-            if (!abName.EndsWith(ExtName))
-            {
-                abName += ExtName;
-            }
-            return abName;
-        }
-
-
+        /// <summary>
+        /// 加载资源
+        /// </summary>
         public void LoadAsset<T>(string abName, Action<Object> action = null, bool loadMainAsset = true)
         {
             LoadAsset(abName, action, loadMainAsset, typeof(T));
         }
 
         /// <summary>
-        /// 加载资源 csharp调用
+        /// 加载资源
         /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="action"></param>
         public void LoadAsset(string abName, Action<Object> action = null, bool loadMainAsset = true, Type t = null)
         {
             if (t == null)
@@ -100,13 +81,27 @@ namespace FrameWork.Resources
                 ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t);
             else
 #endif
-                loadAsset(abName, action, loadMainAsset, t);
+                InnerLoadAsset(abName, action, loadMainAsset, t);
+        }
+
+        /// <summary>
+        /// 此函数交给外部卸载专用，自己调整是否需要彻底清除AB
+        /// </summary>
+        public void UnloadAssetBundle(string abName, bool isThorough = false)
+        {
+            abName = GetRealAssetPath(abName);
+            //if(LoggerHelper.isLogDebug)
+            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
+            UnloadAssetBundleInternal(abName, isThorough);
+            UnloadDependencies(abName, isThorough);
+            //if (LoggerHelper.isLogDebug)
+            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
         }
 
         /// <summary>
         /// 载入素材
         /// </summary>
-        void loadAsset(string abName, Action<Object> action = null, bool loadMainAsset = false, Type t = null)
+        private void InnerLoadAsset(string abName, Action<Object> action = null, bool loadMainAsset = false, Type t = null)
         {
             Debug.Log("LoadAsset：" + abName);
 
@@ -131,7 +126,7 @@ namespace FrameWork.Resources
             }
         }
 
-        IEnumerator OnLoadAsset(string abName)
+        private IEnumerator OnLoadAsset(string abName)
         {
             yield return new WaitForSeconds(0);
             AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
@@ -181,7 +176,7 @@ namespace FrameWork.Resources
         }
 
 
-        IEnumerator OnLoadAssetBundle(string abName)
+        private IEnumerator OnLoadAssetBundle(string abName)
         {
             string path = GetAssetBundlePath(abName);
             Debug.Log("开始异步加载资源：" + path);
@@ -195,7 +190,7 @@ namespace FrameWork.Resources
             }
         }
 
-        AssetBundleInfo GetLoadedAssetBundle(string abName)
+        private AssetBundleInfo GetLoadedAssetBundle(string abName)
         {
             AssetBundleInfo bundle = null;
             m_LoadedAssetBundles.TryGetValue(abName, out bundle);
@@ -210,7 +205,7 @@ namespace FrameWork.Resources
             return bundle;
         }
 
-        bool DependenciesLoaded(string[] dependencies)
+        private bool DependenciesLoaded(string[] dependencies)
         {
             // Make sure all dependencies are loaded
             foreach (var dependency in dependencies)
@@ -223,29 +218,26 @@ namespace FrameWork.Resources
             return true;
         }
 
-        /// <summary>
-        /// 此函数交给外部卸载专用，自己调整是否需要彻底清除AB
-        /// </summary>
-        /// <param name="abName"></param>
-        /// <param name="isThorough"></param>
-        public void UnloadAssetBundle(string abName, bool isThorough = false)
+        private string GetRealAssetPath(string abName)
         {
-            abName = GetRealAssetPath(abName);
-            //if(LoggerHelper.isLogDebug)
-            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
-            UnloadAssetBundleInternal(abName, isThorough);
-            UnloadDependencies(abName, isThorough);
-            //if (LoggerHelper.isLogDebug)
-            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
+            abName = abName.ToLower();
+
+            if (!abName.EndsWith(ExtName))
+            {
+                abName += ExtName;
+            }
+
+            return abName;
         }
+
 
         /// <summary>
         /// 载入依赖
         /// </summary>
         /// <param name="name"></param>
-        void LoadDependencies(string abName)
+        private void LoadDependencies(string abName)
         {
-            if (manifest == null)
+            if (m_Manifest == null)
             {
                 Debug.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
                 return;
@@ -254,7 +246,7 @@ namespace FrameWork.Resources
             string[] dependencies = null;
             if (!m_Dependencies.TryGetValue(abName, out dependencies))
             {
-                dependencies = manifest.GetAllDependencies(abName);
+                dependencies = m_Manifest.GetAllDependencies(abName);
                 if (dependencies.Length > 0)
                 {
                     m_Dependencies.Add(abName, dependencies);
@@ -269,7 +261,7 @@ namespace FrameWork.Resources
             }
         }
 
-        void UnloadDependencies(string abName, bool isThorough)
+        private void UnloadDependencies(string abName, bool isThorough)
         {
             string[] dependencies = null;
             if (!m_Dependencies.TryGetValue(abName, out dependencies))
@@ -283,7 +275,7 @@ namespace FrameWork.Resources
             m_Dependencies.Remove(abName);
         }
 
-        void UnloadAssetBundleInternal(string abName, bool isThorough)
+        private void UnloadAssetBundleInternal(string abName, bool isThorough)
         {
             AssetBundleInfo bundle = GetLoadedAssetBundle(abName);
             if (bundle == null) return;
@@ -300,14 +292,25 @@ namespace FrameWork.Resources
             }
         }
 
-        string GetAssetBundlePath(string abName)
+        private string GetAssetBundlePath(string abName)
         {
             return string.Format("{0}/{1}", ResDefine.AssetBundlePath, abName);
         }
 
         public override void ShutDown()
         {
-            
+            m_Dependencies.Clear();
+            m_LoadedAssetBundles.Clear();
+            m_LoadRequests.Clear();
         }
+
+        public const string ExtName = ".assetBundle";                   //素材扩展名
+        public const int UNLOAD_TIME = 60 * 15;
+
+        private float m_UnLoadTime;
+        private AssetBundleManifest m_Manifest;
+        private Dictionary<string, string[]> m_Dependencies = null;
+        private Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = null;
+        private Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = null;
     }
 }
