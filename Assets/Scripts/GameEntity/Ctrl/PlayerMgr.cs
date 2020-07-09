@@ -2,6 +2,7 @@
 using FrameWork.Camera;
 using FrameWork.Input;
 using FrameWork.Pool;
+using FrameWork.UI;
 using UnityEngine;
 
 public class PlayerMgr : MonoSingleton<PlayerMgr>
@@ -65,7 +66,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
 
         Life = 5;
-
+        
         CameraMgr.Ins.SetTarget(m_Player.transform);
     }
 
@@ -86,6 +87,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         m_Player.Health = 3;
         m_Player.OnRebirthMsg(rebirthPos);
+        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerLife(Life);
     }
 
     private void Control()

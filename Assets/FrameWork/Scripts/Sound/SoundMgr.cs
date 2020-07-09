@@ -87,7 +87,7 @@ namespace FrameWork.Sound
             {
                 m_Source.clip = clip;
                 m_Source.loop = isLoop;
-                m_Source.volume = fadeTime > 0f ? 0f : 1f;
+                m_Source.volume = fadeTime > 0f ? 0f : volum;
                 m_Source.Play();
 
                 if (fadeTime > 0f)

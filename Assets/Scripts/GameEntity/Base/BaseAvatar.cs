@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using FrameWork.GameEntity;
 using FrameWork;
+using FrameWork.Camera;
 
 public abstract class BaseAvatar : BaseSceneObject
 {
@@ -196,6 +197,7 @@ public abstract class BaseAvatar : BaseSceneObject
     {
         return m_FsmMachine.GetState<T>();
     }
+
     protected void ChangeState<T>() where T : BaseFsmState
     {
         m_FsmMachine.ChangeState<T>();
@@ -209,6 +211,18 @@ public abstract class BaseAvatar : BaseSceneObject
     protected void SetDefaultState<T>() where T : BaseFsmState
     {
         m_FsmMachine.SetDefaultState<T>();
+    }
+
+    protected bool IsOutVersionX(float posX)
+    {
+        Vector2[] vision = CameraMgr.Ins.GetVision();
+        return posX - 0.1f <= vision[0].x || posX + 0.1f >= vision[1].x;
+    }
+
+    protected bool IsOutVersionY(float posY)
+    {
+        Vector2[] vision = CameraMgr.Ins.GetVision();
+        return posY <= vision[0].y || posY >= vision[1].y;
     }
 
     protected string m_CurrAnimName = string.Empty;

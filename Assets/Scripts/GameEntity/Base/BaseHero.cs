@@ -1,5 +1,6 @@
 ﻿using FrameWork.Camera;
 using FrameWork.GameEntity;
+using FrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -84,7 +85,7 @@ public class BaseHero : BaseRole
 
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
-            if (IsOutVersion(transform.localPosition) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            if (IsOutVersionX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
             {
                 m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
             }
@@ -177,6 +178,7 @@ public class BaseHero : BaseRole
         }
 
         base.OnHurtMsg(data);
+        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public override void SetPos(Vector2 pos)
@@ -192,15 +194,17 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!CanMove || !StageMgr.Ins.CanMove(pos) || IsOutVersion(pos)) return;
+            if (!CanMove || !StageMgr.Ins.CanMove(pos) || IsOutVersionX(pos.x)) return;
         }
+
         base.SetPos(pos);
     }
 
-    public void OnRebirthMsg(Vector2 rebirthPos)
+    public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
         m_Animator.animation.FadeIn("ReBirth", -1, 0);
+        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     protected virtual void CheckCatch()
@@ -262,12 +266,6 @@ public class BaseHero : BaseRole
     private bool HasCatch()
     {
         return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0;
-    }
-
-    private bool IsOutVersion(Vector3 pos)
-    {
-        Vector2[] vision = CameraMgr.Ins.GetVision();
-        return pos.x - 0.1f <= vision[0].x || pos.x + 0.1f >= vision[1].x;
     }
 
     private List<ICanBeHit> m_ListCatchTarget = null;
