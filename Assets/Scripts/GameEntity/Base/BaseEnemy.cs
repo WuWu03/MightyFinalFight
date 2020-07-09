@@ -23,7 +23,6 @@ public class BaseEnemy : BaseRole
         base.Init(id, name);
         m_AvatarCtrl = gameObject.GetOrAddComponent<AvatarCtrl>();
         m_AvatarCtrl.Init(null, new int[1] { 1001 }, 0.5f);
-        m_JumpForce = Vector2.up * 20;
     }
 
     public override void SetPos(Vector2 pos)

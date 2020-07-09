@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using FrameWork.UI;
+using DG.Tweening;
+
 public class MainPanelCtrl:BasePanelCtrl
 {
 	protected override void OnInit(object[] param)
@@ -55,6 +57,26 @@ public class MainPanelCtrl:BasePanelCtrl
 		m_Panel.EnemyHpBar.maxValue = max;
 		m_Panel.EnemyHpBar.gameObject.SetActive(true);
 		m_Panel.EnemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+
+		if(value == 0)
+		{
+			m_EnemyHpBarHideTimer = -1;
+			Image image = m_Panel.EnemyHpBar.GetComponent<Image>();
+			Sequence sequence = DOTween.Sequence();
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.AppendCallback(() =>
+			{
+				m_Panel.EnemyHpBar.gameObject.SetActive(false);
+			});
+			return;
+		}
+
 		m_EnemyHpBarHideTimer = Time.time;
 	}
 
