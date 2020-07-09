@@ -25,6 +25,7 @@ public class SkillBulletEffect : ISkillEffect
         for (int i = 0; i < skillData.SkillEffects[Index].Bullets.Length; i++)
         {
             Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(skillData.SkillEffects[Index].Bullets[i].Name);
+            bullet.SetObjectType(ObjectType.SceneItem);
             bullet.SetBulletInfo(owner, skillData.SkillEffects[Index], skillData.SkillEffects[Index].Bullets[i]);
         }
 

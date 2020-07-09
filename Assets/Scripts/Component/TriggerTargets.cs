@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrameWork.GameEntity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,8 @@ public class TriggerTargets:MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.Equals(gameObject)) return;
+        BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
+        if (bso == null || bso.ObjectType == ObjectType.SceneItem) return;
 
         if (!Targets.Contains(collision.gameObject))
         {
@@ -36,6 +39,7 @@ public class TriggerTargets:MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Targets.Remove(collision.gameObject);
+        if (Targets.Contains(collision.gameObject))
+            Targets.Remove(collision.gameObject);
     }
 }

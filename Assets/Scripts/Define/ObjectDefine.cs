@@ -4,7 +4,7 @@
     Player = 1,//玩家
     Monster = 2,//怪物
     NPC = 3,//npc
-    SceneItem = 4,//场景物体 箱子,掉落道具等
+    SceneItem = 4,//不可破坏的场景物体 箱子,掉落道具等
 }
 
 public enum ObjectMsgType
