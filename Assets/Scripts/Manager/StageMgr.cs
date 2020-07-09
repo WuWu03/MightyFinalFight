@@ -125,7 +125,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
-        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm2", true,0.3f);
+        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm2", true, 0.3f);
         //SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
         //{
         //    new SoundMgr.AudioGroup()

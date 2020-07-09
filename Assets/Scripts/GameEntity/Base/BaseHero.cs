@@ -178,6 +178,17 @@ public class BaseHero : BaseRole
         }
 
         base.OnHurtMsg(data);
+    }
+
+    public override void AddHealth(int value)
+    {
+        base.AddHealth(value);
+        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
+    }
+
+    public override void SubHealth(int value)
+    {
+        base.SubHealth(value);
         (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
     }
 
@@ -203,7 +214,6 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        m_Animator.animation.FadeIn("ReBirth", -1, 0);
         (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
     }
 

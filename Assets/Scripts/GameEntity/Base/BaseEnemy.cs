@@ -36,11 +36,12 @@ public class BaseEnemy : BaseRole
         base.SetPos(pos);
     }
 
-    public override void OnHurtMsg(HurtData data)
+    public override void SubHealth(int value)
     {
-        base.OnHurtMsg(data);
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetEnemyHP(m_Health, m_MaxHealth,400f);
+        base.SubHealth(value);
+        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetEnemyHP(m_Health, m_MaxHealth, 400f);
     }
+
     protected override void Update()
     {
         if (ResGO == null) return;
