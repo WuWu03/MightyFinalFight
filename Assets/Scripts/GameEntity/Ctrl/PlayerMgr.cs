@@ -112,8 +112,12 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool GetComboCondition(int id)
     {
+        if(id == 1011)
+        {
+
+        }
         SkillData skillData = StaticConfig.SkillConfig.GetData(id);
-        return SkillFactory.CheckStatus(skillData.Status, m_Player);
+        return SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
     }
 
     private void OnComboKeyEvent(int id, bool isTrigger)

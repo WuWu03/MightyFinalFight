@@ -144,8 +144,6 @@ public class BaseHero : BaseRole
                 IsSwoon = true,
                 AttackForce = new Vector2(40f * m_Dir, 150f),
             });
-
-            ResetCatch(false);
         }
     }
 
@@ -241,6 +239,15 @@ public class BaseHero : BaseRole
 
     protected virtual void CheckCatch()
     {    
+        if(m_CatchAttackCount >= 3)
+        {
+            if (IsPlayComplete())
+            {
+                ResetCatch(true);
+            }
+            return;
+        }
+
         if (m_ListCatchTarget.Count < 1)
         {
             if (!IsAnyState(typeof(RoleMove)) || m_TriggerTargets.Targets.Count < 1) return;

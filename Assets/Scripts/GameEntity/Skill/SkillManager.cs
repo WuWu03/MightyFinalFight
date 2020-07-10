@@ -27,6 +27,11 @@ public class SkillManager
 
         if (deployer != null)
         {
+            if (!SkillFactory.CheckStatus(deployer.SkillData.SkillPrevConditions, m_Owner))
+            {
+                return;
+            }
+
             deployer.DeploySkill();
             m_CurrSkillDeployer = deployer;
         }

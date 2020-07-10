@@ -14,16 +14,19 @@ public class SkillData : BaseConfigData
 {
     public enum SkillSelectorType
     {
+        None = 0,
         NearHitSelector = 1,
         BulletSelector = 2,
     }
 
     public enum SkillEffectorType
     {
+        None = 0,
         NearHitEffect = 1,
         BulletHitEffect = 2,
         MoveHitEffect = 3,
         MoveTargetEffect = 4,
+        SubHP = 5,
     }
 
     public enum SkillType
@@ -39,19 +42,24 @@ public class SkillData : BaseConfigData
         Ground,//着陆
         Float,//浮空
         Catch,//抓人
+        HPMoreThan,//hp大于
+        HPLessThan,//hp小于
     }
 
     public enum SkillDeployeType
     {
+        None,
         Just,//直接释放
         Animtion,//动画触发
     }
 
     public enum SkillAddForceType
     {
+        None,
         SelfDir,
         TargetPos,
     }
+
     [Serializable]
     public class Bullet
     {
@@ -93,15 +101,22 @@ public class SkillData : BaseConfigData
         public bool AddTrigger;
     }
 
+    [Serializable]
+    public class SkillPrevCondition
+    {
+        public SkillStatus Status;
+        public string Args;
+    }
+
     public int Level;
     public string Name;
     public string AnimationName;
     public SkillType Type;
-    public SkillStatus Status;//释放技能需要处于什么状态
     public SkillDeployeType DeployeType;//技能释放方式
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数
     public bool IsInEffectPlaySound;//效果触发时是否播放声音
+    public SkillPrevCondition[] SkillPrevConditions;//释放技能的前置条件
     public SkillEffect[] SkillEffects;
 }

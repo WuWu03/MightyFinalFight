@@ -11,11 +11,6 @@ public class SkillSkillAttackDeployer : SkillDeployer
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
 
-        if (!SkillFactory.CheckStatus(m_SkillData.Status,m_Owner))
-        {         
-            return;
-        }
-
         if (m_SkillData.DeployeType == SkillDeployeType.Just)
         {
             m_Owner.OnSkillMsg(m_SkillData);

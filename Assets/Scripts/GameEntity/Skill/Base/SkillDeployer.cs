@@ -2,6 +2,14 @@
 public abstract class SkillDeployer
 {
     public int SkillID { get; private set; }
+    public SkillData SkillData
+    {
+        get 
+        { 
+            return m_SkillData; 
+        }
+    }
+
     public SkillDeployer(int skillID, BaseRole owner)
     {
         SkillID = skillID;
