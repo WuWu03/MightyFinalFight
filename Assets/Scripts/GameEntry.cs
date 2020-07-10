@@ -4,16 +4,13 @@ using UnityEngine;
 using FrameWork;
 using FrameWork.Camera;
 using FrameWork.UI;
-
+using System;
 
 public class GameEntry : FrameWorkEntry
 {
     protected override void OnInit()
     {
         StaticConfig.InitConfig();
-
-        UIMgr.Ins.AddPanelMap<RoleSelectPanelCtrl>("RoleSelectPanel");
-        UIMgr.Ins.AddPanelMap<MainPanelCtrl>("MainPanel");
     }
 
     protected override void OnStartGame()

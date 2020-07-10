@@ -20,8 +20,6 @@ public class Bullet : BaseSceneObject
     public void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
     {
         m_Rigidbody.drag = bulletData.Drag;
-        m_Rigidbody.velocity = new Vector2(bulletData.Velocity.x * owner.Dir, bulletData.Velocity.y);
-
         m_BoxCollider.offset = bulletData.TriggerOffest;
         m_BoxCollider.size = bulletData.TriggerSize;
 
@@ -39,6 +37,7 @@ public class Bullet : BaseSceneObject
     protected override void Update()
     {
         base.Update();
+        if (m_ResGO == null) return;
         if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
         {
             Release();
@@ -85,6 +84,7 @@ public class Bullet : BaseSceneObject
         base.OnResComplete(go);
         m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
         m_Animator.animation.Play(m_BulletData.Name, 1);
+        m_Rigidbody.velocity = new Vector2(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
     }
 
     public override void Release()

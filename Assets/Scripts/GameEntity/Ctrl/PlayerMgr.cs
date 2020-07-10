@@ -87,7 +87,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         m_Player.Health = 3;
         m_Player.OnRebirthMsg(rebirthPos);
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerLife(Life);
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(Life);
     }
 
     private void Control()

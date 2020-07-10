@@ -36,7 +36,6 @@ namespace FrameWork.UI
 
         private void Awake()
         {
-            m_DicPanelMap = new Dictionary<string, System.Type>();
             m_ListOpenPanel = new List<BasePanelCtrl>();
             m_StackMutexPanel = new Stack<BasePanelCtrl>();
             m_QueueDelayDestroy = new Queue<BasePanelCtrl>();
@@ -108,14 +107,14 @@ namespace FrameWork.UI
             InnerOpen(panelName, callback, param);
         }
 
-        public BasePanelCtrl GetPanel<T>()
+        public T GetPanel<T>() where T : BasePanelCtrl
         {
-            return InnerGet(typeof(T).Name);
+            return InnerGet(typeof(T).Name.Replace("Ctrl", "")) as T;
         }
 
-        public BasePanelCtrl GetPanel(string panelName)
+        public T GetPanel<T>(string panelName) where T : BasePanelCtrl
         {
-            return InnerGet(panelName);
+            return InnerGet(panelName) as T;
         }
 
         public bool IsPanelOpen<T>()
@@ -145,22 +144,12 @@ namespace FrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-        public void AddPanelMap<T>(string panelName) where T : BasePanelCtrl
-        {
-            m_DicPanelMap.Add(panelName, typeof(T));
-        }
-
-        public void AddPanelMap(string panelName, System.Type type)
-        {
-            if (typeof(BasePanelCtrl) == type)
-                m_DicPanelMap.Add(panelName, type);
-        }
 
         private void InnerOpen(string panelName, VoidNotPar callback, object[] param)
         {
-            System.Type type = null;
+            System.Type type = System.Type.GetType(panelName + "Ctrl");
 
-            if (!m_DicPanelMap.TryGetValue(panelName, out type))
+            if (type == null)
             {
                 Debug.LogError("Panel is invalid!");
                 return;
@@ -283,14 +272,12 @@ namespace FrameWork.UI
 
         public override void ShutDown()
         {
-            m_DicPanelMap.Clear();
             m_StackMutexPanel.Clear();
             m_ListOpenPanel.Clear();
             m_QueueDelayDestroy.Clear();
             m_QueueAlways.Clear();
         }
 
-        private Dictionary<string, System.Type> m_DicPanelMap = null;
         private Queue<BasePanelCtrl> m_QueueDelayDestroy = null;
         private Queue<BasePanelCtrl> m_QueueAlways = null;
         private Stack<BasePanelCtrl> m_StackMutexPanel = null;

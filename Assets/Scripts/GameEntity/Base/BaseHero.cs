@@ -39,19 +39,27 @@ public class BaseHero : BaseRole
         }
     }
 
-    public bool IsCatch
-    {
-        get
-        {
-            return HasCatch();
-        }
-    }
-
     public override bool CanChangeDefaultState
     {
         get
         {
             return base.CanChangeDefaultState || HasCatch();
+        }
+    }
+
+    public override bool CanBeHit
+    {
+        get
+        {
+            return base.CanBeHit && !m_IsRebirthState;
+        }
+    }
+
+    public bool IsCatch
+    {
+        get
+        {
+            return HasCatch();
         }
     }
 
@@ -77,6 +85,7 @@ public class BaseHero : BaseRole
     {
         base.Update();
         CheckCatch();
+        CheckRebirthState();
 
         if (m_CatchAttackCount >= 3 && IsPlayComplete())
         {
@@ -100,6 +109,12 @@ public class BaseHero : BaseRole
         }
     }
 
+    protected override void OnResComplete(GameObject go)
+    {
+        base.OnResComplete(go);
+        go.transform.Find("slot1").GetComponent<Renderer>().enabled = true;
+        go.transform.Find("slot2").GetComponent<Renderer>().enabled = false;
+    }
     public override List<ICanBeHit> OnHitStart()
     {
         if (m_ListCatchTarget.Count < 1) return null;
@@ -129,6 +144,8 @@ public class BaseHero : BaseRole
                 IsSwoon = true,
                 AttackForce = new Vector2(40f * m_Dir, 150f),
             });
+
+            ResetCatch(false);
         }
     }
 
@@ -183,20 +200,21 @@ public class BaseHero : BaseRole
     public override void AddHealth(int value)
     {
         base.AddHealth(value);
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public override void SubHealth(int value)
     {
         base.SubHealth(value);
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public override void SetPos(Vector2 pos)
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            if (StageMgr.Ins.IsOutArea(pos))
+            bool isMapCanMove = StageMgr.Ins.CanMovePos2(pos);
+            if (!isMapCanMove)
             {
                 CameraMgr.Ins.EndFollow();
             }
@@ -205,7 +223,7 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!CanMove || !StageMgr.Ins.CanMove(pos) || IsOutVersionX(pos.x)) return;
+            if (!CanMove || !isMapCanMove || IsOutVersionX(pos.x)) return;
         }
 
         base.SetPos(pos);
@@ -214,7 +232,11 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetPlayerHP(m_Health, m_MaxHealth);
+        m_ResGO.transform.Find("slot1").GetComponent<Renderer>().enabled = false;
+        m_ResGO.transform.Find("slot2").GetComponent<Renderer>().enabled = true;
+        m_IsRebirthState = true;
+        m_RebirthStateTimer = Time.time;
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     protected virtual void CheckCatch()
@@ -258,6 +280,19 @@ public class BaseHero : BaseRole
         }
     }
 
+    private void CheckRebirthState()
+    {
+        if (!m_IsRebirthState) return;
+
+        if(Time.time - m_RebirthStateTimer >= m_RebirthStateTime)
+        {
+            m_RebirthStateTimer = 0;
+            m_IsRebirthState = false;
+            m_ResGO.transform.Find("slot1").GetComponent<Renderer>().enabled = true;
+            m_ResGO.transform.Find("slot2").GetComponent<Renderer>().enabled = false;
+        }
+    }
+
     private void ResetCatch(bool changeState = true)
     {
         m_ListCatchTarget[0].SetCatch(false);
@@ -278,10 +313,14 @@ public class BaseHero : BaseRole
         return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0;
     }
 
-    private List<ICanBeHit> m_ListCatchTarget = null;
-    private float m_CatchStamp = 0f;
     protected float m_CatchTime = 2;
+    protected bool m_IsRebirthState = false;
+
+    private float m_RebirthStateTimer = 0;
+    private float m_RebirthStateTime = 3.0f;
+    private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
     private int m_CatchAttackCount = 0;
+    private List<ICanBeHit> m_ListCatchTarget = null;
     private Dictionary<int, int> m_DicAttacker = null;
 }

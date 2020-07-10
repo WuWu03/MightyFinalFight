@@ -29,7 +29,7 @@ public class BaseEnemy : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            if (!CanMove || !StageMgr.Ins.CanMove(pos)) return;
+            if (!CanMove || !StageMgr.Ins.CanMovePos2(pos)) return;
         }
 
         base.SetPos(pos);
@@ -38,11 +38,21 @@ public class BaseEnemy : BaseRole
     public override void SubHealth(int value)
     {
         base.SubHealth(value);
-        (UIMgr.Ins.GetPanel<MainPanel>() as MainPanelCtrl).SetEnemyHP(m_Health, m_MaxHealth, 400f);
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
     }
 
     protected override void Update()
     {
+        base.Update();
+
+        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
+        {
+            if (!StageMgr.Ins.CanMovePosX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            {
+                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+            }
+        }
+
         if (ResGO == null) return;
         m_AvatarCtrl.Move(InputMgr.TestAxis());
 
@@ -55,8 +65,6 @@ public class BaseEnemy : BaseRole
         {
             m_AvatarCtrl.Jump(InputMgr.TestAxis());
         }
-
-        base.Update();
     }
 
     protected AvatarCtrl m_AvatarCtrl = null;

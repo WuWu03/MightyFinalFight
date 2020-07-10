@@ -78,21 +78,11 @@ public class StageMgr : MonoSingleton<StageMgr>
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
     }
 
-    public bool IsOutArea(Vector2 pos)
-    {
-        if (m_CurrStageData.Areas == null || m_CurrStageData.Areas.Length < 1)
-        {
-            return false;
-        }
-
-        return IsInArea(m_CurrStageData.Areas[m_CurrAreaIndex], pos);
-    }
-
-    public bool CanMove(Vector2 pos)
+    public bool CanMovePosX(float posX)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
         {
-            if (IsInArea(m_CurrStageData.MoveArea[i], pos))
+            if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
             {
                 return true;
             }
@@ -101,21 +91,66 @@ public class StageMgr : MonoSingleton<StageMgr>
         return false;
     }
 
-    private bool IsInArea(Area area, Vector2 pos)
+    public bool CanMovePosY(float posY)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPosY(m_CurrStageData.MoveArea[i], posY))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool CanMovePos2(Vector2 pos)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+   
+    private bool IsInAreaPosX(Area area,float posX)
     {
         int xLeft = area.Pos.x - area.Width / 2;
         int xRigth = area.Pos.x + area.Width / 2;
-        int yLeft = area.Pos.y - area.Height / 2;
-        int yRigth = area.Pos.y + area.Height / 2;
 
-        pos = pos * 100;
+        posX *= 100;
 
-        if (pos.x > xLeft && pos.x < xRigth && pos.y > yLeft && pos.y < yRigth)
+        if (posX > xLeft && posX < xRigth)
         {
             return true;
         }
 
         return false;
+    }
+
+    private bool IsInAreaPosY(Area area, float posY)
+    {
+        int yLeft = area.Pos.y - area.Height / 2;
+        int yRigth = area.Pos.y + area.Height / 2;
+
+        posY *= 100;
+
+        if (posY > yLeft && posY < yRigth)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsInAreaPos2(Area area, Vector2 pos)
+    {
+        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
     }
 
     private void OnLoadComplete(UnityEngine.Object obj)
