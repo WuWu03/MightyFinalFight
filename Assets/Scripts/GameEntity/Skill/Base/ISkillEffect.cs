@@ -8,4 +8,5 @@ public interface ISkillEffect
     int Index { get; set; }
     void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector);
     void Reset();
+    void Exit();
 }

@@ -38,5 +38,10 @@ public class SkillBulletEffect : ISkillEffect
 
     }
 
+    public void Exit()
+    {
+        
+    }
+
     private BaseRole m_Owner = null;
 }

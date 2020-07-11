@@ -57,6 +57,11 @@ public class SkillMoveTargetEffect : ISkillEffect
         m_IsCompleted = false;
     }
 
+    public void Exit()
+    {
+
+    }
+
     private HurtData m_HurtData = null;
     private bool m_IsCompleted = false;
 }

@@ -96,10 +96,11 @@ public class SkillFactory
                     isCondition = (owner as BaseHero).IsCatch;
                     break;
                 case SkillStatus.HPMoreThan:
-                    Match m = m_RegexHPMoreThan.Match(conditions[i].Args);
+                    Match m = m_RegexHPMoreThan.Match(conditions[i].Args);               
                     if (m.Success)
                     {
-                        isCondition = owner.Health > int.Parse(m.Groups[2].Value);
+                        string[] str = m.Value.Split(':');
+                        isCondition = owner.Health > int.Parse(str[1]);
                     }
                     break;
             }

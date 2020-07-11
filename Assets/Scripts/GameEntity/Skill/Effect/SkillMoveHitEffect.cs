@@ -93,6 +93,11 @@ public class SkillMoveHitEffect : ISkillEffect
         m_IsCompleted = false;
     }
 
+    public void Exit()
+    {
+   
+    }
+
     private bool m_IsCompleted = false;
     private SkillData m_SkillData = null;
     private BaseRole m_Owner = null;

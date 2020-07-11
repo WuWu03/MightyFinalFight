@@ -26,6 +26,7 @@ public class MainPanelCtrl:BasePanelCtrl
 	}
 	protected override void OnOpen()
 	{
+		m_Panel.TxtPlayerLife.text = "5";
 	}
 
 	protected override void OnUpdate()

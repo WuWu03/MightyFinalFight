@@ -21,15 +21,23 @@ public class SkillSubHPEffect : ISkillEffect
 
     public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
     {
+        if (m_IsComplete) return;
+
         foreach (Match m in m_Regex.Matches(skillData.SkillEffects[Index].Args))
         {
-            owner.SubHealth(int.Parse(m.Groups[2].Value));
+            string[] str = m.Value.Split(':');
+            owner.SubHealth(int.Parse(str[1]));
         }
 
         m_IsComplete = true;
     }
 
     public void Reset()
+    {
+        
+    }
+
+    public void Exit()
     {
         m_IsComplete = false;
     }

@@ -58,6 +58,12 @@ public abstract class SkillDeployer
         return ret;
     }
 
+    public virtual void OnExit()
+    {
+        for (int i = 0; i < m_SkillEffects.Length; i++)
+            m_SkillEffects[i].Exit();
+    }
+
     public virtual void Update() { }
 
     protected BaseRole m_Owner = null;

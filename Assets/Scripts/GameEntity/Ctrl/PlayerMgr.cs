@@ -41,8 +41,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
         m_Player.InitData(new BaseRoleData()
         {
-            Health = 3,
-            MaxHealth = 3,
+            Health = 10,
+            MaxHealth = 10,
             AttackSpeed = m_HeroData.AttackSpeed,
             AttackValue = 1,
             Defense = 1,
@@ -112,10 +112,6 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool GetComboCondition(int id)
     {
-        if(id == 1011)
-        {
-
-        }
         SkillData skillData = StaticConfig.SkillConfig.GetData(id);
         return SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
     }

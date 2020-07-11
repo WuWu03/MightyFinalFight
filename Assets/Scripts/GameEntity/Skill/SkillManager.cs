@@ -46,6 +46,7 @@ public class SkillManager
 
         if (m_CurrSkillDeployer.IsAllComplete())
         {
+            m_CurrSkillDeployer.OnExit();
             m_CurrSkillDeployer = null;
             if (m_Owner.CanChangeDefaultState)
                 m_Owner.FsmMachine.ChangeDefaultState();

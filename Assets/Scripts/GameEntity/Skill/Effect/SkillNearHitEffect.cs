@@ -92,6 +92,11 @@ public class SkillNearHitEffect : ISkillEffect
         m_SkillData = null;
     }
 
+    public void Exit()
+    {
+
+    }
+
     private HurtData m_HurtData = null;
     private BaseRole m_Owner = null;
     private SkillData m_SkillData = null;
