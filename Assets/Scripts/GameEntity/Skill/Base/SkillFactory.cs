@@ -74,6 +74,10 @@ public class SkillFactory
     public static bool CheckStatus(SkillPrevCondition[] conditions, BaseRole owner)
     {
         bool ret = true;
+        if(conditions == null || conditions.Length < 1)
+        {
+            return ret;
+        }
 
         for (int i = 0; i < conditions.Length; i++)
         {

@@ -18,14 +18,16 @@ MonoBehaviour:
     Name: CodyAttack1
     AnimationName: Attack1
     Type: 0
-    Status: 0
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -48,14 +50,16 @@ MonoBehaviour:
     Name: CodyAttack2
     AnimationName: Attack2
     Type: 0
-    Status: 0
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -78,14 +82,16 @@ MonoBehaviour:
     Name: CodyAttack3
     AnimationName: Attack3
     Type: 0
-    Status: 0
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -108,18 +114,20 @@ MonoBehaviour:
     Name: CodyAttack4
     AnimationName: Attack4
     Type: 0
-    Status: 0
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 1
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 0
+      ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
@@ -138,18 +146,18 @@ MonoBehaviour:
     Name: CodyJumpAttack1
     AnimationName: JumpAttack1
     Type: 1
-    Status: 2
-    DeployeType: 0
+    DeployeType: 1
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 1
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 0
+      ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
@@ -168,14 +176,14 @@ MonoBehaviour:
     Name: CodyJumpAttack2
     AnimationName: JumpAttack2
     Type: 1
-    Status: 0
-    DeployeType: 0
+    DeployeType: 1
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -198,14 +206,16 @@ MonoBehaviour:
     Name: CodySkill1
     AnimationName: Skill1
     Type: 2
-    Status: 1
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 0400000005000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
     SkillEffects:
     - EffectorType: 2
       SelectorType: 2
@@ -236,7 +246,6 @@ MonoBehaviour:
     Name: CodySkill2
     AnimationName: Attack4
     Type: 2
-    Status: 1
     DeployeType: 1
     Key:
       Keys: 0100000005000000
@@ -244,6 +253,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -266,14 +276,16 @@ MonoBehaviour:
     Name: CodyKnee
     AnimationName: Knee
     Type: 0
-    Status: 1
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 3
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -296,14 +308,16 @@ MonoBehaviour:
     Name: CodyThrow
     AnimationName: Throw
     Type: 2
-    Status: 3
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.6
     AnimTime: 1
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 3
+      Args: 
     SkillEffects:
     - EffectorType: 4
       SelectorType: 1
@@ -323,7 +337,7 @@ MonoBehaviour:
       Args: 
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 0
+      ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 80, y: 100}
@@ -342,23 +356,27 @@ MonoBehaviour:
     Name: CodySkill3
     AnimationName: Skill2
     Type: 1
-    Status: 1
-    DeployeType: 0
+    DeployeType: 1
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 0
     IsInEffectPlaySound: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    - Status: 4
+      Args: HPMoreThan:1
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 1
+      ForceType: 2
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 150}
-      MoveTarget: {x: -0.05, y: 0.15}
+      MoveTarget: {x: 0, y: 0}
       SelectorAngle: 360
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -367,3 +385,19 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       Args: 
+    - EffectorType: 5
+      SelectorType: 0
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      Args: SubHP:1

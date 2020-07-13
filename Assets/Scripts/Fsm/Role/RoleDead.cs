@@ -14,7 +14,7 @@ public class RoleDead : BaseFsmState
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         m_Owner.Rigidbody.velocity = Vector2.zero;
         m_Owner.SetPos(m_Owner.Pos);
-        m_Owner.PlayAnimation(AnimName.Dead, 1, 1);
+        m_Owner.PlayAnimation(AnimName.Dead,4, 1);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
