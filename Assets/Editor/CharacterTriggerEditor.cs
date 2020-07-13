@@ -43,7 +43,7 @@ public class CharacterTriggerEditor : EditorWindow
         if(m_CurrGo == null || m_CurrGo.name != m_CurrSelectObj.name)
         {
             m_CurrGo = GetSelectObj(m_CurrSelectObj.name);
-            m_CurrDB = m_CurrGo.GetComponent<UnityArmatureComponent>();
+            m_CurrDB = m_CurrGo.GetOrAddComponent<UnityArmatureComponent>();
 
             if (m_CurrDB == null)
             {
@@ -53,6 +53,12 @@ public class CharacterTriggerEditor : EditorWindow
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
             m_DBTriggers = new TriggerData[m_CurrDB.animation.animationNames.Count];
             TriggerData[] currDB = m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas;
+
+            if(currDB == null)
+            {
+                currDB = new TriggerData[0];
+            }
+
             Array.Copy(currDB, m_DBTriggers, currDB.Length);
 
             if (m_DBTriggers.Length - currDB.Length > 0)

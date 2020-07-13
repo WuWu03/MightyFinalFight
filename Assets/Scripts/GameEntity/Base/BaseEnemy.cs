@@ -21,8 +21,6 @@ public class BaseEnemy : BaseRole
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_AvatarCtrl = gameObject.GetOrAddComponent<AvatarCtrl>();
-        m_AvatarCtrl.Init(null, new int[1] { 1001 }, 0.5f);
     }
 
     public override void SetPos(Vector2 pos)
@@ -53,18 +51,32 @@ public class BaseEnemy : BaseRole
             }
         }
 
-        if (ResGO == null) return;
-        m_AvatarCtrl.Move(InputMgr.TestAxis());
+        if (ResGO == null || m_Health <= 0) return;
+        m_CurrCtrl.Move(InputMgr.TestAxis());
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            m_AvatarCtrl.Attack(InputMgr.TestAxis());
+            m_CurrCtrl.Attack(InputMgr.TestAxis());
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            m_AvatarCtrl.Jump(InputMgr.TestAxis());
+            m_CurrCtrl.Jump(InputMgr.TestAxis());
         }
+    }
+
+    public override void OnHurtMsg(HurtData data)
+    {
+        if(m_IsBeCatch)
+        {
+            data.HurtAnim = AnimName.Hurt2;
+        }
+        else
+        {
+            data.HurtAnim = UnityEngine.Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
+        }
+
+        base.OnHurtMsg(data);
     }
 
     protected AvatarCtrl m_AvatarCtrl = null;

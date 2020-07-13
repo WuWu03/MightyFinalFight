@@ -35,4 +35,10 @@ public class EditorWindowMgr : MonoBehaviour
     {
         FrameWork.Utils.Utils.CreateConfigData<HeroConfig, HeroData>("HeroData", ".asset");
     }
+
+    [MenuItem("Assets/Config/CreateEnemyData")]
+    public static void CreateEnemyData()
+    {
+        FrameWork.Utils.Utils.CreateConfigData<EnemyConfig, EnemyData>("EnemyData", ".asset");
+    }
 }

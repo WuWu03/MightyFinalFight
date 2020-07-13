@@ -37,8 +37,10 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     {
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
+        m_CurrCtrl = m_Player.AddCtrl<HeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
+
         m_Player.InitData(new BaseRoleData()
         {
             Health = 10,
@@ -49,8 +51,17 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             JumpForce = m_HeroData.JumpForce,
             MoveSpeed = m_HeroData.MoveSpeed
         });
-        m_CurrCtrl = m_Player.AddCtrl<HeroCtrl>();
-        m_CurrCtrl.Init(m_HeroData.AttackWait, m_HeroData.Skills, 0.11f);
+   
+        m_CurrCtrl.Init(new BaseHeroSkillData()
+        {
+            AttackIDs = m_HeroData.AttackIDs,
+            JumpAttackIDs = m_HeroData.JumpAttackIDs,
+            Skills = m_HeroData.Skills,
+            AttackWait = m_HeroData.AttackWait,
+            AttackNextTime = m_HeroData.AttackNextTime,
+            CatchAttackID = m_HeroData.CatchAttackID,
+            ThrowAttackID = m_HeroData.ThrowAttackID,
+        });
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
         InputMgr.Ins.AfterTriggeFunc = Control;

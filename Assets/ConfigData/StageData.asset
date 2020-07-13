@@ -25,4 +25,16 @@ MonoBehaviour:
     - Pos: {x: 0, y: -40}
       Width: 1016
       Height: 45
-    Areas: []
+    EnemyAreas:
+    - Pos: {x: 0, y: -40}
+      Width: 1016
+      Height: 45
+      Enemys:
+      - EnemyID: 1001
+        InitPos: {x: -346, y: -45}
+      - EnemyID: 1001
+        InitPos: {x: -346, y: -64}
+      - EnemyID: 1001
+        InitPos: {x: -398, y: -45}
+      - EnemyID: 1001
+        InitPos: {x: -398, y: -64}

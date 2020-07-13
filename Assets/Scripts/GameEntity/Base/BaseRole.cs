@@ -272,6 +272,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         SubHealth(data.AttackValue);
         m_IsSmoon = data.IsSwoon;
 
+        if (string.IsNullOrEmpty(data.HurtAnim))
+        {
+            data.HurtAnim = AnimName.Hurt;
+        }
+
         if (m_IsSmoon)
         {
             GetState<RoleSwoon>().Force = data.AttackForce;

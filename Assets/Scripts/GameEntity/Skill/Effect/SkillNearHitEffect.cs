@@ -71,6 +71,7 @@ public class SkillNearHitEffect : ISkillEffect
             m_HurtData.AttackerID = owner.ID;
             m_HurtData.AttackValue = 1;
             m_HurtData.HurtSound = string.Empty;
+            m_HurtData.HurtAnim = string.Empty;
 
             hit.OnHurtMsg(m_HurtData);
 

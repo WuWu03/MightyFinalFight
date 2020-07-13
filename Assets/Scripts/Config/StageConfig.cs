@@ -13,10 +13,16 @@ public class StageConfig : BaseScriptableObject<StageData>
 public class StageData : BaseConfigData
 {
     [Serializable]
-    public class EventArea : Area
+    public class Enemy
     {
-        public int[] EnemyIDs;
-        public int[] EventIDs;
+        public int EnemyID;
+        public Vector2Int InitPos;
+    }
+
+    [Serializable]
+    public class EnemyArea : Area
+    {
+        public Enemy[] Enemys;
     }
 
     public string Name;
@@ -27,7 +33,7 @@ public class StageData : BaseConfigData
     public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）
     public Vector2Int InitPos;
     public Area[] MoveArea;//可行走区域
-    public EventArea[] Areas;//每个关卡的区域
+    public EnemyArea[] EnemyAreas;//敌人生成的区域
 }
 
 [Serializable]

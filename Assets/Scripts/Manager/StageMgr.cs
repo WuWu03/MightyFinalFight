@@ -52,24 +52,33 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        float x = -1f;
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 1;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
         {
-            x += 0.2f * (float)i;
             BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
-            enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, "Cody"));
+            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[i];
+            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(enemyInfo.EnemyID);
+
+            enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
             enemy.InitData(new BaseRoleData()
             {
                 Health = 20,
                 MaxHealth = 20,
-                AttackSpeed = 0.8f,
+                AttackSpeed = enemyData.AttackSpeed,
                 AttackValue = 1,
                 Defense = 1,
-                JumpForce = Vector2.up * 20,
-                MoveSpeed = 1
+                MoveSpeed = enemyData.MoveSpeed,
             });
+
+            enemy.AddCtrl<AvatarCtrl>().Init(new BaseRoleSkillData()
+            {
+                AttackIDs = enemyData.AttackIDs,
+                Skills = enemyData.Skills,
+                AttackWait = enemyData.AttackWait,
+                AttackNextTime = enemyData.AttackNextTime,
+            });
+
             enemy.SetObjectType(ObjectType.Monster);
-            enemy.SetPos2(x, -0.35f);
+            enemy.SetMapPos(enemyInfo.InitPos);
         }
 
         CreateSceneObject();

@@ -7,6 +7,14 @@ using UnityEngine;
 
 public class HeroCtrl : AvatarCtrl
 {
+    public override void Init(BaseRoleSkillData data)
+    {     
+        BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
+        m_CatchAttackID = heroSkillData.CatchAttackID;
+        m_ThrowAttackID = heroSkillData.ThrowAttackID;
+        base.Init(data);
+    }
+
     protected override void NormalAttack(Vector2 dir)
     {
         if ((m_Owner as BaseHero).IsCatch)
@@ -21,14 +29,14 @@ public class HeroCtrl : AvatarCtrl
             {
                 m_CatchAttackTimer = 0;
                 m_Owner.SetDir(dir.x);
-                m_SkillManager.DeploySkill(1010);
+                m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }
 
             if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_STAMP)
             {
                 m_CatchAttackTimer = Time.time;
-                m_SkillManager.DeploySkill(1009);
+                m_SkillManager.DeploySkill(m_CatchAttackID);
             }
 
             return;
@@ -38,6 +46,8 @@ public class HeroCtrl : AvatarCtrl
         base.NormalAttack(dir);
     }
 
+    private int m_CatchAttackID;
+    private int m_ThrowAttackID;
     private const float CATCH_ATTACK_STAMP = 0.3f;
     private float m_CatchAttackTimer = 0f;
 }

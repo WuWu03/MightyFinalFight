@@ -2,24 +2,19 @@
 using System;
 using FrameWork;
 
-public class HeroConfig : BaseScriptableObject<HeroData>
+public class EnemyConfig : BaseScriptableObject<EnemyData>
 {
 }
 
 [Serializable]
-public class HeroData : BaseConfigData
+public class EnemyData : BaseConfigData
 {
     public string Name;
     public string AssetName;
-    [HideInInspector]public string Desc;
-    public string HeadIcon;
     public float AttackSpeed;
     public float MoveSpeed;
     public Vector2 JumpForce;
     public int[] AttackIDs;
-    public int[] JumpAttackIDs;
-    public int CatchAttackID;
-    public int ThrowAttackID;
     public int[] Skills;//技能序列
     public float[] AttackWait;//连击时间
     public float AttackNextTime;

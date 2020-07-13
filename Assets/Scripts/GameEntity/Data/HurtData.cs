@@ -10,7 +10,7 @@ public class HurtData : BaseEventArgs
     public bool IsSwoon { get; set; }//是否击飞
     public float AttackerDir { get; set; }
     public string HurtSound { get; set; }
-
+    public string HurtAnim { get; set; }
     public override BaseEventArgs Clone()
     {
         return Activator.CreateInstance<HurtData>();

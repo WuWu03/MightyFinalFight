@@ -1,5 +1,6 @@
 ﻿using DragonBones;
 using FrameWork.Sound;
+using System.Data.Common;
 using UnityEngine;
 
 public class AvatarCtrl : BaseCtrl
@@ -21,15 +22,19 @@ public class AvatarCtrl : BaseCtrl
         base.Release();
 
         m_SkillManager.Release();
-        m_AttackWaitTime = null;
+        m_AttackIDs = null;
+        m_JumpAttackIDs = null;
+        m_AttackWait = null;
         m_SkillManager = null;
     }
 
-    public void Init(float[] attackWaitTime, int[] skillIDs, float attackNextTime)
+    public virtual void Init(BaseRoleSkillData data)
     {
-        m_AttackWaitTime = attackWaitTime == null ? new float[1] { 0.2f } : attackWaitTime;
-        m_SkillManager = new SkillManager(m_Owner, skillIDs);
-        m_AttackNextTime = attackNextTime;
+        m_AttackIDs = data.AttackIDs;
+        m_JumpAttackIDs = data.JumpAttackIDs;
+        m_AttackWait = data.AttackWait;
+        m_AttackNextTime = data.AttackNextTime;
+        m_SkillManager = new SkillManager(m_Owner, data.Skills);
         m_Owner = GetComponent<BaseRole>();
     }
 
@@ -92,9 +97,9 @@ public class AvatarCtrl : BaseCtrl
 
         if (m_AttackTimer > 0)
         {
-            float currWait = m_AttackWaitTime[0];
-            if (m_AttackWaitTime.Length > 1)
-                currWait = m_AttackWaitTime[m_AttackIndex - 1 <= 0 ? 1 : m_AttackIndex - 1];
+            float currWait = m_AttackWait[0];
+            if (m_AttackWait.Length > 1)
+                currWait = m_AttackWait[m_AttackIndex - 1 <= 0 ? 1 : m_AttackIndex - 1];
 
             if (currWait < 0)
             {
@@ -122,8 +127,8 @@ public class AvatarCtrl : BaseCtrl
 
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if (m_AttackWaitTime == null || m_AttackWaitTime.Length < 1) return;
-        if (m_AttackIndex >= m_AttackWaitTime.Length) return;
+        if (m_AttackWait == null || m_AttackWait.Length < 1) return;
+        if (m_AttackIndex >= m_AttackWait.Length) return;
         if (m_AttackTimer > 0 && Time.time - m_AttackTimer < m_AttackNextTime) return;
 
         if (m_AttackIndex == 0) AttackSuccess = true;
@@ -131,22 +136,25 @@ public class AvatarCtrl : BaseCtrl
         else m_AttackIndex = 1;
 
         m_AttackTimer = Time.time;
-        m_CurrSkillID = 1000 + m_AttackIndex;
+        m_CurrSkillID = m_AttackIDs[m_AttackIndex - 1];
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
     protected virtual void JumpAttack(Vector2 dir)
     {
         AttackSuccess = false;
-        m_CurrSkillID = 1004 + (dir.y < 0 ? 2 : 1);
+        m_CurrSkillID = dir.y < 0 ? m_JumpAttackIDs[1] : m_JumpAttackIDs[0];
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
-
-    protected SkillManager m_SkillManager = null;
-    private float[] m_AttackWaitTime = null;
-    protected new BaseRole m_Owner = null;
+ 
+    private int[] m_AttackIDs = null;
+    private int[] m_JumpAttackIDs = null;
+    private float[] m_AttackWait = null;
     private float m_AttackTimer = 0;
     private int m_AttackIndex = 0;
     private int m_CurrSkillID = 0;
     private float m_AttackNextTime = 0;
+
+    protected SkillManager m_SkillManager = null;
+    protected new BaseRole m_Owner = null;
 }

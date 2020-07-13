@@ -8,6 +8,8 @@
     public const string JumpAttack = "JumpAttack";
     public const string JumpRoll = "JumpRoll";
     public const string Hurt = "Hurt";
+    public const string Hurt1 = "Hurt1";
+    public const string Hurt2 = "Hurt2";
     public const string SmoonUp = "SmoonUp";
     public const string SmoonDown = "SmoonDown";
     public const string Awaken = "Awaken";
