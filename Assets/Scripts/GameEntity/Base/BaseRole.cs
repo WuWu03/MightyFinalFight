@@ -152,14 +152,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_MoveSpeed = baseRoleData.MoveSpeed;
     }
 
-    public T AddCtrl<T>() where T : AvatarCtrl
+    public T AddCtrl<T>() where T : BaseRoleCtrl,new()
     {
-        m_CurrCtrl = gameObject.GetOrAddComponent<T>();
+        if(m_CurrCtrl == null)
+        {
+            m_CurrCtrl = new T();
+        }
+
         return m_CurrCtrl as T;
     }
 
     public override void Release()
     {
+        m_CurrCtrl.Release();
         m_CurrCtrl = null;
         base.Release();
     }
@@ -169,11 +174,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnResComplete(go);
         m_MoveDir = UnityEngine.Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
+        m_CurrCtrl.SetOwner(this);
     }
 
     protected override void Update()
     {
         base.Update();
+        m_CurrCtrl.Update();
         if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
         if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
         UpdatePos2(transform.localPosition.x, Pos.y);
@@ -383,7 +390,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsJumpAttack = false;
     protected bool m_IsDropTrag = false;
     protected bool m_IsBeCatch = false;
-    protected AvatarCtrl m_CurrCtrl = null;
+    protected BaseRoleCtrl m_CurrCtrl = null;
     protected DropTragData m_DropTragData = null;
     protected UnityEngine.Vector2 m_JumpForce = UnityEngine.Vector2.zero;
 }

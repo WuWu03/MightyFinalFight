@@ -1,7 +1,7 @@
 ﻿using FrameWork.GameEntity;
 using UnityEngine;
 
-public abstract class BaseCtrl : MonoBehaviour
+public abstract class BaseCtrl
 {
     public BaseObject Owner
     {
@@ -10,14 +10,16 @@ public abstract class BaseCtrl : MonoBehaviour
             return m_Owner;
         }
     }
-    protected virtual void Awake()
+
+    public virtual void SetOwner(BaseRole owner)
     {
-        m_Owner = GetComponent<BaseObject>();
+        m_Owner = owner;
     }
 
-    protected virtual void Update()
+    public void Update()
     {
-
+        if (m_Owner == null) return;
+        OnUpdate();
     }
 
     public virtual void Release()
@@ -25,5 +27,6 @@ public abstract class BaseCtrl : MonoBehaviour
         m_Owner = null;
     }
 
-    protected BaseObject m_Owner = null;
+    protected virtual void OnUpdate() { }
+    protected BaseRole m_Owner = null;
 }

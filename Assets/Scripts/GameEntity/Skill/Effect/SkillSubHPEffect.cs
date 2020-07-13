@@ -25,8 +25,7 @@ public class SkillSubHPEffect : ISkillEffect
 
         foreach (Match m in m_Regex.Matches(skillData.SkillEffects[Index].Args))
         {
-            string[] str = m.Value.Split(':');
-            owner.SubHealth(int.Parse(str[1]));
+            owner.SubHealth(int.Parse(m.Groups[2].Value));
         }
 
         m_IsComplete = true;
@@ -42,6 +41,6 @@ public class SkillSubHPEffect : ISkillEffect
         m_IsComplete = false;
     }
 
-    private Regex m_Regex = new Regex(@"SubHP:[0-9]+");
+    private Regex m_Regex = new Regex(@"(SubHP:)([0-9]+)");
     private bool m_IsComplete = false;
 }

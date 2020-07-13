@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviorTree
+namespace FrameWork.BehaviourTree
 {
-    public class BehaviorTree
+    public class BehaviourTree
     {
-        public BehaviorTree(BehaviorTreeData data,object owner)
+        public BehaviourTree(BehaviourTreeData data,object owner)
         {
             m_Root = Load(data, owner);
         }
@@ -36,15 +36,15 @@ namespace FrameWork.BehaviorTree
             m_IsPause = false;
         }
 
-        private Node Load(BehaviorTreeData data,object owner)
+        private Node Load(BehaviourTreeData data,object owner)
         {
-            Node root = BehaviorFactory.GetNodeByClassType(data.ClassType,data.Args, owner);
+            Node root = BehaviourFactory.GetNodeByClassType(data.Name,data.ClassType,data.Args, owner);
 
             if (data.PreConditions != null && data.PreConditions.Length > 0)
             {
                 for (int i = 0; i < data.PreConditions.Length; i++)
                 {
-                    root.AddPreCondition(BehaviorFactory.GetNodeByClassType(data.PreConditions[i].ClassType, data.PreConditions[i].Args, owner));
+                    root.AddPreCondition(BehaviourFactory.GetNodeByClassType(data.PreConditions[i].Name,data.PreConditions[i].ClassType, data.PreConditions[i].Args, owner));
                 }
             }
 

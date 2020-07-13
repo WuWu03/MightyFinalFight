@@ -3,7 +3,7 @@ using FrameWork.Sound;
 using System.Data.Common;
 using UnityEngine;
 
-public class AvatarCtrl : BaseCtrl
+public class BaseRoleCtrl : BaseCtrl
 {
     public bool AttackSuccess
     {
@@ -11,21 +11,14 @@ public class AvatarCtrl : BaseCtrl
         set;
     }
 
-    protected override void Awake()
-    {
-        base.Awake();
-        m_Owner = base.m_Owner as BaseRole;
-    }
-
     public override void Release()
     {
-        base.Release();
-
         m_SkillManager.Release();
         m_AttackIDs = null;
         m_JumpAttackIDs = null;
         m_AttackWait = null;
         m_SkillManager = null;
+        base.Release();
     }
 
     public virtual void Init(BaseRoleSkillData data)
@@ -35,7 +28,6 @@ public class AvatarCtrl : BaseCtrl
         m_AttackWait = data.AttackWait;
         m_AttackNextTime = data.AttackNextTime;
         m_SkillManager = new SkillManager(m_Owner, data.Skills);
-        m_Owner = GetComponent<BaseRole>();
     }
 
     public void Move(Vector2 dir)
@@ -86,10 +78,8 @@ public class AvatarCtrl : BaseCtrl
         m_Owner.OnJumpMsg(jumpMsgData);
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        if (m_Owner == null || m_Owner.ResGO == null) return;
-
         if (m_SkillManager != null)
         {
             m_SkillManager.Update();
@@ -156,5 +146,4 @@ public class AvatarCtrl : BaseCtrl
     private float m_AttackNextTime = 0;
 
     protected SkillManager m_SkillManager = null;
-    protected new BaseRole m_Owner = null;
 }

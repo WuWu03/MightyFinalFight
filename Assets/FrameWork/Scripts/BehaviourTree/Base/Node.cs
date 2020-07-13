@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviorTree
+namespace FrameWork.BehaviourTree
 {
     public enum BehaviorTreeState
     {

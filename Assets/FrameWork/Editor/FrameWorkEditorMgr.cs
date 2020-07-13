@@ -1,5 +1,5 @@
 ﻿using FrameWork;
-using FrameWork.BehaviorTree;
+using FrameWork.BehaviourTree;
 using FrameWork.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -126,10 +126,10 @@ public static class FrameWorkEditorMgr
 	}
 
 
-	[MenuItem("Assets/Config/CreateBehaviorTreeConfigData")]
+	[MenuItem("Assets/Config/CreateBehaviourTreeData")]
 	public static void CreateBehaviorConfig()
 	{
-		FrameWork.Utils.Utils.CreateConfigData<BehaviorTreeConfig, BehaviorTreeData>("BehaviorTreeConfigData", ".asset");
+		FrameWork.Utils.Utils.CreateConfigData<BehaviourTreeConfig, BehaviourTreeData>("BehaviourTreeData", ".asset");
 	}
 
 	[MenuItem("GameObject/UI/EmojiText", priority = 0)]

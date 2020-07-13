@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviorTree
+namespace FrameWork.BehaviourTree
 {
-    public class BehaviorTreeConfig : BaseScriptableObject<BehaviorTreeData>
+    public class BehaviourTreeConfig : BaseScriptableObject<BehaviourTreeData>
     {
 
     }
@@ -19,9 +19,9 @@ namespace FrameWork.BehaviorTree
     }
 
     [Serializable]
-    public class BehaviorTreeData : BehaviorTreeBaseData
+    public class BehaviourTreeData : BehaviorTreeBaseData
     {
-        public BehaviorTreeData[] Childs;
+        public BehaviourTreeData[] Childs;
         public BehaviorTreeBaseData[] PreConditions;
     }
 }

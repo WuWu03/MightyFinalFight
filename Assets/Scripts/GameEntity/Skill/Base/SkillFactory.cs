@@ -82,33 +82,26 @@ public class SkillFactory
         for (int i = 0; i < conditions.Length; i++)
         {
             bool isCondition = false;
-
-            switch (conditions[i].Status)
+            SkillStatus status = conditions[i].Status;
+            if(status == SkillStatus.None)
+                isCondition = true;
+            else if(status == SkillStatus.Float)
+                isCondition = owner.IsFloat;
+            else if(status == SkillStatus.Ground)
+                isCondition = (owner is BaseHero) ? owner.IsInGround && !(owner as BaseHero).IsCatch : owner.IsInGround;
+            else if(status == SkillStatus.Catch)
+                isCondition = (owner as BaseHero).IsCatch;
+            else if(status == SkillStatus.HPMoreThan)
             {
-                case SkillStatus.None:
-                    isCondition = true;
-                    break;
-                case SkillStatus.Float:
-                    isCondition = owner.IsFloat;
-                    break;
-                case SkillStatus.Ground:
-                    isCondition = owner.IsInGround;
-                    if (owner is BaseHero)
-                        isCondition = isCondition && !(owner as BaseHero).IsCatch;
-                    break;
-                case SkillStatus.Catch:
-                    isCondition = (owner as BaseHero).IsCatch;
-                    break;
-                case SkillStatus.HPMoreThan:
-                    Match m = m_RegexHPMoreThan.Match(conditions[i].Args);               
-                    if (m.Success)
-                    {
-                        string[] str = m.Value.Split(':');
-                        isCondition = owner.Health > int.Parse(str[1]);
-                    }
-                    break;
+                Match m = m_RegexHPMoreThan.Match(conditions[i].Args);
+                if (m.Success)isCondition = owner.Health > int.Parse(m.Groups[2].Value);
             }
-
+            else if (status == SkillStatus.HPLessThan)
+            {
+                Match m = m_RegexHPLessThan.Match(conditions[i].Args);
+                if (m.Success) isCondition = owner.Health < int.Parse(m.Groups[2].Value);
+            }
+            
             if (!isCondition)
             {
                 ret = false;
@@ -119,6 +112,6 @@ public class SkillFactory
         return ret;
     }
 
-    private static Regex m_RegexHPMoreThan = new Regex(@"HPMoreThan:[0-9]+");
-    private static Regex m_RegexHPLessThan = new Regex(@"HPLessThan:[0-9]+");
+    private static Regex m_RegexHPMoreThan = new Regex(@"(HPMoreThan:)([0-9]+)");
+    private static Regex m_RegexHPLessThan = new Regex(@"(HPLessThan:)([0-9]+)");
 }

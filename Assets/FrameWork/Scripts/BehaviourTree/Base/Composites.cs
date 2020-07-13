@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviorTree
+namespace FrameWork.BehaviourTree
 {
     public abstract class Composites : Node
     {
@@ -39,7 +39,9 @@ namespace FrameWork.BehaviorTree
 
         public override Node GetChild(int index)
         {
-            return m_Childs[index];
+            if (index > -1 && index < m_Childs.Count)
+                return m_Childs[index];
+            return null;
         }
 
         public override void Reset()
@@ -49,6 +51,11 @@ namespace FrameWork.BehaviorTree
             {
                 m_Childs[i].Reset();
             }
+        }
+
+        protected int GetChildCount()
+        {
+            return m_Childs.Count;
         }
 
         private List<Node> m_Childs = null;

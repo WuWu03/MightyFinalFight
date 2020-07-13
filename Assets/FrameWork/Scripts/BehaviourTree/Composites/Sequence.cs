@@ -1,0 +1,61 @@
+﻿using System.Text.RegularExpressions;
+
+
+namespace FrameWork.BehaviourTree
+{
+    public class Sequence : Composites
+    {
+        public Sequence(string name, string args, object owner) : base(name, args, owner) { }
+
+        protected override void OnEnter()
+        {
+            m_CurrChildIndex = 0;
+            m_LastChildIndex = 0;
+        }
+
+        protected override void OnUpdate(float deltaTime)
+        {
+            Node child = GetChild(m_CurrChildIndex);
+            if (child != null)
+            {
+                if (child.CanExcute() && child.CheckPreCondition())
+                {
+                    if (m_CurrChildIndex != m_LastChildIndex)
+                    {
+                        m_LastChildIndex = m_CurrChildIndex;
+                        child.Enter();
+                    }
+
+                    child.Update(deltaTime);
+                    BehaviorTreeState state = child.Excute();
+                    if (state != BehaviorTreeState.Running)
+                    {
+                        m_CurrChildIndex++;
+                        if (state == BehaviorTreeState.Success)
+                            return;
+                    }
+                }
+                else
+                {
+                    m_CurrChildIndex++;
+                }
+            }
+
+        }
+
+        public override bool CanExcute()
+        {
+            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Success;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            m_CurrChildIndex = 0;
+            m_LastChildIndex = 0;
+        }
+
+        private int m_CurrChildIndex;
+        private int m_LastChildIndex;
+    }
+}

@@ -1,25 +1,24 @@
 ﻿using DG.Tweening.Core;
-using FrameWork.BehaviorTree;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviorTree
+namespace FrameWork.BehaviourTree
 {
-    public static class BehaviorFactory
+    public static class BehaviourFactory
     {
         public static void AddMap(string className,Type type)
         {
             m_DicBehavior.Add(className, type);
         }
 
-        public static Node GetNodeByClassType(string name, string args, object owner)
+        public static Node GetNodeByClassType(string name, string className, string args, object owner)
         {
-            Type t = null;
-            if (!m_DicBehavior.TryGetValue(name, out t))
+            Type t = Type.GetType(className);
+            if (t == null)//!m_DicBehavior.TryGetValue(name, out t))
             {
-                Debugger.LogError("Behavior entity is invalid!");
+                FrameWork.Log.Debugger.LogError("Behaviour entity is invalid!");
                 return null;
             }
 

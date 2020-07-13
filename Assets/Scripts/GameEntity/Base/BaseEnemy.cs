@@ -23,6 +23,11 @@ public class BaseEnemy : BaseRole
         base.Init(id, name);
     }
 
+    public virtual void AddAI()
+    {
+
+    }
+
     public override void SetPos(Vector2 pos)
     {
         if (IsAnyState(typeof(RoleMove)))
@@ -79,5 +84,5 @@ public class BaseEnemy : BaseRole
         base.OnHurtMsg(data);
     }
 
-    protected AvatarCtrl m_AvatarCtrl = null;
+    protected BaseRoleCtrl m_AvatarCtrl = null;
 }

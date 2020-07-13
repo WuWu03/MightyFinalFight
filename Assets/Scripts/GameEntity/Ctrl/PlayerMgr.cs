@@ -37,7 +37,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     {
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
-        m_CurrCtrl = m_Player.AddCtrl<HeroCtrl>();
+        m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
 
@@ -133,7 +133,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_CurrCtrl.Skill(id);
     }
 
-    private AvatarCtrl m_CurrCtrl = null;
+    private BaseRoleCtrl m_CurrCtrl = null;
     private HeroData m_HeroData = null;
     private BaseHero m_Player = null;
 }
