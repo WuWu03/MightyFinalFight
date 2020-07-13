@@ -89,37 +89,37 @@ MonoBehaviour:
   TriggerDatas:
   - AnimName: Move
     Offest: {x: 0, y: 0}
-    Size: {x: 0.2, y: 0.32}
+    Size: {x: 0.16, y: 0.32}
   - AnimName: Idle
     Offest: {x: 0, y: 0}
-    Size: {x: 0.2, y: 0.32}
+    Size: {x: 0.16, y: 0.32}
   - AnimName: Attack1
-    Offest: {x: 0.05, y: 0}
-    Size: {x: 0.31, y: 0.32}
+    Offest: {x: 0.05000001, y: -0.0005082786}
+    Size: {x: 0.285603, y: 0.32101655}
   - AnimName: Hurt1
-    Offest: {x: -0.06, y: 0}
-    Size: {x: 0.27, y: 0.3}
+    Offest: {x: -0.05288422, y: 0.0010165274}
+    Size: {x: 0.24186766, y: 0.3223639}
   - AnimName: SmoonUp
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.28, y: 0.27}
+    Offest: {x: 0.0010165498, y: -0.035070628}
+    Size: {x: 0.25763613, y: 0.256785}
   - AnimName: SmoonDown
     Offest: {x: 0, y: 0}
     Size: {x: 0.34, y: 0.2}
   - AnimName: Dead
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.34, y: 0.2}
+    Offest: {x: 0.0005082786, y: -0.0655669}
+    Size: {x: 0.32678497, y: 0.19695038}
   - AnimName: Show
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.19, y: 0.32}
+    Offest: {x: -0.00050827116, y: 0}
+    Size: {x: 0.17678498, y: 0.32}
   - AnimName: Wait
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.22, y: 0.29}
+    Offest: {x: 0.0010165423, y: -0.023888707}
+    Size: {x: 0.20576844, y: 0.27271876}
   - AnimName: Hurt2
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.19, y: 0.31}
+    Offest: {x: -0.0076240525, y: -0.003049627}
+    Size: {x: 0.2052481, y: 0.31609926}
   - AnimName: Awaken
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.2, y: 0.26}
+    Offest: {x: 0.00050826743, y: -0.03812027}
+    Size: {x: 0.1928842, y: 0.25491726}
 --- !u!1 &7062996745983349919
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7062996745983349919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.036199998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 52288913372709205}

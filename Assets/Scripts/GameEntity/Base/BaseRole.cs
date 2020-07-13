@@ -31,17 +31,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         set { m_Defense = value; }
     }
 
-    public Rect Bound
-    {
-        get
-        {
-            m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x;
-            m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x;
-            m_Bound.yMin = m_Pos.y + m_Collider.offset.y + m_Collider.size.x;
-            m_Bound.yMax = m_Pos.y + m_Collider.offset.y - m_Collider.size.x;
-            return m_Bound;
-        }
-    }
     public virtual bool CanBeHit
     {
         get
@@ -396,6 +385,5 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeCatch = false;
     protected AvatarCtrl m_CurrCtrl = null;
     protected DropTragData m_DropTragData = null;
-    protected Rect m_Bound = Rect.zero;
     protected UnityEngine.Vector2 m_JumpForce = UnityEngine.Vector2.zero;
 }
