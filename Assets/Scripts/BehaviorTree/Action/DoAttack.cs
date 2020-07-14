@@ -21,6 +21,7 @@ public class DoAttack : Action
     public override BehaviorTreeState Excute()
     {
         m_Owner.Attack(Vector2.zero);
+        m_Owner.Move(Vector2.right * (PlayerMgr.Ins.Player.Pos.x - m_Owner.Owner.Pos.x > 0 ? 1f : -1f));
         if (m_Owner.Owner.IsPlayComplete())
         {
             return BehaviorTreeState.Success;

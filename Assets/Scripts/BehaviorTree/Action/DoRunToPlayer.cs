@@ -10,7 +10,7 @@ public class DoRunToPlayer : Action
 
     protected override void OnEnter()
     {
-        m_IsArravied = false;
+       
     }
 
     public override BehaviorTreeState Excute()
@@ -20,14 +20,17 @@ public class DoRunToPlayer : Action
             m_Owner.Move(Vector2.zero);
             return BehaviorTreeState.Success;
         }
-
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
+    
         Vector2 enemyPos = m_Owner.Owner.Pos;
+        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
+        playerPos = playerPos + Vector2.right * 0.2f * (playerPos.x - enemyPos.x > 0 ? -1f : 1f);
 
-        m_IsArravied = Vector2.Distance(playerPos, enemyPos) <= 0.2f;
+        m_IsArravied = Mathf.Abs(playerPos.x - enemyPos.x) <= 0.05f && Mathf.Abs(playerPos.y - enemyPos.y) <= 0.01f;
+
         if (!m_IsArravied)
         {
             m_Owner.Move((playerPos - enemyPos).normalized);
+            m_Owner.Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - enemyPos.x > 0 ? 1 : -1);
         }
 
         return BehaviorTreeState.Running;

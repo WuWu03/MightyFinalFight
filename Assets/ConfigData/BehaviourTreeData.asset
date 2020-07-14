@@ -33,19 +33,23 @@ MonoBehaviour:
         ClassType: PreIsInSpecialState
         Args: TheNot:true
       - ID: 0
-        Name: "\u8DDD\u79BB\u5927\u4E8E0.2"
-        ClassType: PreIsPlayerDistance
-        Args: Distance:-0.2
+        Name: "\u6CA1\u6709\u5230\u8FBE\u653B\u51FB\u70B9"
+        ClassType: PreIsArrived
+        Args: TheNot:true
+      - ID: 0
+        Name: "\u6CA1\u6709\u968F\u673A\u79FB\u52A8"
+        ClassType: PreIsRandomPos
+        Args: TheNot:true
+      - ID: 0
+        Name: "\u6CA1\u6709\u7ED5\u8DEF"
+        ClassType: PreIsRoundPos
+        Args: TheNot:true
     - ID: 0
       Name: "\u653B\u51FB\u73A9\u5BB6"
       ClassType: DoAttack
       Args: 
       Childs: []
       PreConditions:
-      - ID: 0
-        Name: "\u8DDD\u79BB\u5C0F\u4E8E0.2"
-        ClassType: PreIsPlayerDistance
-        Args: Distance:0.2
       - ID: 0
         Name: "\u9501\u5B9A\u73A9\u5BB6"
         ClassType: PreIsLockPlayer
@@ -54,4 +58,36 @@ MonoBehaviour:
         Name: "\u4E0D\u5728\u7279\u6B8A\u72B6\u6001"
         ClassType: PreIsInSpecialState
         Args: TheNot:true
+      - ID: 0
+        Name: "\u6CA1\u6709\u968F\u673A\u79FB\u52A8"
+        ClassType: PreIsRandomPos
+        Args: TheNot:true
+      - ID: 0
+        Name: "\u5230\u8FBE\u653B\u51FB\u70B9"
+        ClassType: PreIsArrived
+        Args: 
+      - ID: 0
+        Name: "\u6CA1\u6709\u7ED5\u8DEF"
+        ClassType: PreIsRoundPos
+        Args: TheNot:true
+    - ID: 0
+      Name: "\u968F\u673A\u79FB\u52A8"
+      ClassType: 
+      Args: 
+      Childs: []
+      PreConditions:
+      - ID: 0
+        Name: "\u968F\u673A\u5750\u6807"
+        ClassType: PreIsRandomPos
+        Args: 
+    - ID: 0
+      Name: "\u7ED5\u5230\u73A9\u5BB6\u540E\u9762"
+      ClassType: DoRunToRoundPos
+      Args: 
+      Childs: []
+      PreConditions:
+      - ID: 0
+        Name: "\u5706\u5F62\u8FD0\u52A8"
+        ClassType: PreIsRoundPos
+        Args: 
     PreConditions: []

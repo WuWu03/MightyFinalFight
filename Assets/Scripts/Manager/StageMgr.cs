@@ -87,6 +87,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
     }
 
+
     public bool CanMovePosX(float posX)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)

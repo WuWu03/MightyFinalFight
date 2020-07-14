@@ -243,7 +243,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (data.Dir.Equals(UnityEngine.Vector2.zero))
+        if (data.Dir == Vector2.zero)
         {
             ChangeState<RoleIdle>();
             return;
