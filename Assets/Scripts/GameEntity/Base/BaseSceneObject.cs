@@ -56,6 +56,14 @@ public class BaseSceneObject : BaseObject
         set { m_Health = value; }
     }
 
+    public bool ResComplete
+    {
+        get
+        {
+            return m_ResComplete;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -76,6 +84,7 @@ public class BaseSceneObject : BaseObject
         GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
         SceneObjectPool.Ins.Put(this);
         m_ResPath = null;
+        m_ResComplete = false;
     }
 
     public void SetObjectType(ObjectType type)
@@ -147,6 +156,7 @@ public class BaseSceneObject : BaseObject
         m_ResGO.transform.SetParent(this.transform, false);
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
+        m_ResComplete = true;
         SetLayer(m_Layer);
     }
 
@@ -172,6 +182,7 @@ public class BaseSceneObject : BaseObject
         if (m_MaxHealth < 0) m_MaxHealth = 0;
     }
 
+    protected bool m_ResComplete = false;
     protected int m_Health = 0;
     protected int m_MaxHealth = 0;
     protected string m_ResPath = string.Empty;

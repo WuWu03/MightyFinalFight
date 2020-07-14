@@ -157,6 +157,7 @@ public abstract class BaseAvatar : BaseSceneObject
             return;
         }
 
+        SetTrigger(animName);
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
         m_Animator.animation.Play(animName, playTimes);
@@ -172,8 +173,13 @@ public abstract class BaseAvatar : BaseSceneObject
         return m_CurrAnimName.Equals(animName);
     }
 
-    public void StopAnimation(string animName)
+    public void StopAnimation(string animName = null)
     {
+        if (string.IsNullOrEmpty(animName))
+        {
+            if (string.IsNullOrEmpty(m_CurrAnimName)) return;
+            animName = m_CurrAnimName;
+        }
         m_Animator.animation.Stop(animName);
     }
 

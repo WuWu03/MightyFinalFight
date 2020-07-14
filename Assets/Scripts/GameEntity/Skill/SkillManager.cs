@@ -53,6 +53,13 @@ public class SkillManager
         }
     }
 
+    public void ExitSkill()
+    {
+        if (m_CurrSkillDeployer == null) return;
+        m_CurrSkillDeployer.OnExit();
+        m_CurrSkillDeployer = null;
+    }
+
     public void Release()
     {
         m_Owner = null;

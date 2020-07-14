@@ -57,17 +57,17 @@ public class BaseEnemy : BaseRole
         }
 
         if (ResGO == null || m_Health <= 0) return;
-        m_CurrCtrl.Move(InputMgr.TestAxis());
+        //m_CurrCtrl.Move(InputMgr.TestAxis());
 
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            m_CurrCtrl.Attack(InputMgr.TestAxis());
-        }
+        //if (Input.GetKeyDown(KeyCode.Keypad1))
+        //{
+        //    m_CurrCtrl.Attack(InputMgr.TestAxis());
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            m_CurrCtrl.Jump(InputMgr.TestAxis());
-        }
+        //if (Input.GetKeyDown(KeyCode.Keypad2))
+        //{
+        //    m_CurrCtrl.Jump(InputMgr.TestAxis());
+        //}
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -82,6 +82,16 @@ public class BaseEnemy : BaseRole
         }
 
         base.OnHurtMsg(data);
+    }
+
+    public override void SetCatch(bool value)
+    {
+        base.SetCatch(value);
+        if(value)
+        {
+            ChangeState<RoleIdle>();
+        }
+
     }
 
     protected BaseRoleCtrl m_AvatarCtrl = null;

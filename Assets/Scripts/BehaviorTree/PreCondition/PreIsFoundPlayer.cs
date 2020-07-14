@@ -9,7 +9,6 @@ public class PreIsFoundPlayer : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-
         return true;
     }
 

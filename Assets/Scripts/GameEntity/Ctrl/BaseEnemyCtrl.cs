@@ -1,21 +1,18 @@
 ﻿using FrameWork.BehaviourTree;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
-    public override void Init(BaseRoleSkillData data)
+    protected override void OnInit()
     {
-        base.Init(data);
+        base.OnInit();
         m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
         m_BehaviourTreeMgr.Init(1001);
-    }
-
-    public override void SetOwner(BaseRole owner)
-    {
-        base.SetOwner(owner);
         m_BehaviourTreeMgr.Start();
+        m_IsAIStart = true;
     }
 
     protected override void OnUpdate()
@@ -24,5 +21,13 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         m_BehaviourTreeMgr.Update(Time.deltaTime);
     }
 
+    protected override void OnRelease()
+    {
+        base.OnRelease();
+        m_BehaviourTreeMgr.ShutDown();
+        m_BehaviourTreeMgr = null;
+    }
+
+    private bool m_IsAIStart = false;
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;
 }

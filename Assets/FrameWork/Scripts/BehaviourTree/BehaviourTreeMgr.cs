@@ -74,8 +74,16 @@ namespace FrameWork.BehaviourTree
         public void ShutDown()
         {
             StopAll();
+
+            for (int i = 0; i < m_ListTrees.Count; i++)
+            {
+                m_ListTrees[i].Destroy();
+            }
+
             m_ListTrees.Clear();
             m_ListTreeID.Clear();
+            m_ListTrees = null;
+            m_ListTreeID = null;
         }
 
         private void LoadAll()

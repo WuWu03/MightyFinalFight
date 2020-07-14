@@ -79,7 +79,7 @@ public class SkillNearHitEffect : ISkillEffect
             {
                 CameraMgr.Ins.Shake();
             }
-
+             
             return true;
         }
 

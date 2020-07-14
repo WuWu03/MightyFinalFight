@@ -16,8 +16,7 @@ public class RoleIdle : BaseFsmState
         m_Owner.Rigidbody.velocity = Vector2.zero;
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         m_Owner.SetPos(m_Owner.Pos);
-        m_Owner.PlayAnimation(AnimName.Idle, -1, 1);
-        m_Owner.SetTrigger(AnimName.Idle);
+        m_Owner.PlayAnimation(AnimName.Idle, 0);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

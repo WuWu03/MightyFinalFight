@@ -38,7 +38,7 @@ namespace FrameWork.BehaviourTree
         }
 
         protected override void OnUpdate(float deltaTime) { }
-
+        protected override void OnDestroy() { }
         protected abstract bool OnCheckPreCondition();
 
         private bool m_IsNot = false;

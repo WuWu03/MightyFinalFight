@@ -56,10 +56,41 @@ public class CharacterTriggerEditor : EditorWindow
 
             if(currDB == null)
             {
-                currDB = new TriggerData[0];
+                m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas = new TriggerData[0];
+                currDB = m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas;
             }
 
-            Array.Copy(currDB, m_DBTriggers, currDB.Length);
+            int dbIndex = 0;
+            for(int i = 0; i < currDB.Length; i++)
+            {
+                bool hasFind = false;
+                for(int j = 0; j < m_CurrDB.animation.animationNames.Count; j++)
+                {
+                    if(m_CurrDB.animation.animationNames[j].Equals(currDB[i].AnimName))
+                    {
+                        hasFind = true;
+                        break;
+                    }
+                }
+                if (hasFind)
+                {
+                    m_DBTriggers[dbIndex] = currDB[i];
+                    dbIndex++;
+                }
+            }
+
+            for (int i = 0; i < m_CurrDB.animation.animationNames.Count; i++)
+            {
+                if (m_DBTriggers[i] == null || !m_DBTriggers[i].AnimName.Equals(m_CurrDB.animation.animationNames[i]))
+                {
+                    m_DBTriggers[i] = new TriggerData()
+                    {
+                        AnimName = m_CurrDB.animation.animationNames[i],
+                        Offest = Vector2.zero,
+                        Size = Vector2.one,
+                    };
+                }
+            }
 
             if (m_DBTriggers.Length - currDB.Length > 0)
             {

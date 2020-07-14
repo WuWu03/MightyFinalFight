@@ -15,7 +15,12 @@ namespace FrameWork.BehaviourTree
 
         public static Node GetNodeByClassType(string name, string className, string args, object owner)
         {
-            Type t = Type.GetType(className);
+            Type t = null;
+            if (className.Contains("Sequence") || className.Contains("Selector"))
+                t = Type.GetType("FrameWork.BehaviourTree." + className);
+            else
+                t = Type.GetType(className);
+
             if (t == null)//!m_DicBehavior.TryGetValue(name, out t))
             {
                 FrameWork.Log.Debugger.LogError("Behaviour entity is invalid!");

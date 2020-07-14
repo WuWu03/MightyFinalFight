@@ -36,6 +36,11 @@ namespace FrameWork.BehaviourTree
             m_IsPause = false;
         }
 
+        public void Destroy()
+        {
+            m_Root.Destroy();
+        }
+
         private Node Load(BehaviourTreeData data,object owner)
         {
             Node root = BehaviourFactory.GetNodeByClassType(data.Name,data.ClassType,data.Args, owner);

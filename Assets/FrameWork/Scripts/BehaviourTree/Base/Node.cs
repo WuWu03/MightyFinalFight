@@ -39,6 +39,11 @@ namespace FrameWork.BehaviourTree
             OnUpdate(deltaTime);
         }
 
+        public void Destroy()
+        {
+            OnDestroy();
+        }
+
         public virtual void AddChild(Node node) { }
         public virtual Node GetChild(int index) { return null; }
         public virtual void AddPreCondition(Node node) { }
@@ -47,9 +52,9 @@ namespace FrameWork.BehaviourTree
         public virtual bool CanExcute() { return true; }
         public virtual BehaviorTreeState Excute() { return BehaviorTreeState.None; }
 
-
         protected abstract void OnEnter();
         protected abstract void OnUpdate(float deltaTime);
+        protected abstract void OnDestroy();
 
         protected BehaviorTreeState m_State = BehaviorTreeState.None;
         protected string m_Name = string.Empty;

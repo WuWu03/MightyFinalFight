@@ -69,7 +69,7 @@ public class StageMgr : MonoSingleton<StageMgr>
                 MoveSpeed = enemyData.MoveSpeed,
             });
 
-            enemy.AddCtrl<BaseEnemyCtrl>().Init(new BaseRoleSkillData()
+            enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseRoleSkillData()
             {
                 AttackIDs = enemyData.AttackIDs,
                 Skills = enemyData.Skills,

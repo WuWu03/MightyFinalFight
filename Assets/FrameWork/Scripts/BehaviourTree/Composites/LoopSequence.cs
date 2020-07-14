@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 
 namespace FrameWork.BehaviourTree
@@ -10,7 +11,7 @@ namespace FrameWork.BehaviourTree
         protected override void OnEnter()
         {
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
             m_CurrLoopTimes = 0;
             m_LoopTimes = 1;
 
@@ -26,7 +27,7 @@ namespace FrameWork.BehaviourTree
             Node child = GetChild(m_CurrChildIndex);
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition() && CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {
@@ -64,7 +65,7 @@ namespace FrameWork.BehaviourTree
         {
             base.Reset();
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         private void CheckLoopTimes()
@@ -80,6 +81,6 @@ namespace FrameWork.BehaviourTree
         private int m_LastChildIndex;
         private int m_LoopTimes;
         private int m_CurrLoopTimes;
-        private Regex m_Regex = new Regex(@"(LoopTimes:)([0-9]+)");
+        private Regex m_Regex = new Regex(@"(LoopTimes:)(-?[0-9]+)");
     }
 }

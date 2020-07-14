@@ -19,7 +19,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         set { m_AttackValue = value; }
     }
 
-    public UnityEngine.Vector2 JumpForce
+    public Vector2 JumpForce
     {
         get { return m_JumpForce; }
         set { m_JumpForce = value; }
@@ -157,6 +157,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if(m_CurrCtrl == null)
         {
             m_CurrCtrl = new T();
+            m_CurrCtrl.SetOwner(this);
         }
 
         return m_CurrCtrl as T;
@@ -172,17 +173,20 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-        m_MoveDir = UnityEngine.Vector2.right;
+        m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
-        m_CurrCtrl.SetOwner(this);
     }
 
     protected override void Update()
     {
         base.Update();
-        m_CurrCtrl.Update();
+
+        if (m_CurrCtrl != null)
+            m_CurrCtrl.Update();
+
         if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
         if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
+
         UpdatePos2(transform.localPosition.x, Pos.y);
 
         if (IsFloat)
@@ -207,8 +211,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
         GetState<RoleAttack>().StateParam = data;
         ChangeState<RoleAttack>();
-
-        SetTrigger(data.AnimationName);
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
 
@@ -216,7 +218,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         ChangeState<RoleSkill>();
-        SetTrigger(data.AnimationName);
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
     }
 
@@ -248,13 +249,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        m_CurrCtrl.ExitSkill();
         ChangeState<RoleMove>();
     }
 
     public virtual void OnJumpMsg(JumpData data)
     {
         if (data == null) return;
-
+        m_CurrCtrl.ExitSkill();
         GetState<RoleJump>().StateParam = data;
         ChangeState<RoleJump>();
         FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
@@ -264,7 +266,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         if (!CanBeHit) return;
-
+        m_CurrCtrl.ExitSkill();
         SubHealth(data.AttackValue);
         m_IsSmoon = data.IsSwoon;
 
@@ -301,7 +303,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_DropTragData = data;
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_IsDropTrag = true;
-
+        m_CurrCtrl.ExitSkill();
         if (ObjectType == ObjectType.Player)
             CameraMgr.Ins.EndFollow();
     }
@@ -309,6 +311,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void SetCatch(bool value)
     {
         m_IsBeCatch = value;
+        if (value)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
     }
 
     public virtual List<ICanBeHit> OnHitStart()
@@ -328,9 +334,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (!m_IsDropTrag) return;
 
-        UnityEngine.Vector2[] vision = CameraMgr.Ins.GetVision();
+        Vector2[] vision = CameraMgr.Ins.GetVision();
 
-        if ((transform.localPosition + UnityEngine.Vector3.up * 0.6f).y + 0.1f < vision[0].y)
+        if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < vision[0].y)
         {
             if (m_ObjectType == ObjectType.Player)
             {
@@ -364,8 +370,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         OnGroundEvent.Invoke();
         OnGroundEvent.RemoveAllListeners();
         m_IsJumpAttack = false;
-        m_Animator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, null);
-        m_Animator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, null);
+        m_CurrCtrl.ExitSkill();
 
         if (IsAnyState(typeof(RoleSwoon)))
         {
@@ -392,5 +397,5 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeCatch = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected DropTragData m_DropTragData = null;
-    protected UnityEngine.Vector2 m_JumpForce = UnityEngine.Vector2.zero;
+    protected Vector2 m_JumpForce = Vector2.zero;
 }

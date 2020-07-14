@@ -59,6 +59,13 @@ public class SkillNormalAttackDeployer : SkillDeployer
             SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
     }
 
+    public override void OnExit()
+    {
+        base.OnExit();
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+    }
+
     private Queue<string> m_QueueSound = null;
     private AttackData m_AttackMsgData = null;
 }

@@ -53,6 +53,19 @@ namespace FrameWork.BehaviourTree
             }
         }
 
+        protected override void OnDestroy()
+        {
+            for (int i = 0; i < m_Childs.Count; i++)
+            {
+                m_Childs[i].Destroy();
+            }
+
+            for (int i = 0; i < m_PreConditions.Count; i++)
+            {
+                m_PreConditions[i].Destroy();
+            }
+        }
+
         protected int GetChildCount()
         {
             return m_Childs.Count;

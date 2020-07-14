@@ -68,6 +68,14 @@ public class SkillJumpAttackDeployer : SkillDeployer
         m_IsOnGround = true;
     }
 
+    public override void OnExit()
+    {
+        base.OnExit();
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+    }
+
+
     private bool m_IsOnGround = false;
     private AttackData m_AttackMsgData = null;
 }

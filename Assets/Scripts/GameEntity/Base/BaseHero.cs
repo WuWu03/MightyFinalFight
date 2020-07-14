@@ -87,11 +87,6 @@ public class BaseHero : BaseRole
         CheckCatch();
         CheckRebirthState();
 
-        if (m_CatchAttackCount >= 3 && IsPlayComplete())
-        {
-            ResetCatch();
-        }
-
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
             if (IsOutVersionX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
@@ -102,7 +97,7 @@ public class BaseHero : BaseRole
 
         if (m_HitTime < 0) return;
 
-        if (Time.time - m_HitTime > 1.0f)
+        if (Time.time - m_HitTime > 1.5f)
         {
             m_DicAttacker.Clear();
             m_HitTime = -1f;
@@ -125,7 +120,7 @@ public class BaseHero : BaseRole
     {
         base.OnHitEnd(skillData, isHurtTarget);
 
-        if (m_ListCatchTarget.Count < 1 || !isHurtTarget) return;
+        if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3) return;
 
         if (skillData.Type == SkillData.SkillType.SkillAttack)//捕捉状态下技能攻击不进行次数累积
         {
@@ -154,6 +149,7 @@ public class BaseHero : BaseRole
             m_CatchStamp = Time.time;
         }
 
+        if (m_CatchAttackCount >= 3) return;
         base.OnAttackMsg(data, isForceJumpAttack);
     }
 
@@ -238,13 +234,10 @@ public class BaseHero : BaseRole
     }
 
     protected virtual void CheckCatch()
-    {    
-        if(m_CatchAttackCount >= 3)
+    {
+        if (m_CatchAttackCount >= 3 && IsPlayComplete())
         {
-            if (IsPlayComplete())
-            {
-                ResetCatch(true);
-            }
+            ResetCatch(true);
             return;
         }
 

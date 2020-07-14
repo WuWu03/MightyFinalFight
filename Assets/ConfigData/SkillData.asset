@@ -416,8 +416,6 @@ MonoBehaviour:
     SkillPrevConditions:
     - Status: 1
       Args: 
-    - Status: 0
-      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1

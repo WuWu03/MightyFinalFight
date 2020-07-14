@@ -10,6 +10,10 @@ public class JumpData : BaseEventArgs
         set;
     }
 
+    public override void Clear()
+    {
+        Dir = Vector2.zero;
+    }
     public override BaseEventArgs Clone()
     {
         return Activator.CreateInstance<AttackData>();

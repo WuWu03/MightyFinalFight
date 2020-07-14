@@ -2,12 +2,12 @@
 
 public class BaseHeroCtrl : BaseRoleCtrl
 {
-    public override void Init(BaseRoleSkillData data)
+    public override void InitData(BaseRoleSkillData data)
     {     
         BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
         m_CatchAttackID = heroSkillData.CatchAttackID;
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
-        base.Init(data);
+        base.InitData(data);
     }
 
     protected override void NormalAttack(Vector2 dir)

@@ -5,39 +5,46 @@ public class DoRunToPlayer : Action
 {
     public DoRunToPlayer(string name, string args, object owner) : base(name, args, owner) 
     {
-        m_MoveData = new MoveData();
+        m_Owner = base.m_Owner as BaseRoleCtrl;
     }
 
     protected override void OnEnter()
     {
-        m_Owner = base.m_Owner as BaseEnemy;
         m_IsArravied = false;
-    }
-
-    protected override void OnUpdate(float deltaTime)
-    {
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
-        Vector2 enemyPos = m_Owner.Pos;
-
-        m_IsArravied = Vector2.Distance(playerPos, enemyPos) <= 0.1f;
-        if (!m_IsArravied)
-        {
-            m_MoveData.Dir = (playerPos - enemyPos).normalized;
-            m_Owner.OnMoveMsg(m_MoveData);
-        }
     }
 
     public override BehaviorTreeState Excute()
     {
-        if(m_IsArravied)
+        if (m_IsArravied)
         {
+            m_Owner.Move(Vector2.zero);
             return BehaviorTreeState.Success;
+        }
+
+        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
+        Vector2 enemyPos = m_Owner.Owner.Pos;
+
+        m_IsArravied = Vector2.Distance(playerPos, enemyPos) <= 0.2f;
+        if (!m_IsArravied)
+        {
+            m_Owner.Move((playerPos - enemyPos).normalized);
         }
 
         return BehaviorTreeState.Running;
     }
 
-    private MoveData m_MoveData = null;
+    public override void Reset()
+    {
+        base.Reset();
+        m_IsArravied = false;
+        m_Owner.Move(Vector2.zero);
+    }
+
+    protected override void OnUpdate(float deltaTime)
+    {
+        
+    }
+
     private bool m_IsArravied = false;
-    private new BaseEnemy m_Owner = null;
+    private new BaseRoleCtrl m_Owner = null;
 }

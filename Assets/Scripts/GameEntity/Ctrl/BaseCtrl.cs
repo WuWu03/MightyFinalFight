@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class BaseCtrl
 {
-    public BaseObject Owner
+    public BaseRole Owner
     {
         get
         {
@@ -11,22 +11,27 @@ public abstract class BaseCtrl
         }
     }
 
-    public virtual void SetOwner(BaseRole owner)
+    public void SetOwner(BaseRole owner)
     {
         m_Owner = owner;
+        OnInit();
     }
 
     public void Update()
     {
-        if (m_Owner == null) return;
+        if (m_Owner == null || !m_Owner.ResComplete) return;
         OnUpdate();
     }
 
-    public virtual void Release()
+    public void Release()
     {
         m_Owner = null;
+        OnRelease();
     }
 
+    protected virtual void OnInit() { }
     protected virtual void OnUpdate() { }
+    protected virtual void OnRelease() { }
+
     protected BaseRole m_Owner = null;
 }

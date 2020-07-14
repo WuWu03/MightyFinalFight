@@ -88,7 +88,13 @@ public class SkillFactory
             else if(status == SkillStatus.Float)
                 isCondition = owner.IsFloat;
             else if(status == SkillStatus.Ground)
-                isCondition = (owner is BaseHero) ? owner.IsInGround && !(owner as BaseHero).IsCatch : owner.IsInGround;
+            {
+                isCondition = owner.IsInGround;
+                if (owner is BaseHero)
+                    isCondition = isCondition && !(owner as BaseHero).IsCatch;
+                else if (owner is BaseEnemy)
+                    isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;        
+            }
             else if(status == SkillStatus.Catch)
                 isCondition = (owner as BaseHero).IsCatch;
             else if(status == SkillStatus.HPMoreThan)

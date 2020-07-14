@@ -52,7 +52,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             MoveSpeed = m_HeroData.MoveSpeed
         });
    
-        m_CurrCtrl.Init(new BaseHeroSkillData()
+        m_CurrCtrl.InitData(new BaseHeroSkillData()
         {
             AttackIDs = m_HeroData.AttackIDs,
             JumpAttackIDs = m_HeroData.JumpAttackIDs,
