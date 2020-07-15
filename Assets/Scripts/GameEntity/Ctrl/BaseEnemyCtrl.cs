@@ -1,6 +1,4 @@
 ﻿using FrameWork.BehaviourTree;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
@@ -9,7 +7,15 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         get
         {
+            if (!m_IsRandomPos)
+            {
+                m_IsRoundPos = Random.Range(1, 101) <= 20;
+            }
             return m_IsRandomPos;
+        }
+        set
+        {
+            m_IsRandomPos = value;
         }
     }
 
@@ -17,7 +23,32 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         get
         {
+            if (!m_IsRoundPos)
+            {
+                m_IsRoundPos = Random.Range(1, 101) <= 10;
+            }
             return m_IsRoundPos;
+        }
+        set
+        {
+            m_IsRoundPos = value;
+        }
+    }
+
+
+    public bool IsIdle
+    {
+        get
+        {
+            if (!m_IsIdle)
+            {
+                m_IsIdle = Random.Range(1, 101) <= 5;
+            }
+            return m_IsIdle;
+        }
+        set
+        {
+            m_IsIdle = value;
         }
     }
 
@@ -33,7 +64,6 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         base.OnUpdate();
         m_BehaviourTreeMgr.Update(Time.deltaTime);
-        RandomPos();
     }
 
     protected override void OnRelease()
@@ -43,31 +73,8 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         m_BehaviourTreeMgr = null;
     }
 
-    public virtual void SetCanRandomPos(bool value)
-    {
-        m_CanRandomPos = value;
-    }
 
-    private void RandomPos()
-    {
-        if (!m_CanRandomPos)
-        {
-            m_RandomTimer = 0f;
-            m_IsRandomPos = false;
-            m_IsRoundPos = false;
-            return;
-        }
-
-        if (m_RandomTimer == 0 || Time.time - m_RandomTimer >= 3.0f)
-        {
-            m_RandomTimer = Time.time;
-            m_IsRandomPos = Random.Range(1, 101) <= 50;
-            m_IsRoundPos = !m_IsRandomPos && Random.Range(1, 101) <= 50;
-        }
-    }
-
-    private float m_RandomTimer = 0;
-    private bool m_CanRandomPos = true;
+    private bool m_IsIdle = false;
     private bool m_IsRoundPos = false;
     private bool m_IsRandomPos = false;
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;

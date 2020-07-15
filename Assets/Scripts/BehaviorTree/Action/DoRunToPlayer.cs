@@ -15,13 +15,15 @@ public class DoRunToPlayer : Action
 
     public override BehaviorTreeState Excute()
     {
+        Vector2 enemyPos = m_Owner.Owner.Pos;
+
         if (m_IsArravied)
         {
             m_Owner.Move(Vector2.zero);
+            m_Owner.Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - enemyPos.x > 0 ? 1 : -1);
             return BehaviorTreeState.Success;
         }
     
-        Vector2 enemyPos = m_Owner.Owner.Pos;
         Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
         playerPos = playerPos + Vector2.right * 0.2f * (playerPos.x - enemyPos.x > 0 ? -1f : 1f);
 
@@ -40,7 +42,6 @@ public class DoRunToPlayer : Action
     {
         base.Reset();
         m_IsArravied = false;
-        m_Owner.Move(Vector2.zero);
     }
 
     protected override void OnUpdate(float deltaTime)

@@ -127,7 +127,20 @@ public class StageMgr : MonoSingleton<StageMgr>
         return false;
     }
 
-   
+    public float GetRandomY(float posX)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
+            {
+                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2;
+                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2;
+                return Random.Range((float)yLeft / 100f, (float)yRigth / 100f);
+            }
+        }
+
+        return 0;
+    }
     private bool IsInAreaPosX(Area area,float posX)
     {
         int xLeft = area.Pos.x - area.Width / 2;
