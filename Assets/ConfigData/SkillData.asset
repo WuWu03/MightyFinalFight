@@ -25,6 +25,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 1
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -57,6 +58,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -89,6 +91,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -121,6 +124,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 1
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -131,7 +135,7 @@ MonoBehaviour:
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
-      AddSelfForce: {x: 0, y: 0}
+      AddSelfForce: {x: 30, y: 180}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -153,6 +157,7 @@ MonoBehaviour:
     AnimSpeed: 1
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
@@ -183,6 +188,7 @@ MonoBehaviour:
     AnimSpeed: 0.4
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
@@ -213,6 +219,7 @@ MonoBehaviour:
     AnimSpeed: 0.4
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -246,13 +253,14 @@ MonoBehaviour:
     Name: CodySkill2
     AnimationName: Attack4
     Type: 2
-    DeployeType: 1
+    DeployeType: 2
     Key:
       Keys: 0100000005000000
       AddTrigger: 1
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions: []
     SkillEffects:
     - EffectorType: 1
@@ -261,7 +269,7 @@ MonoBehaviour:
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 120}
-      AddSelfForce: {x: 0, y: 0}
+      AddSelfForce: {x: 20, y: 180}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -283,6 +291,7 @@ MonoBehaviour:
     AnimSpeed: 0.8
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 3
       Args: 
@@ -315,6 +324,7 @@ MonoBehaviour:
     AnimSpeed: 0.6
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 3
       Args: 
@@ -363,6 +373,7 @@ MonoBehaviour:
     AnimSpeed: 0.4
     AnimTime: 0
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -413,6 +424,7 @@ MonoBehaviour:
     AnimSpeed: 0.4
     AnimTime: 1
     IsInEffectPlaySound: 0
+    CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
       Args: 

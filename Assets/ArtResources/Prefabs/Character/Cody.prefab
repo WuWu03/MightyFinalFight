@@ -46,7 +46,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -125,7 +124,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -204,7 +202,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -342,8 +339,8 @@ MonoBehaviour:
     Offest: {x: 0.04473853, y: 0.002833277}
     Size: {x: 0.32870704, y: 0.31996173}
   - AnimName: Attack4
-    Offest: {x: 0.010887906, y: 0.003765136}
-    Size: {x: 0.2769585, y: 0.32924992}
+    Offest: {x: 0.036876813, y: 0.003765136}
+    Size: {x: 0.3289363, y: 0.32924992}
   - AnimName: JumpUp
     Offest: {x: 0.0026434362, y: 0.0022016466}
     Size: {x: 0.18905827, y: 0.35829216}

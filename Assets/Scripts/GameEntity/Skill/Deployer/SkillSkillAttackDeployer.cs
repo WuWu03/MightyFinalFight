@@ -38,6 +38,11 @@ public class SkillSkillAttackDeployer : SkillDeployer
 
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
+        if (CurrEffect.AddSelfForce != Vector2.zero)
+        {
+            m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            m_Owner.Rigidbody.AddForce(new Vector2(CurrEffect.AddSelfForce.x * m_Owner.Dir, CurrEffect.AddSelfForce.y));
+        }
         base.DeploySkill();
     }
 

@@ -20,7 +20,7 @@ public class RoleAttack : BaseFsmState, IStateParam<AttackData>
         {
             m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
             m_Owner.Rigidbody.velocity = Vector2.zero;
-            m_Owner.Rigidbody.AddForce(StateParam.AddSelfForce * (Vector2.right * m_Owner.Dir));
+            m_Owner.Rigidbody.AddForce(new Vector2(StateParam.AddSelfForce.x * m_Owner.Dir, StateParam.AddSelfForce.y));
         }
     }
 

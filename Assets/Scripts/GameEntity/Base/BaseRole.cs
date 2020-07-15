@@ -281,8 +281,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
             ChangeState<RoleHurt>();
         }
 
-        string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "OnHit02" : data.HurtSound;
-        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+        if (data.AttackValue > 0)
+        {
+            string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "OnHit02" : data.HurtSound;
+            FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+        }
     }
 
     public virtual void OnDropTragMsg(DropTragData data)

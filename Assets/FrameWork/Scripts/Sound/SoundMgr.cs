@@ -21,13 +21,16 @@ namespace FrameWork.Sound
             }
         }
 
-        private AudioSource m_Source = null;
+        private AudioSource m_BGMSource = null;
+        private AudioSource m_SoundSource = null;
         private void Awake()
         {
             m_Root = new GameObject("SoundMgr");
-            m_Source = m_Root.GetOrAddComponent<AudioSource>();
+            m_BGMSource = m_Root.GetOrAddComponent<AudioSource>();
+            m_SoundSource = new GameObject("Sound").GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();
             m_Root.transform.SetParent(transform, false);
+            m_SoundSource.transform.SetParent(m_Root.transform, false);
             m_QueueAudioGroup = new Queue<AudioGroup>();
             DontDestroyOnLoad(m_Root);
         }
@@ -37,7 +40,7 @@ namespace FrameWork.Sound
             string resPath = string.Format("{0}/{1}", path, name);
             AudioClipPool.Ins.Get(resPath, (AudioClip clip) =>
             {
-                m_Source.PlayOneShot(clip, volume);
+                m_SoundSource.PlayOneShot(clip, volume);
                 AudioClipPool.Ins.Put(resPath, clip);
             });
         }
@@ -72,9 +75,9 @@ namespace FrameWork.Sound
                              m_CurrPlayAudio.IsLoop);
             }
 
-            if (m_CurrPlayAudio != null && m_Source.clip != null && !m_CurrPlayAudio.IsLoop)
+            if (m_CurrPlayAudio != null && m_BGMSource.clip != null && !m_CurrPlayAudio.IsLoop)
             {
-                if (Time.time - m_PlayStamp >= m_Source.clip.length)
+                if (Time.time - m_PlayStamp >= m_BGMSource.clip.length)
                 {
                     StopCurrent();
                 }
@@ -85,13 +88,13 @@ namespace FrameWork.Sound
         {
             AudioClipPool.Ins.Get(path, (AudioClip clip) =>
             {
-                m_Source.clip = clip;
-                m_Source.loop = isLoop;
-                m_Source.volume = fadeTime > 0f ? 0f : volum;
-                m_Source.Play();
+                m_BGMSource.clip = clip;
+                m_BGMSource.loop = isLoop;
+                m_BGMSource.volume = fadeTime > 0f ? 0f : volum;
+                m_BGMSource.Play();
 
                 if (fadeTime > 0f)
-                    m_Source.DOFade(volum, fadeTime);
+                    m_BGMSource.DOFade(volum, fadeTime);
             });
         }
 
@@ -99,10 +102,10 @@ namespace FrameWork.Sound
         {
             if(m_CurrPlayAudio != null)
             {
-                AudioClipPool.Ins.Put(m_CurrPlayAudio.GetPath(), m_Source.clip);
+                AudioClipPool.Ins.Put(m_CurrPlayAudio.GetPath(), m_BGMSource.clip);
                 m_CurrPlayAudio = null;
-                m_Source.Stop();
-                m_Source.clip = null;
+                m_BGMSource.Stop();
+                m_BGMSource.clip = null;
             }
         }
 

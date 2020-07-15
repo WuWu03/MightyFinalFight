@@ -52,7 +52,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        for (int i = 0; i < 20;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
+        for (int i = 0; i < 5;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
         {
             BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
             StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];
@@ -184,7 +184,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
-        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm2", true, 0.3f);
+        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm2", true, 0.2f);
         //SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
         //{
         //    new SoundMgr.AudioGroup()

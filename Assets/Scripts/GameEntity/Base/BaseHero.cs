@@ -128,6 +128,7 @@ public class BaseHero : BaseRole
             return;
         }
 
+        
         m_CatchAttackCount++;
 
         if (m_CatchAttackCount >= 3)
