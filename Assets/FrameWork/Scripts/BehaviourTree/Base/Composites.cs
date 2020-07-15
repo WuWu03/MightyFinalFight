@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
 
 namespace FrameWork.BehaviourTree
@@ -47,11 +48,16 @@ namespace FrameWork.BehaviourTree
         public override void Reset()
         {
             base.Reset();
+            m_State = BehaviorTreeState.Running;
             for (int i = 0; i < m_Childs.Count; i++)
             {
                 m_Childs[i].Reset();
             }
         }
+
+        protected override void OnEnter() { }
+
+        protected override void OnUpdate(float deltaTime) { }
 
         protected override void OnDestroy()
         {

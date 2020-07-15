@@ -31,11 +31,6 @@ public class PreIsInSpecialState : PreCondition
         return false;
     }
 
-    protected override void OnEnter()
-    {
-       
-    }
-
     private float m_Timer = -1f;
     private new BaseRoleCtrl m_Owner = null;
 }

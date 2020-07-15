@@ -37,6 +37,7 @@ namespace FrameWork.BehaviourTree
             return OnCheckPreCondition();
         }
 
+        protected override void OnEnter() { }
         protected override void OnUpdate(float deltaTime) { }
         protected override void OnDestroy() { }
         protected abstract bool OnCheckPreCondition();

@@ -5,18 +5,16 @@ namespace FrameWork.BehaviourTree
 {
     public class LoopSelector : Composites
     {
-        public LoopSelector(string name, string args, object owner) : base(name, args, owner) {}
-
-        protected override void OnEnter()
+        public LoopSelector(string name, string args, object owner) : base(name, args, owner) 
         {
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
             m_CurrLoopTimes = 0;
             m_LoopTimes = 1;
 
-            if (!string.IsNullOrEmpty(m_Args))
+            if (!string.IsNullOrEmpty(args))
             {
-                Match m = m_Regex.Match(m_Args);
+                Match m = m_Regex.Match(args);
                 if (m.Success) m_LoopTimes = int.Parse(m.Groups[2].Value);
             }
         }
@@ -39,8 +37,11 @@ namespace FrameWork.BehaviourTree
                     if(state != BehaviorTreeState.Running)
                     {
                         m_CurrChildIndex++;
-                        if(state == BehaviorTreeState.Success)
+                        if (state == BehaviorTreeState.Success)
+                        {
+                            m_State = BehaviorTreeState.Success;
                             CheckLoopTimes();
+                        }
                     }
                 }
                 else
@@ -64,7 +65,7 @@ namespace FrameWork.BehaviourTree
         {
             base.Reset();
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         private void CheckLoopTimes()

@@ -16,11 +16,6 @@ public class DoIdle : Action
         m_IdleTimer = Time.time;
     }
 
-    protected override void OnUpdate(float deltaTime)
-    {
-        
-    }
-
     public override BehaviorTreeState Excute()
     {
         if(Time.time - m_IdleTimer >= m_IdleTime)
@@ -29,12 +24,16 @@ public class DoIdle : Action
             return BehaviorTreeState.Success;
         }
 
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
         m_Owner.Move(Vector2.zero);
-        m_Owner.Owner.SetDir(playerPos.x - enemyPos.x > 0 ? 1 : -1);
+        m_Owner.OppositePlayer();
 
         return BehaviorTreeState.Running;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        m_Owner.IsIdle = false;
     }
 
     private float m_IdleTime = 0f;

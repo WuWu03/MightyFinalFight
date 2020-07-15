@@ -15,11 +15,6 @@ public class PreIsIdle : PreCondition
         return m_Owner.IsIdle;
     }
 
-    protected override void OnEnter()
-    {
-
-    }
-
     private new BaseEnemyCtrl m_Owner = null;
 }
 

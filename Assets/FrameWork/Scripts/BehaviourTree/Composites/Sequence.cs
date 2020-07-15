@@ -5,12 +5,10 @@ namespace FrameWork.BehaviourTree
 {
     public class Sequence : Composites
     {
-        public Sequence(string name, string args, object owner) : base(name, args, owner) { }
-
-        protected override void OnEnter()
+        public Sequence(string name, string args, object owner) : base(name, args, owner) 
         {
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -18,7 +16,7 @@ namespace FrameWork.BehaviourTree
             Node child = GetChild(m_CurrChildIndex);
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition()&& this.CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {
@@ -31,8 +29,11 @@ namespace FrameWork.BehaviourTree
                     if (state != BehaviorTreeState.Running)
                     {
                         m_CurrChildIndex++;
-                        if (state == BehaviorTreeState.Success)
+                        if (state == BehaviorTreeState.Failure)
+                        {
+                            m_State = BehaviorTreeState.Failure;
                             return;
+                        }
                     }
                 }
                 else
@@ -41,18 +42,22 @@ namespace FrameWork.BehaviourTree
                 }
             }
 
+            if(m_CurrChildIndex >= GetChildCount())
+            {
+                m_State = BehaviorTreeState.Success;
+            }
         }
 
         public override bool CanExcute()
         {
-            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Success;
+            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Failure;
         }
 
         public override void Reset()
         {
             base.Reset();
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         private int m_CurrChildIndex;

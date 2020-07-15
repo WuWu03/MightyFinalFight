@@ -34,11 +34,6 @@ public class PreIsLockPlayer : PreCondition
         return false;
     }
 
-    protected override void OnEnter()
-    {
-        
-    }
-
     private float m_Distance = 0f;
     private Regex m_Regex = new Regex(@"(Distance:)([0-9]+\.?[0-9]*)");
     private bool m_IsLockPlayer = false;

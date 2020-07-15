@@ -12,15 +12,8 @@ public class PreIsRandomPos : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        m_IsRandomPos = Random.Range(1, 101) <= 50;
         return m_Owner.IsRandomPos;
     }
 
-    protected override void OnEnter()
-    {
-
-    }
-
-    private static bool m_IsRandomPos = false;
     private new BaseEnemyCtrl m_Owner = null;
 }

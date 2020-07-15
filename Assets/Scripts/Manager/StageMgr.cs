@@ -52,10 +52,10 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        for (int i = 0; i < 1;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
+        for (int i = 0; i < 10;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
         {
             BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
-            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[i];
+            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];
             EnemyData enemyData = StaticConfig.EnemyConfig.GetData(enemyInfo.EnemyID);
 
             enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
@@ -133,8 +133,8 @@ public class StageMgr : MonoSingleton<StageMgr>
         {
             if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
             {
-                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2;
-                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2;
+                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2 + 50;
+                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2 - 50;
                 return Random.Range((float)yLeft / 100f, (float)yRigth / 100f);
             }
         }

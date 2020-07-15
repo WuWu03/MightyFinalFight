@@ -26,11 +26,6 @@ public class PreIsPlayerDistance : PreCondition
         return distance <= m_Distance;
     }
 
-    protected override void OnEnter()
-    {
-
-    }
-
     private float m_Distance = 0.5f;
     private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+\.?[0-9]+)");
 }

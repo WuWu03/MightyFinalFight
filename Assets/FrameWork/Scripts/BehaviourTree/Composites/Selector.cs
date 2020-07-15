@@ -5,12 +5,10 @@ namespace FrameWork.BehaviourTree
 {
     public class Selector : Composites
     {
-        public Selector(string name, string args, object owner) : base(name, args, owner) { }
-
-        protected override void OnEnter()
+        public Selector(string name, string args, object owner) : base(name, args, owner)
         {
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -18,7 +16,7 @@ namespace FrameWork.BehaviourTree
             Node child = GetChild(m_CurrChildIndex);
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition()&&this.CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {
@@ -32,7 +30,10 @@ namespace FrameWork.BehaviourTree
                     {
                         m_CurrChildIndex++;
                         if (state == BehaviorTreeState.Success)
+                        {
+                            m_State = BehaviorTreeState.Success;
                             return;
+                        }
                     }
                 }
                 else
@@ -41,6 +42,10 @@ namespace FrameWork.BehaviourTree
                 }
             }
 
+            if (m_CurrChildIndex >= GetChildCount())
+            {
+                m_State = BehaviorTreeState.Failure;
+            }
         }
 
         public override bool CanExcute()
@@ -52,7 +57,7 @@ namespace FrameWork.BehaviourTree
         {
             base.Reset();
             m_CurrChildIndex = 0;
-            m_LastChildIndex = 0;
+            m_LastChildIndex = -1;
         }
 
         private int m_CurrChildIndex;

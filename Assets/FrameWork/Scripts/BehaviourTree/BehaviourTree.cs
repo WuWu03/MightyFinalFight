@@ -44,7 +44,7 @@ namespace FrameWork.BehaviourTree
         private Node Load(BehaviourTreeData data,object owner)
         {
             Node root = BehaviourFactory.GetNodeByClassType(data.Name,data.ClassType,data.Args, owner);
-            if (root == null) return root;
+
             if (data.PreConditions != null && data.PreConditions.Length > 0)
             {
                 for (int i = 0; i < data.PreConditions.Length; i++)

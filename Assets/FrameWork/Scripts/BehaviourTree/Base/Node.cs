@@ -50,7 +50,7 @@ namespace FrameWork.BehaviourTree
         public virtual bool CheckPreCondition() { return true; }
         public virtual void Reset() { m_State = BehaviorTreeState.Running; }
         public virtual bool CanExcute() { return true; }
-        public virtual BehaviorTreeState Excute() { return BehaviorTreeState.None; }
+        public virtual BehaviorTreeState Excute() { return m_State; }
 
         protected abstract void OnEnter();
         protected abstract void OnUpdate(float deltaTime);

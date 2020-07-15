@@ -7,10 +7,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         get
         {
-            if (!m_IsRandomPos)
-            {
-                m_IsRoundPos = Random.Range(1, 101) <= 20;
-            }
+            RandomBehaviour();
             return m_IsRandomPos;
         }
         set
@@ -23,10 +20,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         get
         {
-            if (!m_IsRoundPos)
-            {
-                m_IsRoundPos = Random.Range(1, 101) <= 10;
-            }
+            RandomBehaviour();
             return m_IsRoundPos;
         }
         set
@@ -40,10 +34,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         get
         {
-            if (!m_IsIdle)
-            {
-                m_IsIdle = Random.Range(1, 101) <= 5;
-            }
+            RandomBehaviour();
             return m_IsIdle;
         }
         set
@@ -73,6 +64,39 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         m_BehaviourTreeMgr = null;
     }
 
+    public void OppositePlayer()
+    {
+        m_Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - m_Owner.Pos.x > 0 ? 1 : -1);
+    }
+    private void RandomBehaviour()
+    {
+        if (m_IsIdle || m_IsRandomPos || m_IsRoundPos)
+        {
+            return;
+        }
+
+        m_IsRandomPos = Random.Range(1, 1001) <= 10;
+        m_IsRoundPos = Random.Range(1, 1001) <= 5;
+        m_IsIdle = Random.Range(1, 1001) <= 2;
+
+        if (m_IsRandomPos)
+        {
+            m_IsRoundPos = false;
+            m_IsIdle = false;
+        }
+
+        if (m_IsRoundPos)
+        {
+            m_IsRandomPos = false;
+            m_IsIdle = false;
+        }
+
+        if (m_IsIdle)
+        {
+            m_IsRandomPos = false;
+            m_IsRoundPos = false;
+        }
+    }
 
     private bool m_IsIdle = false;
     private bool m_IsRoundPos = false;

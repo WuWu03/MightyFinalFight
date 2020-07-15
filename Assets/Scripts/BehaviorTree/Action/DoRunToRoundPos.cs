@@ -23,7 +23,8 @@ public class DoRunToRoundPos : Action
         //float lerpX = radius * Mathf.Cos(angle / 2);
         //float lerpY = radius * Mathf.Sin(angle / 2);
         // m_RoundPos[0] = new Vector2(center.x + lerpX, center.y + lerpY);
-        m_RoundPos[0] = new Vector2(center.x, randomY);
+        m_RoundPos[0].x = center.x;
+        m_RoundPos[0].y = randomY;
         m_RoundPos[1] = to;
         m_CurrIndex = 0;
         m_IsArravied = false;
@@ -31,28 +32,27 @@ public class DoRunToRoundPos : Action
 
     public override BehaviorTreeState Excute()
     {
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
-
         if (m_IsArravied)
         {
             if (m_CurrIndex >= m_RoundPos.Length - 1)
             {
                 m_Owner.Move(Vector2.zero);
-                m_Owner.IsRoundPos = false;
-                m_Owner.Owner.SetDir(playerPos.x - enemyPos.x > 0 ? 1 : -1);
+                m_Owner.OppositePlayer();
+                m_Owner.IsRoundPos = false;          
                 return BehaviorTreeState.Success;
             }
 
+            m_Owner.OppositePlayer();
             m_CurrIndex++;
         }
 
+        Vector2 enemyPos = m_Owner.Owner.Pos;
         m_IsArravied = Vector2.Distance(enemyPos, m_RoundPos[m_CurrIndex]) < 0.01f;
 
         if (!m_IsArravied)
         {
             m_Owner.Move((m_RoundPos[m_CurrIndex] - enemyPos).normalized);
-            m_Owner.Owner.SetDir(playerPos.x - enemyPos.x > 0 ? 1 : -1);
+            m_Owner.OppositePlayer();
         }
 
         return BehaviorTreeState.Running;
@@ -62,16 +62,11 @@ public class DoRunToRoundPos : Action
     {
         base.Reset();
         m_IsArravied = false;
+        m_Owner.IsRoundPos = false;
     }
-
-    protected override void OnUpdate(float deltaTime)
-    {
-
-    }
-
 
     private int m_CurrIndex = 0;
-    private Vector2[] m_RoundPos = new Vector2[2];
+    private Vector2[] m_RoundPos = new Vector2[2] { Vector2.zero, Vector2.zero };
     private bool m_IsArravied = false;
     private new BaseEnemyCtrl m_Owner = null;
 }
