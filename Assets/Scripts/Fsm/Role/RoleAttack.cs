@@ -20,7 +20,7 @@ public class RoleAttack : BaseFsmState, IStateParam<AttackData>
         {
             m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
             m_Owner.Rigidbody.velocity = Vector2.zero;
-            m_Owner.Rigidbody.AddForce(StateParam.AddSelfForce);
+            m_Owner.Rigidbody.AddForce(StateParam.AddSelfForce * (Vector2.right * m_Owner.Dir));
         }
     }
 
@@ -28,10 +28,7 @@ public class RoleAttack : BaseFsmState, IStateParam<AttackData>
     {
         if (StateParam.CanChangeDir)
         {
-            float angleY = m_Owner.transform.localRotation.eulerAngles.y;
-            if (StateParam.Dir > 0) angleY = 0;
-            else if (StateParam.Dir < 0) angleY = 180f;
-            m_Owner.transform.localRotation = Quaternion.Euler(0, angleY, 0);
+            m_Owner.SetDir(StateParam.Dir);
         }
     }
 

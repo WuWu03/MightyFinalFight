@@ -58,11 +58,13 @@ public class MainPanelCtrl:BasePanelCtrl
 		m_Panel.EnemyHpBar.maxValue = max;
 		m_Panel.EnemyHpBar.gameObject.SetActive(true);
 		m_Panel.EnemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		Image image = m_Panel.EnemyHpBar.GetComponent<Image>();
+		image.DOFade(1, 0);
 
-		if(value == 0)
+		if (value == 0)
 		{
 			m_EnemyHpBarHideTimer = -1;
-			Image image = m_Panel.EnemyHpBar.GetComponent<Image>();
+			
 			Sequence sequence = DOTween.Sequence();
 			sequence.Append(image.DOFade(0, 0.2f));
 			sequence.Append(image.DOFade(1, 0.2f));

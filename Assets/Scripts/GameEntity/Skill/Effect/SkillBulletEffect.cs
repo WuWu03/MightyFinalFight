@@ -34,13 +34,12 @@ public class SkillBulletEffect : ISkillEffect
 
     public void Reset()
     {
-
-
+        m_Owner = null;
     }
 
     public void Exit()
     {
-        
+        m_Owner = null;
     }
 
     private BaseRole m_Owner = null;

@@ -63,7 +63,11 @@ namespace FrameWork.Camera
 
         public void Shake(float time = 0.3f)
         {
-            m_CameraRoot.transform.DOShakePosition(time,0.1f,20,100);
+            m_CameraFollow.EndFollow();
+            m_CameraRoot.transform.DOShakePosition(time,0.1f,20,100).OnComplete(()=> 
+            {
+                m_CameraFollow.StartFollow();
+            });
         }
         public bool IsOutVision(Vector2 targetPos)
         {

@@ -16,7 +16,7 @@ public class SkillNormalAttackDeployer : SkillDeployer
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
 
         m_AttackMsgData.Dir = m_Owner.Dir;
-        m_AttackMsgData.CanChangeDir = true;
+        m_AttackMsgData.CanChangeDir = m_SkillData.CanChangeDir;
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
         m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
         m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
@@ -35,6 +35,11 @@ public class SkillNormalAttackDeployer : SkillDeployer
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        if(CurrEffect.AddSelfForce != Vector2.zero)
+        {
+            m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            m_Owner.Rigidbody.AddForce(new Vector2(CurrEffect.AddSelfForce.x * m_Owner.Dir, CurrEffect.AddSelfForce.y));
+        }
         base.DeploySkill();
         RealPlaySound();
     }

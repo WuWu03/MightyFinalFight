@@ -224,13 +224,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnMoveMsg(MoveData data)
     {
         if (data == null) return;
-        m_MoveDir = data.Dir;
-
-        if (data.Dir.x != 0)
-        {
-            m_Dir = data.Dir.x > 0 ? 1 : -1;
-        }
-
+       
         if (IsAnyState(typeof(RoleJump)))
         {
             GetState<RoleJump>().StateParam.Dir = data.Dir;
@@ -239,7 +233,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().StateParam.Dir = m_Dir;
+            GetState<RoleAttack>().StateParam.Dir = data.Dir.x;             
             return;
         }
 
@@ -249,6 +243,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        m_MoveDir = data.Dir;
         m_CurrCtrl.ExitSkill();
         ChangeState<RoleMove>();
     }

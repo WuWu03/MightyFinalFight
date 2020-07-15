@@ -157,6 +157,11 @@ public abstract class BaseAvatar : BaseSceneObject
             return;
         }
 
+        if(this is BaseHero)
+        {
+            Debug.Log("play:" + animName);
+        }
+
         SetTrigger(animName);
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;

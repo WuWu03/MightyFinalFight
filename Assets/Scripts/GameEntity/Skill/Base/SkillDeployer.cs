@@ -2,6 +2,14 @@
 public abstract class SkillDeployer
 {
     public int SkillID { get; private set; }
+    protected SkillData.SkillEffect CurrEffect
+    {
+        get
+        {
+            return m_SkillData.SkillEffects[m_CurrEffectIndex];
+        }
+    }
+
     public SkillData SkillData
     {
         get 

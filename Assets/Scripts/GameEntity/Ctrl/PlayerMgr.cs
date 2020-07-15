@@ -84,6 +84,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void Rebirth(Vector2 rebirthPos)
     {
         Life -= 1;
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(Life);
 
         if (Life < 1)
         {
@@ -96,9 +97,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             return;
         }
 
-        m_Player.Health = 3;
+        m_Player.Health = 10;
         m_Player.OnRebirthMsg(rebirthPos);
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(Life);
     }
 
     private void Control()

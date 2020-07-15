@@ -19,13 +19,77 @@ MonoBehaviour:
     Args: LoopTimes:-1
     Childs:
     - ID: 0
-      Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u9644\u8FD1"
-      ClassType: DoRunToRoundPos
+      Name: "\u653B\u51FB\u73A9\u5BB6"
+      ClassType: Sequence
       Args: 
-      Childs: []
+      Childs:
+      - ID: 0
+        Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+        ClassType: DoRunToPlayer
+        Args: 
+        Childs: []
+        PreConditions: []
+      - ID: 0
+        Name: 
+        ClassType: DoAttack
+        Args: 
+        Childs: []
+        PreConditions: []
       PreConditions:
       - ID: 0
-        Name: "\u8DDD\u79BB\u4E3A3\u9501\u5B9A\u73A9\u5BB6"
+        Name: "\u6CA1\u6709\u968F\u673A\u79FB\u52A8"
+        ClassType: PreIsRandomPos
+        Args: TheNot:true
+      - ID: 0
+        Name: "\u6CA1\u6709\u7ED5\u8DEF"
         ClassType: PreIsRoundPos
+        Args: TheNot:true
+      - ID: 0
+        Name: "\u6CA1\u6709\u5F85\u673A"
+        ClassType: PreIsIdle
+        Args: TheNot:true
+    - ID: 0
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: Sequence
+      Args: 
+      Childs:
+      - ID: 0
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
         Args: 
-    PreConditions: []
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRandomPos
+          Args: 
+      - ID: 0
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRoundPos
+          Args: 
+      - ID: 0
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsIdle
+          Args: 
+      PreConditions: []
+    PreConditions:
+    - ID: 0
+      Name: 
+      ClassType: PreIsLockPlayer
+      Args: Distance:3
+    - ID: 0
+      Name: 
+      ClassType: PreIsInSpecialState
+      Args: TheNot:true

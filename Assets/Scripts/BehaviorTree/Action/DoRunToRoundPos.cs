@@ -38,7 +38,7 @@ public class DoRunToRoundPos : Action
             {
                 m_Owner.Move(Vector2.zero);
                 m_Owner.OppositePlayer();
-                m_Owner.IsRoundPos = false;          
+                m_Owner.IsRoundPos = false;      
                 return BehaviorTreeState.Success;
             }
 

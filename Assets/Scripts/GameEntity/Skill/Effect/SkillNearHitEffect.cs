@@ -51,6 +51,14 @@ public class SkillNearHitEffect : ISkillEffect
             }
         }
 
+        if (hurtTarget)
+        {
+            if (skillData.SkillEffects[Index].IsShakeCamera)
+            {
+                CameraMgr.Ins.Shake();
+            }
+        }
+
         owner.OnHitEnd(skillData, hurtTarget);
         m_Complete = true;
     }
@@ -73,13 +81,7 @@ public class SkillNearHitEffect : ISkillEffect
             m_HurtData.HurtSound = string.Empty;
             m_HurtData.HurtAnim = string.Empty;
 
-            hit.OnHurtMsg(m_HurtData);
-
-            if (skillData.SkillEffects[Index].IsShakeCamera)
-            {
-                CameraMgr.Ins.Shake();
-            }
-             
+            hit.OnHurtMsg(m_HurtData);           
             return true;
         }
 

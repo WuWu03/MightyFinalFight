@@ -119,7 +119,8 @@ public class BaseRoleCtrl : BaseCtrl
                     m_AttackIndex = 0;
                     m_AttackTimer = 0;
                     AttackSuccess = false;
-                    m_Owner.FsmMachine.ChangeDefaultState();
+                    if (m_Owner.IsInGround)
+                        m_Owner.FsmMachine.ChangeDefaultState();
                 }
             }
             else

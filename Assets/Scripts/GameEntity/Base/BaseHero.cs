@@ -51,7 +51,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanBeHit && !m_IsRebirthState;
+            return base.CanBeHit && !m_IsRebirthState && !IsFloat;
         }
     }
 
@@ -162,6 +162,8 @@ public class BaseHero : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
+        if (HasCatch())
+            ResetCatch(false);
         if (data.IsSwoon)
         {
             m_DicAttacker.Clear();
@@ -293,7 +295,7 @@ public class BaseHero : BaseRole
         }
     }
 
-    private void ResetCatch(bool changeState = true)
+    public void ResetCatch(bool changeState = true)
     {
         m_ListCatchTarget[0].SetCatch(false);
         m_ListCatchTarget.Clear();

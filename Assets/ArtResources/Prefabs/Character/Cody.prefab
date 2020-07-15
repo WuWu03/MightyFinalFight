@@ -327,8 +327,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: 0.012184672, y: 0.0022411048}
-    Size: {x: 0.34435642, y: 0.32879406}
+    Offest: {x: -0.0009711683, y: 0.0016146302}
+    Size: {x: 0.16769221, y: 0.32252938}
   - AnimName: Idle
     Offest: {x: 0.0011122301, y: 0.0022411048}
     Size: {x: 0.24084197, y: 0.32879406}
@@ -342,8 +342,8 @@ MonoBehaviour:
     Offest: {x: 0.04473853, y: 0.002833277}
     Size: {x: 0.32870704, y: 0.31996173}
   - AnimName: Attack4
-    Offest: {x: 0.04473853, y: 0.002833277}
-    Size: {x: 0.32870704, y: 0.31996173}
+    Offest: {x: 0.010887906, y: 0.003765136}
+    Size: {x: 0.2769585, y: 0.32924992}
   - AnimName: JumpUp
     Offest: {x: 0.0026434362, y: 0.0022016466}
     Size: {x: 0.18905827, y: 0.35829216}
@@ -389,3 +389,6 @@ MonoBehaviour:
   - AnimName: Skill2
     Offest: {x: -0.00240995, y: 0.002409935}
     Size: {x: 0.34932205, y: 0.32040286}
+  - AnimName: "Attack4_\u590D\u52361"
+    Offest: {x: 0, y: 0}
+    Size: {x: 1, y: 1}

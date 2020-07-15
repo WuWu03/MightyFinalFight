@@ -48,6 +48,7 @@ public class SkillMoveTargetEffect : ISkillEffect
         {   
             bo.PlayAnimation(AnimName.SmoonUp);
         }
+        m_Owner = owner;
         m_IsCompleted = true;
     }
 
@@ -59,9 +60,19 @@ public class SkillMoveTargetEffect : ISkillEffect
 
     public void Exit()
     {
+        if(m_Owner is BaseHero)
+        {
+            BaseHero bh = m_Owner as BaseHero;
 
+            if (bh.IsCatch)
+            {
+                bh.ResetCatch(false);
+            }
+        }
+        m_Owner = null;
     }
 
+    private BaseRole m_Owner = null;
     private HurtData m_HurtData = null;
     private bool m_IsCompleted = false;
 }
