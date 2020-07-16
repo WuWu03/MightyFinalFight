@@ -1,5 +1,4 @@
 ﻿using FrameWork.Camera;
-using FrameWork.GameEntity;
 using FrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
