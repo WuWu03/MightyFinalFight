@@ -10,7 +10,6 @@ public class SkillMoveTargetEffect : ISkillEffect
 {
     public SkillMoveTargetEffect()
     {
-        m_HurtData = new HurtData();
     }
 
     public bool IsCompleted
@@ -73,6 +72,5 @@ public class SkillMoveTargetEffect : ISkillEffect
     }
 
     private BaseRole m_Owner = null;
-    private HurtData m_HurtData = null;
     private bool m_IsCompleted = false;
 }

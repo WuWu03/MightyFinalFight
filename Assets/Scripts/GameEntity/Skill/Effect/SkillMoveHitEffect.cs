@@ -54,6 +54,7 @@ public class SkillMoveHitEffect : ISkillEffect
                 {
                     AttackerID = m_Owner.ID,
                     AttackerDir = m_Owner.Dir,
+                    AttackerPos = m_Owner.Pos,
                     AttackForce = new Vector2(m_SkillData.SkillEffects[Index].AddTargetForce.x * m_Owner.Dir, m_SkillData.SkillEffects[Index].AddTargetForce.y),
                     IsSwoon = m_SkillData.SkillEffects[Index].IsSmoon,
                     AttackValue = 1,

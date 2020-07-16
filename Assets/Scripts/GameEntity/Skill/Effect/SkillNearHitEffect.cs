@@ -75,12 +75,12 @@ public class SkillNearHitEffect : ISkillEffect
 
             m_HurtData.AttackerDir = owner.Dir;
             m_HurtData.AttackForce = new Vector2(skillData.SkillEffects[Index].AddTargetForce.x * dir, skillData.SkillEffects[Index].AddTargetForce.y);
+            m_HurtData.AttackerPos = owner.Pos;
             m_HurtData.IsSwoon = skillData.SkillEffects[Index].IsSmoon;
             m_HurtData.AttackerID = owner.ID;
             m_HurtData.AttackValue = 1;
             m_HurtData.HurtSound = string.Empty;
             m_HurtData.HurtAnim = string.Empty;
-
             hit.OnHurtMsg(m_HurtData);           
             return true;
         }
@@ -93,6 +93,7 @@ public class SkillNearHitEffect : ISkillEffect
         m_Complete = false;
         m_Owner = null;
         m_SkillData = null;
+        m_HurtData.Clear();
     }
 
     public void Exit()

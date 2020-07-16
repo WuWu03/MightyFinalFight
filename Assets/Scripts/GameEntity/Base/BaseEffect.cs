@@ -45,7 +45,7 @@ public class BaseEffect : BaseSceneObject
     protected override void Update()
     {
         base.Update();
-        if (m_IsPlaying && PlayTime > 0)
+        if (m_IsPlaying && PlayTime > 0 && m_ResComplete)
         {
             m_Timer += Time.deltaTime;
 

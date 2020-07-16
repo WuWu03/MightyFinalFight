@@ -15,6 +15,14 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
+    public HeroData HeroData
+    {
+        get
+        {
+            return m_HeroData;
+        }
+    }
+
     public int Life
     {
         get;
@@ -32,6 +40,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         get;
         private set;
     }
+
+
 
     public void InitPlayer(int roleID)
     {

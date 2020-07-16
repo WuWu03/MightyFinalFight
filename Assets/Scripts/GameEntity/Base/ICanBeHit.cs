@@ -13,10 +13,16 @@ public interface ICanBeHit
         get;
     }
 
+    bool IsDead
+    {
+        get;
+    }
+
     Vector2 HurtPos
     {
         get;
     }
+
     void OnHurtMsg(HurtData data);
     void SetCatch(bool value);
 }

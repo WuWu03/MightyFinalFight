@@ -9,9 +9,12 @@ public abstract class BaseAvatar : BaseSceneObject
 {
     public float MoveSpeed
     {
-        get { return m_MoveSpeed; }
-        set { m_MoveSpeed = value; }
+        get 
+        {
+            return m_MoveSpeed; 
+        }
     }
+
     public bool IsFloat
     {
         get
@@ -19,6 +22,7 @@ public abstract class BaseAvatar : BaseSceneObject
             return m_Rigidbody.velocity.y >= 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
         }
     }
+
     public Vector2 MoveToPoint
     {
         get
@@ -155,11 +159,6 @@ public abstract class BaseAvatar : BaseSceneObject
         if(IsAnim(animName))
         {
             return;
-        }
-
-        if(this is BaseHero)
-        {
-            Debug.Log("play:" + animName);
         }
 
         SetTrigger(animName);

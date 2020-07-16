@@ -14,7 +14,7 @@ namespace FrameWork.Pool
     {
         private void Awake()
         {
-            m_PoolRoot = new GameObject("ResPool").transform;
+            m_PoolRoot = new GameObject("Res" + GetType().Name).transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
             m_DicPool = new Dictionary<string, Queue<T>>();

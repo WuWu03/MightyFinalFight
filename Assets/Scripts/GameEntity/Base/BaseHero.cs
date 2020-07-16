@@ -128,7 +128,6 @@ public class BaseHero : BaseRole
             return;
         }
 
-        
         m_CatchAttackCount++;
 
         if (m_CatchAttackCount >= 3)
@@ -276,7 +275,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if (Time.time - m_CatchStamp >= m_CatchTime)
+        if (Time.time - m_CatchStamp >= m_CatchTime || m_ListCatchTarget[0].IsDead)
         {
             ResetCatch();
             return;

@@ -50,6 +50,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public bool IsDead
+    {
+        get
+        {
+            return m_Health <= 0;
+        }
+    }
+
     public virtual bool CanMove
     {
         get

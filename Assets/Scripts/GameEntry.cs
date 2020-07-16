@@ -10,6 +10,7 @@ public class GameEntry : FrameWorkEntry
 {
     protected override void OnInit()
     {
+        EffectMgr.Init();
         StaticConfig.InitConfig();
     }
 

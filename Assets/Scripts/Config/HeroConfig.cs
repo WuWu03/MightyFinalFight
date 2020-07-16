@@ -11,6 +11,7 @@ public class HeroData : BaseConfigData
 {
     public string Name;
     public string AssetName;
+    public string HitEffect;
     [HideInInspector]public string Desc;
     public string HeadIcon;
     public float AttackSpeed;

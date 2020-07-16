@@ -70,6 +70,7 @@ public class Bullet : BaseSceneObject
             {
                 IsSwoon = m_SkillEffect.IsSmoon,
                 AttackerDir = m_Owner.Dir,
+                AttackerPos = m_Owner.Pos,
                 AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y),
                 AttackValue = 1,
             });

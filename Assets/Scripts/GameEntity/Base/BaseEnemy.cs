@@ -16,11 +16,6 @@ public class BaseEnemy : BaseRole
         base.Init(id, name);
     }
 
-    public virtual void AddAI()
-    {
-
-    }
-
     public override void SetPos(Vector2 pos)
     {
         if (IsAnyState(typeof(RoleMove)))
@@ -50,17 +45,6 @@ public class BaseEnemy : BaseRole
         }
 
         if (ResGO == null || m_Health <= 0) return;
-        //m_CurrCtrl.Move(InputMgr.TestAxis());
-
-        //if (Input.GetKeyDown(KeyCode.Keypad1))
-        //{
-        //    m_CurrCtrl.Attack(InputMgr.TestAxis());
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.Keypad2))
-        //{
-        //    m_CurrCtrl.Jump(InputMgr.TestAxis());
-        //}
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -71,9 +55,11 @@ public class BaseEnemy : BaseRole
         }
         else
         {
-            data.HurtAnim = UnityEngine.Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
+            data.HurtAnim = Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
         }
 
+        int dir = data.AttackerPos.x > m_Pos.x ? 1 : -1;
+        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, Vector2.right * 0.05f * dir, Vector3.zero, true, true, 0.1f);
         base.OnHurtMsg(data);
     }
 
@@ -84,7 +70,6 @@ public class BaseEnemy : BaseRole
         {
             ChangeState<RoleIdle>();
         }
-
     }
 
     protected BaseRoleCtrl m_AvatarCtrl = null;
