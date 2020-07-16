@@ -1,5 +1,6 @@
 ﻿using FrameWork;
 using FrameWork.Camera;
+using FrameWork.Sound;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -341,9 +342,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (!m_IsDropTrag) return;
 
-        Vector2[] vision = CameraMgr.Ins.GetVision();
+        Rect visionRect = CameraMgr.Ins.GetVision();
 
-        if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < vision[0].y)
+        if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < visionRect.yMin)
         {
             if (m_ObjectType == ObjectType.Player)
             {
@@ -383,15 +384,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_Animator.animation.isCompleted)
             {
-                m_Rigidbody.velocity = UnityEngine.Vector2.zero;
+                m_Rigidbody.velocity = Vector2.zero;
                 if (m_Health > 0) ChangeState<RoleAwaken>();
                 else ChangeState<RoleDead>();
             }
         }
         else
         {
-            ChangeState<RoleIdle>();
-            FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
+            if (m_Health > 0)
+            {
+                ChangeState<RoleIdle>();
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
+            }
+            else ChangeState<RoleDead>();
         }
     }
 

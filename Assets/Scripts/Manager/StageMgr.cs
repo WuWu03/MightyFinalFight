@@ -127,16 +127,36 @@ public class StageMgr : MonoSingleton<StageMgr>
         return false;
     }
 
-    public float GetRandomY(float posX)
+    public Vector2 GetRandomPos2(Vector2 currPos)
+    {
+        return new Vector2(GetRandomX(currPos), GetRandomY(currPos));
+    }
+
+    public float GetRandomX(Vector2 currPos)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
         {
-            if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
+            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos))
             {
-                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2 + 10;
-                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2 - 10;
+                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
+                float x = Random.Range(currPos.x - 1.1f, currPos.x + 1.1f);
+                x = Mathf.Clamp(x, bound.xMin, bound.xMax);
+                return x;
+            }
+        }
 
-                return Random.Range((float)yLeft / 100f, (float)yRigth / 100f);
+        return 0;
+    }
+
+    public float GetRandomY(Vector2 currPos)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos))
+            {
+                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
+                float y = Random.Range(bound.yMin / 100f + 0.1f, bound.yMax / 100f - 0.1f);
+                return y;
             }
         }
 
@@ -144,12 +164,11 @@ public class StageMgr : MonoSingleton<StageMgr>
     }
     private bool IsInAreaPosX(Area area,float posX)
     {
-        int xLeft = area.Pos.x - area.Width / 2;
-        int xRigth = area.Pos.x + area.Width / 2;
+        Rect bound = GetBound(area);
 
         posX *= 100;
 
-        if (posX > xLeft && posX < xRigth)
+        if (posX > bound.xMin && posX < bound.xMax)
         {
             return true;
         }
@@ -159,17 +178,28 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private bool IsInAreaPosY(Area area, float posY)
     {
-        int yLeft = area.Pos.y - area.Height / 2;
-        int yRigth = area.Pos.y + area.Height / 2;
+        Rect bound = GetBound(area);
 
         posY *= 100;
 
-        if (posY > yLeft && posY < yRigth)
+        if (posY > bound.yMin && posY < bound.yMax)
         {
             return true;
         }
 
         return false;
+    }
+
+    private Rect GetBound(Area area)
+    {
+        m_AreaBound.width = area.Width;
+        m_AreaBound.height = area.Height;
+        m_AreaBound.xMin = area.Pos.x - area.Width / 2f;
+        m_AreaBound.xMax = area.Pos.x + area.Width / 2f;
+        m_AreaBound.yMin = area.Pos.y - area.Height / 2f;
+        m_AreaBound.yMax = area.Pos.y + area.Height / 2f;
+
+        return m_AreaBound;
     }
 
     private bool IsInAreaPos2(Area area, Vector2 pos)
@@ -228,6 +258,8 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private int m_Width;
     private int m_Height;
+    private Rect m_AreaBound = Rect.zero;
+    private Vector2 m_RandomPos2 = Vector2.zero;
     private SpriteRenderer m_MapRenderer = null;
     private StageData m_CurrStageData = null;
     private int m_CurrID = 0;

@@ -25,13 +25,15 @@ namespace FrameWork.Camera
             m_Target = target;
         }
 
-        public Vector2[] GetVision()//获取当前摄像机的视野范围 左 下 右 上
+        public Rect GetVision()//获取当前摄像机的视野范围 左 下 右 上
         {
-            m_Vision[0].x = transform.position.x - Screen.width * m_CurrAspectRate / 100 / 2;
-            m_Vision[0].y = transform.position.y - Screen.height * m_CurrAspectRate / 100 / 2;
-            m_Vision[1].x = transform.position.x + Screen.width * m_CurrAspectRate / 100 / 2;
-            m_Vision[1].y = transform.position.y + Screen.height * m_CurrAspectRate / 100 / 2;
-            return m_Vision;
+            m_VisionRect.width = Screen.width * m_CurrAspectRate;
+            m_VisionRect.height = Screen.height * m_CurrAspectRate;
+            m_VisionRect.xMin = transform.position.x - Screen.width * m_CurrAspectRate / 100 / 2;
+            m_VisionRect.xMax = transform.position.y - Screen.height * m_CurrAspectRate / 100 / 2;
+            m_VisionRect.xMax = transform.position.x + Screen.width * m_CurrAspectRate / 100 / 2;
+            m_VisionRect.yMax = transform.position.y + Screen.height * m_CurrAspectRate / 100 / 2;
+            return m_VisionRect;
         }
 
         public void InitFollow(int width, int height, float orthographicSize = 0)
@@ -94,7 +96,7 @@ namespace FrameWork.Camera
             return m_CameraClamp;
         }
 
-        private Vector2[] m_Vision = new Vector2[2] { Vector2.zero, Vector2.zero };
+        private Rect m_VisionRect = Rect.zero;
         private float m_CurrAspectRate = 0f;
         private float m_InitSpeed;
         private bool m_IsStart = false;

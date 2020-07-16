@@ -69,14 +69,15 @@ namespace FrameWork.Camera
                 m_CameraFollow.StartFollow();
             });
         }
+
         public bool IsOutVision(Vector2 targetPos)
         {
-            Vector2[] vision = GetVision();
-            return targetPos.x - 0.1 <= vision[0].x || targetPos.x + 0.1 >= vision[1].x ||
-                               targetPos.y - 0.1 <= vision[0].y || targetPos.y + 0.1 >= vision[1].y;
+            Rect visionRect = m_CameraFollow.GetVision();
+            return targetPos.x - 0.1 <= visionRect.xMin || targetPos.x + 0.1 >= visionRect.xMax ||
+                               targetPos.y - 0.1 <= visionRect.yMin || targetPos.y + 0.1 >= visionRect.yMax;
         }
 
-        public Vector2[] GetVision()
+        public Rect GetVision()
         {
             return m_CameraFollow.GetVision();
         }

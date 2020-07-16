@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using FrameWork.BehaviourTree;
 using FrameWork.Camera;
 
@@ -13,17 +11,15 @@ public class DoRunToRoundPos : Action
 
     protected override void OnEnter()
     {
-        Vector2 center = PlayerMgr.Ins.Player.Pos;
-        float randomY = StageMgr.Ins.GetRandomY(center.x);
-        Vector2 current = m_Owner.Owner.Pos;
-        float dir = center.x > m_Owner.Owner.Pos.x ? 1 : -1;
-        float radius = Random.Range(0.2f, Vector2.Distance(current, center));
-        Vector2 to = center + Vector2.right * radius * dir;
-        //float angle = Vector2.Angle(current - center, to - center);
-        //float lerpX = radius * Mathf.Cos(angle / 2);
-        //float lerpY = radius * Mathf.Sin(angle / 2);
-        // m_RoundPos[0] = new Vector2(center.x + lerpX, center.y + lerpY);
-        m_RoundPos[0].x = center.x;
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        Vector2 enemyPos = m_Owner.Owner.Pos;
+        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
+        float randomY = StageMgr.Ins.GetRandomY(playerPos);
+        float dir = playerPos.x > m_Owner.Owner.Pos.x ? 1 : -1;
+        float radius = Random.Range(0.2f, Vector2.Distance(enemyPos, playerPos));
+        Vector2 to = playerPos + Vector2.right * radius * dir;
+        to.x = Mathf.Clamp(to.x, visionRect.xMin + m_Owner.Owner.Bound.width, visionRect.xMax - m_Owner.Owner.Bound.width);
+        m_RoundPos[0].x = playerPos.x;
         m_RoundPos[0].y = randomY;
         m_RoundPos[1] = to;
         m_CurrIndex = 0;
@@ -47,7 +43,8 @@ public class DoRunToRoundPos : Action
         }
 
         Vector2 enemyPos = m_Owner.Owner.Pos;
-        m_IsArravied = Vector2.Distance(enemyPos, m_RoundPos[m_CurrIndex]) < 0.01f;
+        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - enemyPos.x) <= 0.05f &&
+                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - enemyPos.y) <= 0.05f;
 
         if (!m_IsArravied)
         {

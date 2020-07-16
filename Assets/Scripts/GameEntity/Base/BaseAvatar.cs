@@ -239,14 +239,14 @@ public abstract class BaseAvatar : BaseSceneObject
 
     protected bool IsOutVersionX(float posX)
     {
-        Vector2[] vision = CameraMgr.Ins.GetVision();
-        return posX - 0.1f <= vision[0].x || posX + 0.1f >= vision[1].x;
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posX - 0.1f <= visionRect.xMin || posX + 0.1f >= visionRect.xMax;
     }
 
     protected bool IsOutVersionY(float posY)
     {
-        Vector2[] vision = CameraMgr.Ins.GetVision();
-        return posY <= vision[0].y || posY >= vision[1].y;
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
     protected string m_CurrAnimName = string.Empty;
