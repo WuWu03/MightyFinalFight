@@ -17,7 +17,7 @@ public class Bullet : BaseSceneObject
         m_IsHit = false;
     }
 
-    public void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
+    public virtual void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
     {
         m_Owner = owner;
         m_SkillEffect = skillEffect;
@@ -33,11 +33,15 @@ public class Bullet : BaseSceneObject
     protected override void Update()
     {
         base.Update();
-        if (m_ResGO == null) return;
-        if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+        if (!m_ResComplete) return;
+
+        if (m_IsHit)
         {
-            Release();
+            if (m_Animator.animation.isCompleted)
+                Release();
         }
+        else if (m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+            Release();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -70,8 +74,10 @@ public class Bullet : BaseSceneObject
                 AttackValue = 1,
             });
 
+            m_Rigidbody.velocity = Vector2.zero;
+            m_Animator.animation.timeScale = m_BulletData.HitAnimSpeed;
+            m_Animator.animation.Play(m_BulletData.HitAnim, 1);
             m_IsHit = true;
-            Release();
         }
     }
 
@@ -85,7 +91,8 @@ public class Bullet : BaseSceneObject
         m_BoxCollider.enabled = true;
         m_BoxCollider.isTrigger = true;
         m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
-        m_Animator.animation.Play(m_BulletData.Name, 1);
+        m_Animator.animation.timeScale = m_BulletData.NormalAnimSpeed;
+        m_Animator.animation.Play(m_BulletData.NormalAnim,-1);
         m_Rigidbody.velocity = new Vector2(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
     }
 

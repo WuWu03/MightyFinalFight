@@ -35,4 +35,4 @@ MonoBehaviour:
     - 0.3
     - 0.3
     - -1
-    AttackNextTime: 0.12
+    AttackNextTime: 0.15

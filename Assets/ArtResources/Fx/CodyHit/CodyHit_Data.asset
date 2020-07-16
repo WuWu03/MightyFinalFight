@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
+  m_Name: CodyHit_Data
+  m_EditorClassIdentifier: 
+  dataName: CodyHit
+  dragonBonesJSON: {fileID: 4900000, guid: dc59ee654edcf0042bdb34276a5331e0, type: 3}
+  textureAtlas:
+  - textureAtlasJSON: {fileID: 4900000, guid: 02378e28e0cbfa941a4a24fba459a816, type: 3}
+    texture: {fileID: 2800000, guid: 17e34bd443c7d7540a913e3931966e9c, type: 3}
+    material: {fileID: 2100000, guid: 93d346dcfbf3a294e989870c46ae8a7f, type: 2}
+    uiMaterial: {fileID: 0}

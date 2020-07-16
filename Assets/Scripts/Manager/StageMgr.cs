@@ -52,7 +52,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        for (int i = 0; i < 5;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
+        for (int i = 0; i < 1;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
         {
             BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
             StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];

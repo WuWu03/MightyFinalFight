@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FrameWork;
-using FrameWork.Input;
-using FrameWork.UI;
+﻿using FrameWork.UI;
 using UnityEngine;
 
 public class BaseEnemy : BaseRole
