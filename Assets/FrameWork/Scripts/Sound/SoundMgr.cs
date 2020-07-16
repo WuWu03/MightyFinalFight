@@ -181,6 +181,8 @@ namespace FrameWork.Sound
         public override void ShutDown()
         {
             m_QueueAudioGroup.Clear();
+            m_PlayingList.Clear();
+            m_SoundStack.Clear();
         }
 
         private float m_PlayStamp = 0f;
