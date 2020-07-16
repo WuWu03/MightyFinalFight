@@ -70,6 +70,7 @@ public abstract class SkillDeployer
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
             m_SkillEffects[i].Exit();
+        m_CurrEffectIndex = 0;
     }
 
     public virtual void Update() { }
