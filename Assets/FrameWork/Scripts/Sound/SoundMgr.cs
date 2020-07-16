@@ -25,6 +25,7 @@ namespace FrameWork.Sound
         {
             public AudioSource Source;
             public string ResPath;
+            public float PlayTime;
         }
 
         private AudioSource m_BGMSource = null;
@@ -37,18 +38,32 @@ namespace FrameWork.Sound
             m_QueueAudioGroup = new Queue<AudioGroup>();
             m_PlayingList = new List<AudioSoundPlay>();
             m_SoundStack = new Stack<AudioSoundPlay>();
-            PutSoundSource(GetSoundSource(null, "First", string.Empty, 0));
+            PutSoundSource(GetSoundSource("First", string.Empty, 0));
             DontDestroyOnLoad(m_Root);
         }
 
         public void PlaySound(string path, string name, float volume = 1)
         {
+            for (int i = 0; i < m_PlayingList.Count; i++)
+            {
+                string soundPath = m_PlayingList[i].ResPath;
+                string soundName = m_PlayingList[i].Source.name;
+                float process = Time.time - m_PlayingList[i].PlayTime;
+                if (soundPath.Equals(path) && soundName.Equals(name) && process <= 0.05f)
+                {
+                    return;
+                }
+            }
+
+            AudioSoundPlay audioSoundPlay = GetSoundSource(name, path, volume);
+            m_PlayingList.Add(audioSoundPlay);
+
             string resPath = string.Format("{0}/{1}", path, name);
             AudioClipPool.Ins.Get(resPath, (AudioClip clip) =>
             {
-                AudioSoundPlay audioSoundPlay = GetSoundSource(clip, name, path, volume);
+                audioSoundPlay.PlayTime = Time.time;
+                audioSoundPlay.Source.clip = clip;
                 audioSoundPlay.Source.Play();
-                m_PlayingList.Add(audioSoundPlay);
             });
         }
 
@@ -109,7 +124,7 @@ namespace FrameWork.Sound
 
             for (int i = m_PlayingList.Count - 1; i >= 0; i--)
             {
-                if (!m_PlayingList[i].Source.isPlaying)
+                if (!m_PlayingList[i].Source.isPlaying && m_PlayingList[i].Source.clip != null)
                 {
                     PutSoundSource(m_PlayingList[i]);
                     m_PlayingList.RemoveAt(i);
@@ -142,7 +157,7 @@ namespace FrameWork.Sound
             }
         }
 
-        private AudioSoundPlay GetSoundSource(AudioClip clip,string name, string resPath,float volumn)
+        private AudioSoundPlay GetSoundSource(string name, string resPath,float volume)
         {
             AudioSoundPlay audioSoundPlay = null;
             if (m_SoundStack.Count > 0)
@@ -154,18 +169,19 @@ namespace FrameWork.Sound
                 audioSoundPlay = new AudioSoundPlay()
                 {
                     Source = new GameObject().GetOrAddComponent<AudioSource>(),
-                    ResPath = resPath,
                 };
 
                 audioSoundPlay.Source.transform.SetParent(m_Root.transform, false);
             }
 
+            audioSoundPlay.ResPath = resPath;
+            audioSoundPlay.PlayTime = Time.time;
+            audioSoundPlay.Source.SetActive(true);
             audioSoundPlay.Source.name = name;
-            audioSoundPlay.Source.clip = clip;
-            audioSoundPlay.Source.volume = volumn;
+            audioSoundPlay.Source.volume = volume;
             audioSoundPlay.Source.playOnAwake = false;
             audioSoundPlay.Source.loop = false;
-            audioSoundPlay.Source.SetActive(true);
+            audioSoundPlay.Source.Stop();
             return audioSoundPlay;
         }
 

@@ -23,6 +23,7 @@ public class SkillSubHPEffect : ISkillEffect
     {
         if (m_IsComplete) return;
 
+        if (!owner.HitSuccess) return;
         foreach (Match m in m_Regex.Matches(skillData.SkillEffects[Index].Args))
         {
             owner.SubHealth(int.Parse(m.Groups[2].Value));

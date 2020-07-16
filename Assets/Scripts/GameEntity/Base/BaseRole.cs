@@ -202,10 +202,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (!m_IsJumpAttack)
-        {
+        //if (!m_IsJumpAttack)
+        //{
             OnDropEvent.Invoke();
-        }
+        //}
 
         OnDropEvent.RemoveAllListeners();
 

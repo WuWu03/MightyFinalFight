@@ -52,8 +52,8 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
 
     public override void OnDestroy(BaseFsm fsm)
     {
-    }
 
+    }
 
     private void OnGround()
     {
@@ -62,8 +62,10 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
 
     private void OnDrop()
     {
-       m_Owner.PlayAnimation(AnimName.JumpDown);
+        if (!m_Owner.IsAnyState(typeof(RoleAttack)))
+            m_Owner.PlayAnimation(AnimName.JumpDown);
     }
+
     private bool m_HasAddXForce = false;
     private BaseRole m_Owner = null;
 }
