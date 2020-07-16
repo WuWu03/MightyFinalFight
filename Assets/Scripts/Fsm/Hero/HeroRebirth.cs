@@ -13,6 +13,7 @@ public class HeroRebirth : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.OnGroundEvent.AddListener(OnGround);
+        m_Owner.SetDir(1);
         CameraMgr.Ins.EndFollow();
        
         if (ReBirthPos == Vector2.zero)
