@@ -133,8 +133,8 @@ public class StageMgr : MonoSingleton<StageMgr>
         {
             if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
             {
-                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2 + 5;
-                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2 - 5;
+                int yLeft = m_CurrStageData.MoveArea[i].Pos.y - m_CurrStageData.MoveArea[i].Height / 2 + 10;
+                int yRigth = m_CurrStageData.MoveArea[i].Pos.y + m_CurrStageData.MoveArea[i].Height / 2 - 10;
 
                 return Random.Range((float)yLeft / 100f, (float)yRigth / 100f);
             }

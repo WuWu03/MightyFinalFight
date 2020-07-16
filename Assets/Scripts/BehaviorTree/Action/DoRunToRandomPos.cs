@@ -13,17 +13,17 @@ public class DoRunToRandomPos : Action
 
     protected override void OnEnter()
     {
-        Vector2[] vision = CameraMgr.Ins.GetVision();
         float x = Random.Range(PlayerMgr.Ins.Player.Pos.x - 1f, PlayerMgr.Ins.Player.Pos.x + 1f);
         float y = StageMgr.Ins.GetRandomY(x);
-        m_RandomPos = new Vector2(x, y);
+        m_RandomPos.x = x;
+        m_RandomPos.y = y;
     }
 
     public override BehaviorTreeState Excute()
     {
         if (m_IsArravied)
         {
-            m_Owner.Move(Vector2.zero);
+            m_Owner.Move(Vector2.zero, false);
             m_Owner.IsRandomPos = false;
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Success;
@@ -34,7 +34,7 @@ public class DoRunToRandomPos : Action
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RandomPos - enemyPos).normalized);
+            m_Owner.Move((m_RandomPos - enemyPos).normalized, false);
             m_Owner.OppositePlayer();
         }
 

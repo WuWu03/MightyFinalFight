@@ -91,6 +91,8 @@ public abstract class BaseAvatar : BaseSceneObject
     {
         get
         {
+            m_Bound.width = m_Collider.size.x;
+            m_Bound.height = m_Collider.size.x;
             m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x;
             m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x;
             m_Bound.yMin = m_Pos.y + m_Collider.offset.y + m_Collider.size.x;

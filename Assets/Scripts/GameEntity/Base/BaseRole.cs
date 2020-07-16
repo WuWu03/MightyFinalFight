@@ -253,6 +253,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         m_MoveDir = data.Dir;
         m_CurrCtrl.ExitSkill();
+        GetState<RoleMove>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleMove>();
     }
 

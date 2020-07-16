@@ -75,9 +75,9 @@ public class BaseEnemyCtrl : BaseRoleCtrl
             return;
         }
 
-        m_IsRandomPos = Random.Range(1, 1001) <= 10;
+        m_IsRandomPos = Random.Range(1, 1001) <= 8;
         m_IsRoundPos = Random.Range(1, 1001) <= 5;
-        m_IsIdle = Random.Range(1, 1001) <= 2;
+        m_IsIdle = Random.Range(1, 1001) <= 6;
 
         if (m_IsRandomPos)
         {

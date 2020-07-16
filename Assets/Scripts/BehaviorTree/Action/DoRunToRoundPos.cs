@@ -36,7 +36,7 @@ public class DoRunToRoundPos : Action
         {
             if (m_CurrIndex >= m_RoundPos.Length - 1)
             {
-                m_Owner.Move(Vector2.zero);
+                m_Owner.Move(Vector2.zero, false);
                 m_Owner.OppositePlayer();
                 m_Owner.IsRoundPos = false;      
                 return BehaviorTreeState.Success;
@@ -51,7 +51,7 @@ public class DoRunToRoundPos : Action
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RoundPos[m_CurrIndex] - enemyPos).normalized);
+            m_Owner.Move((m_RoundPos[m_CurrIndex] - enemyPos).normalized, false);
             m_Owner.OppositePlayer();
         }
 

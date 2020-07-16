@@ -39,12 +39,13 @@ public class BaseRoleCtrl : BaseCtrl
         m_JumpData = null;
     }
 
-    public void Move(Vector2 dir)
+    public void Move(Vector2 dir,bool canChangeDir = true)
     {
         if (!m_Owner.CanMove) return;
 
         m_MoveData.Clear();
         m_MoveData.Dir = dir;
+        m_MoveData.CanChangeDir = canChangeDir;
         m_Owner.OnMoveMsg(m_MoveData);
     }
 

@@ -12,7 +12,7 @@ public class DoRunToPlayer : Action
     {
         if (m_IsArravied)
         {
-            m_Owner.Move(Vector2.zero);
+            m_Owner.Move(Vector2.zero, false);
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Success;
         }
@@ -25,7 +25,7 @@ public class DoRunToPlayer : Action
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((playerPos - enemyPos).normalized);
+            m_Owner.Move((playerPos - enemyPos).normalized, false);
             m_Owner.OppositePlayer();
         }
 
