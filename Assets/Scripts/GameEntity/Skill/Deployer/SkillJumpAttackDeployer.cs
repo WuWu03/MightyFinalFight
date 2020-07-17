@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillJumpAttackDeployer : SkillDeployer
+public class SkillJumpAttackDeployer : SkillBaseDeployer
 {
     public SkillJumpAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {
@@ -51,6 +51,7 @@ public class SkillJumpAttackDeployer : SkillDeployer
 
     public override void Update()
     {
+        base.Update();
         if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Just)
         {
             if (m_CanEffect)

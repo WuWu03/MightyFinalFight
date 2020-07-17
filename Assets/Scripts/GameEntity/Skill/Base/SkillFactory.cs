@@ -3,9 +3,9 @@ using static SkillData;
 
 public class SkillFactory
 {
-    public static SkillDeployer CreateDeployer(int skillID, BaseRole owner)
+    public static SkillBaseDeployer CreateDeployer(int skillID, BaseRole owner)
     {
-        SkillDeployer ret = null;
+        SkillBaseDeployer ret = null;
         SkillData data = StaticConfig.SkillConfig.GetData(skillID);
 
         switch (data.Type)
@@ -23,18 +23,19 @@ public class SkillFactory
 
         return ret;
     }
-    public static ISkillSelector[] CreateSelector(SkillData.SkillEffect[] skillEffects)
+
+    public static ISkillSelector[] CreateSelector(SkillData skillData, BaseRole owner)
     {
-        ISkillSelector[] ret = new ISkillSelector[skillEffects.Length];
-        for (int i = 0; i < skillEffects.Length; i++)
+        ISkillSelector[] ret = new ISkillSelector[skillData.SkillEffects.Length];
+        for (int i = 0; i < skillData.SkillEffects.Length; i++)
         {
-            switch (skillEffects[i].SelectorType)
+            switch (skillData.SkillEffects[i].SelectorType)
             {
                 case SkillSelectorType.NearHitSelector:
-                    ret[i] = new SkillNearHitSelector() { Index = i };
+                    ret[i] = new SkillNearHitSelector(skillData, owner, i);
                     break;
                 case SkillSelectorType.BulletSelector:
-                    ret[i] = new SkillBulletSelector() { Index = i };
+                    ret[i] = new SkillBulletSelector(skillData, owner, i);
                     break;
             }
         }
@@ -42,28 +43,28 @@ public class SkillFactory
         return ret;
     }
 
-    public static ISkillEffect[] CreateEffects(SkillData.SkillEffect[] skillEffects)
+    public static ISkillEffect[] CreateEffects(SkillData skillData, BaseRole owner)
     {
-        ISkillEffect[] ret = new ISkillEffect[skillEffects.Length];
+        ISkillEffect[] ret = new ISkillEffect[skillData.SkillEffects.Length];
 
-        for (int i = 0; i < skillEffects.Length; i++)
+        for (int i = 0; i < skillData.SkillEffects.Length; i++)
         {
-            switch (skillEffects[i].EffectorType)
+            switch (skillData.SkillEffects[i].EffectorType)
             {
                 case SkillEffectorType.NearHitEffect:
-                    ret[i] = new SkillNearHitEffect() { Index = i };
+                    ret[i] = new SkillNearHitEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.BulletHitEffect:
-                    ret[i] = new SkillBulletEffect() { Index = i };
+                    ret[i] = new SkillBulletEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.MoveHitEffect:
-                    ret[i] = new SkillMoveHitEffect() { Index = i };
+                    ret[i] = new SkillMoveHitEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.MoveTargetEffect:
-                    ret[i] = new SkillMoveTargetEffect() { Index = i };
+                    ret[i] = new SkillMoveTargetEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.SubHP:
-                    ret[i] = new SkillSubHPEffect() { Index = i };
+                    ret[i] = new SkillSubHPEffect(skillData, owner, i);
                     break;
             }
         }

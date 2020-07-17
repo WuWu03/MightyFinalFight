@@ -3,45 +3,45 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class SkillSubHPEffect : ISkillEffect
+public class SkillSubHPEffect : SkillBaseEffect
 {
-    public bool IsCompleted
+    public SkillSubHPEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public override bool IsCompleted
     {
         get
         {
-            return m_IsComplete;
+            return m_IsCompleted;
         }
     }
 
-    public int Index
-    {
-        get;
-        set;
-    }
 
-    public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
+    public override void Effect(ISkillSelector selector)
     {
-        if (m_IsComplete) return;
+        if (m_IsCompleted) return;
+        if (!m_Owner.HitSuccess) return;
 
-        if (!owner.HitSuccess) return;
-        foreach (Match m in m_Regex.Matches(skillData.SkillEffects[Index].Args))
+        foreach (Match m in m_Regex.Matches(m_SkillEffect.Args))
         {
-            owner.SubHealth(int.Parse(m.Groups[2].Value));
+            m_Owner.SubHealth(int.Parse(m.Groups[2].Value));
         }
 
-        m_IsComplete = true;
+        m_IsCompleted = true;
     }
 
-    public void Reset()
+    public override void Reset()
     {
         
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        m_IsComplete = false;
+        m_IsCompleted = false;
+    }
+
+    public override void Update()
+    {
+
     }
 
     private Regex m_Regex = new Regex(@"(SubHP:)([0-9]+)");
-    private bool m_IsComplete = false;
 }

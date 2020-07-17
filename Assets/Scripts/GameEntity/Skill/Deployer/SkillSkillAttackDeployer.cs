@@ -2,7 +2,7 @@
 using UnityEngine;
 using static SkillData;
 
-public class SkillSkillAttackDeployer : SkillDeployer
+public class SkillSkillAttackDeployer : SkillBaseDeployer
 {
     public SkillSkillAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner) { }
 

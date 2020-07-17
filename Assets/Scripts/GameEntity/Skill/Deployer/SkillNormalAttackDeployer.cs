@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillNormalAttackDeployer : SkillDeployer
+public class SkillNormalAttackDeployer : SkillBaseDeployer
 {
     public SkillNormalAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {

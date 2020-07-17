@@ -5,17 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class SkillBulletSelector : ISkillSelector
+public class SkillBulletSelector : SkillBaseSelector
 {
-    public int Index { get; set; }
+    public SkillBulletSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
-    public List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData)
+    public override List<ICanBeHit> GetTargets()
     {
         return null;
     }
 
-    public List<GameObject> GetTargetsObj(BaseRole owner, SkillData skillData)
+    public override List<GameObject> GetTargetsObj()
     {
         return null;
+    }
+
+    public override void Reset()
+    {
+
+    }
+
+    public override void Exit()
+    {
+
     }
 }

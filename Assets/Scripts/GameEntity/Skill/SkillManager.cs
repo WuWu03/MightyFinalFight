@@ -5,7 +5,7 @@ public class SkillManager
     public SkillManager(BaseRole owner, int[] skillIDs)
     {
         m_Owner = owner;
-        m_SkillDeployers = new SkillDeployer[skillIDs.Length];
+        m_SkillDeployers = new SkillBaseDeployer[skillIDs.Length];
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
             m_SkillDeployers[i] = SkillFactory.CreateDeployer(skillIDs[i], owner);
@@ -15,7 +15,7 @@ public class SkillManager
     public void DeploySkill(int id)
     {
         if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillID == id) return;
-        SkillDeployer deployer = null;
+        SkillBaseDeployer deployer = null;
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
             if (m_SkillDeployers[i].SkillID.Equals(id))
@@ -68,6 +68,6 @@ public class SkillManager
     }
 
     private BaseRole m_Owner = null;
-    private SkillDeployer m_CurrSkillDeployer = null;
-    private SkillDeployer[] m_SkillDeployers = null;
+    private SkillBaseDeployer m_CurrSkillDeployer = null;
+    private SkillBaseDeployer[] m_SkillDeployers = null;
 }

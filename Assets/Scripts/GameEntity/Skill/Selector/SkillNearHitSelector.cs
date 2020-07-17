@@ -1,21 +1,17 @@
-﻿using FrameWork.GameEntity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SkillNearHitSelector : ISkillSelector
+public class SkillNearHitSelector : SkillBaseSelector
 {
-    public SkillNearHitSelector()
-    {
-        m_ListTargets = new List<ICanBeHit>();
-    }
+    public SkillNearHitSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
-    public int Index { get; set; }
+ 
 
-    public List<ICanBeHit> GetTargets(BaseRole owner, SkillData skillData)
+    public override List<ICanBeHit> GetTargets()
     {
         m_ListTargets.Clear();
-        TriggerTargets trigger = owner.GetComponent<TriggerTargets>();
+        TriggerTargets trigger = m_Owner.GetComponent<TriggerTargets>();
         if (trigger == null) return m_ListTargets;
 
         for (int i = 0; i < trigger.Targets.Count; i++)
@@ -24,13 +20,14 @@ public class SkillNearHitSelector : ISkillSelector
 
             bool canBeHit = hit != null && hit.CanBeHit;
             bool isInRange = false;
+            BaseSceneObject hitObj = hit as BaseSceneObject;
 
-            Vector2 target = (hit.HurtPos - owner.Pos).normalized;
-            Vector2 normal = owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+            Vector2 target = (hitObj.Pos - m_Owner.Pos).normalized;
+            Vector2 normal = m_Owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
 
-            if (Vector2.Angle(target, normal) <= skillData.SkillEffects[Index].SelectorAngle / 2)
+            if (Vector2.Angle(target, normal) <= m_SkillEffect.SelectorAngle / 2)
             {
-                isInRange = Mathf.Abs(hit.HurtPos.x - owner.Pos.x) <= skillData.SkillEffects[Index].SelectorRadius; //owner.Dir > 0 ? targetObj.Pos.x >= owner.Pos.x : targetObj.Pos.x <= owner.Pos.x;
+                isInRange = Mathf.Abs(hitObj.Pos.x - m_Owner.Pos.x) <= m_SkillEffect.SelectorRadius;
             }
 
             if (isInRange && canBeHit)
@@ -42,10 +39,18 @@ public class SkillNearHitSelector : ISkillSelector
         return m_ListTargets;
     }
 
-    public List<GameObject> GetTargetsObj(BaseRole owner, SkillData skillData)
+    public override List<GameObject> GetTargetsObj()
     {
-        return owner.GetComponent<TriggerTargets>().Targets;
+        return m_Owner.GetComponent<TriggerTargets>().Targets;
     }
 
-    private List<ICanBeHit> m_ListTargets = null;
+    public override void Reset()
+    {
+        m_ListTargets.Clear();
+    }
+
+    public override void Exit()
+    {
+        m_ListTargets.Clear();
+    }
 }

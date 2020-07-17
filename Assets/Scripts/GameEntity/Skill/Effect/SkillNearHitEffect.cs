@@ -3,49 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillNearHitEffect : ISkillEffect
+public class SkillNearHitEffect : SkillBaseEffect
 {
-    public SkillNearHitEffect()
+    public SkillNearHitEffect(SkillData m_SkillData, BaseRole owner, int effectIndex) : base(m_SkillData, owner, effectIndex)
     {
         m_HurtData = new HurtData();
     }
 
-    public bool IsCompleted
+    public override bool IsCompleted
     {
         get
         {
-            if (m_SkillData != null && m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
+            if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
             {
-                m_Complete = m_Owner.IsPlayComplete();
+                m_IsCompleted = m_Owner.IsPlayComplete();
             }
 
-            return m_Complete;
+            return m_IsCompleted;
         }
     }
 
-    public int Index
-    {
-        get;
-        set;
-    }
 
-    public void Effect(BaseRole owner, SkillData skillData, ISkillSelector skillSelector)
+    public override void Effect(ISkillSelector skillSelector)
     {
-        m_Owner = owner;
-        m_SkillData = skillData;
-        m_Complete = false;
+        m_IsCompleted = false;
 
         bool hurtTarget = false;
         List<ICanBeHit> targets = m_Owner.OnHitStart();
         
         if(targets == null)
         {
-            targets = skillSelector.GetTargets(owner, skillData);
+            targets = skillSelector.GetTargets();
         }
         
         for (int i = 0; i < targets.Count; i++)
         {
-            if(Hit(targets[i],owner,skillData))
+            if(Hit(targets[i]))
             {
                 hurtTarget = true;
             }
@@ -53,31 +46,31 @@ public class SkillNearHitEffect : ISkillEffect
 
         if (hurtTarget)
         {
-            if (skillData.SkillEffects[Index].IsShakeCamera)
+            if (m_SkillEffect.IsShakeCamera)
             {
                 CameraMgr.Ins.Shake();
             }
         }
 
-        owner.OnHitEnd(skillData, hurtTarget);
-        m_Complete = true;
+        m_Owner.OnHitEnd(m_SkillData, hurtTarget);
+        m_IsCompleted = true;
     }
 
-    private bool Hit(ICanBeHit hit,BaseRole owner,SkillData skillData)
+    private bool Hit(ICanBeHit hit)
     {
         if (hit != null && hit.CanBeHit)
         {
-            float dir = hit.HurtPos.x - owner.Pos.x >= 0 ? 1 : -1;
-            if(skillData.SkillEffects[Index].ForceType == SkillData.SkillAddForceType.SelfDir)
+            float dir = (hit as BaseSceneObject).Pos.x - m_Owner.Pos.x >= 0 ? 1 : -1;
+            if(m_SkillEffect.ForceType == SkillData.SkillAddForceType.SelfDir)
             {
-                dir = owner.Dir;
+                dir = m_Owner.Dir;
             }
 
-            m_HurtData.AttackerDir = owner.Dir;
-            m_HurtData.AttackForce = new Vector2(skillData.SkillEffects[Index].AddTargetForce.x * dir, skillData.SkillEffects[Index].AddTargetForce.y);
-            m_HurtData.AttackerPos = owner.Pos;
-            m_HurtData.IsSwoon = skillData.SkillEffects[Index].IsSmoon;
-            m_HurtData.AttackerID = owner.ID;
+            m_HurtData.AttackerDir = m_Owner.Dir;
+            m_HurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * dir, m_SkillEffect.AddTargetForce.y);
+            m_HurtData.AttackerPos = m_Owner.Pos;
+            m_HurtData.IsSwoon = m_SkillEffect.IsSmoon;
+            m_HurtData.AttackerID = m_Owner.ID;
             m_HurtData.AttackValue = 1;
             m_HurtData.HurtSound = string.Empty;
             m_HurtData.HurtAnim = string.Empty;
@@ -88,21 +81,21 @@ public class SkillNearHitEffect : ISkillEffect
         return false;
     }
 
-    public void Reset()
+    public override void Reset()
     {
-        m_Complete = false;
-        m_Owner = null;
-        m_SkillData = null;
+        m_IsCompleted = false;
         m_HurtData.Clear();
     }
 
-    public void Exit()
+    public override void Exit()
+    {
+
+    }
+
+    public override void Update()
     {
 
     }
 
     private HurtData m_HurtData = null;
-    private BaseRole m_Owner = null;
-    private SkillData m_SkillData = null;
-    private bool m_Complete = false;
 }

@@ -1,46 +1,54 @@
 ﻿using FrameWork.Pool;
-public class SkillBulletEffect : ISkillEffect
+public class SkillBulletEffect : SkillBaseEffect
 {
-    public bool IsCompleted
+    public SkillBulletEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public override bool IsCompleted
     {
         get
         {
-            if (m_Owner != null && m_Owner.IsPlayComplete())
-            {
-                m_Owner = null;
-                return true;
-            }
-            return false;
+            return m_Owner.IsPlayComplete();
         }
     }
 
-    public int Index
+    public override void Effect(ISkillSelector selector)
     {
-        get;
-        set;
-    }
-
-    public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
-    {
-        for (int i = 0; i < skillData.SkillEffects[Index].Bullets.Length; i++)
+        for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
-            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(skillData.SkillEffects[Index].Bullets[i].Name);
+            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(m_SkillEffect.Bullets[i].Name);        
+            bullet.InitData(new BulletData()
+            {
+                Health = 1,
+                MaxHealth = 1,
+                IsSmoon = m_SkillEffect.IsSmoon,
+                AddTargetForce = m_SkillEffect.AddTargetForce,
+                NormalAnim = m_SkillEffect.Bullets[i].NormalAnim,
+                HitAnim = m_SkillEffect.Bullets[i].HitAnim,
+                NormalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed,
+                HitAnimSpeed = m_SkillEffect.Bullets[i].HitAnimSpeed,
+                Dir = m_SkillEffect.Bullets[i].Dir,
+                Pos = m_SkillEffect.Bullets[i].Pos,
+                Velocity = m_SkillEffect.Bullets[i].Velocity,
+                HitRange = m_SkillEffect.Bullets[i].HitRange,
+                Drag = m_SkillEffect.Bullets[i].Drag,
+                TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest,
+                TriggerSize = m_SkillEffect.Bullets[i].TriggerSize,
+            });
             bullet.SetObjectType(ObjectType.SceneItem);
-            bullet.SetBulletInfo(owner, skillData.SkillEffects[Index], skillData.SkillEffects[Index].Bullets[i]);
+            bullet.SetOwner(m_Owner);
+            bullet.SetRes(string.Format("{0}/{1}", ResDefine.EFFECT_PATH, m_SkillEffect.Bullets[i].Name));
         }
-
-        m_Owner = owner;
     }
 
-    public void Reset()
+    public override void Reset()
     {
-        m_Owner = null;
     }
 
-    public void Exit()
+    public override void Exit()
     {
-        m_Owner = null;
     }
 
-    private BaseRole m_Owner = null;
+    public override void Update()
+    {
+
+    }
 }

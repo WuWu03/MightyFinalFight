@@ -1,7 +1,4 @@
-﻿using FrameWork.GameEntity;
-using UnityEngine;
-
-public interface ICanBeHit
+﻿public interface ICanBeHit
 {
     bool CanBeHit
     {
@@ -14,11 +11,6 @@ public interface ICanBeHit
     }
 
     bool IsDead
-    {
-        get;
-    }
-
-    Vector2 HurtPos
     {
         get;
     }

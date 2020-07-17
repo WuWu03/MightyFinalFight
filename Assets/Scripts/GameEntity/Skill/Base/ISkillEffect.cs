@@ -5,8 +5,8 @@ using UnityEngine;
 public interface ISkillEffect
 {
     bool IsCompleted { get; }
-    int Index { get; set; }
-    void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector);
+    void Effect(ISkillSelector selector);
+    void Update();
     void Reset();
     void Exit();
 }

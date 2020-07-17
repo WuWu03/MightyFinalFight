@@ -17,17 +17,18 @@ public class Bullet : BaseSceneObject
         m_IsHit = false;
     }
 
-    public virtual void SetBulletInfo(BaseRole owner, SkillData.SkillEffect skillEffect, SkillData.Bullet bulletData)
+    public override void InitData(BaseSceneObjectData data)
+    {
+        base.InitData(data);
+        m_BulletData = data as BulletData;
+    }
+
+    public virtual void SetOwner(BaseRole owner)
     {
         m_Owner = owner;
-        m_SkillEffect = skillEffect;
-        m_BulletData = bulletData;
-
         if (owner.Dir > 0) transform.localRotation = Quaternion.Euler(0, 0, 0);
         else if (owner.Dir < 0) transform.localRotation = Quaternion.Euler(0, 180, 0);
-
-        SetPos(owner.Pos + new Vector2(bulletData.Pos.x * owner.Dir, bulletData.Pos.y));
-        SetRes(string.Format("{0}/{1}", ResDefine.EFFECT_PATH, bulletData.Name));
+        SetPos(owner.Pos + new Vector2(m_BulletData.Pos.x * owner.Dir, m_BulletData.Pos.y));
     }
 
     protected override void Update()
@@ -56,7 +57,7 @@ public class Bullet : BaseSceneObject
 
     private void CheckHit(Collider2D collision)
     {
-        if (m_ResGO == null || m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
+        if (!m_ResComplete || m_IsHit || collision.gameObject.Equals(m_Owner.gameObject)) return;
 
         ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
@@ -68,10 +69,10 @@ public class Bullet : BaseSceneObject
         {
             hit.OnHurtMsg(new HurtData()
             {
-                IsSwoon = m_SkillEffect.IsSmoon,
+                IsSwoon = m_BulletData.IsSmoon,
                 AttackerDir = m_Owner.Dir,
                 AttackerPos = m_Owner.Pos,
-                AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y),
+                AttackForce = new Vector2(m_BulletData.AddTargetForce.x * m_Owner.Dir, m_BulletData.AddTargetForce.y),
                 AttackValue = 1,
             });
 
@@ -101,15 +102,13 @@ public class Bullet : BaseSceneObject
     {
         base.Release();
         m_Owner = null;
-        m_SkillEffect = null;
         m_BulletData = null;
     }
 
     private bool m_IsHit = false;
     private DragonBones.UnityArmatureComponent m_Animator = null;
     private BaseSceneObject m_Owner = null;
-    private SkillData.SkillEffect m_SkillEffect = null;
-    private SkillData.Bullet m_BulletData = null;
+    private BulletData m_BulletData = null;
     private Rigidbody2D m_Rigidbody = null;
     private BoxCollider2D m_BoxCollider = null;
 }

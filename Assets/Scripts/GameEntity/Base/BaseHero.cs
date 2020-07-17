@@ -249,8 +249,9 @@ public class BaseHero : BaseRole
             for (int i = 0; i < m_TriggerTargets.Targets.Count; i++)
             {
                 ICanBeHit temp = m_TriggerTargets.Targets[i].GetComponent<ICanBeHit>();
-                if (temp == null || !temp.CanBeHit) continue;
-                BaseSceneObject targetObj = m_TriggerTargets.Targets[i].GetComponent<BaseSceneObject>();
+                if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
+
+                BaseSceneObject targetObj = temp as BaseSceneObject;
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
                                  Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.17f &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;

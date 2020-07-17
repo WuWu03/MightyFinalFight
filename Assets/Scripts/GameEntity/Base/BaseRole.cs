@@ -107,14 +107,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public Vector2 HurtPos
-    {
-        get
-        {
-            return m_Pos;
-        }
-    }
-
     public virtual bool CanChangeDefaultState
     {
         get

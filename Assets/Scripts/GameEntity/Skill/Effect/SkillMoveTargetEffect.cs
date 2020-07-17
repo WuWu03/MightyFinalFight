@@ -6,13 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class SkillMoveTargetEffect : ISkillEffect
+public class SkillMoveTargetEffect : SkillBaseEffect
 {
-    public SkillMoveTargetEffect()
-    {
-    }
-
-    public bool IsCompleted
+    public SkillMoveTargetEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public override bool IsCompleted
     {
         get
         {
@@ -20,44 +17,37 @@ public class SkillMoveTargetEffect : ISkillEffect
         }
     }
 
-
-    public int Index
+    public override void Effect(ISkillSelector selector)
     {
-        get;
-        set;
-    }
+        List<ICanBeHit> targets = m_Owner.OnHitStart();
 
-    public void Effect(BaseRole owner, SkillData skillData, ISkillSelector selector)
-    {
-        List<GameObject> targets = selector.GetTargetsObj(owner, skillData);
-        if (targets.Count < 1)
+        if (targets == null || targets.Count < 1)
         {
             m_IsCompleted = true;
             return;
         }
 
-        BaseRole bo = targets[0].GetComponent<BaseRole>();
+        BaseRole bo = targets[0] as BaseRole;
 
         float targetY = bo.Pos.y;
-        bo.SetPos2(owner.Pos.x + skillData.SkillEffects[Index].MoveTarget.x * owner.Dir,
-                   owner.Pos.y + skillData.SkillEffects[Index].MoveTarget.y);
+        bo.SetPos2(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,
+                   m_Owner.Pos.y + m_SkillEffect.MoveTarget.y);
         bo.UpdatePos2(bo.Pos.x, targetY);
 
-        if (skillData.SkillEffects[Index].IsSmoon)
+        if (m_SkillEffect.IsSmoon)
         {   
             bo.PlayAnimation(AnimName.SmoonUp);
         }
-        m_Owner = owner;
+
         m_IsCompleted = true;
     }
 
-
-    public void Reset()
+    public override void Reset()
     {
         m_IsCompleted = false;
     }
 
-    public void Exit()
+    public override void Exit()
     {
         if(m_Owner is BaseHero)
         {
@@ -65,12 +55,17 @@ public class SkillMoveTargetEffect : ISkillEffect
 
             if (bh.IsCatch)
             {
+                List<ICanBeHit> targets = m_Owner.OnHitStart();
+                (targets[0] as BaseRole).PlayAnimation(AnimName.Idle);
                 bh.ResetCatch(false);
             }
         }
         m_Owner = null;
+        m_IsCompleted = false;
     }
 
-    private BaseRole m_Owner = null;
-    private bool m_IsCompleted = false;
+    public override void Update()
+    {
+
+    }
 }

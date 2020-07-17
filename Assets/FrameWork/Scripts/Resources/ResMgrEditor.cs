@@ -62,6 +62,8 @@ namespace FrameWork.Resources
                 Debug.Log("无效的资源路径 => " + resourcePath);
                 return null;
             }
+
+            m_LoadedAssets.Add(resourcePath, obj);
             return obj;
         }
 
