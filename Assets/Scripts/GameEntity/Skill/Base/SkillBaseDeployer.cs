@@ -73,7 +73,9 @@ public abstract class SkillBaseDeployer
         for (int i = 0; i < m_SkillEffects.Length; i++)
             m_SkillEffects[i].Exit();
         for (int i = 0; i < m_SkillSelector.Length; i++)
-            m_SkillSelector[i].Exit();
+            if (m_SkillSelector[i] != null)
+                m_SkillSelector[i].Exit();
+
         m_CurrEffectIndex = 0;
     }
 
