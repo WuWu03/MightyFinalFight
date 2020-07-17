@@ -106,8 +106,10 @@ public class BaseHero : BaseRole
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-        go.transform.Find("slot1").GetComponent<Renderer>().enabled = true;
-        go.transform.Find("slot2").GetComponent<Renderer>().enabled = false;
+        m_Slot1Renderer = go.transform.Find("slot1").GetComponent<Renderer>();
+        m_Slot2Renderer = go.transform.Find("slot2").GetComponent<Renderer>();
+        m_Slot1Renderer.enabled = true;
+        m_Slot2Renderer.enabled = false;
     }
     public override List<ICanBeHit> OnHitStart()
     {
@@ -227,10 +229,11 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        m_ResGO.transform.Find("slot1").GetComponent<Renderer>().enabled = false;
-        m_ResGO.transform.Find("slot2").GetComponent<Renderer>().enabled = true;
+        m_Slot1Renderer.enabled = true;
+        m_Slot2Renderer.enabled = true;
         m_IsRebirthState = true;
         m_RebirthStateTimer = Time.time;
+        m_RebirthLightTimer = Time.time;
         UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
@@ -289,9 +292,17 @@ public class BaseHero : BaseRole
         if(Time.time - m_RebirthStateTimer >= m_RebirthStateTime)
         {
             m_RebirthStateTimer = 0;
+            m_RebirthLightTimer = 0;
             m_IsRebirthState = false;
-            m_ResGO.transform.Find("slot1").GetComponent<Renderer>().enabled = true;
-            m_ResGO.transform.Find("slot2").GetComponent<Renderer>().enabled = false;
+            m_Slot1Renderer.enabled = true;
+            m_Slot2Renderer.enabled = false;
+            return;
+        }
+
+        if(Time.time - m_RebirthLightTimer >= m_RebirthLightTime)
+        {
+            m_RebirthLightTimer = Time.time;
+            m_Slot2Renderer.enabled = !m_Slot2Renderer.enabled;
         }
     }
 
@@ -320,9 +331,14 @@ public class BaseHero : BaseRole
 
     private float m_RebirthStateTimer = 0;
     private float m_RebirthStateTime = 3.0f;
+    private float m_RebirthLightTimer = 0;
+    private float m_RebirthLightTime = 1f/30f;
     private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
     private int m_CatchAttackCount = 0;
     private List<ICanBeHit> m_ListCatchTarget = null;
     private Dictionary<int, int> m_DicAttacker = null;
+
+    private Renderer m_Slot1Renderer = null;
+    private Renderer m_Slot2Renderer = null;
 }
