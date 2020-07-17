@@ -58,8 +58,9 @@ public class BaseEnemy : BaseRole
             data.HurtAnim = Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
         }
 
-        int dir = data.AttackerPos.x > m_Pos.x ? 1 : -1;
-        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, Vector2.right * 0.05f * dir, Vector3.zero, true, true, 0.1f);
+        int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
+        Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
+        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         base.OnHurtMsg(data);
     }
 

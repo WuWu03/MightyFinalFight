@@ -60,7 +60,7 @@ public class SkillMoveTargetEffect : SkillBaseEffect
                 bh.ResetCatch(false);
             }
         }
-        m_Owner = null;
+
         m_IsCompleted = false;
     }
 
