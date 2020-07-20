@@ -177,6 +177,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnResComplete(go);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
+        SetPos(m_Pos);
     }
 
     protected override void Update()

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class BaseHeroCtrl : BaseRoleCtrl
@@ -46,37 +45,37 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
         if (hero.Weapon != null)
         {
-            hero.Weapon.SubHealth(1);
-            if (hero.Weapon.Health <= 0)
-                m_SkillManager.DeploySkill(1013);
-            else
-                m_SkillManager.DeploySkill(1012);
+            //if (hero.Weapon.Health <= 1)
+            //    m_SkillManager.DeploySkill(1013);
+            //else
+                m_SkillManager.DeploySkill(m_WeaponAttackID);
+            hero.UseWeaponMsg();
             return;
         }
         else
         {
-            Weapon weapon = IsNearWeapon();
-            if (weapon != null)
+            BaseSceneItem item = IsNearSceneItem();
+            if (item != null)
             {
-                hero.PickUpWeaponMsg(weapon);
+                hero.PickUpSceneItemMsg(item);
                 return;
             }
         }
         base.NormalAttack(dir);
     }
 
-    private Weapon IsNearWeapon()
+    private BaseSceneItem IsNearSceneItem()
     {
         List<GameObject> list = m_Owner.TriggerTargets.Targets;
         for (int i = 0; i < list.Count; i++)
         {
-            Weapon weapon = list[i].GetComponent<Weapon>();
-            if (weapon == null) continue;
+            BaseSceneItem item = list[i].GetComponent<BaseSceneItem>();
+            if (item == null) continue;
 
-            bool isInRange = Mathf.Abs(weapon.Bound.yMin - m_Owner.Bound.yMin) <= weapon.Bound.height/2 &&
-                             Mathf.Abs(weapon.Pos.x - m_Owner.Pos.x) <= weapon.Bound.width / 2;
+            bool isInRange = Mathf.Abs(item.Bound.yMin - m_Owner.Bound.yMin) <= item.Bound.height/2 &&
+                             Mathf.Abs(item.Pos.x - m_Owner.Pos.x) <= item.Bound.width / 2;
             if (isInRange)
-                return weapon;
+                return item;
         }
 
         return null;

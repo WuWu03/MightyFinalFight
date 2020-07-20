@@ -33,7 +33,7 @@ public class SkillBulletEffect : SkillBaseEffect
                 TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest,
                 TriggerSize = m_SkillEffect.Bullets[i].TriggerSize,
             });
-            bullet.SetObjectType(ObjectType.SceneItem);
+            bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);
             bullet.SetRes(string.Format("{0}/{1}", ResDefine.EFFECT_PATH, m_SkillEffect.Bullets[i].Name));
         }

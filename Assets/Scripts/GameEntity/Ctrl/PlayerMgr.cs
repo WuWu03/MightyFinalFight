@@ -25,26 +25,43 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     public int Life
     {
-        get;
-        private set;
+        get
+        {
+            return m_Life;
+        }
     }
 
-    public int CurrExp
+    public int EXP
     {
-        get;
-        private set;
+        get
+        {
+            return m_EXP;
+        }
     }
 
-    public int CurrLevel
+    public int Level
     {
-        get;
-        private set;
+        get
+        {
+            return m_Level;
+        }
     }
 
-
+    public int Continue
+    {
+        get
+        {
+            return m_Continue;
+        }
+    }
 
     public void InitPlayer(int roleID)
     {
+        m_Life = 5;
+        m_Continue = 3;
+        m_Level = 1;
+        m_EXP = 0;
+
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
@@ -86,15 +103,13 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
                 InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent);
             }
         }
-
-        Life = 5;
-        
+ 
         CameraMgr.Ins.SetTarget(m_Player.transform);
     }
 
     public void Rebirth(Vector2 rebirthPos)
     {
-        Life -= 1;
+        m_Life -= 1;
         UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(Life);
 
         if (Life < 1)
@@ -110,6 +125,21 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         m_Player.Health = 10;
         m_Player.OnRebirthMsg(rebirthPos);
+    }
+
+    public void AddExp(int value)
+    {
+        m_EXP += value;
+    }
+
+    public void AddLife(int value)
+    {
+        m_Life += value;
+    }
+
+    public void AddContinue(int value)
+    {
+        m_Continue += value;
     }
 
     private void Control()
@@ -147,4 +177,9 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private BaseRoleCtrl m_CurrCtrl = null;
     private HeroData m_HeroData = null;
     private BaseHero m_Player = null;
+
+    private int m_Life = 0;
+    private int m_EXP = 0;
+    private int m_Level = 0;
+    private int m_Continue = 0;
 }

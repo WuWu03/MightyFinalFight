@@ -254,12 +254,29 @@ public class BaseHero : BaseRole
         UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
-    public virtual void PickUpWeaponMsg(Weapon weapon)
+    public virtual void PickUpSceneItemMsg(BaseSceneItem item)
     {
-        if (weapon == null) return;
+        if (item == null) return;
         ChangeState<HeroPickUp>();
-        m_Weapon = weapon;
-        m_Weapon.SetOwner(this);
+        item.SetOwner(this);
+        if (item.ObjectType == ObjectType.Weapon)
+        {
+            m_Weapon = item as Weapon;
+        }
+    }
+
+    public virtual void UseWeaponMsg()
+    {
+        m_Weapon.SubHealth(1);
+        if (m_Weapon.Health <= 0)
+        {
+            m_Weapon.Release();
+            m_Weapon = null;
+            if (IsAnyState(typeof(RoleIdle)))
+            {
+                PlayAnimation(AnimName.Idle, 0, 1);
+            }
+        }
     }
 
     protected virtual void CheckCatch()

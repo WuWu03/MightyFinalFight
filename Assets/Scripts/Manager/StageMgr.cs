@@ -265,8 +265,22 @@ public class StageMgr : MonoSingleton<StageMgr>
     {
         SceneItemData data = StaticConfig.SceneItemConfig.GetData(1001);
         Weapon weapon = SceneObjectPool.Ins.Get<Weapon>("Weapon1");
+        TParamT<ItemData.ItemType, SceneItemData.ItemType> getType = delegate (SceneItemData.ItemType type) 
+        {
+            if (type == SceneItemData.ItemType.Weapon)
+                return ItemData.ItemType.Weapon;
+            else if (type == SceneItemData.ItemType.EXP)
+                return ItemData.ItemType.EXP;
+            else if (type == SceneItemData.ItemType.HP)
+                return ItemData.ItemType.HP;
+            else if (type == SceneItemData.ItemType.Life)
+                return ItemData.ItemType.Life;
+            return ItemData.ItemType.Money;
+        };
+
         weapon.InitData(new ItemData()
         {
+            Type = getType(data.Type),
             Health = data.Value,
             MaxHealth = data.Value,
             TriggerOffest = data.TriggerOffest,
@@ -274,9 +288,29 @@ public class StageMgr : MonoSingleton<StageMgr>
             Value = data.Value,
         });
         weapon.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, data.AssetName));
-        weapon.SetObjectType(ObjectType.SceneItem);
+        weapon.SetObjectType(ObjectType.Weapon);
         weapon.SetMapPos(new Vector2Int(-320, -60));
+
+        for (int i = 0; i < 4; i++)
+        {
+            SceneItemData dataa = StaticConfig.SceneItemConfig.GetData(1004 + i);
+            Consume consume = SceneObjectPool.Ins.Get<Consume>("Consume" + i);
+            consume.InitData(new ItemData()
+            {
+                Type = getType(dataa.Type),
+                Health = dataa.Value,
+                MaxHealth = dataa.Value,
+                TriggerOffest = dataa.TriggerOffest,
+                TriggerSize = dataa.TriggerSize,
+                Value = dataa.Value,
+            });
+
+            consume.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, dataa.AssetName));
+            consume.SetObjectType(ObjectType.Consume);
+            consume.SetMapPos(new Vector2Int(-300 + i * 20, -60));
+        }
     }
+
 
     private int m_Width;
     private int m_Height;

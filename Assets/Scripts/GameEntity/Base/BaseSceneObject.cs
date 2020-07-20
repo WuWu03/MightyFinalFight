@@ -52,8 +52,8 @@ public class BaseSceneObject : BaseObject
 
     public int MaxHealth
     {
-        get { return m_Health; }
-        set { m_Health = value; }
+        get { return m_MaxHealth; }
+        set { m_MaxHealth = value; }
     }
 
     public bool ResComplete

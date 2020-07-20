@@ -20,3 +20,45 @@ MonoBehaviour:
     TriggerSize: {x: 0.1240074, y: 0.1058722}
     TriggerOffest: {x: 0, y: 0}
     Value: 5
+  - ID: 1002
+    Name: GuyWeapon
+    AssetName: Item/Tea
+    Type: 1
+    TriggerSize: {x: 0.07, y: 0.12}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 5
+  - ID: 1003
+    Name: HaggarWeapon
+    AssetName: Item/Tea
+    Type: 1
+    TriggerSize: {x: 0.07, y: 0.12}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 5
+  - ID: 1004
+    Name: Tea
+    AssetName: Item/Tea
+    Type: 1
+    TriggerSize: {x: 0.07, y: 0.12}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 1
+  - ID: 1005
+    Name: Apple
+    AssetName: Item/Apple
+    Type: 1
+    TriggerSize: {x: 0.11, y: 0.12}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 2
+  - ID: 1006
+    Name: Cake
+    AssetName: Item/Cake
+    Type: 1
+    TriggerSize: {x: 0.1, y: 0.1}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 3
+  - ID: 1007
+    Name: Meat
+    AssetName: Item/Meat
+    Type: 1
+    TriggerSize: {x: 0.16, y: 0.13}
+    TriggerOffest: {x: 0, y: 0}
+    Value: 4

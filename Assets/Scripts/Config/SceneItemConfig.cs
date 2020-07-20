@@ -13,8 +13,8 @@ public class SceneItemData : BaseConfigData
     public enum ItemType
     {
         Weapon,
-        Hp,
-        Exp,
+        HP,
+        EXP,
         Life,
         Money,
     }
