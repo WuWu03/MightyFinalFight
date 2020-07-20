@@ -10,6 +10,7 @@ public static class StaticConfig
     public static SceneObjectConfig SceneObjectConfig = null;
     public static EnemyConfig EnemyConfig = null;
     public static BehaviourTreeConfig BehaviourTreeConfig = null;
+    public static SceneItemConfig SceneItemConfig = null;
     public static void InitConfig()
     {
         HeroConfig = AssetDatabase.LoadAssetAtPath<HeroConfig>("Assets/ConfigData/HeroData.asset");
@@ -18,6 +19,7 @@ public static class StaticConfig
         SceneObjectConfig = AssetDatabase.LoadAssetAtPath<SceneObjectConfig>("Assets/ConfigData/SceneObjectData.asset");
         EnemyConfig = AssetDatabase.LoadAssetAtPath<EnemyConfig>("Assets/ConfigData/EnemyData.asset");
         BehaviourTreeConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeConfig>("Assets/ConfigData/BehaviourTreeData.asset");
+        SceneItemConfig = AssetDatabase.LoadAssetAtPath<SceneItemConfig>("Assets/ConfigData/SceneItemData.asset");
     }
 
     public static void Clear()

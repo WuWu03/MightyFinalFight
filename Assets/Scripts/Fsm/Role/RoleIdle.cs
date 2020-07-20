@@ -16,7 +16,15 @@ public class RoleIdle : BaseFsmState
         m_Owner.Rigidbody.velocity = Vector2.zero;
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         m_Owner.SetPos(m_Owner.Pos);
-        m_Owner.PlayAnimation(AnimName.Idle, 0);
+
+        if(m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
+        {
+            m_Owner.PlayAnimation(AnimName.Idle_Weapon, 0);
+        }
+        else
+        {
+            m_Owner.PlayAnimation(AnimName.Idle, 0);
+        }
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -27,6 +35,7 @@ public class RoleIdle : BaseFsmState
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Idle);
+        m_Owner.StopAnimation(AnimName.Idle_Weapon);
     }
 
     public override void OnDestroy(BaseFsm fsm)

@@ -72,7 +72,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             m_HurtData.IsSwoon = m_SkillEffect.IsSmoon;
             m_HurtData.AttackerID = m_Owner.ID;
             m_HurtData.AttackValue = 1;
-            m_HurtData.HurtSound = string.Empty;
+            m_HurtData.HurtSound = m_SkillData.HurtSound;
             m_HurtData.HurtAnim = string.Empty;
             hit.OnHurtMsg(m_HurtData);           
             return true;

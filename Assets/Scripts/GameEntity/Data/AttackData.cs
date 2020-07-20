@@ -19,6 +19,7 @@ public class AttackData : BaseEventArgs
         AddSelfForce = Vector2.zero;
         AnimTime = 0;
     }
+
     public override BaseEventArgs Clone()
     {
         return Activator.CreateInstance<AttackData>();

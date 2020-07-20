@@ -1,7 +1,10 @@
 ﻿using FrameWork.Fsm;
+using System.Security.Policy;
 
 public class RoleSkill : BaseFsmState
 {
+    public bool CanChangeDir = false;
+    public float Dir = 1f;
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -9,20 +12,20 @@ public class RoleSkill : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-
+        Dir = m_Owner.Dir;
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        //if (m_Owner.ActorAnimator.animation.isCompleted)
-        //{
-        //   ChangeState<RoleIdle>(fsm);
-        //}
+        if (CanChangeDir)
+        {
+            m_Owner.SetDir(Dir);
+        }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-
+        CanChangeDir = false;
     }
 
     public override void OnDestroy(BaseFsm fsm)

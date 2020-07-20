@@ -13,7 +13,14 @@ public class RoleMove : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(AnimName.Move, -1, m_Owner.MoveSpeed * 0.2f);
+        if (m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
+        {
+            m_Owner.PlayAnimation(AnimName.Move_Weapon, 0, m_Owner.MoveSpeed * 0.2f);
+        }
+        else
+        {
+            m_Owner.PlayAnimation(AnimName.Move, 0, m_Owner.MoveSpeed * 0.2f);
+        }
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -27,6 +34,7 @@ public class RoleMove : BaseFsmState
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Move);
+        m_Owner.StopAnimation(AnimName.Move_Weapon);
     }
 
     public override void OnDestroy(BaseFsm fsm)

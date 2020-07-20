@@ -29,7 +29,7 @@ public class TriggerTargets:MonoBehaviour
     {
         if (collision.gameObject.Equals(gameObject)) return;
         BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
-        if (bso == null || bso.ObjectType == ObjectType.SceneItem || bso.ObjectType == GetComponent<BaseSceneObject>().ObjectType) return;
+        if (bso == null || bso.ObjectType == ObjectType.CantBreakItem || bso.ObjectType == GetComponent<BaseSceneObject>().ObjectType) return;
         
         if (!Targets.Contains(collision.gameObject))
         {

@@ -2,30 +2,17 @@
 using FrameWork.GameEntity;
 using UnityEngine;
 
-public class Bullet : BaseSceneObject
+public class Bullet : BaseSceneItem
 {
-    public override void Init(int id, string name)
-    {
-        base.Init(id, name);
-        m_Rigidbody = gameObject.GetOrAddComponent<Rigidbody2D>();
-        m_Rigidbody.gravityScale = 0;
-        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody.velocity = Vector2.zero;
-        m_BoxCollider = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_BoxCollider.enabled = false;
-        m_BoxCollider.isTrigger = false;
-        m_IsHit = false;
-    }
-
     public override void InitData(BaseSceneObjectData data)
     {
         base.InitData(data);
         m_BulletData = data as BulletData;
     }
 
-    public virtual void SetOwner(BaseRole owner)
+    public override void SetOwner(BaseRole owner)
     {
-        m_Owner = owner;
+        base.SetOwner(owner);
         if (owner.Dir > 0) transform.localRotation = Quaternion.Euler(0, 0, 0);
         else if (owner.Dir < 0) transform.localRotation = Quaternion.Euler(0, 180, 0);
         SetPos(owner.Pos + new Vector2(m_BulletData.Pos.x * owner.Dir, m_BulletData.Pos.y));
@@ -86,15 +73,15 @@ public class Bullet : BaseSceneObject
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-    
-        m_Rigidbody.drag = m_BulletData.Drag;
-        m_BoxCollider.offset = m_BulletData.TriggerOffest;
-        m_BoxCollider.size = m_BulletData.TriggerSize;
-        m_BoxCollider.enabled = true;
-        m_BoxCollider.isTrigger = true;
+        SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
+        m_Rigidbody.drag = m_BulletData.Drag;    
+        m_Collider.enabled = true;
+        m_Collider.isTrigger = true;
         m_Animator = go.GetComponent<DragonBones.UnityArmatureComponent>();
         m_Animator.animation.timeScale = m_BulletData.NormalAnimSpeed;
         m_Animator.animation.Play(m_BulletData.NormalAnim,-1);
+        m_Rigidbody.gravityScale = 0f;
+        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody.velocity = new Vector2(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
     }
 
@@ -103,12 +90,10 @@ public class Bullet : BaseSceneObject
         base.Release();
         m_Owner = null;
         m_BulletData = null;
+        m_IsHit = false;
     }
 
     private bool m_IsHit = false;
     private DragonBones.UnityArmatureComponent m_Animator = null;
-    private BaseSceneObject m_Owner = null;
     private BulletData m_BulletData = null;
-    private Rigidbody2D m_Rigidbody = null;
-    private BoxCollider2D m_BoxCollider = null;
 }

@@ -71,6 +71,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             AttackNextTime = m_HeroData.AttackNextTime,
             CatchAttackID = m_HeroData.CatchAttackID,
             ThrowAttackID = m_HeroData.ThrowAttackID,
+            WeaponAttackID = 1012,
         });
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };

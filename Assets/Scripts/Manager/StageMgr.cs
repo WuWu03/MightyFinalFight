@@ -52,36 +52,9 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        for (int i = 0; i < 10;i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
-        {
-            BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
-            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];
-            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(enemyInfo.EnemyID);
-
-            enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
-            enemy.InitData(new BaseRoleData()
-            {
-                Health = 20,
-                MaxHealth = 20,
-                AttackSpeed = enemyData.AttackSpeed,
-                AttackValue = 1,
-                Defense = 1,
-                MoveSpeed = enemyData.MoveSpeed,
-            });
-
-            enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseRoleSkillData()
-            {
-                AttackIDs = enemyData.AttackIDs,
-                Skills = enemyData.Skills,
-                AttackWait = enemyData.AttackWait,
-                AttackNextTime = enemyData.AttackNextTime,
-            });
-
-            enemy.SetObjectType(ObjectType.Monster);
-            enemy.SetMapPos(enemyInfo.InitPos);
-        }
-
         CreateSceneObject();
+        CreateEnemy();
+        CreateSceneItem();
         CameraMgr.Ins.EndFollow();
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
@@ -254,6 +227,55 @@ public class StageMgr : MonoSingleton<StageMgr>
                     break;
             }
         }
+    }
+
+    private void CreateEnemy()
+    {
+        for (int i = 0; i < 1; i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
+        {
+            BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
+            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];
+            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(enemyInfo.EnemyID);
+
+            enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
+            enemy.InitData(new BaseRoleData()
+            {
+                Health = 20,
+                MaxHealth = 20,
+                AttackSpeed = enemyData.AttackSpeed,
+                AttackValue = 1,
+                Defense = 1,
+                MoveSpeed = enemyData.MoveSpeed,
+            });
+
+            enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseRoleSkillData()
+            {
+                AttackIDs = enemyData.AttackIDs,
+                Skills = enemyData.Skills,
+                AttackWait = enemyData.AttackWait,
+                AttackNextTime = enemyData.AttackNextTime,
+            });
+
+            enemy.SetObjectType(ObjectType.Monster);
+            enemy.SetMapPos(enemyInfo.InitPos);
+        }
+    }
+
+    private void CreateSceneItem()
+    {
+        SceneItemData data = StaticConfig.SceneItemConfig.GetData(1001);
+        Weapon weapon = SceneObjectPool.Ins.Get<Weapon>("Weapon1");
+        weapon.InitData(new ItemData()
+        {
+            Health = data.Value,
+            MaxHealth = data.Value,
+            TriggerOffest = data.TriggerOffest,
+            TriggerSize = data.TriggerSize,
+            Value = data.Value,
+        });
+        weapon.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, data.AssetName));
+        weapon.SetObjectType(ObjectType.SceneItem);
+        weapon.SetMapPos(new Vector2Int(-320, -60));
     }
 
     private int m_Width;

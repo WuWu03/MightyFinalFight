@@ -1,4 +1,5 @@
 ﻿using FrameWork.BehaviourTree;
+using FrameWork.Input;
 using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
@@ -48,12 +49,18 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         base.OnInit();
         m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
         m_BehaviourTreeMgr.Init(1001);
-        m_BehaviourTreeMgr.Start();
+        //m_BehaviourTreeMgr.Start();
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
+        Move(InputMgr.TestAxis());
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            Attack(InputMgr.TestAxis());
+        }
         m_BehaviourTreeMgr.Update(Time.deltaTime);
     }
 

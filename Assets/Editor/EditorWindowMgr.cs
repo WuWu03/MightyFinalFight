@@ -41,4 +41,10 @@ public class EditorWindowMgr : MonoBehaviour
     {
         FrameWork.Utils.Utils.CreateConfigData<EnemyConfig, EnemyData>("EnemyData", ".asset");
     }
+
+    [MenuItem("Assets/Config/CreateSceneItemData")]
+    public static void CreateSceneItemData()
+    {
+        FrameWork.Utils.Utils.CreateConfigData<SceneItemConfig, SceneItemData>("SceneItemData", ".asset");
+    }
 }

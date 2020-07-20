@@ -18,7 +18,7 @@ public class SkillNearHitSelector : SkillBaseSelector
         {
             ICanBeHit hit = trigger.Targets[i].GetComponent<ICanBeHit>();
 
-            bool canBeHit = hit != null && hit.CanBeHit;
+            if (hit == null) continue;
             bool isInRange = false;
             BaseSceneObject hitObj = hit as BaseSceneObject;
 
@@ -30,7 +30,7 @@ public class SkillNearHitSelector : SkillBaseSelector
                 isInRange = Mathf.Abs(hitObj.Pos.x - m_Owner.Pos.x) <= m_SkillEffect.SelectorRadius;
             }
 
-            if (isInRange && canBeHit)
+            if (isInRange && hit.CanBeHit)
             {
                 m_ListTargets.Add(hit);
             }

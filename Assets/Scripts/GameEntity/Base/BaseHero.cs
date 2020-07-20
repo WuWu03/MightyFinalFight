@@ -1,6 +1,7 @@
 ﻿using FrameWork.Camera;
 using FrameWork.UI;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 
 public class BaseHero : BaseRole
@@ -50,7 +51,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanBeHit && !m_IsRebirthState && !IsFloat;
+            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp));
         }
     }
 
@@ -62,11 +63,20 @@ public class BaseHero : BaseRole
         }
     }
 
+    public Weapon Weapon
+    {
+        get
+        {
+            return m_Weapon;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
         AddState<HeroRebirth>();
         AddState<HeroCatch>();
+        AddState<HeroPickUp>();
         m_DicAttacker = new Dictionary<int, int>();
         m_ListCatchTarget = new List<ICanBeHit>();
     }
@@ -191,6 +201,13 @@ public class BaseHero : BaseRole
             m_HitTime = Time.time;
         }
 
+        if(m_Weapon != null)
+        {
+            m_Weapon.SubHealth(1);
+            m_Weapon.Drop();
+            m_Weapon = null;
+        }
+
         base.OnHurtMsg(data);
     }
 
@@ -237,6 +254,14 @@ public class BaseHero : BaseRole
         UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
+    public virtual void PickUpWeaponMsg(Weapon weapon)
+    {
+        if (weapon == null) return;
+        ChangeState<HeroPickUp>();
+        m_Weapon = weapon;
+        m_Weapon.SetOwner(this);
+    }
+
     protected virtual void CheckCatch()
     {
         if (m_CatchAttackCount >= 3 && IsPlayComplete())
@@ -254,14 +279,15 @@ public class BaseHero : BaseRole
                 ICanBeHit temp = m_TriggerTargets.Targets[i].GetComponent<ICanBeHit>();
                 if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
 
-                BaseSceneObject targetObj = temp as BaseSceneObject;
+                BaseAvatar targetObj = temp as BaseAvatar;
+                float distance = targetObj.Bound.width / 2 + Bound.width / 2;
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
-                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= 0.17f &&
+                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= distance &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;
                 if (isInRange)
                 {
                     targetObj.SetDir(m_Dir * -1);
-                    targetObj.SetPos2(m_Pos.x + 0.17f * m_Dir, m_Pos.y);
+                    targetObj.SetPos2(m_Pos.x + distance * m_Dir, m_Pos.y);
                     temp.SetCatch(true);
                     ChangeState<HeroCatch>();
                     SetDefaultState<HeroCatch>();
@@ -328,6 +354,7 @@ public class BaseHero : BaseRole
 
     protected float m_CatchTime = 2;
     protected bool m_IsRebirthState = false;
+    protected Weapon m_Weapon = null;
 
     private float m_RebirthStateTimer = 0;
     private float m_RebirthStateTime = 3.0f;

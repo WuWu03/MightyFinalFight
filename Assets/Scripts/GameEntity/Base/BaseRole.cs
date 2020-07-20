@@ -67,6 +67,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                    !m_IsBeCatch && IsAnyState(typeof(RoleIdle),
                 typeof(RoleMove),
                 typeof(RoleAttack),
+                typeof(RoleSkill),
                 typeof(RoleJump));
         }
     }
@@ -195,11 +196,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        //if (!m_IsJumpAttack)
-        //{
-            OnDropEvent.Invoke();
-        //}
-
+        OnDropEvent.Invoke();
         OnDropEvent.RemoveAllListeners();
 
         CheckDropTrag();
@@ -218,6 +215,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnSkillMsg(SkillData data)
     {
         if (data == null) return;
+        GetState<RoleSkill>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleSkill>();
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
     }
@@ -235,6 +233,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (IsAnyState(typeof(RoleAttack)))
         {
             GetState<RoleAttack>().StateParam.Dir = data.Dir.x;             
+            return;
+        }
+
+        if (IsAnyState(typeof(RoleSkill)))
+        {
+            GetState<RoleSkill>().Dir = data.Dir.x;
             return;
         }
 
@@ -256,7 +260,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_CurrCtrl.ExitSkill();
         GetState<RoleJump>().StateParam = data;
         ChangeState<RoleJump>();
-        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
     }
 
     public virtual void OnHurtMsg(HurtData data)
@@ -285,8 +289,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (data.AttackValue > 0)
         {
-            string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? "OnHit02" : data.HurtSound;
-            FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+            string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
+            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
         }
     }
 

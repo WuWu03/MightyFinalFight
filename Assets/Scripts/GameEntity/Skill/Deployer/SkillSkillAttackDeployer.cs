@@ -30,7 +30,9 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         if (isComplete)
         {
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+
+            if (!m_SkillData.IsInEffectPlaySound)
+                m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
         }
 
         return isComplete;
@@ -56,7 +58,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     {
         base.OnExit();
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        if (!m_SkillData.IsInEffectPlaySound)
+            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
 
 }

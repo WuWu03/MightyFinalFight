@@ -6,4 +6,5 @@ public class BaseHeroSkillData : BaseRoleSkillData
 {
     public int CatchAttackID;
     public int ThrowAttackID;
+    public int WeaponAttackID;
 }

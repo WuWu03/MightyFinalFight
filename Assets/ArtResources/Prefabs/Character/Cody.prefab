@@ -46,6 +46,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -124,6 +125,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -202,6 +204,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -327,8 +330,8 @@ MonoBehaviour:
     Offest: {x: -0.0009711683, y: 0.0016146302}
     Size: {x: 0.16769221, y: 0.32252938}
   - AnimName: Idle
-    Offest: {x: 0.0011122301, y: 0.0022411048}
-    Size: {x: 0.24084197, y: 0.32879406}
+    Offest: {x: -0.00092183426, y: 0.0022411048}
+    Size: {x: 0.23677385, y: 0.32879406}
   - AnimName: Attack1
     Offest: {x: 0.04473853, y: 0.002833277}
     Size: {x: 0.32870704, y: 0.31996173}
@@ -386,6 +389,12 @@ MonoBehaviour:
   - AnimName: Skill2
     Offest: {x: -0.00240995, y: 0.002409935}
     Size: {x: 0.34932205, y: 0.32040286}
-  - AnimName: "Attack4_\u590D\u52361"
-    Offest: {x: 0, y: 0}
-    Size: {x: 1, y: 1}
+  - AnimName: Idle_Weapon
+    Offest: {x: 0.00032921508, y: -0.000000059604645}
+    Size: {x: 0.23598126, y: 0.3322538}
+  - AnimName: Move_Weapon
+    Offest: {x: 0.015182763, y: 0.008856535}
+    Size: {x: 0.18013108, y: 0.32436728}
+  - AnimName: Attack_Weapon
+    Offest: {x: 0.11893162, y: 0.012652338}
+    Size: {x: 0.38256782, y: 0.32183683}

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
 
-public class Trag : BaseSceneObject
+public class Trag : BaseSceneItem
 {
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_BoxCollider = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_BoxCollider.enabled = true;
-        m_BoxCollider.isTrigger = true;
-        m_ListDrops = new List<BaseRole>();
+        m_Collider.enabled = true;
+        m_Collider.isTrigger = true;
     }
 
     public void SetTragData(SceneObjectData sceneObjectData)
@@ -20,8 +18,7 @@ public class Trag : BaseSceneObject
         float height = (float)sceneObjectData.Area.Height / 100;
         float posX = (float)sceneObjectData.Area.Pos.x / 100;
         float posY = (float)sceneObjectData.Area.Pos.y / 100;
-        m_SceneObjectData = sceneObjectData;
-        m_BoxCollider.size = new Vector2(width, height);
+        m_Collider.size = new Vector2(width, height);
         SetPos2(posX, posY);
     }
 
@@ -30,7 +27,7 @@ public class Trag : BaseSceneObject
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
         if (target == null || target.IsDropTrag) return;
 
-        float width = m_BoxCollider.size.x;
+        float width = m_Collider.size.x;
         float boundsLeft = target.Pos.x - 0.1f;
         float boundsRight = target.Pos.x + 0.1f;
         float selfLeft = m_Pos.x - width / 2;
@@ -51,8 +48,4 @@ public class Trag : BaseSceneObject
             AttackValue = 1,
         });
     }
-
-    private List<BaseRole> m_ListDrops = null;
-    private SceneObjectData m_SceneObjectData = null;
-    private BoxCollider2D m_BoxCollider = null;
 }

@@ -115,6 +115,7 @@ public class SkillData : BaseConfigData
     public int Level;
     public string Name;
     public string AnimationName;
+    public string HurtSound = "OnHit02";
     public SkillType Type;
     public SkillDeployeType DeployeType;//技能释放方式
     public SkillKey Key;

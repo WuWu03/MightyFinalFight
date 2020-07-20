@@ -4,6 +4,7 @@ using UnityEngine;
 using FrameWork.GameEntity;
 using FrameWork;
 using FrameWork.Camera;
+using DragonBones;
 
 public abstract class BaseAvatar : BaseSceneObject
 {
@@ -39,7 +40,7 @@ public abstract class BaseAvatar : BaseSceneObject
         }
     }
 
-    public DragonBones.UnityArmatureComponent ActorAnimator
+    public UnityArmatureComponent ActorAnimator
     {
         get
         {
@@ -93,10 +94,10 @@ public abstract class BaseAvatar : BaseSceneObject
         {
             m_Bound.width = m_Collider.size.x;
             m_Bound.height = m_Collider.size.x;
-            m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x;
-            m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x;
-            m_Bound.yMin = m_Pos.y + m_Collider.offset.y + m_Collider.size.x;
-            m_Bound.yMax = m_Pos.y + m_Collider.offset.y - m_Collider.size.x;
+            m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
+            m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
+            m_Bound.yMin = m_Pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
+            m_Bound.yMax = m_Pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
             return m_Bound;
         }
     }
@@ -116,6 +117,12 @@ public abstract class BaseAvatar : BaseSceneObject
         m_Rigidbody.freezeRotation = true;
     }
 
+    public override void SetPos(Vector2 pos)
+    {
+        m_Pos = pos;
+        transform.localPosition = new Vector3(pos.x, pos.y, Bound.yMin);
+    }
+
     public override void Release()
     {
         base.Release();
@@ -125,7 +132,7 @@ public abstract class BaseAvatar : BaseSceneObject
         m_FsmMachine = null;
     }
 
-    public void SetTrigger(string animName)
+    protected void SetTrigger(string animName)
     {
         if (m_DBTrigger == null) return;
 
