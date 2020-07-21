@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Weapon : BaseSceneItem
 {
-    public override void InitData(BaseSceneObjectData data)
+    public override void InitInfo(BaseSceneObjectInfo data)
     {
-        base.InitData(data);
-        m_WeaponData = data as ItemData;
+        base.InitInfo(data);
+        m_WeaponData = data as SceneItemInfo;
     }
 
     public override void SubHealth(int value)
@@ -18,8 +18,8 @@ public class Weapon : BaseSceneItem
 
     public void Drop()
     {
-        m_ResGO.SetActive(true);
-        transform.SetParent(null, false);
+        gameObject.SetActive(true);
+        SetPos2(m_Owner.Pos.x, m_Owner.Bound.yMin + Bound.height / 2);
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody.AddForce(new Vector2(40 * -m_Owner.Dir, 150));
         m_Animator.animation.Play(AnimName.Drop, 0);
@@ -29,8 +29,7 @@ public class Weapon : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        transform.SetParent(owner.transform, false);
-        m_ResGO.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     protected override void OnResComplete(GameObject go)
@@ -51,7 +50,7 @@ public class Weapon : BaseSceneItem
 
         if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
 
-        UpdatePos2(transform.localPosition.x, Pos.y);
+        UpdatePos2(transform.localPosition.x, m_Pos.y);
 
         if (IsFloat)
         {
@@ -86,5 +85,5 @@ public class Weapon : BaseSceneItem
     }
 
     private UnityArmatureComponent m_Animator = null;
-    private ItemData m_WeaponData = null;
+    private SceneItemInfo m_WeaponData = null;
 }

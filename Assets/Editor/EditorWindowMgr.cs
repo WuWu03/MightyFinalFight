@@ -24,12 +24,6 @@ public class EditorWindowMgr : MonoBehaviour
         FrameWork.Utils.Utils.CreateConfigData<StageConfig, StageData>("StageData", ".asset");
     }
 
-    [MenuItem("Assets/Config/CreateSceneObjectData")]
-    public static void CreateSceneObjectData()
-    {
-        FrameWork.Utils.Utils.CreateConfigData<SceneObjectConfig, SceneObjectData>("SceneObjectData", ".asset");
-    }
-
     [MenuItem("Assets/Config/CreateHeroData")]
     public static void CreatePlayerData()
     {
@@ -46,5 +40,11 @@ public class EditorWindowMgr : MonoBehaviour
     public static void CreateSceneItemData()
     {
         FrameWork.Utils.Utils.CreateConfigData<SceneItemConfig, SceneItemData>("SceneItemData", ".asset");
+    }
+
+    [MenuItem("Assets/Config/CreateTaskData")]
+    public static void CreateTaskData()
+    {
+        FrameWork.Utils.Utils.CreateConfigData<TaskConfig, TaskData>("TaskData", ".asset");
     }
 }

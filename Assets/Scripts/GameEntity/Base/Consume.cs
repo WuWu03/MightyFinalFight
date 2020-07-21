@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Consume : BaseSceneItem
 {
-    public override void InitData(BaseSceneObjectData data)
+    public override void InitInfo(BaseSceneObjectInfo data)
     {
-        base.InitData(data);
-        m_ConsumeData = data as ItemData;
+        base.InitInfo(data);
+        m_ConsumeInfo = data as SceneItemInfo;
     }
 
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        if (m_ConsumeData.Type == ItemData.ItemType.HP)
+        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.HP)
             AddHP();
-        if (m_ConsumeData.Type == ItemData.ItemType.EXP)
+        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.EXP)
             AddExp();
-        if (m_ConsumeData.Type == ItemData.ItemType.Life)
+        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.Life)
             AddExp();
-        if (m_ConsumeData.Type == ItemData.ItemType.Money)
+        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.Money)
             AddMoney();
         Release();
     }
@@ -27,7 +27,7 @@ public class Consume : BaseSceneItem
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-        SetCollider(m_ConsumeData.TriggerOffest, m_ConsumeData.TriggerSize);
+        SetCollider(m_ConsumeInfo.TriggerOffest, m_ConsumeInfo.TriggerSize);
         m_Collider.isTrigger = true;
         m_Collider.enabled = true;
         m_Rigidbody.gravityScale = 1.0f;
@@ -38,29 +38,29 @@ public class Consume : BaseSceneItem
         if (m_Owner.Health >= m_Owner.MaxHealth)
             AddExp();
         else
-            m_Owner.AddHealth(m_ConsumeData.Value);
+            m_Owner.AddHealth(m_ConsumeInfo.Value);
     }
 
     private void AddExp()
     {
-        PlayerMgr.Ins.AddExp(m_ConsumeData.Value);
+        PlayerMgr.Ins.AddExp(m_ConsumeInfo.Value);
     }
 
     private void AddLife()
     {
-        PlayerMgr.Ins.AddLife(m_ConsumeData.Value);
+        PlayerMgr.Ins.AddLife(m_ConsumeInfo.Value);
     }
 
     private void AddMoney()
     {
-        PlayerMgr.Ins.AddContinue(m_ConsumeData.Value);
+        PlayerMgr.Ins.AddContinue(m_ConsumeInfo.Value);
     }
 
     public override void Release()
     {
         base.Release();
-        m_ConsumeData = null;
+        m_ConsumeInfo = null;
     }
 
-    private ItemData m_ConsumeData = null;
+    private SceneItemInfo m_ConsumeInfo = null;
 }

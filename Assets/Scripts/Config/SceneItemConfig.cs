@@ -17,6 +17,7 @@ public class SceneItemData : BaseConfigData
         EXP,
         Life,
         Money,
+        Trap,
     }
 
     public string Name;

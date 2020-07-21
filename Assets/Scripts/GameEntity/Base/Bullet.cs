@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Bullet : BaseSceneItem
 {
-    public override void InitData(BaseSceneObjectData data)
+    public override void InitInfo(BaseSceneObjectInfo data)
     {
-        base.InitData(data);
-        m_BulletData = data as BulletData;
+        base.InitInfo(data);
+        m_BulletData = data as BulletInfo;
     }
 
     public override void SetOwner(BaseRole owner)
@@ -95,5 +95,5 @@ public class Bullet : BaseSceneItem
 
     private bool m_IsHit = false;
     private DragonBones.UnityArmatureComponent m_Animator = null;
-    private BulletData m_BulletData = null;
+    private BulletInfo m_BulletData = null;
 }

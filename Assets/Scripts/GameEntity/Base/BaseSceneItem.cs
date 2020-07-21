@@ -66,7 +66,7 @@ public class BaseSceneItem : BaseSceneObject
     }
 
     private Rect m_Bound = Rect.zero;
-    protected BaseSceneObject m_Owner = null;
+    protected BaseRole m_Owner = null;
     protected Rigidbody2D m_Rigidbody = null;
     protected BoxCollider2D m_Collider = null;
 }

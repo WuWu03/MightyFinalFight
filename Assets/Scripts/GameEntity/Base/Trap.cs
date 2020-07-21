@@ -3,23 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using FrameWork;
 
-public class Trag : BaseSceneItem
+public class Trap : BaseSceneItem
 {
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_Collider.enabled = true;
-        m_Collider.isTrigger = true;
     }
 
-    public void SetTragData(SceneObjectData sceneObjectData)
+    public override void InitInfo(BaseSceneObjectInfo info)
     {
-        float width = (float)sceneObjectData.Area.Width / 100;
-        float height = (float)sceneObjectData.Area.Height / 100;
-        float posX = (float)sceneObjectData.Area.Pos.x / 100;
-        float posY = (float)sceneObjectData.Area.Pos.y / 100;
-        m_Collider.size = new Vector2(width, height);
-        SetPos2(posX, posY);
+        base.InitInfo(info);
+        m_TrapData = info as TrapInfo;
+        SetPos(m_TrapData.Pos);
+    }
+
+    public override void SetPos(Vector2 pos)
+    {
+        m_Pos = pos;
+        transform.localPosition = new Vector3(pos.x, pos.y, 0);
+    }
+
+    protected override void OnResComplete(GameObject go)
+    {
+        base.OnResComplete(go);
+        SetCollider(m_TrapData.TriggerOffest, m_TrapData.TriggerSize);
+        m_Collider.enabled = true;
+        m_Collider.isTrigger = true;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -42,10 +51,12 @@ public class Trag : BaseSceneItem
         else
             rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.Pos.y);
 
-        target.OnDropTragMsg(new DropTragData()
+        target.OnDropTragMsg(new TrapInfo()
         {
-            InitPos = rebirthPos,
-            AttackValue = 1,
+            Pos = rebirthPos,
+            AttackValue = m_TrapData.AttackValue,
         });
     }
+
+    private TrapInfo m_TrapData = null;
 }

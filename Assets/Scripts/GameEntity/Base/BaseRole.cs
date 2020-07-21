@@ -143,10 +143,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
     }
 
     //初始化基本数值
-    public override void InitData(BaseSceneObjectData data)
+    public override void InitInfo(BaseSceneObjectInfo data)
     {
-        base.InitData(data);
-        BaseRoleData baseRoleData = data as BaseRoleData;
+        base.InitInfo(data);
+        BaseRoleInfo baseRoleData = data as BaseRoleInfo;
         m_AttackSpeed = baseRoleData.AttackSpeed;
         m_AttackValue = baseRoleData.AttackValue;
         m_Defense = baseRoleData.Defense;
@@ -295,7 +295,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public virtual void OnDropTragMsg(DropTragData data)
+    public virtual void OnDropTragMsg(TrapInfo data)
     {
         if (data == null) return;
         if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump)) && !m_IsJumpAttack) return;
@@ -305,7 +305,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             PlayAnimation(AnimName.JumpDown);
         }
 
-        m_DropTragData = data;
+        m_TrapData = data;
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_IsDropTrag = true;
         m_CurrCtrl.ExitSkill();
@@ -345,15 +345,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_ObjectType == ObjectType.Player)
             {
-                SubHealth(m_DropTragData.AttackValue);
+                SubHealth(m_TrapData.AttackValue);
                 if (m_Health <= 0)
                 {
-                    GetState<RoleDead>().ReBirthPos = m_DropTragData.InitPos;
+                    GetState<RoleDead>().ReBirthPos = m_TrapData.Pos;
                     ChangeState<RoleDead>();
                 }
                 else
                 {
-                    SetPos(m_DropTragData.InitPos);
+                    SetPos(m_TrapData.Pos);
                     ChangeState<RoleIdle>();
                     CameraMgr.Ins.StartFollow();
                 }
@@ -363,7 +363,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            m_DropTragData = null;
+            m_TrapData = null;
             m_IsDropTrag = false;
         }
     }
@@ -405,6 +405,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsDropTrag = false;
     protected bool m_IsBeCatch = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
-    protected DropTragData m_DropTragData = null;
+    protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;
 }

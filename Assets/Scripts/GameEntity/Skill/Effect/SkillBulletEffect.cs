@@ -15,7 +15,7 @@ public class SkillBulletEffect : SkillBaseEffect
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
             Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(m_SkillEffect.Bullets[i].Name);        
-            bullet.InitData(new BulletData()
+            bullet.InitInfo(new BulletInfo()
             {
                 Health = 1,
                 MaxHealth = 1,

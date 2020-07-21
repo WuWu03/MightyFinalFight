@@ -68,7 +68,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
 
-        m_Player.InitData(new BaseRoleData()
+        m_Player.InitInfo(new BaseRoleInfo()
         {
             Health = 10,
             MaxHealth = 10,
@@ -79,7 +79,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             MoveSpeed = m_HeroData.MoveSpeed
         });
    
-        m_CurrCtrl.InitData(new BaseHeroSkillData()
+        m_CurrCtrl.InitData(new BaseHeroSkillInfo()
         {
             AttackIDs = m_HeroData.AttackIDs,
             JumpAttackIDs = m_HeroData.JumpAttackIDs,

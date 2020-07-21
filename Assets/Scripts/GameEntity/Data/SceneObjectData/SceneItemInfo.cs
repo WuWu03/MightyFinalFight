@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 
-public class ItemData : BaseSceneObjectData
+public class SceneItemInfo : BaseSceneObjectInfo
 {
     public enum ItemType
     {
+        None,
         Weapon,
         HP,
         EXP,
         Life,
         Money,
+        Trap,
     }
 
     public ItemType Type { get; set; }

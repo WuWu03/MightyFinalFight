@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 143e3afa25bc3284087438933d58814e, type: 3}
-  m_Name: SceneObjectData
+  m_Script: {fileID: 11500000, guid: 42e10e8fbf8634b44842e1807cf31514, type: 3}
+  m_Name: TaskData
   m_EditorClassIdentifier: 
-  Datas:
-  - ID: 1001
-    AssetName: 
-    Area:
-      Pos: {x: -213, y: -54}
-      Width: 68
-      Height: 44
-    Type: 0
+  Datas: []

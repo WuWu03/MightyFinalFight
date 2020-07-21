@@ -45,14 +45,13 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     public void Enter(int id)
     {
-        if (CurrID.Equals(id)) return;
+        if (m_CurrID == id) return;
         m_CurrID = id;
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
         m_Width = m_CurrStageData.Width;
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        CreateSceneObject();
         CreateEnemy();
         CreateSceneItem();
         CameraMgr.Ins.EndFollow();
@@ -165,12 +164,12 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private Rect GetBound(Area area)
     {
-        m_AreaBound.width = area.Width;
-        m_AreaBound.height = area.Height;
-        m_AreaBound.xMin = area.Pos.x - area.Width / 2f;
-        m_AreaBound.xMax = area.Pos.x + area.Width / 2f;
-        m_AreaBound.yMin = area.Pos.y - area.Height / 2f;
-        m_AreaBound.yMax = area.Pos.y + area.Height / 2f;
+        m_AreaBound.width = area.Size.x;
+        m_AreaBound.height = area.Size.y;
+        m_AreaBound.xMin = area.Pos.x - area.Size.x / 2f;
+        m_AreaBound.xMax = area.Pos.x + area.Size.x / 2f;
+        m_AreaBound.yMin = area.Pos.y - area.Size.y / 2f;
+        m_AreaBound.yMax = area.Pos.y + area.Size.y / 2f;
 
         return m_AreaBound;
     }
@@ -180,7 +179,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
     }
 
-    private void OnLoadComplete(UnityEngine.Object obj)
+    private void OnLoadComplete(Object obj)
     {
         Sprite sprite = obj as Sprite;
         m_MapRenderer.sprite = sprite;
@@ -207,107 +206,24 @@ public class StageMgr : MonoSingleton<StageMgr>
         UIMgr.Ins.Open<MainPanel>();
     }
 
-    private void CreateSceneObject()
-    {
-        for (int i = 0; i < m_CurrStageData.SceneObjIDs.Length; i++)
-        {
-            int id = m_CurrStageData.SceneObjIDs[i];
-            SceneObjectData data = StaticConfig.SceneObjectConfig.GetData(id);
-
-            if (data == null) continue;
-            switch (data.Type)
-            {
-                case SceneObjectData.SceneObjectType.Trag:
-                    Trag trag = SceneObjectPool.Ins.Get<Trag>("Trag_" + i);
-                    trag.SetTragData(data);
-                    break;
-                case SceneObjectData.SceneObjectType.Drop:
-                    break;
-                case SceneObjectData.SceneObjectType.Obstacle:
-                    break;
-            }
-        }
-    }
-
     private void CreateEnemy()
     {
         for (int i = 0; i < 1; i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
-        {
-            BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>("Monster" + i);
-            StageData.Enemy enemyInfo = m_CurrStageData.EnemyAreas[0].Enemys[0];
-            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(enemyInfo.EnemyID);
-
-            enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
-            enemy.InitData(new BaseRoleData()
-            {
-                Health = 20,
-                MaxHealth = 20,
-                AttackSpeed = enemyData.AttackSpeed,
-                AttackValue = 1,
-                Defense = 1,
-                MoveSpeed = enemyData.MoveSpeed,
-            });
-
-            enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseRoleSkillData()
-            {
-                AttackIDs = enemyData.AttackIDs,
-                Skills = enemyData.Skills,
-                AttackWait = enemyData.AttackWait,
-                AttackNextTime = enemyData.AttackNextTime,
-            });
-
-            enemy.SetObjectType(ObjectType.Monster);
-            enemy.SetMapPos(enemyInfo.InitPos);
+        {           
+            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(1001);
+            StageFactory.CreateEnemy(enemyData, new Vector2Int(-320, -60));
         }
     }
 
     private void CreateSceneItem()
     {
         SceneItemData data = StaticConfig.SceneItemConfig.GetData(1001);
-        Weapon weapon = SceneObjectPool.Ins.Get<Weapon>("Weapon1");
-        TParamT<ItemData.ItemType, SceneItemData.ItemType> getType = delegate (SceneItemData.ItemType type) 
-        {
-            if (type == SceneItemData.ItemType.Weapon)
-                return ItemData.ItemType.Weapon;
-            else if (type == SceneItemData.ItemType.EXP)
-                return ItemData.ItemType.EXP;
-            else if (type == SceneItemData.ItemType.HP)
-                return ItemData.ItemType.HP;
-            else if (type == SceneItemData.ItemType.Life)
-                return ItemData.ItemType.Life;
-            return ItemData.ItemType.Money;
-        };
-
-        weapon.InitData(new ItemData()
-        {
-            Type = getType(data.Type),
-            Health = data.Value,
-            MaxHealth = data.Value,
-            TriggerOffest = data.TriggerOffest,
-            TriggerSize = data.TriggerSize,
-            Value = data.Value,
-        });
-        weapon.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, data.AssetName));
-        weapon.SetObjectType(ObjectType.Weapon);
-        weapon.SetMapPos(new Vector2Int(-320, -60));
+        StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
 
         for (int i = 0; i < 4; i++)
         {
-            SceneItemData dataa = StaticConfig.SceneItemConfig.GetData(1004 + i);
-            Consume consume = SceneObjectPool.Ins.Get<Consume>("Consume" + i);
-            consume.InitData(new ItemData()
-            {
-                Type = getType(dataa.Type),
-                Health = dataa.Value,
-                MaxHealth = dataa.Value,
-                TriggerOffest = dataa.TriggerOffest,
-                TriggerSize = dataa.TriggerSize,
-                Value = dataa.Value,
-            });
-
-            consume.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, dataa.AssetName));
-            consume.SetObjectType(ObjectType.Consume);
-            consume.SetMapPos(new Vector2Int(-300 + i * 20, -60));
+            data = StaticConfig.SceneItemConfig.GetData(1004 + i);
+            StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
         }
     }
 
@@ -315,7 +231,6 @@ public class StageMgr : MonoSingleton<StageMgr>
     private int m_Width;
     private int m_Height;
     private Rect m_AreaBound = Rect.zero;
-    private Vector2 m_RandomPos2 = Vector2.zero;
     private SpriteRenderer m_MapRenderer = null;
     private StageData m_CurrStageData = null;
     private int m_CurrID = 0;

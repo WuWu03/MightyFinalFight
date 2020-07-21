@@ -55,13 +55,8 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        Move(InputMgr.TestAxis());
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            Attack(InputMgr.TestAxis());
-        }
-        m_BehaviourTreeMgr.Update(Time.deltaTime);
+        Test();
+        //m_BehaviourTreeMgr.Update(Time.deltaTime);
     }
 
     protected override void OnRelease()
@@ -102,6 +97,17 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         {
             m_IsRandomPos = false;
             m_IsRoundPos = false;
+        }
+    }
+
+
+    private void Test()
+    {
+        Move(InputMgr.TestAxis());
+
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            Attack(InputMgr.TestAxis());
         }
     }
 

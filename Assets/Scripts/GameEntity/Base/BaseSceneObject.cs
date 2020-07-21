@@ -70,10 +70,10 @@ public class BaseSceneObject : BaseObject
         m_Pos = transform.localPosition;
     }
 
-    public virtual void InitData(BaseSceneObjectData data)
+    public virtual void InitInfo(BaseSceneObjectInfo info)
     {
-        m_Health = data.Health;
-        m_MaxHealth = data.MaxHealth;
+        m_Health = info.Health;
+        m_MaxHealth = info.MaxHealth;
         if (m_MaxHealth < m_Health)
             m_MaxHealth = m_Health;
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseRoleData : BaseSceneObjectData
+public class BaseRoleInfo : BaseSceneObjectInfo
 {
    public float AttackSpeed { get; set; }
     public float AttackValue { get; set; }

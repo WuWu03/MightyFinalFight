@@ -266,5 +266,5 @@ public abstract class BaseAvatar : BaseSceneObject
     protected DBTrigger m_DBTrigger = null;
     protected BoxCollider2D m_Collider = null;
     protected FsmMachine m_FsmMachine = null;
-    protected DragonBones.UnityArmatureComponent m_Animator;
+    protected UnityArmatureComponent m_Animator;
 }

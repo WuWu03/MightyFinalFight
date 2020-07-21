@@ -18,7 +18,7 @@ public class BaseRoleCtrl : BaseCtrl
         m_JumpData = new JumpData();
     }
 
-    public virtual void InitData(BaseRoleSkillData data)
+    public virtual void InitData(BaseRoleSkillInfo data)
     {
         m_AttackIDs = data.AttackIDs;
         m_JumpAttackIDs = data.JumpAttackIDs;

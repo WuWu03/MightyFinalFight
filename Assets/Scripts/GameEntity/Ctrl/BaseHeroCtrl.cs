@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class BaseHeroCtrl : BaseRoleCtrl
 {
-    public override void InitData(BaseRoleSkillData data)
+    public override void InitData(BaseRoleSkillInfo data)
     {     
-        BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
+        BaseHeroSkillInfo heroSkillData = data as BaseHeroSkillInfo;
         m_CatchAttackID = heroSkillData.CatchAttackID;
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
         m_WeaponAttackID = heroSkillData.WeaponAttackID;
@@ -43,7 +43,13 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
         m_CatchAttackTimer = 0f;
 
-        if (hero.Weapon != null)
+        BaseSceneItem item = IsNearSceneItem();
+        if (item != null)
+        {
+            hero.PickUpSceneItemMsg(item);
+            return;
+        }
+        else if (hero.Weapon != null)
         {
             //if (hero.Weapon.Health <= 1)
             //    m_SkillManager.DeploySkill(1013);
@@ -51,15 +57,6 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 m_SkillManager.DeploySkill(m_WeaponAttackID);
             hero.UseWeaponMsg();
             return;
-        }
-        else
-        {
-            BaseSceneItem item = IsNearSceneItem();
-            if (item != null)
-            {
-                hero.PickUpSceneItemMsg(item);
-                return;
-            }
         }
         base.NormalAttack(dir);
     }

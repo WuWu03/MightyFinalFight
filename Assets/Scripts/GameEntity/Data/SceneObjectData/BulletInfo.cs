@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletData : BaseSceneObjectData
+public class BulletInfo : BaseSceneObjectInfo
 {
     public bool IsSmoon { get; set; }
     public Vector2 AddTargetForce { get; set; }
