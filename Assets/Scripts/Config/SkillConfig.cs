@@ -64,6 +64,7 @@ public class SkillData : BaseConfigData
     public class Bullet
     {
         public string Name;
+        public string AssetName;
         public string NormalAnim;
         public string HitAnim;
         public float NormalAnimSpeed;

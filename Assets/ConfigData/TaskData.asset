@@ -12,4 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e10e8fbf8634b44842e1807cf31514, type: 3}
   m_Name: TaskData
   m_EditorClassIdentifier: 
-  Datas: []
+  Datas:
+  - ID: 1001
+    TriggerCondition: 1
+    PosCondition:
+      PosType: 0
+      Pos: {x: -380, y: 0}
+    KillIDs: 
+    BarrelsCount: 0
+    KillAll: 0
+    BarrelsAll: 0
+    TriggerEffect: 1
+    Targets:
+    - ID: 1001
+      Pos: {x: -178, y: -28}
+    - ID: 1002
+      Pos: {x: -178, y: -48}
+    TriggerStopCamera: 1
+    ExitStartCamera: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1002
+  - ID: 1002
+    TriggerCondition: 2
+    PosCondition:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillIDs: 
+    BarrelsCount: 0
+    KillAll: 1
+    BarrelsAll: 0
+    TriggerEffect: 0
+    Targets: []
+    TriggerStopCamera: 0
+    ExitStartCamera: 1
+    TalkID: 0
+    PrevID: 0
+    NextID: 1002

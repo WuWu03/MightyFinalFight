@@ -1,4 +1,5 @@
-﻿using FrameWork.Camera;
+﻿using DragonBones;
+using FrameWork.Camera;
 using FrameWork.UI;
 using System.Collections.Generic;
 using System.Security.Policy;
@@ -227,7 +228,7 @@ public class BaseHero : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            bool isMapCanMove = StageMgr.Ins.CanMovePos2(pos);
+            bool isMapCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
             if (!isMapCanMove)
             {
                 CameraMgr.Ins.EndFollow();

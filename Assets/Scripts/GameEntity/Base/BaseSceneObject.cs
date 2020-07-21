@@ -64,6 +64,14 @@ public class BaseSceneObject : BaseObject
         }
     }
 
+    public int EntityID
+    {
+        get
+        {
+            return m_EntityID;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -74,6 +82,7 @@ public class BaseSceneObject : BaseObject
     {
         m_Health = info.Health;
         m_MaxHealth = info.MaxHealth;
+        m_EntityID = info.ID;
         if (m_MaxHealth < m_Health)
             m_MaxHealth = m_Health;
     }
@@ -190,4 +199,5 @@ public class BaseSceneObject : BaseObject
     protected Vector2 m_Pos = Vector2.zero;
     protected ObjectType m_ObjectType = ObjectType.NONE;
     protected float m_Dir = 1;
+    protected int m_EntityID = 0;
 }

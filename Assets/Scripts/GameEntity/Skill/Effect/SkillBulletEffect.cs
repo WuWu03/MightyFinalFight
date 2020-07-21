@@ -35,7 +35,7 @@ public class SkillBulletEffect : SkillBaseEffect
             });
             bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);
-            bullet.SetRes(string.Format("{0}/{1}", ResDefine.EFFECT_PATH, m_SkillEffect.Bullets[i].Name));
+            bullet.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, m_SkillEffect.Bullets[i].AssetName));
         }
     }
 

@@ -12,6 +12,7 @@ public class GameEntry : FrameWorkEntry
     {
         EffectMgr.Init();
         StaticConfig.InitConfig();
+        TaskMgr.Init();
     }
 
     protected override void OnStartGame()

@@ -51,13 +51,15 @@ namespace FrameWork.Camera
             m_CameraFollow.InitFollow(width, height);
         }
 
-        public void StartFollow()
+        public void StartFollow(bool forceStart = false)
         {
-            m_CameraFollow.StartFollow();
+            if (forceStart) m_IsForceEnd = false;
+            if (!m_IsForceEnd) m_CameraFollow.StartFollow();
         }
 
-        public void EndFollow()
+        public void EndFollow(bool forceEnd = false)
         {
+            if(forceEnd) m_IsForceEnd = true;
             m_CameraFollow.EndFollow();
         }
 
@@ -66,7 +68,8 @@ namespace FrameWork.Camera
             m_CameraFollow.EndFollow();
             m_CameraRoot.transform.DOShakePosition(time,0.1f,20,100).OnComplete(()=> 
             {
-                m_CameraFollow.StartFollow();
+                if (!m_IsForceEnd)
+                    m_CameraFollow.StartFollow();
             });
         }
 
@@ -134,5 +137,6 @@ namespace FrameWork.Camera
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;
         private GameObject m_CameraRoot = null;
+        private bool m_IsForceEnd = false;
     }
 }

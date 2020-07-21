@@ -15,7 +15,18 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Name: Bred
-    AssetName: Bred
+    AssetName: Character/Bred
+    AttackSpeed: 0.5
+    MoveSpeed: 0.6
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: a10f0000
+    Skills: a10f0000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3
+  - ID: 1002
+    Name: Bred
+    AssetName: Character/Bred
     AttackSpeed: 0.5
     MoveSpeed: 0.6
     JumpForce: {x: 0, y: 0}

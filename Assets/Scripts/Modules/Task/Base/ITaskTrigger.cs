@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TaskFactory
+public interface ITaskTrigger 
 {
-
+    void Trigger();
 }

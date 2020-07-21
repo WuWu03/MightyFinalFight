@@ -13,6 +13,7 @@ public class TaskData : BaseConfigData
     [Serializable]
     public enum ConditionType
     {
+        None,
         MoveToPos,//到达指定位置
         KillEnemy,//杀死目标
         WaitBarrels,//等待桶
@@ -21,10 +22,19 @@ public class TaskData : BaseConfigData
     [Serializable]
     public enum EffectType
     {
-        InsEnemy,//产生敌人
-        InsBarrels,//产生桶
+        None,
+        Enemy,//产生敌人
+        Barrels,//产生桶
         Talk,//对话
         Finger,//出现手指
+    }
+
+    [Serializable]
+    public enum PosType
+    {
+        X,
+        Y,
+        Both,
     }
 
     [Serializable]
@@ -34,13 +44,24 @@ public class TaskData : BaseConfigData
         public Vector2Int Pos;
     }
 
+    [Serializable]
+    public class TaskPositon
+    {
+        public PosType PosType;
+        public Vector2Int Pos;
+    }
+
     public ConditionType TriggerCondition;
-    public Vector2 Pos;
+    public TaskPositon PosCondition;
     public int[] KillIDs;
     public int BarrelsCount;
+    public bool KillAll;
+    public bool BarrelsAll;
 
     public EffectType TriggerEffect;
     public InsTarget[] Targets;
+    public bool TriggerStopCamera;
+    public bool ExitStartCamera;
     public int TalkID;
     public int PrevID;
     public int NextID;

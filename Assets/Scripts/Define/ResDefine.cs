@@ -26,8 +26,6 @@ public struct ResDefine
 #endif
 
     public const string PREFAB_PATH = "ArtResources/Prefabs";
-    public const string MODEL_PATH = "ArtResources/Prefabs/Character";
-    public const string WEAPON_PATH = "ArtResources/Prefabs/Weapon";
     public const string EFFECT_PATH = "ArtResources/Prefabs/FX";
     public const string UI_PATH = "ArtResources/UI/Prefabs";
     public const string ICON_PATH = "ArtResources/UI/Icon";

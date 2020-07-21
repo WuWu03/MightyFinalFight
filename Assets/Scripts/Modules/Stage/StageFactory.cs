@@ -36,6 +36,7 @@ public static class StageFactory
 
         sceneItem.InitInfo(new SceneItemInfo()
         {
+            ID = data.ID,
             Type = type,
             Health = data.Value,
             MaxHealth = data.Value,
@@ -43,19 +44,20 @@ public static class StageFactory
             TriggerSize = data.TriggerSize,
             Value = data.Value,
         });
-        sceneItem.SetRes(string.Format("{0}/{1}.prefab", ResDefine.PREFAB_PATH, data.AssetName));
+        sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, data.AssetName));
         sceneItem.SetObjectType(ObjectType.Weapon);
         sceneItem.SetMapPos(pos);
     }
 
-    public static void CreateEnemy(EnemyData enemyData,Vector2Int pos)
+    public static BaseEnemy CreateEnemy(EnemyData enemyData,Vector2Int pos)
     {
         BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
-        enemy.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, enemyData.AssetName));
+        enemy.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, enemyData.AssetName));
         enemy.InitInfo(new BaseRoleInfo()
         {
-            Health = 20,
-            MaxHealth = 20,
+            ID = enemyData.ID,
+            Health = 5,
+            MaxHealth = 5,
             AttackSpeed = enemyData.AttackSpeed,
             AttackValue = 1,
             Defense = 1,
@@ -71,6 +73,8 @@ public static class StageFactory
         });
 
         enemy.SetObjectType(ObjectType.Monster);
-        enemy.SetMapPos(new Vector2Int(-350, -40));
+        enemy.SetMapPos(pos);
+
+        return enemy;
     }
 }

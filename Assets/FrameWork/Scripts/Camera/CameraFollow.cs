@@ -69,6 +69,7 @@ namespace FrameWork.Camera
         {
             m_IsStart = m_Target != null;
         }
+
         public void EndFollow()
         {
             m_IsStart = false;

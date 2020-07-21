@@ -15,7 +15,7 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Name: Cody
-    AssetName: Cody
+    AssetName: Character/Cody
     HitEffect: CodyHit
     Desc: 'A TOUGH STREET
 

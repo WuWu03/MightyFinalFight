@@ -1,4 +1,5 @@
-﻿using FrameWork;
+﻿using Boo.Lang;
+using FrameWork;
 using FrameWork.Camera;
 using FrameWork.Pool;
 using FrameWork.Resources;
@@ -41,6 +42,9 @@ public class StageMgr : MonoSingleton<StageMgr>
             Utils.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
             DontDestroyOnLoad(m_MapRenderer.gameObject);
         }
+
+        m_ListDeadEnemy = new List<int>();
+        m_ListCurrEnemy = new List<BaseEnemy>();
     }
 
     public void Enter(int id)
@@ -52,7 +56,6 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
 
-        CreateEnemy();
         CreateSceneItem();
         CameraMgr.Ins.EndFollow();
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
@@ -162,6 +165,11 @@ public class StageMgr : MonoSingleton<StageMgr>
         return false;
     }
 
+    private bool IsInAreaPos2(Area area, Vector2 pos)
+    {
+        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
+    }
+
     private Rect GetBound(Area area)
     {
         m_AreaBound.width = area.Size.x;
@@ -172,11 +180,6 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_AreaBound.yMax = area.Pos.y + area.Size.y / 2f;
 
         return m_AreaBound;
-    }
-
-    private bool IsInAreaPos2(Area area, Vector2 pos)
-    {
-        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
     }
 
     private void OnLoadComplete(Object obj)
@@ -206,13 +209,27 @@ public class StageMgr : MonoSingleton<StageMgr>
         UIMgr.Ins.Open<MainPanel>();
     }
 
-    private void CreateEnemy()
+    public void CreateEnemy(int id, Vector2Int pos)
     {
-        for (int i = 0; i < 1; i++)// m_CurrStageData.EnemyAreas[0].Enemys.Length; i++)
-        {           
-            EnemyData enemyData = StaticConfig.EnemyConfig.GetData(1001);
-            StageFactory.CreateEnemy(enemyData, new Vector2Int(-320, -60));
+        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(id), pos);
+        enemy.OnDead += OnEnemyDead;
+        m_ListCurrEnemy.Add(enemy);
+    }
+
+    public bool IsEnemyDead(int id)
+    {
+        for(int i = 0;i< m_ListDeadEnemy.Count; i++)
+        {
+            if (m_ListDeadEnemy[i] == id)
+                return true;
         }
+
+        return false;
+    }
+
+    public bool IsAllEnemyDead()
+    {
+        return m_ListCurrEnemy.Count <= 0;
     }
 
     private void CreateSceneItem()
@@ -227,6 +244,18 @@ public class StageMgr : MonoSingleton<StageMgr>
         }
     }
 
+    private void OnEnemyDead(int id)
+    {
+        m_ListDeadEnemy.Add(id);
+
+        for (int i = m_ListCurrEnemy.Count - 1; i >= 0; i--)
+        {
+            if (m_ListCurrEnemy[i].EntityID == id)
+            {
+                m_ListCurrEnemy.RemoveAt(i);
+            }
+        }
+    }
 
     private int m_Width;
     private int m_Height;
@@ -235,4 +264,6 @@ public class StageMgr : MonoSingleton<StageMgr>
     private StageData m_CurrStageData = null;
     private int m_CurrID = 0;
     private int m_CurrAreaIndex = 1;
+    private List<BaseEnemy> m_ListCurrEnemy;
+    private List<int> m_ListDeadEnemy;
 }

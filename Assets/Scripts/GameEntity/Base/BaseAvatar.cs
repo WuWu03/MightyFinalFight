@@ -10,10 +10,8 @@ public abstract class BaseAvatar : BaseSceneObject
 {
     public float MoveSpeed
     {
-        get 
-        {
-            return m_MoveSpeed; 
-        }
+        get {return m_MoveSpeed; }
+        set { m_MoveSpeed = value; }
     }
 
     public bool IsFloat

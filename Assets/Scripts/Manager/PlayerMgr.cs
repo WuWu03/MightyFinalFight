@@ -55,6 +55,16 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
+    public bool CanContrl
+    {
+        get { return m_CanControl; }
+        set
+        {
+            m_CanControl = value;
+            if (value) m_Player.MoveSpeed = m_HeroData.MoveSpeed;
+            else m_Player.MoveSpeed = 0;
+        }
+    }
     public void InitPlayer(int roleID)
     {
         m_Life = 5;
@@ -66,7 +76,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetRes(string.Format("{0}/{1}.prefab", ResDefine.MODEL_PATH, m_HeroData.AssetName));
+        m_Player.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, m_HeroData.AssetName));
 
         m_Player.InitInfo(new BaseRoleInfo()
         {
@@ -81,6 +91,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
    
         m_CurrCtrl.InitData(new BaseHeroSkillInfo()
         {
+            ID = m_HeroData.ID,
             AttackIDs = m_HeroData.AttackIDs,
             JumpAttackIDs = m_HeroData.JumpAttackIDs,
             Skills = m_HeroData.Skills,
@@ -105,6 +116,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
  
         CameraMgr.Ins.SetTarget(m_Player.transform);
+        TaskMgr.Ins.AcceptTask(1001);
+        CanContrl = true;
     }
 
     public void Rebirth(Vector2 rebirthPos)
@@ -144,10 +157,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private void Control()
     {
-        if (m_Player == null || m_CurrCtrl == null) return;
-
-        if (m_Player.ResGO == null) return;
-        if (m_Player.Health <= 0) return;
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.ResComplete || m_Player.Health <= 0) return;
+        if (!CanContrl) return;
 
         m_CurrCtrl.Move(InputMgr.GetAxis());
 
@@ -182,4 +193,5 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_EXP = 0;
     private int m_Level = 0;
     private int m_Continue = 0;
+    private bool m_CanControl = false;
 }

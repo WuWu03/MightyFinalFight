@@ -1,5 +1,6 @@
 ﻿using FrameWork.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BaseEnemy : BaseRole
 {
@@ -11,6 +12,8 @@ public class BaseEnemy : BaseRole
         }
     }
 
+    public event VoidParamT<int> OnDead;
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -20,7 +23,8 @@ public class BaseEnemy : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            if (!CanMove || !StageMgr.Ins.CanMovePos2(pos)) return;
+            bool isMapCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
+            if (!CanMove || !isMapCanMove) return;
         }
 
         base.SetPos(pos);
@@ -73,5 +77,12 @@ public class BaseEnemy : BaseRole
         }
     }
 
+    public override void Release()
+    {
+        base.Release();
+        OnDead(m_EntityID);
+        OnDead -= OnDead;
+        OnDead = null;
+    }
     protected BaseRoleCtrl m_AvatarCtrl = null;
 }
