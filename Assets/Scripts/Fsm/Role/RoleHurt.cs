@@ -16,6 +16,7 @@ public class RoleHurt : BaseFsmState, IStateParam<HurtData>
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.PlayAnimation(StateParam.HurtAnim, 1,2f);
+        m_Owner.SetPos(m_Owner.Pos);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
