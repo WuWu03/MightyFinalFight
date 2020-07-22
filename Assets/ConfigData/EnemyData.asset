@@ -35,3 +35,36 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 0.3
+  - ID: 1003
+    Name: Bred
+    AssetName: Character/Bred
+    AttackSpeed: 0.5
+    MoveSpeed: 0.6
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: a10f0000
+    Skills: a10f0000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3
+  - ID: 1004
+    Name: Bred
+    AssetName: Character/Bred
+    AttackSpeed: 0.5
+    MoveSpeed: 0.6
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: a10f0000
+    Skills: a10f0000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3
+  - ID: 1005
+    Name: Bred
+    AssetName: Character/Bred
+    AttackSpeed: 0.5
+    MoveSpeed: 0.6
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: a10f0000
+    Skills: a10f0000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3

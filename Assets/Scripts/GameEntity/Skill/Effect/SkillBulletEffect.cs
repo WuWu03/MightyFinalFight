@@ -14,7 +14,7 @@ public class SkillBulletEffect : SkillBaseEffect
     {
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
-            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(m_SkillEffect.Bullets[i].Name);        
+            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(m_SkillEffect.Bullets[i].Name);
             bullet.InitInfo(new BulletInfo()
             {
                 Health = 1,
@@ -32,6 +32,8 @@ public class SkillBulletEffect : SkillBaseEffect
                 Drag = m_SkillEffect.Bullets[i].Drag,
                 TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest,
                 TriggerSize = m_SkillEffect.Bullets[i].TriggerSize,
+                IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate,
+                SkillExp = m_SkillData.EXP,
             });
             bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);

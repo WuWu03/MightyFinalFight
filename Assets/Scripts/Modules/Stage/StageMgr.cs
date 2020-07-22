@@ -10,6 +10,13 @@ using UnityEngine;
 
 public class StageMgr : MonoSingleton<StageMgr>
 {
+    public int StageIndex
+    {
+        get
+        {
+            return m_StageIndex;
+        }
+    }
     public int CurrID
     {
         get
@@ -55,7 +62,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Width = m_CurrStageData.Width;
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
-
+        m_StageIndex = m_CurrStageData.StageIndex;
         CreateSceneItem();
         CameraMgr.Ins.EndFollow();
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
@@ -259,11 +266,13 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private int m_Width;
     private int m_Height;
+    private int m_CurrID = 0;
+    private int m_CurrAreaIndex = 1;
+    private int m_StageIndex = 0;
+
     private Rect m_AreaBound = Rect.zero;
     private SpriteRenderer m_MapRenderer = null;
     private StageData m_CurrStageData = null;
-    private int m_CurrID = 0;
-    private int m_CurrAreaIndex = 1;
     private List<BaseEnemy> m_ListCurrEnemy;
     private List<int> m_ListDeadEnemy;
 }

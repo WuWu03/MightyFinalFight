@@ -8,6 +8,7 @@ public class HurtData : BaseEventArgs
     public Vector2 AttackerPos { get; set; }
     public int AttackValue { get; set; }
     public int AttackerID { get; set; }
+    public int SkillExp { get; set; }
     public bool IsSwoon { get; set; }//是否击飞
     public float AttackerDir { get; set; }
     public string HurtSound { get; set; }
@@ -19,6 +20,7 @@ public class HurtData : BaseEventArgs
         AttackerPos = Vector2.zero;
         AttackValue = 0;
         AttackerID = 0;
+        SkillExp = 0;
         IsSwoon = false;
         AttackerDir = 0;
         HurtSound = string.Empty;

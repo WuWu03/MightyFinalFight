@@ -47,4 +47,10 @@ public class EditorWindowMgr : MonoBehaviour
     {
         FrameWork.Utils.Utils.CreateConfigData<TaskConfig, TaskData>("TaskData", ".asset");
     }
+
+    [MenuItem("Assets/Config/CreateLevelData")]
+    public static void CreateLevelData()
+    {
+        FrameWork.Utils.Utils.CreateConfigData<LevelConfig, LevelData>("LevelData", ".asset");
+    }
 }

@@ -116,7 +116,7 @@ public class BaseSceneObject : BaseObject
         SetPos(new Vector2(x, y));
     }
 
-    public void SetMapPos(Vector2Int pos)
+    public virtual void SetMapPos(Vector2Int pos)
     {
         SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
     }

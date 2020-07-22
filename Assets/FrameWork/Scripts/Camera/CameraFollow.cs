@@ -30,8 +30,8 @@ namespace FrameWork.Camera
             m_VisionRect.width = Screen.width * m_CurrAspectRate;
             m_VisionRect.height = Screen.height * m_CurrAspectRate;
             m_VisionRect.xMin = transform.position.x - Screen.width * m_CurrAspectRate / 100 / 2;
-            m_VisionRect.xMax = transform.position.y - Screen.height * m_CurrAspectRate / 100 / 2;
             m_VisionRect.xMax = transform.position.x + Screen.width * m_CurrAspectRate / 100 / 2;
+            m_VisionRect.yMin = transform.position.y - Screen.height * m_CurrAspectRate / 100 / 2;
             m_VisionRect.yMax = transform.position.y + Screen.height * m_CurrAspectRate / 100 / 2;
             return m_VisionRect;
         }

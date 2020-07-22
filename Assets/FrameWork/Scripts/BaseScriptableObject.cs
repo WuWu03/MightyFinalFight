@@ -29,8 +29,17 @@ namespace FrameWork
     }
 
     [Serializable]
-    public abstract class BaseConfigData
+    public abstract class BaseConfigData:IComparable
     {
         public int ID;
+
+        public int CompareTo(object obj)
+        {
+            BaseConfigData data = obj as BaseConfigData;
+            if (data.ID < this.ID)
+                return 1;
+            else
+                return -1;
+        }
     }
 }

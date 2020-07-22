@@ -1,4 +1,5 @@
 ﻿using FrameWork;
+using FrameWork.Camera;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +64,18 @@ public class BaseSceneItem : BaseSceneObject
         m_Collider.offset = offest;
         m_Collider.size = size;
         SetPos(m_Pos);
+    }
+
+    protected bool IsOutVersionX(float posX)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posX <= visionRect.xMin || posX >= visionRect.xMax;
+    }
+
+    protected bool IsOutVersionY(float posY)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
     private Rect m_Bound = Rect.zero;

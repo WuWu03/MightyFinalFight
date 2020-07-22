@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665943257}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.001}
+  m_LocalPosition: {x: 0.0095, y: -0.0088, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8815589085709238872}
@@ -105,7 +105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595950213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0095, y: -0.0088, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8815589085709238872}
@@ -327,23 +327,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: -0.0009711683, y: 0.0016146302}
-    Size: {x: 0.16769221, y: 0.32252938}
+    Offest: {x: -0.012061775, y: -0.0046238303}
+    Size: {x: 0.17323753, y: 0.32391572}
   - AnimName: Idle
     Offest: {x: -0.00092183426, y: 0.0022411048}
     Size: {x: 0.23677385, y: 0.32879406}
   - AnimName: Attack1
-    Offest: {x: 0.04473853, y: 0.002833277}
-    Size: {x: 0.32870704, y: 0.31996173}
+    Offest: {x: 0.050283834, y: -0.0042904764}
+    Size: {x: 0.31761643, y: 0.31757328}
   - AnimName: Attack2
-    Offest: {x: 0.04473853, y: 0.002833277}
-    Size: {x: 0.32870704, y: 0.31996173}
+    Offest: {x: 0.049733877, y: -0.0052841455}
+    Size: {x: 0.31871635, y: 0.3162152}
   - AnimName: Attack3
-    Offest: {x: 0.04473853, y: 0.002833277}
-    Size: {x: 0.32870704, y: 0.31996173}
+    Offest: {x: 0.050358295, y: -0.006532952}
+    Size: {x: 0.30497915, y: 0.31621525}
   - AnimName: Attack4
-    Offest: {x: 0.036876813, y: 0.003765136}
-    Size: {x: 0.3289363, y: 0.32924992}
+    Offest: {x: 0.03930682, y: 0.04723254}
+    Size: {x: 0.33379632, y: 0.41618472}
   - AnimName: JumpUp
     Offest: {x: 0.0026434362, y: 0.0022016466}
     Size: {x: 0.18905827, y: 0.35829216}
@@ -351,50 +351,56 @@ MonoBehaviour:
     Offest: {x: -0.0018643439, y: 0.0041335225}
     Size: {x: 0.18004271, y: 0.3544284}
   - AnimName: Hurt
-    Offest: {x: -0.0012203753, y: 0.001557678}
-    Size: {x: 0.27663797, y: 0.31579024}
+    Offest: {x: 0.010156952, y: -0.0012866557}
+    Size: {x: 0.27663797, y: 0.3214789}
   - AnimName: SmoonUp
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.37, y: 0.3}
+    Offest: {x: 0.00094810873, y: -0.020858377}
+    Size: {x: 0.3908584, y: 0.28483033}
   - AnimName: SmoonDown
-    Offest: {x: 0, y: -0.05}
-    Size: {x: 0.45, y: 0.2}
+    Offest: {x: 0, y: -0.07749518}
+    Size: {x: 0.39690584, y: 0.2018962}
   - AnimName: Awaken
-    Offest: {x: -0.00481984, y: -0.03795044}
-    Size: {x: 0.35576516, y: 0.26518038}
+    Offest: {x: -0.0143009275, y: -0.09199269}
+    Size: {x: 0.39368954, y: 0.18743536}
   - AnimName: Dead
-    Offest: {x: 0, y: -0.07952738}
-    Size: {x: 0.4049664, y: 0.15915474}
+    Offest: {x: 0, y: -0.10986689}
+    Size: {x: 0.4049664, y: 0.14777747}
   - AnimName: JumpAttack1
-    Offest: {x: 0.0047837794, y: -0.016743422}
-    Size: {x: 0.33983523, y: 0.28721333}
+    Offest: {x: 0.00004322827, y: 0.0012706816}
+    Size: {x: 0.33035412, y: 0.2815246}
   - AnimName: JumpAttack2
     Offest: {x: 0.0067573786, y: 0.0067572296}
     Size: {x: 0.2747128, y: 0.3197618}
   - AnimName: Skill1
-    Offest: {x: 0.041298673, y: -0.002050072}
-    Size: {x: 0.3146886, y: 0.32348424}
+    Offest: {x: 0.021388367, y: -0.002050072}
+    Size: {x: 0.335547, y: 0.32348424}
   - AnimName: Knee
-    Offest: {x: -0.000000014901161, y: 0.009639621}
-    Size: {x: 0.1999071, y: 0.3252225}
+    Offest: {x: -0.0047405623, y: -0.009322554}
+    Size: {x: 0.19042599, y: 0.31384522}
   - AnimName: Catch
-    Offest: {x: 0.0120496005, y: 0.007229686}
-    Size: {x: 0.22400627, y: 0.33004236}
+    Offest: {x: -0.015326828, y: -0.008397877}
+    Size: {x: 0.16343012, y: 0.3136676}
   - AnimName: Throw
-    Offest: {x: 0.014459506, y: 0.002409935}
-    Size: {x: 0.25774512, y: 0.33004212}
+    Offest: {x: 0.02962926, y: -0.009915501}
+    Size: {x: 0.28808463, y: 0.30539125}
   - AnimName: JumpRoll
     Offest: {x: 0.00240992, y: 0.004819751}
     Size: {x: 0.2722046, y: 0.27702427}
   - AnimName: Skill2
-    Offest: {x: -0.00240995, y: 0.002409935}
-    Size: {x: 0.34932205, y: 0.32040286}
+    Offest: {x: -0.00240995, y: -0.0032787323}
+    Size: {x: 0.34932205, y: 0.2976482}
   - AnimName: Idle_Weapon
     Offest: {x: 0.00032921508, y: -0.000000059604645}
     Size: {x: 0.23598126, y: 0.3322538}
   - AnimName: Move_Weapon
-    Offest: {x: 0.015182763, y: 0.008856535}
-    Size: {x: 0.18013108, y: 0.32436728}
+    Offest: {x: 0.0094941035, y: 0.008856535}
+    Size: {x: 0.1915084, y: 0.32436728}
   - AnimName: Attack_Weapon
-    Offest: {x: 0.11893162, y: 0.012652338}
-    Size: {x: 0.38256782, y: 0.32183683}
+    Offest: {x: 0.082903445, y: -0.010102302}
+    Size: {x: 0.37877536, y: 0.31045943}
+  - AnimName: PickUp
+    Offest: {x: 0.026362255, y: -0.023009181}
+    Size: {x: 0.24913207, y: 0.27710724}
+  - AnimName: ThrowWeapon
+    Offest: {x: 0.063212425, y: -0.007507086}
+    Size: {x: 0.32810247, y: 0.30921644}

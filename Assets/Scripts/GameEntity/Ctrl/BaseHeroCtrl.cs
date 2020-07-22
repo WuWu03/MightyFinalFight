@@ -9,7 +9,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         m_CatchAttackID = heroSkillData.CatchAttackID;
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
         m_WeaponAttackID = heroSkillData.WeaponAttackID;
-
+        m_ThrowWeaponID = heroSkillData.ThrowWeaponID;
         base.InitData(data);
     }
 
@@ -51,9 +51,9 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
         else if (hero.Weapon != null)
         {
-            //if (hero.Weapon.Health <= 1)
-            //    m_SkillManager.DeploySkill(1013);
-            //else
+            if (hero.Weapon.Health <= 1 && m_ThrowWeaponID != 0)
+                m_SkillManager.DeploySkill(m_ThrowWeaponID);
+            else
                 m_SkillManager.DeploySkill(m_WeaponAttackID);
             hero.UseWeaponMsg();
             return;
@@ -80,6 +80,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
     private int m_CatchAttackID;
     private int m_ThrowAttackID;
+    private int m_ThrowWeaponID;
     private int m_WeaponAttackID;
     private const float CATCH_ATTACK_STAMP = 0.3f;
     private float m_CatchAttackTimer = 0f;

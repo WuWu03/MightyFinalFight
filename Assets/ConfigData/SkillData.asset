@@ -248,6 +248,7 @@ MonoBehaviour:
         Drag: 20
         TriggerOffest: {x: 0, y: 0}
         TriggerSize: {x: 0.1, y: 0.25}
+        IsPenatrate: 0
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 100}
       AddSelfForce: {x: 0, y: 0}
@@ -484,6 +485,54 @@ MonoBehaviour:
       SelectorType: 1
       ForceType: 1
       Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      Args: 
+  - ID: 1013
+    Level: 0
+    Name: CodyThrowWeapon
+    AnimationName: ThrowWeapon
+    HurtSound: DaggerHit
+    Type: 2
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    IsInEffectPlaySound: 1
+    CanChangeDir: 1
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 2
+      SelectorType: 2
+      ForceType: 1
+      Bullets:
+      - Name: Weapon
+        AssetName: Weapon/CodyWeapon
+        NormalAnim: Hit
+        HitAnim: 
+        NormalAnimSpeed: 0
+        HitAnimSpeed: 0
+        Dir: {x: 1, y: 0}
+        Pos: {x: 0.245, y: -0.0529}
+        Velocity: {x: 10, y: 0}
+        HitRange: 0.5
+        Drag: 0
+        TriggerOffest: {x: 0, y: 0}
+        TriggerSize: {x: 0.16, y: 0.06}
+        IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}

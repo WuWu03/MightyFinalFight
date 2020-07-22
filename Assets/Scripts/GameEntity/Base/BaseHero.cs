@@ -303,9 +303,12 @@ public class BaseHero : BaseRole
                 if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
 
                 BaseAvatar targetObj = temp as BaseAvatar;
-                float distance = targetObj.Bound.width / 2 + Bound.width / 2;
+                Vector2 targetSize = targetObj.GetAnimTriggerSize(AnimName.Idle);
+                Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
+
+                float distance = targetSize.x / 2 + selfSize.x / 2 - 0.01f;
                 bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
-                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) <= distance &&
+                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) < distance &&
                                     (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;
                 if (isInRange)
                 {

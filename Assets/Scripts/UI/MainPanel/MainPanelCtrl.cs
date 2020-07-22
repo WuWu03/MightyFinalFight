@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using FrameWork.UI;
 using DG.Tweening;
+using System;
+using System.Security.Principal;
 
 public class MainPanelCtrl:BasePanelCtrl
 {
@@ -18,15 +20,31 @@ public class MainPanelCtrl:BasePanelCtrl
 
 	protected override void OnLoaded()
 	{
+		m_Panel.LevelListGroupView.Init(m_Panel.LevelList, m_Panel.ItemGO, 5);
 	}
 
 	protected override BasePanel GetPanel()
 	{
 		return new MainPanel();
 	}
+
 	protected override void OnOpen()
 	{
-		m_Panel.TxtPlayerLife.text = "5";
+		m_Panel.LevelListGroupView.OnItemUpdate = OnItemUpdate;
+		m_Panel.LevelListGroupView.Update(5);
+		SetPlayerExp(PlayerMgr.Ins.EXP, PlayerMgr.Ins.LevelData.EXP);
+		SetRound(StageMgr.Ins.StageIndex);
+		SetPlayerLife(PlayerMgr.Ins.Life);
+		SetPlayerHP(PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.HPBarWidth);
+	}
+
+	private void OnItemUpdate(MainPanel.LevelListItem obj)
+	{
+		obj.ImgLevel1.gameObject.SetActive(StageMgr.Ins.StageIndex == 1 && PlayerMgr.Ins.Level == obj.Index);
+		obj.ImgLevel2.gameObject.SetActive(StageMgr.Ins.StageIndex == 2 && PlayerMgr.Ins.Level == obj.Index);
+		obj.ImgLevel3.gameObject.SetActive(StageMgr.Ins.StageIndex == 3 && PlayerMgr.Ins.Level == obj.Index);
+		obj.ImgLevel4.gameObject.SetActive(StageMgr.Ins.StageIndex == 4 && PlayerMgr.Ins.Level == obj.Index);
+		obj.ImgLevel5.gameObject.SetActive(StageMgr.Ins.StageIndex == 5 && PlayerMgr.Ins.Level == obj.Index);
 	}
 
 	protected override void OnUpdate()
@@ -46,14 +64,18 @@ public class MainPanelCtrl:BasePanelCtrl
 	{
 	}
 
-	public void SetPlayerHP(int value,int max)
+	public void SetPlayerHP(int value,int max,float width = 0f)
 	{
 		m_Panel.PlayerHpBar.value = value;
 		m_Panel.PlayerHpBar.maxValue = max;
+		if (width != 0)
+			m_Panel.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
 	}
 
 	public void SetEnemyHP(int value, int max,float width)
 	{
+		if (m_IsEnemyHpBarAnim) return;
+
 		m_Panel.EnemyHpBar.value = value;
 		m_Panel.EnemyHpBar.maxValue = max;
 		m_Panel.EnemyHpBar.gameObject.SetActive(true);
@@ -64,7 +86,7 @@ public class MainPanelCtrl:BasePanelCtrl
 		if (value == 0)
 		{
 			m_EnemyHpBarHideTimer = -1;
-			
+			m_IsEnemyHpBarAnim = true;
 			Sequence sequence = DOTween.Sequence();
 			sequence.Append(image.DOFade(0, 0.2f));
 			sequence.Append(image.DOFade(1, 0.2f));
@@ -76,6 +98,7 @@ public class MainPanelCtrl:BasePanelCtrl
 			sequence.AppendCallback(() =>
 			{
 				m_Panel.EnemyHpBar.gameObject.SetActive(false);
+				m_IsEnemyHpBarAnim = false;
 			});
 			return;
 		}
@@ -93,6 +116,27 @@ public class MainPanelCtrl:BasePanelCtrl
 		m_Panel.TxtPlayerLife.text = life.ToString();
 	}
 
+	public void SetPlayerExp(int currExp,int maxExp)
+	{
+		string currExpStr = GetExpStr(currExp);
+		string maxExpStr = GetExpStr(maxExp);
+		m_Panel.TxtExp.text = string.Format("{0}/{1}", currExpStr, maxExpStr);
+	}
+
+	private string GetExpStr(int exp)
+	{
+		string expStr = exp.ToString();
+		if (expStr.Length >= 3) return expStr;
+		int diff = 3 - expStr.Length;
+		for (int i = 0; i < diff; i++)
+		{
+			expStr = "0" + expStr;
+		}
+
+		return expStr;
+	}
+
+	private bool m_IsEnemyHpBarAnim = false;
 	private float m_EnemyHpBarHideTimer = -1;
 	private const float ENEMY_HP_BAR_HIDE = 4f;
 	private MainPanel m_Panel = null;

@@ -10,7 +10,7 @@ public class HeroPickUp : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(AnimName.PickUp, 1, 0.4f);
+        m_Owner.PlayAnimation(AnimName.PickUp, 1, 1f);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

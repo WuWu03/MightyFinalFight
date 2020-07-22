@@ -17,5 +17,6 @@ public class BulletInfo : BaseSceneObjectInfo
     public float Drag { get; set; }
     public Vector2 TriggerOffest { get; set; }
     public Vector2 TriggerSize { get; set; }
-
+    public bool IsPenatrate { get; set; }//是否穿透
+    public int SkillExp { get; set; }
 }

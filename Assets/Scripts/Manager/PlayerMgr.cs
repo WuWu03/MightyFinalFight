@@ -23,6 +23,14 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
+    public LevelData.LevelInfo LevelData
+    {
+        get
+        {
+            return m_LevelData;
+        }
+    }
+
     public int Life
     {
         get
@@ -69,6 +77,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_EXP = 0;
 
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
+        m_LevelData = StaticConfig.LevelConfig.GetData(roleID).Levels[m_Level - 1];
         m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
@@ -76,8 +85,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         m_Player.InitInfo(new BaseRoleInfo()
         {
-            Health = 10,
-            MaxHealth = 10,
+            Health = m_LevelData.Health,
+            MaxHealth = m_LevelData.Health,
             AttackSpeed = m_HeroData.AttackSpeed,
             AttackValue = 1,
             Defense = 1,
@@ -95,7 +104,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             AttackNextTime = m_HeroData.AttackNextTime,
             CatchAttackID = m_HeroData.CatchAttackID,
             ThrowAttackID = m_HeroData.ThrowAttackID,
-            WeaponAttackID = 1012,
+            WeaponAttackID = m_HeroData.WeaponAttackID,
+            ThrowWeaponID = m_HeroData.ThrowWeaponID,
         });
 
         InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
@@ -139,11 +149,22 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
+        if(m_EXP >= m_LevelData.EXP)
+        {
+            m_Level++;
+            m_EXP -= m_LevelData.EXP;
+            m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.ID).Levels[m_Level - 1];
+            m_Player.Health = m_LevelData.Health;
+            m_Player.MaxHealth = m_LevelData.Health;
+            UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
+        }
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerExp(m_EXP, m_LevelData.EXP);
     }
 
     public void AddLife(int value)
     {
         m_Life += value;
+        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)
@@ -199,6 +220,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private BaseRoleCtrl m_CurrCtrl = null;
     private HeroData m_HeroData = null;
     private BaseHero m_Player = null;
+    private LevelData.LevelInfo m_LevelData = null;
 
     private int m_Life = 0;
     private int m_EXP = 0;

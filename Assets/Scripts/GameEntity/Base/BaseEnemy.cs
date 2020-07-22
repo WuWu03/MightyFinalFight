@@ -69,6 +69,11 @@ public class BaseEnemy : BaseRole
         int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
         Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
         EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+
+        if(m_Health - data.AttackValue <= 0)
+        {
+            m_SkillExp = data.SkillExp;
+        }
         base.OnHurtMsg(data);
     }
 
@@ -84,9 +89,13 @@ public class BaseEnemy : BaseRole
     public override void Release()
     {
         base.Release();
+        PlayerMgr.Ins.AddExp(m_SkillExp);
         OnDead(m_EntityID);
         OnDead -= OnDead;
         OnDead = null;
+        m_SkillExp = 0;
     }
+
+    private int m_SkillExp = 0;
     protected BaseRoleCtrl m_AvatarCtrl = null;
 }

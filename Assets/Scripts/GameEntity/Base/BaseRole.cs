@@ -165,6 +165,17 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return m_CurrCtrl as T;
     }
 
+    public override void SetMapPos(Vector2Int pos)
+    {
+        Vector2 realPos = new Vector2(pos.x / 100f, pos.y / 100f);
+        if (m_ResComplete)
+        {
+            realPos.y = realPos.y + m_Collider.offset.y + m_Collider.size.y / 2;
+            SetPos(realPos);
+        }
+        else m_MapPos = realPos;
+    }
+
     public override void Release()
     {
         m_CurrCtrl.Release();
@@ -177,7 +188,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnResComplete(go);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
-        SetPos(m_Pos);
+
+        if (m_MapPos != Vector2.zero)
+        {
+            m_MapPos.y = m_MapPos.y + m_Collider.offset.y + m_Collider.size.y / 2;
+            SetPos(m_MapPos);
+            m_MapPos = Vector2.zero;
+        }
+        else SetPos(m_Pos);
     }
 
     protected override void Update()
@@ -407,4 +425,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;
+
+    private Vector2 m_MapPos = Vector2.zero;
 }

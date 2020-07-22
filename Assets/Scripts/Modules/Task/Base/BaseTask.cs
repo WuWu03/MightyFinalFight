@@ -48,12 +48,14 @@ public abstract class BaseTask
 
     public virtual bool Exit()
     {
-        if(m_TaskData.ExitStartCamera)
+        if (m_TaskData.ExitStartCamera)
         {
             PlayerMgr.Ins.CanContrl = false;
             PlayerMgr.Ins.SetSpeedZero(true);
             CameraMgr.Ins.StartFollow(true);
-            bool isDistance = Mathf.Abs(CameraMgr.Ins.CameraRoot.transform.position.x - PlayerMgr.Ins.Player.transform.position.x) <= 0.03f;
+            float cameraX = CameraMgr.Ins.CameraRoot.transform.position.x;
+            float playerX = PlayerMgr.Ins.Player.Pos.x;
+            bool isDistance = cameraX >= playerX || Mathf.Abs(cameraX - playerX) <= 0.03f;
 
             if (isDistance)
             {

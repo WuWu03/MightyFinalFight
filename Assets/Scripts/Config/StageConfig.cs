@@ -21,6 +21,7 @@ public class StageData : BaseConfigData
 
     public string Name;
     public string AssetName;
+    public int StageIndex;
     public int Width;
     public int Height;
     public Vector2Int InitPos;//主角出生地点

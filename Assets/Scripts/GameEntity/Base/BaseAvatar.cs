@@ -115,6 +115,7 @@ public abstract class BaseAvatar : BaseSceneObject
         m_Rigidbody.freezeRotation = true;
     }
 
+ 
     public override void SetPos(Vector2 pos)
     {
         m_Pos = pos;
@@ -128,6 +129,19 @@ public abstract class BaseAvatar : BaseSceneObject
         m_TriggerTargets.Release();
         m_TriggerTargets = null;
         m_FsmMachine = null;
+    }
+
+    public Vector2 GetAnimTriggerSize(string animName)
+    {
+        if (m_DBTrigger == null) return Vector2.zero;
+        TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
+
+        if (triggerData != null)
+        {
+            return triggerData.Size;
+        }
+
+        return Vector2.zero;
     }
 
     protected void SetTrigger(string animName)
@@ -151,7 +165,7 @@ public abstract class BaseAvatar : BaseSceneObject
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
-        m_Animator = m_ResGO.GetComponent<DragonBones.UnityArmatureComponent>();
+        m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
         m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
     }
 

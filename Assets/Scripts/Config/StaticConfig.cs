@@ -11,7 +11,7 @@ public static class StaticConfig
     public static BehaviourTreeConfig BehaviourTreeConfig = null;
     public static SceneItemConfig SceneItemConfig = null;
     public static TaskConfig TaskConfig = null;
-
+    public static LevelConfig LevelConfig = null;
     public static void InitConfig()
     {
         HeroConfig = AssetDatabase.LoadAssetAtPath<HeroConfig>("Assets/ConfigData/HeroData.asset");
@@ -21,6 +21,7 @@ public static class StaticConfig
         BehaviourTreeConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeConfig>("Assets/ConfigData/BehaviourTreeData.asset");
         SceneItemConfig = AssetDatabase.LoadAssetAtPath<SceneItemConfig>("Assets/ConfigData/SceneItemData.asset");
         TaskConfig = AssetDatabase.LoadAssetAtPath<TaskConfig>("Assets/ConfigData/TaskData.asset");
+        LevelConfig = AssetDatabase.LoadAssetAtPath<LevelConfig>("Assets/ConfigData/LevelData.asset");
     }
 
     public static void Clear()

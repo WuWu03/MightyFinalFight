@@ -76,6 +76,7 @@ public class SkillData : BaseConfigData
         public float Drag;
         public Vector2 TriggerOffest;
         public Vector2 TriggerSize;
+        public bool IsPenatrate;//是否穿透
     }
 
     [Serializable]
@@ -122,6 +123,7 @@ public class SkillData : BaseConfigData
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数
+    public int EXP = 4;
     public bool IsInEffectPlaySound;//效果触发时是否播放声音
     public bool CanChangeDir;
     public SkillPrevCondition[] SkillPrevConditions;//释放技能的前置条件
