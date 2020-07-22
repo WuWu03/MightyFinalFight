@@ -17,11 +17,9 @@ MonoBehaviour:
     Name: Cody
     AssetName: Character/Cody
     HitEffect: CodyHit
-    Desc: 'A TOUGH STREET
+    Desc: 'A TOUGH STREET FIGHTER WHO IS
 
-      FIGHTER WHO IS
-
-      SKILLED WITH KNI'
+      SKILLED WITH KNIVES.'
     HeadIcon: Cody
     AttackSpeed: 1
     MoveSpeed: 0.8
