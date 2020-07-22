@@ -14,7 +14,7 @@ public class DoRunToRandomPos : Action
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        m_RandomPos = StageMgr.Ins.GetRandomPos2(PlayerMgr.Ins.Player.Pos);
+        m_RandomPos = StageMgr.Ins.GetRandomPos2(new Vector2(PlayerMgr.Ins.Player.Pos.x, PlayerMgr.Ins.Player.Bound.yMin));
         m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + m_Owner.Owner.Bound.width, visionRect.xMax - m_Owner.Owner.Bound.width);
     }
 
@@ -28,14 +28,14 @@ public class DoRunToRandomPos : Action
             return BehaviorTreeState.Success;
         }
 
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-
-        m_IsArravied = Mathf.Abs(m_RandomPos.x - enemyPos.x) <= 0.05f &&
-                       Mathf.Abs(m_RandomPos.y - enemyPos.y) <= 0.05f;
+        float x = m_Owner.Owner.Pos.x;
+        float y = m_Owner.Owner.Bound.yMin;
+        m_IsArravied = Mathf.Abs(m_RandomPos.x - x) <= 0.05f &&
+                       Mathf.Abs(m_RandomPos.y - y) <= 0.05f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RandomPos - enemyPos).normalized, false);
+            m_Owner.Move((m_RandomPos - (Vector2.right * x + Vector2.up * y)).normalized, false);
             m_Owner.OppositePlayer();
         }
 

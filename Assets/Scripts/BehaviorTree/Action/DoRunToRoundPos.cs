@@ -12,14 +12,14 @@ public class DoRunToRoundPos : Action
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
-        float randomY = StageMgr.Ins.GetRandomY(playerPos);
-        float dir = playerPos.x > m_Owner.Owner.Pos.x ? 1 : -1;
-        float radius = Random.Range(0.2f, Vector2.Distance(enemyPos, playerPos));
-        Vector2 to = playerPos + Vector2.right * radius * dir;
+        Vector2 selfPos = new Vector2(m_Owner.Owner.Pos.x, m_Owner.Owner.Bound.yMin);
+        Vector2 targetPos = new Vector2(PlayerMgr.Ins.Player.Pos.x, PlayerMgr.Ins.Player.Bound.yMin);
+        float randomY = StageMgr.Ins.GetRandomY(targetPos);
+        float dir = targetPos.x > selfPos.x ? 1 : -1;
+        float radius = Random.Range(0.2f, Vector2.Distance(selfPos, targetPos));
+        Vector2 to = targetPos + Vector2.right * radius * dir;
         to.x = Mathf.Clamp(to.x, visionRect.xMin + m_Owner.Owner.Bound.width, visionRect.xMax - m_Owner.Owner.Bound.width);
-        m_RoundPos[0].x = playerPos.x;
+        m_RoundPos[0].x = targetPos.x;
         m_RoundPos[0].y = randomY;
         m_RoundPos[1] = to;
         m_CurrIndex = 0;
@@ -42,13 +42,15 @@ public class DoRunToRoundPos : Action
             m_CurrIndex++;
         }
 
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - enemyPos.x) <= 0.05f &&
-                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - enemyPos.y) <= 0.05f;
+        float x = m_Owner.Owner.Pos.x;
+        float y = m_Owner.Owner.Bound.yMin;
+
+        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - x) <= 0.05f &&
+                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - y) <= 0.05f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RoundPos[m_CurrIndex] - enemyPos).normalized, false);
+            m_Owner.Move((m_RoundPos[m_CurrIndex] - (Vector2.right * x + Vector2.up * y)).normalized, false);
             m_Owner.OppositePlayer();
         }
 

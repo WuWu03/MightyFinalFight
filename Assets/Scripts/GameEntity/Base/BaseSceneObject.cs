@@ -118,8 +118,7 @@ public class BaseSceneObject : BaseObject
 
     public void SetMapPos(Vector2Int pos)
     {
-        m_Pos = new Vector2((float)pos.x / 100, (float)pos.y / 100);
-        transform.localPosition = new Vector3(m_Pos.x, m_Pos.y, m_Pos.y);
+        SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
     }
 
     public virtual void SetPos(Vector2 pos)

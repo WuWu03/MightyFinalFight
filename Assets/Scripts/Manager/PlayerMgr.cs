@@ -57,14 +57,10 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     public bool CanContrl
     {
-        get { return m_CanControl; }
-        set
-        {
-            m_CanControl = value;
-            if (value) m_Player.MoveSpeed = m_HeroData.MoveSpeed;
-            else m_Player.MoveSpeed = 0;
-        }
+        get;
+        set;
     }
+
     public void InitPlayer(int roleID)
     {
         m_Life = 5;
@@ -155,6 +151,21 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Continue += value;
     }
 
+    public void SetSpeedZero(bool isZero)
+    {
+        if (isZero)
+        {
+            if(m_CurrSpeed == 0)
+                m_CurrSpeed = m_Player.MoveSpeed;
+            m_Player.MoveSpeed = 0f;
+        }
+        else
+        {
+            m_Player.MoveSpeed = m_CurrSpeed;
+            m_CurrSpeed = 0f;        
+        }
+    }
+
     private void Control()
     {
         if (m_Player == null || m_CurrCtrl == null || !m_Player.ResComplete || m_Player.Health <= 0) return;
@@ -193,5 +204,5 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_EXP = 0;
     private int m_Level = 0;
     private int m_Continue = 0;
-    private bool m_CanControl = false;
+    private float m_CurrSpeed = 0f;
 }

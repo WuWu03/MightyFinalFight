@@ -51,10 +51,15 @@ public abstract class BaseTask
         if(m_TaskData.ExitStartCamera)
         {
             PlayerMgr.Ins.CanContrl = false;
+            PlayerMgr.Ins.SetSpeedZero(true);
             CameraMgr.Ins.StartFollow(true);
             bool isDistance = Mathf.Abs(CameraMgr.Ins.CameraRoot.transform.position.x - PlayerMgr.Ins.Player.transform.position.x) <= 0.03f;
 
-            if(isDistance) PlayerMgr.Ins.CanContrl = true;
+            if (isDistance)
+            {
+                PlayerMgr.Ins.CanContrl = true;
+                PlayerMgr.Ins.SetSpeedZero(false);
+            }
             return isDistance;
         }
 

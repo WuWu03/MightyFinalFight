@@ -23,8 +23,12 @@ public class BaseEnemy : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            bool isMapCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
-            if (!CanMove || !isMapCanMove) return;
+            if (!CanMove) return;
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir);
+            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
+
+            if (!isMapXCanMove) pos.x = m_Pos.x;
+            if (!isMapYCanMove) pos.y = m_Pos.y;
         }
 
         base.SetPos(pos);

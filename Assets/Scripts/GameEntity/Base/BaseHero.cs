@@ -228,8 +228,12 @@ public class BaseHero : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            bool isMapCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
-            if (!isMapCanMove)
+            if (!CanMove) return;
+
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && !IsOutVersionX(pos.x);
+            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
+
+            if (!isMapXCanMove || !isMapYCanMove)
             {
                 CameraMgr.Ins.EndFollow();
             }
@@ -238,7 +242,8 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!CanMove || !isMapCanMove || IsOutVersionX(pos.x)) return;
+            if (!isMapXCanMove) pos.x = m_Pos.x;
+            if (!isMapYCanMove) pos.y = m_Pos.y;       
         }
 
         base.SetPos(pos);

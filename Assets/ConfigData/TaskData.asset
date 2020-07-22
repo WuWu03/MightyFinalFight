@@ -48,4 +48,4 @@ MonoBehaviour:
     ExitStartCamera: 1
     TalkID: 0
     PrevID: 0
-    NextID: 1002
+    NextID: 0
