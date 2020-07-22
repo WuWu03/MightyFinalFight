@@ -4,7 +4,7 @@ public class SceneItemInfo : BaseSceneObjectInfo
 {
     public enum ItemType
     {
-        None,
+        NONE,
         Weapon,
         HP,
         EXP,

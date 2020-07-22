@@ -20,7 +20,7 @@ MonoBehaviour:
       EXP: 33
     - Health: 15
       HPBarWidth: 400
-      EXP: 0
+      EXP: 54
     - Health: 25
       HPBarWidth: 550
       EXP: 0

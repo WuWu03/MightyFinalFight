@@ -233,7 +233,7 @@ public class BaseHero : BaseRole
             bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && !IsOutVersionX(pos.x);
             bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
 
-            if (!isMapXCanMove || !isMapYCanMove)
+            if (!isMapXCanMove && !isMapYCanMove)
             {
                 CameraMgr.Ins.EndFollow();
             }

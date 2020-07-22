@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FrameWork.Sound;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,16 +40,19 @@ public class Consume : BaseSceneItem
             AddExp();
         else
             m_Owner.AddHealth(m_ConsumeInfo.Value);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnEat");
     }
 
     private void AddExp()
     {
         PlayerMgr.Ins.AddExp(m_ConsumeInfo.Value);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnEat");
     }
 
     private void AddLife()
     {
         PlayerMgr.Ins.AddLife(m_ConsumeInfo.Value);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/GetRobot");
     }
 
     private void AddMoney()

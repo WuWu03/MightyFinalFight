@@ -2,6 +2,7 @@
 using FrameWork.Camera;
 using FrameWork.Input;
 using FrameWork.Pool;
+using FrameWork.Sound;
 using FrameWork.UI;
 using UnityEngine;
 
@@ -149,16 +150,19 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        if(m_EXP >= m_LevelData.EXP)
+        MainPanelCtrl mainPanelCtrl = UIMgr.Ins.GetPanel<MainPanelCtrl>();
+        if (m_EXP >= m_LevelData.EXP)
         {
             m_Level++;
             m_EXP -= m_LevelData.EXP;
             m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.ID).Levels[m_Level - 1];
             m_Player.Health = m_LevelData.Health;
             m_Player.MaxHealth = m_LevelData.Health;
-            UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
+            mainPanelCtrl.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
+            mainPanelCtrl.SetPlayerLevel();
+            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/LevelUp");
         }
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerExp(m_EXP, m_LevelData.EXP);
+        mainPanelCtrl.SetPlayerExp(m_EXP, m_LevelData.EXP);
     }
 
     public void AddLife(int value)

@@ -40,11 +40,13 @@ public class MainPanelCtrl:BasePanelCtrl
 
 	private void OnItemUpdate(MainPanel.LevelListItem obj)
 	{
-		obj.ImgLevel1.gameObject.SetActive(StageMgr.Ins.StageIndex == 1 && PlayerMgr.Ins.Level == obj.Index);
-		obj.ImgLevel2.gameObject.SetActive(StageMgr.Ins.StageIndex == 2 && PlayerMgr.Ins.Level == obj.Index);
-		obj.ImgLevel3.gameObject.SetActive(StageMgr.Ins.StageIndex == 3 && PlayerMgr.Ins.Level == obj.Index);
-		obj.ImgLevel4.gameObject.SetActive(StageMgr.Ins.StageIndex == 4 && PlayerMgr.Ins.Level == obj.Index);
-		obj.ImgLevel5.gameObject.SetActive(StageMgr.Ins.StageIndex == 5 && PlayerMgr.Ins.Level == obj.Index);
+		int stageIndex = StageMgr.Ins.StageIndex;
+		int playerLevel = PlayerMgr.Ins.Level;
+		obj.ImgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= obj.Index);
+		obj.ImgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= obj.Index);
+		obj.ImgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= obj.Index);
+		obj.ImgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= obj.Index);
+		obj.ImgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= obj.Index);
 	}
 
 	protected override void OnUpdate()
@@ -65,11 +67,11 @@ public class MainPanelCtrl:BasePanelCtrl
 	}
 
 	public void SetPlayerHP(int value,int max,float width = 0f)
-	{
-		m_Panel.PlayerHpBar.value = value;
-		m_Panel.PlayerHpBar.maxValue = max;
+	{	
 		if (width != 0)
-			m_Panel.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+			m_Panel.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;	
+		m_Panel.PlayerHpBar.maxValue = max;
+		m_Panel.PlayerHpBar.value = value;
 	}
 
 	public void SetEnemyHP(int value, int max,float width)
@@ -121,6 +123,11 @@ public class MainPanelCtrl:BasePanelCtrl
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
 		m_Panel.TxtExp.text = string.Format("{0}/{1}", currExpStr, maxExpStr);
+	}
+
+	public void SetPlayerLevel()
+	{
+		m_Panel.LevelListGroupView.Update(5);
 	}
 
 	private string GetExpStr(int exp)

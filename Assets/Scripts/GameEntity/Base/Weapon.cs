@@ -1,5 +1,6 @@
 ﻿using DragonBones;
 using FrameWork;
+using FrameWork.Sound;
 using UnityEditor.Timeline;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ public class Weapon : BaseSceneItem
     {
         base.SetOwner(owner);
         gameObject.SetActive(false);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Bonus");
     }
 
     protected override void OnResComplete(GameObject go)

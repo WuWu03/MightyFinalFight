@@ -11,24 +11,28 @@ public static class StageFactory
         if (data == null) return;
 
         BaseSceneItem sceneItem = null;
-        SceneItemInfo.ItemType type = SceneItemInfo.ItemType.None;
+        SceneItemInfo.ItemType type = SceneItemInfo.ItemType.NONE;
+        ObjectType objectType = ObjectType.NONE;
 
         if (data.Type == SceneItemData.ItemType.Weapon)
         {
             type = SceneItemInfo.ItemType.Weapon;
+            objectType = ObjectType.Weapon;
             sceneItem = SceneObjectPool.Ins.Get<Weapon>(data.Name);
         }
         else if(data.Type == SceneItemData.ItemType.Trap)
         {
             type = SceneItemInfo.ItemType.Trap;
+            objectType = ObjectType.CantBreakItem;
             sceneItem = SceneObjectPool.Ins.Get<Trap>(data.Name);
         }
         else
         {
-            if (data.Type == SceneItemData.ItemType.EXP) type = SceneItemInfo.ItemType.EXP;
+            if (data.Type == SceneItemData.ItemType.EXP) type = SceneItemInfo.ItemType.EXP; 
             else if(data.Type == SceneItemData.ItemType.HP) type = SceneItemInfo.ItemType.HP;
             else if(data.Type == SceneItemData.ItemType.Life) type = SceneItemInfo.ItemType.Life;
             else if(data.Type == SceneItemData.ItemType.Money) type = SceneItemInfo.ItemType.Money;
+            objectType = ObjectType.Consume;
             sceneItem = SceneObjectPool.Ins.Get<Consume>(data.Name);
         }
 
@@ -45,7 +49,7 @@ public static class StageFactory
             Value = data.Value,
         });
         sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, data.AssetName));
-        sceneItem.SetObjectType(ObjectType.Weapon);
+        sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
     }
 
