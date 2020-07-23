@@ -585,7 +585,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 1
+    AnimSpeed: 1.5
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0

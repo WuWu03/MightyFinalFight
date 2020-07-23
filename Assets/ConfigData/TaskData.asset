@@ -24,7 +24,9 @@ MonoBehaviour:
     BarrelsAll: 0
     TriggerEffect: 1
     Targets:
-    - ID: 1006
+    - ID: 1001
+      Pos: {x: -178, y: -38}
+    - ID: 1002
       Pos: {x: -178, y: -38}
     TriggerStopCamera: 1
     ExitStartCamera: 0

@@ -49,17 +49,20 @@ public class DoAttack : Action
         return BehaviorTreeState.Running;
     }
 
+
     public override void Reset()
     {
         base.Reset();
-        m_CurrAttackCount = 0;
         m_Owner.SetBehaviourState(BehaviourType.Attack);
+        m_CurrAttackCount = 0;
     }
 
-    private bool m_IsRandomAttckCount = false;
+    protected int m_CurrAttackCount = 0;
+    protected int m_AttackCount = 0;
     private float m_AttackTimer = -1f;
-    private int m_CurrAttackCount = 0;
-    private int m_AttackCount = 0;
     private Regex m_Regex = new Regex(@"(AttackTime:)(-?[0-9]+)");
-    private new BaseEnemyCtrl m_Owner = null;
+
+    protected new BaseEnemyCtrl m_Owner = null;
+    protected bool m_IsRandomAttckCount = false;
+
 }

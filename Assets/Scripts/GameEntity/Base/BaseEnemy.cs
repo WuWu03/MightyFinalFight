@@ -24,7 +24,7 @@ public class BaseEnemy : BaseRole
         if (IsAnyState(typeof(RoleMove)))
         {
             if (!CanMove) return;
-            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir);
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * (m_MoveDir.x > 0 ? 1 : -1));
             bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
 
             if (!isMapXCanMove) pos.x = m_Pos.x;
@@ -85,11 +85,14 @@ public class BaseEnemy : BaseRole
 
     protected override void OnGroundHurtMsg(HurtData data)
     {
-        base.OnGroundHurtMsg(data);
-        if (data.IsGroundHurt) return;
-        int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
-        Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
-        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+        if (!data.IsGroundHurt)
+        {
+            int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
+            Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
+            EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+        }
+
+        base.OnGroundHurtMsg(data);     
     }
 
     public override void Release()

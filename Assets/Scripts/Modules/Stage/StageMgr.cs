@@ -150,7 +150,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         posX *= 100;
 
-        if (posX > bound.xMin && posX < bound.xMax)
+        if ((int)posX >= (int)bound.xMin && (int)posX <= (int)bound.xMax)
         {
             return true;
         }
@@ -164,7 +164,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         posY *= 100;
 
-        if (posY > bound.yMin && posY < bound.yMax)
+        if ((int)posY >= (int)bound.yMin && (int)posY <= (int)bound.yMax)
         {
             return true;
         }

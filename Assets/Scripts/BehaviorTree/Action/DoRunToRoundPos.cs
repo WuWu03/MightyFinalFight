@@ -45,8 +45,8 @@ public class DoRunToRoundPos : Action
         float x = m_Owner.Owner.Pos.x;
         float y = m_Owner.Owner.Bound.yMin;
 
-        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - x) <= 0.05f &&
-                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - y) <= 0.05f;
+        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - x) <= 0.03f &&
+                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - y) <= 0.03f;
 
         if (!m_IsArravied)
         {

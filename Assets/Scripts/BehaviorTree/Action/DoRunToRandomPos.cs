@@ -30,8 +30,8 @@ public class DoRunToRandomPos : Action
 
         float x = m_Owner.Owner.Pos.x;
         float y = m_Owner.Owner.Bound.yMin;
-        m_IsArravied = Mathf.Abs(m_RandomPos.x - x) <= 0.05f &&
-                       Mathf.Abs(m_RandomPos.y - y) <= 0.05f;
+        m_IsArravied = Mathf.Abs(m_RandomPos.x - x) <= 0.03f &&
+                       Mathf.Abs(m_RandomPos.y - y) <= 0.03f;
 
         if (!m_IsArravied)
         {

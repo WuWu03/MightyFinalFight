@@ -8,6 +8,14 @@ public class DoRunToPlayer : Action
         m_Owner = base.m_Owner as BaseEnemyCtrl;
     }
 
+    protected override void OnEnter()
+    {
+        base.OnEnter();
+        m_TargetPos = PlayerMgr.Ins.Player.Pos;
+        float distance = PlayerMgr.Ins.Player.GetAnimTriggerSize(AnimName.Idle).x / 2 + m_Owner.Owner.GetAnimTriggerSize(AnimName.Idle).x / 2;
+        m_TargetPos.x +=  distance * (m_TargetPos.x - m_Owner.Owner.Pos.x > 0 ? -1f : 1f);
+    }
+
     public override BehaviorTreeState Excute()
     {
         if (m_IsArravied)
@@ -17,16 +25,11 @@ public class DoRunToPlayer : Action
             return BehaviorTreeState.Success;
         }
     
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
-        Vector2 enemyPos = m_Owner.Owner.Pos;
-        float distance = PlayerMgr.Ins.Player.GetAnimTriggerSize(AnimName.Idle).x / 2 + m_Owner.Owner.GetAnimTriggerSize(AnimName.Idle).x / 2;
-        playerPos = playerPos + Vector2.right * distance * (playerPos.x - enemyPos.x > 0 ? -1f : 1f);
-
-        m_IsArravied = Mathf.Abs(playerPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(playerPos.y - enemyPos.y) <= 0.01f;
+        m_IsArravied = Mathf.Abs(m_TargetPos.x - m_Owner.Owner.Pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.Owner.Pos.y) <= 0.03f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((playerPos - enemyPos).normalized, false);
+            m_Owner.Move((m_TargetPos - m_Owner.Owner.Pos).normalized, false);
             m_Owner.OppositePlayer();
         }
 
@@ -39,6 +42,7 @@ public class DoRunToPlayer : Action
         m_IsArravied = false;
     }
 
+    private Vector2 m_TargetPos = Vector2.zero;
     private bool m_IsArravied = false;
     private new BaseEnemyCtrl m_Owner = null;
 }
