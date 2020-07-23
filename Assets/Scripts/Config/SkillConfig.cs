@@ -97,6 +97,7 @@ public class SkillData : BaseConfigData
         public float Gravity;//自身重力大小
         public bool IsSmoon;//是否击昏
         public bool IsShakeCamera;//击中敌人是否震屏
+        public bool IsOnGroundHurt;//是否落地才触发伤害
         public string Args;//各种数值效果的参数 每种类型效果自行解析
     }
 

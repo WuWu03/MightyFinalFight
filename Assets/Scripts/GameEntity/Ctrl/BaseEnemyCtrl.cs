@@ -49,7 +49,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         base.OnInit();
         m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
         m_BehaviourTreeMgr.Init(1001);
-        m_BehaviourTreeMgr.Start();
+        //m_BehaviourTreeMgr.Start();
     }
 
     protected override void OnUpdate()

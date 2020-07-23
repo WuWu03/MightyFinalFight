@@ -1,6 +1,7 @@
 ﻿using FrameWork;
 using FrameWork.Camera;
 using FrameWork.Sound;
+using FrameWork.Timer;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -287,7 +288,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (data == null) return;
         if (!CanBeHit) return;
         m_CurrCtrl.ExitSkill();
-        SubHealth(data.AttackValue);
         m_IsSmoon = data.IsSwoon;
 
         if (string.IsNullOrEmpty(data.HurtAnim))
@@ -306,10 +306,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
             ChangeState<RoleHurt>();
         }
 
-        if (data.AttackValue > 0)
+        if (data.IsGroundHurt && data.AttackForce.y > 0)
+            m_OnDropGroundHurt = data;
+        else if (data.AttackValue > 0)
         {
-            string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
-            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+            OnGroundHurtMsg(data);
         }
     }
 
@@ -351,6 +352,21 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             m_CurrCtrl.AttackSuccess = isHurtTarget;
         }
+    }
+
+    protected virtual void OnGroundHurtMsg(HurtData data)
+    {
+        string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+        SubHealth(data.AttackValue);
+
+        if (m_OnDropGroundHurt != null)
+        {
+            m_OnDropGroundHurt.Clear();
+            m_OnDropGroundHurt = null;
+        }
+
+        if (m_Health <= 0 && !m_IsSmoon) ChangeState<RoleDead>();
     }
 
     private void CheckDropTrag()
@@ -397,12 +413,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleSwoon)))
         {
-            if (m_Animator.animation.isCompleted)
-            {
-                m_Rigidbody.velocity = Vector2.zero;
-                if (m_Health > 0) ChangeState<RoleAwaken>();
-                else ChangeState<RoleDead>();
-            }
+            if (!IsPlayComplete()) return;
+            CheckGroundHurt();
+            m_Rigidbody.velocity = Vector2.zero;
+            m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         }
         else
         {
@@ -413,6 +427,35 @@ public class BaseRole : BaseAvatar, ICanBeHit
             }
             else ChangeState<RoleDead>();
         }
+    }
+
+    private void CheckGroundHurt()
+    {
+        if (m_OnDropGroundHurt != null)
+        {
+            if (m_Health - m_OnDropGroundHurt.AttackValue <= 0)
+            {
+                m_IsSmoon = false;
+                OnGroundHurtMsg(m_OnDropGroundHurt);
+                return;
+            }
+            else
+                Timer.Register(0.1f, () => { OnGroundHurtMsg(m_OnDropGroundHurt); });
+        }
+
+        if(m_Health <= 0)
+        {
+            m_IsSmoon = false;
+            ChangeState<RoleDead>();
+            return;
+        }
+
+        Timer.Register(1f, () =>
+        {
+            m_IsSmoon = false;
+            if (m_Health > 0) ChangeState<RoleAwaken>();
+            else ChangeState<RoleDead>();
+        });
     }
 
     protected bool m_IsSmoon = false;
@@ -426,5 +469,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;
 
+    private HurtData m_OnDropGroundHurt = null;
     private Vector2 m_MapPos = Vector2.zero;
 }

@@ -10,6 +10,7 @@ public class HurtData : BaseEventArgs
     public int AttackerID { get; set; }
     public int SkillExp { get; set; }
     public bool IsSwoon { get; set; }//是否击飞
+    public bool IsGroundHurt { get; set; }//是否落地触发
     public float AttackerDir { get; set; }
     public string HurtSound { get; set; }
     public string HurtAnim { get; set; }                                     

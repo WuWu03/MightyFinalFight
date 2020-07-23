@@ -66,14 +66,11 @@ public class BaseEnemy : BaseRole
             data.HurtAnim = Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
         }
 
-        int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
-        Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
-        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
-
         if(m_Health - data.AttackValue <= 0)
         {
             m_SkillExp = data.SkillExp;
         }
+
         base.OnHurtMsg(data);
     }
 
@@ -84,6 +81,15 @@ public class BaseEnemy : BaseRole
         {
             ChangeState<RoleIdle>();
         }
+    }
+
+    protected override void OnGroundHurtMsg(HurtData data)
+    {
+        base.OnGroundHurtMsg(data);
+        if (data.IsGroundHurt) return;
+        int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
+        Vector3 pos = new Vector3(0.05f * dir * -m_Dir, 0, 0.1f * -m_Dir);
+        EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
     }
 
     public override void Release()

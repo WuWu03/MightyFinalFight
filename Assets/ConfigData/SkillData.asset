@@ -25,6 +25,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
@@ -46,6 +47,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1002
     Level: 0
@@ -59,6 +61,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -80,6 +83,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1003
     Level: 0
@@ -93,6 +97,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -114,6 +119,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1004
     Level: 0
@@ -127,6 +133,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 0
     SkillPrevConditions:
@@ -148,6 +155,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 1
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1005
     Level: 0
@@ -161,6 +169,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 1
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions: []
@@ -180,6 +189,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1006
     Level: 0
@@ -193,6 +203,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions: []
@@ -212,6 +223,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1007
     Level: 0
@@ -225,6 +237,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -260,6 +273,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1008
     Level: 0
@@ -273,6 +287,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions: []
@@ -292,6 +307,7 @@ MonoBehaviour:
       Gravity: 1
       IsSmoon: 1
       IsShakeCamera: 1
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1009
     Level: 0
@@ -305,6 +321,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.8
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -326,6 +343,7 @@ MonoBehaviour:
       Gravity: 1
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1010
     Level: 0
@@ -339,6 +357,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.6
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -360,6 +379,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -376,6 +396,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 1
       Args: 
   - ID: 1011
     Level: 0
@@ -389,6 +410,7 @@ MonoBehaviour:
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 0
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -412,6 +434,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
     - EffectorType: 5
       SelectorType: 0
@@ -428,6 +451,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: SubHP:1
   - ID: 4001
     Level: 0
@@ -441,6 +465,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
@@ -462,6 +487,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 0
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1012
     Level: 0
@@ -475,6 +501,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 1
     SkillPrevConditions:
@@ -496,6 +523,7 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 
   - ID: 1013
     Level: 0
@@ -509,6 +537,7 @@ MonoBehaviour:
       AddTrigger: 0
     AnimSpeed: 0.4
     AnimTime: 1
+    EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 1
     SkillPrevConditions:
@@ -544,4 +573,5 @@ MonoBehaviour:
       Gravity: 0
       IsSmoon: 1
       IsShakeCamera: 0
+      IsOnGroundHurt: 0
       Args: 

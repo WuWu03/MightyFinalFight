@@ -76,6 +76,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             m_HurtData.AttackValue = 1;
             m_HurtData.HurtSound = m_SkillData.HurtSound;
             m_HurtData.HurtAnim = string.Empty;
+            m_HurtData.IsGroundHurt = m_SkillEffect.IsOnGroundHurt;
             hit.OnHurtMsg(m_HurtData);           
             return true;
         }
@@ -86,7 +87,8 @@ public class SkillNearHitEffect : SkillBaseEffect
     public override void Reset()
     {
         m_IsCompleted = false;
-        m_HurtData.Clear();
+        if (!m_SkillEffect.IsOnGroundHurt)
+            m_HurtData.Clear();
     }
 
     public override void Exit()

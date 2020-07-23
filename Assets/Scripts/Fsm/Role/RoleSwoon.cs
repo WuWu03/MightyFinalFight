@@ -31,6 +31,11 @@ public class RoleSwoon : BaseFsmState
         if (m_IsGround)
         {
             m_Owner.SetPos(m_Owner.Pos);
+            if(m_Owner.IsPlayComplete())
+            {
+                m_IsGround = false;
+                FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
+            }
         }
     }
 
@@ -39,15 +44,16 @@ public class RoleSwoon : BaseFsmState
         m_IsGround = true;
         m_Owner.Rigidbody.velocity = new Vector2(m_Owner.Rigidbody.velocity.x, -1f);
         m_Owner.StopAnimation(AnimName.SmoonUp);
-        m_Owner.PlayAnimation(AnimName.SmoonDown, 1);
+        m_Owner.PlayAnimation(AnimName.SmoonDown, 1,0.9f);
         FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.SmoonDown);
+        if (m_IsGround)
+            FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
         m_IsGround = false;
-        FrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
     }
 
     public override void OnDestroy(BaseFsm fsm)

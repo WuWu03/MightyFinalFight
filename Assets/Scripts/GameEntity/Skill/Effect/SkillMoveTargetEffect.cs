@@ -56,7 +56,9 @@ public class SkillMoveTargetEffect : SkillBaseEffect
             if (bh.IsCatch)
             {
                 List<ICanBeHit> targets = m_Owner.OnHitStart();
-                (targets[0] as BaseRole).PlayAnimation(AnimName.Idle);
+                BaseRole br = targets[0] as BaseRole;
+                br.SetCatch(false);
+                br.PlayAnimation(AnimName.Idle);
                 bh.ResetCatch(false);
             }
         }
