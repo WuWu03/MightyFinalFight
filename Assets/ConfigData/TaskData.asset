@@ -24,16 +24,8 @@ MonoBehaviour:
     BarrelsAll: 0
     TriggerEffect: 1
     Targets:
-    - ID: 1001
+    - ID: 1006
       Pos: {x: -178, y: -38}
-    - ID: 1002
-      Pos: {x: -178, y: -48}
-    - ID: 1003
-      Pos: {x: -373, y: -48}
-    - ID: 1004
-      Pos: {x: -373, y: -48}
-    - ID: 1005
-      Pos: {x: -485, y: -35}
     TriggerStopCamera: 1
     ExitStartCamera: 0
     TalkID: 0

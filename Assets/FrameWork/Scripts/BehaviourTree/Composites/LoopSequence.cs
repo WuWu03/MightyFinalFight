@@ -1,6 +1,5 @@
-﻿using System.Diagnostics;
-using System.Text.RegularExpressions;
-
+﻿using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace FrameWork.BehaviourTree
 {
@@ -17,7 +16,14 @@ namespace FrameWork.BehaviourTree
             {
                 Match m = m_Regex.Match(args);
                 if (m.Success) m_LoopTimes = int.Parse(m.Groups[2].Value);
+                m_IsRandomLoop = m_LoopTimes == 0;
             }
+        }
+
+        protected override void OnEnter()
+        {
+            if (m_IsRandomLoop)
+                m_LoopTimes = Random.Range(1, 9);
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -78,6 +84,7 @@ namespace FrameWork.BehaviourTree
             }
         }
 
+        private bool m_IsRandomLoop = false;
         private int m_CurrChildIndex;
         private int m_LastChildIndex;
         private int m_LoopTimes;

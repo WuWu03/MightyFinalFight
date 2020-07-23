@@ -20,6 +20,14 @@ public enum ObjectMsgType
     Hurt = 5,
 }
 
+public struct BehaviourType
+{
+    public const int Idle = 0;//6
+    public const int RandomPos = 1;//8
+    public const int RoundPos = 2;//5
+    public const int Attack = 3;//8
+}
+
 public struct SoundName
 {
     public const string DefaultHurt = "OnHit02";

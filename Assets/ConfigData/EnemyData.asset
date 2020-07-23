@@ -23,7 +23,9 @@ MonoBehaviour:
     Skills: a10f0000
     AttackWait:
     - -1
-    AttackNextTime: 0.3
+    AttackNextTime: 1
+    BehaviourRate: 
+    BehaviourTreeIDs: 
   - ID: 1002
     Name: Bred
     AssetName: Character/Bred
@@ -35,6 +37,8 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 0.3
+    BehaviourRate: 
+    BehaviourTreeIDs: 
   - ID: 1003
     Name: Bred
     AssetName: Character/Bred
@@ -46,6 +50,8 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 0.3
+    BehaviourRate: 
+    BehaviourTreeIDs: 
   - ID: 1004
     Name: Bred
     AssetName: Character/Bred
@@ -57,6 +63,8 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 0.3
+    BehaviourRate: 
+    BehaviourTreeIDs: 
   - ID: 1005
     Name: Bred
     AssetName: Character/Bred
@@ -68,3 +76,18 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 0.3
+    BehaviourRate: 
+    BehaviourTreeIDs: 
+  - ID: 1006
+    Name: TwoP
+    AssetName: Character/TwoP
+    AttackSpeed: 0.5
+    MoveSpeed: 1
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: 89130000
+    Skills: 89130000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3
+    BehaviourRate: 02000000c80000006400000096000000
+    BehaviourTreeIDs: ea030000

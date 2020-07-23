@@ -19,9 +19,10 @@ public class DoRunToPlayer : Action
     
         Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
         Vector2 enemyPos = m_Owner.Owner.Pos;
-        playerPos = playerPos + Vector2.right * 0.2f * (playerPos.x - enemyPos.x > 0 ? -1f : 1f);
+        float distance = PlayerMgr.Ins.Player.GetAnimTriggerSize(AnimName.Idle).x / 2 + m_Owner.Owner.GetAnimTriggerSize(AnimName.Idle).x / 2;
+        playerPos = playerPos + Vector2.right * distance * (playerPos.x - enemyPos.x > 0 ? -1f : 1f);
 
-        m_IsArravied = Mathf.Abs(playerPos.x - enemyPos.x) <= 0.05f && Mathf.Abs(playerPos.y - enemyPos.y) <= 0.01f;
+        m_IsArravied = Mathf.Abs(playerPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(playerPos.y - enemyPos.y) <= 0.01f;
 
         if (!m_IsArravied)
         {

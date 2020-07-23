@@ -68,12 +68,14 @@ public static class StageFactory
             MoveSpeed = enemyData.MoveSpeed,
         });
 
-        enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseRoleSkillInfo()
+        enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseEnemySkillInfo()
         {
             AttackIDs = enemyData.AttackIDs,
             Skills = enemyData.Skills,
             AttackWait = enemyData.AttackWait,
             AttackNextTime = enemyData.AttackNextTime,
+            BehaviourRate = enemyData.BehaviourRate,
+            BehaviourTreesID = enemyData.BehaviourTreeIDs,
         });
 
         enemy.SetObjectType(ObjectType.Monster);

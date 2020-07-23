@@ -12,7 +12,7 @@ public class PreIsRoundPos : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return m_Owner.IsRoundPos;
+        return m_Owner.GetBehaviourState(BehaviourType.RoundPos);
     }
 
     private new BaseEnemyCtrl m_Owner = null;

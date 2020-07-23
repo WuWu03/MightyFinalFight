@@ -18,4 +18,6 @@ public class EnemyData : BaseConfigData
     public int[] Skills;//技能序列
     public float[] AttackWait;//连击时间
     public float AttackNextTime;
+    public int[] BehaviourRate;
+    public int[] BehaviourTreeIDs;//行为树id
 }

@@ -20,7 +20,7 @@ public class DoIdle : Action
     {
         if(Time.time - m_IdleTimer >= m_IdleTime)
         {
-            m_Owner.IsIdle = false;
+            m_Owner.SetBehaviourState(BehaviourType.Idle);
             return BehaviorTreeState.Success;
         }
 
@@ -33,7 +33,7 @@ public class DoIdle : Action
     public override void Reset()
     {
         base.Reset();
-        m_Owner.IsIdle = false;
+        m_Owner.SetBehaviourState(BehaviourType.Idle);
     }
 
     private float m_IdleTime = 0f;

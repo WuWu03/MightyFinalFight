@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using UnityEngine;
 
 
 namespace FrameWork.BehaviourTree
@@ -16,7 +16,7 @@ namespace FrameWork.BehaviourTree
             Node child = GetChild(m_CurrChildIndex);
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition()&& this.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition() && CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {

@@ -12,7 +12,7 @@ public class PreIsRandomPos : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return m_Owner.IsRandomPos;
+        return m_Owner.GetBehaviourState(BehaviourType.RandomPos);
     }
 
     private new BaseEnemyCtrl m_Owner = null;

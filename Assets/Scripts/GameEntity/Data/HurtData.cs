@@ -23,6 +23,7 @@ public class HurtData : BaseEventArgs
         AttackerID = 0;
         SkillExp = 0;
         IsSwoon = false;
+        IsGroundHurt = false;
         AttackerDir = 0;
         HurtSound = string.Empty;
         HurtAnim = string.Empty;

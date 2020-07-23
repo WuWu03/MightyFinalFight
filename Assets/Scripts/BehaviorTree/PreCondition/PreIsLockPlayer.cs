@@ -14,7 +14,7 @@ public class PreIsLockPlayer : PreCondition
             if (m.Success) m_Distance = float.Parse(m.Groups[2].Value);
         }
 
-        m_Owner = base.m_Owner as BaseRoleCtrl;
+        m_Owner = base.m_Owner as BaseEnemyCtrl;
     }
 
     protected override bool OnCheckPreCondition()
@@ -29,6 +29,8 @@ public class PreIsLockPlayer : PreCondition
         if (distance <= m_Distance)
         {
             m_IsLockPlayer = true;
+            m_Owner.OppositePlayer();
+            m_Owner.Owner.FsmMachine.ChangeState<RoleIdle>();
         }
 
         return false;
@@ -37,5 +39,5 @@ public class PreIsLockPlayer : PreCondition
     private float m_Distance = 0f;
     private Regex m_Regex = new Regex(@"(Distance:)([0-9]+\.?[0-9]*)");
     private bool m_IsLockPlayer = false;
-    private new BaseRoleCtrl m_Owner = null;
+    private new BaseEnemyCtrl m_Owner = null;
 }

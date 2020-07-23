@@ -4,59 +4,27 @@ using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
-    public bool IsRandomPos
-    {
-        get
-        {
-            RandomBehaviour();
-            return m_IsRandomPos;
-        }
-        set
-        {
-            m_IsRandomPos = value;
-        }
-    }
-
-    public bool IsRoundPos
-    {
-        get
-        {
-            RandomBehaviour();
-            return m_IsRoundPos;
-        }
-        set
-        {
-            m_IsRoundPos = value;
-        }
-    }
-
-
-    public bool IsIdle
-    {
-        get
-        {
-            RandomBehaviour();
-            return m_IsIdle;
-        }
-        set
-        {
-            m_IsIdle = value;
-        }
-    }
-
     protected override void OnInit()
     {
         base.OnInit();
         m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
-        m_BehaviourTreeMgr.Init(1001);
-        //m_BehaviourTreeMgr.Start();
     }
 
+    public override void InitData(BaseRoleSkillInfo data)
+    {
+        base.InitData(data);
+        BaseEnemySkillInfo baseEnemySkillInfo = data as BaseEnemySkillInfo;
+        m_BehaviourRate = baseEnemySkillInfo.BehaviourRate;
+        m_BehaviourState = new bool[m_BehaviourRate.Length];  
+        m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreesID);
+        m_BehaviourTreeMgr.Start();
+    }
+ 
     protected override void OnUpdate()
     {
+        m_BehaviourTreeMgr.Update(Time.deltaTime);
         base.OnUpdate();
         //Test();
-        m_BehaviourTreeMgr.Update(Time.deltaTime);
     }
 
     protected override void OnRelease()
@@ -70,36 +38,43 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         m_Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - m_Owner.Pos.x > 0 ? 1 : -1);
     }
-    private void RandomBehaviour()
+
+    public bool HasBehaviour()
     {
-        if (m_IsIdle || m_IsRandomPos || m_IsRoundPos)
+        RandomBehaviour();
+        for (int i = 0; i < m_BehaviourState.Length; i++)
         {
-            return;
+            if (m_BehaviourState[i])
+                return true;
         }
 
-        m_IsRandomPos = Random.Range(1, 1001) <= 8;
-        m_IsRoundPos = Random.Range(1, 1001) <= 5;
-        m_IsIdle = Random.Range(1, 1001) <= 6;
-
-        if (m_IsRandomPos)
-        {
-            m_IsRoundPos = false;
-            m_IsIdle = false;
-        }
-
-        if (m_IsRoundPos)
-        {
-            m_IsRandomPos = false;
-            m_IsIdle = false;
-        }
-
-        if (m_IsIdle)
-        {
-            m_IsRandomPos = false;
-            m_IsRoundPos = false;
-        }
+        return false;
     }
 
+    public bool GetBehaviourState(int index)
+    {
+        RandomBehaviour();
+        return m_BehaviourState[index];
+    }
+
+    public void SetBehaviourState(int index)
+    {
+        m_BehaviourState[index] = false;   
+    }
+
+    private void RandomBehaviour()
+    {
+        for (int i = 0; i < m_BehaviourState.Length; i++)
+        {
+            if (m_BehaviourState[i]) return;
+        }
+
+        for (int i = 0; i < m_BehaviourState.Length; i++)
+        {
+            m_BehaviourState[i] = Random.Range(1, 1001) <= m_BehaviourRate[i];
+            if (m_BehaviourState[i]) break;
+        }
+    }
 
     private void Test()
     {
@@ -111,8 +86,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         }
     }
 
-    private bool m_IsIdle = false;
-    private bool m_IsRoundPos = false;
-    private bool m_IsRandomPos = false;
+    private bool[] m_BehaviourState = null;
+    private int[] m_BehaviourRate = null;
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;
 }

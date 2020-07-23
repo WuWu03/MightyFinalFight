@@ -12,7 +12,7 @@ public class PreIsIdle : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return m_Owner.IsIdle;
+        return m_Owner.GetBehaviourState(BehaviourType.Idle);
     }
 
     private new BaseEnemyCtrl m_Owner = null;

@@ -197,6 +197,7 @@ public class BaseHero : BaseRole
                 data.AttackForce = new Vector2(40 * data.AttackerDir, 120);
                 data.IsSwoon = true;
                 data.HurtSound = "OnBlow";
+                data.IsGroundHurt = false;
                 m_DicAttacker.Clear();
             }
             m_HitTime = Time.time;
