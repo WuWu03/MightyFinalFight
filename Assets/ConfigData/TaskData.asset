@@ -51,8 +51,8 @@ MonoBehaviour:
     - EntityID: 9
       SourceID: 1002
       Pos: {x: -178, y: -38}
-    - EntityID: 0
-      SourceID: 0
+    - EntityID: 10
+      SourceID: 1002
       Pos: {x: -178, y: -38}
     TriggerStopCamera: 1
     ExitStartCamera: 0
