@@ -53,13 +53,13 @@ public static class StageFactory
         sceneItem.SetMapPos(pos);
     }
 
-    public static BaseEnemy CreateEnemy(EnemyData enemyData,Vector2Int pos)
+    public static BaseEnemy CreateEnemy(EnemyData enemyData,int engityID,Vector2Int pos)
     {
         BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
         enemy.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, enemyData.AssetName));
         enemy.InitInfo(new BaseRoleInfo()
         {
-            ID = enemyData.ID,
+            ID = engityID,
             Health = 5,
             MaxHealth = 5,
             AttackSpeed = enemyData.AttackSpeed,

@@ -216,9 +216,9 @@ public class StageMgr : MonoSingleton<StageMgr>
         UIMgr.Ins.Open<MainPanel>();
     }
 
-    public void CreateEnemy(int id, Vector2Int pos)
+    public void CreateEnemy(int sourceID, int engityID,Vector2Int pos)
     {
-        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(id), pos);
+        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
         enemy.OnDead += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
     }

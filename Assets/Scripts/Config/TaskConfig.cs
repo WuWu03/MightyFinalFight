@@ -40,7 +40,8 @@ public class TaskData : BaseConfigData
     [Serializable]
     public class InsTarget
     {
-        public int ID;
+        public int EntityID;
+        public int SourceID;
         public Vector2Int Pos;
     }
 
