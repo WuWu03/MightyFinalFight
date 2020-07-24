@@ -109,16 +109,20 @@ public class StageMgr : MonoSingleton<StageMgr>
         return false;
     }
 
-    public Vector2 GetRandomPos2(Vector2 currPos)
+    public Vector2 GetRandomPos2(Vector2 currPos,bool isCorrect = true)
     {
-        return new Vector2(GetRandomX(currPos), GetRandomY(currPos));
+        return new Vector2(GetRandomX(currPos, isCorrect), GetRandomY(currPos, isCorrect));
     }
 
-    public float GetRandomX(Vector2 currPos)
+    public float GetRandomX(Vector2 currPos, bool isCorrect = true)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
         {
-            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos))
+            bool conditoin = false;
+            if (isCorrect) conditoin = IsInAreaPosX(m_CurrStageData.MoveArea[i], currPos.x);
+            else conditoin = IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos);
+
+            if (conditoin)
             {
                 Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
                 float x = Random.Range(currPos.x - 1.1f, currPos.x + 1.1f);
@@ -130,11 +134,15 @@ public class StageMgr : MonoSingleton<StageMgr>
         return 0;
     }
 
-    public float GetRandomY(Vector2 currPos)
+    public float GetRandomY(Vector2 currPos, bool isCorrect = true)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
         {
-            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos))
+            bool conditoin = false;
+            if (isCorrect) conditoin = IsInAreaPosX(m_CurrStageData.MoveArea[i], currPos.x);
+            else conditoin = IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos);
+
+            if (conditoin)
             {
                 Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
                 float y = Random.Range(bound.yMin / 100f + 0.1f, bound.yMax / 100f - 0.1f);
@@ -144,13 +152,14 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         return 0;
     }
+
     private bool IsInAreaPosX(Area area,float posX)
     {
         Rect bound = GetBound(area);
 
         posX *= 100;
 
-        if ((int)posX >= (int)bound.xMin && (int)posX <= (int)bound.xMax)
+        if (posX >= bound.xMin && posX <= bound.xMax)
         {
             return true;
         }
@@ -164,7 +173,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
         posY *= 100;
 
-        if ((int)posY >= (int)bound.yMin && (int)posY <= (int)bound.yMax)
+        if (posY >= bound.yMin && posY <= bound.yMax)
         {
             return true;
         }

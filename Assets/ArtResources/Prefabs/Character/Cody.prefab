@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665943257}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0095, y: -0.0088, z: -0.001}
+  m_LocalPosition: {x: 0, y: -0.1105, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8815589085709238872}
@@ -105,7 +105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1595950213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0095, y: -0.0088, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1105, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8815589085709238872}
@@ -360,11 +360,11 @@ MonoBehaviour:
     Offest: {x: 0, y: -0.07749518}
     Size: {x: 0.39690584, y: 0.2018962}
   - AnimName: Awaken
-    Offest: {x: -0.0143009275, y: -0.09199269}
-    Size: {x: 0.39368954, y: 0.18743536}
+    Offest: {x: -0.0143009275, y: -0.089224115}
+    Size: {x: 0.39368954, y: 0.1818982}
   - AnimName: Dead
-    Offest: {x: 0, y: -0.10986689}
-    Size: {x: 0.4049664, y: 0.14777747}
+    Offest: {x: 0, y: -0.110263646}
+    Size: {x: 0.4049664, y: 0.14108583}
   - AnimName: JumpAttack1
     Offest: {x: 0.00004322827, y: 0.0012706816}
     Size: {x: 0.33035412, y: 0.2815246}

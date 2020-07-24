@@ -24,7 +24,7 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: 1
-    BehaviourRate: 06000000080000000500000008000000
+    BehaviourRate: 03000000080000000500000008000000
     BehaviourTreeIDs: e9030000
   - ID: 1002
     Name: TwoP

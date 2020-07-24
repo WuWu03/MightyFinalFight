@@ -27,33 +27,6 @@ MonoBehaviour:
     - EntityID: 1
       SourceID: 1001
       Pos: {x: -178, y: -38}
-    - EntityID: 2
-      SourceID: 1001
-      Pos: {x: -178, y: -38}
-    - EntityID: 3
-      SourceID: 1001
-      Pos: {x: -178, y: -38}
-    - EntityID: 4
-      SourceID: 1001
-      Pos: {x: -178, y: -38}
-    - EntityID: 5
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
-    - EntityID: 6
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
-    - EntityID: 7
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
-    - EntityID: 8
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
-    - EntityID: 9
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
-    - EntityID: 10
-      SourceID: 1002
-      Pos: {x: -178, y: -38}
     TriggerStopCamera: 1
     ExitStartCamera: 0
     TalkID: 0

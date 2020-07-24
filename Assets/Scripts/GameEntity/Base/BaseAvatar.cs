@@ -90,13 +90,7 @@ public abstract class BaseAvatar : BaseSceneObject
     {
         get
         {
-            m_Bound.width = m_Collider.size.x;
-            m_Bound.height = m_Collider.size.x;
-            m_Bound.xMin = m_Pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
-            m_Bound.xMax = m_Pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
-            m_Bound.yMin = m_Pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
-            m_Bound.yMax = m_Pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
-            return m_Bound;
+            return GetBound(m_Pos);
         }
     }
 
@@ -259,13 +253,24 @@ public abstract class BaseAvatar : BaseSceneObject
     protected bool IsOutVersionX(float posX)
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        return posX - 0.1f <= visionRect.xMin || posX + 0.1f >= visionRect.xMax;
+        return posX <= visionRect.xMin || posX >= visionRect.xMax;
     }
 
     protected bool IsOutVersionY(float posY)
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
+    }
+
+    protected Rect GetBound(Vector2 pos)
+    {
+        m_Bound.width = m_Collider.size.x;
+        m_Bound.height = m_Collider.size.y;
+        m_Bound.xMin = pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
+        m_Bound.xMax = pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
+        m_Bound.yMin = pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
+        m_Bound.yMax = pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
+        return m_Bound;
     }
 
     protected string m_CurrAnimName = string.Empty;

@@ -99,7 +99,8 @@ public class BaseHero : BaseRole
 
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
-            if (IsOutVersionX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            Rect bound = GetBound(transform.localPosition);
+            if (IsOutVersionX(m_Dir > 0 ? bound.xMax : bound.xMin) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
             {
                 m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
             }
@@ -231,8 +232,9 @@ public class BaseHero : BaseRole
         {
             if (!CanMove) return;
 
-            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(pos.x + Bound.width / 2 * m_Dir) && !IsOutVersionX(pos.x);
-            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y - Bound.height / 2);
+            Rect bound = GetBound(pos);
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(m_Dir > 0 ? bound.xMax : bound.xMin) && !IsOutVersionX(m_Dir > 0 ? bound.xMax : bound.xMin);
+            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(bound.yMin);
 
             if (!isMapXCanMove && !isMapYCanMove)
             {
@@ -243,7 +245,8 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!isMapXCanMove) pos.x = m_Pos.x;
+            if (!isMapXCanMove) 
+                pos.x = m_Pos.x;
             if (!isMapYCanMove) pos.y = m_Pos.y;       
         }
 

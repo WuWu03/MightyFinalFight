@@ -119,10 +119,6 @@ MonoBehaviour:
           Args: Distance:0.4
       PreConditions:
       - ID: 0
-        Name: "\u4E0D\u5B58\u5728\u968F\u673A\u884C\u4E3A"
-        ClassType: PreIsRandomBehaviour
-        Args: TheNot:true
-      - ID: 0
         Name: "\u73A9\u5BB6\u8FD1\u8EAB"
         ClassType: PreIsPlayerDistance
         Args: Distance:0.2
