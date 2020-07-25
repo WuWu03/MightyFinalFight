@@ -12,8 +12,8 @@ public class DoRunToRoundPos : Action
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        Vector2 selfPos = new Vector2(m_Owner.Owner.Pos.x, m_Owner.Owner.Bound.yMin);
-        Vector2 targetPos = new Vector2(PlayerMgr.Ins.Player.Pos.x, PlayerMgr.Ins.Player.Bound.yMin);
+        Vector2 selfPos = m_Owner.Owner.Pos;
+        Vector2 targetPos = PlayerMgr.Ins.Player.Pos;
         float randomY = StageMgr.Ins.GetRandomY(targetPos);
         float dir = targetPos.x > selfPos.x ? 1 : -1;
         float radius = Random.Range(0.2f, Vector2.Distance(selfPos, targetPos));
@@ -42,15 +42,12 @@ public class DoRunToRoundPos : Action
             m_CurrIndex++;
         }
 
-        float x = m_Owner.Owner.Pos.x;
-        float y = m_Owner.Owner.Bound.yMin;
-
-        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - x) <= 0.03f &&
-                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - y) <= 0.03f;
+        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - m_Owner.Owner.Pos.x) <= 0.03f &&
+                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - m_Owner.Owner.Pos.y) <= 0.03f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RoundPos[m_CurrIndex] - (Vector2.right * x + Vector2.up * y)).normalized, false);
+            m_Owner.Move((m_RoundPos[m_CurrIndex] - m_Owner.Owner.Pos).normalized, false);
             m_Owner.OppositePlayer();
         }
 

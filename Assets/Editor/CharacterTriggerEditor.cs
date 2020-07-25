@@ -25,6 +25,10 @@ public class CharacterTriggerEditor : EditorWindow
     }
     private void OnGUI()
     {
+        if(m_CurrGo != null)
+        {
+            Selection.activeObject = m_CurrGo;
+        }
         SetSelection();
         OnItemSelect();
         SetTriggerData();

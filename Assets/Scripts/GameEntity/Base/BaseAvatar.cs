@@ -110,12 +110,6 @@ public abstract class BaseAvatar : BaseSceneObject
     }
 
  
-    public override void SetPos(Vector2 pos)
-    {
-        m_Pos = pos;
-        transform.localPosition = new Vector3(pos.x, pos.y, Bound.yMin);
-    }
-
     public override void Release()
     {
         base.Release();
@@ -266,6 +260,7 @@ public abstract class BaseAvatar : BaseSceneObject
     {
         m_Bound.width = m_Collider.size.x;
         m_Bound.height = m_Collider.size.y;
+        m_Bound.center = pos + Vector2.up * (m_Collider.offset.y + m_Collider.size.y / 2);
         m_Bound.xMin = pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
         m_Bound.xMax = pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
         m_Bound.yMin = pos.y + m_Collider.offset.y - m_Collider.size.y / 2;

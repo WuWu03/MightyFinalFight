@@ -60,8 +60,8 @@ public static class StageFactory
         enemy.InitInfo(new BaseRoleInfo()
         {
             ID = engityID,
-            Health = 5,
-            MaxHealth = 5,
+            Health = 20,
+            MaxHealth = 20,
             AttackSpeed = enemyData.AttackSpeed,
             AttackValue = 1,
             Defense = 1,

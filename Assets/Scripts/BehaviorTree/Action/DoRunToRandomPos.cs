@@ -14,8 +14,8 @@ public class DoRunToRandomPos : Action
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        m_RandomPos = StageMgr.Ins.GetRandomPos2(new Vector2(PlayerMgr.Ins.Player.Pos.x, PlayerMgr.Ins.Player.Bound.yMin));
-        m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + m_Owner.Owner.Bound.width, visionRect.xMax - m_Owner.Owner.Bound.width);
+        m_RandomPos = StageMgr.Ins.GetRandomPos2(PlayerMgr.Ins.Player.Pos);
+        m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + m_Owner.Owner.Bound.width / 2, visionRect.xMax - m_Owner.Owner.Bound.width / 2);
     }
 
     public override BehaviorTreeState Excute()
@@ -28,14 +28,12 @@ public class DoRunToRandomPos : Action
             return BehaviorTreeState.Success;
         }
 
-        float x = m_Owner.Owner.Pos.x;
-        float y = m_Owner.Owner.Bound.yMin;
-        m_IsArravied = Mathf.Abs(m_RandomPos.x - x) <= 0.03f &&
-                       Mathf.Abs(m_RandomPos.y - y) <= 0.03f;
+        m_IsArravied = Mathf.Abs(m_RandomPos.x - m_Owner.Owner.Pos.x) <= 0.03f &&
+                       Mathf.Abs(m_RandomPos.y - m_Owner.Owner.Pos.y) <= 0.03f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RandomPos - (Vector2.right * x + Vector2.up * y)).normalized, false);
+            m_Owner.Move((m_RandomPos - m_Owner.Owner.Pos).normalized, false);
             m_Owner.OppositePlayer();
         }
 

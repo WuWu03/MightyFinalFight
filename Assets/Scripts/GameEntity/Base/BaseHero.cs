@@ -233,8 +233,8 @@ public class BaseHero : BaseRole
             if (!CanMove) return;
 
             Rect bound = GetBound(pos);
-            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(m_Dir > 0 ? bound.xMax : bound.xMin) && !IsOutVersionX(m_Dir > 0 ? bound.xMax : bound.xMin);
-            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(bound.yMin);
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin) && !IsOutVersionX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
+            bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y);
 
             if (!isMapXCanMove && !isMapYCanMove)
             {
