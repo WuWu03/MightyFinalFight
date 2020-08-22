@@ -162,7 +162,11 @@ public class BaseHero : BaseRole
             m_CatchStamp = Time.time;
         }
 
-        if (m_CatchAttackCount >= 3) return;
+        if (m_CatchAttackCount >= 3)
+        {
+            return;
+        }
+
         base.OnAttackMsg(data, isForceJumpAttack);
     }
 
@@ -379,7 +383,7 @@ public class BaseHero : BaseRole
 
     private bool HasCatch()
     {
-        return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0;
+        return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0 && m_CatchAttackCount < 3;
     }
 
     protected float m_CatchTime = 2;

@@ -18,6 +18,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         BaseHero hero = m_Owner as BaseHero;
         if (hero.IsCatch)
         {
+            m_AttackIndex = 0;
             if (m_Owner.IsAnim(AnimName.Throw))//正在扔出敌人
             {
                 m_CatchAttackTimer = 0;

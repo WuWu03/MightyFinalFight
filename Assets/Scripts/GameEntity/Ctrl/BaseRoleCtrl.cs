@@ -164,11 +164,12 @@ public class BaseRoleCtrl : BaseCtrl
     private int[] m_JumpAttackIDs = null;
     private float[] m_AttackWait = null;
     private float m_AttackTimer = 0;
-    private int m_AttackIndex = 0;
     private int m_CurrSkillID = 0;
     private float m_AttackNextTime = 0;
 
     private MoveData m_MoveData = null;
     private JumpData m_JumpData = null;
+
     protected SkillManager m_SkillManager = null;
+    protected int m_AttackIndex = 0;
 }
