@@ -37,3 +37,27 @@ MonoBehaviour:
     - 0.3
     - -1
     AttackNextTime: 0.15
+  - ID: 1002
+    Name: Guy
+    AssetName: Character/Guy
+    HitEffect: 
+    Desc: 'A TOUGH STREET FIGHTER WHO IS
+
+      SKILLED WITH KNIVES.'
+    HeadIcon: Guy
+    AttackSpeed: 1
+    MoveSpeed: 0.8
+    JumpForce: {x: 40, y: 150}
+    AttackIDs: e9030000ea030000eb030000ec030000
+    JumpAttackIDs: ed030000ee030000
+    CatchAttackID: 1009
+    ThrowAttackID: 1010
+    WeaponAttackID: 1012
+    ThrowWeaponID: 1013
+    Skills: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000f1030000f2030000f3030000f4030000f5030000
+    AttackWait:
+    - 0.3
+    - 0.3
+    - 0.3
+    - -1
+    AttackNextTime: 0.15
