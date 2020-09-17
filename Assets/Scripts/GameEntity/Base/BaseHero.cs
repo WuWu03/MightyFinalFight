@@ -36,7 +36,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanJump || HasCatch();
+            return base.CanJump || (HasCatch() && !IsAnim(AnimName.Throw));
         }
     }
 

@@ -42,10 +42,6 @@ public class BaseRoleCtrl : BaseCtrl
     public void Move(Vector2 dir,bool canChangeDir = true)
     {
         if (!m_Owner.CanMove) return;
-        if(dir != Vector2.zero)
-        {
-
-        }
         m_MoveData.Clear();
         m_MoveData.Dir = dir;
         m_MoveData.CanChangeDir = canChangeDir;
@@ -72,6 +68,7 @@ public class BaseRoleCtrl : BaseCtrl
     {
         if (!m_Owner.CanSkill) return;
 
+        ExitSkill();
         m_CurrSkillID = skillID;
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }

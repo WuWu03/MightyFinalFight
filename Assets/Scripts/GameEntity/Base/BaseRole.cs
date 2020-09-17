@@ -2,6 +2,7 @@
 using FrameWork.Camera;
 using FrameWork.Sound;
 using FrameWork.Timer;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -89,15 +90,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
+            return !m_IsDropTrag && !m_IsBeCatch && IsInGround && IsAnyState(typeof(RoleIdle), typeof(RoleMove));
         }
     }
 
     public virtual bool CanSkill
     {
         get
-        {
-            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump));
+        { 
+            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump),typeof(RoleAttack));
         }
     }
 

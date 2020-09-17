@@ -831,7 +831,7 @@ MonoBehaviour:
     Type: 2
     DeployeType: 2
     Key:
-      Keys: 0400000005000000
+      Keys: 0500000004000000
       AddTrigger: 1
     AnimSpeed: 0.3
     AnimTime: 1
@@ -929,6 +929,42 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       Args: SubHP:1
+  - ID: 2009
+    Level: 0
+    Name: GuyKnee
+    AnimationName: Knee
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.8
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 3
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
   - ID: 4001
     Level: 0
     Name: BredAttack
@@ -1001,31 +1037,99 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       Args: 
-  - ID: 5001
+  - ID: 2010
     Level: 0
-    Name: TwoPAttack
-    AnimationName: Attack1
+    Name: GuyThrow
+    AnimationName: Throw
     HurtSound: 
     Type: 0
     DeployeType: 2
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 1.5
+    AnimSpeed: 0.6
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - Status: 3
       Args: 
     SkillEffects:
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: -0.09, y: 0.065}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0.12, y: 0.14}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0.18, y: 0.14}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0.24, y: 0.14}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
     - EffectorType: 1
       SelectorType: 1
       ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
+      AddTargetForce: {x: 60, y: 80}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       SelectorAngle: 20
@@ -1033,7 +1137,7 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
-      IsSmoon: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       Args: 
