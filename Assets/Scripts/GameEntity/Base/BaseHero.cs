@@ -141,6 +141,7 @@ public class BaseHero : BaseRole
             return;
         }
 
+        Debug.Log("抓部署增加");
         m_CatchAttackCount++;
 
         if (m_CatchAttackCount >= 3)

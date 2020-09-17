@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 public abstract class SkillBaseDeployer
 {
     public int SkillID { get; private set; }
@@ -29,6 +31,10 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
+        if(SkillID == 2002)
+        {
+            UnityEngine.Debug.Log("技能出错");
+        }
         if(m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
         {
             m_SkillEffects[m_CurrEffectIndex].Effect( m_SkillSelector[m_CurrEffectIndex]);
