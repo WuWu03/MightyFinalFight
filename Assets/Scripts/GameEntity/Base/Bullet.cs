@@ -54,7 +54,7 @@ public class Bullet : BaseSceneItem
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
 
         bool canBeHit = hit != null && hit.CanBeHit;
-        bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
+        bool isInRange = true;//Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
 
         if (isInRange && canBeHit)
         {

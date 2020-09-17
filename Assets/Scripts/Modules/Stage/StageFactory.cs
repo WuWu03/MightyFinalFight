@@ -47,6 +47,7 @@ public static class StageFactory
             TriggerOffest = data.TriggerOffest,
             TriggerSize = data.TriggerSize,
             Value = data.Value,
+            CanDrop = data.CanDrop,
         });
         sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, data.AssetName));
         sceneItem.SetObjectType(objectType);

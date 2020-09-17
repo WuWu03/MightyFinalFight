@@ -26,4 +26,5 @@ public class SceneItemData : BaseConfigData
     public Vector2 TriggerSize;
     public Vector2 TriggerOffest;
     public int Value;
+    public bool CanDrop;
 }

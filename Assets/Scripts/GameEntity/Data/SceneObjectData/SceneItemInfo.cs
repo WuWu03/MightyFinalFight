@@ -16,5 +16,6 @@ public class SceneItemInfo : BaseSceneObjectInfo
     public ItemType Type { get; set; }
     public Vector2 TriggerOffest { get; set; }
     public Vector2 TriggerSize { get; set; }
+    public bool CanDrop { get; set; }
     public int Value;
 }

@@ -19,6 +19,7 @@ public class Weapon : BaseSceneItem
 
     public void Drop()
     {
+        if (!m_WeaponData.CanDrop) return;
         gameObject.SetActive(true);
         SetPos2(m_Owner.Pos.x, m_Owner.Bound.yMin + Bound.height / 2);
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
