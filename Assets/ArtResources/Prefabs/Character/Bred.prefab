@@ -88,38 +88,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.16, y: 0.32}
+    Offest: {x: 0, y: 0.16565382}
+    Size: {x: 0.16, y: 0.3347246}
   - AnimName: Idle
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.16, y: 0.32}
+    Offest: {x: 0, y: 0.16013205}
+    Size: {x: 0.16, y: 0.32368106}
   - AnimName: Attack1
-    Offest: {x: 0.05000001, y: -0.0005082786}
-    Size: {x: 0.285603, y: 0.32101655}
+    Offest: {x: 0.050000012, y: 0.15839669}
+    Size: {x: 0.285603, y: 0.31733525}
   - AnimName: Hurt1
-    Offest: {x: -0.05288422, y: 0.0010165274}
-    Size: {x: 0.24186766, y: 0.3223639}
+    Offest: {x: -0.05288422, y: 0.16114858}
+    Size: {x: 0.24186766, y: 0.32359093}
   - AnimName: SmoonUp
-    Offest: {x: 0.0010165498, y: -0.035070628}
-    Size: {x: 0.25763613, y: 0.256785}
+    Offest: {x: 0.0010165572, y: 0.12506148}
+    Size: {x: 0.25763613, y: 0.25310355}
   - AnimName: SmoonDown
-    Offest: {x: 0, y: 0}
-    Size: {x: 0.34, y: 0.2}
+    Offest: {x: 0, y: 0.11595771}
+    Size: {x: 0.34, y: 0.23313081}
   - AnimName: Dead
-    Offest: {x: 0.0005082786, y: -0.0655669}
-    Size: {x: 0.32678497, y: 0.19695038}
-  - AnimName: Show
-    Offest: {x: -0.00050827116, y: 0}
-    Size: {x: 0.17678498, y: 0.32}
-  - AnimName: Wait
-    Offest: {x: 0.0010165423, y: -0.023888707}
-    Size: {x: 0.20576844, y: 0.27271876}
+    Offest: {x: 0.0005082786, y: 0.096405804}
+    Size: {x: 0.32678497, y: 0.19449621}
+  - AnimName: Wait2
+    Offest: {x: 0.0022476017, y: 0.16368693}
+    Size: {x: 0.18186307, y: 0.32649148}
+  - AnimName: Wait1
+    Offest: {x: 0.003916517, y: 0.13646823}
+    Size: {x: 0.20886353, y: 0.2703079}
   - AnimName: Hurt2
-    Offest: {x: -0.0076240525, y: -0.003049627}
-    Size: {x: 0.2052481, y: 0.31609926}
+    Offest: {x: -0.00913851, y: 0.14752215}
+    Size: {x: 0.21408549, y: 0.29763782}
   - AnimName: Awaken
-    Offest: {x: 0.00050826743, y: -0.03812027}
-    Size: {x: 0.1928842, y: 0.25491726}
+    Offest: {x: 0.000000014901161, y: 0.12793958}
+    Size: {x: 0.20103046, y: 0.2532506}
 --- !u!1 &7062996745983349919
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7062996745983349919}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.036199998, z: 0}
+  m_LocalPosition: {x: 0, y: 0.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 52288913372709205}

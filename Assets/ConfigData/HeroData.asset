@@ -23,7 +23,7 @@ MonoBehaviour:
     HeadIcon: Cody
     AttackSpeed: 1
     MoveSpeed: 0.8
-    JumpForce: {x: 40, y: 150}
+    JumpForce: {x: 40, y: 140}
     AttackIDs: e9030000ea030000eb030000ec030000
     JumpAttackIDs: ed030000ee030000
     CatchAttackID: 1009
@@ -37,27 +37,27 @@ MonoBehaviour:
     - 0.3
     - -1
     AttackNextTime: 0.15
-  - ID: 1002
+  - ID: 2001
     Name: Guy
     AssetName: Character/Guy
-    HitEffect: 
-    Desc: 'A TOUGH STREET FIGHTER WHO IS
+    HitEffect: CodyHit
+    Desc: 'DESCENDED FROM NINJA,HE POSSESSES
 
-      SKILLED WITH KNIVES.'
+      INCREDIBLE AGILITY.'
     HeadIcon: Guy
     AttackSpeed: 1
-    MoveSpeed: 0.8
-    JumpForce: {x: 40, y: 150}
-    AttackIDs: e9030000ea030000eb030000ec030000
-    JumpAttackIDs: ed030000ee030000
-    CatchAttackID: 1009
-    ThrowAttackID: 1010
-    WeaponAttackID: 1012
-    ThrowWeaponID: 1013
-    Skills: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000f1030000f2030000f3030000f4030000f5030000
+    MoveSpeed: 1.1
+    JumpForce: {x: 40, y: 140}
+    AttackIDs: d1070000d2070000d3070000d4070000
+    JumpAttackIDs: d5070000d6070000
+    CatchAttackID: 0
+    ThrowAttackID: 0
+    WeaponAttackID: 0
+    ThrowWeaponID: 0
+    Skills: d1070000d2070000d3070000d4070000d5070000d6070000d7070000d8070000
     AttackWait:
-    - 0.3
-    - 0.3
-    - 0.3
     - -1
-    AttackNextTime: 0.15
+    - -1
+    - -1
+    - -1
+    AttackNextTime: 0.3

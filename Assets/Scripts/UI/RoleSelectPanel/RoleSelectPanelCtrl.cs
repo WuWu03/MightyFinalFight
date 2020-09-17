@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FrameWork.UI;
 using FrameWork.Sound;
+using FrameWork.Input;
 
 public class RoleSelectPanelCtrl : BasePanelCtrl
 {
@@ -25,17 +26,38 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		m_Panel.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
 		m_Panel.RoleContentGroupView.OnItemSelect = OnItemSelect;
 
-		m_Panel.RoleContentGroupView.Update(1);
+		m_Panel.RoleContentGroupView.Update(StaticConfig.HeroConfig.Datas.Length);
 		m_Panel.RoleContentGroupView.SelectItem(0);
 	}
 
 	protected override void OnUpdate()
 	{
-		if (Input.GetButtonDown("A") || Input.GetButton("X"))
+		Vector2 axis = InputMgr.GetAxis(true);
+
+		if (axis.y > 0)
+		{
+			m_CurrSelectIndex++;
+			if(m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Length)
+			{
+				m_CurrSelectIndex = 0;
+			}
+			m_Panel.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
+		}
+		else if (axis.y < 0)
+		{
+			m_CurrSelectIndex--;
+			if (m_CurrSelectIndex < 0)
+			{
+				m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
+			}
+			m_Panel.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
+		}
+
+		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelected");
 			InnerClose();
-			PlayerMgr.Ins.InitPlayer(1001);
+			PlayerMgr.Ins.InitPlayer(StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID);
 			StageMgr.Ins.Enter(1001);
 		}
 	}
@@ -56,7 +78,7 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 
 	private void OnItemUpdate(RoleSelectPanel.RoleContentItem item)
 	{
-		HeroData data = StaticConfig.HeroConfig.GetData(1001);
+		HeroData data = StaticConfig.HeroConfig.Datas[item.Index - 1];
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
 		UITools.LoadSprite("Character", data.HeadIcon, item.BtnRoleIcon.image);
@@ -68,8 +90,10 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 		{
 			m_Panel.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
 			m_Panel.ImgSelectRect.localPosition = Vector3.zero;
+			m_CurrSelectIndex = item.Index - 1;
 		}
 	}
 
+	private int m_CurrSelectIndex = -1;
 	private RoleSelectPanel m_Panel = null;
 }

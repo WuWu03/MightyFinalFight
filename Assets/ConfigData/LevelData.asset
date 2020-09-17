@@ -30,3 +30,20 @@ MonoBehaviour:
     - Health: 60
       HPBarWidth: 900
       EXP: 0
+  - ID: 2001
+    Levels:
+    - Health: 10
+      HPBarWidth: 300
+      EXP: 33
+    - Health: 15
+      HPBarWidth: 400
+      EXP: 54
+    - Health: 25
+      HPBarWidth: 550
+      EXP: 0
+    - Health: 40
+      HPBarWidth: 750
+      EXP: 0
+    - Health: 60
+      HPBarWidth: 900
+      EXP: 0

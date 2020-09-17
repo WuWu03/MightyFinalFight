@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1827891400007914875}
   - component: {fileID: 2906558588607097238}
   - component: {fileID: 8515842514693310294}
+  - component: {fileID: 6190980251809833726}
   m_Layer: 0
   m_Name: Guy
   m_TagString: Untagged
@@ -74,6 +75,94 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotNames: []
   dirty: 0
+--- !u!114 &6190980251809833726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644640882698586319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Attack2
+    Offest: {x: 0.041682824, y: 0.15256172}
+    Size: {x: 0.31495115, y: 0.30848587}
+  - AnimName: Attack1
+    Offest: {x: 0.041682824, y: 0.15256172}
+    Size: {x: 0.31495115, y: 0.30848587}
+  - AnimName: Attack3
+    Offest: {x: 0.027082369, y: 0.14221364}
+    Size: {x: 0.3089883, y: 0.28561795}
+  - AnimName: Attack4
+    Offest: {x: 0.003922127, y: 0.19520783}
+    Size: {x: 0.42649728, y: 0.39763474}
+  - AnimName: Idle
+    Offest: {x: 0.0030698627, y: 0.16076785}
+    Size: {x: 0.23255226, y: 0.3223685}
+  - AnimName: Move
+    Offest: {x: -0.013935208, y: 0.16025573}
+    Size: {x: 0.20290184, y: 0.3227452}
+  - AnimName: AttackWeapon
+    Offest: {x: 0.05852829, y: 0.15468168}
+    Size: {x: 0.31995818, y: 0.30602288}
+  - AnimName: Catch
+    Offest: {x: 0.008361235, y: 0.16025579}
+    Size: {x: 0.22519824, y: 0.32274508}
+  - AnimName: Dead
+    Offest: {x: -0.0069675595, y: 0.06410223}
+    Size: {x: 0.4007828, y: 0.12486422}
+  - AnimName: Hurt
+    Offest: {x: 0.013935372, y: 0.15607506}
+    Size: {x: 0.31438407, y: 0.3143841}
+  - AnimName: Idle_Weapon
+    Offest: {x: 0.00418067, y: 0.15886223}
+    Size: {x: 0.22241116, y: 0.3199582}
+  - AnimName: JumpAttack1
+    Offest: {x: 0.00000008940697, y: 0.15328813}
+    Size: {x: 0.31995815, y: 0.30881}
+  - AnimName: JumpAttack2
+    Offest: {x: 0.0013936087, y: 0.16025573}
+    Size: {x: 0.26700413, y: 0.3227452}
+  - AnimName: JumpDown
+    Offest: {x: 0.00000008940697, y: 0.17419106}
+    Size: {x: 0.28093934, y: 0.35061562}
+  - AnimName: JumpRoll
+    Offest: {x: 0.0069677085, y: 0.1365658}
+    Size: {x: 0.28930053, y: 0.26979113}
+  - AnimName: JumpUp
+    Offest: {x: 0.0013936013, y: 0.17279744}
+    Size: {x: 0.25028178, y: 0.35340285}
+  - AnimName: Knee
+    Offest: {x: 0.000000074505806, y: 0.15189463}
+    Size: {x: 0.20290175, y: 0.30602276}
+  - AnimName: Move_Weapon
+    Offest: {x: -0.0055740327, y: 0.15886223}
+    Size: {x: 0.1917536, y: 0.3255322}
+  - AnimName: PickUp
+    Offest: {x: 0.030657694, y: 0.12959814}
+    Size: {x: 0.26979122, y: 0.267004}
+  - AnimName: SmoonDown
+    Offest: {x: 0.0055741966, y: 0.09057939}
+    Size: {x: 0.40356988, y: 0.18896651}
+  - AnimName: SmoonUp
+    Offest: {x: 0.0013936311, y: 0.11984342}
+    Size: {x: 0.35061577, y: 0.24192059}
+  - AnimName: Throw
+    Offest: {x: 0.10869531, y: 0.14492697}
+    Size: {x: 0.38127336, y: 0.28651345}
+  - AnimName: ThrowWeapon
+    Offest: {x: 0.05852829, y: 0.15468168}
+    Size: {x: 0.31995818, y: 0.30602288}
+  - AnimName: Skill1
+    Offest: {x: -0.081761956, y: 0.16926163}
+    Size: {x: 0.41762555, y: 0.34590447}
+  - AnimName: Skill2
+    Offest: {x: 0.0028688312, y: 0.16926163}
+    Size: {x: 0.409019, y: 0.34590447}
 --- !u!1 &7702529374937591995
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7702529374937591995}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.156, z: 0}
+  m_LocalPosition: {x: -0.038399998, y: 0.1694, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1827891400007914875}
@@ -179,7 +268,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8855023976403987452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.156, z: -0.001}
+  m_LocalPosition: {x: -0.038399998, y: 0.1694, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1827891400007914875}

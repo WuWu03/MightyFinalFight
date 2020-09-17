@@ -33,7 +33,8 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
             {
                 m_HasAddXForce = true;
                 m_Owner.Rigidbody.AddForce(Vector2.right * StateParam.Dir.x * m_Owner.JumpForce.x, 0f);
-                m_Owner.SetDir(StateParam.Dir.x);
+                if (StateParam.CanChangeDir)
+                    m_Owner.SetDir(StateParam.Dir.x);
             }
 
             if (m_HasAddXForce)

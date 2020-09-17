@@ -42,7 +42,10 @@ public class BaseRoleCtrl : BaseCtrl
     public void Move(Vector2 dir,bool canChangeDir = true)
     {
         if (!m_Owner.CanMove) return;
+        if(dir != Vector2.zero)
+        {
 
+        }
         m_MoveData.Clear();
         m_MoveData.Dir = dir;
         m_MoveData.CanChangeDir = canChangeDir;
@@ -91,12 +94,13 @@ public class BaseRoleCtrl : BaseCtrl
         m_SkillManager.ExitSkill();
     }
 
-    public void Jump(Vector2 jumpDir)
+    public void Jump(Vector2 jumpDir,bool canChangeDir)
     {
         if (!m_Owner.CanJump) return;
 
         m_JumpData.Clear();
         m_JumpData.Dir = jumpDir;
+        m_JumpData.CanChangeDir = canChangeDir;
         m_Owner.OnJumpMsg(m_JumpData);
     }
 

@@ -205,7 +205,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         if (Input.GetButtonDown("B") || Input.GetButton("Y"))
         {
-            m_CurrCtrl.Jump(InputMgr.GetAxis());
+            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
         }
     }
 

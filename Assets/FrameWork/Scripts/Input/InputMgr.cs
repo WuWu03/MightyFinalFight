@@ -40,40 +40,73 @@ namespace FrameWork.Input
 
         private void Update()
         {
-            if (m_ListEvent == null || m_ListEvent.Count < 1) return;
+            if (m_ListEvent != null && m_ListEvent.Count > 0)
+            {
+                if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME) ResetKeys();
 
-            if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME) ResetKeys();
-  
-            if (CheckKeyDown(KeyType.Up)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.Down)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.Left)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.Right)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.A)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.B)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.X)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.Y)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.LB)) m_KeyDownTime = Time.time;
-            if (CheckKeyDown(KeyType.RB)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.Up)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.Down)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.Left)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.Right)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.A)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.B)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.X)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.Y)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.LB)) m_KeyDownTime = Time.time;
+                if (CheckKeyDown(KeyType.RB)) m_KeyDownTime = Time.time;
 
-            TriggerKeyEvent();
+                TriggerKeyEvent();
+            }
+
             if (!m_IsCombo)
             {
                 AfterTriggeFunc?.Invoke();
             }
         }
 
-        public static Vector2 GetAxis()
+
+        private static bool m_AxisHorizontalDown = false;
+        private static bool m_AxisVerticalDown = false;
+        private static Vector2 m_Axis = Vector2.zero;
+
+        public static Vector2 GetAxis(bool isDown = false)
         {
-            float x = UnityEngine.Input.GetAxis("Horizontal");
-            float y = UnityEngine.Input.GetAxis("Vertical");
+            float horizontal = UnityEngine.Input.GetAxis("Horizontal");
+            float vertical = UnityEngine.Input.GetAxis("Vertical");
+            float x = horizontal;
+            float y = vertical;
             float speed = 1f;
-            if (x > 0) x = speed;
-            else if (x < 0) x = -speed;
 
-            if (y > 0) y = speed;
-            else if (y < 0) y = -speed;
+            if(!isDown)
+            {
+                m_AxisHorizontalDown = false;
+                m_AxisVerticalDown = false;
+            }
 
-            return new Vector2(x, y);
+            if (!isDown || !m_AxisHorizontalDown)
+            {
+                if (x > 0) x = speed;
+                else if (x < 0) x = -speed;
+            }
+            else x = 0;
+
+            if (!isDown || !m_AxisVerticalDown)
+            {
+                if (y > 0) y = speed;
+                else if (y < 0) y = -speed;
+            }
+            else y = 0;
+
+            if (isDown)
+            {
+                m_AxisHorizontalDown = horizontal != 0;
+                m_AxisVerticalDown = vertical != 0;
+            }
+
+            m_Axis.x = x;
+            m_Axis.y = y;
+
+            return m_Axis;
         }
 
         public static Vector2 TestAxis()
@@ -235,8 +268,8 @@ namespace FrameWork.Input
                     continue;
                 }
 
-                ResetKeys();
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
+                ResetKeys();
                 m_IsCombo = true;
             }
         }

@@ -10,7 +10,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_QueueSound = new Queue<string>();
     }
 
-    public override void DeploySkill()  
+    public override void DeploySkill()
     {
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
@@ -34,7 +34,6 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     private void SkillEvent(string type, DragonBones.EventObject eventObject)
     {
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         if(CurrEffect.AddSelfForce != Vector2.zero)
         {
             m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;

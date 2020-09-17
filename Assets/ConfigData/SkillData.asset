@@ -539,6 +539,396 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       Args: 
+  - ID: 2001
+    Level: 0
+    Name: GuyAttack1
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.6
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2002
+    Level: 0
+    Name: GuyAttack2
+    AnimationName: Attack2
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.6
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2003
+    Level: 0
+    Name: GuyAttack3
+    AnimationName: Attack3
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2004
+    Level: 0
+    Name: GuyAttack4
+    AnimationName: Attack4
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.6
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 130}
+      AddSelfForce: {x: 0, y: 140}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2005
+    Level: 0
+    Name: GuyJumpAttack1
+    AnimationName: JumpAttack1
+    HurtSound: 
+    Type: 1
+    DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 2
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 120}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2006
+    Level: 0
+    Name: GuyJumpAttack2
+    AnimationName: JumpAttack2
+    HurtSound: 
+    Type: 1
+    DeployeType: 1
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 2
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2007
+    Level: 0
+    Name: GuySkill1
+    AnimationName: Skill1
+    HurtSound: 
+    Type: 2
+    DeployeType: 2
+    Key:
+      Keys: 0400000005000000
+      AddTrigger: 1
+    AnimSpeed: 0.3
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 120}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 2008
+    Level: 0
+    Name: GuySkill2
+    AnimationName: Skill2
+    HurtSound: 
+    Type: 1
+    DeployeType: 1
+    Key:
+      Keys: 0500000006000000
+      AddTrigger: 1
+    AnimSpeed: 0.4
+    AnimTime: -1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 2
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 150}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 360
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+    - EffectorType: 5
+      SelectorType: 0
+      ForceType: 0
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: SubHP:1
   - ID: 4001
     Level: 0
     Name: BredAttack
@@ -550,6 +940,42 @@ MonoBehaviour:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      Args: 
+  - ID: 5001
+    Level: 0
+    Name: TwoPAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0

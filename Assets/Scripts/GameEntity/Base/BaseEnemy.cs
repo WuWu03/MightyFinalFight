@@ -89,7 +89,7 @@ public class BaseEnemy : BaseRole
         if (!data.IsGroundHurt)
         {
             int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
-            Vector3 pos = new Vector3(dir > 0 ? Bound.xMax : Bound.xMin, Bound.center.y, 0.1f * -m_Dir);
+            Vector3 pos = new Vector3(dir > 0 ? 0 : 0, Bound.size.y/2, 0.1f * -m_Dir);
             EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         }
 

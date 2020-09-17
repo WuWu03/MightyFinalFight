@@ -339,7 +339,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
-        SubHealth(data.AttackValue);
+        //SubHealth(data.AttackValue);
 
         if (m_OnDropGroundHurt != null)
         {
