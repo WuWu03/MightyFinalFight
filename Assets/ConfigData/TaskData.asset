@@ -44,7 +44,7 @@ MonoBehaviour:
       Pos: {x: -100, y: -54}
     - EntityID: 7
       SourceID: 1002
-      Pos: {x: -600, y: -62}
+      Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
     TalkID: 0
