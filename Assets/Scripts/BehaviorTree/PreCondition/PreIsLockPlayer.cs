@@ -25,12 +25,12 @@ public class PreIsLockPlayer : PreCondition
         }
 
         float distance = Vector2.Distance(PlayerMgr.Ins.Player.Pos, m_Owner.Owner.Pos);
-
         if (distance <= m_Distance)
         {
             m_IsLockPlayer = true;
             m_Owner.OppositePlayer();
             m_Owner.Owner.FsmMachine.ChangeState<RoleIdle>();
+            return true;
         }
 
         return false;
