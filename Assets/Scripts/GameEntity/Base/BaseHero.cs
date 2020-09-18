@@ -174,6 +174,7 @@ public class BaseHero : BaseRole
         if (HasCatch())
             ResetCatch();
         base.OnJumpMsg(data);
+        OnGroundEvent.AddListener(OnGround);
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -292,6 +293,11 @@ public class BaseHero : BaseRole
         }
     }
 
+    private void OnGround()
+    {
+        m_IsOnGround = true;
+    }
+
     protected virtual void CheckCatch()
     {
         if (m_CatchAttackCount >= 3 && IsPlayComplete())
@@ -302,7 +308,12 @@ public class BaseHero : BaseRole
 
         if (m_ListCatchTarget.Count < 1)
         {
-            if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle)) || m_TriggerTargets.Targets.Count < 1) return;
+            bool isCheck = false;
+            if (IsAnyState(typeof(RoleIdle))) isCheck = m_IsOnGround;
+            isCheck = isCheck || IsAnyState(typeof(RoleMove));
+            m_IsOnGround = false;
+           
+            if (!isCheck || m_TriggerTargets.Targets.Count < 1) return;
 
             for (int i = 0; i < m_TriggerTargets.Targets.Count; i++)
             {
@@ -371,7 +382,7 @@ public class BaseHero : BaseRole
         m_ListCatchTarget.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;
-
+        m_IsOnGround = false;
         SetDefaultState<RoleIdle>();
 
         if (changeState)
@@ -395,6 +406,7 @@ public class BaseHero : BaseRole
     private float m_RebirthLightTime = 1f/30f;
     private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
+    private bool m_IsOnGround = false;
     private int m_CatchAttackCount = 0;
     private List<ICanBeHit> m_ListCatchTarget = null;
     private Dictionary<int, int> m_DicAttacker = null;
