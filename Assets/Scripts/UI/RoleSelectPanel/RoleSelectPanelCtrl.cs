@@ -33,23 +33,20 @@ public class RoleSelectPanelCtrl : BasePanelCtrl
 	protected override void OnUpdate()
 	{
 		Vector2 axis = InputMgr.GetAxis(true);
+		if (axis.y != 0)
+		{
+			if (axis.y > 0)
+			{
+				m_CurrSelectIndex++;
+				if (m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Length) m_CurrSelectIndex = 0;
+			}
+			else
+			{
+				m_CurrSelectIndex--;
+				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
+			}
 
-		if (axis.y > 0)
-		{
-			m_CurrSelectIndex++;
-			if(m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Length)
-			{
-				m_CurrSelectIndex = 0;
-			}
-			m_Panel.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
-		}
-		else if (axis.y < 0)
-		{
-			m_CurrSelectIndex--;
-			if (m_CurrSelectIndex < 0)
-			{
-				m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
-			}
+			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelect");
 			m_Panel.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
 		}
 
