@@ -2,6 +2,7 @@
 using FrameWork.Camera;
 using FrameWork.UI;
 using System.Collections.Generic;
+using System.Data;
 using System.Security.Policy;
 using UnityEngine;
 
@@ -189,13 +190,18 @@ public class BaseHero : BaseRole
         else
         {
             int hitTime = 0;
-            if (!m_DicAttacker.TryGetValue(data.AttackerID, out hitTime))
+            if (!IsDrop)
             {
-                m_DicAttacker.Add(data.AttackerID, hitTime);
-            }
+                if (!m_DicAttacker.TryGetValue(data.AttackerID, out hitTime))
+                {
+                    m_DicAttacker.Add(data.AttackerID, hitTime);
+                }
 
-            hitTime++;
-            m_DicAttacker[data.AttackerID] = hitTime;
+                hitTime++;
+                m_DicAttacker[data.AttackerID] = hitTime;
+            }
+            else
+                hitTime = 3;
 
             if (hitTime >= 3)
             {
@@ -295,7 +301,7 @@ public class BaseHero : BaseRole
 
     private void OnGround()
     {
-        m_IsOnGround = true;
+        m_IsOnGround = !IsAnyState(typeof(RoleHurt), typeof(RoleSwoon));
     }
 
     protected virtual void CheckCatch()

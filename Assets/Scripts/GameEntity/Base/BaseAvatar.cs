@@ -22,6 +22,14 @@ public abstract class BaseAvatar : BaseSceneObject
         }
     }
 
+    public bool IsDrop
+    {
+        get
+        {
+            return m_Rigidbody.velocity.y < 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
+        }
+    }
+
     public Vector2 MoveToPoint
     {
         get
