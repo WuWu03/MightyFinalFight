@@ -28,8 +28,8 @@ public class PreIsLockPlayer : PreCondition
         if (distance <= m_Distance)
         {
             m_IsLockPlayer = true;
-            m_Owner.OppositePlayer();
             m_Owner.Owner.FsmMachine.ChangeState<RoleIdle>();
+            m_Owner.OppositePlayer();
             return true;
         }
 

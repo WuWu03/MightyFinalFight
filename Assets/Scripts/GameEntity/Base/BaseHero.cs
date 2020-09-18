@@ -97,13 +97,12 @@ public class BaseHero : BaseRole
         CheckCatch();
         CheckRebirthState();
 
-        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
+        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
         {
             Rect bound = GetBound(transform.localPosition);
-            if (IsOutVersionX(m_Dir > 0 ? bound.xMax : bound.xMin) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
-            {
+            float x = m_Rigidbody.velocity.x > 0 ? bound.xMax : bound.xMin;
+            if (IsOutVersionX(x))
                 m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
-            }
         }
 
         if (m_HitTime < 0) return;
