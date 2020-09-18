@@ -35,10 +35,6 @@ public abstract class SkillBaseDeployer
         {
             m_SkillEffects[m_CurrEffectIndex].Effect( m_SkillSelector[m_CurrEffectIndex]);
             m_CurrEffectIndex++;
-            if(SkillID == 2002)
-            {
-                UnityEngine.Debug.Log("普攻次数" + m_CurrEffectIndex);
-            }
             if(m_CurrEffectIndex >= m_SkillEffects.Length)
             {
                 OnEffectComplete();
