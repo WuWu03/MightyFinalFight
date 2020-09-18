@@ -52,7 +52,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp));
+            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp)) && !IsAnim(AnimName.Throw);
         }
     }
 
@@ -141,7 +141,6 @@ public class BaseHero : BaseRole
             return;
         }
 
-        Debug.Log("抓部署增加");
         m_CatchAttackCount++;
 
         if (m_CatchAttackCount >= 3)
@@ -304,7 +303,7 @@ public class BaseHero : BaseRole
 
         if (m_ListCatchTarget.Count < 1)
         {
-            if (!IsAnyState(typeof(RoleMove)) || m_TriggerTargets.Targets.Count < 1) return;
+            if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle)) || m_TriggerTargets.Targets.Count < 1) return;
 
             for (int i = 0; i < m_TriggerTargets.Targets.Count; i++)
             {

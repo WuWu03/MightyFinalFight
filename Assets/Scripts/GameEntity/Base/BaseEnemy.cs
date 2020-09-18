@@ -19,6 +19,12 @@ public class BaseEnemy : BaseRole
         base.Init(id, name);
     }
 
+    public override void InitInfo(BaseSceneObjectInfo data)
+    {
+        base.InitInfo(data);
+        BaseEnemyInfo baseEnemyInfo = data as BaseEnemyInfo;
+        m_HurtAnim = baseEnemyInfo.HurtAnim;
+    }
     public override void SetPos(Vector2 pos)
     {
         if (IsAnyState(typeof(RoleMove)))
@@ -60,11 +66,11 @@ public class BaseEnemy : BaseRole
     {
         if(m_IsBeCatch)
         {
-            data.HurtAnim = AnimName.Hurt2;
+            data.HurtAnim = m_HurtAnim[m_HurtAnim.Length - 1];
         }
         else
         {
-            data.HurtAnim = Random.Range(0, 100) >= 50 ? AnimName.Hurt1 : AnimName.Hurt2;
+            data.HurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
         }
 
         if(m_Health - data.AttackValue <= 0)
@@ -107,5 +113,6 @@ public class BaseEnemy : BaseRole
     }
 
     private int m_SkillExp = 0;
+    private string[] m_HurtAnim = null;
     protected BaseRoleCtrl m_AvatarCtrl = null;
 }

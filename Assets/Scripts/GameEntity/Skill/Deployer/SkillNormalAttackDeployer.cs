@@ -43,10 +43,15 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         RealPlaySound();
     }
 
+    protected override void OnEffectComplete()
+    {
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+    }
+
     private void SoundEvent(string type, DragonBones.EventObject eventObject)
     {
         m_QueueSound.Enqueue(eventObject.name);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private void RealPlaySound()

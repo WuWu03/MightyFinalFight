@@ -48,10 +48,15 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         base.DeploySkill();
     }
 
+    protected override void OnEffectComplete()
+    {
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+    }
+
     private void SoundEvent(string type, DragonBones.EventObject eventObject)
     {
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
 
     public override void OnExit()
@@ -61,5 +66,4 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         if (!m_SkillData.IsInEffectPlaySound)
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
     }
-
 }

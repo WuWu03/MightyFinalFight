@@ -209,6 +209,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
+
+        if (m_IsJumpAttack && data.AddSelfForce != Vector2.zero)
+        {
+            m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            m_Rigidbody.velocity = Vector2.zero;
+            m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
+        }
+
         GetState<RoleAttack>().StateParam = data;
         ChangeState<RoleAttack>();
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
@@ -340,7 +348,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
-        //SubHealth(data.AttackValue);
+        SubHealth(data.AttackValue);
 
         if (m_OnDropGroundHurt != null)
         {

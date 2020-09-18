@@ -20,4 +20,5 @@ public class EnemyData : BaseConfigData
     public float AttackNextTime;
     public int[] BehaviourRate;
     public int[] BehaviourTreeIDs;//行为树id
+    public string[] HurtEnemy;//受击动画
 }

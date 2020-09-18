@@ -51,7 +51,7 @@ namespace FrameWork.Sound
                 float process = Time.time - m_PlayingList[i].PlayTime;
                 if (soundPath.Equals(path) && soundName.Equals(name) && process <= 0.05f)
                 {
-                    return;
+                    //return;
                 }
             }
 

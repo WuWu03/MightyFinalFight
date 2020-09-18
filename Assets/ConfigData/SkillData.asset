@@ -553,7 +553,7 @@ MonoBehaviour:
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
-    CanChangeDir: 0
+    CanChangeDir: 1
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -623,7 +623,7 @@ MonoBehaviour:
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
-    CanChangeDir: 0
+    CanChangeDir: 1
     SkillPrevConditions:
     - Status: 1
       Args: 
@@ -728,7 +728,7 @@ MonoBehaviour:
     AnimSpeed: 0.6
     AnimTime: 1
     EXP: 4
-    IsInEffectPlaySound: 0
+    IsInEffectPlaySound: 1
     CanChangeDir: 0
     SkillPrevConditions:
     - Status: 1
@@ -1130,10 +1130,10 @@ MonoBehaviour:
       Bullets:
       - Name: GuyBullet
         AssetName: Weapon/GuyWeapon
-        NormalAnim: 
-        HitAnim: Hit
-        NormalAnimSpeed: 0
-        HitAnimSpeed: 0.6
+        NormalAnim: Hit
+        HitAnim: 
+        NormalAnimSpeed: 0.8
+        HitAnimSpeed: 0
         Dir: {x: 0, y: 0}
         Pos: {x: 0.2, y: 0.14}
         Velocity: {x: 8, y: 0}

@@ -58,7 +58,7 @@ public static class StageFactory
     {
         BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
         enemy.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, enemyData.AssetName));
-        enemy.InitInfo(new BaseRoleInfo()
+        enemy.InitInfo(new BaseEnemyInfo()
         {
             ID = engityID,
             Health = 20,
@@ -67,6 +67,7 @@ public static class StageFactory
             AttackValue = 1,
             Defense = 1,
             MoveSpeed = enemyData.MoveSpeed,
+            HurtAnim = enemyData.HurtEnemy,
         });
 
         enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseEnemySkillInfo()

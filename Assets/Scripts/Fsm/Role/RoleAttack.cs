@@ -16,12 +16,6 @@ public class RoleAttack : BaseFsmState, IStateParam<AttackData>
 
     public override void OnEnter(BaseFsm fsm)
     {
-        if(StateParam.AddSelfForce != Vector2.zero)
-        {
-            m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            m_Owner.Rigidbody.velocity = Vector2.zero;
-            m_Owner.Rigidbody.AddForce(new Vector2(StateParam.AddSelfForce.x * m_Owner.Dir, StateParam.AddSelfForce.y));
-        }
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

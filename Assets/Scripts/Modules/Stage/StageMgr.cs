@@ -250,7 +250,7 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private void CreateSceneItem()
     {
-        SceneItemData data = StaticConfig.SceneItemConfig.GetData(1008);
+        SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
         StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
 
         for (int i = 0; i < 4; i++)

@@ -26,6 +26,9 @@ MonoBehaviour:
     AttackNextTime: 1
     BehaviourRate: 03000000080000000500000008000000
     BehaviourTreeIDs: e9030000
+    HurtEnemy:
+    - Hurt1
+    - Hurt2
   - ID: 1002
     Name: TwoP
     AssetName: Character/TwoP
@@ -39,3 +42,5 @@ MonoBehaviour:
     AttackNextTime: 0.3
     BehaviourRate: 02000000c80000006400000096000000
     BehaviourTreeIDs: ea030000
+    HurtEnemy:
+    - Hurt

@@ -13,6 +13,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
+        if (!m_IsOnGround) return;
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
 
@@ -42,7 +43,6 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
         if (isComplete)
         {
-            m_IsOnGround = false;
             m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
         }
 
@@ -95,12 +95,11 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     {
         base.OnExit();
         m_CanEffect = true;
-        m_IsOnGround = false;
         m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
     }
 
 
     private bool m_CanEffect = true;
-    private bool m_IsOnGround = false;
+    private bool m_IsOnGround = true;
     private AttackData m_AttackMsgData = null;
 }

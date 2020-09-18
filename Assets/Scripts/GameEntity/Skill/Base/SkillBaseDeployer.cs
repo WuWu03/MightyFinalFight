@@ -31,14 +31,19 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        if(SkillID == 2002)
-        {
-            UnityEngine.Debug.Log("技能出错");
-        }
         if(m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
         {
             m_SkillEffects[m_CurrEffectIndex].Effect( m_SkillSelector[m_CurrEffectIndex]);
-            m_CurrEffectIndex = m_CurrEffectIndex < m_SkillEffects.Length - 1 ? m_CurrEffectIndex + 1 : 0;
+            m_CurrEffectIndex++;
+            if(SkillID == 2002)
+            {
+                UnityEngine.Debug.Log("普攻次数" + m_CurrEffectIndex);
+            }
+            if(m_CurrEffectIndex >= m_SkillEffects.Length)
+            {
+                OnEffectComplete();
+                m_CurrEffectIndex = 0;
+            }
         }
         else
         {
@@ -91,6 +96,7 @@ public abstract class SkillBaseDeployer
             m_SkillEffects[i].Update();
     }
 
+    protected virtual void OnEffectComplete() { }
     protected BaseRole m_Owner = null;
     protected SkillData m_SkillData = null;
     private int m_CurrEffectIndex = 0;
