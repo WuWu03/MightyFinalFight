@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using FrameWork.GameEntity;
 using FrameWork.Pool;
+using FrameWork;
+using FrameWork.Camera;
 
 public class BaseSceneObject : BaseObject
 {
@@ -20,11 +22,35 @@ public class BaseSceneObject : BaseObject
         }
     }
 
+    public BoxCollider2D Collider
+    {
+        get
+        {
+            return m_Collider;
+        }
+    }
+
     public Vector2 Pos
     {
         get
         {
             return m_Pos;
+        }
+    }
+
+    public Vector2Int MapPos
+    {
+        get
+        {
+            return m_MapPos;
+        }
+    }
+
+    public Rect Bound
+    {
+        get
+        {
+            return GetBound(m_Pos);
         }
     }
 
@@ -76,6 +102,8 @@ public class BaseSceneObject : BaseObject
     {
         base.Init(id, name);
         m_Pos = transform.localPosition;
+        m_Collider = gameObject.GetOrAddComponent<BoxCollider2D>();
+        m_Collider.isTrigger = true;
     }
 
     public virtual void InitInfo(BaseSceneObjectInfo info)
@@ -109,6 +137,8 @@ public class BaseSceneObject : BaseObject
     public virtual void UpdatePos(Vector2 pos)
     {
         m_Pos = pos;
+        m_MapPos.x = Mathf.CeilToInt(m_Pos.x * 100);
+        m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
     }
 
     public void SetPos2(float x, float y)
@@ -119,11 +149,14 @@ public class BaseSceneObject : BaseObject
     public virtual void SetMapPos(Vector2Int pos)
     {
         SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
+        m_MapPos = pos;
     }
 
     public virtual void SetPos(Vector2 pos)
     {
         m_Pos = pos;
+        m_MapPos.x = Mathf.CeilToInt(m_Pos.x * 100);
+        m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
         transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
     }
 
@@ -158,16 +191,6 @@ public class BaseSceneObject : BaseObject
         GameObjectPool.Ins.Get(resPath, OnResComplete);
     }
 
-    protected virtual void OnResComplete(GameObject go)
-    {
-        m_ResGO = go;
-        m_ResGO.transform.SetParent(this.transform, false);
-        m_ResGO.transform.localPosition = Vector3.zero;
-        m_ResGO.SetActive(true);
-        m_ResComplete = true;
-        SetLayer(m_Layer);
-    }
-
     public virtual void AddHealth(int value)
     {
         m_Health += value;
@@ -190,13 +213,69 @@ public class BaseSceneObject : BaseObject
         if (m_MaxHealth < 0) m_MaxHealth = 0;
     }
 
+
+    protected virtual void OnResComplete(GameObject go)
+    {
+        m_ResGO = go;
+        m_ResGO.transform.SetParent(this.transform, false);
+        m_ResGO.transform.localPosition = Vector3.zero;
+        m_ResGO.SetActive(true);
+        m_ResComplete = true;
+        SetLayer(m_Layer);
+    }
+
+    protected Rect GetBound(Vector2 pos)
+    {
+        m_Bound.width = m_Collider.size.x;
+        m_Bound.height = m_Collider.size.y;
+        m_Bound.center = pos + Vector2.up * (m_Collider.offset.y + m_Collider.size.y / 2);
+        m_Bound.xMin = pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
+        m_Bound.xMax = pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
+        m_Bound.yMin = pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
+        m_Bound.yMax = pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
+        return m_Bound;
+    }
+
+    protected void SetCollider(Vector2 offest, Vector2 size)
+    {
+        m_Collider.offset = offest;
+        m_Collider.size = size;
+    }
+
+    protected bool IsOutVersionX(float posX)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posX <= visionRect.xMin || posX >= visionRect.xMax;
+    }
+
+    protected bool IsOutVersionXRight(float posX)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posX >= visionRect.xMax;
+    }
+
+    protected bool IsOutVersionXLeft(float posX)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posX <= visionRect.xMin;
+    }
+
+    protected bool IsOutVersionY(float posY)
+    {
+        Rect visionRect = CameraMgr.Ins.GetVision();
+        return posY <= visionRect.yMin || posY >= visionRect.yMax;
+    }
+
     protected bool m_ResComplete = false;
+    protected float m_Dir = 1f;
+    protected int m_EntityID = 0;
     protected int m_Health = 0;
     protected int m_MaxHealth = 0;
     protected string m_ResPath = string.Empty;
+    protected BoxCollider2D m_Collider = null;
     protected GameObject m_ResGO;
+    protected Rect m_Bound = Rect.zero;
     protected Vector2 m_Pos = Vector2.zero;
+    protected Vector2Int m_MapPos = Vector2Int.zero;
     protected ObjectType m_ObjectType = ObjectType.NONE;
-    protected float m_Dir = 1;
-    protected int m_EntityID = 0;
 }

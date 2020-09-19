@@ -49,6 +49,7 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
         m_HasAddXForce = false;
         StateParam = null;
         m_Owner.StopAnimation(AnimName.JumpUp);
+        Debug.Log("跳跃退出了");
     }
 
     public override void OnDestroy(BaseFsm fsm)

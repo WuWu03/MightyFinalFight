@@ -224,6 +224,12 @@ public class BaseHero : BaseRole
         base.OnHurtMsg(data);
     }
 
+    public override void OnDropTragMsg(TrapInfo data)
+    {
+        base.OnDropTragMsg(data);
+        CameraMgr.Ins.EndFollow();
+    }
+
     public override void AddHealth(int value)
     {
         base.AddHealth(value);

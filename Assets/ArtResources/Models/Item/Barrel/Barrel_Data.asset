@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
-  m_Name: Barrels_Data
+  m_Name: Barrel_Data
   m_EditorClassIdentifier: 
-  dataName: Barrels
-  dragonBonesJSON: {fileID: 4900000, guid: 2b8c2ba8f9dcc93419a4976667d8f11c, type: 3}
+  dataName: Barrel
+  dragonBonesJSON: {fileID: 4900000, guid: f53f59197657a7c439ba23d5ac7ffed8, type: 3}
   textureAtlas:
-  - textureAtlasJSON: {fileID: 4900000, guid: ed84bc91455705c4792846a9a40cf6a9, type: 3}
-    texture: {fileID: 2800000, guid: d3eff43fa8d52d243b9d8e56bbeb4e13, type: 3}
-    material: {fileID: 2100000, guid: 1c39a1492f3488b4db614ca6a46ab10c, type: 2}
+  - textureAtlasJSON: {fileID: 4900000, guid: fb4c4ab071fdad649b12c029d8533846, type: 3}
+    texture: {fileID: 2800000, guid: 446a40c271e431e428667da0471a1016, type: 3}
+    material: {fileID: 2100000, guid: f304489925b1be54a962b445055317af, type: 2}
     uiMaterial: {fileID: 0}

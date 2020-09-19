@@ -63,7 +63,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
         m_StageIndex = m_CurrStageData.StageIndex;
-        CreateSceneItem();
+        CreateSceneItemTest();
         CameraMgr.Ins.EndFollow();
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
@@ -248,7 +248,7 @@ public class StageMgr : MonoSingleton<StageMgr>
         return m_ListCurrEnemy.Count <= 0;
     }
 
-    private void CreateSceneItem()
+    private void CreateSceneItemTest()
     {
         SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
         StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
@@ -257,6 +257,38 @@ public class StageMgr : MonoSingleton<StageMgr>
         {
             data = StaticConfig.SceneItemConfig.GetData(1004 + i);
             StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
+        }
+    }
+
+    public void CreateSceneItem(int id, Vector2Int pos)
+    {
+        SceneItemData data = StaticConfig.SceneItemConfig.GetData(id);
+        StageFactory.CreateSceneItem(data, pos);
+    }
+
+    public void CreateBarrels()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            BaseSceneItem sceneItem = SceneObjectPool.Ins.Get<Barrel>("Barrel");
+            sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
+            sceneItem.SetObjectType(ObjectType.Monster);
+            sceneItem.SetMapPos(new Vector2Int(-500 + i*50, -66));
+            sceneItem.InitInfo(new BarrelInfo()
+            {
+                ID = 1,
+                Health = 1,
+                MaxHealth = 1,
+                TriggerOffest = new Vector2(0, 0.13f),
+                TriggerSize = new Vector2(0.17f, 0.25f),
+                Value = 0,
+                CanDrop = false,
+                Dir = 1,
+                GroundY = 0,
+                IsFloat = false,
+                MoveSpeed = 1,
+                Item = 1001 + i,
+            });
         }
     }
 

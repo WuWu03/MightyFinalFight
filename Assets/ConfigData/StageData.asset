@@ -19,7 +19,7 @@ MonoBehaviour:
     StageIndex: 1
     Width: 1016
     Height: 152
-    InitPos: {x: -420, y: -53}
+    InitPos: {x: -220, y: -53}
     SceneObjIDs: 
     BGMs: []
     MoveArea:

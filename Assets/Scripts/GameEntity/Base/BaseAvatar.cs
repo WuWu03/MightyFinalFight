@@ -6,28 +6,12 @@ using FrameWork;
 using FrameWork.Camera;
 using DragonBones;
 
-public abstract class BaseAvatar : BaseSceneObject
+public abstract class BaseAvatar : BaseGravityObject
 {
     public float MoveSpeed
     {
         get {return m_MoveSpeed; }
         set { m_MoveSpeed = value; }
-    }
-
-    public bool IsFloat
-    {
-        get
-        {
-            return m_Rigidbody.velocity.y >= 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
-        }
-    }
-
-    public bool IsDrop
-    {
-        get
-        {
-            return m_Rigidbody.velocity.y < 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
-        }
     }
 
     public Vector2 MoveToPoint
@@ -62,22 +46,6 @@ public abstract class BaseAvatar : BaseSceneObject
         }
     }
 
-    public Rigidbody2D Rigidbody
-    {
-        get
-        {
-            return m_Rigidbody;
-        }
-    }
-
-    public BoxCollider2D Collider
-    {
-        get
-        {
-            return m_Collider;
-        }
-    }
-
     public DBTrigger DBTrigger
     {
         get
@@ -94,30 +62,13 @@ public abstract class BaseAvatar : BaseSceneObject
         }
     }
 
-    public Rect Bound
-    {
-        get
-        {
-            return GetBound(m_Pos);
-        }
-    }
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
         m_FsmMachine = FsmMachine.Create(this, string.Format("{0}Fsm", this.GetType().Name));
         m_TriggerTargets = gameObject.GetOrAddComponent<TriggerTargets>();
-
-        m_Collider = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_Collider.isTrigger = true;
-
-        m_Rigidbody = gameObject.GetOrAddComponent<Rigidbody2D>();
-        m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-        m_Rigidbody.sleepMode = RigidbodySleepMode2D.NeverSleep;
-        m_Rigidbody.freezeRotation = true;
     }
 
- 
     public override void Release()
     {
         base.Release();
@@ -147,14 +98,12 @@ public abstract class BaseAvatar : BaseSceneObject
         TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
-        {
-            m_Collider.size = triggerData.Size;
-            m_Collider.offset = triggerData.Offest;
-        }
+            SetCollider(triggerData.Offest, triggerData.Size);
     }
 
     protected override void Update()
     {
+        base.Update();
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
@@ -252,39 +201,12 @@ public abstract class BaseAvatar : BaseSceneObject
         m_FsmMachine.SetDefaultState<T>();
     }
 
-    protected bool IsOutVersionX(float posX)
-    {
-        Rect visionRect = CameraMgr.Ins.GetVision();
-        return posX <= visionRect.xMin || posX >= visionRect.xMax;
-    }
-
-    protected bool IsOutVersionY(float posY)
-    {
-        Rect visionRect = CameraMgr.Ins.GetVision();
-        return posY <= visionRect.yMin || posY >= visionRect.yMax;
-    }
-
-    protected Rect GetBound(Vector2 pos)
-    {
-        m_Bound.width = m_Collider.size.x;
-        m_Bound.height = m_Collider.size.y;
-        m_Bound.center = pos + Vector2.up * (m_Collider.offset.y + m_Collider.size.y / 2);
-        m_Bound.xMin = pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
-        m_Bound.xMax = pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
-        m_Bound.yMin = pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
-        m_Bound.yMax = pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
-        return m_Bound;
-    }
-
     protected string m_CurrAnimName = string.Empty;
     protected float m_MoveSpeed = 0.8f;
     protected Vector2 m_MoveToPoint = Vector2.zero;
     protected Vector2 m_MoveDir = Vector2.zero;
-    protected Rect m_Bound = Rect.zero;
-    protected Rigidbody2D m_Rigidbody = null;
     protected TriggerTargets m_TriggerTargets;
     protected DBTrigger m_DBTrigger = null;
-    protected BoxCollider2D m_Collider = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
 }

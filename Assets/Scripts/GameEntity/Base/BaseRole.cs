@@ -126,8 +126,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public UnityEvent OnDropEvent = new UnityEvent();
-    public UnityEvent OnGroundEvent = new UnityEvent();
 
     public override void Init(int id, string name)
     {
@@ -187,22 +185,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_CurrCtrl != null)
             m_CurrCtrl.Update();
-
-        if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
-        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
-
-        UpdatePos2(transform.localPosition.x, Pos.y);
-
-        if (IsFloat)
-        {
-            return;
-        }
-
-        OnDropEvent.Invoke();
-        OnDropEvent.RemoveAllListeners();
-
-        CheckDropTrag();
-        CheckGround();
     }
 
     public virtual void OnAttackMsg(AttackData data,bool forceJumpAttack = false)
@@ -242,7 +224,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().StateParam.Dir = data.Dir.x;             
+            GetState<RoleAttack>().StateParam.Dir = data.Dir.x > 0 ? 1 : -1;             
             return;
         }
 
@@ -318,8 +300,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_IsDropTrag = true;
         m_CurrCtrl.ExitSkill();
-        if (ObjectType == ObjectType.Player)
-            CameraMgr.Ins.EndFollow();
     }
 
     public virtual void SetCatch(bool value)
@@ -359,6 +339,48 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (m_Health <= 0 && !m_IsSmoon) ChangeState<RoleDead>();
     }
 
+    protected override void CheckGround()
+    {
+        if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
+        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
+
+        UpdatePos2(transform.localPosition.x, Pos.y);
+
+        if (IsFloat)
+        {
+            return;
+        }
+
+        OnDropEvent.Invoke();
+        OnDropEvent.RemoveAllListeners();
+
+        CheckDropTrag();
+
+        if (!IsInGround || m_IsDropTrag) return;
+
+        OnGroundEvent.Invoke();
+        OnGroundEvent.RemoveAllListeners();
+        m_IsJumpAttack = false;
+        m_CurrCtrl.ExitSkill();
+
+        if (IsAnyState(typeof(RoleSwoon)))
+        {
+            if (!IsPlayComplete()) return;
+            CheckGroundHurt();
+            m_Rigidbody.velocity = Vector2.zero;
+            m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        }
+        else
+        {
+            if (m_Health > 0)
+            {
+                ChangeState<RoleIdle>();
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
+            }
+            else ChangeState<RoleDead>();
+        }
+    }
+
     private void CheckDropTrag()
     {
         if (!m_IsDropTrag) return;
@@ -389,33 +411,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
             m_TrapData = null;
             m_IsDropTrag = false;
-        }
-    }
-
-    private void CheckGround()
-    {
-        if (!IsInGround || m_IsDropTrag) return;
-
-        OnGroundEvent.Invoke();
-        OnGroundEvent.RemoveAllListeners();
-        m_IsJumpAttack = false;
-        m_CurrCtrl.ExitSkill();
-
-        if (IsAnyState(typeof(RoleSwoon)))
-        {
-            if (!IsPlayComplete()) return;
-            CheckGroundHurt();
-            m_Rigidbody.velocity = Vector2.zero;
-            m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-        }
-        else
-        {
-            if (m_Health > 0)
-            {
-                ChangeState<RoleIdle>();
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
-            }
-            else ChangeState<RoleDead>();
         }
     }
 

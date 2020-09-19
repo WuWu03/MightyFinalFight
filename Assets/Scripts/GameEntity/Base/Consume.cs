@@ -34,6 +34,7 @@ public class Consume : BaseSceneItem
         m_Rigidbody.gravityScale = 1.0f;
         m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
     }
+
     private void AddHP()
     {
         if (m_Owner.Health >= m_Owner.MaxHealth)

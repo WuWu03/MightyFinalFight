@@ -28,7 +28,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             if (Mathf.Abs(dir.x) != 0)
             {
                 m_CatchAttackTimer = 0;
-                m_Owner.SetDir(dir.x);
+                m_Owner.SetDir(dir.x > 0 ? 1 : -1);
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }
@@ -45,7 +45,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         m_CatchAttackTimer = 0f;
 
         BaseSceneItem item = IsNearSceneItem();
-        if (item != null)
+        if (item != null && item.CanPickUp)
         {
             hero.PickUpSceneItemMsg(item);
             return;

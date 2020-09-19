@@ -14,6 +14,7 @@ public class TaskTriggerEnemy : BaseTaskTrigger
             StageMgr.Ins.CreateEnemy(m_TaskData.Targets[i].SourceID, m_TaskData.Targets[i].EntityID, m_TaskData.Targets[i].Pos);
         }
 
+        StageMgr.Ins.CreateBarrels();
         m_IsComplete = true;
     }
 }
