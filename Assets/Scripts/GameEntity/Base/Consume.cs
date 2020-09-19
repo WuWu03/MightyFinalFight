@@ -29,6 +29,7 @@ public class Consume : BaseSceneItem
     {
         base.OnResComplete(go);
         SetCollider(m_ConsumeInfo.TriggerOffest, m_ConsumeInfo.TriggerSize);
+        SetPos(m_Pos);
         m_Collider.isTrigger = true;
         m_Collider.enabled = true;
         m_Rigidbody.gravityScale = 1.0f;

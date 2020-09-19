@@ -28,7 +28,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             if (Mathf.Abs(dir.x) != 0)
             {
                 m_CatchAttackTimer = 0;
-                m_Owner.SetDir(dir.x > 0 ? 1 : -1);
+                m_Owner.SetDir(dir.x);
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }

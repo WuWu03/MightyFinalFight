@@ -284,11 +284,22 @@ public class BaseHero : BaseRole
     {
         if (item == null) return;
         ChangeState<HeroPickUp>();
-        item.SetOwner(this);
+
         if (item.ObjectType == ObjectType.Weapon)
         {
-            m_Weapon = item as Weapon;
+            Weapon weapon = item as Weapon;
+            if (m_Weapon == null)
+            {
+                weapon.SetOwner(this);
+                m_Weapon = weapon;
+            }
+            else
+            {
+                m_Weapon.AddHealth(weapon.Health);
+                weapon.Release();
+            }
         }
+        else item.SetOwner(this);
     }
 
     public virtual void UseWeaponMsg()

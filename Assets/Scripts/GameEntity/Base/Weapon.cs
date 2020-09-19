@@ -6,6 +6,14 @@ using UnityEngine;
 
 public class Weapon : BaseSceneItem
 {
+    public int WeaponHealth
+    {
+        get
+        {
+            return m_WeaponData.Health;
+        }
+    }
+
     public override void InitInfo(BaseSceneObjectInfo data)
     {
         base.InitInfo(data);
@@ -40,6 +48,7 @@ public class Weapon : BaseSceneItem
         base.OnResComplete(go);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         SetCollider(m_WeaponData.TriggerOffest, m_WeaponData.TriggerSize);
+        SetPos(m_Pos);
         m_Collider.isTrigger = true;
         m_Collider.enabled = true;
         m_Rigidbody.gravityScale = 1.0f;
@@ -47,25 +56,10 @@ public class Weapon : BaseSceneItem
         m_Animator.animation.Play(AnimName.Idle, 0);
     }
 
-    protected override void Update()
+    protected override void CheckGround()
     {
-        base.Update();
-
-        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
-
-        UpdatePos2(transform.localPosition.x, m_Pos.y);
-
-        if (IsFloat)
-        {
-            return;
-        }
-
-        CheckGround();
-    }
-
-    private void CheckGround()
-    {
-        if (!IsInGround) return;
+        base.CheckGround();
+        if (!IsInGround || !ResComplete) return;
         m_Rigidbody.velocity = Vector2.zero;
         m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
 

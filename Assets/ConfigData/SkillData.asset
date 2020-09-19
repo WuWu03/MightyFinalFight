@@ -1136,7 +1136,7 @@ MonoBehaviour:
         HitAnimSpeed: 0
         Dir: {x: 0, y: 0}
         Pos: {x: 0.2, y: 0.14}
-        Velocity: {x: 8, y: 0}
+        Velocity: {x: 6, y: 0}
         HitRange: 0
         Drag: 0
         TriggerOffest: {x: 0, y: 0}

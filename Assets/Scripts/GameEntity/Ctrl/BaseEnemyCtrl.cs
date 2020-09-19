@@ -36,7 +36,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     public void OppositePlayer()
     {
-        m_Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - m_Owner.Pos.x > 0 ? 1 : -1);
+        m_Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - m_Owner.Pos.x > 0 ? 1f : -1f);
     }
 
     public bool HasBehaviour()

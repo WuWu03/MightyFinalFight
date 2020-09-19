@@ -224,7 +224,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().StateParam.Dir = data.Dir.x > 0 ? 1 : -1;             
+            GetState<RoleAttack>().StateParam.Dir = data.Dir.x;             
             return;
         }
 

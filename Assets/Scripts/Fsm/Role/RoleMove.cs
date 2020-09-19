@@ -26,7 +26,7 @@ public class RoleMove : BaseFsmState
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (CanChangeDir)
-            m_Owner.SetDir(m_Owner.MoveDir.x > 0 ? 1 : -1);
+            m_Owner.SetDir(m_Owner.MoveDir.x);
         Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
         m_Owner.SetPos(ownerPos);
     }

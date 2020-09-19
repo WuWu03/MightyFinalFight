@@ -273,7 +273,7 @@ public class StageMgr : MonoSingleton<StageMgr>
             BaseSceneItem sceneItem = SceneObjectPool.Ins.Get<Barrel>("Barrel");
             sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
             sceneItem.SetObjectType(ObjectType.Monster);
-            sceneItem.SetMapPos(new Vector2Int(-500 + i*50, -66));
+            sceneItem.SetMapPos(new Vector2Int(-700 + i*50, -66));
             sceneItem.InitInfo(new BarrelInfo()
             {
                 ID = 1,
@@ -286,7 +286,7 @@ public class StageMgr : MonoSingleton<StageMgr>
                 Dir = 1,
                 GroundY = 0,
                 IsFloat = false,
-                MoveSpeed = 1,
+                MoveSpeed = 0.8f,
                 Item = 1001 + i,
             });
         }
