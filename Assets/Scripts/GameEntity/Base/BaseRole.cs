@@ -199,7 +199,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
         }
 
-        GetState<RoleAttack>().StateParam = data;
+        GetState<RoleAttack>().AttackData = data;
         ChangeState<RoleAttack>();
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
@@ -218,13 +218,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
        
         if (IsAnyState(typeof(RoleJump)))
         {
-            GetState<RoleJump>().StateParam.Dir = data.Dir;
+            GetState<RoleJump>().JumpData.Dir = data.Dir;
             return;
         }
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().StateParam.Dir = data.Dir.x;             
+            GetState<RoleAttack>().AttackData.Dir = data.Dir.x;             
             return;
         }
 
@@ -250,7 +250,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         m_CurrCtrl.ExitSkill();
-        GetState<RoleJump>().StateParam = data;
+        GetState<RoleJump>().JumpData = data;
         ChangeState<RoleJump>();
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
     }
@@ -274,7 +274,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
         else
         {
-            GetState<RoleHurt>().StateParam = data;
+            GetState<RoleHurt>().HurtData = data;
             ChangeState<RoleHurt>();
         }
 

@@ -1,8 +1,8 @@
 ﻿using FrameWork.Fsm;
 
-public class RoleHurt : BaseFsmState, IStateParam<HurtData>
+public class RoleHurt : BaseFsmState
 {
-    public HurtData StateParam
+    public HurtData HurtData
     {
         get;
         set;
@@ -15,7 +15,7 @@ public class RoleHurt : BaseFsmState, IStateParam<HurtData>
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(StateParam.HurtAnim, 1,2f);
+        m_Owner.PlayAnimation(HurtData.HurtAnim, 1, m_Owner.IsBeCatch ? 1f : 1.5f);
         m_Owner.SetPos(m_Owner.Pos);
     }
 

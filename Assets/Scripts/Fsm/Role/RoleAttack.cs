@@ -1,9 +1,9 @@
 ﻿using FrameWork.Fsm;
 using UnityEngine;
 
-public class RoleAttack : BaseFsmState, IStateParam<AttackData>
+public class RoleAttack : BaseFsmState
 {
-    public AttackData StateParam
+    public AttackData AttackData
     {
         get;
         set;
@@ -20,15 +20,15 @@ public class RoleAttack : BaseFsmState, IStateParam<AttackData>
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (StateParam.CanChangeDir)
+        if (AttackData.CanChangeDir)
         {
-            m_Owner.SetDir(StateParam.Dir);
+            m_Owner.SetDir(AttackData.Dir);
         }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-        StateParam = null;
+        AttackData = null;
     }
 
     public override void OnDestroy(BaseFsm fsm)

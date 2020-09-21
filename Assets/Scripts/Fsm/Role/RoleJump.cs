@@ -1,9 +1,9 @@
 ﻿using FrameWork.Fsm;
 using UnityEngine;
 
-public class RoleJump : BaseFsmState, IStateParam<JumpData>
+public class RoleJump : BaseFsmState
 {
-    public JumpData StateParam
+    public JumpData JumpData
     {
         get;
         set;
@@ -17,10 +17,10 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Owner.Rigidbody.AddForce(new Vector2(StateParam.Dir.x * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
+        m_Owner.Rigidbody.AddForce(new Vector2(JumpData.Dir.x * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
         m_Owner.PlayAnimation(AnimName.JumpUp);
-        m_HasAddXForce = StateParam.Dir.x != 0;
-        m_Owner.SetDir(StateParam.Dir.x);
+        m_HasAddXForce = JumpData.Dir.x != 0;
+        m_Owner.SetDir(JumpData.Dir.x);
         m_Owner.OnDropEvent.AddListener(OnDrop);
     }
 
@@ -28,12 +28,12 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
     {
         if (m_Owner.IsFloat)
         {
-            if (Mathf.Abs(StateParam.Dir.x) > 0.01f && !m_HasAddXForce)
+            if (Mathf.Abs(JumpData.Dir.x) > 0.01f && !m_HasAddXForce)
             {
                 m_HasAddXForce = true;
-                m_Owner.Rigidbody.AddForce(Vector2.right * StateParam.Dir.x * m_Owner.JumpForce.x, 0f);
-                if (StateParam.CanChangeDir)
-                    m_Owner.SetDir(StateParam.Dir.x);
+                m_Owner.Rigidbody.AddForce(Vector2.right * JumpData.Dir.x * m_Owner.JumpForce.x, 0f);
+                if (JumpData.CanChangeDir)
+                    m_Owner.SetDir(JumpData.Dir.x);
             }
 
             if (m_HasAddXForce)
@@ -46,7 +46,7 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_HasAddXForce = false;
-        StateParam = null;
+        JumpData = null;
         m_Owner.StopAnimation(AnimName.JumpUp);
     }
 
