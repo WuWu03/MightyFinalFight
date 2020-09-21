@@ -21,7 +21,6 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
         m_Owner.PlayAnimation(AnimName.JumpUp);
         m_HasAddXForce = StateParam.Dir.x != 0;
         m_Owner.SetDir(StateParam.Dir.x);
-        m_Owner.OnGroundEvent.AddListener(OnGround);
         m_Owner.OnDropEvent.AddListener(OnDrop);
     }
 
@@ -49,15 +48,9 @@ public class RoleJump : BaseFsmState, IStateParam<JumpData>
         m_HasAddXForce = false;
         StateParam = null;
         m_Owner.StopAnimation(AnimName.JumpUp);
-        Debug.Log("跳跃退出了");
     }
 
     public override void OnDestroy(BaseFsm fsm)
-    {
-
-    }
-
-    private void OnGround()
     {
 
     }
