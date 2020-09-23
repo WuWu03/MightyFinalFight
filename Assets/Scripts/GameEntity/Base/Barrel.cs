@@ -59,7 +59,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         base.Init(id, name);
         m_FsmMachine = new FsmMachine(this, string.Format("{0}Fsm", this.GetType().Name));
-        m_TriggerTargets = gameObject.GetOrAddComponent<TriggerTargets>();
         m_FsmMachine.AddState<BarrelMove>();
         m_FsmMachine.AddState<BarrelDrop>();
         m_FsmMachine.AddState<BarrelDead>();
@@ -76,9 +75,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         base.Release();
         m_FsmMachine.ShutDown();
-        m_TriggerTargets.Release(); 
         m_FsmMachine = null;
-        m_TriggerTargets = null;
         m_BarrelInfo = null;
         m_Timer = 0;
     }
@@ -106,16 +103,19 @@ public class Barrel : BaseSceneItem, ICanBeHit
             return;
         }
         base.Update();
-        CheckStrike();
+       
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CheckStrike(collision.gameObject);
     }
 
     protected override void OnResComplete(GameObject go)
     {
         base.OnResComplete(go);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
         m_Animator.animation.Play(AnimName.Idle, 0);
         if (!m_BarrelInfo.IsFloat)
         {
@@ -135,38 +135,30 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_FsmMachine.Start<BarrelDrop>();
     }
 
-    private void CheckStrike()
+    private void CheckStrike(GameObject go)
     {
-        if (!ResComplete || m_TriggerTargets.Targets.Count < 1 || IsDead) return;
-        if (m_Timer == 0) m_Timer = Time.time;
-        if (Time.time - m_Timer < 0.3f) return;
+        if (!ResComplete || IsDead) return;
+        BaseRole role = go.GetComponent<BaseRole>();
+        if (role == null || !(role is ICanBeHit)) return;
+        if (role.ObjectType != ObjectType.Player) return;
+        if (role.IsAnyState(typeof(RoleAttack))) return;
 
-        for (int i = 0; i < m_TriggerTargets.Targets.Count; i++)
+        ICanBeHit hit = role as ICanBeHit;
+        hit.OnHurtMsg(new HurtData()
         {
-            BaseRole role = m_TriggerTargets.Targets[i].GetComponent<BaseRole>();
-            if (role == null) continue;
-            if (role.ObjectType != ObjectType.Player) continue;
-            ICanBeHit hit = role as ICanBeHit;
-            hit.OnHurtMsg(new HurtData()
-            {
-                AttackerDir = m_BarrelInfo.Dir,
-                AttackForce = new Vector2(40, 150),
-                AttackerPos = m_Pos,
-                IsSwoon = true,
-                AttackerID = ID,
-                AttackValue = 1,
-                HurtSound = "OnBlow",
-                HurtAnim = string.Empty,
-                IsGroundHurt = false,
-            });
-        }
-
-        m_Timer = Time.time;
+            AttackerDir = m_BarrelInfo.Dir,
+            AttackForce = new Vector2(40, 150),
+            AttackerPos = m_Pos,
+            IsSwoon = true,
+            AttackerID = ID,
+            AttackValue = 1,
+            HurtSound = "OnBlow",
+            HurtAnim = string.Empty,
+            IsGroundHurt = false,
+        });
     }
 
     private float m_Timer = 0;
-    private DBTrigger m_DBTrigger = null;
-    private TriggerTargets m_TriggerTargets;
     private FsmMachine m_FsmMachine = null;
     private UnityArmatureComponent m_Animator = null;
     private BarrelInfo m_BarrelInfo = null;

@@ -134,7 +134,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleMove>();
         AddState<RoleJump>();
         AddState<RoleAttack>();
-        AddState<RoleJumpAttack>();
         AddState<RoleHurt>();
         AddState<RoleSwoon>();
         AddState<RoleDead>();

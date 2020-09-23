@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2207548297214873382}
   - component: {fileID: 7016215571579353214}
   - component: {fileID: 282839938346606024}
-  - component: {fileID: 9154528875320983537}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -74,31 +73,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotNames: []
   dirty: 0
---- !u!114 &9154528875320983537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312874009602592689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TriggerDatas:
-  - AnimName: Move
-    Offest: {x: 0, y: 0.13184613}
-    Size: {x: 0.18201673, y: 0.26273882}
-  - AnimName: Dead
-    Offest: {x: -0.096866414, y: 0.19911456}
-    Size: {x: 0.28964612, y: 0.4188013}
-  - AnimName: Drop
-    Offest: {x: 0.0026907325, y: 0.1587534}
-    Size: {x: 0.17663527, y: 0.32731628}
-  - AnimName: Idle
-    Offest: {x: 0.00538148, y: 0.12646455}
-    Size: {x: 0.17125383, y: 0.26273882}
 --- !u!1 &8137241495959884460
 GameObject:
   m_ObjectHideFlags: 0

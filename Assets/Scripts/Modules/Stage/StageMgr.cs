@@ -227,9 +227,9 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     public void CreateEnemy(int sourceID, int engityID,Vector2Int pos)
     {
-        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
-        enemy.OnDead += OnEnemyDead;
-        m_ListCurrEnemy.Add(enemy);
+        //BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
+        //enemy.OnDead += OnEnemyDead;
+        //m_ListCurrEnemy.Add(enemy);
     }
 
     public bool IsEnemyDead(int id)
@@ -250,14 +250,14 @@ public class StageMgr : MonoSingleton<StageMgr>
 
     private void CreateSceneItemTest()
     {
-        SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
-        StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
+        //SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
+        //StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
 
-        for (int i = 0; i < 4; i++)
-        {
-            data = StaticConfig.SceneItemConfig.GetData(1004 + i);
-            StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
-        }
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    data = StaticConfig.SceneItemConfig.GetData(1004 + i);
+        //    StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
+        //}
     }
 
     public void CreateSceneItem(int id, Vector2Int pos)
