@@ -18,9 +18,9 @@ public class Bullet : BaseSceneItem
         SetPos(owner.Pos + new Vector2(m_BulletData.Pos.x * owner.Dir, m_BulletData.Pos.y));
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         if (!m_ResComplete) return;
 
         if (m_BulletData.IsPenatrate)

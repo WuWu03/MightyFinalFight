@@ -123,7 +123,6 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
  
         CameraMgr.Ins.SetTarget(m_Player.transform);
-        TaskMgr.Ins.AcceptTask(1001);
         CanContrl = true;
     }
 

@@ -45,9 +45,9 @@ public class BaseGravityObject : BaseSceneObject
         m_Rigidbody.freezeRotation = true;
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         CheckGround();
     }
 

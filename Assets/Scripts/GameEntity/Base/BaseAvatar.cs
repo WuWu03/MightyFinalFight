@@ -101,9 +101,9 @@ public abstract class BaseAvatar : BaseGravityObject
             SetCollider(triggerData.Offest, triggerData.Size);
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 

@@ -21,6 +21,7 @@ MonoBehaviour:
     Height: 152
     InitPos: {x: -440, y: -53}
     SceneObjIDs: 
+    TaskIDs: e9030000ea030000
     BGMs: []
     MoveArea:
     - Pos: {x: 0, y: -55}

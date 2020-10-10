@@ -92,9 +92,9 @@ public class BaseHero : BaseRole
         m_DicAttacker = null;
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
         CheckCatch();
         CheckRebirthState();
 

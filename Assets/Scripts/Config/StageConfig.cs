@@ -25,7 +25,8 @@ public class StageData : BaseConfigData
     public int Width;
     public int Height;
     public Vector2Int InitPos;//主角出生地点
-    public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等） 
+    public int[] SceneObjIDs;//场景出现的物体（陷阱，障碍物等）
+    public int[] TaskIDs;//场景的任务
     public BGM[] BGMs;//场景音乐组
     public Area[] MoveArea;//可行走区域
 }

@@ -178,9 +178,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_FsmMachine.Start<RoleIdle>();
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
 
         if (m_CurrCtrl != null)
             m_CurrCtrl.Update();

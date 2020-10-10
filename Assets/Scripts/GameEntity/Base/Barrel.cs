@@ -94,7 +94,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     public void SetCatch(bool value) { }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
         bool isOut = m_BarrelInfo.Dir > 0 ? IsOutVersionXRight(m_Pos.x) : IsOutVersionXLeft(m_Pos.x);
         if (isOut)
@@ -102,12 +102,22 @@ public class Barrel : BaseSceneItem, ICanBeHit
             Release();
             return;
         }
-        base.Update();
+        base.OnUpdate();
        
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CheckStrike(collision.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        CheckStrike(collision.gameObject);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
         CheckStrike(collision.gameObject);
     }

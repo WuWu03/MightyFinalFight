@@ -1,6 +1,7 @@
 ﻿using FrameWork;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class TaskMgr : BaseMgr<TaskMgr>
@@ -14,7 +15,25 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
     public void AcceptTask(int id)
     {
+        if(HasAccepted(id))
+        {
+            return;
+        }
+
         m_CurrTaskList.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
+    }
+
+    public bool HasAccepted(int id)
+    {
+        for(int i = 0;i<m_CurrTaskList.Count;i++)
+        {
+            if(m_CurrTaskList[i].TaskData.ID.Equals(id))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void Update()
@@ -46,6 +65,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
             }
         }
     }
+
 
     private int m_CurrTaskIndex = 0;
     private int m_LastTaskIndex = -1;

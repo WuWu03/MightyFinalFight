@@ -7,6 +7,7 @@ using FrameWork.Sound;
 using FrameWork.UI;
 using FrameWork.Utils;
 using UnityEngine;
+using UnityScript.Scripting.Pipeline;
 
 public class StageMgr : MonoSingleton<StageMgr>
 {
@@ -223,13 +224,17 @@ public class StageMgr : MonoSingleton<StageMgr>
         //});
 
         UIMgr.Ins.Open<MainPanel>();
+        for(int i = 0; i < m_CurrStageData.TaskIDs.Length; i++) 
+        {
+            TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
+        }
     }
 
     public void CreateEnemy(int sourceID, int engityID,Vector2Int pos)
     {
-        //BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
-        //enemy.OnDead += OnEnemyDead;
-        //m_ListCurrEnemy.Add(enemy);
+        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
+        enemy.OnDead += OnEnemyDead;
+        m_ListCurrEnemy.Add(enemy);
     }
 
     public bool IsEnemyDead(int id)
@@ -271,9 +276,6 @@ public class StageMgr : MonoSingleton<StageMgr>
         for (int i = 0; i < 5; i++)
         {
             BaseSceneItem sceneItem = SceneObjectPool.Ins.Get<Barrel>("Barrel");
-            sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
-            sceneItem.SetObjectType(ObjectType.Monster);
-            sceneItem.SetMapPos(new Vector2Int(-700 + i*50, -66));
             sceneItem.InitInfo(new BarrelInfo()
             {
                 ID = 1,
@@ -289,6 +291,9 @@ public class StageMgr : MonoSingleton<StageMgr>
                 MoveSpeed = 0.8f,
                 Item = 1001 + i,
             });
+            sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
+            sceneItem.SetObjectType(ObjectType.Monster);
+            sceneItem.SetMapPos(new Vector2Int(-700 + i * 50, -66));
         }
     }
 

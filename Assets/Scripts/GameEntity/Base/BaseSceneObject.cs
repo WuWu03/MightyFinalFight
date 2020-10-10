@@ -213,6 +213,12 @@ public class BaseSceneObject : BaseObject
         if (m_MaxHealth < 0) m_MaxHealth = 0;
     }
 
+    protected override void Update()
+    {
+        base.Update();
+        if (!m_ResComplete) return;
+        OnUpdate();
+    }
 
     protected virtual void OnResComplete(GameObject go)
     {
@@ -265,6 +271,8 @@ public class BaseSceneObject : BaseObject
         Rect visionRect = CameraMgr.Ins.GetVision();
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
+
+    protected virtual void OnUpdate() { }
 
     protected bool m_ResComplete = false;
     protected float m_Dir = 1f;

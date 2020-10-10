@@ -47,9 +47,9 @@ public class BaseEnemy : BaseRole
         UIMgr.Ins.GetPanel<MainPanelCtrl>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
-        base.Update();
+        base.OnUpdate();
 
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
