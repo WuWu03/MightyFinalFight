@@ -11,8 +11,10 @@ public class GameEntry : FrameWorkEntry
     protected override void OnInit()
     {
         EffectMgr.Init();
-        StaticConfig.InitConfig();
         TaskMgr.Init();
+        StageMgr.Init();
+        SceneEntityMgr.Init();
+        StaticConfig.InitConfig();
     }
 
     protected override void OnStartGame()
@@ -22,6 +24,9 @@ public class GameEntry : FrameWorkEntry
 
     protected override void OnExit()
     {
-
+        EffectMgr.Ins.ShutDown();
+        TaskMgr.Ins.ShutDown();
+        StageMgr.Ins.ShutDown();
+        SceneEntityMgr.Ins.ShutDown();
     }
 }

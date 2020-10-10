@@ -10,7 +10,7 @@ public class TaskKillEnemy : BaseTask
     {
         if (m_TaskData.KillAll)
         {
-            m_IsComplete = StageMgr.Ins.IsAllEnemyDead();
+            m_IsComplete = SceneEntityMgr.Ins.IsAllEnemyDead();
             return m_IsComplete;
         }
 
@@ -22,7 +22,7 @@ public class TaskKillEnemy : BaseTask
 
         for (int i = 0; i < m_TaskData.KillIDs.Length; i++)
         {
-            if (!StageMgr.Ins.IsEnemyDead(m_TaskData.KillIDs[i]))
+            if (!SceneEntityMgr.Ins.IsEnemyDead(m_TaskData.KillIDs[i]))
             {
                 m_IsComplete = false;
                 return false;

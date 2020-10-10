@@ -11,10 +11,10 @@ public class TaskTriggerEnemy : BaseTaskTrigger
         base.Trigger();
         for (int i = 0; i < m_TaskData.Targets.Length; i++)
         {
-            StageMgr.Ins.CreateEnemy(m_TaskData.Targets[i].SourceID, m_TaskData.Targets[i].EntityID, m_TaskData.Targets[i].Pos);
+            SceneEntityMgr.Ins.CreateEnemy(m_TaskData.Targets[i].SourceID, m_TaskData.Targets[i].EntityID, m_TaskData.Targets[i].Pos);
         }
 
-        StageMgr.Ins.CreateBarrels();
+        SceneEntityMgr.Ins.CreateBarrels();
         m_IsComplete = true;
     }
 }

@@ -59,6 +59,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         base.Init(id, name);
         m_FsmMachine = new FsmMachine(this, string.Format("{0}Fsm", this.GetType().Name));
+        m_FsmMachine.AddState<BarrelIdle>();
         m_FsmMachine.AddState<BarrelMove>();
         m_FsmMachine.AddState<BarrelDrop>();
         m_FsmMachine.AddState<BarrelDead>();
@@ -77,7 +78,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_FsmMachine.ShutDown();
         m_FsmMachine = null;
         m_BarrelInfo = null;
-        m_Timer = 0;
     }
 
     public void OnHurtMsg(HurtData data)
@@ -88,7 +88,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
         {
             m_FsmMachine.GetState<BarrelDead>().AttackerDir = data.AttackerDir;
             m_FsmMachine.ChangeState<BarrelDead>();
-            StageMgr.Ins.CreateSceneItem(m_BarrelInfo.Item, m_MapPos);
+            SceneEntityMgr.Ins.CreateSceneItem(m_BarrelInfo.Item, m_MapPos);
         }
     }
 
@@ -129,8 +129,15 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_Animator.animation.Play(AnimName.Idle, 0);
         if (!m_BarrelInfo.IsFloat)
         {
-            m_FsmMachine.Start<BarrelMove>();
-            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Barrel");
+            if (m_BarrelInfo.MoveSpeed > 0)
+            {
+                m_FsmMachine.Start<BarrelMove>();
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Barrel");
+            }
+            else
+            {
+                m_FsmMachine.Start<BarrelIdle>();
+            }
         }
         else
         {
@@ -147,7 +154,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     private void CheckStrike(GameObject go)
     {
-        if (!ResComplete || IsDead) return;
+        if (!ResComplete || m_BarrelInfo.MoveSpeed <= 0 || IsDead) return;
         BaseRole role = go.GetComponent<BaseRole>();
         if (role == null || !(role is ICanBeHit)) return;
         if (role.ObjectType != ObjectType.Player) return;
@@ -168,7 +175,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         });
     }
 
-    private float m_Timer = 0;
     private FsmMachine m_FsmMachine = null;
     private UnityArmatureComponent m_Animator = null;
     private BarrelInfo m_BarrelInfo = null;

@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365d01534f6bce9498e1e8c4938ca580, type: 3}
+  m_Name: BehaviourTreeData
+  m_EditorClassIdentifier: 
+  Datas:
+  - ID: 1001
+    Name: BredTree
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    Childs:
+    - ID: 0
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: Sequence
+      Args: 
+      Childs:
+      - ID: 0
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRandomPos
+          Args: 
+      - ID: 0
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRoundPos
+          Args: 
+      - ID: 0
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsIdle
+          Args: 
+      - ID: 0
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        Childs:
+        - ID: 0
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          Childs: []
+          PreConditions: []
+        - ID: 0
+          Name: "\u653B\u51FB"
+          ClassType: DoAttack
+          Args: AttackTime:3
+          Childs: []
+          PreConditions:
+          - ID: 0
+            Name: 
+            ClassType: PreIsPlayerDistance
+            Args: Distance:0.4
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsAttack
+          Args: 
+      PreConditions:
+      - ID: 0
+        Name: "\u5B58\u5728\u968F\u673A\u884C\u4E3A"
+        ClassType: PreIsRandomBehaviour
+        Args: 
+    - ID: 0
+      Name: "\u88AB\u52A8\u653B\u51FB"
+      ClassType: Sequence
+      Args: 
+      Childs:
+      - ID: 0
+        Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+        ClassType: DoRunToPlayer
+        Args: 
+        Childs: []
+        PreConditions: []
+      - ID: 0
+        Name: "\u653B\u51FB"
+        ClassType: DoAttack
+        Args: AttackTime:3
+        Childs:
+        - ID: 0
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          Childs: []
+          PreConditions: []
+        - ID: 0
+          Name: 
+          ClassType: 
+          Args: 
+          Childs: []
+          PreConditions: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsPlayerDistance
+          Args: Distance:0.4
+      PreConditions:
+      - ID: 0
+        Name: "\u73A9\u5BB6\u8FD1\u8EAB"
+        ClassType: PreIsPlayerDistance
+        Args: Distance:0.2
+    PreConditions:
+    - ID: 0
+      Name: 
+      ClassType: PreIsLockPlayer
+      Args: Distance:10
+    - ID: 0
+      Name: 
+      ClassType: PreIsInSpecialState
+      Args: TheNot:true
+  - ID: 1002
+    Name: TwoPTree
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    Childs:
+    - ID: 0
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: Sequence
+      Args: 
+      Childs:
+      - ID: 0
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRandomPos
+          Args: 
+      - ID: 0
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsRoundPos
+          Args: 
+      - ID: 0
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        Childs: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsIdle
+          Args: 
+      - ID: 0
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        Childs:
+        - ID: 0
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          Childs: []
+          PreConditions: []
+        - ID: 0
+          Name: "\u653B\u51FB"
+          ClassType: DoLoopAttack
+          Args: AttackTime:0
+          Childs: []
+          PreConditions: []
+        - ID: 0
+          Name: "\u540E\u9000"
+          ClassType: DoBack
+          Args: BackDistance:0.4
+          Childs: []
+          PreConditions: []
+        PreConditions:
+        - ID: 0
+          Name: 
+          ClassType: PreIsAttack
+          Args: 
+      PreConditions: []
+    PreConditions:
+    - ID: 0
+      Name: 
+      ClassType: PreIsLockPlayer
+      Args: Distance:10
+    - ID: 0
+      Name: 
+      ClassType: PreIsInSpecialState
+      Args: TheNot:true

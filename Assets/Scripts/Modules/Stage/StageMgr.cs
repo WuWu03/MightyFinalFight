@@ -9,7 +9,7 @@ using FrameWork.Utils;
 using UnityEngine;
 using UnityScript.Scripting.Pipeline;
 
-public class StageMgr : MonoSingleton<StageMgr>
+public class StageMgr : BaseMgr<StageMgr>
 {
     public int StageIndex
     {
@@ -50,9 +50,6 @@ public class StageMgr : MonoSingleton<StageMgr>
             Utils.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
             DontDestroyOnLoad(m_MapRenderer.gameObject);
         }
-
-        m_ListDeadEnemy = new List<int>();
-        m_ListCurrEnemy = new List<BaseEnemy>();
     }
 
     public void Enter(int id)
@@ -64,8 +61,6 @@ public class StageMgr : MonoSingleton<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
         m_StageIndex = m_CurrStageData.StageIndex;
-        CreateSceneItemTest();
-        CameraMgr.Ins.EndFollow();
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
         ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
     }
@@ -228,87 +223,12 @@ public class StageMgr : MonoSingleton<StageMgr>
         {
             TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
         }
+
+        SceneEntityMgr.Ins.CreateSceneItemTest();
+        CameraMgr.Ins.EndFollow();
     }
 
-    public void CreateEnemy(int sourceID, int engityID,Vector2Int pos)
-    {
-        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
-        enemy.OnDead += OnEnemyDead;
-        m_ListCurrEnemy.Add(enemy);
-    }
 
-    public bool IsEnemyDead(int id)
-    {
-        for(int i = 0;i< m_ListDeadEnemy.Count; i++)
-        {
-            if (m_ListDeadEnemy[i] == id)
-                return true;
-        }
-
-        return false;
-    }
-
-    public bool IsAllEnemyDead()
-    {
-        return m_ListCurrEnemy.Count <= 0;
-    }
-
-    private void CreateSceneItemTest()
-    {
-        //SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
-        //StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
-
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    data = StaticConfig.SceneItemConfig.GetData(1004 + i);
-        //    StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
-        //}
-    }
-
-    public void CreateSceneItem(int id, Vector2Int pos)
-    {
-        SceneItemData data = StaticConfig.SceneItemConfig.GetData(id);
-        StageFactory.CreateSceneItem(data, pos);
-    }
-
-    public void CreateBarrels()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            BaseSceneItem sceneItem = SceneObjectPool.Ins.Get<Barrel>("Barrel");
-            sceneItem.InitInfo(new BarrelInfo()
-            {
-                ID = 1,
-                Health = 1,
-                MaxHealth = 1,
-                TriggerOffest = new Vector2(0, 0.13f),
-                TriggerSize = new Vector2(0.17f, 0.25f),
-                Value = 0,
-                CanDrop = false,
-                Dir = 1,
-                GroundY = 0,
-                IsFloat = false,
-                MoveSpeed = 0.8f,
-                Item = 1001 + i,
-            });
-            sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
-            sceneItem.SetObjectType(ObjectType.Monster);
-            sceneItem.SetMapPos(new Vector2Int(-700 + i * 50, -66));
-        }
-    }
-
-    private void OnEnemyDead(int id)
-    {
-        m_ListDeadEnemy.Add(id);
-
-        for (int i = m_ListCurrEnemy.Count - 1; i >= 0; i--)
-        {
-            if (m_ListCurrEnemy[i].EntityID == id)
-            {
-                m_ListCurrEnemy.RemoveAt(i);
-            }
-        }
-    }
 
     private int m_Width;
     private int m_Height;
@@ -319,6 +239,5 @@ public class StageMgr : MonoSingleton<StageMgr>
     private Rect m_AreaBound = Rect.zero;
     private SpriteRenderer m_MapRenderer = null;
     private StageData m_CurrStageData = null;
-    private List<BaseEnemy> m_ListCurrEnemy;
-    private List<int> m_ListDeadEnemy;
+
 }

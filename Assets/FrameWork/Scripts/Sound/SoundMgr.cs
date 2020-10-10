@@ -15,9 +15,24 @@ namespace FrameWork.Sound
             public bool IsLoop;
             public float Volum = 1f;
             public float LerpTime = 0f;
+            
+            public AudioGroup(string path,string name,bool isLoop,float volum,float lerpTime)
+            {
+                Path = path;
+                Name = name;
+                IsLoop = isLoop;
+                Volum = volum;
+                LerpTime = lerpTime;
+            }
+
             public string GetPath()
             {
                 return string.Format("{0}/{1}", Path, Name);
+            }
+
+            public static string GetPath(string path, string name)
+            {
+                return string.Format("{0}/{1}", path, name);
             }
         }
 
@@ -67,8 +82,24 @@ namespace FrameWork.Sound
             });
         }
 
-        public void PlayBGMGroup(AudioGroup[] audioGroups)
+        public void PlayBGMGroup(AudioGroup[] audioGroups,bool forceReplay = false)
         {
+            if(!forceReplay)
+            {
+                bool isAllInPlaying = true;
+
+                for (int i = 0; i < audioGroups.Length; i++)
+                {
+                    if(!IsBGMPlaying(audioGroups[i].GetPath()))
+                    {
+                        isAllInPlaying = false;
+                        break;
+                    }
+                }
+
+                if (isAllInPlaying) return;
+            }
+
             StopCurrent();
 
             for (int i = 0; i < audioGroups.Length; i++)
@@ -77,18 +108,22 @@ namespace FrameWork.Sound
             }
         }
 
-        public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0)
+        public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0,bool isForceReplay = false)
         {
+            if (!isForceReplay && IsBGMPlaying(AudioGroup.GetPath(path, name))) return;
             StopCurrent();
             m_QueueAudioGroup.Clear();
-            m_QueueAudioGroup.Enqueue(new AudioGroup() 
+            m_QueueAudioGroup.Enqueue(new AudioGroup(path, name, isLoop, volum, lerpTime));
+        }
+
+        public bool IsBGMPlaying(string fullName)
+        {
+            if (m_CurrPlayAudio != null && m_CurrPlayAudio.GetPath().Equals(fullName)) return true;
+            foreach(AudioGroup group in m_QueueAudioGroup)
             {
-                Path = path,
-                Name = name,
-                IsLoop = isLoop,
-                Volum = volum,
-                LerpTime = lerpTime,
-            });
+                if(group.GetPath().Equals(fullName)) return true;
+            }
+            return false;
         }
 
         private void Update()
