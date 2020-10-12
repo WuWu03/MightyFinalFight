@@ -76,16 +76,6 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         }
     }
 
-    private void Test()
-    {
-        Move(InputMgr.TestAxis());
-
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            Attack(InputMgr.TestAxis());
-        }
-    }
-
     private bool[] m_BehaviourState = null;
     private int[] m_BehaviourRate = null;
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;

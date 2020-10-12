@@ -14,7 +14,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void CreateEnemy(int sourceID, int engityID, Vector2Int pos)
     {
-        BaseEnemy enemy = StageFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
         enemy.OnDead += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
     }
@@ -50,7 +50,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     public void CreateSceneItem(int id, Vector2Int pos)
     {
         SceneItemData data = StaticConfig.SceneItemConfig.GetData(id);
-        StageFactory.CreateSceneItem(data, pos);
+        SceneEntityFactory.CreateSceneItem(data, pos);
     }
 
     public void CreateBarrels()

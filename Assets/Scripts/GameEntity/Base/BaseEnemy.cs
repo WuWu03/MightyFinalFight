@@ -25,6 +25,7 @@ public class BaseEnemy : BaseRole
         BaseEnemyInfo baseEnemyInfo = data as BaseEnemyInfo;
         m_HurtAnim = baseEnemyInfo.HurtAnim;
     }
+
     public override void SetPos(Vector2 pos)
     {
         if (IsAnyState(typeof(RoleMove)))

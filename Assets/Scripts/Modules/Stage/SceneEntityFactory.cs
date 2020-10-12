@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class StageFactory
+public static class SceneEntityFactory
 {
     public static void CreateSceneItem(SceneItemData data, Vector2Int pos)
     {

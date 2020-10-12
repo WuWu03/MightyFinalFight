@@ -139,6 +139,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleDead>();
         AddState<RoleAwaken>();
         AddState<RoleSkill>();
+        AddState<RoleDefense>();
     }
 
     //初始化基本数值
@@ -283,6 +284,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             OnGroundHurtMsg(data);
         }
+    }
+
+    public virtual void OnDefenseMsg(HurtData data)
+    {
+
     }
 
     public virtual void OnDropTragMsg(TrapInfo data)
