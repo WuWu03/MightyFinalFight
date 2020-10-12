@@ -20,7 +20,8 @@ public class TaskMoveToPos : BaseTask
     {
         base.Update();
         Vector2 pos = PlayerMgr.Ins.Player.Pos;
-        if (Mathf.Abs(m_TaskData.PosCondition.Pos.x / 100 - pos.x) <= 0.05f) m_XArrived = true;
+        if (Mathf.Abs(m_TaskData.PosCondition.Pos.x / 100 - pos.x) <= 0.05f)
+            m_XArrived = true;
         if (Mathf.Abs(m_TaskData.PosCondition.Pos.y / 100 - pos.y) <= 0.05f) m_YArrived = true;
     }
 

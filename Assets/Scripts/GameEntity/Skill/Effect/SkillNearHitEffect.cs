@@ -71,6 +71,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             m_HurtData.AttackerDir = m_Owner.Dir;
             m_HurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * dir, m_SkillEffect.AddTargetForce.y);
             m_HurtData.AttackerPos = m_Owner.Pos;
+            m_HurtData.CanBeDefense = m_SkillEffect.CanBeDefense;
             m_HurtData.IsSwoon = m_SkillEffect.IsSmoon;
             m_HurtData.AttackerID = m_Owner.ID;
             m_HurtData.AttackValue = 1;

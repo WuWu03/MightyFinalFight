@@ -20,4 +20,5 @@
     public const string Throw = "Throw";
     public const string Drop = "Drop";
     public const string PickUp = "PickUp";
+    public const string Defense = "Defense";
 }

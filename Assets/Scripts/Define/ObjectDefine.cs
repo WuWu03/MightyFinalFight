@@ -26,8 +26,7 @@ public struct BehaviourType
     public const int RandomPos = 1;
     public const int RoundPos = 2;
     public const int Attack = 3;
-    public const int Defenes = 4;
-    public const int Skill = 5;
+    public const int Skill = 4;
 }
 
 public struct SoundName

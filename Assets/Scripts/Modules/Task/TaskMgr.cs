@@ -25,9 +25,9 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
     public bool HasAccepted(int id)
     {
-        for(int i = 0;i<m_CurrTaskList.Count;i++)
+        for (int i = 0; i < m_CurrTaskList.Count; i++)
         {
-            if(m_CurrTaskList[i].TaskData.ID.Equals(id))
+            if (m_CurrTaskList[i].TaskData.ID.Equals(id))
             {
                 return true;
             }

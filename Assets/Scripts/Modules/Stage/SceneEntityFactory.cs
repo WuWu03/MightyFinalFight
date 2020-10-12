@@ -56,7 +56,7 @@ public static class SceneEntityFactory
 
     public static BaseEnemy CreateEnemy(EnemyData enemyData,int engityID,Vector2Int pos)
     {
-        BaseEnemy enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
+        BaseEnemy enemy = GetEnemyEntity(enemyData);
         enemy.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, enemyData.AssetName));
         enemy.InitInfo(new BaseEnemyInfo()
         {
@@ -82,6 +82,17 @@ public static class SceneEntityFactory
 
         enemy.SetObjectType(ObjectType.Monster);
         enemy.SetMapPos(pos);
+
+        return enemy;
+    }
+
+    private static BaseEnemy GetEnemyEntity(EnemyData enemyData)
+    {
+        BaseEnemy enemy = null;
+        if(enemyData.Name == "Axl")
+            enemy = SceneObjectPool.Ins.Get<DefenseEnemy>(enemyData.Name);
+        else
+            enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
 
         return enemy;
     }

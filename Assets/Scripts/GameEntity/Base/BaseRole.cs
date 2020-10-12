@@ -139,7 +139,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleDead>();
         AddState<RoleAwaken>();
         AddState<RoleSkill>();
-        AddState<RoleDefense>();
     }
 
     //初始化基本数值

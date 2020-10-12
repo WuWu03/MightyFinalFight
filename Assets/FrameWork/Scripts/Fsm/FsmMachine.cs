@@ -137,14 +137,14 @@ namespace FrameWork.Fsm
             }
         }
 
-        public override void ChangeState<T>()
+        public override void ChangeState<T>(bool isForce = false)
         {
             if (m_CurrentState == null)
             {
                 throw new Exception("Fsm Is Invalid or Destroyed");
             }
 
-            if (m_CurrentState.GetType().Equals(typeof(T)))
+            if (!isForce && m_CurrentState.GetType().Equals(typeof(T)))
             {
                 return;
             }

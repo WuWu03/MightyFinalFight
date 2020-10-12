@@ -66,6 +66,7 @@ public class Bullet : BaseSceneItem
                 AttackerPos = m_Owner.Pos,
                 AttackForce = new Vector2(m_BulletData.AddTargetForce.x * m_Owner.Dir, m_BulletData.AddTargetForce.y),
                 AttackValue = 1,
+                CanBeDefense = false,
                 SkillExp = m_BulletData.SkillExp,
             });
 

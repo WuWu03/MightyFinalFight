@@ -13,8 +13,8 @@ public class HurtData : BaseEventArgs
     public bool IsGroundHurt { get; set; }//是否落地触发
     public float AttackerDir { get; set; }
     public string HurtSound { get; set; }
-    public string HurtAnim { get; set; }                                     
-
+    public string HurtAnim { get; set; }
+    public bool CanBeDefense { get; set; }
     public override void Clear()
     {
         AttackForce = Vector2.zero;
@@ -24,6 +24,7 @@ public class HurtData : BaseEventArgs
         SkillExp = 0;
         IsSwoon = false;
         IsGroundHurt = false;
+        CanBeDefense = false;
         AttackerDir = 0;
         HurtSound = string.Empty;
         HurtAnim = string.Empty;

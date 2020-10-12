@@ -48,6 +48,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1002
     Level: 0
@@ -84,6 +85,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1003
     Level: 0
@@ -120,6 +122,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1004
     Level: 0
@@ -156,6 +159,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1005
     Level: 0
@@ -190,6 +194,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1006
     Level: 0
@@ -224,6 +229,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1007
     Level: 0
@@ -274,6 +280,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 1008
     Level: 0
@@ -308,6 +315,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 1009
     Level: 0
@@ -344,6 +352,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 1010
     Level: 0
@@ -380,6 +389,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -397,6 +407,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
+      CanBeDefense: 0
       Args: 
   - ID: 1011
     Level: 0
@@ -435,6 +446,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 5
       SelectorType: 0
@@ -452,6 +464,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: SubHP:1
   - ID: 1012
     Level: 0
@@ -488,6 +501,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 1013
     Level: 0
@@ -538,6 +552,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 2001
     Level: 0
@@ -574,6 +589,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -591,6 +607,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -608,6 +625,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2002
     Level: 0
@@ -644,6 +662,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -661,6 +680,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -678,6 +698,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2003
     Level: 0
@@ -714,6 +735,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2004
     Level: 0
@@ -750,6 +772,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2005
     Level: 0
@@ -786,6 +809,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2006
     Level: 0
@@ -822,6 +846,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2007
     Level: 0
@@ -858,6 +883,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -875,6 +901,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2008
     Level: 0
@@ -911,6 +938,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
     - EffectorType: 5
       SelectorType: 0
@@ -928,6 +956,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: SubHP:1
   - ID: 2009
     Level: 0
@@ -964,6 +993,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 2010
     Level: 0
@@ -1000,6 +1030,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1017,6 +1048,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1034,6 +1066,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1051,6 +1084,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -1068,6 +1102,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
+      CanBeDefense: 0
       Args: 
   - ID: 2011
     Level: 0
@@ -1104,6 +1139,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 1
       Args: 
   - ID: 2012
     Level: 0
@@ -1154,6 +1190,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 2013
     Level: 0
@@ -1204,6 +1241,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 4001
     Level: 0
@@ -1240,6 +1278,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 
   - ID: 5001
     Level: 0
@@ -1276,4 +1315,42 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      CanBeDefense: 0
+      Args: 
+  - ID: 6001
+    Level: 0
+    Name: AxlAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 0
+    DeployeType: 2
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    SkillPrevConditions:
+    - Status: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
       Args: 

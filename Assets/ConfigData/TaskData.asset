@@ -65,4 +65,48 @@ MonoBehaviour:
     ExitStartCamera: 1
     TalkID: 0
     PrevID: 0
+    NextID: 1003
+  - ID: 1003
+    TriggerCondition: 1
+    PosCondition:
+      PosType: 0
+      Pos: {x: 150, y: 0}
+    KillIDs: 
+    BarrelsCount: 0
+    KillAll: 1
+    BarrelsAll: 0
+    TriggerEffect: 1
+    Targets:
+    - EntityID: 7
+      SourceID: 1003
+      Pos: {x: 300, y: -54}
+    - EntityID: 8
+      SourceID: 1003
+      Pos: {x: 300, y: -62}
+    TriggerStopCamera: 1
+    ExitStartCamera: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1004
+  - ID: 1004
+    TriggerCondition: 2
+    PosCondition:
+      PosType: 0
+      Pos: {x: 90, y: 0}
+    KillIDs: 
+    BarrelsCount: 0
+    KillAll: 1
+    BarrelsAll: 0
+    TriggerEffect: 0
+    Targets:
+    - EntityID: 7
+      SourceID: 1003
+      Pos: {x: 300, y: -54}
+    - EntityID: 8
+      SourceID: 1003
+      Pos: {x: 300, y: -62}
+    TriggerStopCamera: 0
+    ExitStartCamera: 1
+    TalkID: 0
+    PrevID: 0
     NextID: 0

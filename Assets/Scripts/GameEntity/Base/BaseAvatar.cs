@@ -186,9 +186,9 @@ public abstract class BaseAvatar : BaseGravityObject
         return m_FsmMachine.GetState<T>();
     }
 
-    protected void ChangeState<T>() where T : BaseFsmState
+    protected void ChangeState<T>(bool isForce = false) where T : BaseFsmState
     {
-        m_FsmMachine.ChangeState<T>();
+        m_FsmMachine.ChangeState<T>(isForce);
     }
 
     protected void RemoveState<T>() where T : BaseFsmState

@@ -44,3 +44,18 @@ MonoBehaviour:
     BehaviourTreeIDs: ea030000
     HurtEnemy:
     - Hurt
+  - ID: 1003
+    Name: Axl
+    AssetName: Character/Axl
+    AttackSpeed: 1
+    MoveSpeed: 0.5
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: 71170000
+    Skills: 71170000
+    AttackWait:
+    - -1
+    AttackNextTime: 0.3
+    BehaviourRate: 0f0000000a0000000a00000014000000
+    BehaviourTreeIDs: eb030000
+    HurtEnemy:
+    - Hurt
