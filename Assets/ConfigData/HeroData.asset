@@ -22,7 +22,7 @@ MonoBehaviour:
       SKILLED WITH KNIVES.'
     HeadIcon: Cody
     AttackSpeed: 1
-    MoveSpeed: 0.8
+    MoveSpeed: 0.7
     JumpForce: {x: 40, y: 140}
     AttackIDs: e9030000ea030000eb030000ec030000
     JumpAttackIDs: ed030000ee030000
@@ -46,7 +46,7 @@ MonoBehaviour:
       INCREDIBLE AGILITY.'
     HeadIcon: Guy
     AttackSpeed: 1
-    MoveSpeed: 1.1
+    MoveSpeed: 1
     JumpForce: {x: 40, y: 140}
     AttackIDs: d1070000d2070000d3070000d4070000
     JumpAttackIDs: d5070000d6070000
