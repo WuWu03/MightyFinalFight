@@ -25,9 +25,9 @@ public class Consume : BaseSceneItem
         Release();
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         SetCollider(m_ConsumeInfo.TriggerOffest, m_ConsumeInfo.TriggerSize);
         SetPos(m_Pos);
         m_Collider.isTrigger = true;

@@ -83,9 +83,9 @@ public class Bullet : BaseSceneItem
         }
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
         m_Rigidbody.drag = m_BulletData.Drag;    
         m_Collider.enabled = true;

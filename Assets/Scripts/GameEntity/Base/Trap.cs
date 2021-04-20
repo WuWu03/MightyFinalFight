@@ -23,9 +23,9 @@ public class Trap : BaseSceneItem
         transform.localPosition = new Vector3(pos.x, pos.y, 0);
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         SetCollider(m_TrapData.TriggerOffest, m_TrapData.TriggerSize);
         m_Collider.enabled = true;
         m_Collider.isTrigger = true;

@@ -18,8 +18,6 @@ namespace GameFrameWork.Editor
             SerializedProperty checkVersion = serializedObject.FindProperty("CheckVersion");
             SerializedProperty loadAB = serializedObject.FindProperty("LoadAB");
             SerializedProperty openLog = serializedObject.FindProperty("OpenLog");
-            SerializedProperty assetsDirectory = serializedObject.FindProperty("AssetsDirectory");
-            SerializedProperty assetsExtendName = serializedObject.FindProperty("AssetsExtendName");
             SerializedProperty useLua = serializedObject.FindProperty("UseLua");
             SerializedProperty loadLuaAB = serializedObject.FindProperty("LoadLuaAB");
             SerializedProperty luaByteMode = serializedObject.FindProperty("LuaByteMode");
@@ -28,8 +26,6 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(checkVersion);
             EditorGUILayout.PropertyField(loadAB);
             EditorGUILayout.PropertyField(openLog);
-            EditorGUILayout.PropertyField(assetsDirectory);
-            EditorGUILayout.PropertyField(assetsExtendName);
             EditorGUILayout.PropertyField(useLua);
 
             if (appConfig.UseLua)
@@ -42,8 +38,6 @@ namespace GameFrameWork.Editor
             if (checkVersion.boolValue != appConfig.CheckVersion
              || loadAB.boolValue != appConfig.LoadAB
              || openLog.boolValue != appConfig.OpenLog
-             || assetsDirectory.stringValue != appConfig.AssetsDirectory
-             || assetsExtendName.stringValue != appConfig.AssetsExtendName
              || useLua.boolValue != appConfig.UseLua
              || loadLuaAB.boolValue != appConfig.LoadLuaAB
              || luaByteMode.boolValue != appConfig.LuaByteMode
@@ -55,8 +49,6 @@ namespace GameFrameWork.Editor
             appConfig.CheckVersion = checkVersion.boolValue;
             appConfig.LoadAB = loadAB.boolValue;
             appConfig.OpenLog = openLog.boolValue;
-            appConfig.AssetsDirectory = assetsDirectory.stringValue;
-            appConfig.AssetsExtendName = assetsExtendName.stringValue;
             appConfig.UseLua = useLua.boolValue;
 
             if (!appConfig.AssetsExtendName.Contains("."))

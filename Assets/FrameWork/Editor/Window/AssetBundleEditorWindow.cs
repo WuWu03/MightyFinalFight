@@ -32,6 +32,7 @@ namespace GameFrameWork.Editor
             MainGUI();
             ExtendNameGUI();
             PatternGUI();
+            PlatFormSelectGUI();
             ConfigButtonGUI();
             BuildGUI();
         }
@@ -83,6 +84,12 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListExtendName == null) m_AssetBundleConfig.ListExtendName = new List<string>();
             if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
 
+            PathUtil.AssetsDirectory = EditorGUILayout.TextField("资源打包路径", PathUtil.AssetsDirectory);
+            if (!PathUtil.AssetsDirectory.StartsWith("Assets/"))
+            {
+                PathUtil.AssetsDirectory = "Assets/" + PathUtil.AssetsDirectory;
+            }
+
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
             int index = 0;
@@ -91,11 +98,24 @@ namespace GameFrameWork.Editor
                 if (m_ListDataHasRemove[i]) continue;
                 index++;
                 GUILayout.BeginVertical();
-                EditorGUILayout.HelpBox(index.ToString(), MessageType.None);
+                GUILayout.BeginHorizontal();
+                GUIStyle style = new GUIStyle();
+                style.alignment = TextAnchor.MiddleLeft;
+                style.fontSize = 18;
+                style.fontStyle = FontStyle.Bold;
+                EditorGUILayout.LabelField(index.ToString(), style);
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button("x"))
+                {
+                    m_ListDataHasRemove[i] = true;
+                }
+                GUILayout.EndHorizontal();
+
                 m_ListData[i].BundleType = (AssetBundleData.AssetType)EditorGUILayout.EnumPopup("包类型：", m_ListData[i].BundleType);
                 m_ListData[i].AssetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].AssetPath);
 
-                if (m_ListData[i].BundleType == AssetBundleData.AssetType.Single)
+                if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
                 {
                     m_ListData[i].AssetBundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].AssetBundlePath);
                 }
@@ -116,11 +136,6 @@ namespace GameFrameWork.Editor
                     m_ListData[i].Pattern = m_AssetBundleConfig.ListPattern[m_ListPatternIndex[i]];
                 }
 
-                if (GUILayout.Button("移除本条"))
-                {
-                    m_ListDataHasRemove[i] = true;
-                }
-
                 GUILayout.EndVertical();
                 if (i < m_ListData.Count - 1)
                     GUILayout.Space(30);
@@ -136,7 +151,7 @@ namespace GameFrameWork.Editor
         {
             //--------------添加扩展名----------------
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("添加扩展名"))
+            if (GUILayout.Button("  添加扩展名  "))
             {
                 if (string.IsNullOrEmpty(extend))
                 {
@@ -172,7 +187,7 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListExtendName.Count > 0)
             {
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("移除扩展名"))
+                if (GUILayout.Button("  移除扩展名  "))
                 {
                     if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
                     {
@@ -240,6 +255,16 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private void PlatFormSelectGUI()
+        {
+            GUILayout.BeginHorizontal();
+            GUI.enabled = false;
+            GUILayout.Button("    打包平台    ");
+            GUI.enabled = true;
+            m_AssetBundleConfig.PlatFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.PlatFormIndex, TARGET_PLATFORM);
+            GUILayout.EndHorizontal();
+        }
+
         private void ConfigButtonGUI()
         {
             if (GUILayout.Button("添加配置"))
@@ -260,14 +285,21 @@ namespace GameFrameWork.Editor
         int platFormIndex = 0;
         private void BuildGUI()
         {
-            GUILayout.BeginHorizontal();
             if (GUILayout.Button("   打     包   "))
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
+                if (EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
                 {
                     SaveConfig();
 
                     if (platFormIndex == 0)
+                    {
+                        Packager.Build(BuildTarget.StandaloneWindows);
+                    }
+                    else if (platFormIndex == 1)
+                    {
+                        Packager.Build(BuildTarget.Android);
+                    }
+                    else
                     {
                         BuildTarget target;
 #if UNITY_5_3_OR_NEWER
@@ -275,27 +307,17 @@ namespace GameFrameWork.Editor
 #else
                         target = BuildTarget.iPhone;
 #endif
-                        Packager.BuildAssetResource(target);
-                    }
-                    else if (platFormIndex == 1)
-                    {
-                        Packager.BuildAssetResource(BuildTarget.Android);
-                    }
-                    else
-                    {
-                        Packager.BuildAssetResource(BuildTarget.StandaloneWindows);
+                        Packager.Build(target);
                     }
                 }
             }
-
-            platFormIndex = EditorGUILayout.Popup(platFormIndex, TARGET_PLATFORM);
-            GUILayout.EndHorizontal();
         }
+
         private string[] TARGET_PLATFORM = new string[]
         {
-            "iOS",
+            "PC",
             "Andriod",
-            "PC"
+            "iOS"
         };
 
         private List<int> m_ListBundleExtendIndex = null;

@@ -8,6 +8,8 @@ namespace GameFrameWork
     public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
     {
         [SerializeField]
+        public int PlatFormIndex = 0;
+        [SerializeField]
         public List<string> ListExtendName = null;
         [SerializeField]
         public List<string> ListPattern = null;
@@ -19,7 +21,7 @@ namespace GameFrameWork
     {
         public enum AssetType
         {
-            Single,
+            MapSingle,
             Map,
         }
 

@@ -51,7 +51,7 @@ namespace GameFrameWork.UI
             if (m_ResState == ResState.UNLOAD)
             {
                 m_ResState = ResState.LOADING;
-                UITools.LoadUI(Panel.PanelName, LoadViewCallback);
+                //UITools.LoadUI(Panel.PanelName, LoadViewCallback);
             }
             else
             {

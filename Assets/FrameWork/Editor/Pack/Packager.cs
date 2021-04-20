@@ -27,9 +27,9 @@ namespace GameFrameWork.Editor
 
 
         /// <summary>
-        /// 生成绑定素材
+        /// 打包
         /// </summary>
-        public static void BuildAssetResource(BuildTarget target)
+        public static void Build(BuildTarget target)
         {
             if (Directory.Exists(Utils.PathUtil.StreamingAssetsPath))
                 Directory.Delete(Utils.PathUtil.StreamingAssetsPath, true);
@@ -45,75 +45,82 @@ namespace GameFrameWork.Editor
                 else HandleLuaFile();
             }
 
-            HandleCustomerBundle();
+            if (GenerateBuildMap())
+            {
+                BuildPipeline.BuildAssetBundles(PathUtil.StreamingAssetsPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
+                BuildFileIndex();
 
-            BuildPipeline.BuildAssetBundles(PathUtil.StreamingAssetsPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
-            BuildFileIndex();
-
-            if (Directory.Exists(Utils.PathUtil.GetLuaTempDir())) Directory.Delete(Utils.PathUtil.GetLuaTempDir(), true);
-            AssetDatabase.Refresh();
+                if (Directory.Exists(Utils.PathUtil.GetLuaTempDir())) Directory.Delete(Utils.PathUtil.GetLuaTempDir(), true);
+                AssetDatabase.Refresh();
+            }
         }
 
         /// <summary>
-        /// 
+        /// 生产打包列表
         /// </summary>
-        private static void HandleCustomerBundle()
+        private static bool GenerateBuildMap()
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleConfig);
             for (int i = 0; i < config.Datas.Length; i++)
             {
-                if (config.Datas[i].BundleType == AssetBundleData.AssetType.Single)
+                if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)
                 {
-                    AddBuildMapSingle(config.Datas[i].Pattern, config.Datas[i].AssetPath, config.Datas[i].AssetBundlePath, config.Datas[i].BundleExtend);
+                    bool result = AddBuildMapSingle(config.Datas[i].Pattern, config.Datas[i].AssetPath, config.Datas[i].AssetBundlePath, config.Datas[i].BundleExtend);
+                    if (!result) return false;
                 }
                 else
                 {
-                    AddBuildMap(config.Datas[i].BundleName + config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath);
+                    bool result =  AddBuildMap(config.Datas[i].BundleName + config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath);
+                    if (!result) return false;
                 }
             }
+
+            return true;
             //AddBuildMap("fonts.unity3d", "*.TTF", "Assets/AssetsLibrary/Font");
-            //AddBuildMap("shaders.unity3d", "*.shader", "Assets/AssetsLibrary/Shaders");
-
             //AddBuildMapSingle("*.prefab", "Assets/AssetsLibrary/UI/Prefabs", "UI/Prefabs/");
-            //AddBuildMapSingle("*.prefab", "Assets/AssetsLibrary/Character/Prefabs", "Character/Prefabs/");
-            //AddBuildMapSingle("*.prefab", "Assets/AssetsLibrary/Models", "Models/");
-
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Shadow", "Textures/Shadow/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Array", "UI/UITextures/Icon/Array/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Buff", "UI/UITextures/Icon/Buff/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Grow", "UI/UITextures/Icon/Grow/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Inventory", "UI/UITextures/Icon/Inventory/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Panel", "UI/UITextures/Icon/Panel/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Role", "UI/UITextures/Icon/Role/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/UI/UITextures/Icon/Skill", "UI/UITextures/Icon/Skill/");
-
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1002/tiles", "Textures/Map/1002/tiles/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1003/tiles", "Textures/Map/1003/tiles/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1004/tiles", "Textures/Map/1004/tiles/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1005/tiles", "Textures/Map/1005/tiles/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1006/tiles", "Textures/Map/1006/tiles/");
-            //AddBuildMapSingle("*.png", "Assets/AssetsLibrary/Textures/Map/1007/tiles", "Textures/Map/1007/tiles/");
         }
 
-        static void AddBuildMap(string bundleName, string pattern, string path)
+        private static bool AddBuildMap(string bundleName, string pattern, string path)
         {
+            if (!Directory.Exists(path))
+            {
+                EditorUtility.DisplayDialog("错误", "资源路径不存在", "确定");
+                return false;
+            }
+
             string[] files = Directory.GetFiles(path, pattern);
-            if (files.Length == 0) return;
+            if (files.Length == 0)
+            {
+                EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
+                return false;
+            }
 
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = files[i].Replace('\\', '/');
             }
+
             AssetBundleBuild build = new AssetBundleBuild();
             build.assetBundleName = bundleName;
             build.assetNames = files;
             maps.Add(build);
+            return true;
         }
 
-        static void AddBuildMapSingle(string pattern, string path, string abPath, string extend)
+        private static bool AddBuildMapSingle(string pattern, string path, string abPath, string extend)
         {
+            if(!Directory.Exists(path))
+            {
+                EditorUtility.DisplayDialog("错误", "资源路径不存在", "确定");
+                return false;
+            }
+
             string[] files = Directory.GetFiles(path, pattern);
-            if (files.Length == 0) return;
+            if (files.Length == 0)
+            {
+                EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
+                return false;
+            }
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -125,6 +132,7 @@ namespace GameFrameWork.Editor
                 maps.Add(build);
             }
 
+            return true;
         }
 
         /// <summary>
@@ -311,14 +319,14 @@ namespace GameFrameWork.Editor
                 isWin = true;
                 luaexe = "luajit.exe";
                 args = "-b " + srcFile + " " + outFile;
-                exedir = Utils.PathUtil.DataPath.Replace("assets", "") + "LuaEncoder/luajit/";
+                exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
             }
             else if (Application.platform == RuntimePlatform.OSXEditor)
             {
                 isWin = false;
                 luaexe = "./luajit";
                 args = "-b " + srcFile + " " + outFile;
-                exedir = Utils.PathUtil.DataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
+                exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
             }
 
             Directory.SetCurrentDirectory(exedir);

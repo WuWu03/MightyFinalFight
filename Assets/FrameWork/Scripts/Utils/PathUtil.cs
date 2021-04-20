@@ -8,8 +8,8 @@ namespace GameFrameWork.Utils
     {
         public static string StreamingAssetsPath = Application.streamingAssetsPath + "/";
         public static string PersistentDataPath = Application.persistentDataPath + "/";
-        public static string DataPath = Application.dataPath + "/";
-
+        public static string AppDataPath = Application.dataPath + "/";
+        public static string AssetsDirectory = "Assets/StreamingAssets/";
         public const string AssetBundleDataPath = "Assets/FrameWork/Editor/AssetBundleConfig/";
         public const string AssetBundleDataName = "AssetBundleData";
         public const string AssetBundleDataExtend = ".asset";
@@ -17,12 +17,12 @@ namespace GameFrameWork.Utils
 
         public static string GetAssetFullDir()
         {
-            return DataPath + AppConfig.Ins.AssetsDirectory.Substring(AppConfig.Ins.AssetsDirectory.IndexOf("Assets/") + "Assets/".Length);
+            return AppDataPath + AssetsDirectory.Substring(AssetsDirectory.IndexOf("Assets/") + "Assets/".Length);
         }
 
         public static string GetLuaTempDir()
         {
-            return DataPath + "LuaTemp/";
+            return AppDataPath + "LuaTemp/";
         }
     }
 }

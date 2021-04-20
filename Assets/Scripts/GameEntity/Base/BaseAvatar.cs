@@ -107,9 +107,9 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
         m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
     }

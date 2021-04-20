@@ -11,6 +11,11 @@ namespace GameFrameWork.Resources
     {
 
 #if UNITY_EDITOR
+        class LoadRequest 
+        {
+            public Action<Object, object[]> action;
+            public object[] param;
+        }
         private static ResMgrEditor _ins;
 
         public static ResMgrEditor Ins
@@ -30,7 +35,7 @@ namespace GameFrameWork.Resources
             }
         }
         private Dictionary<string, Object> m_LoadedAssets = new Dictionary<string, Object>();
-        private Dictionary<string, List<Action<Object>>> m_DicLoadRequest = new Dictionary<string, List<Action<Object>>>();
+        private Dictionary<string, List<LoadRequest>> m_DicLoadRequest = new Dictionary<string, List<LoadRequest>>();
         /// <summary>
         /// 加载资源
         /// </summary>
@@ -67,17 +72,17 @@ namespace GameFrameWork.Resources
             return obj;
         }
 
-        public void LoadForEditorAsync(string resourcePath, Action<Object> action = null, Type t = null)
+        public void LoadForEditorAsync(string resourcePath, Action<Object, object[]> action = null, Type t = null, object[] param = null)
         {
-            List<Action<Object>> list = null;
+            List<LoadRequest> list = null;
 
             if (!m_DicLoadRequest.TryGetValue(resourcePath, out list))
             {
-                list = new List<Action<Object>>();
+                list = new List<LoadRequest>();
                 m_DicLoadRequest.Add(resourcePath, list);
             }
 
-            list.Add(action);
+            list.Add(new LoadRequest() { action = action, param = param });
             ResMgr.Ins.StartCoroutine(InnerLoad(resourcePath, t));
         }
 
@@ -96,13 +101,13 @@ namespace GameFrameWork.Resources
             //// 等待一秒
             //yield return new WaitForSeconds(0.1f);
             // 返回资源
-            List<Action<Object>> list = null;
+            List<LoadRequest> list = null;
 
             if (m_DicLoadRequest.TryGetValue(resourcePath, out list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i]?.Invoke(obj);
+                    list[i].action?.Invoke(obj, list[i].param);
                 }
 
                 m_DicLoadRequest.Remove(resourcePath);

@@ -171,9 +171,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.Release();
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
     }

@@ -1,6 +1,4 @@
-﻿using GameFrameWork.Resources;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,11 +35,13 @@ namespace GameFrameWork.UI
         private class WaitLoadPanel
         {
             public BasePanel Panel;
+            public string PanelName;
             public object[] Param;
 
-            public WaitLoadPanel(BasePanel panel,object[] param)
+            public WaitLoadPanel(BasePanel panel,string panelName,object[] param)
             {
                 this.Panel = panel;
+                this.PanelName = panelName;
                 this.Param = param;
             }
         }
@@ -179,8 +179,7 @@ namespace GameFrameWork.UI
 
             if (!panel.IsInit)
             {
-                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, param));
-                UITools.LoadUI(panelName, OnResComplete);
+                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, panelName, param));
             }
             else if(!panel.IsOpen)
             {
@@ -259,14 +258,26 @@ namespace GameFrameWork.UI
             return null;
         }
 
-        private void OnResComplete(GameObject go)
+        private void OnResComplete(GameObject go,object[] param)
         {
-            WaitLoadPanel wait = m_QueueWaitLoadPanel.Dequeue();
+            WaitLoadPanel wait = (param[0] as WaitLoadPanel);
             wait.Panel.Init(go, wait.Param);
         }
 
         private void Update()
         {
+            if(m_QueueWaitLoadPanel.Count > 0)
+            {
+                WaitLoadPanel waitLoadPanel = null;
+                Queue<WaitLoadPanel> queue = m_QueueWaitLoadPanel;
+
+                lock (queue)
+                {
+                    waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
+                    UITools.LoadUI(waitLoadPanel.PanelName, OnResComplete, waitLoadPanel);
+                }
+            }
+
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
                 if (m_ListOpenPanel[i].IsOpen)

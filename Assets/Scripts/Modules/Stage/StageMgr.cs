@@ -192,7 +192,7 @@ public class StageMgr : BaseMgr<StageMgr>
         return m_AreaBound;
     }
 
-    private void OnLoadComplete(Object obj)
+    private void OnLoadComplete(Object obj, object[] param)
     {
         Sprite sprite = obj as Sprite;
         m_MapRenderer.sprite = sprite;
@@ -217,7 +217,7 @@ public class StageMgr : BaseMgr<StageMgr>
         //});
 
         UIMgr.Ins.Open<MainPanel>();
-        for(int i = 0; i < m_CurrStageData.TaskIDs.Length; i++) 
+        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
         {
             TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
         }

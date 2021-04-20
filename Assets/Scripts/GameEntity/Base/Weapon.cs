@@ -41,9 +41,9 @@ public class Weapon : BaseSceneItem
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Bonus");
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         SetCollider(m_WeaponData.TriggerOffest, m_WeaponData.TriggerSize);
         SetPos(m_Pos);

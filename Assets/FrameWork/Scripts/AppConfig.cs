@@ -14,9 +14,6 @@ namespace GameFrameWork
         [Header("* 是否打开日志输出")]
         public bool OpenLog = true;
 
-        [Header("* 资源打包工程内路径")]
-        public string AssetsDirectory = "Assets/StreamingAssets/";
-
         [Header("* 资源扩展名")]
         public string AssetsExtendName = ".unity3d";
 

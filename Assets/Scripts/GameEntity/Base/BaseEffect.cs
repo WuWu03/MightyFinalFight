@@ -30,9 +30,9 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_UAC = go.GetComponent<DragonBones.UnityArmatureComponent>();
         m_UAC.animation.Stop();
 

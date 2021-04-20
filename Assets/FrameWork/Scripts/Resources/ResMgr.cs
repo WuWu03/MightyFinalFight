@@ -23,9 +23,10 @@ namespace GameFrameWork.Resources
 
         class LoadAssetRequest
         {
-            public Action<Object> sharpFunc;
+            public Action<Object,object[]> sharpFunc;
             public bool loadMainAsset;
             public Type assetType;
+            public object[] param;
         }
 
         private void Awake()
@@ -61,7 +62,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载资源
         /// </summary>
-        public T LoadAsset<T>(string abName,bool loadMainAsset = true) where T:Object
+        public T LoadAsset<T>(string abName,bool loadMainAsset = true) where T: Object
         {
             Object o = LoadAsset(abName, loadMainAsset, typeof(T));
 
@@ -94,15 +95,15 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync<T>(string abName, Action<Object> action = null, bool loadMainAsset = true)
+        public void LoadAssetAsync<T>(string abName, Action<Object,object[]> action = null, bool loadMainAsset = true, params object[] param)
         {
-            LoadAssetAsync(abName, action, loadMainAsset, typeof(T));
+            LoadAssetAsync(abName, action, loadMainAsset, typeof(T), param);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync(string abName, Action<Object> action = null, bool loadMainAsset = true, Type t = null)
+        public void LoadAssetAsync(string abName, Action<Object,object[]> action = null, bool loadMainAsset = true, Type t = null, params object[] param)
         {
             if (t == null)
             {
@@ -111,10 +112,10 @@ namespace GameFrameWork.Resources
             bool isLoadAb = AppConfig.Ins.LoadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
-                ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t);
+                ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t, param);
             else
 #endif
-                LoadAsync(abName, action, loadMainAsset, t);
+                LoadAsync(abName, action, loadMainAsset, t, param);
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载
         /// </summary>
-        private void LoadAsync(string abName, Action<Object> action = null, bool loadMainAsset = false, Type t = null)
+        private void LoadAsync(string abName, Action<Object,object[]> action = null, bool loadMainAsset = false, Type t = null , object[] param = null)
         {
             Log.Debugger.Log("LoadAsset：" + abName);
 
@@ -178,7 +179,7 @@ namespace GameFrameWork.Resources
             request.sharpFunc = action;
             request.loadMainAsset = loadMainAsset;
             request.assetType = t;
-
+            request.param = param;
             List<LoadAssetRequest> requests = null;
             if (!m_LoadRequests.TryGetValue(abName, out requests))
             {
@@ -233,7 +234,7 @@ namespace GameFrameWork.Resources
                 {
                     if (list[i].loadMainAsset)
                     {
-                        list[i].sharpFunc(ab.GetMainAsset(list[i].assetType));
+                        list[i].sharpFunc(ab.GetMainAsset(list[i].assetType), list[i].param);
                         list[i].sharpFunc = null;
                     }
 

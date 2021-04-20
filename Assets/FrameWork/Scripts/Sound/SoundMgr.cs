@@ -74,7 +74,7 @@ namespace GameFrameWork.Sound
             m_PlayingList.Add(audioSoundPlay);
 
             string resPath = string.Format("{0}/{1}", path, name);
-            AudioClipPool.Ins.Get(resPath, (AudioClip clip) =>
+            AudioClipPool.Ins.Get(resPath, (AudioClip clip,object[] param) =>
             {
                 audioSoundPlay.PlayTime = Time.time;
                 audioSoundPlay.Source.clip = clip;
@@ -169,7 +169,7 @@ namespace GameFrameWork.Sound
 
         private void InnerPlayBGM(string path, float volum, float fadeTime, bool isLoop)
         {
-            AudioClipPool.Ins.Get(path, (AudioClip clip) =>
+            AudioClipPool.Ins.Get(path, (AudioClip clip,object[] param) =>
             {
                 m_BGMSource.clip = clip;
                 m_BGMSource.loop = isLoop;

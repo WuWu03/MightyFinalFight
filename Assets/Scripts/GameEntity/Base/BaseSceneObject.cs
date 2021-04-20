@@ -220,7 +220,7 @@ public class BaseSceneObject : BaseObject
         OnUpdate();
     }
 
-    protected virtual void OnResComplete(GameObject go)
+    protected virtual void OnResComplete(GameObject go,object[] param)
     {
         m_ResGO = go;
         m_ResGO.transform.SetParent(this.transform, false);

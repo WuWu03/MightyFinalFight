@@ -122,9 +122,9 @@ public class Barrel : BaseSceneItem, ICanBeHit
         CheckStrike(collision.gameObject);
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         m_Animator.animation.Play(AnimName.Idle, 0);
         if (!m_BarrelInfo.IsFloat)

@@ -112,9 +112,9 @@ public class BaseHero : BaseRole
         }
     }
 
-    protected override void OnResComplete(GameObject go)
+    protected override void OnResComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go);
+        base.OnResComplete(go, param);
         m_Slot1Renderer = go.transform.Find("slot1").GetComponent<Renderer>();
         m_Slot2Renderer = go.transform.Find("slot2").GetComponent<Renderer>();
         m_Slot1Renderer.enabled = true;
