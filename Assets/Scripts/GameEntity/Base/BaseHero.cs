@@ -1,9 +1,6 @@
-﻿using DragonBones;
-using FrameWork.Camera;
-using FrameWork.UI;
+﻿using GameFrameWork.Camera;
+using GameFrameWork.UI;
 using System.Collections.Generic;
-using System.Data;
-using System.Security.Policy;
 using UnityEngine;
 
 public class BaseHero : BaseRole
@@ -233,13 +230,13 @@ public class BaseHero : BaseRole
     public override void AddHealth(int value)
     {
         base.AddHealth(value);
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public override void SubHealth(int value)
     {
         base.SubHealth(value);
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public override void SetPos(Vector2 pos)
@@ -277,7 +274,7 @@ public class BaseHero : BaseRole
         m_IsRebirthState = true;
         m_RebirthStateTimer = Time.time;
         m_RebirthLightTimer = Time.time;
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerHP(m_Health, m_MaxHealth);
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public virtual void PickUpSceneItemMsg(BaseSceneItem item)

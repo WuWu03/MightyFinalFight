@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     [RequireComponent(typeof(CanvasScaler))]
     public class UICanvasScaleAdapt : MonoBehaviour

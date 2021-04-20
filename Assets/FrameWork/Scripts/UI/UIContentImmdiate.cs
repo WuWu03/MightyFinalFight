@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using FitMode = UnityEngine.UI.ContentSizeFitter.FitMode;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     [RequireComponent(typeof(ContentSizeFitter))]
     public class UIContentImmdiate : MonoBehaviour

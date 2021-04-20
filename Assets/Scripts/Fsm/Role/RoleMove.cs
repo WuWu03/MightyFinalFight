@@ -1,5 +1,5 @@
-﻿using FrameWork.Camera;
-using FrameWork.Fsm;
+﻿using GameFrameWork.Camera;
+using GameFrameWork.Fsm;
 using UnityEngine;
 
 public class RoleMove : BaseFsmState

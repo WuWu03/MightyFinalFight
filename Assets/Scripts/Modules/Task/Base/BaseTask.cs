@@ -1,7 +1,6 @@
-﻿using FrameWork.Camera;
+﻿using GameFrameWork.Camera;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
 using UnityEngine;
 
 public abstract class BaseTask

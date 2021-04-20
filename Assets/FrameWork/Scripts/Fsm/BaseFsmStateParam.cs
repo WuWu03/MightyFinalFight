@@ -1,4 +1,4 @@
-﻿namespace FrameWork.Fsm
+﻿namespace GameFrameWork.Fsm
 {
     public abstract class BaseFsmStateParam
     {

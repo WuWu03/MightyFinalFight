@@ -1,5 +1,5 @@
-﻿using FrameWork;
-using FrameWork.BehaviourTree;
+﻿using GameFrameWork;
+using GameFrameWork.BehaviourTree;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public abstract class LayoutGroupViewItem
     {

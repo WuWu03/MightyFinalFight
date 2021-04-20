@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace FrameWork.Event
+namespace GameFrameWork.Event
 {
     public class EventMgr:BaseMgr<EventMgr>
     {
@@ -60,7 +60,7 @@ namespace FrameWork.Event
             m_EventPool.DispatchNow(sender, e);
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_EventPool.ShutDown();
         }

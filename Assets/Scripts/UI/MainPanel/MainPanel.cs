@@ -6,7 +6,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using FrameWork.UI;
+using GameFrameWork.UI;
 
 public class MainPanel : BasePanel
 {
@@ -15,47 +15,132 @@ public class MainPanel : BasePanel
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Root; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.MainPanel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
-	//Player/PlayerHpBar,Slider
-	public Slider PlayerHpBar { get; private set;}
-	//Enemy/EnemyHpBar,Slider
-	public Slider EnemyHpBar { get; private set;}
-	//State/TxtStage,Text
-	public Text TxtStage { get; private set;}
-	//PlayerLife/TxtPlayerLife,Text
-	public Text TxtPlayerLife { get; private set;}
-	//Level/LevelList,GameObject
-	public GameObject LevelList { get; private set;}
-	//Level/LevelList/Item,GameObject
-	public GameObject ItemGO { get; private set;}
-	//Exp/TxtExp,Text
-	public Text TxtExp { get; private set;}
-	public LayoutGroupView<LevelListItem> LevelListGroupView { get; private set;}
-	protected override void OnInit()
+
+    protected override void OnInit(object[] param)
 	{
-		PlayerHpBar = UIRefRoot.Objects[0] as Slider;
-		EnemyHpBar = UIRefRoot.Objects[1] as Slider;
-		TxtStage = UIRefRoot.Objects[2] as Text;
-		TxtPlayerLife = UIRefRoot.Objects[3] as Text;
-		LevelList = UIRefRoot.Objects[4] as GameObject;
-		ItemGO = UIRefRoot.Objects[5] as GameObject;
-		TxtExp = UIRefRoot.Objects[11] as Text;
-		LevelListGroupView = new LayoutGroupView<LevelListItem>();
+		m_Component = new MainPanelComponent(UIRefRoot);
+		m_Component.LevelListGroupView.Init(m_Component.LevelList, m_Component.ItemGO, 5);
 	}
 
-	public class LevelListItem : LayoutGroupViewItem
+    protected override void OnOpen()
 	{
-		public Image ImgLevel1 = null;
-		public Image ImgLevel2 = null;
-		public Image ImgLevel3 = null;
-		public Image ImgLevel4 = null;
-		public Image ImgLevel5 = null;
-		protected override void OnCreate(GameObject go)
+		m_Component.LevelListGroupView.OnItemUpdate = OnItemUpdate;
+		m_Component.LevelListGroupView.Update(5);
+		SetPlayerExp(PlayerMgr.Ins.EXP, PlayerMgr.Ins.LevelData.EXP);
+		SetRound(StageMgr.Ins.StageIndex);
+		SetPlayerLife(PlayerMgr.Ins.Life);
+		SetPlayerHP(PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.HPBarWidth);
+	}
+
+    protected override void OnUpdate()
+    {
+		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ENEMY_HP_BAR_HIDE)
 		{
-			ImgLevel1 = transform.Find("ImgLevel1").GetComponent<Image>();
-			ImgLevel2 = transform.Find("ImgLevel2").GetComponent<Image>();
-			ImgLevel3 = transform.Find("ImgLevel3").GetComponent<Image>();
-			ImgLevel4 = transform.Find("ImgLevel4").GetComponent<Image>();
-			ImgLevel5 = transform.Find("ImgLevel5").GetComponent<Image>();
+			m_Component.EnemyHpBar.gameObject.SetActive(false);
+			m_EnemyHpBarHideTimer = -1;
 		}
 	}
+
+	protected override void OnClose()
+	{
+
+	}
+
+	protected override void OnDestroy()
+	{
+
+	}
+
+	private void OnItemUpdate(MainPanelComponent.LevelListItem obj)
+	{
+		int stageIndex = StageMgr.Ins.StageIndex;
+		int playerLevel = PlayerMgr.Ins.Level;
+		obj.ImgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= obj.Index);
+		obj.ImgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= obj.Index);
+		obj.ImgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= obj.Index);
+		obj.ImgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= obj.Index);
+		obj.ImgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= obj.Index);
+	}
+
+	public void SetPlayerHP(int value, int max, float width = 0f)
+	{
+		if (width != 0)
+			m_Component.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		m_Component.PlayerHpBar.maxValue = max;
+		m_Component.PlayerHpBar.value = value;
+	}
+
+	public void SetEnemyHP(int value, int max, float width)
+	{
+		if (m_IsEnemyHpBarAnim) return;
+
+		m_Component.EnemyHpBar.value = value;
+		m_Component.EnemyHpBar.maxValue = max;
+		m_Component.EnemyHpBar.gameObject.SetActive(true);
+		m_Component.EnemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		Image image = m_Component.EnemyHpBar.GetComponent<Image>();
+		image.DOFade(1, 0);
+
+		if (value == 0)
+		{
+			m_EnemyHpBarHideTimer = -1;
+			m_IsEnemyHpBarAnim = true;
+			Sequence sequence = DOTween.Sequence();
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.Append(image.DOFade(1, 0.2f));
+			sequence.Append(image.DOFade(0, 0.2f));
+			sequence.AppendCallback(() =>
+			{
+				m_Component.EnemyHpBar.gameObject.SetActive(false);
+				m_IsEnemyHpBarAnim = false;
+			});
+			return;
+		}
+
+		m_EnemyHpBarHideTimer = Time.time;
+	}
+
+	public void SetRound(int round)
+	{
+		m_Component.TxtStage.text = round.ToString();
+	}
+
+	public void SetPlayerLife(int life)
+	{
+		m_Component.TxtPlayerLife.text = life.ToString();
+	}
+
+	public void SetPlayerExp(int currExp, int maxExp)
+	{
+		string currExpStr = GetExpStr(currExp);
+		string maxExpStr = GetExpStr(maxExp);
+		m_Component.TxtExp.text = string.Format("{0}/{1}", currExpStr, maxExpStr);
+	}
+
+	public void SetPlayerLevel()
+	{
+		m_Component.LevelListGroupView.Update(5);
+	}
+
+	private string GetExpStr(int exp)
+	{
+		string expStr = exp.ToString();
+		if (expStr.Length >= 3) return expStr;
+		int diff = 3 - expStr.Length;
+		for (int i = 0; i < diff; i++)
+		{
+			expStr = "0" + expStr;
+		}
+
+		return expStr;
+	}
+
+	private bool m_IsEnemyHpBarAnim = false;
+	private float m_EnemyHpBarHideTimer = -1;
+	private const float ENEMY_HP_BAR_HIDE = 4f;
+	private MainPanelComponent m_Component = null;
 }

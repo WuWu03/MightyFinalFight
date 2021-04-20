@@ -1,5 +1,5 @@
-﻿using FrameWork;
-using FrameWork.Pool;
+﻿using GameFrameWork;
+using GameFrameWork.Pool;
 using UnityEngine;
 
 public class EffectMgr : BaseMgr<EffectMgr>

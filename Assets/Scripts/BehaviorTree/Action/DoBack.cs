@@ -1,5 +1,5 @@
-﻿using FrameWork.BehaviourTree;
-using FrameWork.Camera;
+﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.Camera;
 using System.Text.RegularExpressions;
 using UnityEngine;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FrameWork.BehaviourTree;
-using FrameWork.Camera;
+using GameFrameWork.BehaviourTree;
+using GameFrameWork.Camera;
 
 public class DoRunToRandomPos : Action
 {

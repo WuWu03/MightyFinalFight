@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-namespace FrameWork.Input
+namespace GameFrameWork.Input
 {
     public enum KeyType
     {
@@ -251,13 +252,13 @@ namespace FrameWork.Input
             {
                 if (m_ListEvent[i].Keys.Length < 1 || m_ListKeyType.Count < m_ListEvent[i].Keys.Length) continue;
 
-                bool isMatch = true;
+                bool isMatch = false;
 
                 for (int j = 0; j < m_ListEvent[i].Keys.Length; j++)
                 {
-                    if(m_ListEvent[i].Keys[j] != m_ListKeyType[j])
+                    if(IsMatch(m_ListEvent[i].Keys,m_ListKeyType))
                     {
-                        isMatch = false;
+                        isMatch = true;
                         break;
                     }
                 }
@@ -274,6 +275,18 @@ namespace FrameWork.Input
             }
         }
 
+        private bool IsMatch(KeyType[] origin,List<KeyType> input)
+        {
+            if (input.Count < origin.Length)
+            {
+                return false;
+            }
+
+            bool isContainFlag = !input.Except(origin).Any();
+
+            return isContainFlag;
+        }
+
         private void ResetKeys()
         {
             m_ListKeyType.Clear();
@@ -288,9 +301,9 @@ namespace FrameWork.Input
             m_IsCombo = false;
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
-            
+            m_ListKeyType.Clear();
         }
 
         private bool m_KeyUpAdd = true;

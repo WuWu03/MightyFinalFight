@@ -1,12 +1,12 @@
-﻿using FrameWork.Pool;
-using FrameWork.Resources;
+﻿using GameFrameWork.Pool;
+using GameFrameWork.Resources;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public abstract class BasePanelCtrl
     {
@@ -104,7 +104,7 @@ namespace FrameWork.UI
         private void LoadViewCallback(GameObject go)
         {
             m_ResState = ResState.LOADED;     
-            Panel.Init(go, this);
+          //  Panel.Init(go, this);
             OnLoaded();
             ShowPanel(true);
         }

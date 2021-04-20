@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     [AddComponentMenu("UI/ScrollRectDrag")]
     public class ScrollRectDrag : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler

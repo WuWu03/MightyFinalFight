@@ -1,4 +1,4 @@
-﻿using FrameWork.Camera;
+﻿using GameFrameWork.Camera;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

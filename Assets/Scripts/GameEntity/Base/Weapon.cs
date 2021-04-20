@@ -1,7 +1,5 @@
 ﻿using DragonBones;
-using FrameWork;
-using FrameWork.Sound;
-using UnityEditor.Timeline;
+using GameFrameWork.Sound;
 using UnityEngine;
 
 public class Weapon : BaseSceneItem

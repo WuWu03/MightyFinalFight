@@ -1,7 +1,7 @@
-﻿using FrameWork;
-using FrameWork.Camera;
-using FrameWork.Sound;
-using FrameWork.Timer;
+﻿using GameFrameWork;
+using GameFrameWork.Camera;
+using GameFrameWork.Sound;
+using GameFrameWork.Timer;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,4 +1,4 @@
-﻿using FrameWork;
+﻿using GameFrameWork;
 
 public class IdleData : BaseEventArgs
 {

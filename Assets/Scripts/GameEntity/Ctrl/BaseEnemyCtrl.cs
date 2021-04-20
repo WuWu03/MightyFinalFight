@@ -1,5 +1,5 @@
-﻿using FrameWork.BehaviourTree;
-using FrameWork.Input;
+﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.Input;
 using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl

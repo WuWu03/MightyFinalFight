@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public class MyButton : Selectable, ISubmitHandler
     {

@@ -1,6 +1,6 @@
 ﻿using DragonBones;
-using FrameWork;
-using FrameWork.GameEntity;
+using GameFrameWork;
+using GameFrameWork.GameEntity;
 using UnityEngine;
 
 public class Bullet : BaseSceneItem

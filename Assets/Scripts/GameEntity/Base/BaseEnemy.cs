@@ -1,4 +1,4 @@
-﻿using FrameWork.UI;
+﻿using GameFrameWork.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,7 +45,7 @@ public class BaseEnemy : BaseRole
     public override void SubHealth(int value)
     {
         base.SubHealth(value);
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
+        UIMgr.Ins.GetPanel<MainPanel>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
     }
 
     protected override void OnUpdate()

@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace GameFrameWork
+{
+    public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
+    {
+        [SerializeField]
+        public List<string> ListExtendName = null;
+        [SerializeField]
+        public List<string> ListPattern = null;
+
+    }
+
+    [Serializable]
+    public class AssetBundleData : BaseConfigData
+    {
+        public enum AssetType
+        {
+            Single,
+            Map,
+        }
+
+        public AssetType BundleType;
+        public string BundleName;
+        public string BundleExtend;
+        public string Pattern;
+        public string AssetPath;
+        public string AssetBundlePath;
+    }
+}

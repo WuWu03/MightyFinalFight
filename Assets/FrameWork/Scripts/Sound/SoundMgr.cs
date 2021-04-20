@@ -1,10 +1,10 @@
-﻿using FrameWork.Pool;
-using FrameWork.Resources;
+﻿using GameFrameWork.Pool;
+using GameFrameWork.Resources;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-namespace FrameWork.Sound
+namespace GameFrameWork.Sound
 {
     public class SoundMgr : BaseMgr<SoundMgr>
     {
@@ -229,7 +229,7 @@ namespace FrameWork.Sound
             m_SoundStack.Push(audioSoundPlay);
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_QueueAudioGroup.Clear();
             m_PlayingList.Clear();

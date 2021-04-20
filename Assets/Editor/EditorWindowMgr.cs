@@ -15,42 +15,42 @@ public class EditorWindowMgr : MonoBehaviour
     [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<SkillConfig, SkillData>("StageData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<SkillConfig, SkillData>("StageData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateStageData")]
     public static void CreateStageData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<StageConfig, StageData>("StageData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<StageConfig, StageData>("StageData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateHeroData")]
     public static void CreatePlayerData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<HeroConfig, HeroData>("HeroData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<HeroConfig, HeroData>("HeroData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateEnemyData")]
     public static void CreateEnemyData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<EnemyConfig, EnemyData>("EnemyData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<EnemyConfig, EnemyData>("EnemyData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateSceneItemData")]
     public static void CreateSceneItemData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<SceneItemConfig, SceneItemData>("SceneItemData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<SceneItemConfig, SceneItemData>("SceneItemData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateTaskData")]
     public static void CreateTaskData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<TaskConfig, TaskData>("TaskData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<TaskConfig, TaskData>("TaskData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateLevelData")]
     public static void CreateLevelData()
     {
-        FrameWork.Utils.Utils.CreateConfigData<LevelConfig, LevelData>("LevelData", ".asset");
+        GameFrameWork.Editor.Utility.CreateConfigData<LevelConfig, LevelData>("LevelData", ".asset");
     }
 }

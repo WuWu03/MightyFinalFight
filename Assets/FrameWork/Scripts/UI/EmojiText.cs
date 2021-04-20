@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine.EventSystems;
 using System;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public class EmojiText : Text, IPointerClickHandler
     {
@@ -383,7 +383,7 @@ namespace FrameWork.UI
                         {
                             onHrefClick(hrefInfo.name);
                         }
-                        Debug.Log("点击了:" + hrefInfo.name);
+                        Log.Debugger.Log("点击了:" + hrefInfo.name);
                         return;
                     }
                 }

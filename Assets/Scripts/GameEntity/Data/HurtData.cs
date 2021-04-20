@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using FrameWork;
+using GameFrameWork;
 using System;
 
 public class HurtData : BaseEventArgs

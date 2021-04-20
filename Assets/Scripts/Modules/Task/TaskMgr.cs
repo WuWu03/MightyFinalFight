@@ -1,8 +1,5 @@
-﻿using FrameWork;
-using System.Collections;
+﻿using GameFrameWork;
 using System.Collections.Generic;
-using UnityEditorInternal;
-using UnityEngine;
 
 public class TaskMgr : BaseMgr<TaskMgr>
 {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace FrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public class Sequence : Composites
     {

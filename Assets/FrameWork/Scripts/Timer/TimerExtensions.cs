@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace FrameWork.Timer
+namespace GameFrameWork.Timer
 {
     public static class TimerExtensions
     {

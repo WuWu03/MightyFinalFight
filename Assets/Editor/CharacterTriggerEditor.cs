@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using DragonBones;
 using System;
-using FrameWork;
+using GameFrameWork;
 
 public class CharacterTriggerEditor : EditorWindow
 {

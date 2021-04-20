@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 using System.Net.Security;
-using FrameWork.Net;
+using GameFrameWork.Net;
 using client;
 
 public class UDPTest : MonoBehaviour 

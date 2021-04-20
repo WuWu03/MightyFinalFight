@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-namespace FrameWork.LocalData
+namespace GameFrameWork.LocalData
 {
     public class GameDataTableParser : IDisposable
     {

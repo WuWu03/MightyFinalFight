@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace FrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public class LoopSequence : Composites
     {

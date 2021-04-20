@@ -114,7 +114,7 @@ public class UIRefSetting : MonoBehaviour
     public float UnLoadTime = 10;
 
     [HideInInspector] public string PanelPath;
-    [HideInInspector] public string PanelCtrlPath;
+    [HideInInspector] public string PanelComponentPath;
     [HideInInspector] public string PanelPrefabPath;
 
 
@@ -156,7 +156,7 @@ public class UIRefSetting : MonoBehaviour
         }
 
         PanelPath = string.Format(m_ScriptFolder + "{0}.{1}", m_PanelName, extension);
-        PanelCtrlPath = string.Format(m_ScriptFolder + "{0}Ctrl.{1}", m_PanelName, extension);
+        PanelComponentPath = string.Format(m_ScriptFolder + "{0}Component.{1}", m_PanelName, extension);
     }
 
     public void RefreshPrefabFolder()

@@ -2,7 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-namespace FrameWork.Camera
+namespace GameFrameWork.Camera
 {
     public struct MaskName
     {
@@ -126,7 +126,7 @@ namespace FrameWork.Camera
             return sizeRate * m_NormalSize / 100;
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_ListCamera.Clear();
         }

@@ -1,4 +1,4 @@
-﻿using FrameWork;
+﻿using GameFrameWork;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -88,7 +88,7 @@ public class ObjectMsgCenter : BaseMgr<ObjectMsgCenter>
         }
     }
 
-    public override void ShutDown()
+    protected override void OnShutDown()
     {
         foreach(KeyValuePair<string,List<ObjectMsg>> kvp in m_DicObjectMsg)
         {

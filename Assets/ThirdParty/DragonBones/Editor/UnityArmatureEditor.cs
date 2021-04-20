@@ -101,7 +101,7 @@ namespace DragonBones
                 UnityFactory.factory.Clear(true);
 
                 // Unload
-                EditorUtility.UnloadUnusedAssetsImmediate();
+                global::UnityEditor.EditorUtility.UnloadUnusedAssetsImmediate();
                 System.GC.Collect();
 
                 // Load data.
@@ -171,7 +171,7 @@ namespace DragonBones
                 {
                     if (GUILayout.Button("Reload"))
                     {
-                        if (EditorUtility.DisplayDialog("DragonBones Alert", "Are you sure you want to reload data", "Yes", "No"))
+                        if (global::UnityEditor.EditorUtility.DisplayDialog("DragonBones Alert", "Are you sure you want to reload data", "Yes", "No"))
                         {
                             created = true;
                         }
@@ -392,7 +392,7 @@ namespace DragonBones
 
             if (!EditorApplication.isPlayingOrWillChangePlaymode && Selection.activeObject == _armatureComponent.gameObject)
             {
-                EditorUtility.SetDirty(_armatureComponent);
+                global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
                 HandleUtility.Repaint();
             }
         }
@@ -470,7 +470,7 @@ namespace DragonBones
 
         private void MarkSceneDirty()
         {
-            EditorUtility.SetDirty(_armatureComponent);
+            global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
             //
             if (!Application.isPlaying && !_IsPrefab())
             {

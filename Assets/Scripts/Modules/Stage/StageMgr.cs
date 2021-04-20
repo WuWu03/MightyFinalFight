@@ -1,13 +1,11 @@
-﻿using Boo.Lang;
-using FrameWork;
-using FrameWork.Camera;
-using FrameWork.Pool;
-using FrameWork.Resources;
-using FrameWork.Sound;
-using FrameWork.UI;
-using FrameWork.Utils;
+﻿using GameFrameWork;
+using GameFrameWork.Camera;
+using GameFrameWork.Pool;
+using GameFrameWork.Resources;
+using GameFrameWork.Sound;
+using GameFrameWork.UI;
+using GameFrameWork.Utils;
 using UnityEngine;
-using UnityScript.Scripting.Pipeline;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
@@ -47,7 +45,7 @@ public class StageMgr : BaseMgr<StageMgr>
         {
             m_MapRenderer = new GameObject("Map").GetOrAddComponent<SpriteRenderer>();
             m_MapRenderer.transform.SetParent(transform, false);
-            Utils.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
+            Utility.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
             DontDestroyOnLoad(m_MapRenderer.gameObject);
         }
     }
@@ -62,7 +60,7 @@ public class StageMgr : BaseMgr<StageMgr>
         m_CurrAreaIndex = 0;
         m_StageIndex = m_CurrStageData.StageIndex;
         string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
-        ResMgr.Ins.LoadAsset(resPath, OnLoadComplete, true, typeof(Sprite));
+        ResMgr.Ins.LoadAssetAsync(resPath, OnLoadComplete, true, typeof(Sprite));
     }
 
 

@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace FrameWork
+namespace GameFrameWork
 {
     public abstract class Singleton<T> where T : Singleton<T>,new()
     {

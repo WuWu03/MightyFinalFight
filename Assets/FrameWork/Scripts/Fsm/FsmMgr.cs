@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace FrameWork.Fsm
+namespace GameFrameWork.Fsm
 {
     public class FsmMgr : BaseMgr<FsmMgr>
     {
@@ -80,7 +80,7 @@ namespace FrameWork.Fsm
             return false;
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_DicFsms.Clear();
         }

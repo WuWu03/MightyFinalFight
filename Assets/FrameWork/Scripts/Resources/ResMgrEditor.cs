@@ -5,7 +5,7 @@ using System;
 using Object = UnityEngine.Object;
 using System.IO;
 
-namespace FrameWork.Resources
+namespace GameFrameWork.Resources
 {
     public class ResMgrEditor
     {
@@ -36,7 +36,7 @@ namespace FrameWork.Resources
         /// </summary>
         /// <param name="resourcePath">资源路径</param>
         /// <returns>资源对象</returns>
-        private Object LoadForEditor(string resourcePath, Type t)
+        private Object Load(string resourcePath, Type t)
         {
             Object obj;
             if (m_LoadedAssets.TryGetValue(resourcePath, out obj))
@@ -81,11 +81,16 @@ namespace FrameWork.Resources
             ResMgr.Ins.StartCoroutine(InnerLoad(resourcePath, t));
         }
 
+        public Object LoadForEditor(string resourcePath, Type t = null)
+        {
+            return Load(resourcePath, t);
+        }
+
         // 模拟异步加载的行为
         private IEnumerator InnerLoad(string resourcePath, Type t = null)
         {
             // 等待一帧
-            Object obj = LoadForEditor(resourcePath, t);
+            Object obj = Load(resourcePath, t);
             // 等待一帧
             yield return null;
             //// 等待一秒

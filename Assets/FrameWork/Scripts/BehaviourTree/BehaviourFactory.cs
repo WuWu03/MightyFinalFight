@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public static class BehaviourFactory
     {
@@ -17,13 +17,13 @@ namespace FrameWork.BehaviourTree
         {
             Type t = null;
             if (className.Contains("Sequence") || className.Contains("Selector"))
-                t = Type.GetType("FrameWork.BehaviourTree." + className);
+                t = Type.GetType("GameFrameWork.BehaviourTree." + className);
             else
                 t = Type.GetType(className);
 
-            if (t == null)//!m_DicBehavior.TryGetValue(name, out t))
+            if (t == null)
             {
-                FrameWork.Log.Debugger.LogError("Behaviour entity is invalid!");
+                GameFrameWork.Log.Debugger.LogError("Behaviour entity is invalid!");
                 return null;
             }
 

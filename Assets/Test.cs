@@ -1,9 +1,9 @@
-﻿using FrameWork.UI;
+﻿using GameFrameWork.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using FrameWork.Event;
-using FrameWork.Sound;
+using GameFrameWork.Event;
+using GameFrameWork.Sound;
 using UnityEngine.AI;
 
 public class Test : MonoBehaviour

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Object = UnityEngine.Object;
 
-namespace FrameWork.Timer
+namespace GameFrameWork.Timer
 {
     public class Timer
     {

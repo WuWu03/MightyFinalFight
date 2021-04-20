@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FrameWork;
-using FrameWork.Camera;
-using FrameWork.UI;
+using GameFrameWork;
+using GameFrameWork.Camera;
+using GameFrameWork.UI;
 using System;
 
-public class GameEntry : FrameWorkEntry
+public class GameEntry : GameFrameWorkEntry
 {
     protected override void OnInit()
     {
-        EffectMgr.Init();
-        TaskMgr.Init();
-        StageMgr.Init();
-        SceneEntityMgr.Init();
+        EffectMgr.Init(m_Manager);
+        TaskMgr.Init(m_Manager);
+        StageMgr.Init(m_Manager);
+        SceneEntityMgr.Init(m_Manager);
         StaticConfig.InitConfig();
     }
 

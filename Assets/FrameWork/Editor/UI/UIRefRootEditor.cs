@@ -2,13 +2,16 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(UIRefRoot))]
-public class UIRefRootEditor : Editor
+namespace GameFrameWork.Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(UIRefRoot))]
+    public class UIRefRootEditor : UnityEditor.Editor
     {
-        GUI.enabled = false;
-        base.OnInspectorGUI();
-        GUI.enabled = true;
+        public override void OnInspectorGUI()
+        {
+            GUI.enabled = false;
+            base.OnInspectorGUI();
+            GUI.enabled = true;
+        }
     }
 }

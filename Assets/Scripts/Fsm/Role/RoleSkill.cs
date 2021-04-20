@@ -1,5 +1,4 @@
-﻿using FrameWork.Fsm;
-using System.Security.Policy;
+﻿using GameFrameWork.Fsm;
 
 public class RoleSkill : BaseFsmState
 {

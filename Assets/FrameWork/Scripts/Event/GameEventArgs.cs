@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.Event
+namespace GameFrameWork.Event
 {
     public class GameEventArgs : BaseEventArgs
     {

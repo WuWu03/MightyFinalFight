@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.Log
+namespace GameFrameWork.Log
 {
     public static class Debugger
     {
         public static Color LogColor = Color.black;
         public static void Log(string logStr = "", params object[] args)
         {
-            if (!RuntimeEnvironment.Instance.OpenLog) return;
+            if (!AppConfig.Ins.OpenLog) return;
             Debug.Log(GetLogInfo(logStr, args));
         }
 
         public static void LogError(string logStr = "", params object[] args)
         {
-            if (!RuntimeEnvironment.Instance.OpenLog) return;
+            if (!AppConfig.Ins.OpenLog) return;
             Debug.LogError(GetLogInfo(logStr, args));
         }
 

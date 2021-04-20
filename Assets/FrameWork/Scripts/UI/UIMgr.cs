@@ -1,4 +1,4 @@
-﻿using FrameWork.Resources;
+﻿using GameFrameWork.Resources;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public class UIMgr : BaseMgr<UIMgr>
     {
@@ -29,17 +29,30 @@ namespace FrameWork.UI
         public enum CloseMode
         {
             Always = 1,         // UI常驻场景, 此类UI关闭达到一定数量后, 会摧毁最先关闭的
-            Destroy = 2,        //关闭时立即销毁
+            Destroy = 2,        // 关闭时立即销毁
             DelayDestroy = 3,   // 延迟一段时间销毁
             Eternal = 4,        // 总是存于场景中, 除非主动销毁
         }
 
-        private void Awake()
+        private class WaitLoadPanel
         {
-            m_ListOpenPanel = new List<BasePanelCtrl>();
-            m_StackMutexPanel = new Stack<BasePanelCtrl>();
-            m_QueueDelayDestroy = new Queue<BasePanelCtrl>();
-            m_QueueAlways = new Queue<BasePanelCtrl>();
+            public BasePanel Panel;
+            public object[] Param;
+
+            public WaitLoadPanel(BasePanel panel,object[] param)
+            {
+                this.Panel = panel;
+                this.Param = param;
+            }
+        }
+
+        protected override void OnAwake()
+        {
+            m_ListOpenPanel = new List<BasePanel>();
+            m_StackMutexPanel = new Stack<BasePanel>();
+            m_QueueDelayDestroy = new Queue<BasePanel>();
+            m_QueueAlways = new Queue<BasePanel>();
+            m_QueueWaitLoadPanel = new Queue<WaitLoadPanel>();
 
             m_UIRoot = new GameObject("UIRoot");
             m_UICanvas = new GameObject("UICanvas").GetOrAddComponent<Canvas>();
@@ -94,49 +107,49 @@ namespace FrameWork.UI
                 m_UILayerTransform[i].gameObject.SetLayer("UI");
             }
 
-            GameObject.DontDestroyOnLoad(m_UIRoot);
+            DontDestroyOnLoad(m_UIRoot);
         }
 
-        public void Open<T>(VoidNotPar callback = null, params object[] param) where T : BasePanel, new()
+        public void Open<T>(params object[] param) where T : BasePanel, new()
         {
-            InnerOpen(typeof(T).Name, callback, param);
+            RealOpen(typeof(T).Name, param);
         }
 
-        public void Open(string panelName, VoidNotPar callback = null, params object[] param)
+        public void Open(string panelName,params object[] param)
         {
-            InnerOpen(panelName, callback, param);
+            RealOpen(panelName, param);
         }
 
-        public T GetPanel<T>() where T : BasePanelCtrl
+        public T GetPanel<T>() where T : BasePanel
         {
-            return InnerGet(typeof(T).Name.Replace("Ctrl", "")) as T;
+            return RealGet(typeof(T).Name.Replace("Ctrl", "")) as T;
         }
 
         public T GetPanel<T>(string panelName) where T : BasePanelCtrl
         {
-            return InnerGet(panelName) as T;
+            return RealGet(panelName) as T;
         }
 
         public bool IsPanelOpen<T>()
         {
-            BasePanelCtrl ctrl = InnerGet(typeof(T).Name);
-            return ctrl != null && ctrl.IsOpen;
+            BasePanel panel = RealGet(typeof(T).Name);
+            return panel != null && panel.IsOpen;
         }
 
         public bool IsPanelOpen(string panelName)
         {
-            BasePanelCtrl ctrl = InnerGet(panelName);
-            return ctrl != null && ctrl.IsOpen;
+            BasePanel panel = RealGet(panelName);
+            return panel != null && panel.IsOpen;
         }
 
-        public void Close<T>(VoidNotPar callback = null)
+        public void Close<T>(bool isForceDestroy = false) where T:BasePanel
         {
-            InnerClose(typeof(T).Name, callback);
+            RealClose(typeof(T).Name,isForceDestroy);
         }
 
-        public void Close(string panelName,VoidNotPar callback = null)
+        public void Close(string panelName,bool isForceDestroy = false)
         {
-            InnerClose(panelName, callback);
+            RealClose(panelName, isForceDestroy);
         }
 
         public Transform GetUILayer(Layer layer)
@@ -144,77 +157,87 @@ namespace FrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-
-        private void InnerOpen(string panelName, VoidNotPar callback, object[] param)
+        private void RealOpen(string panelName, object[] param)
         {
-            System.Type type = System.Type.GetType(panelName + "Ctrl");
+            System.Type type = System.Type.GetType(panelName);
 
             if (type == null)
             {
-                Debug.LogError("Panel is invalid!");
+                Log.Debugger.LogError("Panel is invalid!");
                 return;
             }
 
-            BasePanelCtrl ctrl = InnerGet(panelName);
-            if (ctrl != null && ctrl.IsOpen) return;
+            BasePanel panel = RealGet(panelName);
 
-            if (ctrl == null)
+            if (panel != null && panel.IsOpen) return;
+
+            if (panel == null)
             {
-                ctrl = Activator.CreateInstance(type) as BasePanelCtrl;
-                m_ListOpenPanel.Add(ctrl);
+                panel = Activator.CreateInstance(type) as BasePanel;
+                m_ListOpenPanel.Add(panel);
             }
 
-            ctrl.Open(callback, param);
+            if (!panel.IsInit)
+            {
+                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, param));
+                UITools.LoadUI(panelName, OnResComplete);
+            }
+            else if(!panel.IsOpen)
+            {
+                panel.Open();
+            }
 
-            if (ctrl.Panel.PanelType == Type.Pop) return;
+            if (panel.PanelType == Type.Pop) return;
 
             if (m_StackMutexPanel.Count > 0)
             {
-                m_StackMutexPanel.Peek().Close(null);
+                Close(m_StackMutexPanel.Peek().PanelName);
             }
 
-            m_StackMutexPanel.Push(ctrl);
+            m_StackMutexPanel.Push(panel);
         }
 
-        private void InnerClose(string panelName, VoidNotPar callback)
+        private void RealClose(string panelName,bool isForceDestroy)
         {
-            BasePanelCtrl ctrl = InnerGet(panelName);
+            BasePanel panel = RealGet(panelName);
 
-            if (ctrl == null) return;
+            if (panel == null) return;
 
-            ctrl.Close(callback);
+            panel.Close();
 
-            if (ctrl.Panel.PanelCloseMode == CloseMode.DelayDestroy)
+            if (panel.PanelCloseMode == CloseMode.DelayDestroy)
             {
-                Queue<BasePanelCtrl> queue = m_QueueDelayDestroy;
+                Queue<BasePanel> queue = m_QueueDelayDestroy;
                 lock(queue)
                 {
-                    m_QueueDelayDestroy.Enqueue(ctrl);
+                    m_QueueDelayDestroy.Enqueue(panel);
                 }
             }
 
-            if(ctrl.Panel.PanelCloseMode == CloseMode.Always)
+            if(panel.PanelCloseMode == CloseMode.Always)
             {
-                Queue<BasePanelCtrl> queue = m_QueueAlways;
+                Queue<BasePanel> queue = m_QueueAlways;
                 lock (queue)
                 {
-                    m_QueueAlways.Enqueue(ctrl);
+                    m_QueueAlways.Enqueue(panel);
                 }
             }
 
-            if (ctrl.Panel.PanelCloseMode == CloseMode.Destroy)
+            if (panel.PanelCloseMode == CloseMode.Destroy || isForceDestroy)
             {
-                m_ListOpenPanel.Remove(ctrl);
+                panel.Destroy();
+                Destroy(panel.gameObject);
+                m_ListOpenPanel.Remove(panel);
             }
 
-            if (ctrl.Panel.PanelType == Type.Pop) return;
+            if (panel.PanelType == Type.Pop) return;
             if (m_StackMutexPanel.Count < 1) return;
 
-            BasePanelCtrl top = m_StackMutexPanel.Pop();
+            BasePanel top = m_StackMutexPanel.Pop();
 
             if (m_StackMutexPanel.Count < 1)
             {
-                if (top.Panel.PanelType == Type.Root)
+                if (top.PanelType == Type.Root)
                     m_StackMutexPanel.Push(top);
                 return;
             }
@@ -222,17 +245,24 @@ namespace FrameWork.UI
             m_StackMutexPanel.Peek().Open();
         }
 
-        private BasePanelCtrl InnerGet(string panelName)
+
+        private BasePanel RealGet(string panelName)
         {
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                if (m_ListOpenPanel[i].Panel.PanelName.Equals(panelName))
+                if (m_ListOpenPanel[i].PanelName.Equals(panelName))
                 {
                     return m_ListOpenPanel[i];
                 }
             }
 
             return null;
+        }
+
+        private void OnResComplete(GameObject go)
+        {
+            WaitLoadPanel wait = m_QueueWaitLoadPanel.Dequeue();
+            wait.Panel.Init(go, wait.Param);
         }
 
         private void Update()
@@ -245,32 +275,34 @@ namespace FrameWork.UI
 
             if (m_QueueDelayDestroy.Count > 0 && m_QueueDelayDestroy.Peek().IsDelayTimeOut)
             {
-                BasePanelCtrl ctrl = null;
-                Queue<BasePanelCtrl> queue = m_QueueDelayDestroy;
+                BasePanel panel = null;
+                Queue<BasePanel> queue = m_QueueDelayDestroy;
 
                 lock (queue)
                 {
-                    ctrl = m_QueueDelayDestroy.Dequeue();
-                    ctrl.Destroy(true);
-                    m_ListOpenPanel.Remove(ctrl);
+                    panel = m_QueueDelayDestroy.Dequeue();
+                    panel.Destroy();
+                    Destroy(panel.gameObject);
+                    m_ListOpenPanel.Remove(panel);
                 }
             }
 
             if(m_QueueAlways.Count > 10)
             {
-                BasePanelCtrl ctrl = null;
-                Queue<BasePanelCtrl> queue = m_QueueAlways;
+                BasePanel panel = null;
+                Queue<BasePanel> queue = m_QueueAlways;
 
                 lock (queue)
                 {
-                    ctrl = m_QueueAlways.Dequeue();
-                    ctrl.Destroy(true);
-                    m_ListOpenPanel.Remove(ctrl);
+                    panel = m_QueueAlways.Dequeue();
+                    panel.Destroy();
+                    Destroy(panel.gameObject);
+                    m_ListOpenPanel.Remove(panel);
                 }
             }
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_StackMutexPanel.Clear();
             m_ListOpenPanel.Clear();
@@ -278,10 +310,11 @@ namespace FrameWork.UI
             m_QueueAlways.Clear();
         }
 
-        private Queue<BasePanelCtrl> m_QueueDelayDestroy = null;
-        private Queue<BasePanelCtrl> m_QueueAlways = null;
-        private Stack<BasePanelCtrl> m_StackMutexPanel = null;
-        private List<BasePanelCtrl> m_ListOpenPanel = null;
+        private Queue<BasePanel> m_QueueDelayDestroy = null;
+        private Queue<BasePanel> m_QueueAlways = null;
+        private Queue<WaitLoadPanel> m_QueueWaitLoadPanel = null;
+        private Stack<BasePanel> m_StackMutexPanel = null;
+        private List<BasePanel> m_ListOpenPanel = null;
         private RectTransform[] m_UILayerTransform = null;
         private GameObject m_UIRoot = null;
         private Canvas m_UICanvas = null;

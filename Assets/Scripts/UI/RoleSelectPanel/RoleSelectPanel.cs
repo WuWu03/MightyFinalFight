@@ -6,7 +6,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using FrameWork.UI;
+using GameFrameWork.UI;
+using GameFrameWork.Sound;
+using GameFrameWork.Input;
 
 public class RoleSelectPanel : BasePanel
 {
@@ -15,31 +17,82 @@ public class RoleSelectPanel : BasePanel
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
-	//RoleContent,GameObject
-	public GameObject RoleContent { get; private set;}
-	//RoleContent/Item,GameObject
-	public GameObject ItemGO { get; private set;}
-	//ImgSelect,RectTransform
-	public RectTransform ImgSelectRect { get; private set;}
-	public LayoutGroupView<RoleContentItem> RoleContentGroupView { get; private set;}
-	protected override void OnInit()
+
+    protected override void OnInit(object[] param)
 	{
-		RoleContent = UIRefRoot.Objects[0] as GameObject;
-		ItemGO = UIRefRoot.Objects[1] as GameObject;
-		ImgSelectRect = UIRefRoot.Objects[5] as RectTransform;
-		RoleContentGroupView = new LayoutGroupView<RoleContentItem>();
+		m_Component = new RoleSelectPanelComponent(UIRefRoot);
+		m_Component.RoleContentGroupView.Init(m_Component.RoleContent, m_Component.ItemGO, 3);
+
 	}
 
-	public class RoleContentItem : LayoutGroupViewItem
-	{
-		public MyButton BtnRoleIcon = null;
-		public Text TxtName = null;
-		public Text TxtDesc = null;
-		protected override void OnCreate(GameObject go)
+    protected override void OnOpen()
+    {
+		SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm14Character", true);
+		m_Component.ImgSelectRect.gameObject.SetActive(true);
+		m_Component.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
+		m_Component.RoleContentGroupView.OnItemSelect = OnItemSelect;
+
+		m_Component.RoleContentGroupView.Update(StaticConfig.HeroConfig.Datas.Length);
+		m_Component.RoleContentGroupView.SelectItem(0);
+	}
+
+    protected override void OnUpdate()
+    {
+		Vector2 axis = InputMgr.GetAxis(true);
+		if (axis.y != 0)
 		{
-			BtnRoleIcon = transform.Find("BtnRoleIcon").GetComponent<MyButton>();
-			TxtName = transform.Find("TxtName").GetComponent<Text>();
-			TxtDesc = transform.Find("TxtDesc").GetComponent<Text>();
+			if (axis.y > 0)
+			{
+				m_CurrSelectIndex++;
+				if (m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Length) m_CurrSelectIndex = 0;
+			}
+			else
+			{
+				m_CurrSelectIndex--;
+				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
+			}
+
+			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelect");
+			m_Component.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
+		}
+
+		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
+		{
+			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelected");
+			InnerClose();
+			PlayerMgr.Ins.InitPlayer(StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID);
+			StageMgr.Ins.Enter(1001);
 		}
 	}
+
+	protected override void OnClose()
+	{
+
+	}
+
+	protected override void OnDestroy()
+	{
+
+	}
+
+	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
+	{
+		HeroData data = StaticConfig.HeroConfig.Datas[item.Index - 1];
+		item.TxtDesc.text = data.Desc;
+		item.TxtName.text = data.Name;
+		UITools.LoadSprite("Character", data.HeadIcon, item.BtnRoleIcon.image);
+	}
+
+	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)
+	{
+		if (isSelect)
+		{
+			m_Component.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
+			m_Component.ImgSelectRect.localPosition = Vector3.zero;
+			m_CurrSelectIndex = item.Index - 1;
+		}
+	}
+
+	private int m_CurrSelectIndex = -1;
+	private RoleSelectPanelComponent m_Component = null;
 }

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 
-namespace FrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public abstract class PreCondition : Node
     {

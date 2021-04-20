@@ -156,7 +156,7 @@ namespace DragonBones
                             //save
                             string json = JsonUtility.ToJson(tdc);
                             File.WriteAllText(path,json);
-                            EditorUtility.SetDirty(ta);
+                            global::UnityEditor.EditorUtility.SetDirty(ta);
 
                             GameObject.DestroyImmediate(texture);
                         }

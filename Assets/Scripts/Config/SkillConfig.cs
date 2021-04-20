@@ -1,4 +1,4 @@
-﻿using FrameWork;
+﻿using GameFrameWork;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -105,7 +105,7 @@ public class SkillData : BaseConfigData
     [Serializable]
     public class SkillKey
     {
-        public FrameWork.Input.KeyType[] Keys;
+        public GameFrameWork.Input.KeyType[] Keys;
         public bool AddTrigger;
     }
 

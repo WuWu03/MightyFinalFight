@@ -1,9 +1,9 @@
-﻿using FrameWork;
-using FrameWork.Camera;
-using FrameWork.Input;
-using FrameWork.Pool;
-using FrameWork.Sound;
-using FrameWork.UI;
+﻿using GameFrameWork;
+using GameFrameWork.Camera;
+using GameFrameWork.Input;
+using GameFrameWork.Pool;
+using GameFrameWork.Sound;
+using GameFrameWork.UI;
 using UnityEngine;
 
 public class PlayerMgr : MonoSingleton<PlayerMgr>
@@ -129,7 +129,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(Life);
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerLife(Life);
 
         if (Life < 1)
         {
@@ -149,7 +149,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainPanelCtrl mainPanelCtrl = UIMgr.Ins.GetPanel<MainPanelCtrl>();
+        MainPanel mainPanel = UIMgr.Ins.GetPanel<MainPanel>();
         if (m_EXP >= m_LevelData.EXP)
         {
             m_Level++;
@@ -157,17 +157,17 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.ID).Levels[m_Level - 1];
             m_Player.Health = m_LevelData.Health;
             m_Player.MaxHealth = m_LevelData.Health;
-            mainPanelCtrl.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
-            mainPanelCtrl.SetPlayerLevel();
+            mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
+            mainPanel.SetPlayerLevel();
             SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/LevelUp");
         }
-        mainPanelCtrl.SetPlayerExp(m_EXP, m_LevelData.EXP);
+        mainPanel.SetPlayerExp(m_EXP, m_LevelData.EXP);
     }
 
     public void AddLife(int value)
     {
         m_Life += value;
-        UIMgr.Ins.GetPanel<MainPanelCtrl>().SetPlayerLife(m_Life);
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)

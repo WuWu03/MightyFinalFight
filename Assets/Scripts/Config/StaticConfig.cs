@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using FrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
+using GameFrameWork.Resources;
 
 public static class StaticConfig
 {
@@ -14,14 +15,14 @@ public static class StaticConfig
     public static LevelConfig LevelConfig = null;
     public static void InitConfig()
     {
-        HeroConfig = AssetDatabase.LoadAssetAtPath<HeroConfig>("Assets/ConfigData/HeroData.asset");
-        SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>("Assets/ConfigData/SkillData.asset");
-        StageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>("Assets/ConfigData/StageData.asset");
-        EnemyConfig = AssetDatabase.LoadAssetAtPath<EnemyConfig>("Assets/ConfigData/EnemyData.asset");
-        BehaviourTreeConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeConfig>("Assets/ConfigData/BehaviourTreeData.asset");
-        SceneItemConfig = AssetDatabase.LoadAssetAtPath<SceneItemConfig>("Assets/ConfigData/SceneItemData.asset");
-        TaskConfig = AssetDatabase.LoadAssetAtPath<TaskConfig>("Assets/ConfigData/TaskData.asset");
-        LevelConfig = AssetDatabase.LoadAssetAtPath<LevelConfig>("Assets/ConfigData/LevelData.asset");
+        HeroConfig = ResMgr.Ins.LoadAsset<HeroConfig>("ConfigData/HeroData");
+        SkillConfig = ResMgr.Ins.LoadAsset<SkillConfig>("ConfigData/SkillData");
+        StageConfig = ResMgr.Ins.LoadAsset<StageConfig>("ConfigData/StageData");
+        EnemyConfig = ResMgr.Ins.LoadAsset<EnemyConfig>("ConfigData/EnemyData");
+        BehaviourTreeConfig = ResMgr.Ins.LoadAsset<BehaviourTreeConfig>("ConfigData/BehaviourTreeData");
+        SceneItemConfig = ResMgr.Ins.LoadAsset<SceneItemConfig>("ConfigData/SceneItemData");
+        TaskConfig = ResMgr.Ins.LoadAsset<TaskConfig>("ConfigData/TaskData");
+        LevelConfig = ResMgr.Ins.LoadAsset<LevelConfig>("ConfigData/LevelData");
     }
 
     public static void Clear()

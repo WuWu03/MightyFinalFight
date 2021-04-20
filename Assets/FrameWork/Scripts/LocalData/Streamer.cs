@@ -2,7 +2,7 @@
 using System.Text;
 using System;
 
-namespace FrameWork.LocalData
+namespace GameFrameWork.LocalData
 {
     /// <summary>
     ///从流中读取或写入一个数据

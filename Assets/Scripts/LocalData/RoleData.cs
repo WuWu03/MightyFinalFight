@@ -4,8 +4,8 @@
 //==创建时间：2020-02-01 16:27:10
 //备注：此代码为工具生成 请勿手工修改
 //===================================================
-using FrameWork;
-using FrameWork.LocalData;
+using GameFrameWork;
+using GameFrameWork.LocalData;
 using System.Collections;
 
 /// <summary>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public class BehaviourTree
     {

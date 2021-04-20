@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public sealed class UIEventListener :
     MonoBehaviour,

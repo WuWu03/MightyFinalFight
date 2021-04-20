@@ -1,6 +1,6 @@
 ﻿
 //数据实体基类
-namespace FrameWork.LocalData
+namespace GameFrameWork.LocalData
 {
     public abstract class AbstractData
     {

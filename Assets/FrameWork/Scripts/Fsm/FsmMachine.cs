@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FrameWork.Fsm
+namespace GameFrameWork.Fsm
 {
     public class FsmMachine : BaseFsm
     {

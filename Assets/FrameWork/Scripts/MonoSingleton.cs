@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FrameWork
+namespace GameFrameWork
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
@@ -17,7 +17,7 @@ namespace FrameWork
                     {
                         if (instances.Length > 1)
                         {
-                            FrameWork.Log.Debugger.LogError(string.Format("The instance that Type of {0} is more than one", typeof(T).Name));
+                            GameFrameWork.Log.Debugger.LogError(string.Format("The instance that Type of {0} is more than one", typeof(T).Name));
                             return null;
                         }
                         else

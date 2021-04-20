@@ -1,7 +1,7 @@
 using System.IO;
 using System;
 
-namespace FrameWork.Utils
+namespace GameFrameWork.Utils
 {
     public class IOUtil
     {

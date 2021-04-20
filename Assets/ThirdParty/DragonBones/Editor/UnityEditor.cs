@@ -188,13 +188,13 @@ namespace DragonBones
 
                     _armatureComponent.gameObject.name = armatureName;
 
-                    EditorUtility.SetDirty(_armatureComponent);
+                    global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
 
                     return true;
                 }
                 else
                 {
-                    EditorUtility.DisplayDialog("Error", "Could not load dragonBones data.", "OK", null);
+                    global::UnityEditor.EditorUtility.DisplayDialog("Error", "Could not load dragonBones data.", "OK", null);
 
                     return false;
                 }
@@ -210,7 +210,7 @@ namespace DragonBones
                     _armatureComponent.Dispose(false);
                 }
 
-                EditorUtility.SetDirty(_armatureComponent);
+                global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
 
                 return true;
             }
@@ -411,7 +411,7 @@ namespace DragonBones
                 if (isDirty)
                 {
                     AssetDatabase.Refresh();
-                    EditorUtility.SetDirty(data);
+                    global::UnityEditor.EditorUtility.SetDirty(data);
                 }
 
                 //
@@ -465,7 +465,7 @@ namespace DragonBones
             gameObject.transform.SetParent(parentTransform, false);
 
             //
-            EditorUtility.FocusProjectWindow();
+            global::UnityEditor.EditorUtility.FocusProjectWindow();
             Selection.activeObject = gameObject;
             EditorGUIUtility.PingObject(Selection.activeObject);
             Undo.RegisterCreatedObjectUndo(gameObject, "Create Armature Object");

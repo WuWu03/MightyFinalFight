@@ -1,4 +1,4 @@
-﻿using FrameWork.BehaviourTree;
+﻿using GameFrameWork.BehaviourTree;
 using UnityEngine;
 
 public class DoRunToPlayer : Action

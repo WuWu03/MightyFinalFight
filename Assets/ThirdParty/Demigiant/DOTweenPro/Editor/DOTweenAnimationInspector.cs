@@ -255,7 +255,7 @@ namespace DG.DOTweenEditor
             }
             if (_src.animationType == DOTweenAnimationType.None) {
                 _src.isValid = false;
-                if (GUI.changed) EditorUtility.SetDirty(_src);
+                if (GUI.changed) UnityEditor.EditorUtility.SetDirty(_src);
                 return;
             }
 
@@ -286,7 +286,7 @@ namespace DG.DOTweenEditor
                 GUILayout.Label("No valid Component was found for the selected animation", EditorGUIUtils.wordWrapLabelStyle);
                 GUILayout.EndVertical();
                 GUI.color = Color.white;
-                if (GUI.changed) EditorUtility.SetDirty(_src);
+                if (GUI.changed) UnityEditor.EditorUtility.SetDirty(_src);
                 return;
             }
 
@@ -410,7 +410,7 @@ namespace DG.DOTweenEditor
             // Events
             AnimationInspectorGUI.AnimationEvents(this, _src);
 
-            if (GUI.changed) EditorUtility.SetDirty(_src);
+            if (GUI.changed) UnityEditor.EditorUtility.SetDirty(_src);
         }
 
         #endregion
@@ -512,11 +512,11 @@ namespace DG.DOTweenEditor
                     // Check that it's a Transform for a Transform or a RectTransform for a RectTransform
                     if (_src.GetComponent<RectTransform>() != null) {
                         if (_src.endValueTransform.GetComponent<RectTransform>() == null) {
-                            EditorUtility.DisplayDialog("DOTween Pro", "For Unity UI elements, the target must also be a UI element", "Ok");
+                            UnityEditor.EditorUtility.DisplayDialog("DOTween Pro", "For Unity UI elements, the target must also be a UI element", "Ok");
                             _src.endValueTransform = null;
                         }
                     } else if (_src.endValueTransform.GetComponent<RectTransform>() != null) {
-                        EditorUtility.DisplayDialog("DOTween Pro", "You can't use a UI target for a non UI object", "Ok");
+                        UnityEditor.EditorUtility.DisplayDialog("DOTween Pro", "You can't use a UI target for a non UI object", "Ok");
                         _src.endValueTransform = null;
                     }
                 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FrameWork.UI
+namespace GameFrameWork.UI
 {
     public class LayoutGroupLoopView<T> where T : LayoutGroupViewItem, new()
     {

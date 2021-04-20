@@ -5,7 +5,7 @@ using System;
 using Object = UnityEngine.Object;
 using System.IO;
 
-namespace FrameWork.Resources
+namespace GameFrameWork.Resources
 {
     public class ResMgr : BaseMgr<ResMgr>
     {
@@ -35,7 +35,7 @@ namespace FrameWork.Resources
             m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
 
 #if UNITY_EDITOR
-            if (RuntimeEnvironment.Instance.LoadAB)
+            if (AppConfig.Ins.LoadAB)
 #endif
             {
                 string url = ResDefine.AssetBundlePath + "/StreamingAssets";
@@ -59,29 +59,62 @@ namespace FrameWork.Resources
         }
 
         /// <summary>
-        /// 加载资源
+        /// 同步加载资源
         /// </summary>
-        public void LoadAsset<T>(string abName, Action<Object> action = null, bool loadMainAsset = true)
+        public T LoadAsset<T>(string abName,bool loadMainAsset = true) where T:Object
         {
-            LoadAsset(abName, action, loadMainAsset, typeof(T));
+            Object o = LoadAsset(abName, loadMainAsset, typeof(T));
+
+            if(o == null)
+            {
+                return null;
+            }
+
+            return o as T;
         }
 
         /// <summary>
-        /// 加载资源
+        /// 同步加载资源
         /// </summary>
-        public void LoadAsset(string abName, Action<Object> action = null, bool loadMainAsset = true, Type t = null)
+        public Object LoadAsset(string abName,bool loadMainAsset = true,Type t = null)
         {
             if (t == null)
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = RuntimeEnvironment.Instance.LoadAB;
+            bool isLoadAb = AppConfig.Ins.LoadAB;
+#if UNITY_EDITOR
+            if (!isLoadAb)
+                return ResMgrEditor.Ins.LoadForEditor(abName, t);
+            else
+#endif
+                return Load(abName, loadMainAsset, t);
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync<T>(string abName, Action<Object> action = null, bool loadMainAsset = true)
+        {
+            LoadAssetAsync(abName, action, loadMainAsset, typeof(T));
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync(string abName, Action<Object> action = null, bool loadMainAsset = true, Type t = null)
+        {
+            if (t == null)
+            {
+                t = typeof(Object);
+            }
+            bool isLoadAb = AppConfig.Ins.LoadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
                 ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t);
             else
 #endif
-                InnerLoadAsset(abName, action, loadMainAsset, t);
+                LoadAsync(abName, action, loadMainAsset, t);
         }
 
         /// <summary>
@@ -90,20 +123,55 @@ namespace FrameWork.Resources
         public void UnloadAssetBundle(string abName, bool isThorough = false)
         {
             abName = GetRealAssetPath(abName);
-            //if(LoggerHelper.isLogDebug)
-            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
+            Log.Debugger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
             UnloadAssetBundleInternal(abName, isThorough);
             UnloadDependencies(abName, isThorough);
-            //if (LoggerHelper.isLogDebug)
-            Debug.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
+            Log.Debugger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
         }
 
         /// <summary>
-        /// 载入素材
+        /// 同步加载
         /// </summary>
-        private void InnerLoadAsset(string abName, Action<Object> action = null, bool loadMainAsset = false, Type t = null)
+
+        private Object Load(string abName, bool loadMainAsset = false, Type t = null)
         {
-            Debug.Log("LoadAsset：" + abName);
+            Log.Debugger.Log("LoadAsset：" + abName);
+
+            abName = GetRealAssetPath(abName);
+            LoadDependencies(abName);
+
+            AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
+            if (bundleInfo == null)
+            {
+                bundleInfo = GetLoadedAssetBundle(abName);
+                if (bundleInfo == null)
+                {
+                    m_LoadRequests.Remove(abName);
+                    Log.Debugger.LogError("OnLoadAsset--->>>" + abName);
+                    return null;
+                }
+            }
+
+            string[] dependencies = null;
+
+            if (m_Dependencies.TryGetValue(abName, out dependencies))
+            {
+                while (DependenciesLoaded(dependencies))
+                {
+                    AssetBundle ab = bundleInfo.m_AssetBundle;
+                    return ab.GetMainAsset(t);
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 异步加载
+        /// </summary>
+        private void LoadAsync(string abName, Action<Object> action = null, bool loadMainAsset = false, Type t = null)
+        {
+            Log.Debugger.Log("LoadAsset：" + abName);
 
             abName = GetRealAssetPath(abName);
             LoadAssetRequest request = new LoadAssetRequest();
@@ -138,7 +206,7 @@ namespace FrameWork.Resources
                 if (bundleInfo == null)
                 {
                     m_LoadRequests.Remove(abName);
-                    Debug.LogError("OnLoadAsset--->>>" + abName);
+                    Log.Debugger.LogError("OnLoadAsset--->>>" + abName);
                     yield break;
                 }
             }
@@ -178,7 +246,7 @@ namespace FrameWork.Resources
         private IEnumerator OnLoadAssetBundle(string abName)
         {
             string path = GetAssetBundlePath(abName);
-            Debug.Log("开始异步加载资源：" + path);
+            Log.Debugger.Log("开始异步加载资源：" + path);
             AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(path);
             yield return createRequest;
 
@@ -194,13 +262,10 @@ namespace FrameWork.Resources
             AssetBundleInfo bundle = null;
             m_LoadedAssetBundles.TryGetValue(abName, out bundle);
             if (bundle == null) return null;
-
             // No dependencies are recorded, only the bundle itself is required.
             //string[] dependencies = null;
             //if (!m_Dependencies.TryGetValue(abName, out dependencies))
             //    return bundle;
-
-
             return bundle;
         }
 
@@ -238,7 +303,7 @@ namespace FrameWork.Resources
         {
             if (m_Manifest == null)
             {
-                Debug.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
+                Log.Debugger.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
                 return;
             }
             // Get dependecies from the AssetBundleManifest object..
@@ -287,7 +352,7 @@ namespace FrameWork.Resources
                 }
                 bundle.m_AssetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
-                Debug.Log(abName + " has been unloaded successfully");
+                Log.Debugger.Log(abName + " has been unloaded successfully");
             }
         }
 
@@ -296,7 +361,7 @@ namespace FrameWork.Resources
             return string.Format("{0}/{1}", ResDefine.AssetBundlePath, abName);
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_Dependencies.Clear();
             m_LoadedAssetBundles.Clear();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FrameWork
+namespace GameFrameWork
 {
     public abstract class BaseEventArgs:EventArgs
     {

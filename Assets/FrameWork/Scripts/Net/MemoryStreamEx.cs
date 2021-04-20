@@ -4,7 +4,7 @@ using System.IO;
 using System;
 using System.Text;
 
-namespace FrameWork.Net
+namespace GameFrameWork.Net
 {
     public class MemoryStreamEx : MemoryStream
     {

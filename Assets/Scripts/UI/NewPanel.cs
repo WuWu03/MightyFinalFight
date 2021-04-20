@@ -1,12 +1,11 @@
 /*******************************************************/
-/**2020-5-22 11:45****************************************/
+/**2021-4-19 14:30****************************************/
 /**Create By GQY****************************************/
-/**工具生成，请勿修改************************************/
 /*******************************************************/
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using FrameWork.UI;
+using GameFrameWork.UI;
 
 public class NewPanel : BasePanel
 {
@@ -15,24 +14,27 @@ public class NewPanel : BasePanel
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Always; } }
-	//Image1,Image
-	public Image Image1 { get; private set;}
-	//List1,RectTransform
-	public RectTransform List1 { get; private set;}
-	public LayoutGroupLoopView<List1Item> List1GroupView { get; private set;}
-	protected override void OnInit()
+
+	protected override void OnInit(object[] param)
 	{
-		Image1 = UIRefRoot.Objects[0] as Image;
-		List1 = UIRefRoot.Objects[1] as RectTransform;
-		List1GroupView = new LayoutGroupLoopView<List1Item>();
+		m_Component = new NewPanelComponent(UIRefRoot);
 	}
 
-	public class List1Item : LayoutGroupViewItem
+	protected override void OnOpen()
 	{
-		public Image Icon = null;
-		protected override void OnCreate(GameObject go)
-		{
-			Icon = transform.Find("Icon").GetComponent<Image>();
-		}
 	}
+
+	protected override void OnUpdate()
+	{
+	}
+
+	protected override void OnClose()
+	{
+	}
+
+	protected override void OnDestroy()
+	{
+	}
+
+	private NewPanelComponent m_Component = null;
 }

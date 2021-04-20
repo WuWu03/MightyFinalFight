@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FrameWork.Camera
+namespace GameFrameWork.Camera
 {
     public class CameraFollow : MonoBehaviour
     {
@@ -40,7 +40,7 @@ namespace FrameWork.Camera
         {
             if (m_Target == null)
             {
-                FrameWork.Log.Debugger.LogError("Don't have target to follow!");
+                GameFrameWork.Log.Debugger.LogError("Don't have target to follow!");
                 return;
             }
 

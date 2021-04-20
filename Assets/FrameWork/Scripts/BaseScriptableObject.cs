@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork
+namespace GameFrameWork
 {
     public abstract class BaseScriptableObject<T> : ScriptableObject where T : BaseConfigData
     {

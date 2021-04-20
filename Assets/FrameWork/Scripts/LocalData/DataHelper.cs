@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.LocalData
+namespace GameFrameWork.LocalData
 {
     public class DataHelper
     {

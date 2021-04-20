@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace FrameWork
+namespace GameFrameWork
 {
     public abstract class BaseMgr<T>: MonoBehaviour where T:BaseMgr<T>,new()
     {
@@ -19,7 +19,7 @@ namespace FrameWork
             }
         }
 
-        public static void Init()
+        public static void Init(GameObject manager)
         {
             if (m_Ins != null)
             {
@@ -27,21 +27,17 @@ namespace FrameWork
                 return;
             }
 
-            if(m_Manager == null)
+            if(manager == null)
             {
-                m_Manager = GameObject.Find("GameManager");
-
-                if (m_Manager == null)
-                {
-                    m_Manager = new GameObject("GameManager");
-                    DontDestroyOnLoad(m_Manager);
-                }
+                Log.Debugger.LogError("The manager is missing");
+                return;
             }
 
-            m_Ins = m_Manager.GetOrAddComponent<T>();
+            m_Ins = manager.GetOrAddComponent<T>();
+            m_Ins.m_Running = true;
         }
 
-        internal virtual int Priority
+        public virtual int Priority
         {
             get
             {
@@ -49,17 +45,51 @@ namespace FrameWork
             }
         }
 
-        public virtual void ShutDown()
+        public virtual void Run()
         {
-            m_Ins = null;
+            m_Running = true;
+            OnRun();
         }
 
+        public void ShutDown()
+        {
+            m_Running = false;
+            OnShutDown();
+        }
+
+        private void Awake()
+        {
+            OnAwake();
+        }
+
+        private void Start()
+        {
+            OnStart();
+        }
+
+        private void Update()
+        {
+            if (m_Running)
+                OnUpdate();
+        }
+
+        protected virtual void OnRun() { }
+
+        protected virtual void OnShutDown() { }
+
+        protected virtual void OnAwake() { }
+
+        protected virtual void OnStart() { }
+
+        protected virtual void OnUpdate() { }
+
+       
         private void OnDestroy()
         {
             ShutDown();
         }
 
+        private bool m_Running = false;
         private static T m_Ins = null;
-        private static GameObject m_Manager = null;
     }
 }

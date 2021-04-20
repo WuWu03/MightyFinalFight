@@ -2,7 +2,7 @@
 using ProtoBuf;
 using System.IO;
 
-namespace FrameWork.Net
+namespace GameFrameWork.Net
 {
     public class ProtoBufUtil
     {

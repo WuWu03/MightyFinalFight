@@ -1,10 +1,10 @@
-﻿using FrameWork.GameEntity;
+﻿using GameFrameWork.GameEntity;
 using System;
 using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace FrameWork.Pool
+namespace GameFrameWork.Pool
 {
     public class SceneObjectPool : BaseMgr<SceneObjectPool>
     {    
@@ -79,7 +79,7 @@ namespace FrameWork.Pool
             return null;
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_ListUsingObj.Clear();
             m_QueueUnUseObj.Clear();

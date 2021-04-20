@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Test2 : MonoBehaviour
 {

@@ -1,4 +1,4 @@
-﻿using FrameWork.Sound;
+﻿using GameFrameWork.Sound;
 using UnityEngine;
 using static SkillData;
 

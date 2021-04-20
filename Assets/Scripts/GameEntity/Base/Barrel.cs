@@ -1,8 +1,8 @@
 ﻿using DragonBones;
-using FrameWork;
-using FrameWork.Fsm;
-using FrameWork.Sound;
-using FrameWork.Timer;
+using GameFrameWork;
+using GameFrameWork.Fsm;
+using GameFrameWork.Sound;
+using GameFrameWork.Timer;
 using UnityEngine;
 
 public class Barrel : BaseSceneItem, ICanBeHit

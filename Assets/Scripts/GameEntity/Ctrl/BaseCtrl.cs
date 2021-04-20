@@ -1,4 +1,4 @@
-﻿using FrameWork.GameEntity;
+﻿using GameFrameWork.GameEntity;
 using UnityEngine;
 
 public abstract class BaseCtrl

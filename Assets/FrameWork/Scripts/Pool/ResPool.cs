@@ -1,9 +1,9 @@
-﻿using FrameWork.Resources;
+﻿using GameFrameWork.Resources;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.Pool
+namespace GameFrameWork.Pool
 {
     public abstract class ResPool<T,P> : BaseMgr<P> where T:UnityEngine.Object
                                                     where P:ResPool<T,P>,new()
@@ -36,7 +36,7 @@ namespace FrameWork.Pool
 
                 loadList.Add(call);
                 m_DicLoadCallback[resPath] = loadList;
-                ResMgr.Ins.LoadAsset(resPath, (UnityEngine.Object obj) =>
+                ResMgr.Ins.LoadAssetAsync(resPath, (UnityEngine.Object obj) =>
                 {
                     List<Action<T>> loadListCurr = null;
                     if (m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
@@ -87,7 +87,7 @@ namespace FrameWork.Pool
             return pool;
         }
 
-        public override void ShutDown()
+        protected override void OnShutDown()
         {
             m_DicPool.Clear();
             m_DicLoadCallback.Clear();
@@ -114,7 +114,7 @@ namespace FrameWork.Pool
 
     public class AudioClipPool : ResPool<AudioClip, AudioClipPool> 
     {
-        protected override bool NeedInstantiate { get { return true; } }
+        protected override bool NeedInstantiate { get { return false; } }
     }
 
     public class SpritePool : ResPool<Sprite, SpritePool> 

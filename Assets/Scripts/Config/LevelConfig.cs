@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FrameWork;
+using GameFrameWork;
 using System;
 
 public class LevelConfig : BaseScriptableObject<LevelData>

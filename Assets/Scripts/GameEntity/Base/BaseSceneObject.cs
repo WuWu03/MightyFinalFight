@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using FrameWork.GameEntity;
-using FrameWork.Pool;
-using FrameWork;
-using FrameWork.Camera;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Pool;
+using GameFrameWork;
+using GameFrameWork.Camera;
 
 public class BaseSceneObject : BaseObject
 {

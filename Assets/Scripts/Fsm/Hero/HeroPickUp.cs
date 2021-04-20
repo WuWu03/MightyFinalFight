@@ -1,4 +1,4 @@
-﻿using FrameWork.Fsm;
+﻿using GameFrameWork.Fsm;
 
 
 public class HeroPickUp : BaseFsmState

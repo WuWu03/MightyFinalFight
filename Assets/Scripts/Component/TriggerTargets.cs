@@ -1,4 +1,4 @@
-﻿using FrameWork.GameEntity;
+﻿using GameFrameWork.GameEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

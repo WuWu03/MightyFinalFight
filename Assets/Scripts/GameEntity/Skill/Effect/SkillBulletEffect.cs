@@ -1,4 +1,4 @@
-﻿using FrameWork.Pool;
+﻿using GameFrameWork.Pool;
 public class SkillBulletEffect : SkillBaseEffect
 {
     public SkillBulletEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FrameWork.Event
+namespace GameFrameWork.Event
 {
     public class EventPool<T> where T : BaseEventArgs
     {

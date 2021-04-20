@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Policy;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
-namespace FrameWork.Net
+namespace GameFrameWork.Net
 {
     public class SocketMgr : MonoBehaviour
     {
@@ -52,7 +48,7 @@ namespace FrameWork.Net
                     OnConnectSuccess();
                 }
 
-                Debug.Log("连接服务器:" + ip + "成功！");
+                Log.Debugger.Log("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
@@ -61,7 +57,7 @@ namespace FrameWork.Net
                     OnConnectFail();
                 }
 
-                Debug.Log(e.ToString());
+                Log.Debugger.Log(e.ToString());
             }
         }
 
@@ -133,7 +129,7 @@ namespace FrameWork.Net
 
                 if (length < 1)
                 {
-                    Debug.Log("服务器断开连接");
+                    Log.Debugger.Log("服务器断开连接");
                     Close();
                     return;
                 }
@@ -187,7 +183,7 @@ namespace FrameWork.Net
             }
             catch (Exception e)
             {
-                Debug.Log("++服务器断开连接," + e.Message);
+                Log.Debugger.Log("++服务器断开连接," + e.Message);
                 Close();
                 return;
             }

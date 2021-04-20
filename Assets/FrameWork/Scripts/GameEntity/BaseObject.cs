@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FrameWork.GameEntity
+namespace GameFrameWork.GameEntity
 {
     public class BaseObject : MonoBehaviour
     {

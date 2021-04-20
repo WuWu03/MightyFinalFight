@@ -1,9 +1,9 @@
-﻿using FrameWork.Fsm;
+﻿using GameFrameWork.Fsm;
 using System;
 using UnityEngine;
-using FrameWork.GameEntity;
-using FrameWork;
-using FrameWork.Camera;
+using GameFrameWork.GameEntity;
+using GameFrameWork;
+using GameFrameWork.Camera;
 using DragonBones;
 
 public abstract class BaseAvatar : BaseGravityObject

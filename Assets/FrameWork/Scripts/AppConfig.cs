@@ -1,0 +1,35 @@
+﻿using UnityEditor;
+using UnityEngine;
+
+namespace GameFrameWork
+{
+    public class AppConfig : MonoSingleton<AppConfig>
+    {
+        [Header("* 游戏运行是否进行版本检查")]
+        public bool CheckVersion = false;
+     
+        [Header("* 是否从AssetBundle加载资源")]
+        public bool LoadAB = false;
+
+        [Header("* 是否打开日志输出")]
+        public bool OpenLog = true;
+
+        [Header("* 资源打包工程内路径")]
+        public string AssetsDirectory = "Assets/StreamingAssets/";
+
+        [Header("* 资源扩展名")]
+        public string AssetsExtendName = ".unity3d";
+
+        [Header("* 是否启用Lua脚本")]
+        public bool UseLua = false;
+
+        [Header("* 是否从AssetBundle加载Lua文件")]
+        public bool LoadLuaAB = false;
+
+        [Header("* Lua字节模式")]
+        public bool LuaByteMode = false;
+
+        [Header("* Lua脚本路径")]
+        public string LuaDirectory = "Assets/Scripts/Lua";
+    }
+}
