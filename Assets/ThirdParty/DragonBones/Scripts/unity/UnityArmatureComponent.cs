@@ -141,7 +141,7 @@ namespace DragonBones
                         var go = gameObject;
                         UnityFactoryHelper.DestroyUnityObject(gameObject);
                     }
-                    catch (System.Exception e)
+                    catch
                     {
 
                     }
@@ -657,15 +657,15 @@ namespace DragonBones
 #if UNITY_EDITOR
         private bool _IsPrefab()
         {
-            return PrefabUtility.GetPrefabParent(gameObject) == null
-                && PrefabUtility.GetPrefabObject(gameObject) != null;
+            return PrefabUtility.GetCorrespondingObjectFromSource(gameObject) == null
+                && PrefabUtility.GetPrefabInstanceHandle(gameObject) != null;
         }
 #endif
 
         /// <private/>
         void Awake()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
             if (_IsPrefab())
             {
                 return;

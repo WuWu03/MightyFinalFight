@@ -29,14 +29,14 @@ namespace DragonBones
     /// <summary>
     /// - The base class of the transform object.
     /// </summary>
-    /// <see cref="DragonBones.Transform"/>
+    /// <see cref="Transform"/>
     /// <version>DragonBones 4.5</version>
     /// <language>en_US</language>
 
     /// <summary>
     /// - 变换对象的基类。
     /// </summary>
-    /// <see cref="DragonBones.Transform"/>
+    /// <see cref="Transform"/>
     /// <version>DragonBones 4.5</version>
     /// <language>zh_CN</language>
     public abstract class TransformObject : BaseObject

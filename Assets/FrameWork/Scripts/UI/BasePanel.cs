@@ -65,7 +65,6 @@ namespace GameFrameWork.UI
             }
 
             transform.SetParent(UIMgr.Ins.GetUILayer(PanelLayer), false);
-            GameObject.DontDestroyOnLoad(gameObject);
             OnInit(param);
             m_IsInit = true;
             Open();

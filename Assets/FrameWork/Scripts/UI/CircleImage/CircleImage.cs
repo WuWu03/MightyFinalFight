@@ -4,16 +4,16 @@ using UnityEngine.UI;
 using UnityEngine.Sprites;
 
 [AddComponentMenu("UI/Circle Image")]
-public class CircleImage : BaseImage {
-
-	// Use this for initialization
-	void Awake () {
+public class CircleImage : BaseImage 
+{
+	protected override void Awake () 
+    {
         innerVertices = new List<Vector3>();
         outterVertices = new List<Vector3>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
         this.thickness = (float)Mathf.Clamp(this.thickness, 0, rectTransform.rect.width / 2);
 	}
 
@@ -168,9 +168,6 @@ public class CircleImage : BaseImage {
     /// <summary>
     /// 使用RayCrossing算法判断点击点是否在封闭多边形里
     /// </summary>
-    /// <param name="p"></param>
-    /// <param name="vertices"></param>
-    /// <param name="crossNumber"></param>
     private void RayCrossing(Vector2 p, List<Vector3> vertices, ref int crossNumber)
     {
         for (int i = 0, count = vertices.Count; i < count; i++)
@@ -190,6 +187,4 @@ public class CircleImage : BaseImage {
             }
         }
     }
-
-
 }

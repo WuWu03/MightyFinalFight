@@ -398,7 +398,8 @@ public class BaseHero : BaseRole
 
     public void ResetCatch(bool changeState = true)
     {
-        m_ListCatchTarget[0].SetCatch(false);
+        if (m_ListCatchTarget.Count > 0)
+            m_ListCatchTarget[0].SetCatch(false);
         m_ListCatchTarget.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;

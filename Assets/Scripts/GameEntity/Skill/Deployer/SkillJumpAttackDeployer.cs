@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Sound;
+﻿using DragonBones;
+using GameFrameWork.Sound;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,8 +15,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     public override void DeploySkill()
     {
         if (!m_IsOnGround) return;
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         m_AttackMsgData.Dir = m_Owner.Dir;
         m_AttackMsgData.CanChangeDir = false;
@@ -32,8 +33,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
         m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
         m_Owner.OnDropEvent.AddListener(OnDropEvent);
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(m_AttackMsgData, true);
     }
 
@@ -43,7 +44,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
         if (isComplete)
         {
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+            m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         }
 
         return isComplete;
@@ -63,7 +64,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         }
     }
 
-    private void SkillEvent(string type, DragonBones.EventObject eventObject)
+    private void SkillEvent(string type, EventObject eventObject)
     {
         if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
         {
@@ -72,7 +73,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     }
 
 
-    private void SoundEvent(string type, DragonBones.EventObject eventObject)
+    private void SoundEvent(string type, EventObject eventObject)
     {
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
     }
@@ -86,7 +87,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     private void OnGroundEvent()
     {
         m_Owner.OnGroundEvent.RemoveListener(OnGroundEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_IsOnGround = true;
         m_CanEffect = false;
     }
@@ -95,7 +96,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     {
         base.OnExit();
         m_CanEffect = true;
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
     }
 
 

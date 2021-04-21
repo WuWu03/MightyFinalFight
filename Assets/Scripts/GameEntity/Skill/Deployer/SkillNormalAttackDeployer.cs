@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Sound;
+﻿using DragonBones;
+using GameFrameWork.Sound;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +13,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         m_AttackMsgData.Dir = m_Owner.Dir;
         m_AttackMsgData.CanChangeDir = m_SkillData.CanChangeDir;
@@ -26,13 +27,13 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
             m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
         }
 
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         m_Owner.OnAttackMsg(m_AttackMsgData);
     }
 
-    private void SkillEvent(string type, DragonBones.EventObject eventObject)
+    private void SkillEvent(string type, EventObject eventObject)
     {
         if(CurrEffect.AddSelfForce != Vector2.zero)
         {
@@ -45,11 +46,11 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     protected override void OnEffectComplete()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
 
-    private void SoundEvent(string type, DragonBones.EventObject eventObject)
+    private void SoundEvent(string type, EventObject eventObject)
     {
         m_QueueSound.Enqueue(eventObject.name);
     }
@@ -71,8 +72,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
     public override void OnExit()
     {
         base.OnExit();
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private Queue<string> m_QueueSound = null;

@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Sound;
+﻿using DragonBones;
+using GameFrameWork.Sound;
 using UnityEngine;
 using static SkillData;
 
@@ -8,8 +9,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         if (m_SkillData.DeployeType == SkillDeployeType.Just)
         {
@@ -18,8 +19,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
             return;
         }
 
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnSkillMsg(m_SkillData);
     }
 
@@ -29,16 +30,16 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
         if (isComplete)
         {
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+            m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
 
             if (!m_SkillData.IsInEffectPlaySound)
-                m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+                m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         }
 
         return isComplete;
     }
 
-    private void SkillEvent(string type, DragonBones.EventObject eventObject)
+    private void SkillEvent(string type, EventObject eventObject)
     {
         if (CurrEffect.AddSelfForce != Vector2.zero)
         {
@@ -50,11 +51,11 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     protected override void OnEffectComplete()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
 
-    private void SoundEvent(string type, DragonBones.EventObject eventObject)
+    private void SoundEvent(string type, EventObject eventObject)
     {
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
     }
@@ -62,8 +63,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     public override void OnExit()
     {
         base.OnExit();
-        m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         if (!m_SkillData.IsInEffectPlaySound)
-            m_Owner.ActorAnimator.RemoveEventListener(DragonBones.EventObject.SOUND_EVENT, SoundEvent);
+            m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
 }

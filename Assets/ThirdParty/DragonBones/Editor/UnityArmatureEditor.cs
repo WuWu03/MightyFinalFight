@@ -101,7 +101,7 @@ namespace DragonBones
                 UnityFactory.factory.Clear(true);
 
                 // Unload
-                global::UnityEditor.EditorUtility.UnloadUnusedAssetsImmediate();
+                EditorUtility.UnloadUnusedAssetsImmediate();
                 System.GC.Collect();
 
                 // Load data.
@@ -171,7 +171,7 @@ namespace DragonBones
                 {
                     if (GUILayout.Button("Reload"))
                     {
-                        if (global::UnityEditor.EditorUtility.DisplayDialog("DragonBones Alert", "Are you sure you want to reload data", "Yes", "No"))
+                        if (EditorUtility.DisplayDialog("DragonBones Alert", "Are you sure you want to reload data", "Yes", "No"))
                         {
                             created = true;
                         }
@@ -392,7 +392,7 @@ namespace DragonBones
 
             if (!EditorApplication.isPlayingOrWillChangePlaymode && Selection.activeObject == _armatureComponent.gameObject)
             {
-                global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
+                EditorUtility.SetDirty(_armatureComponent);
                 HandleUtility.Repaint();
             }
         }
@@ -456,8 +456,8 @@ namespace DragonBones
 
         private bool _IsPrefab()
         {
-            return PrefabUtility.GetPrefabParent(_armatureComponent.gameObject) == null
-                && PrefabUtility.GetPrefabObject(_armatureComponent.gameObject) != null;
+            return PrefabUtility.GetCorrespondingObjectFromSource(_armatureComponent.gameObject) == null
+                && PrefabUtility.GetPrefabInstanceHandle(_armatureComponent.gameObject) != null;
         }
 
         private List<string> _GetSortingLayerNames()
@@ -470,7 +470,7 @@ namespace DragonBones
 
         private void MarkSceneDirty()
         {
-            global::UnityEditor.EditorUtility.SetDirty(_armatureComponent);
+            EditorUtility.SetDirty(_armatureComponent);
             //
             if (!Application.isPlaying && !_IsPrefab())
             {

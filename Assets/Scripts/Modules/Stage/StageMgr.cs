@@ -39,14 +39,13 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    private void Awake()
+    protected override void OnAwake()
     {
         if (m_MapRenderer == null)
         {
             m_MapRenderer = new GameObject("Map").GetOrAddComponent<SpriteRenderer>();
             m_MapRenderer.transform.SetParent(transform, false);
             Utility.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
-            DontDestroyOnLoad(m_MapRenderer.gameObject);
         }
     }
 

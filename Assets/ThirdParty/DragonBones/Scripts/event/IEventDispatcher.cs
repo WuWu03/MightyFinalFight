@@ -57,7 +57,7 @@
         /// </summary>
         /// <param name="type">- Event type.</param>
         /// <param name="eventObject">- Event object.</param>
-        /// <see cref="DragonBones.EventObject"/>
+        /// <see cref="EventObject"/>
         /// <version>DragonBones 4.5</version>
         /// <language>en_US</language>
 
@@ -66,7 +66,7 @@
         /// </summary>
         /// <param name="type">- 事件类型。</param>
         /// <param name="eventObject">- 事件数据。</param>
-        /// <see cref="DragonBones.EventObject"/>
+        /// <see cref="EventObject"/>
         /// <version>DragonBones 4.5</version>
         /// <language>zh_CN</language>
         void DispatchDBEvent(string type, T eventObject);

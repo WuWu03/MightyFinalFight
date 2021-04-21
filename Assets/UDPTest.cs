@@ -45,8 +45,7 @@ public class UDPTest : MonoBehaviour
 	{
 		if(!SocketMgr.Instance.IsConnected)
 		{
-			IPAddress[] address = Dns.GetHostAddresses("st14818931.iask.in");
-			int port = 23641;
+			//IPAddress[] address = Dns.GetHostAddresses("st14818931.iask.in");
 			SocketMgr.Instance.Connect("127.0.0.1", 8888);
 			return;
 		}

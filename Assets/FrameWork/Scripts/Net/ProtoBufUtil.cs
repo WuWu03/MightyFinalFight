@@ -28,9 +28,8 @@ namespace GameFrameWork.Net
                 return array;
 
             }
-            catch (Exception ex)
+            catch
             {
-
                 return new byte[0];
             }
         }
@@ -50,7 +49,7 @@ namespace GameFrameWork.Net
                 memoryStream.Dispose();
                 return result;
             }
-            catch (Exception ex)
+            catch
             {
                 return default(T);
             }

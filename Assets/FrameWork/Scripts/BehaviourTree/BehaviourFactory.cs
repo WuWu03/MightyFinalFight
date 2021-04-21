@@ -23,7 +23,7 @@ namespace GameFrameWork.BehaviourTree
 
             if (t == null)
             {
-                GameFrameWork.Log.Debugger.LogError("Behaviour entity is invalid!");
+                Log.Debugger.LogError("Behaviour entity is invalid!" + (owner as BaseEnemyCtrl).Owner.Name);
                 return null;
             }
 

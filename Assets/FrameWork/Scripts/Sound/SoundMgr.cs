@@ -44,7 +44,7 @@ namespace GameFrameWork.Sound
         }
 
         private AudioSource m_BGMSource = null;
-        private void Awake()
+        protected override void OnAwake()
         {
             m_Root = new GameObject("SoundMgr");
             m_BGMSource = m_Root.GetOrAddComponent<AudioSource>();
@@ -54,7 +54,6 @@ namespace GameFrameWork.Sound
             m_PlayingList = new List<AudioSoundPlay>();
             m_SoundStack = new Stack<AudioSoundPlay>();
             PutSoundSource(GetSoundSource("First", string.Empty, 0));
-            DontDestroyOnLoad(m_Root);
         }
 
         public void PlaySound(string path, string name, float volume = 1)
