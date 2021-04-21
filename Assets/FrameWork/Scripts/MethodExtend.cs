@@ -5,7 +5,7 @@ namespace GameFrameWork
 {
     public static class MethodExtend
     {
-        public static void SetActive(this Component go, bool value)
+        public static void SetActive(this UnityEngine.Component go, bool value)
         {
             if (go == null)
             {
@@ -14,7 +14,7 @@ namespace GameFrameWork
             go.gameObject.SetActive(value);
         }
 
-        public static T GetOrAddComponent<T>(this Transform transform) where T : Component
+        public static T GetOrAddComponent<T>(this Transform transform) where T : UnityEngine.Component
         {
             return GetOrAddComponent<T>(transform.gameObject);
         }

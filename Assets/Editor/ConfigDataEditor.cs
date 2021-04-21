@@ -1,29 +1,7 @@
-﻿using GameFrameWork;
-using GameFrameWork.BehaviourTree;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.Editor;
 using UnityEditor;
-using UnityEngine;
 
-public abstract class ConfigDataEditor<T,P> : Editor where T:BaseScriptableObject<P> where P:BaseConfigData
-{
-    T Config;
-
-    private void OnEnable()
-    {
-        Config = (target as T);
-    }
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        if (GUILayout.Button("排序"))
-        {
-            Array.Sort(Config.Datas);
-        }
-    }
-}
 
 [CustomEditor(typeof(BehaviourTreeConfig), true)]
 public class BehaviourTreeConfigEditor : ConfigDataEditor<BehaviourTreeConfig, BehaviourTreeData> { }

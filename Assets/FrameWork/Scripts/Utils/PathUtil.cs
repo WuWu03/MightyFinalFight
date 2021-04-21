@@ -10,10 +10,12 @@ namespace GameFrameWork.Utils
         public static string PersistentDataPath = Application.persistentDataPath + "/";
         public static string AppDataPath = Application.dataPath + "/";
         public static string AssetsDirectory = "Assets/StreamingAssets/";
-        public const string AssetBundleDataPath = "Assets/FrameWork/Editor/AssetBundleConfig/";
+        public const string AssetBundleConfigPath = "Assets/FrameWork/Editor/AssetBundleConfig/";
+        public static string AssetBundleConfigFullPath = AppDataPath + AssetBundleConfigPath.Substring(6);
         public const string AssetBundleDataName = "AssetBundleData";
         public const string AssetBundleDataExtend = ".asset";
-        public const string AssetBundleConfig = AssetBundleDataPath + AssetBundleDataName + AssetBundleDataExtend;
+        public const string AssetBundleDataPath = AssetBundleConfigPath + AssetBundleDataName + AssetBundleDataExtend;
+        public static string AssetBundleDataFullPath = AppDataPath + AssetBundleConfigPath.Substring(6) + AssetBundleDataName + AssetBundleDataExtend;
 
         public static string GetAssetFullDir()
         {

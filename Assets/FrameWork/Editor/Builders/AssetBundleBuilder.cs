@@ -7,7 +7,7 @@ using GameFrameWork.Utils;
 
 namespace GameFrameWork.Editor
 {
-    public class Packager
+    public class AssetBundleBuilder
     {
         public static string platform = string.Empty;
         static List<string> paths = new List<string>();
@@ -52,6 +52,7 @@ namespace GameFrameWork.Editor
 
                 if (Directory.Exists(Utils.PathUtil.GetLuaTempDir())) Directory.Delete(Utils.PathUtil.GetLuaTempDir(), true);
                 AssetDatabase.Refresh();
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(PathUtil.StreamingAssetsPath);
             }
         }
 
@@ -60,7 +61,7 @@ namespace GameFrameWork.Editor
         /// </summary>
         private static bool GenerateBuildMap()
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleConfig);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataFullPath);
             for (int i = 0; i < config.Datas.Length; i++)
             {
                 if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)

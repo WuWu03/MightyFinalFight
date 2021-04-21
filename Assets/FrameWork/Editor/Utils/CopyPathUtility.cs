@@ -6,30 +6,30 @@ using System.Text;
 
 namespace GameFrameWork.Editor
 {
-    public class CopyPathMgr
+    public class CopyPathUtility
     {
-        static string[] components = new string[]
+        private static string[] components = new string[]
         {
-        "Button",
-        "MyButton",
-        "Toggle",
-        "Text",
-        "Slider",
-        "InputField",
-        "ScrollRect",
-        "GameObject"
+            "Button",
+            "MyButton",
+            "Toggle",
+            "Text",
+            "Slider",
+            "InputField",
+            "ScrollRect",
+            "GameObject"
         };
 
-        static string[] endPartten = new string[]//名字中包含此关键字的将作为本次搜索的根节点
+        private static string[] endPartten = new string[]//名字中包含此关键字的将作为本次搜索的根节点
         {
-        "Panel",
+            "Panel",
         };
 
         /// <summary>
-        /// 复制路径，生成Lua代码
+        /// 复制Lua路径
         /// </summary>
         [MenuItem("GameObject/CopyPath Lua", false, 0)]
-        static void CopyPathLua()
+        private static void CopyPathLua()
         {
             if (Selection.gameObjects == null || Selection.gameObjects.Length < 1)
             {
@@ -65,18 +65,14 @@ namespace GameFrameWork.Editor
 
             }
 
-            TextEditor editor = new TextEditor();
-            editor.text = sb.ToString();
-            editor.SelectAll();
-            editor.Copy();
-            Debug.Log("拷贝路径成功!");
+            Copy(sb.ToString());
         }
 
         /// <summary>
-        /// 复制路径生成CSharp代码
+        /// 复制CSharp路径
         /// </summary>
         [MenuItem("GameObject/CopyPath CSharp &c", false, 0)]
-        static void CopyPathCSharp()
+        private static void CopyPathCSharp()
         {
             if (Selection.gameObjects == null || Selection.gameObjects.Length < 1)
             {
@@ -125,15 +121,26 @@ namespace GameFrameWork.Editor
                 sb.AppendLine(variableList[i]);
             }
 
+            Copy(sb.ToString());
+        }
+
+        [MenuItem("Assets/CopyPath",false,2)]
+        private static void CopyAssetsPath()
+        {
+            Copy(AssetDatabase.GetAssetPath(Selection.activeObject));
+        }
+
+        private static void Copy(string content)
+        {
             TextEditor editor = new TextEditor();
-            editor.text = sb.ToString();
+            editor.text = content;
             editor.SelectAll();
             editor.Copy();
+            EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
             Debug.Log("拷贝路径成功!");
         }
 
-
-        static string GetCSComponentPath(string componentName, string objName, string path = "")
+        private static string GetCSComponentPath(string componentName, string objName, string path = "")
         {
             string ret = string.Empty;
             string objScriptName = "m_" + objName;
@@ -156,8 +163,7 @@ namespace GameFrameWork.Editor
             return ret;
         }
 
-
-        static void GetNodePath(Transform trans, ref string path, GameObject selectObj)
+        private static void GetNodePath(Transform trans, ref string path, GameObject selectObj)
         {
             bool condition = trans != null;
 

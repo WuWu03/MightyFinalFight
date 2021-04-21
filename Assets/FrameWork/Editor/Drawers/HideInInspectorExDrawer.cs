@@ -8,6 +8,7 @@ namespace GameFrameWork
     [CustomPropertyDrawer(typeof(HideInInspectorExAttribute))]
     public class HideInInspectorExDrawer : PropertyDrawer
     {
+        
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return EditorGUI.GetPropertyHeight(property, label, true);

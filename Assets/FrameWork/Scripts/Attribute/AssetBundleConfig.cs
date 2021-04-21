@@ -10,10 +10,15 @@ namespace GameFrameWork
         [SerializeField]
         public int PlatFormIndex = 0;
         [SerializeField]
+        public string AssetBuildDir = string.Empty;
+        [SerializeField]
+        public string AssetCopyDir = string.Empty;
+        [SerializeField]
+        public bool IsCopyAsset = false;
+        [SerializeField]
         public List<string> ListExtendName = null;
         [SerializeField]
         public List<string> ListPattern = null;
-
     }
 
     [Serializable]

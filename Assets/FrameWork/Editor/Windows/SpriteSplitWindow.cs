@@ -7,7 +7,7 @@ using UnityEngine;
 namespace GameFrameWork.Editor
 {
     [Serializable]
-    public class SpriteSpliter : EditorWindow
+    public class SpriteSplitWindow : EditorWindow
     {
         private int spriteSizeW = 256;
         private int spriteSizeH = 256;
@@ -20,7 +20,7 @@ namespace GameFrameWork.Editor
         private bool outPutGenMipmaps = false;
         private TextureImporterType outPutType = TextureImporterType.Sprite;
 
-        public SpriteSpliter()
+        public SpriteSplitWindow()
         {
             titleContent = new GUIContent(this.GetType().Name);
         }
@@ -60,7 +60,7 @@ namespace GameFrameWork.Editor
             {
                 string path = AssetDatabase.GetAssetPath(_object);
                 Rect wr = new Rect(0, 0, path.Length, 260);
-                SpriteSpliter window = (SpriteSpliter)EditorWindow.GetWindowWithRect(typeof(SpriteSpliter), wr, true, "SpriteSpliterSettings");
+                SpriteSplitWindow window = (SpriteSplitWindow)EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr, true, "SpriteSpliterSettings");
                 EditorGUILayout.LabelField("", path);
             }
 

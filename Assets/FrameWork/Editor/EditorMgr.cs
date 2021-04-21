@@ -31,22 +31,22 @@ namespace GameFrameWork.Editor
 		public static void OpenSpriteSpliter()
 		{
 			Rect wr = new Rect(0, 0, 600, 600);
-			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(SpriteSpliter), wr);
+			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr);
 			s.Show();
 		}
 
 		[MenuItem("GameFrameWork/AssetBundleEditor")]
 		public static void AssetBundleEditor()
 		{
-			Rect wr = new Rect(0, 0, 600, 600);
-			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(AssetBundleEditorWindow), wr);
+			Rect wr = new Rect(0, 0, 700, 800);
+			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
 			s.Show();
 		}
 
 		[MenuItem("Assets/Config/CreateBehaviourTreeData")]
 		public static void CreateBehaviorConfig()
 		{
-			GameFrameWork.Utils.Utility.CreateConfigData<BehaviourTreeConfig, BehaviourTreeData>("BehaviourTreeData", ".asset");
+			Utility.CreateConfigData<BehaviourTreeConfig, BehaviourTreeData>("BehaviourTreeData", ".asset");
 		}
 
 		public static string GetHierarchy(GameObject obj)

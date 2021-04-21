@@ -4,7 +4,7 @@
 namespace GameFrameWork.Editor
 {
     [CustomEditor(typeof(AppConfig))]
-    public class AppConfigWindow : UnityEditor.Editor
+    public class AppConfigEditor : UnityEditor.Editor
     {
         private AppConfig appConfig;
 

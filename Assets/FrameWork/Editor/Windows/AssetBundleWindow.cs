@@ -8,9 +8,9 @@ using System.IO;
 
 namespace GameFrameWork.Editor
 {
-    public class AssetBundleEditorWindow : EditorWindow
+    public class AssetBundleWindow : EditorWindow
     {
-        public AssetBundleEditorWindow()
+        public AssetBundleWindow()
         {
             titleContent = new GUIContent(this.GetType().Name);
             m_ListData = new List<AssetBundleData>();
@@ -25,11 +25,16 @@ namespace GameFrameWork.Editor
             SaveConfig();
         }
 
+        private void OnDestroy()
+        {
+            SaveConfig();
+        }
+
         private void OnGUI()
         {
             InitConfig();
-
             MainGUI();
+            CopyAssetGUI();
             ExtendNameGUI();
             PatternGUI();
             PlatFormSelectGUI();
@@ -40,18 +45,18 @@ namespace GameFrameWork.Editor
         private void InitConfig()
         {
             if (m_AssetBundleConfig != null) return;
-            string configPath = Application.dataPath + PathUtil.AssetBundleDataPath.Substring(PathUtil.AssetBundleDataPath.IndexOf("Assets") + "Assets".Length);
-            if (!Directory.Exists(configPath))
+
+            if (!Directory.Exists(PathUtil.AssetBundleConfigFullPath))
             {
-                Directory.CreateDirectory(configPath);
+                Directory.CreateDirectory(PathUtil.AssetBundleConfigFullPath);
             }
 
-            if (!File.Exists(configPath + PathUtil.AssetBundleConfig.Substring(PathUtil.AssetBundleConfig.IndexOf("Assets") + "Assets".Length)))
+            if (!File.Exists(PathUtil.AssetBundleDataFullPath))
             {
-                Utility.CreateConfigData<AssetBundleConfig, AssetBundleData>(PathUtil.AssetBundleDataName, PathUtil.AssetBundleDataExtend, configPath);
+                Utility.CreateConfigData<AssetBundleConfig, AssetBundleData>(PathUtil.AssetBundleDataName, PathUtil.AssetBundleDataExtend, PathUtil.AssetBundleConfigPath);
             }
 
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleConfig);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
             m_ListData.AddRange(m_AssetBundleConfig.Datas);
             m_ListPatternIndex.AddRange(new int[m_ListData.Count]);
             m_ListBundleExtendIndex.AddRange(new int[m_ListData.Count]);
@@ -84,11 +89,22 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListExtendName == null) m_AssetBundleConfig.ListExtendName = new List<string>();
             if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
 
-            PathUtil.AssetsDirectory = EditorGUILayout.TextField("资源打包路径", PathUtil.AssetsDirectory);
-            if (!PathUtil.AssetsDirectory.StartsWith("Assets/"))
+            GUIBoxScope(() =>
             {
-                PathUtil.AssetsDirectory = "Assets/" + PathUtil.AssetsDirectory;
-            }
+                GUILayout.BeginVertical();
+                m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
+
+                if (m_AssetBundleConfig.IsCopyAsset)
+                {
+                    m_AssetBundleConfig.AssetCopyDir = EditorGUILayout.TextField("资源复制路径（绝对路径）", m_AssetBundleConfig.AssetCopyDir);
+                }
+
+                if (!m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
+                {
+                    m_AssetBundleConfig.AssetBuildDir = "Assets/" + m_AssetBundleConfig.AssetBuildDir;
+                }
+                GUILayout.EndVertical();
+            });
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
@@ -97,52 +113,68 @@ namespace GameFrameWork.Editor
             {
                 if (m_ListDataHasRemove[i]) continue;
                 index++;
-                GUILayout.BeginVertical();
-                GUILayout.BeginHorizontal();
-                GUIStyle style = new GUIStyle();
-                style.alignment = TextAnchor.MiddleLeft;
-                style.fontSize = 18;
-                style.fontStyle = FontStyle.Bold;
-                EditorGUILayout.LabelField(index.ToString(), style);
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button("x"))
+                m_ListData[i].ID = index;
+                GUIBoxScope(() => 
                 {
-                    m_ListDataHasRemove[i] = true;
-                }
-                GUILayout.EndHorizontal();
+                    GUILayout.BeginVertical();
+                    GUILayout.BeginHorizontal();
+                    GUIStyle style = new GUIStyle(GUI.skin.label);
+                    style.alignment = TextAnchor.MiddleLeft;
+                    style.fontSize = 18;
+                    style.fontStyle = FontStyle.Bold;
+                    EditorGUILayout.LabelField(index.ToString(), style);
+                    GUILayout.FlexibleSpace();
 
-                m_ListData[i].BundleType = (AssetBundleData.AssetType)EditorGUILayout.EnumPopup("包类型：", m_ListData[i].BundleType);
-                m_ListData[i].AssetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].AssetPath);
+                    if (GUILayout.Button("×"))//删除本条数据
+                    {
+                        if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
+                        {
+                            m_ListDataHasRemove[i] = true;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
 
-                if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
-                {
-                    m_ListData[i].AssetBundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].AssetBundlePath);
-                }
-                else
-                {
-                    m_ListData[i].BundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].BundleName);
-                }
-  
-                if (m_AssetBundleConfig.ListExtendName.Count > 0)
-                {
-                    m_ListBundleExtendIndex[i] = EditorGUILayout.Popup("包扩展名：", m_ListBundleExtendIndex[i], m_AssetBundleConfig.ListExtendName.ToArray());
-                    m_ListData[i].BundleExtend = m_AssetBundleConfig.ListExtendName[m_ListBundleExtendIndex[i]];
-                }
+                    m_ListData[i].BundleType = (AssetBundleData.AssetType)EditorGUILayout.EnumPopup("包类型：", m_ListData[i].BundleType);
+                    m_ListData[i].AssetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].AssetPath);
 
-                if (m_AssetBundleConfig.ListPattern.Count > 0)
-                {
-                    m_ListPatternIndex[i] = EditorGUILayout.Popup("文件过滤：", m_ListPatternIndex[i], m_AssetBundleConfig.ListPattern.ToArray());
-                    m_ListData[i].Pattern = m_AssetBundleConfig.ListPattern[m_ListPatternIndex[i]];
-                }
+                    if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
+                    {
+                        m_ListData[i].AssetBundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].AssetBundlePath);
+                    }
+                    else
+                    {
+                        m_ListData[i].BundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].BundleName);
+                    }
 
-                GUILayout.EndVertical();
-                if (i < m_ListData.Count - 1)
-                    GUILayout.Space(30);
+                    if (m_AssetBundleConfig.ListExtendName.Count > 0)
+                    {
+                        m_ListBundleExtendIndex[i] = EditorGUILayout.Popup("包扩展名：", m_ListBundleExtendIndex[i], m_AssetBundleConfig.ListExtendName.ToArray());
+                        m_ListData[i].BundleExtend = m_AssetBundleConfig.ListExtendName[m_ListBundleExtendIndex[i]];
+                    }
+
+                    if (m_AssetBundleConfig.ListPattern.Count > 0)
+                    {
+                        m_ListPatternIndex[i] = EditorGUILayout.Popup("文件过滤：", m_ListPatternIndex[i], m_AssetBundleConfig.ListPattern.ToArray());
+                        m_ListData[i].Pattern = m_AssetBundleConfig.ListPattern[m_ListPatternIndex[i]];
+                    }
+
+                    GUILayout.EndVertical();
+                });
+                
+                //if (i < m_ListData.Count - 1)
+                //    GUILayout.Space(0);
             }
 
             GUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
+        }
+
+        private void CopyAssetGUI()
+        {
+            GUIBoxScope(() =>
+            {
+                m_AssetBundleConfig.IsCopyAsset = GUILayout.Toggle(m_AssetBundleConfig.IsCopyAsset, "打包完成后自动复制资源到指定文件夹", GUI.skin.toggle);
+            });
         }
 
         string extend = string.Empty;
@@ -151,6 +183,7 @@ namespace GameFrameWork.Editor
         {
             //--------------添加扩展名----------------
             GUILayout.BeginHorizontal();
+
             if (GUILayout.Button("  添加扩展名  "))
             {
                 if (string.IsNullOrEmpty(extend))
@@ -181,23 +214,22 @@ namespace GameFrameWork.Editor
                 }
             }
             extend = EditorGUILayout.TextField(extend);
-            GUILayout.EndHorizontal();
 
             //--------------移除扩展名----------------
-            if (m_AssetBundleConfig.ListExtendName.Count > 0)
+            if (GUILayout.Button("  移除扩展名  "))
             {
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("  移除扩展名  "))
+                if (m_AssetBundleConfig.ListExtendName.Count < 1)
                 {
-                    if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
-                    {
-                        m_AssetBundleConfig.ListExtendName.RemoveAt(removeExtendIndex);
-                    }
+                    ShowNotification(new GUIContent("没有扩展名，请先添加扩展名"));
+                    return;
                 }
-
-                removeExtendIndex = EditorGUILayout.Popup(removeExtendIndex, m_AssetBundleConfig.ListExtendName.ToArray());
-                GUILayout.EndHorizontal();
+                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                {
+                    m_AssetBundleConfig.ListExtendName.RemoveAt(removeExtendIndex);
+                }
             }
+            removeExtendIndex = EditorGUILayout.Popup(removeExtendIndex, m_AssetBundleConfig.ListExtendName.ToArray());
+            GUILayout.EndHorizontal();
         }
 
         string pattern = string.Empty;
@@ -214,7 +246,7 @@ namespace GameFrameWork.Editor
                 }
                 else
                 {
-                    if(pattern.Contains("."))
+                    if (pattern.Contains("."))
                     {
                         pattern = "*" + pattern.Substring(pattern.LastIndexOf("."));
                     }
@@ -236,31 +268,34 @@ namespace GameFrameWork.Editor
                 }
             }
             pattern = EditorGUILayout.TextField(pattern);
-            GUILayout.EndHorizontal();
 
             //--------------移除过滤器----------------
-            if (m_AssetBundleConfig.ListPattern.Count > 0)
+            if (GUILayout.Button("移除过滤器名"))
             {
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("移除过滤器名"))
+                if (m_AssetBundleConfig.ListPattern.Count < 1)
                 {
-                    if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
-                    {
-                        m_AssetBundleConfig.ListPattern.RemoveAt(removePatternIndex);
-                    }
+                    ShowNotification(new GUIContent("没有过滤器名，请先添加过滤器名"));
+                    return;
                 }
 
-                removePatternIndex = EditorGUILayout.Popup(removePatternIndex, m_AssetBundleConfig.ListPattern.ToArray());
-                GUILayout.EndHorizontal();
+                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                {
+                    m_AssetBundleConfig.ListPattern.RemoveAt(removePatternIndex);
+                }
             }
+
+            removePatternIndex = EditorGUILayout.Popup(removePatternIndex, m_AssetBundleConfig.ListPattern.ToArray());
+            GUILayout.EndHorizontal();
         }
 
         private void PlatFormSelectGUI()
         {
             GUILayout.BeginHorizontal();
-            GUI.enabled = false;
-            GUILayout.Button("    打包平台    ");
-            GUI.enabled = true;
+            GUIStyle style = new GUIStyle(GUI.skin.button);
+            style.fontStyle = FontStyle.Bold;
+            style.alignment = TextAnchor.MiddleCenter;
+            style.fixedWidth = 346;
+            GUILayout.Label("打包平台", style);
             m_AssetBundleConfig.PlatFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.PlatFormIndex, TARGET_PLATFORM);
             GUILayout.EndHorizontal();
         }
@@ -293,11 +328,11 @@ namespace GameFrameWork.Editor
 
                     if (platFormIndex == 0)
                     {
-                        Packager.Build(BuildTarget.StandaloneWindows);
+                        AssetBundleBuilder.Build(BuildTarget.StandaloneWindows);
                     }
                     else if (platFormIndex == 1)
                     {
-                        Packager.Build(BuildTarget.Android);
+                        AssetBundleBuilder.Build(BuildTarget.Android);
                     }
                     else
                     {
@@ -307,8 +342,19 @@ namespace GameFrameWork.Editor
 #else
                         target = BuildTarget.iPhone;
 #endif
-                        Packager.Build(target);
+                        AssetBundleBuilder.Build(target);
                     }
+                }
+            }
+        }
+
+        private void GUIBoxScope(Action action)
+        {
+            using (new GUILayout.VerticalScope(GUI.skin.box, new GUILayoutOption[0]))
+            {
+                using (new GUILayout.HorizontalScope(GUI.skin.box, new GUILayoutOption[0]))
+                {
+                    action?.Invoke();
                 }
             }
         }

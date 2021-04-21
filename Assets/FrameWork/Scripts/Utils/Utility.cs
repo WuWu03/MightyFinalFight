@@ -300,28 +300,31 @@ namespace GameFrameWork.Utils
             return resultPos;
         }
 
-        public static void CreateConfigData<T, P>(string name, string ext,string dir = null)
-            where T : BaseScriptableObject<P>
-            where P : BaseConfigData
+        public static bool SetColor(ref Color currentValue, Color newValue)
         {
-            string directory = Application.dataPath + "/ConfigData/";
-            if (!string.IsNullOrEmpty(dir)) directory = dir;
+            if (currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a)
+                return false;
 
-            string fileName = directory + name + ext;
-            if (File.Exists(fileName))
-            {
-                return;
-            }
+            currentValue = newValue;
+            return true;
+        }
 
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
+        public static bool SetStruct<T>(ref T currentValue, T newValue) where T : struct
+        {
+            if (currentValue.Equals(newValue))
+                return false;
 
-            T data = ScriptableObject.CreateInstance<T>();
-            //AssetDatabase.CreateAsset(data, directory.Substring(directory.IndexOf("Assets")) + name + ext);
-            //AssetDatabase.SaveAssets();
-            //AssetDatabase.Refresh();
+            currentValue = newValue;
+            return true;
+        }
+
+        public static bool SetClass<T>(ref T currentValue, T newValue) where T : class
+        {
+            if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
+                return false;
+
+            currentValue = newValue;
+            return true;
         }
     }
 }
