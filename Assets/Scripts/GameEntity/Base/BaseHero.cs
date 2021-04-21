@@ -132,7 +132,7 @@ public class BaseHero : BaseRole
 
         if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3) return;
 
-        if (skillData.Type == SkillData.SkillType.SkillAttack)//捕捉状态下技能攻击不进行次数累积
+        if (skillData.Type == SkillData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
         {
             ResetCatch(false);
             return;

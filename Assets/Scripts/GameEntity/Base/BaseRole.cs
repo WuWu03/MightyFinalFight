@@ -193,6 +193,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_IsJumpAttack && data.AddSelfForce != Vector2.zero)
         {
+            Debug.Log("AddForce : " + data.AddSelfForce.y);
             m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
             m_Rigidbody.velocity = Vector2.zero;
             m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
@@ -322,7 +323,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHitEnd(SkillData skillData,bool isHurtTarget) 
     {
-        if (skillData.Type != SkillData.SkillType.SkillAttack && m_CurrCtrl != null)
+        if (skillData.Type != SkillData.SkillType.Skill && m_CurrCtrl != null)
         {
             m_CurrCtrl.AttackSuccess = isHurtTarget;
         }

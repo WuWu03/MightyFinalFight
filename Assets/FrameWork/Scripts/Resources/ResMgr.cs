@@ -29,17 +29,28 @@ namespace GameFrameWork.Resources
             public object[] param;
         }
 
+        class AssetVersion 
+        {
+            public string FilePath;
+            public string ExtendName;
+            public string MD5;
+        }
+
         private void Awake()
         {
             m_Dependencies = new Dictionary<string, string[]>();
             m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
-
+            m_DicAssetVerson = new Dictionary<string, AssetVersion>();
 #if UNITY_EDITOR
             if (AppConfig.Ins.LoadAB)
 #endif
             {
-                string url = ResDefine.AssetBundlePath + "/StreamingAssets";
+#if UNITY_EDITOR
+                string url = Utils.PathUtil.StreamingAssetsPath + Utils.PathUtil.AssetsDirectory.Substring(6);
+#else
+                string url = Utils.PathUtil.PersistentDataPath + Utils.PathUtil.AssetsDirectory.Substring(6);
+#endif
                 byte[] stream = File.ReadAllBytes(url);
                 AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
                 m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
@@ -359,7 +370,12 @@ namespace GameFrameWork.Resources
 
         private string GetAssetBundlePath(string abName)
         {
-            return string.Format("{0}/{1}", ResDefine.AssetBundlePath, abName);
+#if UNITY_EDITOR
+            string resPath = Utils.PathUtil.StreamingAssetsPath;
+#else
+            string resPath = Utils.PathUtil.PersistentDataPath; 
+#endif
+            return string.Format("{0}/{1}", resPath, abName);
         }
 
         protected override void OnShutDown()
@@ -377,5 +393,6 @@ namespace GameFrameWork.Resources
         private Dictionary<string, string[]> m_Dependencies = null;
         private Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = null;
         private Dictionary<string, List<LoadAssetRequest>> m_LoadRequests = null;
+        private Dictionary<string, AssetVersion> m_DicAssetVerson = null;
     }
 }

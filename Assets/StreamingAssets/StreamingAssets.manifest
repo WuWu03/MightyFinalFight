@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 3422728522
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: artresources/ui/prefabs/mainpanel.assetbundle
+      Dependencies: {}
+    Info_1:
+      Name: artresources/ui/prefabs/roleselectpanel.assetbundle
+      Dependencies: {}

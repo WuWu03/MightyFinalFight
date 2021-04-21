@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using UnityEngine;
 using static SkillData;
 
 public class SkillFactory
@@ -8,15 +9,15 @@ public class SkillFactory
         SkillBaseDeployer ret = null;
         SkillData data = StaticConfig.SkillConfig.GetData(skillID);
 
-        switch (data.Type)
+        switch (data.DeployerType)
         {
-            case SkillType.NormalAttack:
+            case SkillDeployerType.NormalAttack:
                 ret = new SkillNormalAttackDeployer(skillID, owner);
                 break;
-            case SkillType.JumpAttack:
+            case SkillDeployerType.JumpAttack:
                 ret = new SkillJumpAttackDeployer(skillID, owner);
                 break;
-            case SkillType.SkillAttack:
+            case SkillDeployerType.SkillAttack:
                 ret = new SkillSkillAttackDeployer(skillID, owner);
                 break;
         }

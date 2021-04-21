@@ -31,7 +31,7 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        if(m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
+        if(m_SkillData.TriggerType == SkillData.SkillTriggerType.Animtion)
         {
             m_SkillEffects[m_CurrEffectIndex].Effect( m_SkillSelector[m_CurrEffectIndex]);
             m_CurrEffectIndex++;

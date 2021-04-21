@@ -14,23 +14,24 @@ public class SkillData : BaseConfigData
 {
     public enum SkillSelectorType
     {
-        None = 0,
-        NearHitSelector = 1,
-        BulletSelector = 2,
+        None,
+        NearHitSelector,
+        BulletSelector,
     }
 
     public enum SkillEffectorType
     {
-        None = 0,
-        NearHitEffect = 1,
-        BulletHitEffect = 2,
-        MoveHitEffect = 3,
-        MoveTargetEffect = 4,
-        SubHP = 5,
+        None,
+        NearHitEffect,
+        BulletHitEffect,
+        MoveHitEffect,
+        MoveTargetEffect,
+        SubHP,
     }
 
-    public enum SkillType
+    public enum SkillDeployerType
     {
+        None,
         NormalAttack,
         JumpAttack,
         SkillAttack,
@@ -46,10 +47,17 @@ public class SkillData : BaseConfigData
         HPLessThan,//hp小于
     }
 
-    public enum SkillDeployeType
+    public enum SkillType
     {
         None,
-        Just,//直接释放
+        Normal,//普通攻击
+        Skill,//技能攻击
+    }
+
+    public enum SkillTriggerType
+    {
+        None,
+        Just,//直接触发
         Animtion,//动画触发
     }
 
@@ -120,8 +128,9 @@ public class SkillData : BaseConfigData
     public string Name;
     public string AnimationName;
     public string HurtSound = "OnHit02";
-    public SkillType Type;
-    public SkillDeployeType DeployeType;//技能释放方式
+    public SkillType Type;//技能类型
+    public SkillDeployerType DeployerType;//释放器类型
+    public SkillTriggerType TriggerType;//技能触发方式
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数

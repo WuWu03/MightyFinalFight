@@ -14,7 +14,7 @@ public class SkillNearHitEffect : SkillBaseEffect
     {
         get
         {
-            if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
+            if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Animtion)
             {
                 m_IsCompleted = m_Owner.IsPlayComplete();
             }

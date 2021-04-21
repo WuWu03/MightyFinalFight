@@ -14,6 +14,6 @@ public partial class DataHelper
 
 	public static void Init()
 	{
-		RoleData = GameFrameWork.LocalData.DataHelper.LoadData<RoleData>(ResDefine.ConfigDataPath, "Role.data");
+		//RoleData = GameFrameWork.LocalData.DataHelper.LoadData<RoleData>(ResDefine.ConfigDataPath, "Role.data");
 	}
 }

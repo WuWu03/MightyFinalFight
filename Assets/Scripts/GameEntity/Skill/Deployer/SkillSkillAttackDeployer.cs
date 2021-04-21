@@ -12,7 +12,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
-        if (m_SkillData.DeployeType == SkillDeployeType.Just)
+        if (m_SkillData.TriggerType == SkillTriggerType.Just)
         {
             m_Owner.OnSkillMsg(m_SkillData);
             base.DeploySkill();

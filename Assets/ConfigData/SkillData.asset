@@ -18,8 +18,9 @@ MonoBehaviour:
     Name: CodyAttack1
     AnimationName: Attack1
     HurtSound: 
-    Type: 0
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -55,8 +56,9 @@ MonoBehaviour:
     Name: CodyAttack2
     AnimationName: Attack2
     HurtSound: 
-    Type: 0
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -92,8 +94,9 @@ MonoBehaviour:
     Name: CodyAttack3
     AnimationName: Attack3
     HurtSound: 
-    Type: 0
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -129,8 +132,9 @@ MonoBehaviour:
     Name: CodyAttack4
     AnimationName: Attack4
     HurtSound: 
-    Type: 0
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -167,7 +171,8 @@ MonoBehaviour:
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
-    DeployeType: 1
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 
       AddTrigger: 0
@@ -202,7 +207,8 @@ MonoBehaviour:
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 1
-    DeployeType: 1
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 
       AddTrigger: 0
@@ -237,7 +243,8 @@ MonoBehaviour:
     AnimationName: Skill1
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 3
+    TriggerType: 2
     Key:
       Keys: 0400000005000000
       AddTrigger: 1
@@ -288,7 +295,8 @@ MonoBehaviour:
     AnimationName: Attack4
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 3
+    TriggerType: 2
     Key:
       Keys: 0100000005000000
       AddTrigger: 1
@@ -322,8 +330,9 @@ MonoBehaviour:
     Name: CodyKnee
     AnimationName: Knee
     HurtSound: 
-    Type: 0
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -359,8 +368,9 @@ MonoBehaviour:
     Name: CodyThrow
     AnimationName: Throw
     HurtSound: 
-    Type: 2
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -414,8 +424,9 @@ MonoBehaviour:
     Name: CodySkill3
     AnimationName: Skill2
     HurtSound: 
-    Type: 1
-    DeployeType: 1
+    Type: 2
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
@@ -471,8 +482,9 @@ MonoBehaviour:
     Name: CodyAttack_Weapon
     AnimationName: Attack_Weapon
     HurtSound: DaggerHit
-    Type: 2
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -508,8 +520,9 @@ MonoBehaviour:
     Name: CodyThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: DaggerHit
-    Type: 2
-    DeployeType: 2
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -560,7 +573,8 @@ MonoBehaviour:
     AnimationName: Attack1
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -633,7 +647,8 @@ MonoBehaviour:
     AnimationName: Attack2
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -706,7 +721,8 @@ MonoBehaviour:
     AnimationName: Attack3
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -743,7 +759,8 @@ MonoBehaviour:
     AnimationName: Attack4
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -780,7 +797,8 @@ MonoBehaviour:
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
-    DeployeType: 1
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -817,7 +835,8 @@ MonoBehaviour:
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 1
-    DeployeType: 1
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -854,7 +873,8 @@ MonoBehaviour:
     AnimationName: Skill1
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 0500000004000000
       AddTrigger: 1
@@ -909,7 +929,8 @@ MonoBehaviour:
     AnimationName: Skill2
     HurtSound: 
     Type: 1
-    DeployeType: 1
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
@@ -964,7 +985,8 @@ MonoBehaviour:
     AnimationName: Knee
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1001,7 +1023,8 @@ MonoBehaviour:
     AnimationName: Throw
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1110,7 +1133,8 @@ MonoBehaviour:
     AnimationName: Attack1
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1147,7 +1171,8 @@ MonoBehaviour:
     AnimationName: AttackWeapon
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1198,7 +1223,8 @@ MonoBehaviour:
     AnimationName: ThrowWeapon
     HurtSound: 
     Type: 2
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1249,7 +1275,8 @@ MonoBehaviour:
     AnimationName: Attack1
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1286,7 +1313,8 @@ MonoBehaviour:
     AnimationName: Attack1
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1323,7 +1351,8 @@ MonoBehaviour:
     AnimationName: Attack1
     HurtSound: 
     Type: 0
-    DeployeType: 2
+    DeployerType: 0
+    TriggerType: 0
     Key:
       Keys: 
       AddTrigger: 0

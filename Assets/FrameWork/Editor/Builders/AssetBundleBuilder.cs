@@ -152,7 +152,11 @@ namespace GameFrameWork.Editor
 
                 string md5 = Utils.Utility.MD5File(m_ListFiles[i]);
                 string value = m_ListFiles[i].Replace(config.AssetBuildFullDir, string.Empty);
-                streamWriter.WriteLine(value + "|" + md5);
+                string directory = Path.GetDirectoryName(value).Replace("\\", "/");
+                string fileName = Path.GetFileNameWithoutExtension(value);          
+                string ext = Path.GetExtension(value);
+                if (!string.IsNullOrEmpty(directory)) directory += "/";
+                streamWriter.WriteLine(directory + fileName + "|" + ext + "|" + md5);
             }
 
             streamWriter.Close();

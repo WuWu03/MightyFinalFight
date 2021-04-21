@@ -26,7 +26,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_IsOnGround = false;
         m_CanEffect = true;
 
-        if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Just)
+        if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Just)
         {
             m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
         }
@@ -53,7 +53,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     public override void Update()
     {
         base.Update();
-        if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Just)
+        if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Just)
         {
             if (m_CanEffect)
             {
@@ -66,7 +66,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SkillEvent(string type, EventObject eventObject)
     {
-        if (m_SkillData.DeployeType == SkillData.SkillDeployeType.Animtion)
+        if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Animtion)
         {
             base.DeploySkill();
         }
