@@ -65,13 +65,14 @@ namespace GameFrameWork.Editor
 
         private void SaveConfig()
         {
-            List<AssetBundleData> list = new List<AssetBundleData>();
+            List<AssetBundleData> listData = new List<AssetBundleData>();
+            
             for (int i = 0; i < m_ListData.Count; i++)
             {
-                if (!m_ListDataHasRemove[i]) list.Add(m_ListData[i]);
+                if (!m_ListDataHasRemove[i]) listData.Add(m_ListData[i]);
             }
 
-            m_AssetBundleConfig.Datas = list.ToArray();
+            m_AssetBundleConfig.Datas = listData.ToArray();
             m_ListData.Clear();
             m_ListPatternIndex.Clear();
             m_ListDataHasRemove.Clear();
@@ -80,6 +81,15 @@ namespace GameFrameWork.Editor
             m_ListPatternIndex.AddRange(new int[m_ListData.Count]);
             m_ListBundleExtendIndex.AddRange(new int[m_ListData.Count]);
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
+        }
+
+        private void ClearConfig()
+        {
+            m_ListData.Clear();
+            m_ListPatternIndex.Clear();
+            m_ListDataHasRemove.Clear();
+            m_ListBundleExtendIndex.Clear();
+            m_AssetBundleConfig.Datas = m_ListData.ToArray();
         }
 
         Vector2 scrollPosition = Vector2.zero;
@@ -94,14 +104,23 @@ namespace GameFrameWork.Editor
                 GUILayout.BeginVertical();
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
 
+                if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetBuildDir) && !m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
+                {
+                    m_AssetBundleConfig.AssetBuildDir = "Assets/" + m_AssetBundleConfig.AssetBuildDir;
+                }
+
+                if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetBuildDir) && !m_AssetBundleConfig.AssetBuildDir.EndsWith("/"))
+                {
+                    m_AssetBundleConfig.AssetBuildDir += "/";
+                }
+
                 if (m_AssetBundleConfig.IsCopyAsset)
                 {
                     m_AssetBundleConfig.AssetCopyDir = EditorGUILayout.TextField("资源复制路径（绝对路径）", m_AssetBundleConfig.AssetCopyDir);
-                }
-
-                if (!m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
-                {
-                    m_AssetBundleConfig.AssetBuildDir = "Assets/" + m_AssetBundleConfig.AssetBuildDir;
+                    if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetCopyDir) && !m_AssetBundleConfig.AssetCopyDir.EndsWith("\\"))
+                    {
+                        m_AssetBundleConfig.AssetCopyDir += "\\";
+                    }
                 }
                 GUILayout.EndVertical();
             });
@@ -140,6 +159,8 @@ namespace GameFrameWork.Editor
                     if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
                     {
                         m_ListData[i].AssetBundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].AssetBundlePath);
+                        if (!string.IsNullOrEmpty(m_ListData[i].AssetBundlePath) && !m_ListData[i].AssetBundlePath.EndsWith("/"))
+                            m_ListData[i].AssetBundlePath += "/";
                     }
                     else
                     {
@@ -310,6 +331,14 @@ namespace GameFrameWork.Editor
                 m_ListDataHasRemove.Add(false);
             }
 
+            if (GUILayout.Button("清空配置"))
+            {
+                if (EditorUtility.DisplayDialog("提示", "确认清空全部配置吗？", "确认", "取消"))
+                {
+                    ClearConfig();
+                }
+            }
+
             if (GUILayout.Button("保存配置"))
             {
                 SaveConfig();
@@ -320,7 +349,7 @@ namespace GameFrameWork.Editor
         int platFormIndex = 0;
         private void BuildGUI()
         {
-            if (GUILayout.Button("   打     包   "))
+            if (GUILayout.Button("打        包"))
             {
                 if (EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
                 {

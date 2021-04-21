@@ -1,43 +1,23 @@
 ﻿using UnityEditor;
-using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GameFrameWork.Utils;
 
 namespace GameFrameWork.Editor
 {
     public class AssetBundleBuilder
     {
-        public static string platform = string.Empty;
-        static List<string> paths = new List<string>();
-        static List<string> files = new List<string>();
-        static List<AssetBundleBuild> maps = new List<AssetBundleBuild>();
-
-        ///-----------------------------------------------------------
-        static string[] exts = { ".txt", ".xml", ".lua", ".assetbundle", ".json" };
-        static bool CanCopy(string ext)
-        {   //能不能复制
-            foreach (string e in exts)
-            {
-                if (ext.Equals(e)) return true;
-            }
-            return false;
-        }
-
-
         /// <summary>
         /// 打包
         /// </summary>
         public static void Build(BuildTarget target)
         {
-            if (Directory.Exists(Utils.PathUtil.StreamingAssetsPath))
-                Directory.Delete(Utils.PathUtil.StreamingAssetsPath, true);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
 
-            Directory.CreateDirectory(Utils.PathUtil.StreamingAssetsPath);
+            IOUtil.DeleteDirectory(config.AssetBuildFullDir);
+            IOUtil.VerifyDirectory(config.AssetBuildFullDir);
             AssetDatabase.Refresh();
-
-            maps.Clear();
+            m_BuildMaps.Clear();
 
             if (AppConfig.Ins.UseLua)
             {
@@ -47,21 +27,35 @@ namespace GameFrameWork.Editor
 
             if (GenerateBuildMap())
             {
-                BuildPipeline.BuildAssetBundles(PathUtil.StreamingAssetsPath, maps.ToArray(), BuildAssetBundleOptions.None, target);
+                BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.None, target);
                 BuildFileIndex();
 
-                if (Directory.Exists(Utils.PathUtil.GetLuaTempDir())) Directory.Delete(Utils.PathUtil.GetLuaTempDir(), true);
+                if (AppConfig.Ins.UseLua)
+                {
+                    IOUtil.DeleteDirectory(PathUtil.LuaTempDir);
+                }
+
                 AssetDatabase.Refresh();
-                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(PathUtil.StreamingAssetsPath);
+
+                if (config.IsCopyAsset)
+                {
+                    IOUtil.DeleteDirectory(config.AssetCopyDir);
+                    IOUtil.CopyDirectory(config.AssetBuildFullDir, config.AssetCopyDir);
+                }
+
+                AssetDatabase.Refresh();
+
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.AssetBuildDir);
+                EditorUtility.DisplayDialog("提示", "打包成功", "确定");
             }
         }
 
         /// <summary>
-        /// 生产打包列表
+        /// 生成打包列表
         /// </summary>
         private static bool GenerateBuildMap()
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataFullPath);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
             for (int i = 0; i < config.Datas.Length; i++)
             {
                 if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)
@@ -90,7 +84,7 @@ namespace GameFrameWork.Editor
             }
 
             string[] files = Directory.GetFiles(path, pattern);
-            if (files.Length == 0)
+            if (files.Length < 1)
             {
                 EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
                 return false;
@@ -104,7 +98,7 @@ namespace GameFrameWork.Editor
             AssetBundleBuild build = new AssetBundleBuild();
             build.assetBundleName = bundleName;
             build.assetNames = files;
-            maps.Add(build);
+            m_BuildMaps.Add(build);
             return true;
         }
 
@@ -117,7 +111,7 @@ namespace GameFrameWork.Editor
             }
 
             string[] files = Directory.GetFiles(path, pattern);
-            if (files.Length == 0)
+            if (files.Length < 1)
             {
                 EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
                 return false;
@@ -130,12 +124,42 @@ namespace GameFrameWork.Editor
                 AssetBundleBuild build = new AssetBundleBuild();
                 build.assetBundleName = abPath + Path.GetFileNameWithoutExtension(files[i]) + extend;
                 build.assetNames = new string[] { files[i] };
-                maps.Add(build);
+                m_BuildMaps.Add(build);
             }
 
             return true;
         }
 
+       
+        private static void BuildFileIndex()
+        {
+            ///----------------------创建文件列表-----------------------
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
+            string versionPath = config.AssetBuildFullDir + "/Version.txt";
+            IOUtil.DeleteFile(versionPath);
+
+            m_ListPaths.Clear();
+            m_ListFiles.Clear();
+
+            IOUtil.Recursive(config.AssetBuildFullDir, m_ListFiles, m_ListPaths);
+
+            FileStream fileStream = new FileStream(versionPath, FileMode.CreateNew);
+            StreamWriter streamWriter = new StreamWriter(fileStream);
+
+            for (int i = 0; i < m_ListFiles.Count; i++)
+            {
+                if (m_ListFiles[i].EndsWith(".meta") || m_ListFiles[i].Contains(".DS_Store")) continue;
+
+                string md5 = Utils.Utility.MD5File(m_ListFiles[i]);
+                string value = m_ListFiles[i].Replace(config.AssetBuildFullDir, string.Empty);
+                streamWriter.WriteLine(value + "|" + md5);
+            }
+
+            streamWriter.Close();
+            fileStream.Close();
+        }
+
+        #region Lua
         /// <summary>
         /// 处理Lua代码包
         /// </summary>
@@ -208,139 +232,89 @@ namespace GameFrameWork.Editor
         /// </summary>
         private static void HandleLuaFile()
         {
-            string resPath = Utils.PathUtil.GetAssetFullDir();
-            string luaPath = resPath + "lua/";
+            //string resPath = Utils.PathUtil.GetAssetFullDir();
+            //string luaPath = resPath + "lua/";
 
-            //----------复制Lua文件----------------
-            if (!Directory.Exists(luaPath)) Directory.CreateDirectory(luaPath);
+            ////----------复制Lua文件----------------
+            //if (!Directory.Exists(luaPath)) Directory.CreateDirectory(luaPath);
 
-            string[] luaPaths = {
-                AppConfig.Ins.LuaDirectory,
-                //AppDataPath + "/LuaFramework/lua/",
-                //AppDataPath + "/LuaFramework/Tolua/Lua/" 
-            };
+            //string[] luaPaths = {
+            //    AppConfig.Ins.LuaDirectory,
+            //    //AppDataPath + "/LuaFramework/lua/",
+            //    //AppDataPath + "/LuaFramework/Tolua/Lua/" 
+            //};
 
-            for (int i = 0; i < luaPaths.Length; i++)
-            {
-                paths.Clear(); files.Clear();
-                string luaDataPath = luaPaths[i].ToLower();
-                Recursive(luaDataPath);
-                int n = 0;
-                foreach (string f in files)
-                {
-                    if (f.EndsWith(".meta")) continue;
-                    string newfile = f.Replace(luaDataPath, "");
-                    string newpath = luaPath + newfile;
-                    string path = Path.GetDirectoryName(newpath);
+            //for (int i = 0; i < luaPaths.Length; i++)
+            //{
+            //    paths.Clear(); files.Clear();
+            //    string luaDataPath = luaPaths[i].ToLower();
+            //    Recursive(luaDataPath);
+            //    int n = 0;
+            //    foreach (string f in files)
+            //    {
+            //        if (f.EndsWith(".meta")) continue;
+            //        string newfile = f.Replace(luaDataPath, "");
+            //        string newpath = luaPath + newfile;
+            //        string path = Path.GetDirectoryName(newpath);
 
-                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            //        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-                    if (File.Exists(newpath)) File.Delete(newpath);
+            //        if (File.Exists(newpath)) File.Delete(newpath);
 
-                    if (AppConfig.Ins.LuaByteMode) EncodeLuaFile(f, newpath);
-                    else File.Copy(f, newpath, true);
-                    UpdateProgress(n++, files.Count, newpath);
-                }
-            }
-            UnityEditor.EditorUtility.ClearProgressBar();
-            AssetDatabase.Refresh();
-        }
-
-        private static void BuildFileIndex()
-        {
-            ///----------------------创建文件列表-----------------------
-            string versionPath = Utils.PathUtil.GetAssetFullDir() + "/Version.txt";
-            if (File.Exists(versionPath)) File.Delete(versionPath);
-
-            paths.Clear();
-            files.Clear();
-            Recursive(Utils.PathUtil.GetAssetFullDir());
-
-            FileStream fs = new FileStream(versionPath, FileMode.CreateNew);
-            StreamWriter sw = new StreamWriter(fs);
-            for (int i = 0; i < files.Count; i++)
-            {
-                string file = files[i];
-                string ext = Path.GetExtension(file);
-
-                if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
-
-                string md5 = Utils.Utility.MD5File(file);
-                string value = file.Replace(Utils.PathUtil.GetAssetFullDir(), string.Empty);
-                sw.WriteLine(value + "|" + md5);
-            }
-            sw.Close();
-            fs.Close();
-        }
-
-
-        /// <summary>
-        /// 遍历目录及其子目录
-        /// </summary>
-        static void Recursive(string path)
-        {
-            string[] names = Directory.GetFiles(path);
-            string[] dirs = Directory.GetDirectories(path);
-            foreach (string filename in names)
-            {
-                string ext = Path.GetExtension(filename);
-                if (ext.Equals(".meta")) continue;
-                files.Add(filename.Replace('\\', '/'));
-            }
-            foreach (string dir in dirs)
-            {
-                paths.Add(dir.Replace('\\', '/'));
-                Recursive(dir);
-            }
-        }
-
-        static void UpdateProgress(int progress, int progressMax, string desc)
-        {
-            string title = "Processing...[" + progress + " - " + progressMax + "]";
-            float value = (float)progress / (float)progressMax;
-            UnityEditor.EditorUtility.DisplayProgressBar(title, desc, value);
+            //        if (AppConfig.Ins.LuaByteMode) EncodeLuaFile(f, newpath);
+            //        else File.Copy(f, newpath, true);
+            //        UpdateProgress(n++, files.Count, newpath);
+            //    }
+            //}
+            //UnityEditor.EditorUtility.ClearProgressBar();
+            //AssetDatabase.Refresh();
         }
 
         public static void EncodeLuaFile(string srcFile, string outFile)
         {
-            if (!srcFile.ToLower().EndsWith(".lua"))
-            {
-                File.Copy(srcFile, outFile, true);
-                return;
-            }
+            //if (!srcFile.ToLower().EndsWith(".lua"))
+            //{
+            //    File.Copy(srcFile, outFile, true);
+            //    return;
+            //}
 
-            bool isWin = true;
-            string luaexe = string.Empty;
-            string args = string.Empty;
-            string exedir = string.Empty;
-            string currDir = Directory.GetCurrentDirectory();
-            if (Application.platform == RuntimePlatform.WindowsEditor)
-            {
+            //bool isWin = true;
+            //string luaexe = string.Empty;
+            //string args = string.Empty;
+            //string exedir = string.Empty;
+            //string currDir = Directory.GetCurrentDirectory();
+            //if (Application.platform == RuntimePlatform.WindowsEditor)
+            //{
 
-                isWin = true;
-                luaexe = "luajit.exe";
-                args = "-b " + srcFile + " " + outFile;
-                exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
-            }
-            else if (Application.platform == RuntimePlatform.OSXEditor)
-            {
-                isWin = false;
-                luaexe = "./luajit";
-                args = "-b " + srcFile + " " + outFile;
-                exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
-            }
+            //    isWin = true;
+            //    luaexe = "luajit.exe";
+            //    args = "-b " + srcFile + " " + outFile;
+            //    exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
+            //}
+            //else if (Application.platform == RuntimePlatform.OSXEditor)
+            //{
+            //    isWin = false;
+            //    luaexe = "./luajit";
+            //    args = "-b " + srcFile + " " + outFile;
+            //    exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
+            //}
 
-            Directory.SetCurrentDirectory(exedir);
-            ProcessStartInfo info = new ProcessStartInfo();
-            info.FileName = luaexe;
-            info.Arguments = args;
-            info.WindowStyle = ProcessWindowStyle.Hidden;
-            info.UseShellExecute = isWin;
-            info.ErrorDialog = true;
-            Log.Debugger.Log(info.FileName + " " + info.Arguments);
-            Process pro = Process.Start(info);
-            pro.WaitForExit();
-            Directory.SetCurrentDirectory(currDir);
+            //Directory.SetCurrentDirectory(exedir);
+            //ProcessStartInfo info = new ProcessStartInfo();
+            //info.FileName = luaexe;
+            //info.Arguments = args;
+            //info.WindowStyle = ProcessWindowStyle.Hidden;
+            //info.UseShellExecute = isWin;
+            //info.ErrorDialog = true;
+            //Log.Debugger.Log(info.FileName + " " + info.Arguments);
+            //Process pro = Process.Start(info);
+            //pro.WaitForExit();
+            //Directory.SetCurrentDirectory(currDir);
         }
+        #endregion
+
+        private static List<string> m_ListPaths = new List<string>();
+        private static List<string> m_ListFiles = new List<string>();
+        private static List<AssetBundleBuild> m_BuildMaps = new List<AssetBundleBuild>();
     }
 }

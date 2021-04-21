@@ -1,5 +1,6 @@
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace GameFrameWork.Utils
 {
@@ -30,8 +31,6 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 创建文本文件
         /// </summary>
-        /// <param name="filePath"></param>
-        /// <param name="content"></param>
         public static void CreateTextFile(string filePath, string content)
         {
             DeleteFile(filePath);
@@ -50,7 +49,6 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 删除文件
         /// </summary>
-        /// <param name="filePath"></param>
         public static void DeleteFile(string filePath)
         {
             if (File.Exists(filePath))
@@ -64,8 +62,6 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 拷贝文件夹
         /// </summary>
-        /// <param name="sourceDirName"></param>
-        /// <param name="destDirName"></param>
         public static void CopyDirectory(string sourceDirName, string destDirName)
         {
             try
@@ -74,13 +70,13 @@ namespace GameFrameWork.Utils
                 {
                     Directory.CreateDirectory(destDirName);
                     File.SetAttributes(destDirName, File.GetAttributes(sourceDirName));
-
                 }
 
                 if (destDirName[destDirName.Length - 1] != Path.DirectorySeparatorChar)
                     destDirName = destDirName + Path.DirectorySeparatorChar;
 
-                string[] files = Directory.GetFiles(sourceDirName);
+                string[] files = Directory.GetFiles(sourceDirName, "*", SearchOption.TopDirectoryOnly);
+
                 foreach (string file in files)
                 {
                     if (File.Exists(destDirName + Path.GetFileName(file)))
@@ -106,6 +102,28 @@ namespace GameFrameWork.Utils
         }
         #endregion
 
+        /// <summary>
+        /// 遍历目录及其子目录
+        /// </summary>
+        public static void Recursive(string path, List<string> listFiles, List<string> listPaths)
+        {
+            string[] files = Directory.GetFiles(path);
+            string[] dirs = Directory.GetDirectories(path);
+
+            foreach (string filename in files)
+            {
+                string ext = Path.GetExtension(filename);
+                if (ext.Equals(".meta")) continue;
+                listFiles.Add(filename.Replace('\\', '/'));
+            }
+
+            foreach (string dir in dirs)
+            {
+                listPaths.Add(dir.Replace('\\', '/'));
+                Recursive(dir, listFiles, listPaths);
+            }
+        }
+
         public static bool VerifyDirectory(string dirPath)
         {
             if (!Directory.Exists(dirPath))
@@ -115,6 +133,14 @@ namespace GameFrameWork.Utils
             }
 
             return true;
+        }
+
+        public static void DeleteDirectory(string directory, bool recursive = true)
+        {
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, recursive);
+            }
         }
     }
 }

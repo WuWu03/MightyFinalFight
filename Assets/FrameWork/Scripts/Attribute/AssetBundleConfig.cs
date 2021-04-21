@@ -19,6 +19,8 @@ namespace GameFrameWork
         public List<string> ListExtendName = null;
         [SerializeField]
         public List<string> ListPattern = null;
+
+        public string AssetBuildFullDir => Application.dataPath + AssetBuildDir.Substring(6);
     }
 
     [Serializable]

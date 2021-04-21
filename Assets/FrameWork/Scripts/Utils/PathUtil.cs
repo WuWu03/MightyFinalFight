@@ -16,15 +16,6 @@ namespace GameFrameWork.Utils
         public const string AssetBundleDataExtend = ".asset";
         public const string AssetBundleDataPath = AssetBundleConfigPath + AssetBundleDataName + AssetBundleDataExtend;
         public static string AssetBundleDataFullPath = AppDataPath + AssetBundleConfigPath.Substring(6) + AssetBundleDataName + AssetBundleDataExtend;
-
-        public static string GetAssetFullDir()
-        {
-            return AppDataPath + AssetsDirectory.Substring(AssetsDirectory.IndexOf("Assets/") + "Assets/".Length);
-        }
-
-        public static string GetLuaTempDir()
-        {
-            return AppDataPath + "LuaTemp/";
-        }
+        public static string LuaTempDir = AppDataPath + "LuaTemp";
     }
 }
