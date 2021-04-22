@@ -67,7 +67,6 @@ public class BaseRoleCtrl : BaseCtrl
     public void Skill(int skillID)
     {
         if (!m_Owner.CanSkill) return;
-
         ExitSkill();
         m_CurrSkillID = skillID;
         m_SkillManager.DeploySkill(m_CurrSkillID);
@@ -94,7 +93,7 @@ public class BaseRoleCtrl : BaseCtrl
     public void Jump(Vector2 jumpDir,bool canChangeDir)
     {
         if (!m_Owner.CanJump) return;
-
+        Debug.Log("跳跃" + m_Owner.CanJump);
         m_JumpData.Clear();
         m_JumpData.Dir = jumpDir;
         m_JumpData.CanChangeDir = canChangeDir;

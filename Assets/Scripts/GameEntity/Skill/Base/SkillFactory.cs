@@ -84,27 +84,29 @@ public class SkillFactory
         for (int i = 0; i < conditions.Length; i++)
         {
             bool isCondition = false;
-            SkillStatus status = conditions[i].Status;
-            if(status == SkillStatus.None)
+            SkillPrevConditionType status = conditions[i].PrevConditionType;
+            if (status == SkillPrevConditionType.None)
                 isCondition = true;
-            else if(status == SkillStatus.Float)
-                isCondition = owner.IsFloat;
-            else if(status == SkillStatus.Ground)
+            else if (status == SkillPrevConditionType.Ground)
             {
                 isCondition = owner.IsInGround;
                 if (owner is BaseHero)
                     isCondition = isCondition && !(owner as BaseHero).IsCatch;
                 else if (owner is BaseEnemy)
-                    isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;        
+                    isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;
             }
-            else if(status == SkillStatus.Catch)
+            else if (status == SkillPrevConditionType.Float)
+                isCondition = owner.IsFloat;
+            else if (status == SkillPrevConditionType.Catch)
                 isCondition = (owner as BaseHero).IsCatch;
-            else if(status == SkillStatus.HPMoreThan)
+            else if (status == SkillPrevConditionType.GroundOrCatch)
+                isCondition = owner.IsInGround || (owner as BaseHero).IsCatch;
+            else if (status == SkillPrevConditionType.HPMoreThan)
             {
                 Match m = m_RegexHPMoreThan.Match(conditions[i].Args);
-                if (m.Success)isCondition = owner.Health > int.Parse(m.Groups[2].Value);
+                if (m.Success) isCondition = owner.Health > int.Parse(m.Groups[2].Value);
             }
-            else if (status == SkillStatus.HPLessThan)
+            else if (status == SkillPrevConditionType.HPLessThan)
             {
                 Match m = m_RegexHPLessThan.Match(conditions[i].Args);
                 if (m.Success) isCondition = owner.Health < int.Parse(m.Groups[2].Value);

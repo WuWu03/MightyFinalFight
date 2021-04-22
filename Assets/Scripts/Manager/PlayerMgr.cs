@@ -199,24 +199,24 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         if (Input.GetButtonDown("A") || Input.GetButton("X"))
         {
-            m_CurrCtrl.Attack(InputMgr.GetAxis());
+           m_CurrCtrl.Attack(InputMgr.GetAxis());
         }
 
         if (Input.GetButtonDown("B") || Input.GetButton("Y"))
         {
-            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
+           m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
         }
     }
 
     private bool GetComboCondition(int id)
     {
         SkillData skillData = StaticConfig.SkillConfig.GetData(id);
-        return SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
+        bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
+        return a;
     }
 
     private void OnComboKeyEvent(int id, bool isTrigger)
     {
-        if (m_Player.IsCatch) return;
         m_CurrCtrl.Skill(id);
     }
 

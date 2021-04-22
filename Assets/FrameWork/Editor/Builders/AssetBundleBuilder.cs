@@ -156,7 +156,7 @@ namespace GameFrameWork.Editor
                 string fileName = Path.GetFileNameWithoutExtension(value);          
                 string ext = Path.GetExtension(value);
                 if (!string.IsNullOrEmpty(directory)) directory += "/";
-                streamWriter.WriteLine(directory + fileName + "|" + ext + "|" + md5);
+                streamWriter.Write(directory + fileName + "|" + ext + "|" + md5 + (i < m_ListFiles.Count - 1 ? "\n" : string.Empty));
             }
 
             streamWriter.Close();

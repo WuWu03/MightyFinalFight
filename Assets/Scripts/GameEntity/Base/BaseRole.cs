@@ -97,7 +97,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual bool CanSkill
     {
         get
-        { 
+        {
+            Debug.Log(m_IsDropTrag + "," + m_IsBeCatch + "," + IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump), typeof(RoleAttack)));
             return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump),typeof(RoleAttack));
         }
     }
@@ -193,7 +194,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_IsJumpAttack && data.AddSelfForce != Vector2.zero)
         {
-            Debug.Log("AddForce : " + data.AddSelfForce.y);
             m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
             m_Rigidbody.velocity = Vector2.zero;
             m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));

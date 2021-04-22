@@ -1,6 +1,0 @@
-StreamingAssets||d280eb05685b45caf52248e01e4e37e1
-StreamingAssets|.manifest|866c93f1823264ce0e8d0cf070b29dae
-artresources/ui/prefabs/mainpanel|.assetbundle|23e9471ed201e2a65b53341a975a1b11
-artresources/ui/prefabs/mainpanel.assetbundle|.manifest|fb075fcb5e39169d85508f78c0e38142
-artresources/ui/prefabs/roleselectpanel|.assetbundle|6390d8842e2721f758843b4aa5deda98
-artresources/ui/prefabs/roleselectpanel.assetbundle|.manifest|7683d8128dfb12ac651fcee1ed94cfe3

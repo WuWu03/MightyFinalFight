@@ -1,9 +1,4 @@
-﻿using GameFrameWork.GameEntity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillMoveTargetEffect : SkillBaseEffect
@@ -19,6 +14,7 @@ public class SkillMoveTargetEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector selector)
     {
+        m_IsCompleted = false;
         List<ICanBeHit> targets = m_Owner.OnHitStart();
 
         if (targets == null || targets.Count < 1)
@@ -27,19 +23,17 @@ public class SkillMoveTargetEffect : SkillBaseEffect
             return;
         }
 
-        BaseRole bo = targets[0] as BaseRole;
+        BaseRole target = targets[0] as BaseRole;
 
-        float targetY = bo.Pos.y;
-        bo.SetPos2(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,
+        float targetY = target.Pos.y;
+        target.SetPos2(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,
                    m_Owner.Pos.y + m_SkillEffect.MoveTarget.y);
-        bo.UpdatePos2(bo.Pos.x, targetY);
+        target.UpdatePos2(target.Pos.x, targetY);
 
         if (m_SkillEffect.IsSmoon)
-        {   
-            bo.PlayAnimation(AnimName.SmoonUp);
+        {
+            target.PlayAnimation(AnimName.SmoonUp);
         }
-
-        m_IsCompleted = true;
     }
 
     public override void Reset()
@@ -51,23 +45,25 @@ public class SkillMoveTargetEffect : SkillBaseEffect
     {
         if(m_Owner is BaseHero)
         {
-            BaseHero bh = m_Owner as BaseHero;
+            BaseHero owner = m_Owner as BaseHero;
 
-            if (bh.IsCatch)
+            if (owner.IsCatch)
             {
                 List<ICanBeHit> targets = m_Owner.OnHitStart();
-                BaseRole br = targets[0] as BaseRole;
-                br.SetCatch(false);
-                br.PlayAnimation(AnimName.Idle);
-                bh.ResetCatch(false);
+                BaseRole target = targets[0] as BaseRole;
+                target.SetCatch(false);
+                if (!m_SkillEffect.IsSmoon)
+                    target.PlayAnimation(AnimName.Idle);
+                owner.ResetCatch(false);
             }
         }
-
-        m_IsCompleted = false;
     }
 
     public override void Update()
     {
-
+        if(m_Owner.IsPlayComplete())
+        {
+            m_IsCompleted = true;
+        }
     }
 }

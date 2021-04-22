@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 public class AttackData : BaseEventArgs
 {
+    public int skillID;
     public string AnimationName { get; set; }
     public float Dir { get; set; }
     public bool CanChangeDir { get; set; }

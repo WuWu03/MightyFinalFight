@@ -17,7 +17,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanSkill && !HasCatch();
+            return base.CanSkill || IsAnyState(typeof(HeroCatch));
         }
     }
 

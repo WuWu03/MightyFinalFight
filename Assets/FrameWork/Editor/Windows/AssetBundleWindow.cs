@@ -57,30 +57,53 @@ namespace GameFrameWork.Editor
             }
 
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
-            m_ListData.AddRange(m_AssetBundleConfig.Datas);
-            m_ListPatternIndex.AddRange(new int[m_ListData.Count]);
-            m_ListBundleExtendIndex.AddRange(new int[m_ListData.Count]);
+            for (int i = 0; i < m_AssetBundleConfig.Datas.Length; i++)
+            {
+                AssetBundleData data = new AssetBundleData()
+                {
+                    BundleType = m_AssetBundleConfig.Datas[i].BundleType,
+                    BundleName = m_AssetBundleConfig.Datas[i].BundleName,
+                    BundleExtend = m_AssetBundleConfig.Datas[i].BundleExtend,
+                    Pattern = m_AssetBundleConfig.Datas[i].Pattern,
+                    AssetPath = m_AssetBundleConfig.Datas[i].AssetPath,
+                    AssetBundlePath = m_AssetBundleConfig.Datas[i].AssetBundlePath,
+                };
+                m_ListData.Add(data);
+                for (int j = 0; j < m_AssetBundleConfig.ListPattern.Count; j++)
+                {
+                    if(data.Pattern.Equals(m_AssetBundleConfig.ListPattern[j]))
+                    {
+                        m_ListPatternIndex.Add(j);
+                    }
+                }
+
+                for (int j = 0; j < m_AssetBundleConfig.ListExtendName.Count; j++)
+                {
+                    if (data.BundleExtend.Equals(m_AssetBundleConfig.ListExtendName[j]))
+                    {
+                        m_ListBundleExtendIndex.Add(j);
+                    }
+                }
+            }
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
         }
 
         private void SaveConfig()
         {
-            List<AssetBundleData> listData = new List<AssetBundleData>();
-            
-            for (int i = 0; i < m_ListData.Count; i++)
+            for (int i = m_ListData.Count - 1; i >= 0; i--)
             {
-                if (!m_ListDataHasRemove[i]) listData.Add(m_ListData[i]);
+                if (m_ListDataHasRemove[i])
+                {
+                    m_ListData.RemoveAt(i);
+                    m_ListBundleExtendIndex.RemoveAt(i);
+                    m_ListPatternIndex.RemoveAt(i);
+                }
             }
 
-            m_AssetBundleConfig.Datas = listData.ToArray();
-            m_ListData.Clear();
-            m_ListPatternIndex.Clear();
+            m_AssetBundleConfig.Datas = m_ListData.ToArray();
             m_ListDataHasRemove.Clear();
-            m_ListBundleExtendIndex.Clear();
-            m_ListData.AddRange(m_AssetBundleConfig.Datas);
-            m_ListPatternIndex.AddRange(new int[m_ListData.Count]);
-            m_ListBundleExtendIndex.AddRange(new int[m_ListData.Count]);
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
+            EditorUtility.SetDirty(m_AssetBundleConfig);
         }
 
         private void ClearConfig()
@@ -130,7 +153,7 @@ namespace GameFrameWork.Editor
             int index = 0;
             for (int i = 0; i < m_ListData.Count; i++)
             {
-                if (m_ListDataHasRemove[i]) continue;
+                if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i]) continue;
                 index++;
                 m_ListData[i].ID = index;
                 GUIBoxScope(() => 
@@ -154,7 +177,10 @@ namespace GameFrameWork.Editor
                     GUILayout.EndHorizontal();
 
                     m_ListData[i].BundleType = (AssetBundleData.AssetType)EditorGUILayout.EnumPopup("包类型：", m_ListData[i].BundleType);
+
                     m_ListData[i].AssetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].AssetPath);
+                    if (!string.IsNullOrEmpty(m_ListData[i].AssetPath) && !m_ListData[i].AssetPath.EndsWith("/"))
+                        m_ListData[i].AssetPath += "/";
 
                     if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
                     {

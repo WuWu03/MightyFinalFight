@@ -13,12 +13,48 @@ MonoBehaviour:
   m_Name: AssetBundleData
   m_EditorClassIdentifier: 
   Datas:
-  - ID: 0
+  - ID: 1
     BundleType: 0
     BundleName: 
-    BundleExtend: 
-    Pattern: 
-    AssetPath: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
+    AssetPath: Assets/ArtResources/UI/Prefabs/
+    AssetBundlePath: ArtResources/UI/Prefabs/
+  - ID: 2
+    BundleType: 0
+    BundleName: ConfigData
+    BundleExtend: .assetbundle
+    Pattern: '*.asset'
+    AssetPath: Assets/ConfigData/
+    AssetBundlePath: ConfigData/
+  - ID: 3
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/UI/Icon/Character/
+    AssetBundlePath: ArtResources/UI/Icon/Character/
+  - ID: 4
+    BundleType: 1
+    BundleName: CommonAtlas/commonatlas
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/UI/UIAtlas/CommonAtlas/
     AssetBundlePath: 
-  ListExtendName: []
-  ListPattern: []
+  - ID: 5
+    BundleType: 1
+    BundleName: UIAtlas/SelectPlayerPanel
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/UI/UIAtlas/SelectPlayerPanel/
+    AssetBundlePath: 
+  PlatFormIndex: 0
+  AssetBuildDir: Assets/StreamingAssets/
+  AssetCopyDir: 
+  IsCopyAsset: 0
+  ListExtendName:
+  - .assetbundle
+  ListPattern:
+  - '*.prefab'
+  - '*.asset'
+  - '*.png'

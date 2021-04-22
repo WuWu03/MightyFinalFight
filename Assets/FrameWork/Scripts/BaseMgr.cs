@@ -73,6 +73,12 @@ namespace GameFrameWork
                 OnUpdate();
         }
 
+        private void LateUpdate()
+        {
+            if (m_Running)
+                OnLateUpdate();
+        }
+
         protected virtual void OnRun() { }
 
         protected virtual void OnShutDown() { }
@@ -83,7 +89,7 @@ namespace GameFrameWork
 
         protected virtual void OnUpdate() { }
 
-       
+        protected virtual void OnLateUpdate() { }
         private void OnDestroy()
         {
             ShutDown();

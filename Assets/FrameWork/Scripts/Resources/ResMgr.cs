@@ -29,11 +29,18 @@ namespace GameFrameWork.Resources
             public object[] param;
         }
 
-        class AssetVersion 
+        class AssetVersion
         {
             public string FilePath;
             public string ExtendName;
             public string MD5;
+
+            public AssetVersion(string filePath, string extendName, string md5)
+            {
+                FilePath = filePath;
+                ExtendName = extendName;
+                MD5 = md5;
+            }
         }
 
         private void Awake()
@@ -42,18 +49,25 @@ namespace GameFrameWork.Resources
             m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
             m_DicAssetVerson = new Dictionary<string, AssetVersion>();
+
 #if UNITY_EDITOR
             if (AppConfig.Ins.LoadAB)
 #endif
             {
-#if UNITY_EDITOR
-                string url = Utils.PathUtil.StreamingAssetsPath + Utils.PathUtil.AssetsDirectory.Substring(6);
-#else
-                string url = Utils.PathUtil.PersistentDataPath + Utils.PathUtil.AssetsDirectory.Substring(6);
-#endif
-                byte[] stream = File.ReadAllBytes(url);
+                string maniFesturl = Utils.PathUtil.RunTimeAssetPath + Utils.PathUtil.ManiFest;
+                string versionUrl = Utils.PathUtil.RunTimeAssetPath + Utils.PathUtil.AssetBundleVersion;
+
+                byte[] stream = File.ReadAllBytes(maniFesturl);
                 AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
                 m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+
+                string[] version = File.ReadAllText(versionUrl).Split('\n');
+                for (int i = 0; i < version.Length; i++)
+                {
+                    string[] data = version[i].Split('|');
+                    if (!data[1].Equals(".manifest"))
+                        m_DicAssetVerson.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
+                }
             }
 
             //StartCoroutine(OnTimeRelease());
@@ -155,7 +169,9 @@ namespace GameFrameWork.Resources
             AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
             if (bundleInfo == null)
             {
+                OnLoadAssetBundle(abName);
                 bundleInfo = GetLoadedAssetBundle(abName);
+
                 if (bundleInfo == null)
                 {
                     m_LoadRequests.Remove(abName);
@@ -165,17 +181,19 @@ namespace GameFrameWork.Resources
             }
 
             string[] dependencies = null;
+            AssetBundle ab = null;
 
             if (m_Dependencies.TryGetValue(abName, out dependencies))
             {
                 while (DependenciesLoaded(dependencies))
                 {
-                    AssetBundle ab = bundleInfo.m_AssetBundle;
+                    ab = bundleInfo.m_AssetBundle;
                     return ab.GetMainAsset(t);
                 }
             }
 
-            return null;
+            ab = bundleInfo.m_AssetBundle;
+            return ab.GetMainAsset(t);
         }
 
         /// <summary>
@@ -212,7 +230,7 @@ namespace GameFrameWork.Resources
             AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
             if (bundleInfo == null)
             {
-                yield return StartCoroutine(OnLoadAssetBundle(abName));
+                yield return StartCoroutine(OnLoadAssetBundleAsync(abName));
 
                 bundleInfo = GetLoadedAssetBundle(abName);
                 if (bundleInfo == null)
@@ -255,7 +273,20 @@ namespace GameFrameWork.Resources
             m_LoadRequests.Remove(abName);
         }
 
-        private IEnumerator OnLoadAssetBundle(string abName)
+
+        private void OnLoadAssetBundle(string abName)
+        {
+            string path = GetAssetBundlePath(abName);
+            Log.Debugger.Log("开始同步加载资源：" + path);
+
+            AssetBundle assetObj = AssetBundle.LoadFromFile(path);
+            if (assetObj != null)
+            {
+                m_LoadedAssetBundles.Add(abName, new AssetBundleInfo(assetObj));
+            }
+        }
+
+        private IEnumerator OnLoadAssetBundleAsync(string abName)
         {
             string path = GetAssetBundlePath(abName);
             Log.Debugger.Log("开始异步加载资源：" + path);
@@ -268,6 +299,7 @@ namespace GameFrameWork.Resources
                 m_LoadedAssetBundles.Add(abName, new AssetBundleInfo(assetObj));
             }
         }
+
 
         private AssetBundleInfo GetLoadedAssetBundle(string abName)
         {
@@ -297,15 +329,21 @@ namespace GameFrameWork.Resources
         private string GetRealAssetPath(string abName)
         {
             abName = abName.ToLower();
+            AssetVersion version = null;
 
-            if (!abName.EndsWith(ExtName))
+            if(m_DicAssetVerson.TryGetValue(abName,out version))
             {
-                abName += ExtName;
+                if (!abName.EndsWith(version.ExtendName))
+                {
+                    abName += version.ExtendName;
+                }
+
+                return abName;
             }
 
-            return abName;
+            Log.Debugger.LogError("Can't find the version of" + abName);
+            return string.Empty;
         }
-
 
         /// <summary>
         /// 载入依赖
@@ -315,7 +353,7 @@ namespace GameFrameWork.Resources
         {
             if (m_Manifest == null)
             {
-                Log.Debugger.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
+                Log.Debugger.LogError("Please initialize AssetBundleManifest by calling ResMgr.Init()");
                 return;
             }
             // Get dependecies from the AssetBundleManifest object..
@@ -370,12 +408,7 @@ namespace GameFrameWork.Resources
 
         private string GetAssetBundlePath(string abName)
         {
-#if UNITY_EDITOR
-            string resPath = Utils.PathUtil.StreamingAssetsPath;
-#else
-            string resPath = Utils.PathUtil.PersistentDataPath; 
-#endif
-            return string.Format("{0}/{1}", resPath, abName);
+            return string.Format("{0}/{1}", Utils.PathUtil.RunTimeAssetPath, abName);
         }
 
         protected override void OnShutDown()
@@ -385,9 +418,7 @@ namespace GameFrameWork.Resources
             m_LoadRequests.Clear();
         }
 
-        public const string ExtName = ".assetBundle";                   //素材扩展名
         public const int UNLOAD_TIME = 60 * 15;
-
         private float m_UnLoadTime;
         private AssetBundleManifest m_Manifest;
         private Dictionary<string, string[]> m_Dependencies = null;

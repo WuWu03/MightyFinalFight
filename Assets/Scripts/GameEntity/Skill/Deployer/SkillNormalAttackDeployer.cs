@@ -21,7 +21,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
         m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
         m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
-
+        m_AttackMsgData.skillID = m_SkillData.ID;
         if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Just)
         {
             m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;

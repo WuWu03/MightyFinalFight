@@ -6,7 +6,7 @@ namespace GameFrameWork.Log
 {
     public static class Debugger
     {
-        public static Color LogColor = Color.black;
+        public static Color LogColor = Color.white;
         public static void Log(string logStr = "", params object[] args)
         {
             if (!AppConfig.Ins.OpenLog) return;
@@ -34,7 +34,6 @@ namespace GameFrameWork.Log
             }
 
             string color = ToRGBHex(LogColor);
-            LogColor = Color.black;
 
             if (!string.IsNullOrEmpty(color))
             {

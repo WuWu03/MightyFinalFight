@@ -37,12 +37,13 @@ public class SkillData : BaseConfigData
         SkillAttack,
     }
 
-    public enum SkillStatus
+    public enum SkillPrevConditionType
     {
         None,
         Ground,//着陆
         Float,//浮空
         Catch,//抓人
+        GroundOrCatch,//着陆或抓人
         HPMoreThan,//hp大于
         HPLessThan,//hp小于
     }
@@ -120,7 +121,7 @@ public class SkillData : BaseConfigData
     [Serializable]
     public class SkillPrevCondition
     {
-        public SkillStatus Status;
+        public SkillPrevConditionType PrevConditionType;
         public string Args;
     }
 

@@ -33,13 +33,13 @@ namespace GameFrameWork.Input
             public VoidParamT2<int, bool> KeyEvent;
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             m_ListEvent = new List<ComboKeyEvent>();
             m_ListKeyType = new List<KeyType>();
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             if (m_ListEvent != null && m_ListEvent.Count > 0)
             {
@@ -58,13 +58,15 @@ namespace GameFrameWork.Input
 
                 TriggerKeyEvent();
             }
+        }
 
+        protected override void OnLateUpdate()
+        {
             if (!m_IsCombo)
             {
                 AfterTriggeFunc?.Invoke();
             }
         }
-
 
         private static bool m_AxisHorizontalDown = false;
         private static bool m_AxisVerticalDown = false;
@@ -269,9 +271,9 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
+                m_IsCombo = true;
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
                 ResetKeys();
-                m_IsCombo = true;
             }
         }
 
@@ -312,9 +314,7 @@ namespace GameFrameWork.Input
         private bool m_KeyRightAdd = true;
         private bool m_KeyXAdd = true;
         private bool m_KeyYAdd = true;
-
         private bool m_IsCombo = false;
-
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;
 

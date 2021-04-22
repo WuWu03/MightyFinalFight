@@ -21,7 +21,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.Rigidbody.velocity = Vector2.zero;
         m_Owner.Rigidbody.AddForce(Force);
-        m_Owner.PlayAnimation(AnimName.SmoonUp);
+        m_Owner.PlayAnimation(AnimName.SmoonUp, 0);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

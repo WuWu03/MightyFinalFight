@@ -25,7 +25,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
         m_IsOnGround = false;
         m_CanEffect = true;
-
+        m_AttackMsgData.skillID = m_SkillData.ID;
         if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Just)
         {
             m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
@@ -35,6 +35,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.OnDropEvent.AddListener(OnDropEvent);
         m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.SetCatch(false);
         m_Owner.OnAttackMsg(m_AttackMsgData, true);
     }
 
