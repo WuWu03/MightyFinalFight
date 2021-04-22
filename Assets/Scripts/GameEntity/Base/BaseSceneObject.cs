@@ -62,7 +62,7 @@ public class BaseSceneObject : BaseObject
         }
     }
 
-    public bool IsInGround
+    public virtual bool IsInGround
     {
         get
         {

@@ -43,7 +43,10 @@ namespace GameFrameWork.Input
         {
             if (m_ListEvent != null && m_ListEvent.Count > 0)
             {
-                if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME) ResetKeys();
+                if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME)
+                {
+                    ResetKeys();
+                }
 
                 if (CheckKeyDown(KeyType.Up)) m_KeyDownTime = Time.time;
                 if (CheckKeyDown(KeyType.Down)) m_KeyDownTime = Time.time;
@@ -55,15 +58,11 @@ namespace GameFrameWork.Input
                 if (CheckKeyDown(KeyType.Y)) m_KeyDownTime = Time.time;
                 if (CheckKeyDown(KeyType.LB)) m_KeyDownTime = Time.time;
                 if (CheckKeyDown(KeyType.RB)) m_KeyDownTime = Time.time;
-
-                TriggerKeyEvent();
             }
-        }
 
-        protected override void OnLateUpdate()
-        {
-            if (!m_IsCombo)
+            if(!TriggerKeyEvent())
             {
+                ResetKeys();
                 AfterTriggeFunc?.Invoke();
             }
         }
@@ -246,9 +245,9 @@ namespace GameFrameWork.Input
             return keyDown;
         }
 
-        private void TriggerKeyEvent()
+        private bool TriggerKeyEvent()
         {
-            if (m_ListKeyType.Count < 1) return;
+            if (m_ListKeyType.Count < 1) return false;
 
             for (int i = 0; i < m_ListEvent.Count; i++)
             {
@@ -260,21 +259,21 @@ namespace GameFrameWork.Input
                 {
                     if(IsMatch(m_ListEvent[i].Keys,m_ListKeyType))
                     {
-                        isMatch = true;
+                        isMatch = true;       
                         break;
                     }
                 }
-
+                
                 if (!isMatch || GetPreconditonFunc == null || !GetPreconditonFunc(m_ListEvent[i].EventID))
                 {
-                    m_IsCombo = false;
                     continue;
                 }
 
-                m_IsCombo = true;
                 m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
-                ResetKeys();
+                return true;
             }
+
+            return false;
         }
 
         private bool IsMatch(KeyType[] origin,List<KeyType> input)
@@ -300,7 +299,6 @@ namespace GameFrameWork.Input
             m_KeyRightAdd = true;
             m_KeyXAdd = true;
             m_KeyYAdd = true;
-            m_IsCombo = false;
         }
 
         protected override void OnShutDown()
@@ -314,7 +312,6 @@ namespace GameFrameWork.Input
         private bool m_KeyRightAdd = true;
         private bool m_KeyXAdd = true;
         private bool m_KeyYAdd = true;
-        private bool m_IsCombo = false;
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;
 

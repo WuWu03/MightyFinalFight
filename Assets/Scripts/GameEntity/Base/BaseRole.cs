@@ -190,6 +190,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnAttackMsg(AttackData data,bool forceJumpAttack = false)
     {
         if (data == null) return;
+        Debug.Log("技能啊啊" + forceJumpAttack);
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
 
         if (m_IsJumpAttack && data.AddSelfForce != Vector2.zero)

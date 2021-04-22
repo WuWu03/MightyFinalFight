@@ -125,7 +125,9 @@ namespace GameFrameWork.Editor
             GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
+                GUI.enabled = false;
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
+                GUI.enabled = true ;
 
                 if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetBuildDir) && !m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
                 {
