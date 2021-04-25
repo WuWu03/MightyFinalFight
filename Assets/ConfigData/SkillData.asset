@@ -30,7 +30,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -68,7 +68,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -106,7 +106,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -144,7 +144,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 1
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -181,7 +181,9 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
-    SkillPrevConditions: []
+    SkillPrevConditions:
+    - PrevConditionType: 2
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -217,7 +219,9 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
-    SkillPrevConditions: []
+    SkillPrevConditions:
+    - PrevConditionType: 2
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -254,7 +258,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -305,7 +309,9 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
-    SkillPrevConditions: []
+    SkillPrevConditions:
+    - PrevConditionType: 1
+      Args: 
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
@@ -342,7 +348,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 3
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -369,7 +375,7 @@ MonoBehaviour:
     AnimationName: Throw
     HurtSound: 
     Type: 1
-    DeployerType: 1
+    DeployerType: 3
     TriggerType: 2
     Key:
       Keys: 
@@ -380,7 +386,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 3
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 4
@@ -436,9 +442,9 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 4
       Args: 
-    - Status: 4
+    - PrevConditionType: 5
       Args: HPMoreThan:1
     SkillEffects:
     - EffectorType: 1
@@ -494,7 +500,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 1
     CanChangeDir: 1
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -532,7 +538,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 1
     CanChangeDir: 1
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -584,7 +590,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -658,7 +664,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -732,7 +738,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -770,7 +776,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 1
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -808,7 +814,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 2
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -846,7 +852,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 2
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -884,7 +890,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -940,7 +946,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -996,7 +1002,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 3
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1034,7 +1040,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 3
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 4
@@ -1144,7 +1150,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1182,7 +1188,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1234,7 +1240,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1274,9 +1280,9 @@ MonoBehaviour:
     Name: BredAttack
     AnimationName: Attack1
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1286,7 +1292,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1312,9 +1318,9 @@ MonoBehaviour:
     Name: TwoPAttack
     AnimationName: Attack1
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1324,7 +1330,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1350,9 +1356,9 @@ MonoBehaviour:
     Name: AxlAttack
     AnimationName: Attack1
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1362,7 +1368,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - Status: 1
+    - PrevConditionType: 0
       Args: 
     SkillEffects:
     - EffectorType: 1

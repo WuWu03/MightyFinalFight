@@ -98,7 +98,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            Debug.Log(m_IsDropTrag + "," + m_IsBeCatch + "," + IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump), typeof(RoleAttack)));
             return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump),typeof(RoleAttack));
         }
     }

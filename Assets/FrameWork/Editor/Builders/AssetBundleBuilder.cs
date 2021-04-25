@@ -79,14 +79,14 @@ namespace GameFrameWork.Editor
         {
             if (!Directory.Exists(path))
             {
-                EditorUtility.DisplayDialog("错误", "资源路径不存在", "确定");
+                EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
                 return false;
             }
 
             string[] files = Directory.GetFiles(path, pattern);
             if (files.Length < 1)
             {
-                EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
+                EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n" + path, "确定");
                 return false;
             }
 
@@ -106,14 +106,14 @@ namespace GameFrameWork.Editor
         {
             if(!Directory.Exists(path))
             {
-                EditorUtility.DisplayDialog("错误", "资源路径不存在", "确定");
+                EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
                 return false;
             }
 
             string[] files = Directory.GetFiles(path, pattern);
             if (files.Length < 1)
             {
-                EditorUtility.DisplayDialog("错误", "该路径下无任何文件", "确定");
+                EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n"+ path, "确定"); 
                 return false;
             }
 

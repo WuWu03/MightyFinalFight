@@ -34,6 +34,7 @@ namespace GameFrameWork.Editor
         {
             InitConfig();
             MainGUI();
+            LockConfigGUI();
             CopyAssetGUI();
             ExtendNameGUI();
             PatternGUI();
@@ -122,12 +123,11 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListExtendName == null) m_AssetBundleConfig.ListExtendName = new List<string>();
             if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
 
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
-                GUI.enabled = false;
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
-                GUI.enabled = true ;
 
                 if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetBuildDir) && !m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
                 {
@@ -149,9 +149,10 @@ namespace GameFrameWork.Editor
                 }
                 GUILayout.EndVertical();
             });
+            GUI.enabled = true;
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             int index = 0;
             for (int i = 0; i < m_ListData.Count; i++)
             {
@@ -209,21 +210,28 @@ namespace GameFrameWork.Editor
 
                     GUILayout.EndVertical();
                 });
-                
-                //if (i < m_ListData.Count - 1)
-                //    GUILayout.Space(0);
             }
 
             GUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
+            GUI.enabled = true;
         }
 
+        private void LockConfigGUI()
+        {
+            GUIBoxScope(() =>
+            {
+                m_AssetBundleConfig.LockConfig = GUILayout.Toggle(m_AssetBundleConfig.LockConfig, "锁定所有配置", GUI.skin.toggle);
+            });
+        }
         private void CopyAssetGUI()
         {
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.IsCopyAsset = GUILayout.Toggle(m_AssetBundleConfig.IsCopyAsset, "打包完成后自动复制资源到指定文件夹", GUI.skin.toggle);
             });
+            GUI.enabled = true;
         }
 
         string extend = string.Empty;
@@ -231,6 +239,7 @@ namespace GameFrameWork.Editor
         private void ExtendNameGUI()
         {
             //--------------添加扩展名----------------
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             GUILayout.BeginHorizontal();
 
             if (GUILayout.Button("  添加扩展名  "))
@@ -267,7 +276,7 @@ namespace GameFrameWork.Editor
             //--------------移除扩展名----------------
             if (GUILayout.Button("  移除扩展名  "))
             {
-                if (m_AssetBundleConfig.ListExtendName.Count < 1)
+                if(m_AssetBundleConfig.ListExtendName.Count < 1)
                 {
                     ShowNotification(new GUIContent("没有扩展名，请先添加扩展名"));
                     return;
@@ -279,6 +288,7 @@ namespace GameFrameWork.Editor
             }
             removeExtendIndex = EditorGUILayout.Popup(removeExtendIndex, m_AssetBundleConfig.ListExtendName.ToArray());
             GUILayout.EndHorizontal();
+            GUI.enabled = true;
         }
 
         string pattern = string.Empty;
@@ -286,12 +296,14 @@ namespace GameFrameWork.Editor
         private void PatternGUI()
         {
             //--------------添加过滤器----------------
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("添加过滤器名"))
             {
+
                 if (string.IsNullOrEmpty(pattern))
                 {
-                    ShowNotification(new GUIContent("过滤器名不能为空"));
+                    pattern = "*";
                 }
                 else
                 {
@@ -304,16 +316,16 @@ namespace GameFrameWork.Editor
                     {
                         pattern = "*." + pattern;
                     }
+                }
 
-                    if (!m_AssetBundleConfig.ListPattern.Contains(pattern))
-                    {
-                        m_AssetBundleConfig.ListPattern.Add(pattern);
-                        ShowNotification(new GUIContent("添加成功"));
-                    }
-                    else
-                    {
-                        ShowNotification(new GUIContent("已存在相同的过滤器名"));
-                    }
+                if (!m_AssetBundleConfig.ListPattern.Contains(pattern))
+                {
+                    m_AssetBundleConfig.ListPattern.Add(pattern);
+                    ShowNotification(new GUIContent("添加成功"));
+                }
+                else
+                {
+                    ShowNotification(new GUIContent("已存在相同的过滤器名"));
                 }
             }
             pattern = EditorGUILayout.TextField(pattern);
@@ -321,7 +333,7 @@ namespace GameFrameWork.Editor
             //--------------移除过滤器----------------
             if (GUILayout.Button("移除过滤器名"))
             {
-                if (m_AssetBundleConfig.ListPattern.Count < 1)
+                if(m_AssetBundleConfig.ListPattern.Count < 1)
                 {
                     ShowNotification(new GUIContent("没有过滤器名，请先添加过滤器名"));
                     return;
@@ -335,10 +347,12 @@ namespace GameFrameWork.Editor
 
             removePatternIndex = EditorGUILayout.Popup(removePatternIndex, m_AssetBundleConfig.ListPattern.ToArray());
             GUILayout.EndHorizontal();
+            GUI.enabled = true;
         }
 
         private void PlatFormSelectGUI()
         {
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             GUILayout.BeginHorizontal();
             GUIStyle style = new GUIStyle(GUI.skin.button);
             style.fontStyle = FontStyle.Bold;
@@ -347,10 +361,12 @@ namespace GameFrameWork.Editor
             GUILayout.Label("打包平台", style);
             m_AssetBundleConfig.PlatFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.PlatFormIndex, TARGET_PLATFORM);
             GUILayout.EndHorizontal();
+            GUI.enabled = true;
         }
 
         private void ConfigButtonGUI()
         {
+            GUI.enabled = !m_AssetBundleConfig.LockConfig;
             if (GUILayout.Button("添加配置"))
             {
                 m_ListData.Add(new AssetBundleData());
@@ -372,6 +388,7 @@ namespace GameFrameWork.Editor
                 SaveConfig();
                 ShowNotification(new GUIContent("保存成功"));
             }
+            GUI.enabled = true;
         }
 
         int platFormIndex = 0;

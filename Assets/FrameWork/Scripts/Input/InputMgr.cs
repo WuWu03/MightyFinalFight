@@ -22,9 +22,9 @@ namespace GameFrameWork.Input
 
     public class InputMgr : BaseMgr<InputMgr>
     {
-        public FloatNotPar GetDirFunc;
-        public VoidNotPar AfterTriggeFunc;
-        public BoolParamT<int> GetPreconditonFunc;
+        public FloatNotPar GetDirection;
+        public BoolNotPar AfterTrigger;
+        public BoolParamT<int> GetPreconditon;
 
         class ComboKeyEvent
         {
@@ -58,12 +58,11 @@ namespace GameFrameWork.Input
                 if (CheckKeyDown(KeyType.Y)) m_KeyDownTime = Time.time;
                 if (CheckKeyDown(KeyType.LB)) m_KeyDownTime = Time.time;
                 if (CheckKeyDown(KeyType.RB)) m_KeyDownTime = Time.time;
-            }
 
-            if(!TriggerKeyEvent())
-            {
-                ResetKeys();
-                AfterTriggeFunc?.Invoke();
+                if (!TriggerKeyEvent())
+                {
+                    AfterTrigger.Invoke();
+                }
             }
         }
 
@@ -71,7 +70,7 @@ namespace GameFrameWork.Input
         private static bool m_AxisVerticalDown = false;
         private static Vector2 m_Axis = Vector2.zero;
 
-        public static Vector2 GetAxis(bool isDown = false)
+        public static Vector2 GetAxis(bool isOneKey = false)
         {
             float horizontal = UnityEngine.Input.GetAxis("Horizontal");
             float vertical = UnityEngine.Input.GetAxis("Vertical");
@@ -79,27 +78,27 @@ namespace GameFrameWork.Input
             float y = vertical;
             float speed = 1f;
 
-            if(!isDown)
+            if(!isOneKey)
             {
                 m_AxisHorizontalDown = false;
                 m_AxisVerticalDown = false;
             }
 
-            if (!isDown || !m_AxisHorizontalDown)
+            if (!isOneKey || !m_AxisHorizontalDown)
             {
                 if (x > 0) x = speed;
                 else if (x < 0) x = -speed;
             }
             else x = 0;
 
-            if (!isDown || !m_AxisVerticalDown)
+            if (!isOneKey || !m_AxisVerticalDown)
             {
                 if (y > 0) y = speed;
                 else if (y < 0) y = -speed;
             }
             else y = 0;
 
-            if (isDown)
+            if (isOneKey)
             {
                 m_AxisHorizontalDown = horizontal != 0;
                 m_AxisVerticalDown = vertical != 0;
@@ -111,30 +110,34 @@ namespace GameFrameWork.Input
             return m_Axis;
         }
 
-        public static Vector2 TestAxis()
+        private static Dictionary<string, bool> m_DicIsButtonDown = new Dictionary<string, bool>();
+        public static bool GetButtonDown(KeyType keyType, bool isOneKey = false)
         {
-            Vector2 axis = Vector2.zero;
-            if(UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+            string keyName = Enum.GetName(typeof(KeyType), keyType);
+            bool isButtonDown = UnityEngine.Input.GetButton(keyName);
+            bool prev = false;
+
+            if (!m_DicIsButtonDown.TryGetValue(keyName, out prev))
             {
-                axis.x = -1;
+                m_DicIsButtonDown.Add(keyName, false);
             }
 
-            if(UnityEngine.Input.GetKey(KeyCode.RightArrow))
+            if (isButtonDown)
             {
-                axis.x = 1;
-            }
+                if (isOneKey)
+                {
+                    m_DicIsButtonDown[keyName] = true;
+                    return !prev;
+                }
 
-            if (UnityEngine.Input.GetKey(KeyCode.UpArrow))
+                return isButtonDown;
+            }
+            else
             {
-                axis.y = 1;
+                m_DicIsButtonDown[keyName] = false;
             }
-
-            if (UnityEngine.Input.GetKey(KeyCode.DownArrow))
-            {
-                axis.y = -1;
-            }
-
-            return axis;
+            
+            return false;
         }
 
         public void AddKeyEvent(KeyType[] keys,int eventID, VoidParamT2<int, bool> KeyEvent)
@@ -161,9 +164,9 @@ namespace GameFrameWork.Input
 
         public void RemoveAllKeyEvent()
         {
-            GetDirFunc = null;
-            AfterTriggeFunc = null;
-            GetPreconditonFunc = null;
+            GetDirection = null;
+            AfterTrigger = null;
+            GetPreconditon = null;
             m_ListEvent.Clear();
         }
 
@@ -173,33 +176,13 @@ namespace GameFrameWork.Input
 
             if (key == KeyType.Up || key == KeyType.Down || key == KeyType.Left || key == KeyType.Right)
             {
-                float x = UnityEngine.Input.GetAxisRaw("Horizontal");
-                float y = UnityEngine.Input.GetAxisRaw("Vertical");
-                bool isX = (x > 0 && m_KeyRightAdd) || (x < 0 && m_KeyLeftAdd);
-                bool isY = (y > 0 && m_KeyUpAdd) || (y < 0 && m_KeyDownAdd);
+                Vector2 axis = GetAxis(true);
+                if (m_CurrDir == 0) m_CurrDir = GetDirection != null ? GetDirection() : 1;
 
-                if (m_CurrDir == 0) m_CurrDir = GetDirFunc != null ? GetDirFunc() : 1;
-
-                if (y > 0 && m_KeyUpAdd)
-                {
-                    m_ListKeyType.Add(KeyType.Up);
-                    m_KeyUpAdd = false;
-                }
-
-                if (y < 0 && m_KeyDownAdd)
-                {
-                    m_ListKeyType.Add(KeyType.Down);
-                    m_KeyDownAdd = false;
-                }
-
-                if (x > 0 && m_KeyRightAdd)
-                {
-                    if (m_CurrDir > 0) m_ListKeyType.Add(KeyType.Right);
-                    if (m_CurrDir < 0) m_ListKeyType.Add(KeyType.Left);
-                    m_KeyRightAdd = false;
-                }
-
-                if (x < 0 && m_KeyLeftAdd)
+                if (axis.y > 0) m_ListKeyType.Add(KeyType.Up);
+                if (axis.y < 0) m_ListKeyType.Add(KeyType.Down);
+                if (axis.x > 0) m_ListKeyType.Add(m_CurrDir > 0 ? KeyType.Right : KeyType.Left);
+                if (axis.x < 0)
                 {
                     if (m_ListKeyType.Count > 0 && m_ListKeyType[m_ListKeyType.Count - 1] == KeyType.Right)
                     {
@@ -211,35 +194,28 @@ namespace GameFrameWork.Input
                         if (m_CurrDir > 0) m_ListKeyType.Add(KeyType.Left);
                         if (m_CurrDir < 0) m_ListKeyType.Add(KeyType.Right);
                     }
-
-                    m_KeyLeftAdd = false;
                 }
 
+                bool isX = axis.x > 0 || axis.x < 0;
+                bool isY = axis.y > 0 || axis.y < 0;
                 keyDown = isX || isY;
             }
             else if (key == KeyType.X || key == KeyType.Y)
             {
-                bool xDown = UnityEngine.Input.GetButton("X");
-                bool yDown = UnityEngine.Input.GetButton("Y");
-
-                if (xDown && m_KeyXAdd)
+                if (GetButtonDown(key))
                 {
-                    m_ListKeyType.Add(KeyType.A);
-                    m_KeyXAdd = false;
+                    KeyType trans = key == KeyType.X ? KeyType.A : KeyType.B;
+                    if (m_ListKeyType.Count < 1 || m_ListKeyType[m_ListKeyType.Count - 1] != trans)
+                    {
+                        m_ListKeyType.Add(trans);
+                        keyDown = true;
+                    }
                 }
-
-                if (yDown && m_KeyYAdd)
-                {
-                    m_ListKeyType.Add(KeyType.B);
-                    m_KeyYAdd = false;
-                }
-
-                keyDown = xDown || yDown;
             }
-            else if (UnityEngine.Input.GetButtonDown(Enum.GetName(typeof(KeyType), key)))
+            else
             {
-                keyDown = true;
-                m_ListKeyType.Add(key);
+                keyDown = GetButtonDown(key, true);
+                if (keyDown) m_ListKeyType.Add(key);
             }
 
             return keyDown;
@@ -247,7 +223,10 @@ namespace GameFrameWork.Input
 
         private bool TriggerKeyEvent()
         {
-            if (m_ListKeyType.Count < 1) return false;
+            if (m_ListKeyType.Count < 1)
+            {
+                return false;
+            }
 
             for (int i = 0; i < m_ListEvent.Count; i++)
             {
@@ -257,14 +236,14 @@ namespace GameFrameWork.Input
 
                 for (int j = 0; j < m_ListEvent[i].Keys.Length; j++)
                 {
-                    if(IsMatch(m_ListEvent[i].Keys,m_ListKeyType))
+                    if (IsMatch(m_ListEvent[i].Keys, m_ListKeyType))
                     {
-                        isMatch = true;       
+                        isMatch = true;
                         break;
                     }
                 }
                 
-                if (!isMatch || GetPreconditonFunc == null || !GetPreconditonFunc(m_ListEvent[i].EventID))
+                if (!isMatch || GetPreconditon == null || !GetPreconditon(m_ListEvent[i].EventID))
                 {
                     continue;
                 }
@@ -276,29 +255,32 @@ namespace GameFrameWork.Input
             return false;
         }
 
-        private bool IsMatch(KeyType[] origin,List<KeyType> input)
+        private bool IsMatch(KeyType[] origin,List<KeyType> input,int originIndex = 0,int inputIndex = 0)
         {
-            if (input.Count < origin.Length)
+            if (input.Count < origin.Length) return false;
+            if (originIndex >= origin.Length) return true;
+            if (inputIndex >= input.Count) return false;
+       
+            if (input[inputIndex] != origin[originIndex])
             {
-                return false;
+                inputIndex = inputIndex + 1;
+                if (originIndex > 0) originIndex = 0;
+                return IsMatch(origin, input, originIndex, inputIndex);
             }
-
-            bool isContainFlag = !input.Except(origin).Any();
-
-            return isContainFlag;
+            else
+            {
+                inputIndex = inputIndex + 1;
+                originIndex = originIndex + 1;
+                return IsMatch(origin, input, originIndex, inputIndex);
+            }
         }
+
 
         private void ResetKeys()
         {
             m_ListKeyType.Clear();
             m_KeyDownTime = -1f;
             m_CurrDir = 0;
-            m_KeyUpAdd = true;
-            m_KeyDownAdd = true;
-            m_KeyLeftAdd = true;
-            m_KeyRightAdd = true;
-            m_KeyXAdd = true;
-            m_KeyYAdd = true;
         }
 
         protected override void OnShutDown()
@@ -306,16 +288,10 @@ namespace GameFrameWork.Input
             m_ListKeyType.Clear();
         }
 
-        private bool m_KeyUpAdd = true;
-        private bool m_KeyDownAdd = true;
-        private bool m_KeyLeftAdd = true;
-        private bool m_KeyRightAdd = true;
-        private bool m_KeyXAdd = true;
-        private bool m_KeyYAdd = true;
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;
-
-        private const float KEY_DOWN_TIME = 0.05f;
+        private float m_XYAddTime = -1f;
+        private const float KEY_DOWN_TIME = 0.02f;
 
         private List<KeyType> m_ListKeyType = null;
         private List<ComboKeyEvent> m_ListEvent = null;

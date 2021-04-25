@@ -16,6 +16,7 @@ namespace GameFrameWork.Editor
         public override void OnInspectorGUI()
         {
             SerializedProperty checkVersion = serializedObject.FindProperty("CheckVersion");
+            SerializedProperty openUpdate = serializedObject.FindProperty("OpenUpdate");
             SerializedProperty loadAB = serializedObject.FindProperty("LoadAB");
             SerializedProperty openLog = serializedObject.FindProperty("OpenLog");
             SerializedProperty useLua = serializedObject.FindProperty("UseLua");
@@ -24,6 +25,7 @@ namespace GameFrameWork.Editor
             SerializedProperty luaDirectory = serializedObject.FindProperty("LuaDirectory");
 
             EditorGUILayout.PropertyField(checkVersion);
+            EditorGUILayout.PropertyField(openUpdate);
             EditorGUILayout.PropertyField(loadAB);
             EditorGUILayout.PropertyField(openLog);
             EditorGUILayout.PropertyField(useLua);
@@ -36,6 +38,7 @@ namespace GameFrameWork.Editor
             }
 
             if (checkVersion.boolValue != appConfig.CheckVersion
+             || openUpdate.boolValue != appConfig.OpenUpdate
              || loadAB.boolValue != appConfig.LoadAB
              || openLog.boolValue != appConfig.OpenLog
              || useLua.boolValue != appConfig.UseLua
@@ -43,18 +46,14 @@ namespace GameFrameWork.Editor
              || luaByteMode.boolValue != appConfig.LuaByteMode
              || luaDirectory.stringValue != appConfig.LuaDirectory)
             {
-                UnityEditor.EditorUtility.SetDirty(target);
+                EditorUtility.SetDirty(target);
             }
 
             appConfig.CheckVersion = checkVersion.boolValue;
             appConfig.LoadAB = loadAB.boolValue;
+            appConfig.OpenUpdate = openUpdate.boolValue;
             appConfig.OpenLog = openLog.boolValue;
             appConfig.UseLua = useLua.boolValue;
-
-            if (!appConfig.AssetsExtendName.Contains("."))
-            {
-                appConfig.AssetsExtendName = "." + appConfig.AssetsExtendName;
-            }
 
             if (appConfig.UseLua)
             {

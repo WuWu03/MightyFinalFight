@@ -180,9 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CheckVersion: 1
+  OpenUpdate: 0
   LoadAB: 0
   OpenLog: 1
-  AssetsExtendName: .unity3d
   UseLua: 0
   LoadLuaAB: 0
   LuaByteMode: 0

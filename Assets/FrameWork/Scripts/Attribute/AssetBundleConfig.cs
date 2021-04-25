@@ -8,6 +8,8 @@ namespace GameFrameWork
     public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
     {
         [SerializeField]
+        public bool LockConfig = false;
+        [SerializeField]
         public int PlatFormIndex = 0;
         [SerializeField]
         public string AssetBuildDir = string.Empty;

@@ -9,7 +9,6 @@ namespace GameFrameWork.Utils
         public static string StreamingAssetsPath = Application.streamingAssetsPath + "/";
         public static string PersistentDataPath = Application.persistentDataPath + "/";
         public static string AppDataPath = Application.dataPath + "/";
-        public static string AssetsDirectory = "Assets/StreamingAssets/";
         public const string AssetBundleVersion = "Version.txt";
         public const string AssetBundleConfigPath = "Assets/FrameWork/Editor/AssetBundleConfig/";
         public static string AssetBundleConfigFullPath = AppDataPath + AssetBundleConfigPath.Substring(6);
@@ -19,15 +18,16 @@ namespace GameFrameWork.Utils
         public static string AssetBundleDataFullPath = AppDataPath + AssetBundleConfigPath.Substring(6) + AssetBundleDataName + AssetBundleDataExtend;
         public static string LuaTempDir = AppDataPath + "LuaTemp";
         public const string ManiFest = "StreamingAssets";
+
         public static string RunTimeAssetPath
         {
             get
             {
 
 #if UNITY_EDITOR
-                string resPath = Utils.PathUtil.StreamingAssetsPath;
+                string resPath = StreamingAssetsPath;
 #else
-                string resPath = Utils.PathUtil.PersistentDataPath; 
+                string resPath = StreamingAssetsPath;
 #endif
                 return resPath;
             }

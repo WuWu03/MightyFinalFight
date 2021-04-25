@@ -17,14 +17,13 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         m_BehaviourRate = baseEnemySkillInfo.BehaviourRate;
         m_BehaviourState = new bool[m_BehaviourRate.Length];  
         m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreesID);
-        //m_BehaviourTreeMgr.Start();
+        m_BehaviourTreeMgr.Start();
     }
  
     protected override void OnUpdate()
     {
         m_BehaviourTreeMgr.Update(Time.deltaTime);
         base.OnUpdate();
-        //Test();
     }
 
     protected override void OnRelease()

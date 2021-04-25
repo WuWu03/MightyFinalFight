@@ -48,6 +48,119 @@ MonoBehaviour:
     Pattern: '*.png'
     AssetPath: Assets/ArtResources/UI/UIAtlas/SelectPlayerPanel/
     AssetBundlePath: 
+  - ID: 6
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/Texture/Stage/
+    AssetBundlePath: ArtResources/Texture/Stage/
+  - ID: 7
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/AudioClip/BGM/
+    AssetBundlePath: ArtResources/AudioClip/BGM/
+  - ID: 8
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/AudioClip/Sound/
+    AssetBundlePath: ArtResources/AudioClip/Sound/
+  - ID: 9
+    BundleType: 1
+    BundleName: fonts
+    BundleExtend: .assetbundle
+    Pattern: '*.ttf'
+    AssetPath: Assets/ArtResources/Fonts/
+    AssetBundlePath: 
+  - ID: 10
+    BundleType: 1
+    BundleName: Models/Character/Axl
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Axl/
+    AssetBundlePath: 
+  - ID: 11
+    BundleType: 1
+    BundleName: Models/Character/Bred
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Bred/
+    AssetBundlePath: Character/Bred/
+  - ID: 12
+    BundleType: 1
+    BundleName: Models/Character/Cody
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Cody/
+    AssetBundlePath: 
+  - ID: 13
+    BundleType: 1
+    BundleName: Models/Character/Guy
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Guy/
+    AssetBundlePath: 
+  - ID: 14
+    BundleType: 1
+    BundleName: Models/Character/TwoP
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/TwoP/
+    AssetBundlePath: Character/TwoP/
+  - ID: 15
+    BundleType: 1
+    BundleName: Models/Item
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Item/
+    AssetBundlePath: 
+  - ID: 16
+    BundleType: 1
+    BundleName: Models/Weapon/CodyWeapon
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Weapon/CodyWeapon/
+    AssetBundlePath: 
+  - ID: 17
+    BundleType: 1
+    BundleName: Models/Weapon/GuyWeapon
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Weapon/GuyWeapon/
+    AssetBundlePath: 
+  - ID: 18
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
+    AssetPath: Assets/ArtResources/Prefabs/Character/
+    AssetBundlePath: ArtResources/Prefabs/Character/
+  - ID: 19
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
+    AssetPath: Assets/ArtResources/Prefabs/FX/
+    AssetBundlePath: ArtResources/Prefabs/FX/
+  - ID: 20
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
+    AssetPath: Assets/ArtResources/Prefabs/Item/
+    AssetBundlePath: ArtResources/Prefabs/Item/
+  - ID: 21
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
+    AssetPath: Assets/ArtResources/Prefabs/Weapon/
+    AssetBundlePath: ArtResources/Prefabs/Weapon/
+  LockConfig: 0
   PlatFormIndex: 0
   AssetBuildDir: Assets/StreamingAssets/
   AssetCopyDir: 
@@ -58,3 +171,5 @@ MonoBehaviour:
   - '*.prefab'
   - '*.asset'
   - '*.png'
+  - '*'
+  - '*.ttf'

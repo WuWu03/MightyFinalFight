@@ -109,9 +109,9 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             ThrowWeaponID = m_HeroData.ThrowWeaponID,
         });
 
-        InputMgr.Ins.GetDirFunc = delegate () { return m_Player.Dir; };
-        InputMgr.Ins.AfterTriggeFunc = Control;
-        InputMgr.Ins.GetPreconditonFunc = GetComboCondition;
+        InputMgr.Ins.GetDirection = delegate () { return m_Player.Dir; };
+        InputMgr.Ins.AfterTrigger = AfterTrigger;
+        InputMgr.Ins.GetPreconditon = GetPreCondition;
 
         for (int i = 6; i < m_HeroData.Skills.Length; i++)
         {
@@ -190,25 +190,31 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
-    private void Control()
+    private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.ResComplete || m_Player.Health <= 0) return;
-        if (!CanContrl) return;
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.ResComplete || m_Player.Health <= 0) return false;
+        if (!CanContrl) return false;
+        bool resutl = false;
+        Vector2 asix = InputMgr.GetAxis();
+        resutl = asix.x != 0 || asix.y != 0;
 
-        m_CurrCtrl.Move(InputMgr.GetAxis());
+        m_CurrCtrl.Move(asix);
 
         if (Input.GetButtonDown("A") || Input.GetButton("X"))
         {
-           m_CurrCtrl.Attack(InputMgr.GetAxis());
+            m_CurrCtrl.Attack(InputMgr.GetAxis());
+            resutl = true;
         }
 
         if (Input.GetButtonDown("B") || Input.GetButton("Y"))
         {
-           m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
+            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
+            resutl = true;
         }
+        return resutl;
     }
 
-    private bool GetComboCondition(int id)
+    private bool GetPreCondition(int id)
     {
         SkillData skillData = StaticConfig.SkillConfig.GetData(id);
         bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);

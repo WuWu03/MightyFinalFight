@@ -7,15 +7,15 @@ namespace GameFrameWork
     {
         [Header("* 游戏运行是否进行版本检查")]
         public bool CheckVersion = false;
-     
+
+        [Header("* 是否启用更新")]
+        public bool OpenUpdate = true;
+
         [Header("* 是否从AssetBundle加载资源")]
         public bool LoadAB = false;
 
         [Header("* 是否打开日志输出")]
         public bool OpenLog = true;
-
-        [Header("* 资源扩展名")]
-        public string AssetsExtendName = ".unity3d";
 
         [Header("* 是否启用Lua脚本")]
         public bool UseLua = false;
