@@ -48,6 +48,7 @@ public class BaseGravityObject : BaseSceneObject
     protected override void OnUpdate()
     {
         base.OnUpdate();
+
         CheckGround();
     }
 

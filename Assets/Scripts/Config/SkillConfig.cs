@@ -26,6 +26,7 @@ public class SkillData : BaseConfigData
         BulletHitEffect,
         MoveHitEffect,
         MoveTargetEffect,
+        MoveSelfEffect,
         SubHP,
     }
 
@@ -40,7 +41,8 @@ public class SkillData : BaseConfigData
     public enum SkillPrevConditionType
     {
         None,
-        Ground,//着陆
+        Ground,//站立在陆地上
+        DropGround,//刚刚落到地上
         Float,//浮空
         Catch,//抓人
         GroundOrCatch,//着陆或抓人
@@ -99,6 +101,7 @@ public class SkillData : BaseConfigData
         public Vector2 AddTargetForce;//对目标施加力
         public Vector2 AddSelfForce;//对自身施加力
         public Vector2 MoveTarget;//把目标移动
+        public Vector2 AddSelfVelocity;//自身速度
         public float SelectorAngle;//选择器角度
         public float SelectorRadius;//选择器半径
         public float AddSelfDrag;//自身的空气阻力

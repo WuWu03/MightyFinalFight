@@ -33,7 +33,7 @@ public abstract class SkillBaseDeployer
     {
         if(m_SkillData.TriggerType == SkillData.SkillTriggerType.Animtion)
         {
-            m_SkillEffects[m_CurrEffectIndex].Effect( m_SkillSelector[m_CurrEffectIndex]);
+            m_SkillEffects[m_CurrEffectIndex].Effect(m_SkillSelector[m_CurrEffectIndex]);
             m_CurrEffectIndex++;
             if(m_CurrEffectIndex >= m_SkillEffects.Length)
             {
@@ -46,7 +46,8 @@ public abstract class SkillBaseDeployer
             m_CurrEffectIndex = 0;
             for (int i = 0; i < m_SkillEffects.Length; i++)
             {
-                m_SkillEffects[i].Effect(m_SkillSelector[i]);
+                if (m_SkillEffects[m_CurrEffectIndex] != null)
+                    m_SkillEffects[i].Effect(m_SkillSelector[i]);
             }
         }
     }
@@ -89,7 +90,10 @@ public abstract class SkillBaseDeployer
     public virtual void Update() 
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
-            m_SkillEffects[i].Update();
+        {
+            if (!m_SkillEffects[i].IsCompleted)
+                m_SkillEffects[i].Update(m_SkillSelector[i]);
+        }
     }
 
     protected virtual void OnEffectComplete() { }

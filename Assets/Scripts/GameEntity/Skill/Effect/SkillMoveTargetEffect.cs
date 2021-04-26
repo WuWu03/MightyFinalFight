@@ -60,7 +60,7 @@ public class SkillMoveTargetEffect : SkillBaseEffect
         }
     }
 
-    public override void Update()
+    public override void Update(ISkillSelector selector)
     {
         if(m_Owner.IsPlayComplete())
         {

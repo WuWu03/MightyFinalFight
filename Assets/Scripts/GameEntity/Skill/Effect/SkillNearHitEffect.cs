@@ -97,7 +97,7 @@ public class SkillNearHitEffect : SkillBaseEffect
 
     }
 
-    public override void Update()
+    public override void Update(ISkillSelector selector)
     {
 
     }

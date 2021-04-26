@@ -41,6 +41,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -79,6 +80,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -117,6 +119,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -155,6 +158,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 30, y: 180}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -182,7 +186,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 2
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -193,6 +197,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -220,7 +225,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 2
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -231,6 +236,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -283,6 +289,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -321,6 +328,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 20, y: 180}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -359,6 +367,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
       AddSelfDrag: 0
@@ -397,6 +406,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: -0.05, y: 0.15}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
       AddSelfDrag: 0
@@ -415,6 +425,7 @@ MonoBehaviour:
       AddTargetForce: {x: 80, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
       AddSelfDrag: 0
@@ -455,6 +466,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 150}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 360
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -473,6 +485,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
       AddSelfDrag: 0
@@ -511,6 +524,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -526,7 +540,7 @@ MonoBehaviour:
     Name: CodyThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: DaggerHit
-    Type: 1
+    Type: 2
     DeployerType: 1
     TriggerType: 2
     Key:
@@ -563,6 +577,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -578,9 +593,9 @@ MonoBehaviour:
     Name: GuyAttack1
     AnimationName: Attack1
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -590,7 +605,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -601,6 +616,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -619,6 +635,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -637,6 +654,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -652,9 +670,9 @@ MonoBehaviour:
     Name: GuyAttack2
     AnimationName: Attack2
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -664,7 +682,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 1
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -675,6 +693,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -693,6 +712,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -711,6 +731,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -726,9 +747,9 @@ MonoBehaviour:
     Name: GuyAttack3
     AnimationName: Attack3
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -738,7 +759,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -749,6 +770,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -764,9 +786,9 @@ MonoBehaviour:
     Name: GuyAttack4
     AnimationName: Attack4
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -776,7 +798,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 1
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -787,6 +809,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 130}
       AddSelfForce: {x: 0, y: 140}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -803,8 +826,8 @@ MonoBehaviour:
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
-    DeployerType: 0
-    TriggerType: 0
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 
       AddTrigger: 0
@@ -814,7 +837,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -825,6 +848,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -841,8 +865,8 @@ MonoBehaviour:
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 1
-    DeployerType: 0
-    TriggerType: 0
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 
       AddTrigger: 0
@@ -852,7 +876,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -863,6 +887,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -879,8 +904,8 @@ MonoBehaviour:
     AnimationName: Skill1
     HurtSound: 
     Type: 2
-    DeployerType: 0
-    TriggerType: 0
+    DeployerType: 3
+    TriggerType: 2
     Key:
       Keys: 0500000004000000
       AddTrigger: 1
@@ -890,7 +915,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -901,6 +926,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -919,6 +945,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -934,9 +961,9 @@ MonoBehaviour:
     Name: GuySkill2
     AnimationName: Skill2
     HurtSound: 
-    Type: 1
-    DeployerType: 0
-    TriggerType: 0
+    Type: 2
+    DeployerType: 2
+    TriggerType: 1
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
@@ -946,7 +973,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 4
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -957,6 +984,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 150}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 360
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -975,6 +1003,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -990,9 +1019,9 @@ MonoBehaviour:
     Name: GuyKnee
     AnimationName: Knee
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1002,7 +1031,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1013,6 +1042,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1028,9 +1058,9 @@ MonoBehaviour:
     Name: GuyThrow
     AnimationName: Throw
     HurtSound: 
-    Type: 2
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 3
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1040,7 +1070,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 3
       Args: 
     SkillEffects:
     - EffectorType: 4
@@ -1051,12 +1081,13 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: -0.09, y: 0.065}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
-      IsSmoon: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
@@ -1069,6 +1100,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.12, y: 0.14}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1087,6 +1119,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.18, y: 0.14}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1105,6 +1138,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.24, y: 0.14}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1123,6 +1157,7 @@ MonoBehaviour:
       AddTargetForce: {x: 60, y: 80}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1136,31 +1171,32 @@ MonoBehaviour:
   - ID: 2011
     Level: 0
     Name: GuySkill3
-    AnimationName: Attack1
+    AnimationName: Skill3
     HurtSound: 
-    Type: 0
-    DeployerType: 0
-    TriggerType: 0
+    Type: 2
+    DeployerType: 3
+    TriggerType: 2
     Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 1.5
+      Keys: 0100000005000000
+      AddTrigger: 1
+    AnimSpeed: 1
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
-      Args: 
+    - PrevConditionType: 2
+      Args: Pos:-1
     SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
+    - EffectorType: 0
+      SelectorType: 0
       ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 100}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1171,14 +1207,33 @@ MonoBehaviour:
       IsOnGroundHurt: 0
       CanBeDefense: 1
       Args: 
+    - EffectorType: 3
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 100, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 10, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 20
+      MoveDistance: -1
+      Gravity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 1
+      Args: OnGroundPickUp
   - ID: 2012
     Level: 0
     Name: GuyAttack_Weapon
     AnimationName: AttackWeapon
     HurtSound: 
-    Type: 2
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1188,7 +1243,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1213,6 +1268,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1228,9 +1284,9 @@ MonoBehaviour:
     Name: GuyThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: 
-    Type: 2
-    DeployerType: 0
-    TriggerType: 0
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
     Key:
       Keys: 
       AddTrigger: 0
@@ -1240,7 +1296,7 @@ MonoBehaviour:
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1265,6 +1321,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1303,6 +1360,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1341,6 +1399,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
@@ -1379,6 +1438,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0

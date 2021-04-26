@@ -32,6 +32,9 @@ public class SkillFactory
         {
             switch (skillData.SkillEffects[i].SelectorType)
             {
+                case SkillSelectorType.None:
+                    ret[i] = new SkillNoneSelector(skillData, owner, i);
+                    break;
                 case SkillSelectorType.NearHitSelector:
                     ret[i] = new SkillNearHitSelector(skillData, owner, i);
                     break;
@@ -52,6 +55,9 @@ public class SkillFactory
         {
             switch (skillData.SkillEffects[i].EffectorType)
             {
+                case SkillEffectorType.None:
+                    ret[i] = new SkillNoneEffect(skillData, owner, i);
+                    break;
                 case SkillEffectorType.NearHitEffect:
                     ret[i] = new SkillNearHitEffect(skillData, owner, i);
                     break;
@@ -63,6 +69,9 @@ public class SkillFactory
                     break;
                 case SkillEffectorType.MoveTargetEffect:
                     ret[i] = new SkillMoveTargetEffect(skillData, owner, i);
+                    break;
+                case SkillEffectorType.MoveSelfEffect:
+                    ret[i] = new SkillNoneEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.SubHP:
                     ret[i] = new SkillSubHPEffect(skillData, owner, i);
@@ -85,33 +94,43 @@ public class SkillFactory
         {
             bool isCondition = false;
             SkillPrevConditionType status = conditions[i].PrevConditionType;
-            if (status == SkillPrevConditionType.None)
-                isCondition = true;
-            else if (status == SkillPrevConditionType.Ground)
+            switch (status)
             {
-                isCondition = owner.IsInGround;
-                if (owner is BaseHero)
-                    isCondition = isCondition && !(owner as BaseHero).IsCatch;
-                else if (owner is BaseEnemy)
-                    isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;
+                case SkillPrevConditionType.None:
+                    isCondition = true;
+                    break;
+                case SkillPrevConditionType.Ground:
+                    isCondition = owner.IsInGround;
+                    if (owner is BaseHero)
+                        isCondition = isCondition && !(owner as BaseHero).IsCatch;
+                    else if (owner is BaseEnemy)
+                        isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;
+                    break;
+                case SkillPrevConditionType.DropGround:
+                    Debug.Log(owner.IsDropGround);
+                    isCondition = owner.IsDropGround;
+                    break;
+                case SkillPrevConditionType.Float:
+                    isCondition = owner.IsFloat;
+                    break;
+                case SkillPrevConditionType.Catch:
+                    isCondition = (owner as BaseHero).IsCatch;
+                    break;
+                case SkillPrevConditionType.GroundOrCatch:
+                    isCondition = owner.IsInGround || (owner as BaseHero).IsCatch;
+                    break;
+                case SkillPrevConditionType.HPMoreThan:
+                    Match m1 = m_RegexHPMoreThan.Match(conditions[i].Args);
+                    if (m1.Success) isCondition = owner.Health > int.Parse(m1.Groups[2].Value);
+                    break;
+                case SkillPrevConditionType.HPLessThan:
+                    Match m2 = m_RegexHPLessThan.Match(conditions[i].Args);
+                    if (m2.Success) isCondition = owner.Health < int.Parse(m2.Groups[2].Value);
+                    break;
+                default:
+                    break;
             }
-            else if (status == SkillPrevConditionType.Float)
-                isCondition = owner.IsFloat;
-            else if (status == SkillPrevConditionType.Catch)
-                isCondition = (owner as BaseHero).IsCatch;
-            else if (status == SkillPrevConditionType.GroundOrCatch)
-                isCondition = owner.IsInGround || (owner as BaseHero).IsCatch;
-            else if (status == SkillPrevConditionType.HPMoreThan)
-            {
-                Match m = m_RegexHPMoreThan.Match(conditions[i].Args);
-                if (m.Success) isCondition = owner.Health > int.Parse(m.Groups[2].Value);
-            }
-            else if (status == SkillPrevConditionType.HPLessThan)
-            {
-                Match m = m_RegexHPLessThan.Match(conditions[i].Args);
-                if (m.Success) isCondition = owner.Health < int.Parse(m.Groups[2].Value);
-            }
-            
+
             if (!isCondition)
             {
                 ret = false;

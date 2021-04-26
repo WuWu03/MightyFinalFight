@@ -14,7 +14,7 @@ public abstract class SkillBaseEffect : SkillBase, ISkillEffect
     }
 
     public abstract void Effect(ISkillSelector selector);
-    public abstract void Update();
+    public abstract void Update(ISkillSelector selector);
     public abstract void Exit();
     public abstract void Reset();
 

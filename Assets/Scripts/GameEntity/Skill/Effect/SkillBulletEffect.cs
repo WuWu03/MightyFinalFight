@@ -49,7 +49,7 @@ public class SkillBulletEffect : SkillBaseEffect
     {
     }
 
-    public override void Update()
+    public override void Update(ISkillSelector selector)
     {
 
     }

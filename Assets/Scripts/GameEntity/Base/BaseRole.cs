@@ -110,6 +110,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public bool IsDropGround
+    {
+        get
+        {
+            return m_IsDropGround;
+        }
+    }
+
     public virtual bool CanChangeDefaultState
     {
         get
@@ -345,6 +353,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     protected override void CheckGround()
     {
+        if (m_IsDropGround && m_DropGourndTime > 0 && Time.time - m_DropGourndTime > 0.05f)
+        {
+            m_DropGourndTime = 0f;
+            m_IsDropGround = false;
+        }
+
         if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
         if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
 
@@ -362,6 +376,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (!IsInGround || m_IsDropTrag) return;
 
+        m_IsDropGround = true;
+        m_DropGourndTime = Time.time;
         OnGroundEvent.Invoke();
         OnGroundEvent.RemoveAllListeners();
         m_IsJumpAttack = false;
@@ -378,7 +394,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_Health > 0)
             {
-                ChangeState<RoleIdle>();
+                ChangeDefaultState();
                 SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
             }
             else ChangeState<RoleDead>();
@@ -458,5 +474,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;
 
+    private float m_DropGourndTime = 0f;
+    private bool m_IsDropGround = false;
     private HurtData m_OnDropGroundHurt = null;
 }

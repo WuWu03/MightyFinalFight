@@ -20,7 +20,8 @@ public class RoleAwaken : BaseFsmState
     {
         if (m_Owner.IsPlayComplete())
         {
-            ChangeState<RoleIdle>(fsm);
+            fsm.SetDefaultState<RoleIdle>();
+            fsm.ChangeDefaultState();
         }
     }
 

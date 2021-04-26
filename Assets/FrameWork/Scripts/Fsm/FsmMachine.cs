@@ -162,7 +162,7 @@ namespace GameFrameWork.Fsm
             m_CurrentState.OnEnter(this);
         }
 
-        public void ChangeDefaultState()
+        public override void ChangeDefaultState()
         {
             if (m_CurrentState == null)
             {

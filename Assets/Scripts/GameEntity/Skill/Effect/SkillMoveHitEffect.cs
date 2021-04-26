@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillMoveHitEffect : SkillBaseEffect
@@ -14,25 +15,28 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector selector)
     {
-        m_StartPos = base.m_Owner.transform.localPosition;
-        m_OriginalGravity = base.m_Owner.Rigidbody.gravityScale;
-        m_Selector = selector;
         m_IsCompleted = false;
-        base.m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        base.m_Owner.Rigidbody.AddForce(new Vector2(m_SkillEffect.AddSelfForce.x * base.m_Owner.Dir, m_SkillEffect.AddSelfForce.y));
-        base.m_Owner.Rigidbody.drag = m_SkillEffect.AddSelfDrag;
-        base.m_Owner.Rigidbody.gravityScale = m_SkillEffect.Gravity;
+        m_StartPos = m_Owner.transform.localPosition;
+        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+        m_Owner.Rigidbody.velocity = new Vector2(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
+        m_Owner.Rigidbody.drag = m_SkillEffect.AddSelfDrag;
+        m_Owner.Rigidbody.gravityScale = m_SkillEffect.Gravity;
+
+        if (m_SkillEffect.Args == "OnGroundPickUp")
+            m_Owner.OnGroundEvent.AddListener(OnGround);
+    }
+
+    private void OnGround()
+    {
+        m_Owner.FsmMachine.SetDefaultState<HeroPickUp>();
     }
 
     private void Complete()
     {
-        //m_Owner.Rigidbody.velocity = Vector2.zero;
-        //m_Owner.Rigidbody.gravityScale = m_OriginalGravity;
-        //m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        m_Owner.Rigidbody.velocity = Vector2.zero;
+        m_Owner.Rigidbody.gravityScale = 1.0f;
+        m_Owner.Rigidbody.drag = 0f;
         m_IsCompleted = true;
-        m_SkillData = null;
-        m_Owner = null;
-        m_Selector = null;
     }
 
     public override void Reset()
@@ -45,11 +49,30 @@ public class SkillMoveHitEffect : SkillBaseEffect
    
     }
 
-    public override void Update()
+    public override void Update(ISkillSelector selector)
+    {
+        CheckAttack(selector);
+
+        if (m_SkillEffect.MoveDistance < 0)
+        {
+            if (m_Owner.Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+                Complete();
+            return;
+        }
+        else
+        {
+            float dis = Mathf.Abs(m_SkillEffect.MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
+            if (dis <= 0.1f)
+            {
+                Complete();
+            }
+        } 
+    }
+
+    private void CheckAttack(ISkillSelector selector)
     {
         m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
-        List<ICanBeHit> targets = m_Selector.GetTargets();
-        bool hasHit = false;
+        List<ICanBeHit> targets = selector.GetTargets();
 
         for (int i = 0; i < targets.Count; i++)
         {
@@ -64,26 +87,8 @@ public class SkillMoveHitEffect : SkillBaseEffect
                     IsSwoon = m_SkillEffect.IsSmoon,
                     AttackValue = 1,
                 });
-
-                hasHit = true;
             }
         }
-
-        if (hasHit)
-        {
-            Complete();
-            return;
-        }
-
-        float dis = Mathf.Abs(m_SkillEffect.MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
-        if (dis <= 0.1f)
-        {
-            Complete();
-            return;
-        }
     }
-
     private Vector3 m_StartPos = Vector3.zero;
-    private ISkillSelector m_Selector = null;
-    private float m_OriginalGravity = 0;
 }

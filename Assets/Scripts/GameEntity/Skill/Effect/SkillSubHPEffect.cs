@@ -38,7 +38,7 @@ public class SkillSubHPEffect : SkillBaseEffect
         m_IsCompleted = false;
     }
 
-    public override void Update()
+    public override void Update(ISkillSelector selector)
     {
 
     }
