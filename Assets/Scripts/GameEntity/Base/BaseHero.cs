@@ -42,7 +42,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanChangeDefaultState || HasCatch() || (m_Weapon != null && m_Weapon.Health > 0);
+            return base.CanChangeDefaultState || HasCatch() || m_Weapon != null || IsAnim(AnimName.ThrowWeapon);
         }
     }
 

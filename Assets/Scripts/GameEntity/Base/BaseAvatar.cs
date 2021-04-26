@@ -135,12 +135,14 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsAnim(string animName)
     {
+        bool result = m_CurrAnimName.Equals(animName);
+
         if (m_Animator.animation.isCompleted)
         {
             m_CurrAnimName = string.Empty;
         }
 
-        return m_CurrAnimName.Equals(animName);
+        return result;
     }
 
     public void StopAnimation(string animName = null)

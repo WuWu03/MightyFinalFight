@@ -62,7 +62,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
         else if (hero.Weapon != null)
         {
-            if (hero.Weapon.Health <= 1 && m_ThrowWeaponID != 0)
+            if (hero.Weapon.Health <= 1)
                 m_SkillManager.DeploySkill(m_ThrowWeaponID);
             else
             {
@@ -72,7 +72,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 if (!isWeaponAttack || isWeaponAttackComplete)
                     m_SkillManager.DeploySkill(m_WeaponAttackID);
             }
-                
+
             hero.UseWeaponMsg();
             return;
         }

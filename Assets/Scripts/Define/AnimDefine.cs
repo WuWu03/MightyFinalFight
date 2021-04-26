@@ -6,6 +6,7 @@
     public const string Idle_Weapon = "Idle_Weapon";
     public const string Move = "Move";
     public const string Move_Weapon = "Move_Weapon";
+    public const string ThrowWeapon = "ThrowWeapon";
     public const string JumpUp = "JumpUp";
     public const string JumpDown = "JumpDown";
     public const string JumpAttack = "JumpAttack";
