@@ -122,7 +122,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
         CheckStrike(collision.gameObject);
     }
 
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
@@ -154,7 +154,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     private void CheckStrike(GameObject go)
     {
-        if (!ResComplete || m_BarrelInfo.MoveSpeed <= 0 || IsDead) return;
+        if (!m_IsResComplete || m_BarrelInfo.MoveSpeed <= 0 || IsDead) return;
         BaseRole role = go.GetComponent<BaseRole>();
         if (role == null || !(role is ICanBeHit)) return;
         if (role.ObjectType != ObjectType.Player) return;

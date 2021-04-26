@@ -19,7 +19,7 @@ public abstract class BaseCtrl
 
     public void Update()
     {
-        if (m_Owner == null || !m_Owner.ResComplete) return;
+        if (m_Owner == null || !m_Owner.IsResComplete) return;
         OnUpdate();
     }
 

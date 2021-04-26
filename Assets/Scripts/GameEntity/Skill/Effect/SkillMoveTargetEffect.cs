@@ -39,6 +39,7 @@ public class SkillMoveTargetEffect : SkillBaseEffect
     public override void Reset()
     {
         m_IsCompleted = false;
+        Exit();
     }
 
     public override void Exit()

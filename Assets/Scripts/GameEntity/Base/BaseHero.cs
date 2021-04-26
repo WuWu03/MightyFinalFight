@@ -42,7 +42,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanChangeDefaultState || HasCatch();
+            return base.CanChangeDefaultState || HasCatch() || (m_Weapon != null && m_Weapon.Health > 0);
         }
     }
 
@@ -398,8 +398,11 @@ public class BaseHero : BaseRole
 
     public void ResetCatch(bool changeState = true)
     {
-        if (m_ListCatchTarget.Count > 0)
-            m_ListCatchTarget[0].SetCatch(false);
+        for (int i = 0; i < m_ListCatchTarget.Count; i++)
+        {
+            m_ListCatchTarget[i].SetCatch(false);
+        }
+         
         m_ListCatchTarget.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;

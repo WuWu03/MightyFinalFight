@@ -57,7 +57,7 @@ public class Weapon : BaseSceneItem
     protected override void CheckGround()
     {
         base.CheckGround();
-        if (!IsInGround || !ResComplete) return;
+        if (!IsInGround || !m_IsResComplete) return;
         m_Rigidbody.velocity = Vector2.zero;
         m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
 

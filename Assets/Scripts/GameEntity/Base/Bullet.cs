@@ -21,7 +21,7 @@ public class Bullet : BaseSceneItem
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        if (!m_ResComplete) return;
+        if (!m_IsResComplete) return;
 
         if (m_BulletData.IsPenatrate)
         {
@@ -48,7 +48,7 @@ public class Bullet : BaseSceneItem
 
     private void CheckHit(Collider2D collision)
     {
-        if (!m_ResComplete || (!m_BulletData.IsPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject)) return;
+        if (!m_IsResComplete || (!m_BulletData.IsPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject)) return;
 
         ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();

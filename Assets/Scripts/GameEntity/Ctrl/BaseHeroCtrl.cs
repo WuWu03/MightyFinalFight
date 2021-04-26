@@ -19,9 +19,19 @@ public class BaseHeroCtrl : BaseRoleCtrl
         if (hero.IsCatch)
         {
             m_AttackIndex = 0;
-            if (m_Owner.IsAnim(AnimName.Throw))//正在扔出敌人
+            bool isThrowing = m_SkillManager.IsCurrSkill(m_ThrowAttackID);
+            bool isThrowingComplete = m_SkillManager.IsSkillComplete(m_ThrowAttackID);
+            bool isCatchAttack = m_SkillManager.IsCurrSkill(m_CatchAttackID);
+            bool isCatchAttackComplete = m_SkillManager.IsSkillComplete(m_CatchAttackID);
+
+            if (isThrowing && !isThrowingComplete)//正在扔出敌人
             {
                 m_CatchAttackTimer = 0;
+                return;
+            }
+
+            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CATCH_ATTACK_STAMP))//正在捕捉攻击
+            {
                 return;
             }
 
@@ -32,7 +42,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }
-
+               
             if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_STAMP)
             {
                 m_CatchAttackTimer = Time.time;
@@ -55,7 +65,14 @@ public class BaseHeroCtrl : BaseRoleCtrl
             if (hero.Weapon.Health <= 1 && m_ThrowWeaponID != 0)
                 m_SkillManager.DeploySkill(m_ThrowWeaponID);
             else
-                m_SkillManager.DeploySkill(m_WeaponAttackID);
+            {
+                bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
+                bool isWeaponAttackComplete = m_SkillManager.IsSkillComplete(m_WeaponAttackID);
+
+                if (!isWeaponAttack || isWeaponAttackComplete)
+                    m_SkillManager.DeploySkill(m_WeaponAttackID);
+            }
+                
             hero.UseWeaponMsg();
             return;
         }

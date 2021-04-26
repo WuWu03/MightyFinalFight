@@ -192,7 +192,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.ResComplete || m_Player.Health <= 0) return false;
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Health <= 0) return false;
         if (!CanContrl) return false;
         bool resutl = false;
         Vector2 asix = InputMgr.GetAxis();

@@ -82,11 +82,11 @@ public class BaseSceneObject : BaseObject
         set { m_MaxHealth = value; }
     }
 
-    public bool ResComplete
+    public bool IsResComplete
     {
         get
         {
-            return m_ResComplete;
+            return m_IsResComplete;
         }
     }
 
@@ -118,10 +118,14 @@ public class BaseSceneObject : BaseObject
     public override void Release()
     {
         base.Release();
-        GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
-        SceneObjectPool.Ins.Put(this);
-        m_ResPath = null;
-        m_ResComplete = false;
+        m_ResIsReleased = true;
+        m_IsResComplete = false;
+        if (m_ResGO != null)
+        {
+            GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
+            SceneObjectPool.Ins.Put(this);
+            m_ResPath = null;
+        }
     }
 
     public void SetObjectType(ObjectType type)
@@ -188,7 +192,7 @@ public class BaseSceneObject : BaseObject
     {
         if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath)) return;
         m_ResPath = resPath;
-        GameObjectPool.Ins.Get(resPath, OnResComplete);
+        GameObjectPool.Ins.Get(resPath, ResComplete);
     }
 
     public virtual void AddHealth(int value)
@@ -213,21 +217,30 @@ public class BaseSceneObject : BaseObject
         if (m_MaxHealth < 0) m_MaxHealth = 0;
     }
 
-    protected override void Update()
-    {
-        base.Update();
-        if (!m_ResComplete) return;
-        OnUpdate();
-    }
-
-    protected virtual void OnResComplete(GameObject go,object[] param)
+    private void ResComplete(GameObject go, object[] param)
     {
         m_ResGO = go;
         m_ResGO.transform.SetParent(this.transform, false);
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
-        m_ResComplete = true;
+        m_IsResComplete = true;
         SetLayer(m_Layer);
+
+        if (!m_ResIsReleased)
+            OnResComplete(go, param);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        if (!m_IsResComplete) return;
+        if(m_ResIsReleased)
+        {
+            Release();
+            m_ResIsReleased = false;
+            return;
+        }
+        OnUpdate();
     }
 
     protected Rect GetBound(Vector2 pos)
@@ -273,8 +286,11 @@ public class BaseSceneObject : BaseObject
     }
 
     protected virtual void OnUpdate() { }
+    protected virtual void OnResComplete(GameObject go,object[] param) { }
 
-    protected bool m_ResComplete = false;
+    private bool m_ResIsReleased = false;
+
+    protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
     protected int m_EntityID = 0;
     protected int m_Health = 0;

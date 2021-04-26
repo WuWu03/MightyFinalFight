@@ -53,6 +53,21 @@ public class SkillManager
         }
     }
 
+    public bool IsCurrSkill(int id)
+    {
+        if (m_CurrSkillDeployer == null) return false;
+        if (!m_CurrSkillDeployer.SkillID.Equals(id)) return false;
+        return true;
+    }
+
+    public bool IsSkillComplete(int id)
+    {
+        if (m_CurrSkillDeployer == null) return false;
+        if (!m_CurrSkillDeployer.SkillID.Equals(id)) return false;
+
+        return m_CurrSkillDeployer.IsAllComplete();
+    }
+
     public void ExitSkill()
     {
         if (m_CurrSkillDeployer == null) return;
