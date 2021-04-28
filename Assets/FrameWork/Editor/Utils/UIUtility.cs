@@ -381,7 +381,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
-            sb.AppendFormat("public class {0}Component:BasePanelComponent\n", setting.PanelName);
+            sb.AppendFormat("public class {0}Component : BasePanelComponent\n", setting.PanelName);
             sb.AppendLine("{");
 
             List<UIRef> layoutRefList = new List<UIRef>();
@@ -406,7 +406,7 @@ namespace GameFrameWork.Editor
                 sb.Append("\t//").Append(GetComment(uiRef));
                 sb.AppendLine();
                 sb.AppendFormat("\tpublic {0} {1}", uiRef.ComponentName, uiRef.GetName());
-                sb.Append(" { get; private set;}\n");
+                sb.Append(" { get; private set; }\n");
             }
 
             for (int i = 0; i < layoutRefList.Count; i++)
@@ -415,7 +415,7 @@ namespace GameFrameWork.Editor
                 string itemVarableName = layoutRefList[i].GetName() + "GroupView";
                 string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
                 sb.AppendFormat("\tpublic {0}<{1}> {2}", layoutName, itemName, itemVarableName);
-                sb.Append(" { get; private set;}\n");
+                sb.Append(" { get; private set; }\n");
             }
             sb.AppendLine();
             sb.AppendFormat("\tpublic {0}Component(UIRefRoot root) : base(root)", setting.PanelName);

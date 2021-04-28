@@ -1,11 +1,16 @@
-﻿using System.Collections;
+/*******************************************************/
+/**2021-4-28 17:36**************************************/
+/**Create By GQY****************************************/
+/**工具生成，请勿修改************************************/
+/*******************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork.UI;
 using UnityEngine.UI;
-
+using GameFrameWork.UI;
 public class MainPanelComponent : BasePanelComponent
 {
+	//Player/PlayerHpBar,Slider
 	public Slider PlayerHpBar { get; private set; }
 	//Enemy/EnemyHpBar,Slider
 	public Slider EnemyHpBar { get; private set; }
@@ -22,7 +27,6 @@ public class MainPanelComponent : BasePanelComponent
 	public LayoutGroupView<LevelListItem> LevelListGroupView { get; private set; }
 
 	public MainPanelComponent(UIRefRoot root) : base(root) { }
-
 	protected override void InitComponent(UIRefRoot root)
 	{
 		PlayerHpBar = root.Objects[0] as Slider;

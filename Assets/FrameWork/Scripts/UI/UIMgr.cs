@@ -67,14 +67,14 @@ namespace GameFrameWork.UI
             m_UICanvas.transform.SetParent(m_UIRoot.transform, false);
             m_EventSystem.transform.SetParent(m_UIRoot.transform, false);
 
-            m_UICamera.clearFlags = CameraClearFlags.SolidColor;
+            m_UICamera.clearFlags = CameraClearFlags.Depth;
             m_UICamera.backgroundColor = Color.black;
             m_UICamera.cullingMask = LayerMask.GetMask("UI");
             m_UICamera.orthographic = true;
             m_UICamera.orthographicSize = 5;
             m_UICamera.nearClipPlane = -1000;
             m_UICamera.farClipPlane = 1000;
-            m_UICamera.depth = 0;
+            m_UICamera.depth = 100;
 
             m_UICanvas.renderMode = RenderMode.ScreenSpaceCamera;
             m_UICanvas.worldCamera = m_UICamera;
