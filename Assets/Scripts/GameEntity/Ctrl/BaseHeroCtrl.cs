@@ -108,7 +108,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_ThrowAttackID;
     private int m_ThrowWeaponID;
     private int m_WeaponAttackID;
-    private const float CATCH_ATTACK_STAMP = 0.3f;
+    private const float CATCH_ATTACK_STAMP = 0.2f;
     private float m_CatchAttackTimer = 0f;
 }
 
