@@ -72,5 +72,13 @@ public class BaseGravityObject : BaseSceneObject
         OnGroundEvent.RemoveAllListeners();
     }
 
+    public override void Release()
+    {
+        base.Release();
+        m_Rigidbody.gravityScale = 0f;
+        m_Rigidbody.velocity = Vector2.zero;
+        m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+    }
+
     protected Rigidbody2D m_Rigidbody = null;
 }

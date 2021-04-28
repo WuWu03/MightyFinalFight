@@ -32,7 +32,7 @@ public class SkillMoveTargetEffect : SkillBaseEffect
 
         if (m_SkillEffect.IsSmoon)
         {
-            target.PlayAnimation(AnimName.SmoonUp);
+            target.PlayAnimation(AnimName.SwoonUp);
         }
     }
 

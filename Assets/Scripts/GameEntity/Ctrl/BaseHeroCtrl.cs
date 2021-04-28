@@ -62,21 +62,29 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
         else if (hero.Weapon != null)
         {
+            bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
             if (hero.Weapon.Health <= 1)
-                m_SkillManager.DeploySkill(m_ThrowWeaponID);
+            {
+                if (!isWeaponAttack && m_Owner.IsPlayComplete())
+                {
+                    hero.UseWeaponMsg();
+                    m_SkillManager.DeploySkill(m_ThrowWeaponID);
+                }
+            }
             else
             {
-                bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
-                bool isWeaponAttackComplete = m_SkillManager.IsSkillComplete(m_WeaponAttackID);
-
-                if (!isWeaponAttack || isWeaponAttackComplete)
+                if (!isWeaponAttack && m_Owner.IsPlayComplete())
+                {
+                    hero.UseWeaponMsg();
                     m_SkillManager.DeploySkill(m_WeaponAttackID);
+                }
             }
 
-            hero.UseWeaponMsg();
             return;
         }
-        base.NormalAttack(dir);
+
+        if (!m_Owner.IsAnim(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
+            base.NormalAttack(dir);
     }
 
     private BaseSceneItem IsNearSceneItem()

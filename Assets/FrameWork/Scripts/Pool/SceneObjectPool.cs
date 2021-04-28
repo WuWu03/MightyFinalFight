@@ -32,20 +32,21 @@ namespace GameFrameWork.Pool
                 DontDestroyOnLoad(obj);
             }
 
-            m_ListUsingObj.Add(obj);
             obj.Init(m_ListUsingObj.Count, name);
-            obj.SetActive(true);
             obj.SetParent(parent, false);
+            obj.transform.localPosition = Vector3.zero;
+            obj.SetActive(true);
+            m_ListUsingObj.Add(obj);
             return obj;
         }
 
-        public void Put(BaseObject @object)
+        public void Put(BaseObject obj)
         {
-            @object.SetActive(false);
-            @object.SetParent(m_PoolRoot, false);
-            @object.transform.localPosition = Vector3.zero;
-            m_QueueUnUseObj.Enqueue(@object);
-            m_ListUsingObj.Remove(@object);
+            obj.SetActive(false);
+            obj.transform.localPosition = Vector3.zero;
+            obj.SetParent(m_PoolRoot, false);    
+            m_QueueUnUseObj.Enqueue(obj);
+            m_ListUsingObj.Remove(obj);
         }
 
         public T[] FindObjects<T>(string name = null) where T : BaseObject

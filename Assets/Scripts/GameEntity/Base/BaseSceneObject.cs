@@ -118,7 +118,6 @@ public class BaseSceneObject : BaseObject
     public override void Release()
     {
         base.Release();
-        m_ResIsReleased = true;
         m_IsResComplete = false;
         if (m_ResGO != null)
         {
@@ -225,19 +224,16 @@ public class BaseSceneObject : BaseObject
         m_ResGO.SetActive(true);
         m_IsResComplete = true;
         SetLayer(m_Layer);
-
-        if (!m_ResIsReleased)
-            OnResComplete(go, param);
+        OnResComplete(go, param);
     }
 
     protected override void Update()
     {
         base.Update();
         if (!m_IsResComplete) return;
-        if(m_ResIsReleased)
+        if(m_ResGO == null)
         {
             Release();
-            m_ResIsReleased = false;
             return;
         }
         OnUpdate();
@@ -287,8 +283,6 @@ public class BaseSceneObject : BaseObject
 
     protected virtual void OnUpdate() { }
     protected virtual void OnResComplete(GameObject go,object[] param) { }
-
-    private bool m_ResIsReleased = false;
 
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;

@@ -21,7 +21,6 @@ public class Bullet : BaseSceneItem
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        if (!m_IsResComplete) return;
 
         if (m_BulletData.IsPenatrate)
         {
@@ -86,6 +85,7 @@ public class Bullet : BaseSceneItem
     protected override void OnResComplete(GameObject go,object[] param)
     {
         base.OnResComplete(go, param);
+        go.SetActive(true);
         SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
         m_Rigidbody.drag = m_BulletData.Drag;    
         m_Collider.enabled = true;

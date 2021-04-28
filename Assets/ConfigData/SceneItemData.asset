@@ -19,7 +19,7 @@ MonoBehaviour:
     Type: 0
     TriggerSize: {x: 0.1240074, y: 0.1058722}
     TriggerOffest: {x: 0, y: 0.05}
-    Value: 5
+    Value: 500
     CanDrop: 1
   - ID: 1002
     Name: GuyWeapon
@@ -27,7 +27,7 @@ MonoBehaviour:
     Type: 0
     TriggerSize: {x: 0.11, y: 0.08}
     TriggerOffest: {x: 0, y: 0.04}
-    Value: 5
+    Value: 500
     CanDrop: 0
   - ID: 1003
     Name: HaggarWeapon

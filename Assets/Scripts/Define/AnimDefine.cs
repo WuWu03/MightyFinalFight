@@ -12,8 +12,8 @@
     public const string JumpAttack = "JumpAttack";
     public const string JumpRoll = "JumpRoll";
     public const string Hurt = "Hurt";
-    public const string SmoonUp = "SmoonUp";
-    public const string SmoonDown = "SmoonDown";
+    public const string SwoonUp = "SmoonUp";
+    public const string SwoonDown = "SmoonDown";
     public const string Awaken = "Awaken";
     public const string Dead = "Dead";
     public const string Catch = "Catch";
@@ -22,4 +22,7 @@
     public const string Drop = "Drop";
     public const string PickUp = "PickUp";
     public const string Defense = "Defense";
+    public const string Skill1 = "Skill1";
+    public const string Skill2 = "Skill2";
+    public const string Skill3 = "Skill3";
 }
