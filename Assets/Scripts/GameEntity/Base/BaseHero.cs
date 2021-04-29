@@ -333,11 +333,11 @@ public class BaseHero : BaseRole
             isCheck = isCheck || IsAnyState(typeof(RoleMove));
             m_IsOnGround = false;
            
-            if (!isCheck || m_TriggerTargets.Targets.Count < 1) return;
+            if (!isCheck || m_ListTargets.Count < 1) return;
 
-            for (int i = 0; i < m_TriggerTargets.Targets.Count; i++)
+            for (int i = 0; i < m_ListTargets.Count; i++)
             {
-                ICanBeHit temp = m_TriggerTargets.Targets[i].GetComponent<ICanBeHit>();
+                ICanBeHit temp = m_ListTargets[i].GetComponent<ICanBeHit>();
                 if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
 
                 BaseAvatar targetObj = temp as BaseAvatar;

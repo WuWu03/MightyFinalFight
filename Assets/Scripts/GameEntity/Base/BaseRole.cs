@@ -45,11 +45,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public virtual bool IsBeCatch
+    public bool IsBeCatch
     {
         get
         {
             return m_IsBeCatch;
+        }
+    }
+
+    public bool IsBeThrow
+    {
+        get
+        {
+            return m_IsBeThrow;
         }
     }
 
@@ -323,6 +331,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public virtual void SetThrow(bool value)
+    {
+        m_IsBeThrow = value;
+        if (value)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
+    }
+
     public virtual List<ICanBeHit> OnHitStart()
     {
         return null;
@@ -470,6 +487,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsJumpAttack = false;
     protected bool m_IsDropTrag = false;
     protected bool m_IsBeCatch = false;
+    protected bool m_IsBeThrow = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;

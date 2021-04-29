@@ -35,12 +35,12 @@ public class Bullet : BaseSceneItem
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         CheckHit(collision);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected override void OnTriggerStay2D(Collider2D collision)
     {
         CheckHit(collision);
     }

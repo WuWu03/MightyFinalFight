@@ -4,6 +4,14 @@ using UnityEngine.Events;
 
 public class BaseEnemy : BaseRole
 {
+    public bool IsThrowing 
+    {
+        get
+        {
+            return m_IsBeThrow;
+        }
+    }
+
     public override bool CanJump
     {
         get
@@ -48,21 +56,6 @@ public class BaseEnemy : BaseRole
         UIMgr.Ins.GetPanel<MainPanel>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
     }
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-
-        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
-        {
-            if (!StageMgr.Ins.CanMovePosX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
-            {
-                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
-            }
-        }
-
-        if (ResGO == null || m_Health <= 0) return;
-    }
-
     public override void OnHurtMsg(HurtData data)
     {
         if(m_IsBeCatch)
@@ -91,6 +84,29 @@ public class BaseEnemy : BaseRole
         }
     }
 
+    public override void Release()
+    {
+        base.Release();
+        PlayerMgr.Ins.AddExp(m_SkillExp);
+        OnDead(m_EntityID);
+        OnDead -= OnDead;
+        OnDead = null;
+        m_SkillExp = 0;
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
+        {
+            if (!StageMgr.Ins.CanMovePosX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            {
+                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+            }
+        }
+    }
+
     protected override void OnGroundHurtMsg(HurtData data)
     {
         if (!data.IsGroundHurt)
@@ -103,17 +119,37 @@ public class BaseEnemy : BaseRole
         base.OnGroundHurtMsg(data);     
     }
 
-    public override void Release()
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        base.Release();
-        PlayerMgr.Ins.AddExp(m_SkillExp);
-        OnDead(m_EntityID);
-        OnDead -= OnDead;
-        OnDead = null;
-        m_SkillExp = 0;
+        base.OnTriggerEnter2D(collision);
+        if (collision.gameObject.Equals(gameObject)) return;
+        BaseRole throwTarget = collision.gameObject.GetComponent<BaseRole>();
+        ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+
+        if (throwTarget == null || hit == null || throwTarget.ObjectType != ObjectType.Monster || !throwTarget.IsBeThrow) return;
+
+        bool isInRange = Mathf.Abs(m_Pos.y - throwTarget.Pos.y) <= 0.1f;
+        if (!isInRange) return;
+
+        OnHurtMsg(new HurtData()
+        {
+            ID = 0,
+            SkillExp = 2,
+            AttackerDir = -m_Dir,
+            AttackForce = new Vector2(40 * -m_Dir, 150),
+            AttackerPos = m_Pos,
+            CanBeDefense = false,
+            IsSwoon = true,
+            AttackerID = m_ID,
+            AttackValue = 1,
+            HurtSound = string.Empty,
+            HurtAnim = string.Empty,
+            IsGroundHurt = true,
+        });
     }
 
     private int m_SkillExp = 0;
     private string[] m_HurtAnim = null;
     protected BaseRoleCtrl m_AvatarCtrl = null;
+
 }

@@ -11,14 +11,12 @@ public class SkillNearHitSelector : SkillBaseSelector
     public override List<ICanBeHit> GetTargets()
     {
         m_ListTargets.Clear();
-        TriggerTargets trigger = m_Owner.GetComponent<TriggerTargets>();
-        if (trigger == null) return m_ListTargets;
 
-        for (int i = 0; i < trigger.Targets.Count; i++)
+        for (int i = 0; i < m_Owner.Targets.Count; i++)
         {
-            ICanBeHit hit = trigger.Targets[i].GetComponent<ICanBeHit>();
-
+            ICanBeHit hit = m_Owner.Targets[i].GetComponent<ICanBeHit>();
             if (hit == null) continue;
+
             bool isInRange = false;
             BaseSceneObject hitObj = hit as BaseSceneObject;
 
@@ -41,7 +39,7 @@ public class SkillNearHitSelector : SkillBaseSelector
 
     public override List<GameObject> GetTargetsObj()
     {
-        return m_Owner.GetComponent<TriggerTargets>().Targets;
+        return m_Owner.Targets;
     }
 
     public override void Reset()

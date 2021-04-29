@@ -31,6 +31,14 @@ public class Barrel : BaseSceneItem, ICanBeHit
         }
     }
 
+    public bool IsBeThrow
+    {
+        get
+        {
+            return false;
+        }
+    }
+
     public bool IsDead
     {
         get
@@ -93,6 +101,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
     }
 
     public void SetCatch(bool value) { }
+    public void SetThrow(bool value) { }
 
     protected override void OnUpdate()
     {
@@ -107,17 +116,17 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         CheckStrike(collision.gameObject);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected override void OnTriggerStay2D(Collider2D collision)
     {
         CheckStrike(collision.gameObject);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected override void OnTriggerExit2D(Collider2D collision)
     {
         CheckStrike(collision.gameObject);
     }

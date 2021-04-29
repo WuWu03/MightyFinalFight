@@ -3,6 +3,7 @@ using GameFrameWork.GameEntity;
 using GameFrameWork.Pool;
 using GameFrameWork;
 using GameFrameWork.Camera;
+using System.Collections.Generic;
 
 public class BaseSceneObject : BaseObject
 {
@@ -98,12 +99,21 @@ public class BaseSceneObject : BaseObject
         }
     }
 
+    public List<GameObject> Targets
+    {
+        get
+        {
+            return m_ListTargets;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
         m_Pos = transform.localPosition;
         m_Collider = gameObject.GetOrAddComponent<BoxCollider2D>();
         m_Collider.isTrigger = true;
+        m_ListTargets = new List<GameObject>();
     }
 
     public virtual void InitInfo(BaseSceneObjectInfo info)
@@ -118,6 +128,8 @@ public class BaseSceneObject : BaseObject
     public override void Release()
     {
         base.Release();
+        m_ListTargets.Clear();
+        m_ListTargets = null;
         m_IsResComplete = false;
         if (m_ResGO != null)
         {
@@ -204,7 +216,7 @@ public class BaseSceneObject : BaseObject
         m_MaxHealth += value;
     }
 
-    public  virtual void SubHealth(int value)
+    public virtual void SubHealth(int value)
     {
         m_Health -= value;
         if (m_Health < 0) m_Health = 0;
@@ -231,7 +243,7 @@ public class BaseSceneObject : BaseObject
     {
         base.Update();
         if (!m_IsResComplete) return;
-        if(m_ResGO == null)
+        if (m_ResGO == null)
         {
             Release();
             return;
@@ -281,8 +293,28 @@ public class BaseSceneObject : BaseObject
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (m_ListTargets == null || collision.gameObject.Equals(gameObject)) return;
+        BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
+        if (bso == null || bso.ObjectType == ObjectType.CantBreakItem || bso.ObjectType == m_ObjectType) return;
+
+        if (!m_ListTargets.Contains(collision.gameObject))
+        {
+            m_ListTargets.Add(collision.gameObject);
+        }
+    }
+
+    protected virtual void OnTriggerStay2D(Collider2D collision) { }
+
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        if (m_ListTargets != null && m_ListTargets.Contains(collision.gameObject))
+            m_ListTargets.Remove(collision.gameObject);
+    }
+
     protected virtual void OnUpdate() { }
-    protected virtual void OnResComplete(GameObject go,object[] param) { }
+    protected virtual void OnResComplete(GameObject go, object[] param) { }
 
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
@@ -296,4 +328,5 @@ public class BaseSceneObject : BaseObject
     protected Vector2 m_Pos = Vector2.zero;
     protected Vector2Int m_MapPos = Vector2Int.zero;
     protected ObjectType m_ObjectType = ObjectType.NONE;
+    protected List<GameObject> m_ListTargets = null;
 }

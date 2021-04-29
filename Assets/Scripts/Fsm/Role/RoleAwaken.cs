@@ -13,7 +13,8 @@ public class RoleAwaken : BaseFsmState
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
         m_Owner.Rigidbody.velocity = Vector2.zero;
         m_Owner.PlayAnimation(AnimName.Awaken, 1, 0.2f);
-        m_Owner.SetPos(m_Owner.Pos);    
+        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetThrow(false);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

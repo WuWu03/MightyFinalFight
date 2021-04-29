@@ -47,6 +47,7 @@ public class RoleSwoon : BaseFsmState
     private void OnGround()
     {
         m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetThrow(false);
         GameFrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnFallDown");
     }
 

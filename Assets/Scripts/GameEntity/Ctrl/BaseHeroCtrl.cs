@@ -39,6 +39,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             {
                 m_CatchAttackTimer = 0;
                 m_Owner.SetDir(dir.x);
+                hero.OnHitStart()[0].SetThrow(true);
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }
@@ -89,7 +90,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
     private BaseSceneItem IsNearSceneItem()
     {
-        List<GameObject> list = m_Owner.TriggerTargets.Targets;
+        List<GameObject> list = m_Owner.Targets;
         for (int i = 0; i < list.Count; i++)
         {
             BaseSceneItem item = list[i].GetComponent<BaseSceneItem>();

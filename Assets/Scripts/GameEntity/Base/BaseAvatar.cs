@@ -1,9 +1,6 @@
 ﻿using GameFrameWork.Fsm;
 using System;
 using UnityEngine;
-using GameFrameWork.GameEntity;
-using GameFrameWork;
-using GameFrameWork.Camera;
 using DragonBones;
 
 public abstract class BaseAvatar : BaseGravityObject
@@ -54,27 +51,16 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public TriggerTargets TriggerTargets
-    {
-        get
-        {
-            return m_TriggerTargets;
-        }
-    }
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
         m_FsmMachine = FsmMachine.Create(this, string.Format("{0}Fsm", this.GetType().Name));
-        m_TriggerTargets = gameObject.GetOrAddComponent<TriggerTargets>();
     }
 
     public override void Release()
     {
         base.Release();
         m_FsmMachine.ShutDown();
-        m_TriggerTargets.Release();
-        m_TriggerTargets = null;
         m_FsmMachine = null;
     }
 
@@ -212,7 +198,6 @@ public abstract class BaseAvatar : BaseGravityObject
     protected float m_MoveSpeed = 0.8f;
     protected Vector2 m_MoveToPoint = Vector2.zero;
     protected Vector2 m_MoveDir = Vector2.zero;
-    protected TriggerTargets m_TriggerTargets;
     protected DBTrigger m_DBTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
