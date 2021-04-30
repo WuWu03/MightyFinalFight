@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace GameFrameWork
@@ -138,21 +139,33 @@ namespace GameFrameWork
             return LitJson.JsonMapper.ToObject(value);
         }
 
-        public static Object GetMainAsset(this AssetBundle ab)
+        public static Object GetAsset(this AssetBundle ab, string assetName)
         {
-            if (ab.GetAllAssetNames().Length > 0)
+            string[] allAssetNames = ab.GetAllAssetNames();
+            for (int i = 0; i < allAssetNames.Length; i++)
             {
-                return ab.LoadAsset(ab.GetAllAssetNames()[0]);
+                string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
+                if (assetNameTemp.Equals(assetName))
+                {
+                    return ab.LoadAsset(allAssetNames[i]);
+                }
             }
+
             return null;
         }
 
-        public static Object GetMainAsset(this AssetBundle ab, System.Type type)
+        public static Object GetAsset(this AssetBundle ab, string assetName, System.Type type)
         {
-            if (ab.GetAllAssetNames().Length > 0)
+            string[] allAssetNames = ab.GetAllAssetNames();
+            for (int i = 0; i < allAssetNames.Length; i++)
             {
-                return ab.LoadAsset(ab.GetAllAssetNames()[0], type);
+                string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
+                if (assetNameTemp.Equals(assetName))
+                {
+                    return ab.LoadAsset(allAssetNames[i], type);
+                }
             }
+
             return null;
         }
 

@@ -31,13 +31,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         }
     }
 
-    public bool IsBeThrow
-    {
-        get
-        {
-            return false;
-        }
-    }
 
     public bool IsDead
     {
@@ -60,6 +53,14 @@ public class Barrel : BaseSceneItem, ICanBeHit
         get
         {
             return m_BarrelInfo;
+        }
+    }
+
+    public bool IsBeThrow
+    {
+        get
+        {
+            return false;
         }
     }
 
@@ -101,7 +102,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
     }
 
     public void SetCatch(bool value) { }
-    public void SetThrow(bool value) { }
 
     protected override void OnUpdate()
     {
@@ -118,6 +118,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
+        CheckThrow(collision.gameObject);
         CheckStrike(collision.gameObject);
     }
 
@@ -164,24 +165,51 @@ public class Barrel : BaseSceneItem, ICanBeHit
     private void CheckStrike(GameObject go)
     {
         if (!m_IsResComplete || m_BarrelInfo.MoveSpeed <= 0 || IsDead) return;
-        BaseRole role = go.GetComponent<BaseRole>();
-        if (role == null || !(role is ICanBeHit)) return;
-        if (role.ObjectType != ObjectType.Player) return;
-        if (role.IsAnyState(typeof(RoleAttack))) return;
 
-        ICanBeHit hit = role as ICanBeHit;
+        BaseRole role = go.GetComponent<BaseRole>();
+        ICanBeHit hit = go.GetComponent<ICanBeHit>();
+
+        if (role == null || hit == null || role.ObjectType != ObjectType.Player || role.IsAnyState(typeof(RoleAttack)))
+        {
+            return;
+        }
+ 
         hit.OnHurtMsg(new HurtData()
         {
-            AttackerDir = m_BarrelInfo.Dir,
+            AttackerDir = -role.Dir,
+        });
+    }
+
+    private void CheckThrow(GameObject go)
+    {
+        if (!m_IsResComplete || IsDead) return;
+
+        BaseRole role = go.GetComponent<BaseRole>();
+        ICanBeHit hit = go.GetComponent<ICanBeHit>();
+
+        if (role == null || hit == null || role.ObjectType != ObjectType.Monster || !role.IsBeThrow)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(role.Pos.y - m_Pos.y) > 0.1f) return;
+
+        OnHurtMsg(new HurtData()
+        {
+            AttackerDir = -role.Dir,
             AttackForce = new Vector2(40, 150),
             AttackerPos = m_Pos,
             IsSwoon = true,
             AttackerID = ID,
             AttackValue = 1,
-            HurtSound = "OnBlow",
             HurtAnim = string.Empty,
             IsGroundHurt = false,
         });
+    }
+
+    public void SetThrow(bool value)
+    {
+        throw new System.NotImplementedException();
     }
 
     private FsmMachine m_FsmMachine = null;

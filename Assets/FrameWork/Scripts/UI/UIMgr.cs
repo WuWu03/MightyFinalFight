@@ -330,12 +330,6 @@ namespace GameFrameWork.UI
                 }
             }
 
-            for (int i = 0; i < m_ListOpenPanel.Count; i++)
-            {
-                if (m_ListOpenPanel[i].IsOpen)
-                    m_ListOpenPanel[i].Update();
-            }
-
             if (m_QueueDelayDestroy.Count > 0 && m_QueueDelayDestroy.Peek().IsDelayTimeOut)
             {
                 BasePanel panel = null;
@@ -362,6 +356,12 @@ namespace GameFrameWork.UI
                     panel.Destroy();
                     Destroy(panel.gameObject); 
                 }
+            }
+
+            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            {
+                if (m_ListOpenPanel[i].IsOpen)
+                    m_ListOpenPanel[i].Update();
             }
         }
 

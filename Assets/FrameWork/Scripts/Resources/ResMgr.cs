@@ -26,6 +26,7 @@ namespace GameFrameWork.Resources
             public Action<Object,object[]> sharpFunc;
             public bool loadMainAsset;
             public Type assetType;
+            public string AssetName;
             public object[] param;
         }
 
@@ -188,12 +189,12 @@ namespace GameFrameWork.Resources
                 while (DependenciesLoaded(dependencies))
                 {
                     ab = bundleInfo.m_AssetBundle;
-                    return ab.GetMainAsset(t);
+                    return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
                 }
             }
 
             ab = bundleInfo.m_AssetBundle;
-            return ab.GetMainAsset(t);
+            return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
         }
 
         /// <summary>
@@ -209,6 +210,7 @@ namespace GameFrameWork.Resources
             request.loadMainAsset = loadMainAsset;
             request.assetType = t;
             request.param = param;
+            request.AssetName = Path.GetFileNameWithoutExtension(abName);
             List<LoadAssetRequest> requests = null;
             if (!m_LoadRequests.TryGetValue(abName, out requests))
             {
@@ -263,10 +265,9 @@ namespace GameFrameWork.Resources
                 {
                     if (list[i].loadMainAsset)
                     {
-                        list[i].sharpFunc(ab.GetMainAsset(list[i].assetType), list[i].param);
+                        list[i].sharpFunc(ab.GetAsset(list[i].AssetName, list[i].assetType), list[i].param);
                         list[i].sharpFunc = null;
                     }
-
                 }
                 bundleInfo.m_ReferencedCount++;
             }
