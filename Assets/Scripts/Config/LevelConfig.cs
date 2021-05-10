@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork;
-using System;
+using GameFrameWork.Serialize;
 
 public class LevelConfig : BaseScriptableObject<LevelData>
 {

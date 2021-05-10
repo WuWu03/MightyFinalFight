@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFrameWork
+namespace GameFrameWork.Serialize
 {
     public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
     {

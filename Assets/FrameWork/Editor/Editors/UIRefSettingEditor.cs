@@ -22,35 +22,35 @@ namespace GameFrameWork.Editor
             string panelName = EditorGUILayout.TextField("Panel Name", m_UIRefSetting.PanelName);
             if (m_UIRefSetting.PanelName != panelName)
             {
-                EditorMgr.RegisterUndo(target, "Change UIRefSetting Panel Name");
+                EditorUtility.RegisterUndo(target, "Change UIRefSetting Panel Name");
                 m_UIRefSetting.PanelName = panelName;
             }
 
             string scriptFolder = EditorGUILayout.TextField("Script Folder", m_UIRefSetting.ScriptFolder);
             if (m_UIRefSetting.ScriptFolder != scriptFolder)
             {
-                EditorMgr.RegisterUndo(target, "Change UIRefSetting Folder Name");
+                EditorUtility.RegisterUndo(target, "Change UIRefSetting Folder Name");
                 m_UIRefSetting.ScriptFolder = scriptFolder;
             }
 
             string prefabFolder = EditorGUILayout.TextField("Prefab Folder", m_UIRefSetting.PrefabFolder);
             if (m_UIRefSetting.PrefabFolder != prefabFolder)
             {
-                EditorMgr.RegisterUndo(target, "Change UIRefSetting Res Folder Name");
+                EditorUtility.RegisterUndo(target, "Change UIRefSetting Res Folder Name");
                 m_UIRefSetting.PrefabFolder = prefabFolder;
             }
 
             UIRefSetting.ExoprtScriptType scriptType = (UIRefSetting.ExoprtScriptType)EditorGUILayout.EnumPopup("Script Type", m_UIRefSetting.ScriptType);
             if (m_UIRefSetting.ScriptType != scriptType)
             {
-                EditorMgr.RegisterUndo(target, "Change UIRefSetting Script Type");
+                EditorUtility.RegisterUndo(target, "Change UIRefSetting Script Type");
                 m_UIRefSetting.ScriptType = scriptType;
             }
 
             UIRefSetting.Type panelType = (UIRefSetting.Type)EditorGUILayout.EnumPopup("Panel Type", m_UIRefSetting.PanelType);
             if (m_UIRefSetting.PanelType != panelType)
             {
-                EditorMgr.RegisterUndo(target, "Change UIRefSetting Panel Type");
+                EditorUtility.RegisterUndo(target, "Change UIRefSetting Panel Type");
                 m_UIRefSetting.PanelType = panelType;
             }
 
@@ -71,10 +71,10 @@ namespace GameFrameWork.Editor
             if (panelType != UIRefSetting.Type.Root)
             {
                 EditorGUILayout.BeginHorizontal();
-                SerializedProperty isCustom = EditorMgr.DrawProperty(null, serializedObject, "IsCustomLayer");
+                SerializedProperty isCustom = EditorUtility.DrawProperty(null, serializedObject, "IsCustomLayer");
                 if (isCustom.boolValue)
                 {
-                    EditorMgr.DrawProperty("", serializedObject, "PanelLayer");
+                    EditorUtility.DrawProperty("", serializedObject, "PanelLayer");
                     m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.PanelLayer);
                 }
                 else
@@ -91,7 +91,7 @@ namespace GameFrameWork.Editor
                     UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.PanelCloseMode);
                     if (m_UIRefSetting.PanelCloseMode != closeMode)
                     {
-                        EditorMgr.RegisterUndo(target, "Change UIRefSetting Close Mode");
+                        EditorUtility.RegisterUndo(target, "Change UIRefSetting Close Mode");
                         m_UIRefSetting.PanelCloseMode = closeMode;
                     }
                 }
@@ -100,7 +100,7 @@ namespace GameFrameWork.Editor
                     m_UIRefSetting.PanelCloseMode = UIRefSetting.CloseMode.Destroy;
                 }
 
-                EditorMgr.DrawProperty("PreLoad Type", serializedObject, "PanelPreLoadType");
+                EditorUtility.DrawProperty("PreLoad Type", serializedObject, "PanelPreLoadType");
 
                 m_SBHelp.AppendLine("PreLoad Type: " + m_UIRefSetting.PanelPreLoadType);
                 m_SBHelp.AppendLine("Close Mode: " + m_UIRefSetting.PanelCloseMode);
@@ -108,7 +108,7 @@ namespace GameFrameWork.Editor
                 if (m_UIRefSetting.PanelCloseMode == UIRefSetting.CloseMode.DelayDestroy)
                 {
                     if (m_UIRefSetting.UnLoadTime == 0) m_UIRefSetting.UnLoadTime = 10f;
-                    SerializedProperty unLoadTime = EditorMgr.DrawProperty("UnLoad Time", serializedObject, "UnLoadTime");
+                    SerializedProperty unLoadTime = EditorUtility.DrawProperty("UnLoad Time", serializedObject, "UnLoadTime");
                     m_SBHelp.Append("UnLoad Time: " + m_UIRefSetting.UnLoadTime);
                 }
                 else

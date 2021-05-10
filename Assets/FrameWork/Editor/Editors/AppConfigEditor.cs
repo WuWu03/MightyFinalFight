@@ -46,7 +46,7 @@ namespace GameFrameWork.Editor
              || luaByteMode.boolValue != appConfig.LuaByteMode
              || luaDirectory.stringValue != appConfig.LuaDirectory)
             {
-                EditorUtility.SetDirty(target);
+                UnityEditor.EditorUtility.SetDirty(target);
             }
 
             appConfig.CheckVersion = checkVersion.boolValue;

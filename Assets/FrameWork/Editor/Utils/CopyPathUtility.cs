@@ -136,7 +136,7 @@ namespace GameFrameWork.Editor
             editor.text = content;
             editor.SelectAll();
             editor.Copy();
-            EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
+            UnityEditor.EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
             Debug.Log("拷贝路径成功!");
         }
 

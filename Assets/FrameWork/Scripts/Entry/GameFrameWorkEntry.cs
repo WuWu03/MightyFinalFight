@@ -21,6 +21,7 @@ namespace GameFrameWork
             DontDestroyOnLoad(m_Manager);
     
             UIMgr.Init(m_Manager);
+            RedPointMgr.Init(m_Manager);
             InputMgr.Init(m_Manager);
             ResMgr.Init(m_Manager);
             GameObjectPool.Init(m_Manager);
@@ -43,6 +44,7 @@ namespace GameFrameWork
         private void OnApplicationQuit()
         {
             UIMgr.Ins.ShutDown();
+            RedPointMgr.Ins.ShutDown();
             InputMgr.Ins.ShutDown();
             ResMgr.Ins.ShutDown();
             GameObjectPool.Ins.ShutDown();
@@ -59,7 +61,6 @@ namespace GameFrameWork
         protected abstract void OnInit();
         protected abstract void OnStartGame();
         protected abstract void OnExit();
-
 
         protected GameObject m_Manager = null;
     }

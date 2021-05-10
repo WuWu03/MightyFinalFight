@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using GameFrameWork.Utils;
+using GameFrameWork.Serialize;
 
 namespace GameFrameWork.Editor
 {
@@ -25,6 +26,7 @@ namespace GameFrameWork.Editor
                 else HandleLuaFile();
             }
 
+
             if (GenerateBuildMap())
             {
                 BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.None, target);
@@ -46,7 +48,7 @@ namespace GameFrameWork.Editor
                 AssetDatabase.Refresh();
 
                 Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.AssetBuildDir);
-                EditorUtility.DisplayDialog("提示", "打包成功", "确定");
+                UnityEditor.EditorUtility.DisplayDialog("提示", "打包成功", "确定");
             }
         }
 
@@ -79,14 +81,14 @@ namespace GameFrameWork.Editor
         {
             if (!Directory.Exists(path))
             {
-                EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
                 return false;
             }
 
             string[] files = Directory.GetFiles(path, pattern);
             if (files.Length < 1)
             {
-                EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n" + path, "确定");
                 return false;
             }
 
@@ -106,14 +108,14 @@ namespace GameFrameWork.Editor
         {
             if(!Directory.Exists(path))
             {
-                EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
                 return false;
             }
 
             string[] files = Directory.GetFiles(path, pattern);
             if (files.Length < 1)
             {
-                EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n"+ path, "确定"); 
+                UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n"+ path, "确定"); 
                 return false;
             }
 

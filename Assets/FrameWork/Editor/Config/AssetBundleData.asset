@@ -160,7 +160,7 @@ MonoBehaviour:
     Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/Weapon/
     AssetBundlePath: ArtResources/Prefabs/Weapon/
-  LockConfig: 1
+  LockConfig: 0
   PlatFormIndex: 0
   AssetBuildDir: Assets/StreamingAssets/
   AssetCopyDir: 

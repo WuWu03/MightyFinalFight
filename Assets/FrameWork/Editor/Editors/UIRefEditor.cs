@@ -30,7 +30,7 @@ namespace GameFrameWork.Editor
             GUI.color = Color.white;
             EditorGUI.BeginChangeCheck();
 
-            SerializedProperty useObjName = EditorMgr.DrawProperty("使用默认字段名", serializedObject, "m_UseObjName", new GUILayoutOption[0]);
+            SerializedProperty useObjName = EditorUtility.DrawProperty("使用默认字段名", serializedObject, "m_UseObjName", new GUILayoutOption[0]);
             if (m_UIRef.UseObjName != useObjName.boolValue)
             {
                 m_UIRef.UseObjName = useObjName.boolValue;
@@ -82,7 +82,7 @@ namespace GameFrameWork.Editor
 
             if (m_UIRef.IsLayoutContent())
             {
-                SerializedProperty isLoopLayout = EditorMgr.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
+                SerializedProperty isLoopLayout = EditorUtility.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
                 if (m_UIRef.IsLoopLayout != isLoopLayout.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
@@ -94,7 +94,7 @@ namespace GameFrameWork.Editor
             UIRef parentLayoutRef = m_UIRef.transform.parent == null ? null : m_UIRef.transform.parent.GetComponent<UIRef>();
             if (parentLayoutRef != null && parentLayoutRef.IsLayoutContent())
             {
-                SerializedProperty isLayoutItem = EditorMgr.DrawProperty("列表格子", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
+                SerializedProperty isLayoutItem = EditorUtility.DrawProperty("列表格子", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
                 if (m_UIRef.IsLayoutItem != isLayoutItem.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
@@ -116,7 +116,7 @@ namespace GameFrameWork.Editor
             }
             if (isParentLayoutItem)
             {
-                SerializedProperty isLayoutItem = EditorMgr.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItemVariable", new GUILayoutOption[0]);
+                SerializedProperty isLayoutItem = EditorUtility.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItemVariable", new GUILayoutOption[0]);
                 if (m_UIRef.IsLayoutItemVariable != isLayoutItem.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
@@ -125,7 +125,7 @@ namespace GameFrameWork.Editor
             }
             else m_UIRef.IsLayoutItemVariable = false;
 
-            SerializedProperty isCopyRefStr = EditorMgr.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
+            SerializedProperty isCopyRefStr = EditorUtility.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
             if (m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)
             {
                 UnityEditor.EditorUtility.SetDirty(m_UIRef);

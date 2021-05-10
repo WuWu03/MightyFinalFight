@@ -19,7 +19,8 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnStartGame()
     {
-        UIMgr.Ins.Open<RoleSelectPanel>();
+        //UIMgr.Ins.Open<RoleSelectPanel>();
+        UIMgr.Ins.Open<TestMailPanel>();
     }
 
     protected override void OnExit()

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using GameFrameWork;
+using GameFrameWork.Serialize;
 
 public class HeroConfig : BaseScriptableObject<HeroData>
 {

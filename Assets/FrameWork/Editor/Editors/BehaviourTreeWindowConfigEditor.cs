@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
 namespace GameFrameWork.Editor
 {
-    [CustomEditor(typeof(AssetBundleConfig))]
-    public class AssetBundleConfigEditor : ConfigDataEditor<AssetBundleConfig, AssetBundleData>
+    [CustomEditor(typeof(BehaviourTreeWindowConfig))]
+    public class BehaviourTreeWindowConfigEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
-            GUI.enabled = false;
+            //GUI.enabled = false;
             base.OnInspectorGUI();
             GUI.enabled = true;
         }

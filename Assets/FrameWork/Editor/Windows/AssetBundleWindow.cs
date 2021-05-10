@@ -5,6 +5,7 @@ using UnityEditor;
 using GameFrameWork.Utils;
 using System;
 using System.IO;
+using GameFrameWork.Serialize;
 
 namespace GameFrameWork.Editor
 {
@@ -54,7 +55,7 @@ namespace GameFrameWork.Editor
 
             if (!File.Exists(PathUtil.AssetBundleDataFullPath))
             {
-                Utility.CreateConfigData<AssetBundleConfig, AssetBundleData>(PathUtil.AssetBundleDataName, PathUtil.AssetBundleDataExtend, PathUtil.AssetBundleConfigPath);
+                EditorUtility.CreateConfigData<AssetBundleConfig, AssetBundleData>(PathUtil.AssetBundleDataName, PathUtil.AssetBundleDataExtend, PathUtil.EdiorConfiglPath);
             }
 
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
@@ -104,7 +105,7 @@ namespace GameFrameWork.Editor
             m_AssetBundleConfig.Datas = m_ListData.ToArray();
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
-            EditorUtility.SetDirty(m_AssetBundleConfig);
+            UnityEditor.EditorUtility.SetDirty(m_AssetBundleConfig);
         }
 
         private void ClearConfig()
@@ -124,7 +125,7 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
 
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
-            GUIBoxScope(() =>
+            EditorUtility.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
@@ -159,7 +160,7 @@ namespace GameFrameWork.Editor
                 if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i]) continue;
                 index++;
                 m_ListData[i].ID = index;
-                GUIBoxScope(() => 
+                EditorUtility.GUIBoxScope(() => 
                 {
                     GUILayout.BeginVertical();
                     GUILayout.BeginHorizontal();
@@ -172,7 +173,7 @@ namespace GameFrameWork.Editor
 
                     if (GUILayout.Button("×"))//删除本条数据
                     {
-                        if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
+                        if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                         {
                             m_ListDataHasRemove[i] = true;
                         }
@@ -219,7 +220,7 @@ namespace GameFrameWork.Editor
 
         private void LockConfigGUI()
         {
-            GUIBoxScope(() =>
+            EditorUtility.GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.LockConfig = GUILayout.Toggle(m_AssetBundleConfig.LockConfig, "锁定所有配置", GUI.skin.toggle);
             });
@@ -227,7 +228,7 @@ namespace GameFrameWork.Editor
         private void CopyAssetGUI()
         {
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
-            GUIBoxScope(() =>
+            EditorUtility.GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.IsCopyAsset = GUILayout.Toggle(m_AssetBundleConfig.IsCopyAsset, "打包完成后自动复制资源到指定文件夹", GUI.skin.toggle);
             });
@@ -281,7 +282,7 @@ namespace GameFrameWork.Editor
                     ShowNotification(new GUIContent("没有扩展名，请先添加扩展名"));
                     return;
                 }
-                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
                 {
                     m_AssetBundleConfig.ListExtendName.RemoveAt(removeExtendIndex);
                 }
@@ -339,7 +340,7 @@ namespace GameFrameWork.Editor
                     return;
                 }
 
-                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
                 {
                     m_AssetBundleConfig.ListPattern.RemoveAt(removePatternIndex);
                 }
@@ -377,7 +378,7 @@ namespace GameFrameWork.Editor
 
             if (GUILayout.Button("清空配置"))
             {
-                if (EditorUtility.DisplayDialog("提示", "确认清空全部配置吗？", "确认", "取消"))
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认清空全部配置吗？", "确认", "取消"))
                 {
                     ClearConfig();
                 }
@@ -396,7 +397,7 @@ namespace GameFrameWork.Editor
         {
             if (GUILayout.Button("打        包"))
             {
-                if (EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
                 {
                     SaveConfig();
 
@@ -422,16 +423,6 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private void GUIBoxScope(Action action)
-        {
-            using (new GUILayout.VerticalScope(GUI.skin.box, new GUILayoutOption[0]))
-            {
-                using (new GUILayout.HorizontalScope(GUI.skin.box, new GUILayoutOption[0]))
-                {
-                    action?.Invoke();
-                }
-            }
-        }
 
         private string[] TARGET_PLATFORM = new string[]
         {

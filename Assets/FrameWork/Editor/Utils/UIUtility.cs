@@ -129,7 +129,7 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            string currObjPath = EditorMgr.GetHierarchy(Selection.activeGameObject);
+            string currObjPath = EditorUtility.GetHierarchy(Selection.activeGameObject);
             if (!currObjPath.StartsWith("UIRoot\\UICanvas\\Panel"))
             {
                 Debug.LogError("应该选择Panel下面的对象作为根节点");
@@ -146,7 +146,7 @@ namespace GameFrameWork.Editor
                 if (!component.IsCopyRefStr) continue;
 
                 string name = component.GetName();
-                string path = EditorMgr.GetHierarchy(component.gameObject);
+                string path = EditorUtility.GetHierarchy(component.gameObject);
                 if (!hashSet.Add(name))
                 {
                     Debug.LogError("有重复的引用名称 => " + component.Name + "; 引用对象=>" + path);
@@ -266,11 +266,12 @@ namespace GameFrameWork.Editor
                 {
                     Debug.LogError(string.Concat(new string[]
                     {
-                    "有重复的引用名称 => ",
-                    component.Name,
-                    "; 引用对象=>",
-                    EditorMgr.GetHierarchy(component.gameObject),"; ",
-                    EditorMgr.GetHierarchy(component.gameObject)
+                        "有重复的引用名称 => ",
+                        component.Name,
+                        "; 引用对象=>",
+                        EditorUtility.GetHierarchy(component.gameObject),
+                        "; ",
+                        EditorUtility.GetHierarchy(component.gameObject)
                     }));
                     Selection.activeGameObject = component.gameObject;
                     return false;
@@ -535,7 +536,7 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < itemRefs.Length; i++)
             {
                 if (!itemRefs[i].IsLayoutItemVariable) continue;
-                string path = EditorMgr.GetHierarchy(itemRefs[i].gameObject);
+                string path = EditorUtility.GetHierarchy(itemRefs[i].gameObject);
                 path = path.Substring(path.LastIndexOf(itemName) + itemName.Length + 1).Replace(@"\", "/");
                 if (itemRefs[i].ComponentName.Equals("GameObject"))
                 {
@@ -558,7 +559,7 @@ namespace GameFrameWork.Editor
 
         private static string GetComment(UIRef uiRef)
         {
-            string objPath = EditorMgr.GetHierarchy(uiRef.gameObject);
+            string objPath = EditorUtility.GetHierarchy(uiRef.gameObject);
             string comment = objPath.Substring("UIRoot/UICanvas/Panel".Length + 1).Replace("\\", "/") + "," + uiRef.ComponentName;
 
             if (!string.IsNullOrEmpty(uiRef.Desc))
