@@ -3,9 +3,6 @@ using GameFrameWork.Editor;
 using UnityEditor;
 
 
-[CustomEditor(typeof(BehaviourTreeConfig), true)]
-public class BehaviourTreeConfigEditor : ConfigDataEditor<BehaviourTreeConfig, BehaviourTreeData> { }
-
 [CustomEditor(typeof(EnemyConfig), true)]
 public class EnemyConfigEditor : ConfigDataEditor<EnemyConfig, EnemyData> { }
 

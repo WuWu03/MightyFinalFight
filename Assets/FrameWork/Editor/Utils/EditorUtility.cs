@@ -6,37 +6,30 @@ using UnityEditor;
 using UnityEngine;
 using GameFrameWork.Serialize;
 using GameFrameWork.Utils;
+using GameFrameWork.BehaviourTree;
 
 namespace GameFrameWork.Editor
 {
-    public static class EditorUtility
-    {
-        public static void CreateConfigData<T, P>(string name, string ext, string dir = null)
-                    where T : BaseScriptableObject<P>
-                    where P : BaseConfigData
-        {
-            string directory = PathUtil.ConfigDataDefaultPath;
-            if (!string.IsNullOrEmpty(dir)) directory = dir;
-
-            string fileName = directory + name + ext;
-            if (File.Exists(fileName))
-            {
-                return;
-            }
-
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            T data = ScriptableObject.CreateInstance<T>();
-            AssetDatabase.CreateAsset(data, directory.Substring(directory.IndexOf("Assets")) + name + ext);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-
-		public static void CreateScriptableObject<T>(string name, string ext, string dir = null) where T:ScriptableObject
+	public static class EditorUtility
+	{
+		public static void CreateBehaviorConfig(string name, string extend, string path)
 		{
+			CreateConfigData<BehaviourTreeConfig, BehaviourTreeData>(name, extend, path);
+		}
+
+		public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
+																							  where P : BaseConfigData
+		{
+			CreateScriptableObject(typeof(T), name, ext, dir);
+		}
+
+		public static void CreateScriptableObject<T>(string name, string ext, string dir = null) where T : ScriptableObject
+		{
+			CreateScriptableObject(typeof(T), name, ext, dir);
+		}
+
+		private static void CreateScriptableObject(Type type,string name, string ext, string dir = null)
+        {
 			string directory = PathUtil.ConfigDataDefaultPath;
 			if (!string.IsNullOrEmpty(dir)) directory = dir;
 
@@ -51,13 +44,13 @@ namespace GameFrameWork.Editor
 				Directory.CreateDirectory(directory);
 			}
 
-			T data = ScriptableObject.CreateInstance<T>();
+			ScriptableObject data = ScriptableObject.CreateInstance(type);
 			AssetDatabase.CreateAsset(data, directory.Substring(directory.IndexOf("Assets")) + name + ext);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 		}
 
-		public static void GUIBoxScope(Action action)
+		public static void GUIBoxScope(System.Action action)
 		{
 			using (new GUILayout.VerticalScope(GUI.skin.label, new GUILayoutOption[0]))
 			{

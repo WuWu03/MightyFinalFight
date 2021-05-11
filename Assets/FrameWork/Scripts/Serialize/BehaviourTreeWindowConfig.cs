@@ -16,6 +16,8 @@ namespace GameFrameWork.Serialize
     public class BehaviourTreeWindowData
     {
         [SerializeField]
+        public int ID;
+        [SerializeField]
         public string Name;
         [SerializeField]
         public string ClassType;

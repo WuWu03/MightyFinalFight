@@ -31,35 +31,45 @@ namespace GameFrameWork.Editor
 		public static void OpenSpriteSpliter()
 		{
 			Rect wr = new Rect(0, 0, 600, 600);
-			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr);
-			s.Show();
+			EditorWindow window = EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr);
+			window.Show();
 		}
 
 		[MenuItem("GameFrameWork/AssetBundleEditor")]
 		public static void AssetBundleEditor()
 		{
 			Rect wr = new Rect(0, 0, 700, 800);
-			EditorWindow s = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
-			s.Show();
+			EditorWindow window = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
+			window.Show();
 		}
 
 		[MenuItem("GameFrameWork/BehaviourTreeEditor")]
 		public static void BehaviourTreeEditor()
         {
-			EditorWindow s = EditorWindow.GetWindow<BehaviourTreeWindow>();
-			s.Show();
+			EditorWindow window = EditorWindow.GetWindow<BehaviourTreeWindow>();
+			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/BehaviourTreeEditortttt")]
-		public static void BehaviourTreeEditotttr()
+		[MenuItem("GameFrameWork/EditorDemo/Tab")]
+		public static void TabDemoWinow()
 		{
-			EditorWindow s = EditorWindow.GetWindow<BehaviourTreeWindow>();
-			s.Close();
+			Rect wr = new Rect(0, 0, 600, 600);
+			TabDemo window = EditorWindow.GetWindowWithRect<TabDemo>(wr, true, "Unity Tab表签");
+			window.Show();
 		}
 
-		public static void CreateBehaviorConfig(string name,string extend,string path)
+		[MenuItem("GameFrameWork/EditorDemo/Styles&Icons")]
+		public static void BuiltInDemo()
 		{
-			EditorUtility.CreateConfigData<BehaviourTreeConfig, BehaviourTreeData>(name, extend, path);
+			BuiltInDemo window = EditorWindow.GetWindow<BuiltInDemo>();
+			window.Show();
+		}
+
+		[MenuItem("GameFrameWork/EditorDemo/SplitView")]
+		public static void Init()
+		{
+			EditorWindow window = EditorWindow.GetWindow<SplitViewDemo>();
+			window.Show();
 		}
 	}
 }

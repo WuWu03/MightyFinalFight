@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BehaviourConfigPath: Assets/BehaviourTreeData.asset
   WindowDatas:
-  - Name: qqq
+  - ID: 1
+    Name: "\u672A\u547D\u540D"
     ClassType: 
     Args: 
     Rect:
@@ -25,7 +26,8 @@ MonoBehaviour:
       height: 40
     Childs: []
     PreConditions: []
-  - Name: "\u672A\u547D\u540D"
+  - ID: 2
+    Name: qqq
     ClassType: 
     Args: 
     Rect:
@@ -36,7 +38,8 @@ MonoBehaviour:
       height: 40
     Childs: []
     PreConditions: []
-  - Name: "\u672A\u547D\u540D"
+  - ID: 3
+    Name: "\u672A\u547D\u540D"
     ClassType: 
     Args: 
     Rect:
@@ -47,13 +50,38 @@ MonoBehaviour:
       height: 40
     Childs: []
     PreConditions: []
-  - Name: "\u672A\u547D\u540D"
+  - ID: 4
+    Name: "\u672A\u547D\u540D"
     ClassType: 
     Args: 
     Rect:
       serializedVersion: 2
       x: 20
       y: 121
+      width: -25
+      height: 40
+    Childs: []
+    PreConditions: []
+  - ID: 5
+    Name: "\u672A\u547D\u540D"
+    ClassType: 
+    Args: 
+    Rect:
+      serializedVersion: 2
+      x: 20
+      y: 161
+      width: -25
+      height: 40
+    Childs: []
+    PreConditions: []
+  - ID: 6
+    Name: BredTree
+    ClassType: 
+    Args: 
+    Rect:
+      serializedVersion: 2
+      x: 20
+      y: 201
       width: -25
       height: 40
     Childs: []
