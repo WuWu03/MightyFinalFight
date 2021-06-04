@@ -13,19 +13,19 @@ public class AssetImportPost : AssetPostprocessor
     {
 		if (IsSprite())
 		{
-			TextureImporter textureImporter = assetImporter as TextureImporter;
-			textureImporter.spriteImportMode = SpriteImportMode.Single;
-			textureImporter.textureType = TextureImporterType.Sprite;
-			textureImporter.isReadable = false;
-			textureImporter.maxTextureSize = 2048;
-			textureImporter.textureCompression = TextureImporterCompression.Compressed;
-			textureImporter.compressionQuality = 2;
-			textureImporter.wrapMode = TextureWrapMode.Clamp;
-			textureImporter.filterMode = FilterMode.Point;
-			textureImporter.sRGBTexture = true;
-			textureImporter.alphaSource = TextureImporterAlphaSource.FromInput;
-			textureImporter.alphaIsTransparency = true;
-			textureImporter.mipmapEnabled = false;
+			//TextureImporter textureImporter = assetImporter as TextureImporter;
+			//textureImporter.spriteImportMode = SpriteImportMode.Single;
+			//textureImporter.textureType = TextureImporterType.Sprite;
+			//textureImporter.isReadable = false;
+			//textureImporter.maxTextureSize = 2048;
+			//textureImporter.textureCompression = TextureImporterCompression.Compressed;
+			//textureImporter.compressionQuality = 2;
+			//textureImporter.wrapMode = TextureWrapMode.Clamp;
+			//textureImporter.filterMode = FilterMode.Point;
+			//textureImporter.sRGBTexture = true;
+			//textureImporter.alphaSource = TextureImporterAlphaSource.FromInput;
+			//textureImporter.alphaIsTransparency = true;
+			//textureImporter.mipmapEnabled = false;
 		}
 	}
 
