@@ -15,6 +15,15 @@ namespace GameFrameWork.Serialize
     [Serializable]
     public class BehaviourTreeWindowData
     {
+        public BehaviourTreeWindowData(string name,int id,float x = 20,float y = 20)
+        {
+            Name = name;
+            ID = id;
+            Children = new List<BehaviourTreeWindowData>();
+            PreConditions = new List<BehaviourTreeWindowData>();
+            WindowRect = new Rect(x, y, 150, 80);
+        }
+
         [SerializeField]
         public int ID;
         [SerializeField]
@@ -24,9 +33,11 @@ namespace GameFrameWork.Serialize
         [SerializeField]
         public string Args;
         [SerializeField]
-        public Rect Rect;
+        public Rect ListRect;
         [SerializeField]
-        public List<BehaviourTreeWindowData> Childs;
+        public Rect WindowRect;
+        [SerializeField]
+        public List<BehaviourTreeWindowData> Children;
         [SerializeField]
         public List<BehaviourTreeWindowData> PreConditions;
     }

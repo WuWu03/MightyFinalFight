@@ -50,15 +50,20 @@ namespace GameFrameWork.Editor
 		{
 			GUILayout.EndScrollView();
 			ResizeSplitFirstView();
+
+			if (splitDirection == Direction.Horizontal)
+				scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUI.skin.scrollView, GUILayout.Width(availableRect.width * (1 - splitNormalizedPosition)));
+			else
+				scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Height(availableRect.height * (1 - splitNormalizedPosition)));
 		}
 
 		public void EndSplitView()
 		{
-
 			if (splitDirection == Direction.Horizontal)
 				EditorGUILayout.EndHorizontal();
 			else
 				EditorGUILayout.EndVertical();
+			GUILayout.EndScrollView();
 		}
 
 		private void ResizeSplitFirstView()

@@ -30,7 +30,7 @@ namespace GameFrameWork.Editor
 		[MenuItem("GameFrameWork/SpriteSpliter")]
 		public static void OpenSpriteSpliter()
 		{
-			Rect wr = new Rect(0, 0, 600, 600);
+			Rect wr = new Rect(0, 0, 600, 300);
 			EditorWindow window = EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr);
 			window.Show();
 		}

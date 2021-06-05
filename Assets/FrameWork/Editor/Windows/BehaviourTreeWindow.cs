@@ -18,12 +18,11 @@ namespace GameFrameWork.Editor
             titleContent = new GUIContent(this.GetType().Name);
         }
 
-        BehaviourTreeWindowNode node;
+
 
         private void OnEnable()
         {
-            //node = new BehaviourTreeWindowNode(1, "test", 0, 0, 100, 60);
-            //node2 = new BehaviourTreeNode(2, "test2", 0, 0, 100, 60);
+
         }
 
         private void OnDisable()
@@ -63,7 +62,7 @@ namespace GameFrameWork.Editor
             m_LeftList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
                 BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.WindowDatas[index];
-                m_BehaviourTreeWindowConfig.WindowDatas[index].Rect = rect;
+                m_BehaviourTreeWindowConfig.WindowDatas[index].ListRect = rect;
 
                 if(m_LeftOperation == 1 && m_CurrSelect == index)
                     windowData.Name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width,15), windowData.Name);
@@ -84,7 +83,14 @@ namespace GameFrameWork.Editor
 
             m_LeftList.onSelectCallback = (ReorderableList list) => 
             {
+                int oldIndex = m_CurrSelect;
                 m_CurrSelect = list.index;
+
+                if (oldIndex != m_CurrSelect)
+                {
+                    SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
+                }
+
                 m_LeftOperation = -1;
             };
         }
@@ -112,7 +118,7 @@ namespace GameFrameWork.Editor
         {
             if (string.IsNullOrEmpty(m_BehaviourTreeWindowConfig.BehaviourConfigPath) || !File.Exists(m_BehaviourTreeWindowConfig.BehaviourConfigPath))
                 return;
-
+            
             UnityEngine.Event e = UnityEngine.Event.current;
             m_HorizontalSplitView.BeginSplitView();
             LeftViewGUI(e);
@@ -140,67 +146,132 @@ namespace GameFrameWork.Editor
                 bool isClickItem = false;
                 for (int i = 0; i < m_BehaviourTreeWindowConfig.WindowDatas.Count; i++)
                 {
-                    if (m_BehaviourTreeWindowConfig.WindowDatas[i].Rect.Contains(e.mousePosition) && i == m_CurrSelect)
+                    if (m_BehaviourTreeWindowConfig.WindowDatas[i].ListRect.Contains(e.mousePosition) && i == m_CurrSelect)
                     {
                         isClickItem = true;
-                        ShowMenu(0);
+                        ShowLeftMenu(0);
                         break;
                     }
                 }
 
                 if (!isClickItem)
                 {
-                    ShowMenu(1);
+                    ShowLeftMenu(1);
                 }
             }
         }
 
-        private void ShowMenu(int type)
+        private void ShowLeftMenu(int type)
         {
             GenericMenu menu = new GenericMenu();
             menu.AddSeparator("");
             if (type == 0)
             {
-                menu.AddItem(new GUIContent("删除"), false, ContextCallback, 0);
-                menu.AddItem(new GUIContent("更改名称"), false, ContextCallback, 1);
-                menu.AddItem(new GUIContent("更改ID"), false, ContextCallback, 2);
-                menu.AddItem(new GUIContent("添加行为树"), false, ContextCallback, 3);
+                menu.AddItem(new GUIContent("删除"), false, LeftMenuContextCallback, 0);
+                menu.AddItem(new GUIContent("更改名称"), false, LeftMenuContextCallback, 1);
+                menu.AddItem(new GUIContent("更改ID"), false, LeftMenuContextCallback, 2);
+                menu.AddItem(new GUIContent("添加行为树"), false, LeftMenuContextCallback, 3);
             }
             else if (type == 1)
             {
-                menu.AddItem(new GUIContent("添加行为树"), false, ContextCallback, 3);
+                menu.AddItem(new GUIContent("添加行为树"), false, LeftMenuContextCallback, 3);
             }
             menu.AddSeparator("");
             menu.ShowAsContext();
         }
 
-        private void ContextCallback(object args)
+        private void LeftMenuContextCallback(object args)
         {
             int operation = (int)args;
-            if (operation == 0)
-                m_BehaviourTreeWindowConfig.WindowDatas.RemoveAt(m_CurrSelect);
-            else if(operation == 3)
-                m_BehaviourTreeWindowConfig.WindowDatas.Add(new BehaviourTreeWindowData()
-                {
-                    Name = "未命名",
-                    ID = m_BehaviourTreeWindowConfig.WindowDatas.Count + 1,
-                });
-            else
-                m_LeftOperation = operation;
+
+            switch(operation)
+            {
+                case 0:
+                    m_BehaviourTreeWindowConfig.WindowDatas.RemoveAt(m_CurrSelect);
+                    if (m_CurrSelect < m_BehaviourTreeWindowConfig.WindowDatas.Count)
+                        SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
+                    else
+                        SetRightWindowNode(null);
+                    break;
+                case 3:
+                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.WindowDatas.Count + 1);
+                    m_BehaviourTreeWindowConfig.WindowDatas.Add(data);
+                    break;
+                default:
+                    m_LeftOperation = operation;
+                    break;
+            }
         }
 
         private void RightViewGUI(UnityEngine.Event e)
         {
-            //BeginWindows();
-            //node.OnGUI();
-            //node2.OnGUI();
-            //EndWindows();
+            if (m_BehaviourTreeWindowConfig.WindowDatas == null) return;
+            if (m_BehaviourTreeWindowConfig.WindowDatas.Count < 1) return;
 
-            //Vector3 startPos = new Vector3(node.Rect.x + node.Rect.width, node.Rect.y + node.Rect.height / 2, 0);
-            //Vector3 endPos = new Vector3(node2.Rect.x, node2.Rect.y + node2.Rect.height / 2, 0);
-            //Vector3 startTan = startPos + Vector3.right * 50;
-            //Vector3 endTan = endPos + Vector3.left * 50;
-            //Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.green, null, 4);
+            BeginWindows();
+            if (m_RightWindowNode != null)
+            {
+                m_RightWindowNode.OnGUI(e);
+            }
+            EndWindows();
+
+            if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.WindowDatas.Count - 1) return;
+
+            if (e.button == 1 && e.type == EventType.MouseUp)
+            {
+                bool isOnWindowNode = IsOnWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect], e.mousePosition);
+                ShowRightMenu(isOnWindowNode ? 1 : 0);
+            }
+        }
+
+        private bool IsOnWindowNode(BehaviourTreeWindowData data,Vector2 mousePosition)
+        {
+            if (data.WindowRect.Contains(mousePosition))
+            {
+                return true;
+            }
+
+            for (int i = 0; i < data.Children.Count; i++)
+            {
+                if (IsOnWindowNode(data.Children[i], mousePosition))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void ShowRightMenu(int type)
+        {
+            GenericMenu menu = new GenericMenu();
+            menu.AddSeparator("");
+            if (type == 0)
+            {
+                menu.AddItem(new GUIContent("增加节点"), false, RightMenuContextCallback, 0);
+            }
+            else if (type == 1)
+            {
+                menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 1);
+                menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 2);
+            }
+            menu.AddSeparator("");
+            menu.ShowAsContext();
+        }
+
+        private void RightMenuContextCallback(object args)
+        {
+            int operation = (int)args;
+
+            switch (operation)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
         }
 
         private void ResetOperation(UnityEngine.Event e)
@@ -222,25 +293,19 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private void CopyChild(List<BehaviourTreeWindowData> src, List<BehaviourTreeWindowData> dest)
+        private void SetRightWindowNode(BehaviourTreeWindowData data)
         {
-            if (src == null || src.Count < 1) return;
-            if (dest == null) dest = new List<BehaviourTreeWindowData>();
-
-            for (int i = 0; i < src.Count; i++)
+            if (m_RightWindowNode == null)
             {
-                dest.Add(new BehaviourTreeWindowData()
-                {
-                    Name = src[i].Name,
-                    ClassType = src[i].ClassType,
-                    Args = src[i].Args,
-                    Rect = src[i].Rect,
-                });
-
-                CopyChild(src[i].Childs, dest[i].Childs);
+                m_RightWindowNode = new BehaviourTreeWindowNode(data);
+            }
+            else
+            {
+                m_RightWindowNode.UpdateData(data);
             }
         }
 
+        private BehaviourTreeWindowNode m_RightWindowNode = null;
         private EditorGUISplitView m_HorizontalSplitView = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
         private SerializedObject m_WindowConfigSo;
         private ReorderableList m_LeftList = null;

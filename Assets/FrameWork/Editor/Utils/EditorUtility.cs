@@ -7,6 +7,7 @@ using UnityEngine;
 using GameFrameWork.Serialize;
 using GameFrameWork.Utils;
 using GameFrameWork.BehaviourTree;
+using System.Reflection;
 
 namespace GameFrameWork.Editor
 {
@@ -170,6 +171,49 @@ namespace GameFrameWork.Editor
 			}
 
 			GUILayout.Space(3f);
+		}
+
+		/// <summary>
+		/// 在枚举值加上EnumLabel标签可以显示自定义名字
+		/// </summary>
+		public static object EnumPopup(string title, Enum selected)
+		{
+			int index = 0;
+			var array = Enum.GetValues(selected.GetType());
+			int length = array.Length;
+
+			string[] enumString = new string[length];
+			for (int i = 0; i < length; i++)
+			{
+				FieldInfo[] fields = selected.GetType().GetFields();
+				foreach (FieldInfo field in fields)
+				{
+					if (field.Name.Equals(array.GetValue(i).ToString()))
+					{
+						object[] objs = field.GetCustomAttributes(typeof(EnumLabelAttribute), true);
+						if (objs != null && objs.Length > 0)
+						{
+							enumString[i] = ((EnumLabelAttribute)objs[0]).label;
+						}
+					}
+				}
+			}
+
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.PrefixLabel(title);
+			index = EditorGUILayout.Popup(selected.GetHashCode(), enumString);
+			EditorGUILayout.EndHorizontal();
+
+			return Enum.ToObject(selected.GetType(), index);
+		}
+
+		public static void DrawCurve(Rect start, Rect end, Color color)
+		{
+			Vector3 startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
+			Vector3 endPos = new Vector3(end.x, end.y + end.height / 2, 0);
+			Vector3 startTan = startPos + Vector3.right * 50;
+			Vector3 endTan = endPos + Vector3.left * 50;
+			Handles.DrawBezier(startPos, endPos, startTan, endTan, color, null, 4);
 		}
 
 		private static bool m_EndHorizontal = false;

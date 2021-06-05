@@ -8,40 +8,43 @@ namespace GameFrameWork.Editor
 {
     public class SpriteSplitWindow : EditorWindow
     {
+        enum SplitType
+        {
+            [EnumLabel("图片")]
+            Texture2D,
+            [EnumLabel("路径")]
+            Folder,
+        }
+
         public SpriteSplitWindow()
         {
-            titleContent = new GUIContent(this.GetType().Name);
+            titleContent = new GUIContent(GetType().Name);
         }
 
         private void OnGUI()
         {
-            //输入框控件
-            UnityEngine.Object _temp = m_SelectObject;
-            m_SelectObject = EditorGUILayout.ObjectField(new GUIContent("拖入要切割的图片"), m_SelectObject, typeof(Texture2D), true);
+            MainGUI();
+        }
 
-            if (m_SelectObject == null)
+        private void MainGUI()
+        {
+            SplitType type = m_SplitType;
+            m_SplitType = (SplitType)EditorUtility.EnumPopup("切图模式",m_SplitType);
+
+            if(type != m_SplitType)
             {
-                m_SpriteWidth = 256;
-                m_SpriteHeight = 256;
-                m_OutPutExtName = ".png";
-                m_OutPutPath = Application.dataPath + "/SplitSprite/";
-                m_OutPutType = TextureImporterType.Sprite;
-                m_OutPutPackTag = string.Empty;
-                m_OutPutGenMipmaps = false;
+                m_SelectObject = null;
+                m_SelectFolder = string.Empty;
             }
-            else if (m_SelectObject != null && _temp != m_SelectObject)
-            {
-                m_OutPutPath = Application.dataPath + "/SplitSprite/" + m_SelectObject.name + "/";
-                _temp = m_SelectObject;
 
-                TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(m_SelectObject)) as TextureImporter;
-                textureImporter.textureType = TextureImporterType.Sprite;
-                textureImporter.spriteImportMode = SpriteImportMode.Single;
-                textureImporter.isReadable = true;
-                textureImporter.fadeout = false;
-                textureImporter.SaveAndReimport();
-                (m_SelectObject as Texture2D).Apply();
-                AssetDatabase.Refresh();
+            switch (m_SplitType)
+            {
+                case SplitType.Texture2D:
+                    FileGUI();
+                    break;
+                case SplitType.Folder:
+                    FolderGUI();
+                    break;
             }
 
             m_SpriteWidth = EditorGUILayout.IntField("每张小图的宽度:", m_SpriteWidth);
@@ -52,78 +55,186 @@ namespace GameFrameWork.Editor
             m_OutPutPackTag = EditorGUILayout.TextField("导出图片图集名称:", m_OutPutPackTag);
             m_OutPutGenMipmaps = EditorGUILayout.Toggle("导出图片生成小图:", m_OutPutGenMipmaps);
 
-            m_FoldOut = EditorGUILayout.Foldout(m_FoldOut, "图片路径");
-            if (m_FoldOut)
+            if(m_SelectObject != null)
             {
-                string path = AssetDatabase.GetAssetPath(m_SelectObject);
-                EditorGUILayout.LabelField("", path);
+                EditorGUILayout.LabelField("路径:", AssetDatabase.GetAssetPath(m_SelectObject));
             }
-
             GUILayout.FlexibleSpace();
 
             if (GUILayout.Button("切割图片"))
             {
-                if (m_SelectObject == null)
+                switch (m_SplitType)
                 {
-                    ShowNotification(new GUIContent("先拖入要切割的图片！"));
-                    return;
+                    case SplitType.Texture2D:
+                        FileSplit();
+                        break;
+                    case SplitType.Folder:
+                        FolderSplit();
+                        break;
                 }
+            }
+        }
 
-                bool isInExt = false;
+        private void FileGUI()
+        {
+            UnityEngine.Object temp = m_SelectObject;
+            Rect rect = EditorGUILayout.GetControlRect(GUILayout.Width(position.width - 5));
+            m_SelectObject = EditorGUI.ObjectField(rect, "拖入图片", m_SelectObject, typeof(UnityEngine.Texture2D), false);
 
-                if (string.IsNullOrEmpty(m_OutPutExtName))
+            if (m_SelectObject == null)
+            {
+                DefaultSetting();
+            }
+            else if (m_SelectObject != null && temp != m_SelectObject)
+            {
+                temp = m_SelectObject;
+                SetTextureSprite(m_SelectObject as Texture2D);
+                AssetDatabase.Refresh();
+            }
+        }
+
+        private void FolderGUI()
+        {
+            Rect rect = EditorGUILayout.GetControlRect(GUILayout.Width(position.width - 5));
+            UnityEngine.Object temp = m_SelectObject;
+            m_SelectObject = EditorGUI.ObjectField(rect, "拖入文件夹", m_SelectObject, typeof(UnityEditor.DefaultAsset), false);
+
+            if (m_SelectObject == null)
+            {
+                DefaultSetting();
+            }
+            else if (m_SelectObject != null && temp != m_SelectObject)
+            {
+                m_SelectFolder = AssetDatabase.GetAssetPath(m_SelectObject);
+                m_OutPutPath = Application.dataPath + "/SplitSprite" + m_SelectFolder.Substring(m_SelectFolder.LastIndexOf("/")) + "/";
+                string path = Application.dataPath + m_SelectFolder.Substring(m_SelectFolder.IndexOf("Assets") + 6);
+                string[] files = Directory.GetFiles(path, "*");
+
+                for (int i = 0; i < files.Length; i++)
                 {
-                    m_OutPutExtName = ".png";
-                    isInExt = true;
-                }
-                else
-                {
-                    foreach (string _ext in m_ExtNames)
+                    if (Path.GetExtension(files[i]).Equals(".meta")) continue;
+                    string objectPath = files[i].Substring(files[i].IndexOf("Assets"));
+                    UnityEngine.Object @object = AssetDatabase.LoadAssetAtPath(objectPath, typeof(Texture2D));
+
+                    if(@object != null)
                     {
-                        if (m_OutPutExtName.ToLower().Equals(_ext))
-                        {
-                            isInExt = true;
-                            break;
-                        }
+                        SetTextureSprite(@object as Texture2D);
                     }
                 }
 
-                if (!isInExt)
-                {
-                    string error = "图片格式只能是";
+                AssetDatabase.Refresh();
+            }
+        }
 
-                    foreach (string ext in m_ExtNames)
-                    {
-                        error += ext;
-                        error += " ";
-                    }
+        private void DefaultSetting()
+        {
+            m_SpriteWidth = 256;
+            m_SpriteHeight = 256;
+            m_OutPutExtName = ".png";
+            m_OutPutPath = Application.dataPath + "/SplitSprite/";
+            m_OutPutType = TextureImporterType.Sprite;
+            m_OutPutPackTag = string.Empty;
+            m_OutPutGenMipmaps = false;
+        }
 
-                    error += "!";
-                    ShowNotification(new GUIContent(error));
-                    return;
-                }
-
-                Texture2D tempTex = m_SelectObject as Texture2D;
-
-                if (m_SpriteWidth > tempTex.width || m_SpriteHeight > tempTex.height)
-                {
-                    ShowNotification(new GUIContent("小图宽高不能比主图大，请重新输入正确的数值!"));
-                    return;
-                }
+        private void FileSplit()
+        {
+            if (m_SelectObject == null)
+            {
+                ShowNotification(new GUIContent("先拖入要切割的图片！"));
+                return;
+            }
 
 
-                SplitSprite();
+            if (CanSplit(m_SelectObject as Texture2D))
+            {
+                SplitSprite(m_SelectObject as Texture2D);
                 ShowNotification(new GUIContent("图片切割成功在" + m_OutPutPath + "下查看"));
             }
         }
 
-        private void SplitSprite()
+        private void FolderSplit()
         {
-            if (m_SelectObject == null) return;
+            if (m_SelectObject == null)
+            {
+                ShowNotification(new GUIContent("先拖入文件夹！"));
+                return;
+            }
 
-            Texture2D texture = m_SelectObject as Texture2D;
+            string path = Application.dataPath + m_SelectFolder.Substring(m_SelectFolder.IndexOf("Assets") + 6);
+            string[] files = Directory.GetFiles(path, "*");
 
-            string selectionPath = AssetDatabase.GetAssetPath(m_SelectObject);
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (Path.GetExtension(files[i]).Equals(".meta")) continue;
+                string objectPath = files[i].Substring(files[i].IndexOf("Assets"));
+                UnityEngine.Object @object = AssetDatabase.LoadAssetAtPath(objectPath, typeof(Texture2D));
+                if (@object != null && CanSplit(@object as Texture2D))
+                    SplitSprite(@object as Texture2D);
+            }
+        }
+
+        private bool CanSplit(Texture2D texture)
+        {
+            bool isInExt = false;
+
+            if (string.IsNullOrEmpty(m_OutPutExtName))
+            {
+                m_OutPutExtName = ".png";
+                isInExt = true;
+            }
+            else
+            {
+                foreach (string ext in m_ExtNames)
+                {
+                    if (m_OutPutExtName.ToLower().Equals(ext))
+                    {
+                        isInExt = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isInExt)
+            {
+                string error = "图片格式只能是";
+
+                foreach (string ext in m_ExtNames)
+                {
+                    error += ext;
+                    error += " ";
+                }
+
+                error += "!";
+                ShowNotification(new GUIContent(error));
+                return false;
+            }
+
+            if (m_SpriteWidth > texture.width || m_SpriteHeight > texture.height)
+            {
+                ShowNotification(new GUIContent("小图宽高不能比主图大，请重新输入正确的数值!"));
+                return false;
+            }
+
+            return true;
+        }
+
+        private void SetTextureSprite(Texture2D texture)
+        {
+            TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;
+            textureImporter.textureType = TextureImporterType.Sprite;
+            textureImporter.spriteImportMode = SpriteImportMode.Single;
+            textureImporter.isReadable = true;
+            textureImporter.fadeout = false;
+            textureImporter.SaveAndReimport();
+            texture.Apply();
+        }
+
+        private void SplitSprite(Texture2D texture)
+        {
+            if (texture == null) return;
+
+            string selectionPath = AssetDatabase.GetAssetPath(texture);
             string selectionExt = System.IO.Path.GetExtension(selectionPath);
             string loadPath = selectionPath.Remove(selectionPath.Length - selectionExt.Length);
 
@@ -151,7 +262,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(m_SelectObject)) as TextureImporter;
+            TextureImporter textureImporter = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;
             textureImporter.textureType = TextureImporterType.Sprite;
             textureImporter.spriteImportMode = SpriteImportMode.Multiple;
             textureImporter.isReadable = true;
@@ -177,9 +288,14 @@ namespace GameFrameWork.Editor
 
             if (sprites.Count > 0)
             {
-                string outPutPath = m_OutPutPath;
-                string realOutPutPath = string.Empty;
-                System.IO.Directory.CreateDirectory(outPutPath);
+                string realOutPutPath = m_OutPutPath + texture.name + "/";
+
+                if (Directory.Exists(realOutPutPath))
+                {
+                    Directory.Delete(realOutPutPath, true);
+                }
+
+                Directory.CreateDirectory(realOutPutPath);
 
                 foreach (Sprite sprite in sprites)
                 {
@@ -194,17 +310,16 @@ namespace GameFrameWork.Editor
                     if (m_OutPutExtName.Equals(".png")) bytes = tex.EncodeToPNG();
                     else if (m_OutPutExtName.Equals(".jpb")) bytes = tex.EncodeToJPG();
 
-                    realOutPutPath = outPutPath + sprite.name + m_OutPutExtName;
-                    System.IO.File.WriteAllBytes(realOutPutPath, bytes);
+                    File.WriteAllBytes(realOutPutPath + sprite.name + m_OutPutExtName, bytes);
                 }
 
                 AssetDatabase.Refresh();
 
+                realOutPutPath = realOutPutPath.Substring(realOutPutPath.IndexOf("Assets"));
+
                 foreach (Sprite sprite in sprites)
                 {
-                    realOutPutPath = outPutPath + sprite.name + m_OutPutExtName;
-                    realOutPutPath = realOutPutPath.Substring(realOutPutPath.IndexOf("Assets"));
-                    textureImporter = AssetImporter.GetAtPath(realOutPutPath) as TextureImporter;
+                    textureImporter = AssetImporter.GetAtPath(realOutPutPath + sprite.name + m_OutPutExtName) as TextureImporter;
                     textureImporter.isReadable = true;
                     textureImporter.textureType = m_OutPutType;
                     textureImporter.spriteImportMode = SpriteImportMode.Single;
@@ -219,13 +334,15 @@ namespace GameFrameWork.Editor
         private void OnDestroy()
         {
             m_SelectObject = null;
+            m_SelectFolder = string.Empty;
         }
 
+        private SplitType m_SplitType = SplitType.Texture2D;
         private int m_SpriteWidth = 256;
         private int m_SpriteHeight = 256;
         private string m_OutPutExtName = ".png";
         private UnityEngine.Object m_SelectObject = null;
-
+        private string m_SelectFolder = string.Empty;
         private string[] m_ExtNames = new string[] { ".png", ".jpg" };
         private string m_OutPutPath = string.Empty;
         private string m_OutPutPackTag = string.Empty;
