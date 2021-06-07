@@ -7,18 +7,16 @@ using GameFrameWork.Utils;
 using GameFrameWork.Serialize;
 using UnityEditorInternal;
 using System;
+using System.Reflection;
 
 namespace GameFrameWork.Editor
 {
     public class BehaviourTreeWindow : EditorWindow
     {
-
         public BehaviourTreeWindow()
         {
             titleContent = new GUIContent(this.GetType().Name);
         }
-
-
 
         private void OnEnable()
         {
@@ -54,6 +52,7 @@ namespace GameFrameWork.Editor
             
             m_BehaviourTreeWindowConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeWindowConfig>(PathUtil.BehaviourTreeWindowDataPath);
             m_WindowConfigSo = new SerializedObject(m_BehaviourTreeWindowConfig);
+            m_DicFreeWindowNode = new Dictionary<int, List<BehaviourTreeWindowNode>>();
             m_LeftList = new ReorderableList(m_WindowConfigSo, m_WindowConfigSo.FindProperty("WindowDatas"), true, false, false, false);
             m_LeftList.headerHeight = 0;
             m_LeftList.footerHeight = 0;
@@ -187,11 +186,7 @@ namespace GameFrameWork.Editor
             switch(operation)
             {
                 case 0:
-                    m_BehaviourTreeWindowConfig.WindowDatas.RemoveAt(m_CurrSelect);
-                    if (m_CurrSelect < m_BehaviourTreeWindowConfig.WindowDatas.Count)
-                        SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
-                    else
-                        SetRightWindowNode(null);
+                    DeleteRootWindowNode();
                     break;
                 case 3:
                     BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.WindowDatas.Count + 1);
@@ -208,52 +203,99 @@ namespace GameFrameWork.Editor
             if (m_BehaviourTreeWindowConfig.WindowDatas == null) return;
             if (m_BehaviourTreeWindowConfig.WindowDatas.Count < 1) return;
 
+            PopMenu(e);
+
             BeginWindows();
             if (m_RightWindowNode != null)
             {
                 m_RightWindowNode.OnGUI(e);
             }
-            EndWindows();
 
-            if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.WindowDatas.Count - 1) return;
-
-            if (e.button == 1 && e.type == EventType.MouseUp)
+            List<BehaviourTreeWindowNode> list = null;
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
             {
-                bool isOnWindowNode = IsOnWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect], e.mousePosition);
-                ShowRightMenu(isOnWindowNode ? 1 : 0);
-            }
-        }
-
-        private bool IsOnWindowNode(BehaviourTreeWindowData data,Vector2 mousePosition)
-        {
-            if (data.WindowRect.Contains(mousePosition))
-            {
-                return true;
-            }
-
-            for (int i = 0; i < data.Children.Count; i++)
-            {
-                if (IsOnWindowNode(data.Children[i], mousePosition))
+                for (int i = 0; i < list.Count; i++)
                 {
-                    return true;
+                    list[i].OnGUI(e);
                 }
             }
+            EndWindows();
 
-            return false;
+            if(m_IsDrawTransition)
+            {
+                EditorUtility.DrawCurve(m_CurrWindowNode.Rect, new Rect(e.mousePosition, Vector2.zero), Color.red);
+            }
         }
 
-        private void ShowRightMenu(int type)
+        private void PopMenu(UnityEngine.Event e)
+        {
+            if (e.type != EventType.MouseUp) return;
+
+            if (e.button == 0)
+            {
+                if (m_IsDrawTransition)
+                {
+                    BehaviourTreeWindowNode node = GetFreeWindowNode(e.mousePosition);
+                    if (node == null)
+                    {
+                        node = GetWindowNode(m_RightWindowNode, e.mousePosition);
+                    }
+
+                    if (node != null)
+                    {
+                        SetFreeNodeParent(node);
+                        m_IsDrawTransition = false;
+                    }
+                }
+            }
+            else if (e.button == 1)
+            {
+                if (m_IsDrawTransition)
+                {
+                    m_IsDrawTransition = false;
+                }
+                else
+                {
+                    if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.WindowDatas.Count - 1) return;
+                    m_CurrWindowNode = GetFreeWindowNode(e.mousePosition);
+                    m_CurrMousePosition = e.mousePosition;
+                    if (m_CurrWindowNode != null)
+                    {
+                        ShowRightMenu(true);
+                    }
+                    else
+                    {
+                        m_CurrWindowNode = GetWindowNode(m_RightWindowNode, e.mousePosition);
+                        ShowRightMenu(false);
+                    }
+                }
+            }
+        }
+
+        private void ShowRightMenu(bool isFree)
         {
             GenericMenu menu = new GenericMenu();
             menu.AddSeparator("");
-            if (type == 0)
+
+            if (m_CurrWindowNode == null)
             {
                 menu.AddItem(new GUIContent("增加节点"), false, RightMenuContextCallback, 0);
             }
-            else if (type == 1)
+            else
             {
-                menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 1);
-                menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 2);
+                menu.AddItem(new GUIContent("更改信息"), false, RightMenuContextCallback, 1);
+
+                if (isFree)
+                {
+                    menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 3);
+                }
+                else
+                {
+                    if (m_CurrWindowNode.Parent != null)
+                        menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.Parent == null ? 4 : 5);
+                }
             }
             menu.AddSeparator("");
             menu.ShowAsContext();
@@ -265,13 +307,112 @@ namespace GameFrameWork.Editor
 
             switch (operation)
             {
-                case 0:
+                case 0://增加节点
+                    AddFreeWindowNode();
                     break;
-                case 1:
+                case 1://更改信息
                     break;
-                case 2:
+                case 2://关联父节点
+                    m_IsDrawTransition = true;
+                    break;
+                case 3://删除自由节点
+                    DeleteFreeWindowNode();
+                    break;
+                case 4://删除根节点
+                    DeleteRootWindowNode();
+                    break;
+                case 5://删除子节点
+                    DeleteChildWindowNode();
                     break;
             }
+        }
+
+        private void AddFreeWindowNode()
+        {
+            List<BehaviourTreeWindowNode> list = null;
+
+            if (!m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            {
+                list = new List<BehaviourTreeWindowNode>();
+                m_DicFreeWindowNode.Add(m_CurrSelect, list);
+            }
+
+            int id = (m_CurrSelect + 1) * 1000 + list.Count + 1;
+            BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", id, m_CurrMousePosition.x, m_CurrMousePosition.y);
+            BehaviourTreeWindowNode node = new BehaviourTreeWindowNode(data, false);
+
+            list.Add(node);
+        }
+
+        private void DeleteFreeWindowNode()
+        {
+            List<BehaviourTreeWindowNode> list = null;
+
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            {
+                list.Remove(m_CurrWindowNode);
+                m_CurrWindowNode = null;
+            }
+        }
+
+        private void DeleteRootWindowNode()
+        {
+            m_BehaviourTreeWindowConfig.WindowDatas.RemoveAt(m_CurrSelect);
+            if (m_CurrSelect < m_BehaviourTreeWindowConfig.WindowDatas.Count)
+                SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
+            else
+                SetRightWindowNode(null);
+        }
+
+        private void DeleteChildWindowNode()
+        {
+            m_CurrWindowNode.Parent.RemoveChild(m_CurrWindowNode);
+
+            m_CurrWindowNode = null;
+        }
+
+        private void SetFreeNodeParent(BehaviourTreeWindowNode parent)
+        {
+            if (m_CurrWindowNode == null) return;
+            m_CurrWindowNode.SetParent(parent);
+            DeleteFreeWindowNode();
+        }
+
+        private BehaviourTreeWindowNode GetWindowNode(BehaviourTreeWindowNode node, Vector2 mousePosition)
+        {
+            if (node.Rect.Contains(mousePosition))
+            {
+                return node;
+            }
+
+            for (int i = 0; i < node.Children.Count; i++)
+            {
+                BehaviourTreeWindowNode ret = GetWindowNode(node.Children[i], mousePosition);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+
+            return null;
+        }
+
+        private BehaviourTreeWindowNode GetFreeWindowNode(Vector2 mousePosition)
+        {
+            List<BehaviourTreeWindowNode> list = null;
+
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].Rect.Contains(mousePosition))
+                    {
+                        return list[i];
+                    }
+                }
+            }
+
+            return null;
         }
 
         private void ResetOperation(UnityEngine.Event e)
@@ -297,15 +438,19 @@ namespace GameFrameWork.Editor
         {
             if (m_RightWindowNode == null)
             {
-                m_RightWindowNode = new BehaviourTreeWindowNode(data);
+                m_RightWindowNode = new BehaviourTreeWindowNode(data, true);
             }
             else
             {
-                m_RightWindowNode.UpdateData(data);
+                m_RightWindowNode.UpdateData(data, true);
             }
         }
 
+        private bool m_IsDrawTransition = false;
+        private Vector2 m_CurrMousePosition = Vector2.zero;
         private BehaviourTreeWindowNode m_RightWindowNode = null;
+        private BehaviourTreeWindowNode m_CurrWindowNode = null;
+        private Dictionary<int,List<BehaviourTreeWindowNode>> m_DicFreeWindowNode = null;
         private EditorGUISplitView m_HorizontalSplitView = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
         private SerializedObject m_WindowConfigSo;
         private ReorderableList m_LeftList = null;

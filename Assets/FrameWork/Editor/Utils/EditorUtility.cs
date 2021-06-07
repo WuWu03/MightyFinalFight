@@ -216,6 +216,7 @@ namespace GameFrameWork.Editor
 			Handles.DrawBezier(startPos, endPos, startTan, endTan, color, null, 4);
 		}
 
+
 		private static bool m_EndHorizontal = false;
 	}
 }
