@@ -71,7 +71,7 @@ namespace GameFrameWork.Editor
         /// <summary>
         /// 复制CSharp路径
         /// </summary>
-        [MenuItem("GameObject/CopyPath CSharp &c", false, 0)]
+        [MenuItem("GameObject/UI/CopyPath CSharp &c", false, 0)]
         private static void CopyPathCSharp()
         {
             if (Selection.gameObjects == null || Selection.gameObjects.Length < 1)

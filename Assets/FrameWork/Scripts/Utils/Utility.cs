@@ -326,5 +326,17 @@ namespace GameFrameWork.Utils
             currentValue = newValue;
             return true;
         }
+
+        public static string ToRGBHex(Color c)
+        {
+            if (c == default(Color)) c = Color.black;
+            return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a));
+        }
+
+        private static byte ToByte(float f)
+        {
+            f = Mathf.Clamp01(f);
+            return (byte)(f * 255);
+        }
     }
 }

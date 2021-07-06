@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameFrameWork.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace GameFrameWork.Log
                 }
             }
 
-            string color = ToRGBHex(LogColor);
+            string color = Utility.ToRGBHex(LogColor);
 
             if (!string.IsNullOrEmpty(color))
             {
@@ -41,18 +42,6 @@ namespace GameFrameWork.Log
             }
 
             return logInfo;
-        }
-
-        private static string ToRGBHex(Color c)
-        {
-            if (c == default(Color)) c = Color.black;
-            return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a));
-        }
-
-        private static byte ToByte(float f)
-        {
-            f = Mathf.Clamp01(f);
-            return (byte)(f * 255);
         }
     }
 }

@@ -5,11 +5,13 @@ using System.Text.RegularExpressions;
 using System.Text;
 using UnityEngine.EventSystems;
 using System;
+using GameFrameWork.Utils;
 
 namespace GameFrameWork.UI
 {
     public class EmojiText : Text, IPointerClickHandler
     {
+        public Color HrefColor = Color.blue;
         /// <summary>
         /// 超链接信息类
         /// </summary>
@@ -317,7 +319,7 @@ namespace GameFrameWork.UI
                 }
 
                 s_TextBuilder.Append(part);
-                s_TextBuilder.Append("<color=blue>");
+                s_TextBuilder.AppendFormat("<color={0}>", Utility.ToRGBHex(HrefColor));
                 int startIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
                 s_TextBuilder.Append(match.Groups[2].Value);
                 int endIndex = s_TextBuilder.Length * 4 - removeEmojiCount;

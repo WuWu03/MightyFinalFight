@@ -22,8 +22,8 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public Node(string name,string args,object owner)
-      {
+        public Node(string name, string args, object owner)
+        {
             m_Name = name;
             m_Args = args;
             m_Owner = owner;

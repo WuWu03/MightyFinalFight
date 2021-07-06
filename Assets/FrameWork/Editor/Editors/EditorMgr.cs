@@ -71,5 +71,11 @@ namespace GameFrameWork.Editor
 			EditorWindow window = EditorWindow.GetWindow<SplitViewDemo>();
 			window.Show();
 		}
+
+		[MenuItem("Assets/CreateFont")]
+		public static void CreateFont()
+        {
+			FontMaker.CreateMyFontSprite();
+		}
 	}
 }
