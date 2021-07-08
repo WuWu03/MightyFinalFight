@@ -498,7 +498,7 @@ MonoBehaviour:
     Level: 0
     Name: CodyAttack_Weapon
     AnimationName: Attack_Weapon
-    HurtSound: DaggerHit
+    HurtSound: Sound/DaggerHit
     Type: 1
     DeployerType: 1
     TriggerType: 2

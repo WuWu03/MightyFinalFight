@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TaskKillEnemy : BaseTask
 {
-    public TaskKillEnemy(TaskData data) : base(data) { }
+    public TaskKillEnemy(TaskConfigData data) : base(data) { }
 
     public override bool CheckCondition()
     {

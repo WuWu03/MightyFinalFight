@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class BaseHeroCtrl : BaseRoleCtrl
 {
-    public override void InitData(BaseRoleSkillInfo data)
-    {     
-        BaseHeroSkillInfo heroSkillData = data as BaseHeroSkillInfo;
+    public override void SetData(BaseRoleSkillData data)
+    {
+        base.SetData(data);
+        BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
         m_CatchAttackID = heroSkillData.CatchAttackID;
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
         m_WeaponAttackID = heroSkillData.WeaponAttackID;
         m_ThrowWeaponID = heroSkillData.ThrowWeaponID;
-        base.InitData(data);
     }
 
     protected override void NormalAttack(Vector2 dir)
@@ -105,11 +105,21 @@ public class BaseHeroCtrl : BaseRoleCtrl
         return null;
     }
 
+    protected override void OnRelease()
+    {
+        base.OnRelease();
+        m_CatchAttackID = 0;
+        m_ThrowAttackID = 0;
+        m_ThrowWeaponID = 0;
+        m_WeaponAttackID = 0;
+    }
+
     private int m_CatchAttackID;
     private int m_ThrowAttackID;
     private int m_ThrowWeaponID;
     private int m_WeaponAttackID;
-    private const float CATCH_ATTACK_STAMP = 0.2f;
     private float m_CatchAttackTimer = 0f;
+
+    private const float CATCH_ATTACK_STAMP = 0.2f;
 }
 

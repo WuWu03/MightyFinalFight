@@ -4,7 +4,7 @@ using System.Diagnostics;
 public abstract class SkillBaseDeployer
 {
     public int SkillID { get; private set; }
-    protected SkillData.SkillEffect CurrEffect
+    protected SkillConfigData.SkillEffect CurrEffect
     {
         get
         {
@@ -12,7 +12,7 @@ public abstract class SkillBaseDeployer
         }
     }
 
-    public SkillData SkillData
+    public SkillConfigData SkillData
     {
         get 
         { 
@@ -31,7 +31,7 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        if(m_SkillData.TriggerType == SkillData.SkillTriggerType.Animtion)
+        if(m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
             m_SkillEffects[m_CurrEffectIndex].Effect(m_SkillSelector[m_CurrEffectIndex]);
             m_CurrEffectIndex++;
@@ -98,7 +98,7 @@ public abstract class SkillBaseDeployer
 
     protected virtual void OnEffectComplete() { }
     protected BaseRole m_Owner = null;
-    protected SkillData m_SkillData = null;
+    protected SkillConfigData m_SkillData = null;
     private int m_CurrEffectIndex = 0;
     private ISkillSelector[] m_SkillSelector = null;
     private ISkillEffect[] m_SkillEffects = null;

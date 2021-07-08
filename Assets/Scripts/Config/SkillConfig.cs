@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class SkillConfig : BaseScriptableObject<SkillData>
+public class SkillConfig : BaseScriptableObject<SkillConfigData>
 {
 
 }
 
 [Serializable]
-public class SkillData : BaseConfigData
+public class SkillConfigData : BaseConfigData
 {
     public enum SkillSelectorType
     {

@@ -20,7 +20,7 @@ MonoBehaviour:
     Desc: 'A TOUGH STREET FIGHTER WHO IS
 
       SKILLED WITH KNIVES.'
-    HeadIcon: Cody
+    HeadIcon: Character/Cody
     AttackSpeed: 1
     MoveSpeed: 0.7
     JumpForce: {x: 40, y: 140}
@@ -44,7 +44,7 @@ MonoBehaviour:
     Desc: 'DESCENDED FROM NINJA,HE POSSESSES
 
       INCREDIBLE AGILITY.'
-    HeadIcon: Guy
+    HeadIcon: Character/Guy
     AttackSpeed: 1
     MoveSpeed: 1
     JumpForce: {x: 40, y: 140}

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class TaskConfig : BaseScriptableObject<TaskData>
+public class TaskConfig : BaseScriptableObject<TaskConfigData>
 {
 
 }
 
 [Serializable]
-public class TaskData : BaseConfigData
+public class TaskConfigData : BaseConfigData
 {
     [Serializable]
     public enum ConditionType

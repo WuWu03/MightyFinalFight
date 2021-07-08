@@ -1,13 +1,13 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
-using static SkillData;
+using static SkillConfigData;
 
 public class SkillFactory
 {
     public static SkillBaseDeployer CreateDeployer(int skillID, BaseRole owner)
     {
         SkillBaseDeployer ret = null;
-        SkillData data = StaticConfig.SkillConfig.GetData(skillID);
+        SkillConfigData data = StaticConfig.SkillConfig.GetData(skillID);
 
         switch (data.DeployerType)
         {
@@ -25,7 +25,7 @@ public class SkillFactory
         return ret;
     }
 
-    public static ISkillSelector[] CreateSelector(SkillData skillData, BaseRole owner)
+    public static ISkillSelector[] CreateSelector(SkillConfigData skillData, BaseRole owner)
     {
         ISkillSelector[] ret = new ISkillSelector[skillData.SkillEffects.Length];
         for (int i = 0; i < skillData.SkillEffects.Length; i++)
@@ -47,7 +47,7 @@ public class SkillFactory
         return ret;
     }
 
-    public static ISkillEffect[] CreateEffects(SkillData skillData, BaseRole owner)
+    public static ISkillEffect[] CreateEffects(SkillConfigData skillData, BaseRole owner)
     {
         ISkillEffect[] ret = new ISkillEffect[skillData.SkillEffects.Length];
 

@@ -10,10 +10,10 @@ public class Trap : BaseSceneItem
         base.Init(id, name);
     }
 
-    public override void InitInfo(BaseSceneObjectInfo info)
+    public override void SetData(BaseSceneObjectData info)
     {
-        base.InitInfo(info);
-        m_TrapData = info as TrapInfo;
+        base.SetData(info);
+        m_TrapData = info as TrapData;
         SetPos(m_TrapData.Pos);
     }
 
@@ -31,7 +31,7 @@ public class Trap : BaseSceneItem
         m_Collider.isTrigger = true;
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected override void OnTriggerStay2D(Collider2D collision)
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
         if (target == null || target.IsDropTrag) return;
@@ -51,12 +51,12 @@ public class Trap : BaseSceneItem
         else
             rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.Pos.y);
 
-        target.OnDropTragMsg(new TrapInfo()
-        {
-            Pos = rebirthPos,
-            AttackValue = m_TrapData.AttackValue,
-        });
+        TrapData trapData = ReferencePool.Acquire<TrapData>();
+        trapData.Pos = rebirthPos;
+        trapData.AttackValue = m_TrapData.AttackValue;
+
+        target.OnDropTragMsg(trapData);
     }
 
-    private TrapInfo m_TrapData = null;
+    private TrapData m_TrapData = null;
 }

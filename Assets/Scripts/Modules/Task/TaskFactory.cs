@@ -4,22 +4,22 @@ using UnityEngine;
 
 public static class TaskFactory
 {
-    public static BaseTask CreateTask(TaskData data)
+    public static BaseTask CreateTask(TaskConfigData data)
     {
         BaseTask ret = null;
-        if (data.TriggerCondition == TaskData.ConditionType.MoveToPos)
+        if (data.TriggerCondition == TaskConfigData.ConditionType.MoveToPos)
             ret = new TaskMoveToPos(data);
-        else if (data.TriggerCondition == TaskData.ConditionType.KillEnemy)
+        else if (data.TriggerCondition == TaskConfigData.ConditionType.KillEnemy)
             ret = new TaskKillEnemy(data);
-        else if (data.TriggerCondition == TaskData.ConditionType.WaitBarrels)
+        else if (data.TriggerCondition == TaskConfigData.ConditionType.WaitBarrels)
             ret = new TaskWaitBarrels(data);
         return ret;
     }
 
-    public static BaseTaskTrigger CreateTaskTrigger(TaskData data)
+    public static BaseTaskTrigger CreateTaskTrigger(TaskConfigData data)
     {
         BaseTaskTrigger ret = null;
-        if (data.TriggerEffect == TaskData.EffectType.Enemy)
+        if (data.TriggerEffect == TaskConfigData.EffectType.Enemy)
             ret = new TaskTriggerEnemy(data);
         return ret;
     }

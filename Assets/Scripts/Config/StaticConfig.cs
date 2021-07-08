@@ -13,6 +13,7 @@ public static class StaticConfig
     public static SceneItemConfig SceneItemConfig = null;
     public static TaskConfig TaskConfig = null;
     public static LevelConfig LevelConfig = null;
+
     public static void InitConfig()
     {
         HeroConfig = ResMgr.Ins.LoadAsset<HeroConfig>("ConfigData/HeroData");

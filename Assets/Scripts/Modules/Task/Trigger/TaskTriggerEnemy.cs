@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TaskTriggerEnemy : BaseTaskTrigger
 {
-    public TaskTriggerEnemy(TaskData data) : base(data) { }
+    public TaskTriggerEnemy(TaskConfigData data) : base(data) { }
 
     public override void Trigger()
     {

@@ -10,10 +10,10 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
     }
 
-    public override void InitData(BaseRoleSkillInfo data)
+    public override void SetData(BaseRoleSkillData data)
     {
-        base.InitData(data);
-        BaseEnemySkillInfo baseEnemySkillInfo = data as BaseEnemySkillInfo;
+        base.SetData(data);
+        BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
         m_BehaviourRate = baseEnemySkillInfo.BehaviourRate;
         m_BehaviourState = new bool[m_BehaviourRate.Length];  
         m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreesID);

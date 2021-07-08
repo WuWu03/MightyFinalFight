@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BaseTask
 {
-    public TaskData TaskData
+    public TaskConfigData TaskData
     {
         get
         {
@@ -21,7 +21,7 @@ public abstract class BaseTask
         }
     }
 
-    public BaseTask(TaskData data)
+    public BaseTask(TaskConfigData data)
     {
         m_TaskData = data;
         m_IsComplete = false;
@@ -68,6 +68,6 @@ public abstract class BaseTask
     }
 
     protected bool m_IsComplete = false;
-    protected TaskData m_TaskData = null;
+    protected TaskConfigData m_TaskData = null;
     private BaseTaskTrigger m_Trigger = null;
 }

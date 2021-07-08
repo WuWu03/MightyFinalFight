@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TaskWaitBarrels : BaseTask
 {
-    public TaskWaitBarrels(TaskData data) : base(data) { }
+    public TaskWaitBarrels(TaskConfigData data) : base(data) { }
     public override bool CheckCondition()
     {
         return false;

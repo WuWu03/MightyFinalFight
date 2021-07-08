@@ -1,4 +1,5 @@
 ﻿using DragonBones;
+using GameFrameWork;
 using GameFrameWork.Sound;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,6 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 {
     public SkillNormalAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {
-        m_AttackMsgData = new AttackData();
         m_QueueSound = new Queue<string>();
     }
 
@@ -16,21 +16,24 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
-        m_AttackMsgData.Dir = m_Owner.Dir;
-        m_AttackMsgData.CanChangeDir = m_SkillData.CanChangeDir;
-        m_AttackMsgData.AnimationName = m_SkillData.AnimationName;
-        m_AttackMsgData.AnimSpeed = m_SkillData.AnimSpeed;
-        m_AttackMsgData.AnimTime = m_SkillData.AnimTime;
-        m_AttackMsgData.skillID = m_SkillData.ID;
-        if (m_SkillData.TriggerType == SkillData.SkillTriggerType.Just)
+        AttackData attackData = AttackData.Create();
+        attackData.Dir = m_Owner.Dir;
+        attackData.SkillID = m_SkillData.ID;
+        attackData.AnimName = m_SkillData.AnimationName;
+        attackData.AnimSpeed = m_SkillData.AnimSpeed;
+        attackData.AnimTime = m_SkillData.AnimTime;
+        attackData.CanChangeDir = m_SkillData.CanChangeDir;
+
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
         {
-            m_AttackMsgData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
+            attackData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
         }
 
         m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.OnAttackMsg(attackData);
 
-        m_Owner.OnAttackMsg(m_AttackMsgData);
+        ReferencePool.Release(attackData);
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -62,11 +65,12 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         if (m_Owner.HitSuccess)
         {
-            if (m_SkillData.IsInEffectPlaySound)
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
+            if (m_SkillData.IsInEffectPlaySound) SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
         }
         else
+        {
             SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", soundName);
+        }
     }
 
     public override void OnExit()
@@ -77,5 +81,4 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
     }
 
     private Queue<string> m_QueueSound = null;
-    private AttackData m_AttackMsgData = null;
 }

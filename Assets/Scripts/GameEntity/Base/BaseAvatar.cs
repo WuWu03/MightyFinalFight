@@ -54,7 +54,7 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_FsmMachine = FsmMachine.Create(this, string.Format("{0}Fsm", this.GetType().Name));
+        m_FsmMachine = FsmMachine.Create(this, this.GetType().Name);
     }
 
     public override void Release()

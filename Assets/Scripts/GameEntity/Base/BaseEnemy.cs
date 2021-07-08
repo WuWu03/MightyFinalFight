@@ -1,6 +1,6 @@
-﻿using GameFrameWork.UI;
+﻿using GameFrameWork;
+using GameFrameWork.UI;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BaseEnemy : BaseRole
 {
@@ -20,18 +20,27 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    public event VoidParamT<int> OnDead;
+    public event GameFrameWorkAction<int> OnDead
+    {
+        add 
+        {
+            m_OnDeadEventHandler += value;
+        }
+        remove
+        {
+            m_OnDeadEventHandler -= value;
+        }
+    }
 
     public override void Init(int id, string name)
     {
         base.Init(id, name);
     }
 
-    public override void InitInfo(BaseSceneObjectInfo data)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.InitInfo(data);
-        BaseEnemyInfo baseEnemyInfo = data as BaseEnemyInfo;
-        m_HurtAnim = baseEnemyInfo.HurtAnim;
+        base.SetData(data);
+        m_HurtAnim = (data as BaseEnemyData).HurtAnim;
     }
 
     public override void SetPos(Vector2 pos)
@@ -88,10 +97,9 @@ public class BaseEnemy : BaseRole
     {
         base.Release();
         PlayerMgr.Ins.AddExp(m_SkillExp);
-        OnDead(m_EntityID);
-        OnDead -= OnDead;
-        OnDead = null;
+        m_OnDeadEventHandler?.Invoke(m_EntityID);
         m_SkillExp = 0;
+        m_HurtAnim = null;
     }
 
     protected override void OnUpdate()
@@ -131,25 +139,25 @@ public class BaseEnemy : BaseRole
         bool isInRange = Mathf.Abs(m_Pos.y - throwTarget.Pos.y) <= 0.1f;
         if (!isInRange) return;
 
-        OnHurtMsg(new HurtData()
-        {
-            ID = 0,
-            SkillExp = 2,
-            AttackerDir = -m_Dir,
-            AttackForce = new Vector2(40 * -m_Dir, 150),
-            AttackerPos = m_Pos,
-            CanBeDefense = false,
-            IsSwoon = true,
-            AttackerID = m_ID,
-            AttackValue = 1,
-            HurtSound = string.Empty,
-            HurtAnim = string.Empty,
-            IsGroundHurt = true,
-        });
+        HurtData hurtData = HurtData.Create();
+        hurtData.Id = 0;
+        hurtData.SkillExp = 2;
+        hurtData.AttackerDir = -m_Dir;
+        hurtData.AttackForce = new Vector2(40 * -m_Dir, 150);
+        hurtData.AttackerPos = m_Pos;
+        hurtData.CanBeDefense = false;
+        hurtData.IsSwoon = true;
+        hurtData.AttackerID = m_ID;
+        hurtData.AttackValue = 1;
+        hurtData.HurtSound = string.Empty;
+        hurtData.HurtAnim = string.Empty;
+        hurtData.IsGroundHurt = true;
+
+        OnHurtMsg(hurtData);
+        ReferencePool.Release(hurtData);
     }
 
+    private GameFrameWorkAction<int> m_OnDeadEventHandler = null;
     private int m_SkillExp = 0;
     private string[] m_HurtAnim = null;
-    protected BaseRoleCtrl m_AvatarCtrl = null;
-
 }

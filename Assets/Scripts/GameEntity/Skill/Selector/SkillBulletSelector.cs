@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SkillBulletSelector : SkillBaseSelector
 {
-    public SkillBulletSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBulletSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
     public override List<ICanBeHit> GetTargets()
     {

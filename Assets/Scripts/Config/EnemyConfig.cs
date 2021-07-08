@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class EnemyConfig : BaseScriptableObject<EnemyData>
+public class EnemyConfig : BaseScriptableObject<EnemyConfigData>
 {
 }
 
 [Serializable]
-public class EnemyData : BaseConfigData
+public class EnemyConfigData : BaseConfigData
 {
     public string Name;
     public string AssetName;

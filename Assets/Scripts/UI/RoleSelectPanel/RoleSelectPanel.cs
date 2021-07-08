@@ -77,10 +77,10 @@ public class RoleSelectPanel : BasePanel
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{
-		HeroData data = StaticConfig.HeroConfig.Datas[item.Index - 1];
+		HeroConfigData data = StaticConfig.HeroConfig.Datas[item.Index - 1];
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
-		UITools.LoadSprite("Character", data.HeadIcon, item.BtnRoleIcon.image);
+		UITools.LoadSprite(data.HeadIcon, item.BtnRoleIcon.image);
 	}
 
 	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)

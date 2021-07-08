@@ -2,12 +2,12 @@
 using System;
 using GameFrameWork.Serialize;
 
-public class HeroConfig : BaseScriptableObject<HeroData>
+public class HeroConfig : BaseScriptableObject<HeroConfigData>
 {
 }
 
 [Serializable]
-public class HeroData : BaseConfigData
+public class HeroConfigData : BaseConfigData
 {
     public string Name;
     public string AssetName;

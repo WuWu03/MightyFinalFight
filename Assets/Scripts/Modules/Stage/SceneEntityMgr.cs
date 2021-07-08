@@ -1,5 +1,6 @@
 ﻿using GameFrameWork;
-using GameFrameWork.Pool;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +50,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemData data = StaticConfig.SceneItemConfig.GetData(id);
+        SceneItemConfigData data = StaticConfig.SceneItemConfig.GetData(id);
         SceneEntityFactory.CreateSceneItem(data, pos);
     }
 
@@ -57,23 +58,23 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         for (int i = 0; i < 5; i++)
         {
-            BaseSceneItem sceneItem = SceneObjectPool.Ins.Get<Barrel>("Barrel");
-            sceneItem.InitInfo(new BarrelInfo()
-            {
-                ID = 1,
-                Health = 1,
-                MaxHealth = 1,
-                TriggerOffest = new Vector2(0, 0.13f),
-                TriggerSize = new Vector2(0.17f, 0.25f),
-                Value = 0,
-                CanDrop = false,
-                Dir = 1,
-                GroundY = 0,
-                IsFloat = false,
-                MoveSpeed = 0f,
-                Item = 1001 + i,
-            });
-            sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, "Item/Barrel"));
+            BaseSceneItem sceneItem = EntityMgr.Ins.GetEntity<Barrel>("Barrel");
+            BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
+            barrelData.Id = 1;
+            barrelData.Health = 1;
+            barrelData.MaxHealth = 1;
+            barrelData.TriggerOffest = new Vector2(0, 0.13f);
+            barrelData.TriggerSize = new Vector2(0.17f, 0.25f);
+            barrelData.Value = 0;
+            barrelData.CanDrop = false;
+            barrelData.Dir = 1;
+            barrelData.GroundY = 0;
+            barrelData.IsFloat = false;
+            barrelData.MoveSpeed = 0f;
+            barrelData.ItemId = 1001 + i;
+
+            sceneItem.SetData(barrelData);
+            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, "Item/Barrel"));
             sceneItem.SetObjectType(ObjectType.Monster);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
         }
@@ -87,11 +88,11 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         {
             if (m_ListCurrEnemy[i].EntityID == id)
             {
+                m_ListCurrEnemy[i].OnDead -= OnEnemyDead;
                 m_ListCurrEnemy.RemoveAt(i);
             }
         }
     }
-
 
     private List<int> m_ListDeadEnemy;
     private List<BaseEnemy> m_ListCurrEnemy;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillMoveTargetEffect : SkillBaseEffect
 {
-    public SkillMoveTargetEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillMoveTargetEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
     public override bool IsCompleted
     {
         get

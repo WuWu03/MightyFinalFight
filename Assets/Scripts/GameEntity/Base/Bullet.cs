@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Bullet : BaseSceneItem
 {
-    public override void InitInfo(BaseSceneObjectInfo data)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.InitInfo(data);
-        m_BulletData = data as BulletInfo;
+        base.SetData(data);
+        m_BulletData = data as BulletData;
     }
 
     public override void SetOwner(BaseRole owner)
@@ -57,17 +57,18 @@ public class Bullet : BaseSceneItem
 
         if (isInRange && canBeHit)
         {
-            hit.OnHurtMsg(new HurtData()
-            {
-                ID = m_BulletData.ID,
-                IsSwoon = m_BulletData.IsSmoon,
-                AttackerDir = m_Owner.Dir,
-                AttackerPos = m_Owner.Pos,
-                AttackForce = new Vector2(m_BulletData.AddTargetForce.x * m_Owner.Dir, m_BulletData.AddTargetForce.y),
-                AttackValue = 1,
-                CanBeDefense = false,
-                SkillExp = m_BulletData.SkillExp,
-            });
+            HurtData hurtData = HurtData.Create();
+            hurtData.Id = m_BulletData.Id;
+            hurtData.IsSwoon = m_BulletData.IsSmoon;
+            hurtData.AttackerDir = m_Owner.Dir;
+            hurtData.AttackerPos = m_Owner.Pos;
+            hurtData.AttackForce = new Vector2(m_BulletData.AddTargetForce.x * m_Owner.Dir, m_BulletData.AddTargetForce.y);
+            hurtData.AttackValue = 1;
+            hurtData.CanBeDefense = false;
+            hurtData.SkillExp = m_BulletData.SkillExp;
+            hit.OnHurtMsg(hurtData);
+
+            ReferencePool.Release(hurtData);
 
             if (!m_BulletData.IsPenatrate)
                 m_Rigidbody.velocity = Vector2.zero;
@@ -108,5 +109,5 @@ public class Bullet : BaseSceneItem
 
     private bool m_IsHit = false;
     private UnityArmatureComponent m_Animator = null;
-    private BulletInfo m_BulletData = null;
+    private BulletData m_BulletData = null;
 }

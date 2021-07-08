@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TaskMoveToPos : BaseTask
 {
-    public TaskMoveToPos(TaskData data) : base(data) 
+    public TaskMoveToPos(TaskConfigData data) : base(data) 
     {
         m_XArrived = false;
         m_YArrived = false;
@@ -27,8 +27,8 @@ public class TaskMoveToPos : BaseTask
 
     public override bool CheckCondition()
     {
-        if (m_TaskData.PosCondition.PosType == TaskData.PosType.X) return m_XArrived;
-        if (m_TaskData.PosCondition.PosType == TaskData.PosType.Y) return m_YArrived;
+        if (m_TaskData.PosCondition.PosType == TaskConfigData.PosType.X) return m_XArrived;
+        if (m_TaskData.PosCondition.PosType == TaskConfigData.PosType.Y) return m_YArrived;
         return m_XArrived && m_YArrived;
     }
 

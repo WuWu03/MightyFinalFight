@@ -1,7 +1,10 @@
-﻿using GameFrameWork.Pool;
+﻿using GameFrameWork;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Utility;
+
 public class SkillBulletEffect : SkillBaseEffect
 {
-    public SkillBulletEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBulletEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
     public override bool IsCompleted
     {
         get
@@ -14,30 +17,29 @@ public class SkillBulletEffect : SkillBaseEffect
     {
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
-            Bullet bullet = SceneObjectPool.Ins.Get<Bullet>(m_SkillEffect.Bullets[i].Name);
-            bullet.InitInfo(new BulletInfo()
-            {
-                Health = 1,
-                MaxHealth = 1,
-                IsSmoon = m_SkillEffect.IsSmoon,
-                AddTargetForce = m_SkillEffect.AddTargetForce,
-                NormalAnim = m_SkillEffect.Bullets[i].NormalAnim,
-                HitAnim = m_SkillEffect.Bullets[i].HitAnim,
-                NormalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed,
-                HitAnimSpeed = m_SkillEffect.Bullets[i].HitAnimSpeed,
-                Dir = m_SkillEffect.Bullets[i].Dir,
-                Pos = m_SkillEffect.Bullets[i].Pos,
-                Velocity = m_SkillEffect.Bullets[i].Velocity,
-                HitRange = m_SkillEffect.Bullets[i].HitRange,
-                Drag = m_SkillEffect.Bullets[i].Drag,
-                TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest,
-                TriggerSize = m_SkillEffect.Bullets[i].TriggerSize,
-                IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate,
-                SkillExp = m_SkillData.EXP,
-            });
+            Bullet bullet = EntityMgr.Ins.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
+            BulletData bulletData = ReferencePool.Acquire<BulletData>();
+            bulletData.Health = 1;
+            bulletData.MaxHealth = 1;
+            bulletData.IsSmoon = m_SkillEffect.IsSmoon;
+            bulletData.AddTargetForce = m_SkillEffect.AddTargetForce;
+            bulletData.NormalAnim = m_SkillEffect.Bullets[i].NormalAnim;
+            bulletData.HitAnim = m_SkillEffect.Bullets[i].HitAnim;
+            bulletData.NormalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed;
+            bulletData.HitAnimSpeed = m_SkillEffect.Bullets[i].HitAnimSpeed;
+            bulletData.Dir = m_SkillEffect.Bullets[i].Dir;
+            bulletData.Pos = m_SkillEffect.Bullets[i].Pos;
+            bulletData.Velocity = m_SkillEffect.Bullets[i].Velocity;
+            bulletData.HitRange = m_SkillEffect.Bullets[i].HitRange;
+            bulletData.Drag = m_SkillEffect.Bullets[i].Drag;
+            bulletData.TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest;
+            bulletData.TriggerSize = m_SkillEffect.Bullets[i].TriggerSize;
+            bulletData.IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
+            bulletData.SkillExp = m_SkillData.EXP;
+            bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);
-            bullet.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, m_SkillEffect.Bullets[i].AssetName));
+            bullet.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_SkillEffect.Bullets[i].AssetName));
         }
     }
 

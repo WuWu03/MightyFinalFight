@@ -1,4 +1,5 @@
-﻿using GameFrameWork.GameEntity;
+﻿using GameFrameWork;
+using GameFrameWork.GameEntity;
 using UnityEngine;
 
 public class BaseEffect : BaseSceneObject
@@ -9,7 +10,7 @@ public class BaseEffect : BaseSceneObject
         set;
     }
 
-    public VoidNotPar PlayEndCallback
+    public GameFrameWorkAction PlayEndCallback
     {
         get;
         set;

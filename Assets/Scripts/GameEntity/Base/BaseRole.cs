@@ -2,36 +2,58 @@
 using GameFrameWork.Camera;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
     public float AttackValue
     {
-        get { return m_AttackValue; }
-        set { m_AttackValue = value; }
+        get
+        {
+            return m_AttackValue;
+        }
+        set
+        {
+            m_AttackValue = value;
+        }
     }
 
     public float AttackSpeed
     {
-        get { return m_AttackSpeed; }
-        set { m_AttackValue = value; }
+        get
+        {
+            return m_AttackSpeed;
+        }
+        set
+        {
+            m_AttackValue = value;
+        }
     }
 
     public Vector2 JumpForce
     {
-        get { return m_JumpForce; }
-        set { m_JumpForce = value; }
+        get
+        {
+            return m_JumpForce;
+        }
+        set
+        {
+            m_JumpForce = value;
+        }
     }
 
     public float Defense
     {
-        get { return m_Defense; }
-        set { m_Defense = value; }
+        get
+        {
+            return m_Defense;
+        }
+        set
+        {
+            m_Defense = value;
+        }
     }
 
     public virtual bool CanBeHit
@@ -142,7 +164,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -157,11 +178,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleSkill>();
     }
 
-    //初始化基本数值
-    public override void InitInfo(BaseSceneObjectInfo data)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.InitInfo(data);
-        BaseRoleInfo baseRoleData = data as BaseRoleInfo;
+        base.SetData(data);
+        BaseRoleData baseRoleData = data as BaseRoleData;
         m_AttackSpeed = baseRoleData.AttackSpeed;
         m_AttackValue = baseRoleData.AttackValue;
         m_Defense = baseRoleData.Defense;
@@ -202,7 +222,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_CurrCtrl.Update();
     }
 
-    public virtual void OnAttackMsg(AttackData data,bool forceJumpAttack = false)
+    public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)
     {
         if (data == null) return;
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
@@ -216,10 +236,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         GetState<RoleAttack>().AttackData = data;
         ChangeState<RoleAttack>();
-        PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
+        PlayAnimation(data.AnimName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
 
-    public virtual void OnSkillMsg(SkillData data)
+    public virtual void OnSkillMsg(SkillConfigData data)
     {
         if (data == null) return;
         GetState<RoleSkill>().CanChangeDir = data.CanChangeDir;
@@ -267,7 +287,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_CurrCtrl.ExitSkill();
         GetState<RoleJump>().JumpData = data;
         ChangeState<RoleJump>();
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Jump");
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultJump);
     }
 
     public virtual void OnHurtMsg(HurtData data)
@@ -306,7 +326,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     }
 
-    public virtual void OnDropTragMsg(TrapInfo data)
+    public virtual void OnDropTragMsg(TrapData data)
     {
         if (data == null) return;
         if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump)) && !m_IsJumpAttack) return;
@@ -345,9 +365,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return null;
     }
 
-    public virtual void OnHitEnd(SkillData skillData,bool isHurtTarget) 
+    public virtual void OnHitEnd(SkillConfigData skillData,bool isHurtTarget) 
     {
-        if (skillData.Type != SkillData.SkillType.Skill && m_CurrCtrl != null)
+        if (skillData.Type != SkillConfigData.SkillType.Skill && m_CurrCtrl != null)
         {
             m_CurrCtrl.AttackSuccess = isHurtTarget;
         }
@@ -356,7 +376,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected virtual void OnGroundHurtMsg(HurtData data)
     {
         string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", hurtSound);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, hurtSound);
         SubHealth(data.AttackValue);
 
         if (m_OnDropGroundHurt != null)
@@ -412,7 +432,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (m_Health > 0)
             {
                 ChangeDefaultState();
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnDrop");
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultDrop);
             }
             else ChangeState<RoleDead>();
         }
@@ -446,8 +466,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            m_TrapData = null;
+            ReferencePool.Release(m_TrapData);
             m_IsDropTrag = false;
+            m_TrapData = null;
         }
     }
 
@@ -462,7 +483,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 return;
             }
             else
+            {
                 Timer.Register(0.1f, () => { OnGroundHurtMsg(m_OnDropGroundHurt); });
+            }
         }
 
         if(m_Health <= 0)
@@ -489,10 +512,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeCatch = false;
     protected bool m_IsBeThrow = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
-    protected TrapInfo m_TrapData = null;
     protected Vector2 m_JumpForce = Vector2.zero;
 
     private float m_DropGourndTime = 0f;
     private bool m_IsDropGround = false;
     private HurtData m_OnDropGroundHurt = null;
+    private TrapData m_TrapData = null;
 }

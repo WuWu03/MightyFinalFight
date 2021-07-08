@@ -1,9 +1,10 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
+using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
-using GameFrameWork.Pool;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
+using GameFrameWork.Utility;
 using UnityEngine;
 
 public class PlayerMgr : MonoSingleton<PlayerMgr>
@@ -16,7 +17,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
-    public HeroData HeroData
+    public HeroConfigData HeroData
     {
         get
         {
@@ -24,7 +25,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
-    public LevelData.LevelInfo LevelData
+    public LevelConfigData.LevelInfo LevelData
     {
         get
         {
@@ -79,35 +80,35 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
         m_LevelData = StaticConfig.LevelConfig.GetData(roleID).Levels[m_Level - 1];
-        m_Player = SceneObjectPool.Ins.Get<BaseHero>("Player");
+        m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, m_HeroData.AssetName));
+        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_HeroData.AssetName));
 
-        m_Player.InitInfo(new BaseRoleInfo()
-        {
-            Health = m_LevelData.Health,
-            MaxHealth = m_LevelData.Health,
-            AttackSpeed = m_HeroData.AttackSpeed,
-            AttackValue = 1,
-            Defense = 1,
-            JumpForce = m_HeroData.JumpForce,
-            MoveSpeed = m_HeroData.MoveSpeed
-        });
-   
-        m_CurrCtrl.InitData(new BaseHeroSkillInfo()
-        {
-            ID = m_HeroData.ID,
-            AttackIDs = m_HeroData.AttackIDs,
-            JumpAttackIDs = m_HeroData.JumpAttackIDs,
-            Skills = m_HeroData.Skills,
-            AttackWait = m_HeroData.AttackWait,
-            AttackNextTime = m_HeroData.AttackNextTime,
-            CatchAttackID = m_HeroData.CatchAttackID,
-            ThrowAttackID = m_HeroData.ThrowAttackID,
-            WeaponAttackID = m_HeroData.WeaponAttackID,
-            ThrowWeaponID = m_HeroData.ThrowWeaponID,
-        });
+        BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
+        BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
+
+        roleData.Health = m_LevelData.Health;
+        roleData.MaxHealth = m_LevelData.Health;
+        roleData.AttackSpeed = m_HeroData.AttackSpeed;
+        roleData.AttackValue = 1;
+        roleData.Defense = 1;
+        roleData.JumpForce = m_HeroData.JumpForce;
+        roleData.MoveSpeed = m_HeroData.MoveSpeed;
+
+        heroSkillData.Id = m_HeroData.ID;
+        heroSkillData.AttackIds = m_HeroData.AttackIDs;
+        heroSkillData.JumpAttackIds = m_HeroData.JumpAttackIDs;
+        heroSkillData.SkillIds = m_HeroData.Skills;
+        heroSkillData.AttackWait = m_HeroData.AttackWait;
+        heroSkillData.AttackNextTime = m_HeroData.AttackNextTime;
+        heroSkillData.CatchAttackID = m_HeroData.CatchAttackID;
+        heroSkillData.ThrowAttackID = m_HeroData.ThrowAttackID;
+        heroSkillData.WeaponAttackID = m_HeroData.WeaponAttackID;
+        heroSkillData.ThrowWeaponID = m_HeroData.ThrowWeaponID;
+
+        m_Player.SetData(roleData);
+        m_CurrCtrl.SetData(heroSkillData);
 
         InputMgr.Ins.GetDirection = delegate () { return m_Player.Dir; };
         InputMgr.Ins.AfterTrigger = AfterTrigger;
@@ -115,7 +116,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         for (int i = 6; i < m_HeroData.Skills.Length; i++)
         {
-            SkillData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
+            SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
                 InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent);
@@ -142,7 +143,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             return;
         }
 
-        m_Player.Health = 10;
+        m_Player.SetHealth(10);
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
@@ -155,8 +156,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             m_Level++;
             m_EXP -= m_LevelData.EXP;
             m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.ID).Levels[m_Level - 1];
-            m_Player.Health = m_LevelData.Health;
-            m_Player.MaxHealth = m_LevelData.Health;
+            m_Player.SetMaxHealth(m_LevelData.Health);
+            m_Player.SetHealth(m_LevelData.Health);
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
             mainPanel.SetPlayerLevel();
             SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/LevelUp");
@@ -216,7 +217,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool GetPreCondition(int id)
     {
-        SkillData skillData = StaticConfig.SkillConfig.GetData(id);
+        SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
         bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
         return a;
     }
@@ -227,9 +228,9 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     }
 
     private BaseRoleCtrl m_CurrCtrl = null;
-    private HeroData m_HeroData = null;
+    private HeroConfigData m_HeroData = null;
     private BaseHero m_Player = null;
-    private LevelData.LevelInfo m_LevelData = null;
+    private LevelConfigData.LevelInfo m_LevelData = null;
 
     private int m_Life = 0;
     private int m_EXP = 0;

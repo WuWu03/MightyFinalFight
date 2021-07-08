@@ -13,7 +13,7 @@ public abstract class BaseTaskTrigger : ITaskTrigger
         }
     }
 
-    public BaseTaskTrigger(TaskData data)
+    public BaseTaskTrigger(TaskConfigData data)
     {
         m_TaskData = data;
     }
@@ -27,5 +27,5 @@ public abstract class BaseTaskTrigger : ITaskTrigger
     }
 
     protected bool m_IsComplete = false;
-    protected TaskData m_TaskData = null;
+    protected TaskConfigData m_TaskData = null;
 }

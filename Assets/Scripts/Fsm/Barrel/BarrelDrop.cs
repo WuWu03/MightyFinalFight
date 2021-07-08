@@ -24,7 +24,7 @@ public class BarrelDrop : BaseFsmState
     {
         if(m_Owner.BarrelAnimator.animation.isCompleted)
         {
-            if (m_Owner.BarrelInfo.MoveSpeed > 0) ChangeState<BarrelMove>(fsm);
+            if (m_Owner.BarrelData.MoveSpeed > 0) ChangeState<BarrelMove>(fsm);
             else ChangeState<BarrelIdle>(fsm);
         }
     }

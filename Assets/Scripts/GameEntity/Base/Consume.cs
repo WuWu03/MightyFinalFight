@@ -5,22 +5,22 @@ using UnityEngine;
 
 public class Consume : BaseSceneItem
 {
-    public override void InitInfo(BaseSceneObjectInfo data)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.InitInfo(data);
-        m_ConsumeInfo = data as SceneItemInfo;
+        base.SetData(data);
+        m_ConsumeInfo = data as SceneItemData;
     }
 
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.HP)
+        if (m_ConsumeInfo.Type == SceneItemData.ItemType.HP)
             AddHP();
-        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.EXP)
+        if (m_ConsumeInfo.Type == SceneItemData.ItemType.EXP)
             AddExp();
-        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.Life)
+        if (m_ConsumeInfo.Type == SceneItemData.ItemType.Life)
             AddExp();
-        if (m_ConsumeInfo.Type == SceneItemInfo.ItemType.Money)
+        if (m_ConsumeInfo.Type == SceneItemData.ItemType.Money)
             AddMoney();
         Release();
     }
@@ -68,5 +68,5 @@ public class Consume : BaseSceneItem
         m_ConsumeInfo = null;
     }
 
-    private SceneItemInfo m_ConsumeInfo = null;
+    private SceneItemData m_ConsumeInfo = null;
 }

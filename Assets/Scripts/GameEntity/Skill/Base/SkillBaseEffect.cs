@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SkillBaseEffect : SkillBase, ISkillEffect
 {
-    public SkillBaseEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBaseEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
     public virtual bool IsCompleted
     {
         get

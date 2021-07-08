@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork.UI;
+using GameFrameWork.Utility;
 
 public class MainPanel : BasePanel
 {
@@ -118,7 +119,7 @@ public class MainPanel : BasePanel
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.TxtExp.text = string.Format("{0}/{1}", currExpStr, maxExpStr);
+		m_Component.TxtExp.text = TextUtil.Format("{0}/{1}", currExpStr, maxExpStr);
 	}
 
 	public void SetPlayerLevel()

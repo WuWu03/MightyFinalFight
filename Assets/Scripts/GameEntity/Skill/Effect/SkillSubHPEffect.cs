@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SkillSubHPEffect : SkillBaseEffect
 {
-    public SkillSubHPEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillSubHPEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
     public override bool IsCompleted
     {
         get

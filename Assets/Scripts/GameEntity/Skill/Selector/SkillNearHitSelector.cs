@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillNearHitSelector : SkillBaseSelector
 {
-    public SkillNearHitSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillNearHitSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
  
 

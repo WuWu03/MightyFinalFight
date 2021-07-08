@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GameFrameWork;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillMoveHitEffect : SkillBaseEffect
 {
-    public SkillMoveHitEffect(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillMoveHitEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
     public override bool IsCompleted
     {
         get
@@ -74,21 +75,25 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
         List<ICanBeHit> targets = selector.GetTargets();
 
+        HurtData hurtData = HurtData.Create();
+
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].CanBeHit)
             {
-                targets[i].OnHurtMsg(new HurtData()
-                {
-                    AttackerID = m_Owner.ID,
-                    AttackerDir = m_Owner.Dir,
-                    AttackerPos = m_Owner.Pos,
-                    AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y),
-                    IsSwoon = m_SkillEffect.IsSmoon,
-                    AttackValue = 1,
-                });
+                hurtData.AttackerID = m_Owner.ID;
+                hurtData.AttackerDir = m_Owner.Dir;
+                hurtData.AttackerPos = m_Owner.Pos;
+                hurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y);
+                hurtData.IsSwoon = m_SkillEffect.IsSmoon;
+                hurtData.AttackValue = 1;
+                
+                targets[i].OnHurtMsg(hurtData);
             }
         }
+
+        ReferencePool.Release(hurtData);
     }
+
     private Vector3 m_StartPos = Vector3.zero;
 }

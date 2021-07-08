@@ -10,16 +10,6 @@
     CantBreakItem = 6,//不可破坏物体
 }
 
-public enum ObjectMsgType
-{
-    NONE = 0,
-    Idle = 1,
-    Move = 2,
-    Attack = 3,
-    Jump = 4,
-    Hurt = 5,
-}
-
 public struct BehaviourType
 {
     public const int Idle = 0;
@@ -31,5 +21,7 @@ public struct BehaviourType
 
 public struct SoundName
 {
-    public const string DefaultHurt = "OnHit02";
+    public const string DefaultHurt = "Sound/OnHit02";
+    public const string DefaultDrop = "Sound/OnDrop";
+    public const string DefaultJump = "Sound/Jump";
 }

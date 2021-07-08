@@ -5,7 +5,7 @@ using GameFrameWork;
 using GameFrameWork.Camera;
 using System.Collections.Generic;
 
-public class BaseSceneObject : BaseObject
+public class BaseSceneObject : BaseEntity
 {
     public ObjectType ObjectType
     {
@@ -73,14 +73,18 @@ public class BaseSceneObject : BaseObject
 
     public int Health
     {
-        get { return m_Health; }
-        set { m_Health = value; }
+        get
+        {
+            return m_Health;
+        }
     }
 
     public int MaxHealth
     {
-        get { return m_MaxHealth; }
-        set { m_MaxHealth = value; }
+        get 
+        { 
+            return m_MaxHealth; 
+        }
     }
 
     public bool IsResComplete
@@ -116,13 +120,17 @@ public class BaseSceneObject : BaseObject
         m_ListTargets = new List<GameObject>();
     }
 
-    public virtual void InitInfo(BaseSceneObjectInfo info)
+    public T GetData<T>() where T : BaseSceneObjectData
     {
-        m_Health = info.Health;
-        m_MaxHealth = info.MaxHealth;
-        m_EntityID = info.ID;
-        if (m_MaxHealth < m_Health)
-            m_MaxHealth = m_Health;
+        return m_Data != null ? m_Data as T : null;
+    }
+
+    public virtual void SetData(BaseSceneObjectData data)
+    {
+        m_EntityID = data.Id;
+        m_Health = data.Health;
+        m_MaxHealth = data.MaxHealth;
+        m_Data = data;
     }
 
     public override void Release()
@@ -131,12 +139,15 @@ public class BaseSceneObject : BaseObject
         m_ListTargets.Clear();
         m_ListTargets = null;
         m_IsResComplete = false;
+       
         if (m_ResGO != null)
         {
             GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
-            SceneObjectPool.Ins.Put(this);
+            EntityMgr.Ins.PutEntity(this);
             m_ResPath = null;
         }
+
+        ReferencePool.Release(m_Data);
     }
 
     public void SetObjectType(ObjectType type)
@@ -208,7 +219,7 @@ public class BaseSceneObject : BaseObject
 
     public virtual void AddHealth(int value)
     {
-        m_Health += value;
+         m_Health += value;
     }
 
     public virtual void AddMaxHealth(int value)
@@ -218,14 +229,22 @@ public class BaseSceneObject : BaseObject
 
     public virtual void SubHealth(int value)
     {
-        m_Health -= value;
-        if (m_Health < 0) m_Health = 0;
+        m_Health = Mathf.Max(m_Health - value, 0);
     }
 
     public virtual void SubMaxHealth(int value)
     {
-        m_MaxHealth -= value;
-        if (m_MaxHealth < 0) m_MaxHealth = 0;
+        m_MaxHealth = Mathf.Max(m_MaxHealth - value, 0);
+    }
+
+    public virtual void SetHealth(int value)
+    {
+        m_Health = Mathf.Min(m_MaxHealth, value);
+    }
+
+    public virtual void SetMaxHealth(int value)
+    {
+        m_MaxHealth = Mathf.Max(value, 1);
     }
 
     private void ResComplete(GameObject go, object[] param)
@@ -316,12 +335,13 @@ public class BaseSceneObject : BaseObject
     protected virtual void OnUpdate() { }
     protected virtual void OnResComplete(GameObject go, object[] param) { }
 
+
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
     protected int m_EntityID = 0;
+    protected string m_ResPath = string.Empty;
     protected int m_Health = 0;
     protected int m_MaxHealth = 0;
-    protected string m_ResPath = string.Empty;
     protected BoxCollider2D m_Collider = null;
     protected GameObject m_ResGO;
     protected Rect m_Bound = Rect.zero;
@@ -329,4 +349,6 @@ public class BaseSceneObject : BaseObject
     protected Vector2Int m_MapPos = Vector2Int.zero;
     protected ObjectType m_ObjectType = ObjectType.NONE;
     protected List<GameObject> m_ListTargets = null;
+
+    private BaseSceneObjectData m_Data = null;
 }

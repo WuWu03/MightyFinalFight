@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SkillBaseSelector : SkillBase, ISkillSelector
 {
-    public SkillBaseSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) 
+    public SkillBaseSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) 
     {
         m_ListTargets = new List<ICanBeHit>();
     }

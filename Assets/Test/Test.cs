@@ -9,19 +9,27 @@ using UnityEngine.AI;
 public class Test : MonoBehaviour
 {
     public Button btn1;
-    public Button btn2;
-    public Button btn3;
+    //public Button btn2;
+    //public Button btn3;
     public GameObject parent;
-    public GameObject item;
-    public ScrollRect scroll;
+    //public GameObject item;
+    //public ScrollRect scroll;
 
+    public class TestEventArg : GameEventArgs
+    {
+        public string fuck;
+
+        public override void Clear()
+        {
+            fuck = string.Empty;
+        }
+    }
 
     public NavMeshAgent agent;
     private void Awake()
     {
-        gameObject.GetComponent<ParticleSystemRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-
-        //UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
+        EventMgr.Init(parent);
+        UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
         //UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
         //UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
@@ -50,31 +58,33 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
-
-        //EventManager.Ins.Subscribe(1,OnSub);
+        EventMgr.Ins.Subscribe(1,OnSub);
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitinfo;
-            bool racast = Physics.Raycast(ray, out hitinfo, 100f, LayerMask.GetMask("Map"));
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hitinfo;
+        //    bool racast = Physics.Raycast(ray, out hitinfo, 100f, LayerMask.GetMask("Map"));
 
-            if (racast)
-            {
-                agent.destination = hitinfo.point;
-            }
-        }
+        //    if (racast)
+        //    {
+        //        agent.destination = hitinfo.point;
+        //    }
+        //}
     }
 
     private void onClick1(GameObject go, PointerEventData eventData)
     {
         //wrap.SetItemCount(10);
         //UIMgr.Ins.Open<RoleSelectPanel>();
+        TestEventArg e = new TestEventArg();
+        e.Id = 1;
+        e.fuck = "fuck";
+        EventMgr.Ins.Dispatch(this, e);
     }
-
 
     private void onClick2(GameObject go, PointerEventData eventData)
     {
@@ -102,6 +112,8 @@ public class Test : MonoBehaviour
 
     private void OnSub(object seneder, GameEventArgs args)
     {
-        Debug.Log(args.ID);
+        TestEventArg e = args as TestEventArg;
+        Debug.Log(args.Id);
+        Debug.Log(e.fuck);
     }
 }

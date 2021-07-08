@@ -4,13 +4,13 @@ using UnityEditor;
 
 
 [CustomEditor(typeof(EnemyConfig), true)]
-public class EnemyConfigEditor : ConfigDataEditor<EnemyConfig, EnemyData> { }
+public class EnemyConfigEditor : ConfigDataEditor<EnemyConfig, EnemyConfigData> { }
 
 [CustomEditor(typeof(HeroConfig), true)]
-public class HeroConfigEditor : ConfigDataEditor<HeroConfig, HeroData>{}
+public class HeroConfigEditor : ConfigDataEditor<HeroConfig, HeroConfigData>{}
 
 [CustomEditor(typeof(SceneItemConfig), true)]
-public class SceneItemConfigEditor : ConfigDataEditor<SceneItemConfig, SceneItemData> { }
+public class SceneItemConfigEditor : ConfigDataEditor<SceneItemConfig, SceneItemConfigData> { }
 
 [CustomEditor(typeof(SkillConfig), true)]
-public class SkillConfigEditor : ConfigDataEditor<SkillConfig, SkillData> { }
+public class SkillConfigEditor : ConfigDataEditor<SkillConfig, SkillConfigData> { }

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class StageConfig : BaseScriptableObject<StageData>
+public class StageConfig : BaseScriptableObject<StageConfigData>
 {
 }
 
 [Serializable]
-public class StageData : BaseConfigData
+public class StageConfigData : BaseConfigData
 {
     [Serializable]
     public class BGM

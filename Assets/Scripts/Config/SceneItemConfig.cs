@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class SceneItemConfig : BaseScriptableObject<SceneItemData>
+public class SceneItemConfig : BaseScriptableObject<SceneItemConfigData>
 {
 
 }
 
 [Serializable]
-public class SceneItemData : BaseConfigData
+public class SceneItemConfigData : BaseConfigData
 {
     public enum ItemType
     {

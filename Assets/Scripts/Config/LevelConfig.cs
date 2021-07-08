@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.Serialize;
 
-public class LevelConfig : BaseScriptableObject<LevelData>
+public class LevelConfig : BaseScriptableObject<LevelConfigData>
 {
 
 }
 
 [Serializable]
-public class LevelData : BaseConfigData
+public class LevelConfigData : BaseConfigData
 {
     [Serializable]
     public class LevelInfo

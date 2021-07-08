@@ -1,98 +1,96 @@
-﻿using GameFrameWork.Pool;
-using System.Collections;
-using System.Collections.Generic;
+﻿using GameFrameWork;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Utility;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public static class SceneEntityFactory
 {
-    public static void CreateSceneItem(SceneItemData data, Vector2Int pos)
+    public static void CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
     {
         if (data == null) return;
 
         BaseSceneItem sceneItem = null;
-        SceneItemInfo.ItemType type = SceneItemInfo.ItemType.NONE;
+        SceneItemData.ItemType type = SceneItemData.ItemType.None;
         ObjectType objectType = ObjectType.NONE;
 
-        if (data.Type == SceneItemData.ItemType.Weapon)
+        if (data.Type == SceneItemConfigData.ItemType.Weapon)
         {
-            type = SceneItemInfo.ItemType.Weapon;
+            type = SceneItemData.ItemType.Weapon;
             objectType = ObjectType.Weapon;
-            sceneItem = SceneObjectPool.Ins.Get<Weapon>(data.Name);
+            sceneItem = EntityMgr.Ins.GetEntity<Weapon>(data.Name);
         }
-        else if(data.Type == SceneItemData.ItemType.Trap)
+        else if(data.Type == SceneItemConfigData.ItemType.Trap)
         {
-            type = SceneItemInfo.ItemType.Trap;
+            type = SceneItemData.ItemType.Trap;
             objectType = ObjectType.CantBreakItem;
-            sceneItem = SceneObjectPool.Ins.Get<Trap>(data.Name);
+            sceneItem = EntityMgr.Ins.GetEntity<Trap>(data.Name);
         }
         else
         {
-            if (data.Type == SceneItemData.ItemType.EXP) type = SceneItemInfo.ItemType.EXP; 
-            else if(data.Type == SceneItemData.ItemType.HP) type = SceneItemInfo.ItemType.HP;
-            else if(data.Type == SceneItemData.ItemType.Life) type = SceneItemInfo.ItemType.Life;
-            else if(data.Type == SceneItemData.ItemType.Money) type = SceneItemInfo.ItemType.Money;
+            if (data.Type == SceneItemConfigData.ItemType.EXP) type = SceneItemData.ItemType.EXP; 
+            else if(data.Type == SceneItemConfigData.ItemType.HP) type = SceneItemData.ItemType.HP;
+            else if(data.Type == SceneItemConfigData.ItemType.Life) type = SceneItemData.ItemType.Life;
+            else if(data.Type == SceneItemConfigData.ItemType.Money) type = SceneItemData.ItemType.Money;
             objectType = ObjectType.Consume;
-            sceneItem = SceneObjectPool.Ins.Get<Consume>(data.Name);
+            sceneItem = EntityMgr.Ins.GetEntity<Consume>(data.Name);
         }
 
         if (sceneItem == null) return;
 
-        sceneItem.InitInfo(new SceneItemInfo()
-        {
-            ID = data.ID,
-            Type = type,
-            Health = data.Value,
-            MaxHealth = data.Value,
-            TriggerOffest = data.TriggerOffest,
-            TriggerSize = data.TriggerSize,
-            Value = data.Value,
-            CanDrop = data.CanDrop,
-        });
-        sceneItem.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, data.AssetName));
+        SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
+        sceneItemData.Id = data.ID;
+        sceneItemData.Type = type;
+        sceneItemData.Health = data.Value;
+        sceneItemData.MaxHealth = data.Value;
+        sceneItemData.TriggerOffest = data.TriggerOffest;
+        sceneItemData.TriggerSize = data.TriggerSize;
+        sceneItemData.Value = data.Value;
+        sceneItemData.CanDrop = data.CanDrop;
+
+        sceneItem.SetData(sceneItemData);
+        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, data.AssetName));
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
     }
 
-    public static BaseEnemy CreateEnemy(EnemyData enemyData,int engityID,Vector2Int pos)
+    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, Vector2Int pos)
     {
-        BaseEnemy enemy = GetEnemyEntity(enemyData);
-        enemy.SetRes(string.Format("{0}/{1}", ResDefine.PREFAB_PATH, enemyData.AssetName));
-        enemy.InitInfo(new BaseEnemyInfo()
-        {
-            ID = engityID,
-            Health = 20,
-            MaxHealth = 20,
-            AttackSpeed = enemyData.AttackSpeed,
-            AttackValue = 1,
-            Defense = 1,
-            MoveSpeed = enemyData.MoveSpeed,
-            HurtAnim = enemyData.HurtEnemy,
-        });
+        BaseEnemy enemy = GetEnemyEntity(enemyConfigData);
+        BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
+        BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
 
-        enemy.AddCtrl<BaseEnemyCtrl>().InitData(new BaseEnemySkillInfo()
-        {
-            AttackIDs = enemyData.AttackIDs,
-            Skills = enemyData.Skills,
-            AttackWait = enemyData.AttackWait,
-            AttackNextTime = enemyData.AttackNextTime,
-            BehaviourRate = enemyData.BehaviourRate,
-            BehaviourTreesID = enemyData.BehaviourTreeIDs,
-        });
+        enemyData.Id = engityID;
+        enemyData.Health = 20;
+        enemyData.MaxHealth = 20;
+        enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
+        enemyData.AttackValue = 1;
+        enemyData.Defense = 1;
+        enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
+        enemyData.HurtAnim = enemyConfigData.HurtEnemy;
 
+        enemySkillData.AttackIds = enemyConfigData.AttackIDs;
+        enemySkillData.SkillIds = enemyConfigData.Skills;
+        enemySkillData.AttackWait = enemyConfigData.AttackWait;
+        enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
+        enemySkillData.BehaviourRate = enemyConfigData.BehaviourRate;
+        enemySkillData.BehaviourTreesID = enemyConfigData.BehaviourTreeIDs;
+
+        enemy.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, enemyConfigData.AssetName));
+        enemy.SetData(enemyData);
+        enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
         enemy.SetObjectType(ObjectType.Monster);
         enemy.SetMapPos(pos);
 
         return enemy;
     }
 
-    private static BaseEnemy GetEnemyEntity(EnemyData enemyData)
+    private static BaseEnemy GetEnemyEntity(EnemyConfigData enemyData)
     {
         BaseEnemy enemy = null;
         if(enemyData.Name == "Axl")
-            enemy = SceneObjectPool.Ins.Get<DefenseEnemy>(enemyData.Name);
+            enemy = EntityMgr.Ins.GetEntity<DefenseEnemy>(enemyData.Name);
         else
-            enemy = SceneObjectPool.Ins.Get<BaseEnemy>(enemyData.Name);
+            enemy = EntityMgr.Ins.GetEntity<BaseEnemy>(enemyData.Name);
 
         return enemy;
     }

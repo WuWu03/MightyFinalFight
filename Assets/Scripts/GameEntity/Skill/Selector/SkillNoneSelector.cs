@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SkillNoneSelector : SkillBaseSelector
 {
-    public SkillNoneSelector(SkillData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillNoneSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
     public override List<ICanBeHit> GetTargets()
     {

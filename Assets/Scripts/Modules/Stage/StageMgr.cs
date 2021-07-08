@@ -4,7 +4,7 @@ using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using GameFrameWork.Utility;
 using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>
@@ -45,7 +45,7 @@ public class StageMgr : BaseMgr<StageMgr>
         {
             m_MapRenderer = new GameObject("Map").GetOrAddComponent<SpriteRenderer>();
             m_MapRenderer.transform.SetParent(transform, false);
-            Utility.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
+            Util.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
         }
     }
 
@@ -198,7 +198,9 @@ public class StageMgr : BaseMgr<StageMgr>
 
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
-        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH + "/BGM", "bgm2", true, 0.2f);
+        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm2", true, 0.2f);
+
+
         //SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
         //{
         //    new SoundMgr.AudioGroup()
@@ -235,6 +237,6 @@ public class StageMgr : BaseMgr<StageMgr>
 
     private Rect m_AreaBound = Rect.zero;
     private SpriteRenderer m_MapRenderer = null;
-    private StageData m_CurrStageData = null;
+    private StageConfigData m_CurrStageData = null;
 
 }

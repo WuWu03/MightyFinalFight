@@ -12,10 +12,10 @@ public class Weapon : BaseSceneItem
         }
     }
 
-    public override void InitInfo(BaseSceneObjectInfo data)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.InitInfo(data);
-        m_WeaponData = data as SceneItemInfo;
+        base.SetData(data);
+        m_WeaponData = data as SceneItemData;
     }
 
     public override void SubHealth(int value)
@@ -80,5 +80,5 @@ public class Weapon : BaseSceneItem
     }
 
     private UnityArmatureComponent m_Animator = null;
-    private SceneItemInfo m_WeaponData = null;
+    private SceneItemData m_WeaponData = null;
 }

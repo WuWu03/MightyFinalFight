@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Camera;
+﻿using GameFrameWork;
+using GameFrameWork.Camera;
 using GameFrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -126,13 +127,13 @@ public class BaseHero : BaseRole
         return m_ListCatchTarget;
     }
 
-    public override void OnHitEnd(SkillData skillData,bool isHurtTarget)
+    public override void OnHitEnd(SkillConfigData skillData,bool isHurtTarget)
     {
         base.OnHitEnd(skillData, isHurtTarget);
 
         if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3) return;
 
-        if (skillData.Type == SkillData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
+        if (skillData.Type == SkillConfigData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
         {
             ResetCatch(false);
             return;
@@ -142,13 +143,14 @@ public class BaseHero : BaseRole
 
         if (m_CatchAttackCount >= 3)
         {
-            m_ListCatchTarget[0].OnHurtMsg(new HurtData()
-            {
-                AttackerDir = m_Dir,
-                AttackValue = 0,
-                IsSwoon = true,
-                AttackForce = new Vector2(40f * m_Dir, 150f),
-            });
+            HurtData hurtData = HurtData.Create();
+            hurtData.AttackerDir = m_Dir;
+            hurtData.AttackValue = 0;
+            hurtData.IsSwoon = true;
+            hurtData.AttackForce = new Vector2(40f * m_Dir, 150f);
+
+            m_ListCatchTarget[0].OnHurtMsg(hurtData);
+            ReferencePool.Release(hurtData);
         }
     }
 
@@ -221,7 +223,7 @@ public class BaseHero : BaseRole
         base.OnHurtMsg(data);
     }
 
-    public override void OnDropTragMsg(TrapInfo data)
+    public override void OnDropTragMsg(TrapData data)
     {
         base.OnDropTragMsg(data);
         CameraMgr.Ins.EndFollow();

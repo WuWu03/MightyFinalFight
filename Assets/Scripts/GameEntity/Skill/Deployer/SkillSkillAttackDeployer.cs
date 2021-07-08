@@ -1,7 +1,7 @@
 ﻿using DragonBones;
 using GameFrameWork.Sound;
 using UnityEngine;
-using static SkillData;
+using static SkillConfigData;
 
 public class SkillSkillAttackDeployer : SkillBaseDeployer
 {
