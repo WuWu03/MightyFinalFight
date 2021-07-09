@@ -7,8 +7,8 @@ namespace GameFrameWork.UI
 {
     public class LayoutGroupView<T> where T : LayoutGroupViewItem, new()
     {
-        public Action<T> OnItemUpdate;
-        public Action<T,bool> OnItemSelect;
+        public GameFrameWorkAction<T> OnItemUpdate;
+        public GameFrameWorkAction<T,bool> OnItemSelect;
         
         public void Init(GameObject parent,GameObject item, int maxCount = 1, ScrollRect scroll = null)
         {

@@ -48,7 +48,7 @@ namespace GameFrameWork.Net
                     OnConnectSuccess();
                 }
 
-                Log.Debugger.Log("连接服务器:" + ip + "成功！");
+                Log.GameFrameworkLog.Log("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace GameFrameWork.Net
                     OnConnectFail();
                 }
 
-                Log.Debugger.Log(e.ToString());
+                Log.GameFrameworkLog.Log(e.ToString());
             }
         }
 
@@ -129,7 +129,7 @@ namespace GameFrameWork.Net
 
                 if (length < 1)
                 {
-                    Log.Debugger.Log("服务器断开连接");
+                    Log.GameFrameworkLog.Log("服务器断开连接");
                     Close();
                     return;
                 }
@@ -183,7 +183,7 @@ namespace GameFrameWork.Net
             }
             catch (Exception e)
             {
-                Log.Debugger.Log("++服务器断开连接," + e.Message);
+                Log.GameFrameworkLog.Log("++服务器断开连接," + e.Message);
                 Close();
                 return;
             }

@@ -1,47 +1,37 @@
 ﻿using GameFrameWork.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Log
 {
-    public static class Debugger
+    public static class GameFrameworkLog
     {
-        public static Color LogColor = Color.white;
-        public static void Log(string logStr = "", params object[] args)
+        public static void Log(params object[] args)
         {
             if (!AppConfig.Ins.OpenLog) return;
-            Debug.Log(GetLogInfo(logStr, args));
+            Debug.Log(GetLogInfo(args));
         }
 
-        public static void LogError(string logStr = "", params object[] args)
+        public static void LogError(params object[] args)
         {
             if (!AppConfig.Ins.OpenLog) return;
-            Debug.LogError(GetLogInfo(logStr, args));
+            Debug.LogError(GetLogInfo(args));
         }
 
-        private static string GetLogInfo(string logStr, object[] args)
+        private static string GetLogInfo(object[] args)
         {
-            string logInfo = logStr;
+            m_LogColor = AppConfig.Ins.LogColor;
 
-            if (args != null && args.Length > 0)
-            {
-                logInfo = !string.IsNullOrEmpty(logStr) ? logStr + ":" : string.Empty;
-
-                for (int i = 0; i < args.Length; i++)
-                {
-                    logInfo = TextUtil.Format("{0}[{1}]{2}", logInfo, args[i], i < args.Length - 1 ? "," : string.Empty);
-                }
-            }
-
-            string color = Utility.Util.ToRGBHex(LogColor);
+            string logInfo = TextUtil.FormatDefault(args);
+            string color = Util.ToRGBHex(m_LogColor);
 
             if (!string.IsNullOrEmpty(color))
             {
-                logInfo = TextUtil.Format("<color={0}>{1}</color>", color, logInfo);
+                logInfo = TextUtil.FormatDefault("<color=", color, ">", logInfo, "</color>");
             }
 
             return logInfo;
         }
+
+        public static Color m_LogColor = Color.white;
     }
 }

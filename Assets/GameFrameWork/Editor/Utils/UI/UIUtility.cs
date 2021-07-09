@@ -36,7 +36,10 @@ namespace GameFrameWork.Editor
             SceneView.duringSceneGui += DuringSceneGUI;
             EditorApplication.hierarchyWindowItemOnGUI = null;
             EditorApplication.hierarchyWindowItemOnGUI = HierarchyWindowItemOnGUI;
-        }
+
+            m_CSharpExporter = new CSharpExporter();
+            m_LuaExporter = new LuaExporter();
+    }
 
         public static void NewUIScene()
         {
@@ -77,7 +80,7 @@ namespace GameFrameWork.Editor
                 GUI.color = Color.green;
                 Handles.BeginGUI();
 
-                if (GUI.Button(new Rect(0f, (float)(Screen.height - 30 - 40), 70f, 30f), "生成预制体"))
+                if (GUI.Button(new Rect(0f, (float)(Screen.height - 70), 70f, 30f), "生成预制体"))
                 {
                     string exportPath = ExportUIPrefab(true);
                     if (string.IsNullOrEmpty(exportPath)) return;
@@ -88,16 +91,19 @@ namespace GameFrameWork.Editor
                 }
 
                 GUI.color = Color.white;
+
                 if (GUI.Button(new Rect((float)(Screen.width - 200), (float)(Screen.height - 70), 110f, 30f), "复制引用到剪切板"))
                 {
                     CopyRefStr();
                     UnityEngine.Event.current.Use();
                 }
+
                 if (GUI.Button(new Rect((float)(Screen.width - 70), (float)(Screen.height - 70), 70f, 30f), "添加引用"))
                 {
                     AddUIRef();
                     UnityEngine.Event.current.Use();
                 }
+
                 Handles.EndGUI();
             }
         }
@@ -109,16 +115,30 @@ namespace GameFrameWork.Editor
             GameObject gameObject = UnityEditor.EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (gameObject == null || gameObject.transform.parent == null) return;
 
+            if (gameObject.name[0] >= '0' && gameObject.name[0] <= '9')
+            {
+                char[] objName = gameObject.name.ToCharArray();
+                int index = gameObject.name[0];
+                index += 49;
+                objName[0] = (char)index;
+                gameObject.name = new string(objName);
+            }
+
             UIRef component = gameObject.GetComponent<UIRef>();
             if (component == null) return;
 
             GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
             GUIStyle labelStyle2 = new GUIStyle(EditorStyles.label);
+
             labelStyle.normal.textColor = Color.green;
             labelStyle2.normal.textColor = Color.yellow;
 
-            GUI.Label(new Rect(selectionRect.x + selectionRect.width - 15f, selectionRect.y + 2f, 15f,
-                selectionRect.height), "*", component.IsCopyRefStr ? labelStyle2 : labelStyle);
+            float x = selectionRect.x + selectionRect.width - 15f;
+            float y = selectionRect.y + 2f;
+            float width = 15f;
+            float height = selectionRect.height;
+
+            GUI.Label(new Rect(x, y, width, height), "*", component.IsCopyRefStr ? labelStyle2 : labelStyle);
         }
 
         private static bool CopyRefStr()
@@ -217,19 +237,10 @@ namespace GameFrameWork.Editor
         {
             if (obj == null) return;
 
-            UIRef[] components = obj.GetComponents<UIRef>();
             UIRef uiRef = obj.AddComponent<UIRef>();
             uiRef.ComponentName = typeof(GameObject).Name;
-            if (components.Length == 0)
-            {
-                uiRef.UseObjName = true;
-                uiRef.SetObjName(obj.name);
-            }
-            else
-            {
-                uiRef.UseObjName = false;
-                uiRef.SetName(obj.name);
-            }
+            uiRef.UseDefaultName = true;
+            uiRef.SetName(obj.name);
         }
 
         private static bool IsUIScene()
@@ -301,11 +312,11 @@ namespace GameFrameWork.Editor
 
             if (setting.ScriptType == UIRefSetting.ExoprtScriptType.CSharp)
             {
-                ExportCSharp(components, setting);
+                m_CSharpExporter.Export(components, setting);
             }
             else
             {
-                ExportLua(components);
+                m_LuaExporter.Export(components, setting);
             }
             return true;
         }
@@ -357,217 +368,7 @@ namespace GameFrameWork.Editor
             return path;
         }
 
-        private static void ExportCSharp(UIRef[] uiRefs, UIRefSetting setting)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            int year = DateTime.Now.Year;
-            int month = DateTime.Now.Month;
-            int day = DateTime.Now.Day;
-            int hour = DateTime.Now.Hour;
-            int minute = DateTime.Now.Minute;
-
-            string layerName = Enum.GetName(typeof(UIRefSetting.Layer), setting.PanelLayer);
-            string closeModeName = Enum.GetName(typeof(UIRefSetting.CloseMode), setting.PanelCloseMode);
-            string typeName = Enum.GetName(typeof(UIRefSetting.Type), setting.PanelType);
-            float unLoadTime = setting.UnLoadTime;
-
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}**************************************/\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By GQY****************************************/");
-            sb.AppendLine("/**工具生成，请勿修改************************************/");
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendLine("using System.Collections;");
-            sb.AppendLine("using System.Collections.Generic;");
-            sb.AppendLine("using UnityEngine;");
-            sb.AppendLine("using UnityEngine.UI;");
-            sb.AppendLine("using GameFrameWork.UI;");
-            sb.AppendFormat("public class {0}Component : BasePanelComponent\n", setting.PanelName);
-            sb.AppendLine("{");
-
-            List<UIRef> layoutRefList = new List<UIRef>();
-            List<UIRef> normalRefList = new List<UIRef>();
-
-            for (int i = 0; i < uiRefs.Length; i++)
-            {
-                if (uiRefs[i].IsLayoutContent())
-                {
-                    layoutRefList.Add(uiRefs[i]);
-                    normalRefList.Add(uiRefs[i]);
-                }
-                else if (!uiRefs[i].IsLayoutItemVariable)
-                {
-                    normalRefList.Add(uiRefs[i]);
-                }
-            }
-
-            for (int i = 0; i < normalRefList.Count; i++)
-            {
-                UIRef uiRef = normalRefList[i];
-                sb.Append("\t//").Append(GetComment(uiRef));
-                sb.AppendLine();
-                sb.AppendFormat("\tpublic {0} {1}", uiRef.ComponentName, uiRef.GetName());
-                sb.Append(" { get; private set; }\n");
-            }
-
-            for (int i = 0; i < layoutRefList.Count; i++)
-            {
-                string itemName = layoutRefList[i].GetName() + "Item";
-                string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-                string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
-                sb.AppendFormat("\tpublic {0}<{1}> {2}", layoutName, itemName, itemVarableName);
-                sb.Append(" { get; private set; }\n");
-            }
-            sb.AppendLine();
-            sb.AppendFormat("\tpublic {0}Component(UIRefRoot root) : base(root)", setting.PanelName);
-            sb.Append(" { }\n");
-            sb.AppendLine("\tprotected override void InitComponent(UIRefRoot root)");
-            sb.AppendLine("\t{");
-
-            for (int i = 0; i < normalRefList.Count; i++)
-            {
-                int objIndex = i;
-                UIRef uiRef = normalRefList[i];
-                for (int j = 0; j < uiRefs.Length; j++)
-                {
-                    if (uiRefs[j] == uiRef)
-                    {
-                        objIndex = j;
-                        break;
-                    }
-                }
-                sb.AppendFormat("\t\t{0} = root.Objects[{1}] as {2};\n", uiRef.GetName(), objIndex, uiRef.ComponentName);
-            }
-
-            for (int i = 0; i < layoutRefList.Count; i++)
-            {
-                string itemName = layoutRefList[i].GetName() + "Item";
-                string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-                string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
-                sb.AppendFormat("\t\t{0} = new {1}<{2}>();\n", itemVarableName, layoutName, itemName);
-            }
-
-            sb.AppendLine("\t}");
-
-            for (int i = 0; i < layoutRefList.Count; i++)
-            {
-                GenCSharpLayout(layoutRefList[i], sb);
-            }
-
-            sb.Append("}");
-            FileUitl.VerifyDirectory(setting.ScriptFolder);
-            FileUitl.CreateTextFile(setting.PanelComponentPath, sb.ToString());
-
-            if (File.Exists(setting.PanelPath)) return;
-            sb.Clear();
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}****************************************/\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By GQY****************************************/");
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendLine("using UnityEngine;");
-            sb.AppendLine("using UnityEngine.UI;");
-            sb.AppendLine("using DG.Tweening;");
-            sb.AppendLine("using GameFrameWork.UI;");
-            sb.AppendLine();
-            sb.AppendFormat("public class {0} : BasePanel", setting.PanelName);
-            sb.AppendLine("\n{");
-            sb.Append("\tpublic override string PanelName { get { " + string.Format("return \"{0}\"", setting.PanelName) + "; } }\n");
-            sb.Append("\tpublic override float PanelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\n");
-            sb.Append("\tpublic override UIMgr.Type PanelType { get { " + string.Format("return UIMgr.Type.{0}", typeName) + "; } }\n");
-            sb.Append("\tpublic override UIMgr.Layer PanelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\n");
-            sb.Append("\tpublic override UIMgr.CloseMode PanelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\n");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnInit(object[] param)");
-            sb.AppendLine("\t{");
-            sb.AppendFormat("\t\tm_Component = new {0}Component(UIRefRoot);\n", setting.PanelName);
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnOpen()");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnUpdate()");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnClose()");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnDestroy()");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendFormat("\tprivate {0}Component m_Component = null;\n", setting.PanelName);
-            sb.Append("}");
-            FileUitl.VerifyDirectory(setting.ScriptFolder);
-            FileUitl.CreateTextFile(setting.PanelPath, sb.ToString());
-        }
-
-        private static void GenCSharpLayout(UIRef uiRef, StringBuilder sb)
-        {
-            UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
-
-
-            sb.AppendLine();
-            sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\n", uiRef.GetName() + "Item");
-            sb.AppendLine("\t{");
-
-            string itemName = string.Empty;
-
-            for (int i = 0; i < itemRefs.Length; i++)
-            {
-                if (itemRefs[i].IsLayoutItem)
-                {
-                    itemName = itemRefs[i].name;
-                    break;
-                }
-            }
-
-            for (int i = 0; i < itemRefs.Length; i++)
-            {
-                if (!itemRefs[i].IsLayoutItemVariable) continue;
-                sb.AppendFormat("\t\tpublic {0} {1} = null;\n", itemRefs[i].ComponentName, itemRefs[i].GetName());
-            }
-
-            sb.AppendLine("\t\tprotected override void OnCreate(GameObject go)");
-            sb.AppendLine("\t\t{");
-
-            for (int i = 0; i < itemRefs.Length; i++)
-            {
-                if (!itemRefs[i].IsLayoutItemVariable) continue;
-                string path = EditorUtility.GetHierarchy(itemRefs[i].gameObject);
-                path = path.Substring(path.LastIndexOf(itemName) + itemName.Length + 1).Replace(@"\", "/");
-                if (itemRefs[i].ComponentName.Equals("GameObject"))
-                {
-                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").gameObject;\n", itemRefs[i].GetName(), path);
-                }
-                else
-                {
-                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\n", itemRefs[i].GetName(), path, itemRefs[i].ComponentName);
-                }
-            }
-
-            sb.AppendLine("\t\t}");
-            sb.AppendLine("\t}");
-        }
-
-        private static bool ExportLua(UIRef[] uiRefs)
-        {
-            return false;
-        }
-
-        private static string GetComment(UIRef uiRef)
-        {
-            string objPath = EditorUtility.GetHierarchy(uiRef.gameObject);
-            string comment = objPath.Substring("UIRoot/UICanvas/Panel".Length + 1).Replace("\\", "/") + "," + uiRef.ComponentName;
-
-            if (!string.IsNullOrEmpty(uiRef.Desc))
-            {
-                comment = comment + "[" + uiRef.Desc + "]";
-            }
-
-            return comment;
-        }
+        private static IExporter m_CSharpExporter = null;
+        private static IExporter m_LuaExporter = null;
     }
 }

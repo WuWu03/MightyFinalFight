@@ -26,7 +26,7 @@ namespace GameFrameWork.UI
             {
                 if (root == null)
                 {
-                    Log.Debugger.LogError("The red point root [" + key + "] is invalid,please regist first");
+                    Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
                     return;
                 }
 
@@ -41,7 +41,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                Log.Debugger.LogError("The red point root [" + key + "] is invalid,please regist first");
+                Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace GameFrameWork.UI
 
             if(node == null)
             {
-                Log.Debugger.LogError("The red point node [" + subKey + "] is invalid,please regist first");
+                Log.GameFrameworkLog.LogError("The red point node [" + subKey + "] is invalid,please regist first");
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                Log.Debugger.LogError("The red point root [" + key + "] is invalid,please regist first");
+                Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
                 return;
             }
 

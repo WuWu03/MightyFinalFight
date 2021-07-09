@@ -1,8 +1,8 @@
 /*******************************************************/
-/**2020-7-22 19:39****************************************/
+/**2020-7-22 19:39**************************************/
 /**Create By GQY****************************************/
-/**工具生成，请勿修改************************************/
 /*******************************************************/
+
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -52,15 +52,15 @@ public class MainPanel : BasePanel
 
 	}
 
-	private void OnItemUpdate(MainPanelComponent.LevelListItem obj)
+	private void OnItemUpdate(MainPanelComponent.LevelListItem item)
 	{
 		int stageIndex = StageMgr.Ins.StageIndex;
 		int playerLevel = PlayerMgr.Ins.Level;
-		obj.ImgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= obj.Index);
-		obj.ImgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= obj.Index);
-		obj.ImgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= obj.Index);
-		obj.ImgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= obj.Index);
-		obj.ImgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= obj.Index);
+		item.ImgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= item.Id);
+		item.ImgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= item.Id);
+		item.ImgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= item.Id);
+		item.ImgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= item.Id);
+		item.ImgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= item.Id);
 	}
 
 	public void SetPlayerHP(int value, int max, float width = 0f)

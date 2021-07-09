@@ -23,12 +23,14 @@ namespace GameFrameWork.Editor
             SerializedProperty loadLuaAB = serializedObject.FindProperty("LoadLuaAB");
             SerializedProperty luaByteMode = serializedObject.FindProperty("LuaByteMode");
             SerializedProperty luaDirectory = serializedObject.FindProperty("LuaDirectory");
+            SerializedProperty logColor = serializedObject.FindProperty("LogColor");
 
             EditorGUILayout.PropertyField(checkVersion);
             EditorGUILayout.PropertyField(openUpdate);
             EditorGUILayout.PropertyField(loadAB);
             EditorGUILayout.PropertyField(openLog);
             EditorGUILayout.PropertyField(useLua);
+            EditorGUILayout.PropertyField(logColor);
 
             if (appConfig.UseLua)
             {
@@ -44,7 +46,8 @@ namespace GameFrameWork.Editor
              || useLua.boolValue != appConfig.UseLua
              || loadLuaAB.boolValue != appConfig.LoadLuaAB
              || luaByteMode.boolValue != appConfig.LuaByteMode
-             || luaDirectory.stringValue != appConfig.LuaDirectory)
+             || luaDirectory.stringValue != appConfig.LuaDirectory
+             || logColor.colorValue != appConfig.LogColor)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
@@ -54,6 +57,7 @@ namespace GameFrameWork.Editor
             appConfig.OpenUpdate = openUpdate.boolValue;
             appConfig.OpenLog = openLog.boolValue;
             appConfig.UseLua = useLua.boolValue;
+            appConfig.LogColor = logColor.colorValue;
 
             if (appConfig.UseLua)
             {

@@ -91,7 +91,7 @@ namespace GameFrameWork.Event
 
             if (!m_EventHandlers.TryGetValue(id, out eventList))
             {
-                throw new Exception(TextUtil.Format("Dont't have event ID:{0}.", id));
+                throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
             }
 
             if (eventList.Contains(handler))
@@ -160,7 +160,7 @@ namespace GameFrameWork.Event
 
             if (!m_EventHandlers.TryGetValue(id, out eventList))
             {
-                throw new Exception(TextUtil.Format("Dont't have event ID:{0}.", id));
+                throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
             }
 
             for (int i = 0; i < eventList.Count; i++)

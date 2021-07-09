@@ -151,10 +151,10 @@ namespace GameFrameWork.Resources
         public void UnloadAssetBundle(string abName, bool isThorough = false)
         {
             abName = GetRealAssetPath(abName);
-            Log.Debugger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
+            Log.GameFrameworkLog.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
             UnloadAssetBundleInternal(abName, isThorough);
             UnloadDependencies(abName, isThorough);
-            Log.Debugger.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
+            Log.GameFrameworkLog.Log(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace GameFrameWork.Resources
 
         private Object Load(string abName, bool loadMainAsset = false, Type t = null)
         {
-            Log.Debugger.Log("LoadAsset：" + abName);
+            Log.GameFrameworkLog.Log("LoadAsset：" + abName);
 
             abName = GetRealAssetPath(abName);
             LoadDependencies(abName);
@@ -177,7 +177,7 @@ namespace GameFrameWork.Resources
                 if (bundleInfo == null)
                 {
                     m_LoadRequests.Remove(abName);
-                    Log.Debugger.LogError("OnLoadAsset--->>>" + abName);
+                    Log.GameFrameworkLog.LogError("OnLoadAsset--->>>" + abName);
                     return null;
                 }
             }
@@ -203,7 +203,7 @@ namespace GameFrameWork.Resources
         /// </summary>
         private void LoadAsync(string abName, Action<Object,object[]> action = null, bool loadMainAsset = false, Type t = null , object[] param = null)
         {
-            Log.Debugger.Log("LoadAsset：" + abName);
+            Log.GameFrameworkLog.Log("LoadAsset：" + abName);
 
             abName = GetRealAssetPath(abName);
             LoadAssetRequest request = new LoadAssetRequest();
@@ -239,7 +239,7 @@ namespace GameFrameWork.Resources
                 if (bundleInfo == null)
                 {
                     m_LoadRequests.Remove(abName);
-                    Log.Debugger.LogError("OnLoadAsset--->>>" + abName);
+                    Log.GameFrameworkLog.LogError("OnLoadAsset--->>>" + abName);
                     yield break;
                 }
             }
@@ -279,7 +279,7 @@ namespace GameFrameWork.Resources
         private void OnLoadAssetBundle(string abName)
         {
             string path = GetAssetBundlePath(abName);
-            Log.Debugger.Log("开始同步加载资源：" + path);
+            Log.GameFrameworkLog.Log("开始同步加载资源：" + path);
 
             AssetBundle assetObj = AssetBundle.LoadFromFile(path);
             if (assetObj != null)
@@ -291,7 +291,7 @@ namespace GameFrameWork.Resources
         private IEnumerator OnLoadAssetBundleAsync(string abName)
         {
             string path = GetAssetBundlePath(abName);
-            Log.Debugger.Log("开始异步加载资源：" + path);
+            Log.GameFrameworkLog.Log("开始异步加载资源：" + path);
             AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(path);
             yield return createRequest;
 
@@ -343,7 +343,7 @@ namespace GameFrameWork.Resources
                 return abName;
             }
 
-            Log.Debugger.LogError("Can't find the version of" + abName);
+            Log.GameFrameworkLog.LogError("Can't find the version of" + abName);
             return string.Empty;
         }
 
@@ -355,7 +355,7 @@ namespace GameFrameWork.Resources
         {
             if (m_Manifest == null)
             {
-                Log.Debugger.LogError("Please initialize AssetBundleManifest by calling ResMgr.Init()");
+                Log.GameFrameworkLog.LogError("Please initialize AssetBundleManifest by calling ResMgr.Init()");
                 return;
             }
             // Get dependecies from the AssetBundleManifest object..
@@ -404,7 +404,7 @@ namespace GameFrameWork.Resources
                 }
                 bundle.m_AssetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
-                Log.Debugger.Log(abName + " has been unloaded successfully");
+                Log.GameFrameworkLog.Log(TextUtil.FormatDefault(abName, " has been unloaded successfully"));
             }
         }
 

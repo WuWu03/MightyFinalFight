@@ -1,4 +1,5 @@
 ﻿using GameFrameWork.Utility;
+using GameFrameWork.Log;
 using UnityEngine;
 
 namespace GameFrameWork
@@ -18,7 +19,7 @@ namespace GameFrameWork
                     {
                         if (instances.Length > 1)
                         {
-                            Log.Debugger.LogError(TextUtil.Format("The instance that Type of {0} is more than one", typeof(T).Name));
+                            GameFrameworkLog.LogError("The instance that Type of ", typeof(T).Name, " is more than one");
                             return null;
                         }
                         else
@@ -37,6 +38,5 @@ namespace GameFrameWork
         }
 
         protected static T m_Ins;
-        protected static bool m_IsAutoInstantiate = true;
     }
 }

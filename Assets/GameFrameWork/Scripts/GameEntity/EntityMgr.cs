@@ -81,11 +81,13 @@ namespace GameFrameWork.GameEntity
             }
 
             m_AcquireCount++;
+            m_ListUsingEntity.Add(obj);
+
             obj.Init(m_ListUsingEntity.Count, name);
             obj.SetParent(parent, false);
             obj.transform.localPosition = Vector3.zero;
             obj.SetActive(true);
-            m_ListUsingEntity.Add(obj);
+
             return obj;
         }
 
@@ -158,6 +160,11 @@ namespace GameFrameWork.GameEntity
             }
 
             return null;
+        }
+        
+        public bool HasEntity<T>(string name = null)  where T:BaseEntity
+        {
+            return FindEntity<T>(name) != null;
         }
 
         protected override void OnShutDown()

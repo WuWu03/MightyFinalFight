@@ -30,24 +30,23 @@ namespace GameFrameWork.Editor
             GUI.color = Color.white;
             EditorGUI.BeginChangeCheck();
 
-            SerializedProperty useObjName = EditorUtility.DrawProperty("使用默认字段名", serializedObject, "m_UseObjName", new GUILayoutOption[0]);
-            if (m_UIRef.UseObjName != useObjName.boolValue)
+            SerializedProperty useDefaultName = EditorUtility.DrawProperty("使用默认字段名", serializedObject, "m_UseDefaultName", new GUILayoutOption[0]);
+            if (m_UIRef.UseDefaultName != useDefaultName.boolValue)
             {
-                m_UIRef.UseObjName = useObjName.boolValue;
+                m_UIRef.UseDefaultName = useDefaultName.boolValue;
                 UnityEditor.EditorUtility.SetDirty(this.m_UIRef);
             }
 
-            if (useObjName.boolValue)
+            if (useDefaultName.boolValue)
             {
-                //m_UIRef.SetObjName(m_UIRef.gameObject.name);
-                foreach (UIRef current in GetOtherRef(m_UIRef))
-                {
-                    if (current == m_UIRef || !current.UseObjName) continue;
-
-                    current.UseObjName = false;
-                    current.SetName(m_UIRef.gameObject.name);
-                    break;
-                }
+                m_UIRef.SetName(m_UIRef.gameObject.name);
+                //foreach (UIRef current in GetOtherRef(m_UIRef))
+                //{
+    
+                //    if (!current.UseDefaultName) continue;
+                //    current.SetName();
+                //    break;
+                //}
             }
             else
             {
@@ -141,21 +140,6 @@ namespace GameFrameWork.Editor
             return ret;
         }
 
-        public static string GetUniqueName(string name, IEnumerable<string> array)
-        {
-            int num = 1;
-            string text = name;
-
-            foreach (string current in array)
-            {
-                if (current == text)
-                {
-                    text = string.Format("{0} {1}", name, num++);
-                }
-            }
-
-            return text;
-        }
 
         private List<string> m_ListCompName = new List<string>();
         private UIRef m_UIRef;

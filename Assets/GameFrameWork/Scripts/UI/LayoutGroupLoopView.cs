@@ -14,7 +14,7 @@ namespace GameFrameWork.UI
         {
             if (scroll == null)
             {
-                Log.Debugger.LogError("LayoutGroupLoopView initialize failed ScrollRect not found");
+                Log.GameFrameworkLog.LogError("LayoutGroupLoopView initialize failed ScrollRect not found");
                 return;
             }
 

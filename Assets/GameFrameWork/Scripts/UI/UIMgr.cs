@@ -240,7 +240,7 @@ namespace GameFrameWork.UI
 
             if (type == null)
             {
-                Log.Debugger.LogError("Panel is invalid!");
+                Log.GameFrameworkLog.LogError("Panel is invalid!");
                 return null;
             }
 

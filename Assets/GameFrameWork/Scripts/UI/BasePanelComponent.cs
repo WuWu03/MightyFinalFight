@@ -11,6 +11,11 @@ namespace GameFrameWork.UI
             InitComponent(root);
         }
 
+        public virtual void Clear()
+        {
+
+        }
+
         protected abstract void InitComponent(UIRefRoot root);
     }
 }

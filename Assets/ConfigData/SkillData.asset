@@ -537,7 +537,7 @@ MonoBehaviour:
     Level: 0
     Name: CodyThrowWeapon
     AnimationName: ThrowWeapon
-    HurtSound: DaggerHit
+    HurtSound: Sound/DaggerHit
     Type: 2
     DeployerType: 1
     TriggerType: 2

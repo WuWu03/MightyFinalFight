@@ -187,6 +187,7 @@ MonoBehaviour:
   LoadLuaAB: 0
   LuaByteMode: 0
   LuaDirectory: Assets/Scripts/Lua
+  LogColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!850595691 &806011820
 LightingSettings:
   m_ObjectHideFlags: 0

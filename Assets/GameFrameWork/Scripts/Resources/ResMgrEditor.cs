@@ -2,56 +2,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using Object = UnityEngine.Object;
 using System.IO;
 using GameFrameWork.Utility;
+using GameFrameWork.Log;
 
 namespace GameFrameWork.Resources
 {
-    public class ResMgrEditor
+    public class ResMgrEditor:Singleton<ResMgrEditor>
     {
-
 #if UNITY_EDITOR
         class LoadRequest 
         {
-            public Action<Object, object[]> action;
+            public Action<UnityEngine.Object, object[]> action;
             public object[] param;
         }
-        private static ResMgrEditor _ins;
 
-        public static ResMgrEditor Ins
+
+        public ResMgrEditor()
         {
-            get
-            {
-                if (_ins == null)
-                {
-                    _ins = new ResMgrEditor();
-                }
-                return _ins;
-            }
-
-            set
-            {
-                _ins = value;
-            }
+            m_LoadedAssets = new Dictionary<string, UnityEngine.Object>();
+            m_DicLoadRequest = new Dictionary<string, List<LoadRequest>>();
         }
-        private Dictionary<string, Object> m_LoadedAssets = new Dictionary<string, Object>();
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequest = new Dictionary<string, List<LoadRequest>>();
+
         /// <summary>
         /// 加载资源
         /// </summary>
         /// <param name="resourcePath">资源路径</param>
         /// <returns>资源对象</returns>
-        private Object Load(string resourcePath, Type t)
+        private UnityEngine.Object Load(string resourcePath, Type t)
         {
-            Object obj;
+            UnityEngine.Object obj;
             if (m_LoadedAssets.TryGetValue(resourcePath, out obj))
                 return obj;
 
             string fileName = Path.GetFileName(resourcePath);
 
             string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(resourcePath));
-            string paName = TextUtil.Format("{0}*", fileName);
+            string paName = TextUtil.FormatDefault(fileName, "*");
             string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
 
             // 加载本地资源
@@ -59,13 +46,14 @@ namespace GameFrameWork.Resources
             {
                 if (Path.GetExtension(files[i]) == ".meta") continue;
 
-                Debug.Log("开始编辑器加载资源：" + files[i]);
+                GameFrameworkLog.Log(TextUtil.FormatDefault("开始编辑器加载资源：", files[i]));
                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
                 break;
             }
+
             if (obj == null)
             {
-                Debug.Log("无效的资源路径 => " + resourcePath);
+                Debug.Log(TextUtil.FormatDefault("无效的资源路径 => ", resourcePath));
                 return null;
             }
 
@@ -73,7 +61,7 @@ namespace GameFrameWork.Resources
             return obj;
         }
 
-        public void LoadForEditorAsync(string resourcePath, Action<Object, object[]> action = null, Type t = null, object[] param = null)
+        public void LoadForEditorAsync(string resourcePath, Action<UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
         {
             List<LoadRequest> list = null;
 
@@ -87,7 +75,7 @@ namespace GameFrameWork.Resources
             ResMgr.Ins.StartCoroutine(InnerLoad(resourcePath, t));
         }
 
-        public Object LoadForEditor(string resourcePath, Type t = null)
+        public UnityEngine.Object LoadForEditor(string resourcePath, Type t = null)
         {
             return Load(resourcePath, t);
         }
@@ -96,7 +84,7 @@ namespace GameFrameWork.Resources
         private IEnumerator InnerLoad(string resourcePath, Type t = null)
         {
             // 等待一帧
-            Object obj = Load(resourcePath, t);
+            UnityEngine.Object obj = Load(resourcePath, t);
             // 等待一帧
             yield return null;
             //// 等待一秒
@@ -114,6 +102,9 @@ namespace GameFrameWork.Resources
                 m_DicLoadRequest.Remove(resourcePath);
             }
         }
+
+        private Dictionary<string, UnityEngine.Object> m_LoadedAssets = null;
+        private Dictionary<string, List<LoadRequest>> m_DicLoadRequest = null;
 #endif
     }
 }

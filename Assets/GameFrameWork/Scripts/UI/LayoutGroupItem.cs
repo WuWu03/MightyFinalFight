@@ -6,7 +6,7 @@ namespace GameFrameWork.UI
 {
     public abstract class LayoutGroupViewItem
     {
-        public int Index 
+        public int Id
         {
             get
             {
@@ -14,7 +14,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public int RealIndex
+        public int Index 
         {
             get
             {

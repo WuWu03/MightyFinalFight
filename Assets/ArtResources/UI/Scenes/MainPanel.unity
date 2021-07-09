@@ -570,7 +570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 0
   m_RefName: 
   m_ComponentName: Slider
   m_Desc: 
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 0
   m_RefName: 
   m_ComponentName: Text
   m_Desc: 
@@ -785,7 +785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 0
   m_RefName: 
   m_ComponentName: Text
   m_Desc: 
@@ -956,8 +956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: ImgLevel3
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1511,8 +1511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: ImgLevel2
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1607,8 +1607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: ImgLevel5
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -2079,8 +2079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: ImgLevel1
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -2232,8 +2232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 0
+  m_RefName: LevelList
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
@@ -2387,7 +2387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 0
   m_RefName: 
   m_ComponentName: Text
   m_Desc: 
@@ -2608,7 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 1
   m_RefName: Item
   m_ComponentName: GameObject
   m_Desc: 
@@ -2923,7 +2923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
+  m_UseDefaultName: 0
   m_RefName: 
   m_ComponentName: Slider
   m_Desc: 
@@ -3019,8 +3019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: ImgLevel4
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0

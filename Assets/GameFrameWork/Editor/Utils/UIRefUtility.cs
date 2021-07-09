@@ -18,16 +18,19 @@ namespace GameFrameWork.Editor
             List<string> list = new List<string>();
             UIRef[] components = uiRefRoot.GetComponentsInChildren<UIRef>(true);
 
+            int selfIndex = 0;
+
             for (int i = 0; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                if (component != uiRef && component.IsCopyRefStr == uiRef.IsCopyRefStr)
+                if (component.IsCopyRefStr == uiRef.IsCopyRefStr)
                 {
-                    list.Add(component.UseObjName ? component.gameObject.name : component.Name);
+                    if (components[i] == uiRef) selfIndex = i;
+                    list.Add(component.UseDefaultName ? component.gameObject.name : component.Name);
                 }
             }
 
-            uiRef.Name = UIRefEditor.GetUniqueName(name.Trim(), list);
+            uiRef.Name = GetUniqueName(name.Trim(), list,selfIndex);
         }
 
         public static string GetName(this UIRef uiRef)
@@ -48,14 +51,10 @@ namespace GameFrameWork.Editor
                     str = "GO";
                 }
             }
-            string text;
-            if (uiRef.UseObjName) text = uiRef.gameObject.name;
-            else text = uiRef.Name;
 
-
+            string text = uiRef.Name;
             if (string.IsNullOrEmpty(text)) return str;
 
-            text = text.Replace(" ", "_").Replace("(", "_").Replace(")", "_");
             if (text[0] > 'a' && text[0] < 'z')
             {
                 text = (char)(text[0] - ' ') + text.Substring(1);
@@ -63,27 +62,28 @@ namespace GameFrameWork.Editor
             return text + str;
         }
 
-        public static void SetObjName(this UIRef uiRef, string name)
+        public static string GetUniqueName(string name, IEnumerable<string> array, int selfIndex)
         {
-            UIRefRoot uiRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();//NGUITools.FindInParents<UIRefRoot>(uiRef.gameObject);
-            if (uiRefRoot == null)
-            {
-                Debug.LogError("没有 mUIRefSetting 组件");
-                return;
-            }
+            int index = 0;
+            int findIndex = 0;
+            string text = name;
 
-            HashSet<string> hashSet = new HashSet<string>();
-            UIRef[] children = uiRefRoot.GetComponentsInChildren<UIRef>(true);
-
-            for (int i = 0; i < children.Length; i++)
+            foreach (string current in array)
             {
-                UIRef child = children[i];
-                if (child != uiRef && child.IsCopyRefStr == uiRef.IsCopyRefStr && child.UseObjName)
+                if (current == text)
                 {
-                    hashSet.Add(child.gameObject.name);
+                    if(selfIndex == index)
+                    {
+                        string nameParam = findIndex == 0 ? string.Empty : findIndex.ToString();
+                        text = string.Format("{0}{1}", name, nameParam);
+                    }
+                    findIndex++;
                 }
+
+                index++;
             }
-            uiRef.gameObject.name = UIRefEditor.GetUniqueName(name.Trim(), hashSet).Replace("(", "_").Replace(")", "_");
+
+            return text;
         }
 
         public static bool IsLayoutContent(this UIRef uiRef)

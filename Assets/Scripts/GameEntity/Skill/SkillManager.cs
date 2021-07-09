@@ -35,7 +35,7 @@ public class SkillManager
             deployer.DeploySkill();
             m_CurrSkillDeployer = deployer;
         }
-        else GameFrameWork.Log.Debugger.LogError("Skill not found id:", id);
+        else GameFrameWork.Log.GameFrameworkLog.LogError("Skill not found id:", id);
     }
 
     public void Update()

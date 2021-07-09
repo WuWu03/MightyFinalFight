@@ -385,7 +385,7 @@ namespace GameFrameWork.UI
                         {
                             onHrefClick(hrefInfo.name);
                         }
-                        Log.Debugger.Log("点击了:" + hrefInfo.name);
+                        Log.GameFrameworkLog.Log("点击了:" + hrefInfo.name);
                         return;
                     }
                 }

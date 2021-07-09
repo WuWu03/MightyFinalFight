@@ -7,6 +7,10 @@ namespace GameFrameWork.Utility
 {
     public class FileUitl
     {
+        public static bool FileExists(string path)
+        {
+            return File.Exists(path);
+        }
         /// <summary>
         /// 读取文本文件
         /// </summary>
