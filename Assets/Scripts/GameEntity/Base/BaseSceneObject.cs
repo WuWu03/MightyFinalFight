@@ -147,7 +147,10 @@ public class BaseSceneObject : BaseEntity
             m_ResPath = null;
         }
 
-        ReferencePool.Release(m_Data);
+        if (m_Data != null)
+        {
+            ReferencePool.Release(m_Data);
+        }
     }
 
     public void SetObjectType(ObjectType type)

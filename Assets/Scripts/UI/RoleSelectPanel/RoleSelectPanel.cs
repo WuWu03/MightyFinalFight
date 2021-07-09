@@ -77,7 +77,7 @@ public class RoleSelectPanel : BasePanel
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{
-		HeroConfigData data = StaticConfig.HeroConfig.Datas[item.Index - 1];
+		HeroConfigData data = StaticConfig.HeroConfig.Datas[item.Index];
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
 		UITools.LoadSprite(data.HeadIcon, item.BtnRoleIcon.image);
@@ -89,7 +89,7 @@ public class RoleSelectPanel : BasePanel
 		{
 			m_Component.ImgSelectRect.SetParent(item.BtnRoleIcon.transform, false);
 			m_Component.ImgSelectRect.localPosition = Vector3.zero;
-			m_CurrSelectIndex = item.Index - 1;
+			m_CurrSelectIndex = item.Index;
 		}
 	}
 
