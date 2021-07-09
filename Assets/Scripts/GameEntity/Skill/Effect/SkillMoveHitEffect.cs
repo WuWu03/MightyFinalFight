@@ -75,12 +75,11 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
         List<ICanBeHit> targets = selector.GetTargets();
 
-        HurtData hurtData = HurtData.Create();
-
         for (int i = 0; i < targets.Count; i++)
         {
             if (targets[i].CanBeHit)
             {
+                HurtData hurtData = HurtData.Create();
                 hurtData.AttackerID = m_Owner.ID;
                 hurtData.AttackerDir = m_Owner.Dir;
                 hurtData.AttackerPos = m_Owner.Pos;
@@ -91,8 +90,6 @@ public class SkillMoveHitEffect : SkillBaseEffect
                 targets[i].OnHurtMsg(hurtData);
             }
         }
-
-        ReferencePool.Release(hurtData);
     }
 
     private Vector3 m_StartPos = Vector3.zero;

@@ -3,7 +3,13 @@ using UnityEngine;
 
 public class RoleAttack : BaseFsmState
 {
-    public AttackData AttackData
+    public bool CanChangeDir
+    {
+        get;
+        set;
+    }
+
+    public float Dir
     {
         get;
         set;
@@ -20,15 +26,15 @@ public class RoleAttack : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (AttackData.CanChangeDir)
+        if (CanChangeDir)
         {
-            m_Owner.SetDir(AttackData.Dir);
+            m_Owner.SetDir(Dir);
         }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-        AttackData = null;
+
     }
 
     public override void OnDestroy(BaseFsm fsm)

@@ -82,7 +82,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", eventObject.name);
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/" + eventObject.name);
     }
 
     private void OnDropEvent()

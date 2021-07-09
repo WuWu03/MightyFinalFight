@@ -150,7 +150,6 @@ public class BaseHero : BaseRole
             hurtData.AttackForce = new Vector2(40f * m_Dir, 150f);
 
             m_ListCatchTarget[0].OnHurtMsg(hurtData);
-            ReferencePool.Release(hurtData);
         }
     }
 
@@ -206,7 +205,7 @@ public class BaseHero : BaseRole
             {
                 data.AttackForce = new Vector2(40 * data.AttackerDir, 120);
                 data.IsSwoon = true;
-                data.HurtSound = "OnBlow";
+                data.HurtSound = "Sound/OnBlow";
                 data.IsGroundHurt = false;
                 m_DicAttacker.Clear();
             }

@@ -154,7 +154,6 @@ public class BaseEnemy : BaseRole
         hurtData.IsGroundHurt = true;
 
         OnHurtMsg(hurtData);
-        ReferencePool.Release(hurtData);
     }
 
     private GameFrameWorkAction<int> m_OnDeadEventHandler = null;

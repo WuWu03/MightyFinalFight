@@ -68,8 +68,6 @@ public class Bullet : BaseSceneItem
             hurtData.SkillExp = m_BulletData.SkillExp;
             hit.OnHurtMsg(hurtData);
 
-            ReferencePool.Release(hurtData);
-
             if (!m_BulletData.IsPenatrate)
                 m_Rigidbody.velocity = Vector2.zero;
            

@@ -143,7 +143,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
             if (m_BarrelData.MoveSpeed > 0)
             {
                 m_FsmMachine.Start<BarrelMove>();
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "Barrel");
+                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Barrel");
             }
             else
             {
@@ -178,8 +178,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         HurtData hurtData = HurtData.Create();
         hurtData.AttackerDir = -role.Dir;
         hit.OnHurtMsg(hurtData);
-
-        ReferencePool.Release(hurtData);
     }
 
     private void CheckThrow(GameObject go)
@@ -207,7 +205,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         hurtData.IsGroundHurt = false;
 
         OnHurtMsg(hurtData);
-        ReferencePool.Release(hurtData);
     }
 
     public void SetThrow(bool value)

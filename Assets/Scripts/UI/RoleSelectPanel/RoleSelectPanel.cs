@@ -52,13 +52,13 @@ public class RoleSelectPanel : BasePanel
 				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
 			}
 
-			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelect");
+			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelect");
 			m_Component.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
 		}
 
 		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
 		{
-			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH + "/Sound", "OnSelected");
+			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
 			InnerClose();
 			PlayerMgr.Ins.InitPlayer(StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID);
 			StageMgr.Ins.Enter(1001);

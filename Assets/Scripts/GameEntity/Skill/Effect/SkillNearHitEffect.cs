@@ -61,6 +61,7 @@ public class SkillNearHitEffect : SkillBaseEffect
         if (hit != null && hit.CanBeHit)
         {
             float dir = (hit as BaseSceneObject).Pos.x - m_Owner.Pos.x >= 0 ? 1 : -1;
+
             if(m_SkillEffect.ForceType == SkillConfigData.SkillAddForceType.SelfDir)
             {
                 dir = m_Owner.Dir;
@@ -80,7 +81,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             hurtData.HurtAnim = string.Empty;
             hurtData.IsGroundHurt = m_SkillEffect.IsOnGroundHurt;
             hit.OnHurtMsg(hurtData);
-            ReferencePool.Release(hurtData);
+
             return true;
         }
 

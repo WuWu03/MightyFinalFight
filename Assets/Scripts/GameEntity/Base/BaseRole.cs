@@ -234,7 +234,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
         }
 
-        GetState<RoleAttack>().AttackData = data;
+        GetState<RoleAttack>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleAttack>();
         PlayAnimation(data.AnimName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
@@ -259,7 +259,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().AttackData.Dir = data.Dir.x;             
+            GetState<RoleAttack>().Dir = data.Dir.x;             
             return;
         }
 
@@ -381,11 +381,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_OnDropGroundHurt != null)
         {
-            m_OnDropGroundHurt.Clear();
+            ReferencePool.Release(m_OnDropGroundHurt);
             m_OnDropGroundHurt = null;
         }
 
         if (m_Health <= 0 && !m_IsSmoon) ChangeState<RoleDead>();
+        ReferencePool.Release(data);
     }
 
     protected override void CheckGround()
