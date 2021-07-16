@@ -10,13 +10,11 @@ public class TaskKillEnemy : BaseTask
     {
         if (m_TaskData.KillAll)
         {
-            m_IsComplete = SceneEntityMgr.Ins.IsAllEnemyDead();
-            return m_IsComplete;
+            return SceneEntityMgr.Ins.IsAllEnemyDead();
         }
 
         if (m_TaskData.KillIDs.Length < 1)
         {
-            m_IsComplete = true;
             return true;
         }
 
@@ -24,12 +22,10 @@ public class TaskKillEnemy : BaseTask
         {
             if (!SceneEntityMgr.Ins.IsEnemyDead(m_TaskData.KillIDs[i]))
             {
-                m_IsComplete = false;
                 return false;
             }
         }
 
-        m_IsComplete = true;
         return true;
     }
 }

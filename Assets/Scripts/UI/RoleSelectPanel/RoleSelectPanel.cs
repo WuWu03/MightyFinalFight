@@ -59,9 +59,9 @@ public class RoleSelectPanel : BasePanel
 		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
-			InnerClose();
 			PlayerMgr.Ins.InitPlayer(StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID);
 			StageMgr.Ins.Enter(1001);
+			InnerClose();
 		}
 	}
 
@@ -80,7 +80,7 @@ public class RoleSelectPanel : BasePanel
 		HeroConfigData data = StaticConfig.HeroConfig.Datas[item.Index];
 		item.TxtDesc.text = data.Desc;
 		item.TxtName.text = data.Name;
-		UITools.LoadSprite(data.HeadIcon, item.BtnRoleIcon.image);
+		item.BtnRoleIcon.image.SetSprite(data.HeadIcon);
 	}
 
 	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)

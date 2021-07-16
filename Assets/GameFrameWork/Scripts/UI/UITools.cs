@@ -16,16 +16,16 @@ namespace GameFrameWork.UI
             return PathUtil.FormatPath(ResDefine.UI_PATH, name);
         }
 
-        public static void LoadSprite(string name, Image renderer)
+        public static void SetSprite(this Image renderer, string name)
         {
             string realPath = PathUtil.FormatPath(ResDefine.ICON_PATH, name);
-            SpritePool.Ins.Get(realPath, (Sprite sprite,object[] param) =>
+            SpritePool.Ins.Get(realPath, (Sprite sprite, object[] param) =>
             {
                 renderer.sprite = sprite;
             });
         }
 
-        public static void LoadUI(string uiName,Action<GameObject,object[]> loadCallback,params object[] param)
+        public static void LoadUI(string uiName, GameFrameWorkAction<GameObject, object[]> loadCallback, params object[] param)
         {
             GameObjectPool.Ins.Get(GetUIResPath(uiName), loadCallback, param);
         }

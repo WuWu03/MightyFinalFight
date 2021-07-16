@@ -1,6 +1,4 @@
 ﻿using GameFrameWork;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -30,8 +28,21 @@ public class BaseGravityObject : BaseSceneObject
         }
     }
 
-    public UnityEvent OnDropEvent = new UnityEvent();
-    public UnityEvent OnGroundEvent = new UnityEvent();
+    public UnityEvent OnDropEvent
+    {
+        get
+        {
+            return m_OnDropEvent;
+        }
+    }
+
+    public UnityEvent OnGroundEvent
+    {
+        get
+        {
+            return m_OnGroundEvent;
+        }
+    }
 
     public override void Init(int id, string name)
     {
@@ -63,13 +74,15 @@ public class BaseGravityObject : BaseSceneObject
             return;
         }
 
-        OnDropEvent.Invoke();
-        OnDropEvent.RemoveAllListeners();
+        m_OnDropEvent.Invoke();
+        m_OnDropEvent.RemoveAllListeners();
+        OnDrop();
 
         if (!IsInGround) return;
 
-        OnGroundEvent.Invoke();
-        OnGroundEvent.RemoveAllListeners();
+        m_OnGroundEvent.Invoke();
+        m_OnGroundEvent.RemoveAllListeners();
+        OnGround();
     }
 
     public override void Release()
@@ -80,5 +93,10 @@ public class BaseGravityObject : BaseSceneObject
         m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
     }
 
+    protected virtual void OnDrop() { }
+    protected virtual void OnGround() { }
+
+    private UnityEvent m_OnDropEvent = new UnityEvent();
+    private UnityEvent m_OnGroundEvent = new UnityEvent();
     protected Rigidbody2D m_Rigidbody = null;
 }

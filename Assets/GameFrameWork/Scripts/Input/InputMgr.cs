@@ -6,36 +6,15 @@ using UnityEngine;
 
 namespace GameFrameWork.Input
 {
-    public enum KeyType
-    {
-        Up = 1,
-        Down = 2,
-        Left = 3,
-        Right = 4,
-        A = 5,
-        B = 6,
-        X = 7,
-        Y = 8,
-        LB = 9,
-        RB = 10,
-    }
-
     public class InputMgr : BaseMgr<InputMgr>
     {
         public GameFrameWorkFloatAction GetDirection;
         public GameFrameWorkBooleanAction AfterTrigger;
         public GameFrameWorkBooleanAction<int> GetPreconditon;
 
-        class ComboKeyEvent
-        {
-            public KeyType[] Keys;
-            public int EventID;
-            public GameFrameWorkAction<int, bool> KeyEvent;
-        }
-
         protected override void OnAwake()
         {
-            m_ListEvent = new List<ComboKeyEvent>();
+            m_ListEvent = new List<ComboKeyEventArgs>();
             m_ListKeyType = new List<KeyType>();
         }
 
@@ -61,7 +40,7 @@ namespace GameFrameWork.Input
 
                 if (!TriggerKeyEvent())
                 {
-                    AfterTrigger.Invoke();
+                    AfterTrigger?.Invoke();
                 }
             }
         }
@@ -138,22 +117,18 @@ namespace GameFrameWork.Input
             return false;
         }
 
-        public void AddKeyEvent(KeyType[] keys,int eventID, GameFrameWorkAction<int, bool> KeyEvent)
+        public void AddKeyEvent(KeyType[] keys,int eventId, GameFrameWorkAction<int, bool> keyEvent)
         {
-            m_ListEvent.Add(new ComboKeyEvent()
-            {
-                Keys = keys,
-                EventID = eventID,
-                KeyEvent = KeyEvent,
-            });
+            m_ListEvent.Add(ComboKeyEventArgs.Create(keys, eventId, keyEvent));
         }
 
         public void RemoveKeyEvent(int eventID)
         {
             for (int i = m_ListEvent.Count - 1; i >= 0; i--)
             {
-                if (m_ListEvent[i].EventID.Equals(eventID))
+                if (m_ListEvent[i].EventId.Equals(eventID))
                 {
+                    ReferencePool.Release(m_ListEvent[i]);
                     m_ListEvent.RemoveAt(i);
                     break;
                 }
@@ -241,25 +216,25 @@ namespace GameFrameWork.Input
                     }
                 }
                 
-                if (!isMatch || GetPreconditon == null || !GetPreconditon(m_ListEvent[i].EventID))
+                if (!isMatch || GetPreconditon == null || !GetPreconditon(m_ListEvent[i].EventId))
                 {
                     continue;
                 }
 
                 ResetKeys();
-                m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventID, true);
+                m_ListEvent[i].KeyEvent?.Invoke(m_ListEvent[i].EventId, true);
                 return true;
             }
 
             return false;
         }
 
-        private bool IsMatch(KeyType[] origin,List<KeyType> input,int originIndex = 0,int inputIndex = 0)
+        private bool IsMatch(KeyType[] origin, List<KeyType> input, int originIndex = 0, int inputIndex = 0)
         {
             if (input.Count < origin.Length) return false;
             if (originIndex >= origin.Length) return true;
             if (inputIndex >= input.Count) return false;
-       
+
             if (input[inputIndex] != origin[originIndex])
             {
                 inputIndex = inputIndex + 1;
@@ -274,7 +249,6 @@ namespace GameFrameWork.Input
             }
         }
 
-
         private void ResetKeys()
         {
             m_ListKeyType.Clear();
@@ -285,6 +259,7 @@ namespace GameFrameWork.Input
         protected override void OnShutDown()
         {
             m_ListKeyType.Clear();
+            m_ListEvent.Clear();
         }
 
         private float m_CurrDir = 0;
@@ -292,6 +267,6 @@ namespace GameFrameWork.Input
         private const float KEY_DOWN_TIME = 0.04f;
 
         private List<KeyType> m_ListKeyType = null;
-        private List<ComboKeyEvent> m_ListEvent = null;
+        private List<ComboKeyEventArgs> m_ListEvent = null;
     }
 }

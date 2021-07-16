@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class RoleJump : BaseFsmState
 {
-    public JumpData JumpData
-    {
-        get;
-        set;
-    }
-
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -17,10 +11,10 @@ public class RoleJump : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Owner.Rigidbody.AddForce(new Vector2(JumpData.Dir.x * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
+        m_Owner.Rigidbody.AddForce(new Vector2(m_Dir * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
         m_Owner.PlayAnimation(AnimName.JumpUp);
-        m_HasAddXForce = JumpData.Dir.x != 0;
-        m_Owner.SetDir(JumpData.Dir.x);
+        m_HasAddXForce = m_Dir != 0;
+        m_Owner.SetDir(m_Dir);
         m_Owner.OnDropEvent.AddListener(OnDrop);
     }
 
@@ -28,12 +22,12 @@ public class RoleJump : BaseFsmState
     {
         if (m_Owner.IsFloat)
         {
-            if (Mathf.Abs(JumpData.Dir.x) > 0.01f && !m_HasAddXForce)
+            if (Mathf.Abs(m_Dir) > 0.01f && !m_HasAddXForce)
             {
                 m_HasAddXForce = true;
-                m_Owner.Rigidbody.AddForce(Vector2.right * JumpData.Dir.x * m_Owner.JumpForce.x, 0f);
-                if (JumpData.CanChangeDir)
-                    m_Owner.SetDir(JumpData.Dir.x);
+                m_Owner.Rigidbody.AddForce(Vector2.right * m_Dir * m_Owner.JumpForce.x, 0f);
+                if (m_CanChangeDir)
+                    m_Owner.SetDir(m_Dir);
             }
 
             if (m_HasAddXForce)
@@ -46,7 +40,6 @@ public class RoleJump : BaseFsmState
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_HasAddXForce = false;
-        JumpData = null;
         m_Owner.StopAnimation(AnimName.JumpUp);
     }
 
@@ -61,6 +54,14 @@ public class RoleJump : BaseFsmState
             m_Owner.PlayAnimation(AnimName.JumpDown);
     }
 
+    public override void SetParam(object[] args)
+    {
+        m_CanChangeDir = (bool)args[0];
+        m_Dir = (float)args[1];
+    }
+
+    private float m_Dir = 0;
+    private bool m_CanChangeDir = false;
     private bool m_HasAddXForce = false;
     private BaseRole m_Owner = null;
 }

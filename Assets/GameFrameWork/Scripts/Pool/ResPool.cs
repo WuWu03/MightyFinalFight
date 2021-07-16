@@ -13,43 +13,36 @@ namespace GameFrameWork.Pool
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
             m_DicPool = new Dictionary<string, Queue<T>>();
-            m_DicLoadCallback = new Dictionary<string, List<Action<T, object[]>>>();
+            m_DicLoadCallback = new Dictionary<string, List<GameFrameWorkAction<T, object[]>>>();
         }
 
-        public virtual void Get(string resPath, Action<T, object[]> call, params object[] param)
+        public virtual void Get(string resPath, GameFrameWorkAction<T, object[]> call, params object[] args)
         {
-            if (string.IsNullOrEmpty(resPath) || call == null) return;
-            Queue<T> pool = this.GetOrCreatePool(resPath);
+            if (string.IsNullOrEmpty(resPath) || call == null)
+            {
+                Log.GameFrameworkLog.LogError("Rescource param is invalid.");
+                return;
+            }
+
+            Queue<T> pool = GetOrCreatePool(resPath);
+
             if (pool.Count > 0)
             {
                 T go = pool.Dequeue();
-                call(go, param);
+                call(go, args);
+                return;
             }
-            else
+
+            List<GameFrameWorkAction<T, object[]>> loadList = null;
+
+            if (!m_DicLoadCallback.TryGetValue(resPath, out loadList))
             {
-                List<Action<T, object[]>> loadList = null;
-                if (!m_DicLoadCallback.TryGetValue(resPath, out loadList))
-                {
-                    loadList = new List<Action<T, object[]>>();
-                }
-
-                loadList.Add(call);
-                m_DicLoadCallback[resPath] = loadList;
-                ResMgr.Ins.LoadAssetAsync(resPath, (UnityEngine.Object obj, object[] param2) =>
-                {
-                    List<Action<T, object[]>> loadListCurr = null;
-                    if (m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
-                    {
-                        for (int i = 0; i < loadListCurr.Count; i++)
-                        {
-                            T go = m_NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
-                            loadListCurr[i](go, param2);
-                        }
-
-                        m_DicLoadCallback.Remove(resPath);
-                    }
-                }, true, typeof(T), param);
+                loadList = new List<GameFrameWorkAction<T, object[]>>();
+                m_DicLoadCallback.Add(resPath, loadList);
             }
+
+            loadList.Add(call);       
+            ResMgr.Ins.LoadAssetAsync(resPath, OnLoaded, true, typeof(T), args);
         }
 
         public virtual void Put(string resPath, T go)
@@ -67,6 +60,25 @@ namespace GameFrameWork.Pool
                 return pool.Count;
             }
             return 0;
+        }
+
+        private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
+        {
+            List<GameFrameWorkAction<T, object[]>> loadListCurr = null;
+
+            if (!m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
+            {
+                Log.GameFrameworkLog.LogError("Resource load complete,but the callback is invalid.");
+                return;
+            }
+
+            for (int i = 0; i < loadListCurr.Count; i++)
+            {
+                T go = m_NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
+                loadListCurr[i](go, args);
+            }
+
+            m_DicLoadCallback.Remove(resPath);
         }
 
         public Queue<T> GetPool(string path)
@@ -95,6 +107,6 @@ namespace GameFrameWork.Pool
         protected abstract bool m_NeedInstantiate { get; }
         protected Transform m_PoolRoot = null;
         private Dictionary<string, Queue<T>> m_DicPool = null;
-        private Dictionary<string, List<Action<T, object[]>>> m_DicLoadCallback = null;
+        private Dictionary<string, List<GameFrameWorkAction<T, object[]>>> m_DicLoadCallback = null;
     }
 }

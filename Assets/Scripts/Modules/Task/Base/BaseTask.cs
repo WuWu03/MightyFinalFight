@@ -41,8 +41,11 @@ public abstract class BaseTask
     public abstract bool CheckCondition();
     public virtual void Trigger()
     {
-        if (!m_IsComplete && m_Trigger != null)
-            m_Trigger.Trigger();  
+        if (!m_IsComplete)
+        {
+            if (m_Trigger != null) m_Trigger.Trigger();
+            else m_IsComplete = true;
+        }
     }
 
     public virtual bool Exit()
@@ -67,7 +70,7 @@ public abstract class BaseTask
         return true;
     }
 
-    protected bool m_IsComplete = false;
     protected TaskConfigData m_TaskData = null;
+    private bool m_IsComplete = false;
     private BaseTaskTrigger m_Trigger = null;
 }

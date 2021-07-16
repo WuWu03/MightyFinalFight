@@ -59,6 +59,11 @@ namespace GameFrameWork.GameEntity
             gameObject.SetLayer(layer, isChild);
         }
 
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+        }
+
         protected virtual void Awake() { }
         protected virtual void Update() { }
         protected virtual void OnDestroy() { }

@@ -19,7 +19,7 @@ public class StageConfigData : BaseConfigData
     }
 
     public string Name;
-    public string AssetName;
+    public string SceneName;
     public int StageIndex;
     public int Width;
     public int Height;

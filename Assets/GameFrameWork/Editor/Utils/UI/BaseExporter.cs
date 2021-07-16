@@ -46,6 +46,9 @@ namespace GameFrameWork.Editor
                 return DateTime.Now.Minute;
             }
         }
+
+        public abstract string CopyRef(UIRef[] uiRefs);
+
         public abstract void Export(UIRef[] uiRefs, UIRefSetting setting);
     }
 }

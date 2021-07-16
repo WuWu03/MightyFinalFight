@@ -96,13 +96,15 @@ public class Barrel : BaseSceneItem, ICanBeHit
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnHit");
         if (IsDead)
         {
-            m_FsmMachine.GetState<BarrelDead>().AttackerDir = data.AttackerDir;
-            m_FsmMachine.ChangeState<BarrelDead>();
+            SetStateParam<BarrelDead>(data.AttackerDir);
+            ChangeState<BarrelDead>();
             SceneEntityMgr.Ins.CreateSceneItem(m_BarrelData.ItemId, m_MapPos);
         }
     }
 
     public void SetCatch(bool value) { }
+
+    public void SetThrow(bool value) { }
 
     protected override void OnUpdate()
     {
@@ -154,11 +156,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
         {
             UpdatePos2(m_Pos.x, m_BarrelData.GroundY / 100f);
             m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            OnGroundEvent.AddListener(OnGround);
         }
     }
 
-    private void OnGround()
+    protected override void OnGround()
     {
         m_FsmMachine.Start<BarrelDrop>();
     }
@@ -207,9 +208,14 @@ public class Barrel : BaseSceneItem, ICanBeHit
         OnHurtMsg(hurtData);
     }
 
-    public void SetThrow(bool value)
+    private void ChangeState<T>() where T : BaseFsmState
     {
-        throw new System.NotImplementedException();
+        m_FsmMachine.ChangeState<T>();
+    }
+
+    private void SetStateParam<T>(params object[] args) where T : BaseFsmState
+    {
+        m_FsmMachine.GetState<T>().SetParam(args);
     }
 
     private FsmMachine m_FsmMachine = null;

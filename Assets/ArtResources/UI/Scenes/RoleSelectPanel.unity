@@ -179,9 +179,6 @@ MonoBehaviour:
   Objects:
   - {fileID: 767242336}
   - {fileID: 712527415}
-  - {fileID: 1669707881}
-  - {fileID: 2043417338}
-  - {fileID: 710926879}
   - {fileID: 472813151}
 --- !u!1 &472813150
 GameObject:
@@ -314,8 +311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 0
+  m_RefName: ImgSelect
   m_ComponentName: RectTransform
   m_Desc: 
   m_IsLayoutItem: 0
@@ -649,8 +646,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: _txtDesc
+  m_UseDefaultName: 1
+  m_RefName: TxtDesc
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
@@ -729,8 +726,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: Item
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 1
@@ -864,8 +861,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: 
+  m_UseDefaultName: 1
+  m_RefName: RoleContent
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1425,8 +1422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: _btnRoleIcon
+  m_UseDefaultName: 1
+  m_RefName: BtnRoleIcon
   m_ComponentName: MyButton
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1606,8 +1603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseObjName: 1
-  m_RefName: _txtName
+  m_UseDefaultName: 1
+  m_RefName: TxtName
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0

@@ -12,23 +12,23 @@ namespace GameFrameWork.Resources
     {
         class AssetBundleInfo
         {
-            public AssetBundle m_AssetBundle;
-            public int m_ReferencedCount;
+            public AssetBundle AssetBundle;
+            public int ReferencedCount;
 
             public AssetBundleInfo(AssetBundle assetBundle)
             {
-                m_AssetBundle = assetBundle;
-                m_ReferencedCount = 0;
+                AssetBundle = assetBundle;
+                ReferencedCount = 0;
             }
         }
 
         class LoadAssetRequest
         {
-            public Action<Object,object[]> sharpFunc;
-            public bool loadMainAsset;
-            public Type assetType;
+            public GameFrameWorkAction<string, Object, object[]> SharpFunc;
+            public bool LoadMainAsset;
+            public Type AssetType;
             public string AssetName;
-            public object[] param;
+            public object[] Args;
         }
 
         class AssetVersion
@@ -56,14 +56,15 @@ namespace GameFrameWork.Resources
             if (AppConfig.Ins.LoadAB)
 #endif
             {
-                string maniFesturl = Utility.PathUtil.RunTimeAssetPath + Utility.PathUtil.ManiFest;
-                string versionUrl = Utility.PathUtil.RunTimeAssetPath + Utility.PathUtil.AssetBundleVersion;
+                string maniFesturl = PathUtil.RunTimeAssetPath + PathUtil.ManiFest;
+                string versionUrl = PathUtil.RunTimeAssetPath + PathUtil.AssetBundleVersion;
 
                 byte[] stream = File.ReadAllBytes(maniFesturl);
                 AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
                 m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
                 string[] version = File.ReadAllText(versionUrl).Split('\n');
+
                 for (int i = 0; i < version.Length; i++)
                 {
                     string[] data = version[i].Split('|');
@@ -71,11 +72,8 @@ namespace GameFrameWork.Resources
                         m_DicAssetVerson.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
                 }
             }
-
-            //StartCoroutine(OnTimeRelease());
         }
 
-        
         private void Update()
         {
             if (Time.time - m_UnLoadTime >= UNLOAD_TIME)
@@ -122,7 +120,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync<T>(string abName, Action<Object,object[]> action = null, bool loadMainAsset = true, params object[] param)
+        public void LoadAssetAsync<T>(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = true, params object[] param)
         {
             LoadAssetAsync(abName, action, loadMainAsset, typeof(T), param);
         }
@@ -130,7 +128,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync(string abName, Action<Object,object[]> action = null, bool loadMainAsset = true, Type t = null, params object[] param)
+        public void LoadAssetAsync(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = true, Type t = null, params object[] param)
         {
             if (t == null)
             {
@@ -189,28 +187,28 @@ namespace GameFrameWork.Resources
             {
                 while (DependenciesLoaded(dependencies))
                 {
-                    ab = bundleInfo.m_AssetBundle;
+                    ab = bundleInfo.AssetBundle;
                     return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
                 }
             }
 
-            ab = bundleInfo.m_AssetBundle;
+            ab = bundleInfo.AssetBundle;
             return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
         }
 
         /// <summary>
         /// 异步加载
         /// </summary>
-        private void LoadAsync(string abName, Action<Object,object[]> action = null, bool loadMainAsset = false, Type t = null , object[] param = null)
+        private void LoadAsync(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = false, Type t = null, object[] param = null)
         {
             Log.GameFrameworkLog.Log("LoadAsset：" + abName);
 
             abName = GetRealAssetPath(abName);
             LoadAssetRequest request = new LoadAssetRequest();
-            request.sharpFunc = action;
-            request.loadMainAsset = loadMainAsset;
-            request.assetType = t;
-            request.param = param;
+            request.SharpFunc = action;
+            request.LoadMainAsset = loadMainAsset;
+            request.AssetType = t;
+            request.Args = param;
             request.AssetName = Path.GetFileNameWithoutExtension(abName);
             List<LoadAssetRequest> requests = null;
             if (!m_LoadRequests.TryGetValue(abName, out requests))
@@ -259,18 +257,18 @@ namespace GameFrameWork.Resources
                 }
             }
 
-            AssetBundle ab = bundleInfo.m_AssetBundle;
+            AssetBundle ab = bundleInfo.AssetBundle;
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].sharpFunc != null)
+                if (list[i].SharpFunc != null)
                 {
-                    if (list[i].loadMainAsset)
+                    if (list[i].LoadMainAsset)
                     {
-                        list[i].sharpFunc(ab.GetAsset(list[i].AssetName, list[i].assetType), list[i].param);
-                        list[i].sharpFunc = null;
+                        list[i].SharpFunc(abName, ab.GetAsset(list[i].AssetName, list[i].AssetType), list[i].Args);
+                        list[i].SharpFunc = null;
                     }
                 }
-                bundleInfo.m_ReferencedCount++;
+                bundleInfo.ReferencedCount++;
             }
             m_LoadRequests.Remove(abName);
         }
@@ -301,7 +299,6 @@ namespace GameFrameWork.Resources
                 m_LoadedAssetBundles.Add(abName, new AssetBundleInfo(assetObj));
             }
         }
-
 
         private AssetBundleInfo GetLoadedAssetBundle(string abName)
         {
@@ -355,7 +352,7 @@ namespace GameFrameWork.Resources
         {
             if (m_Manifest == null)
             {
-                Log.GameFrameworkLog.LogError("Please initialize AssetBundleManifest by calling ResMgr.Init()");
+                Log.GameFrameworkLog.LogError("Please initialize AssetBundleManifest first.");
                 return;
             }
             // Get dependecies from the AssetBundleManifest object..
@@ -396,13 +393,13 @@ namespace GameFrameWork.Resources
             AssetBundleInfo bundle = GetLoadedAssetBundle(abName);
             if (bundle == null) return;
 
-            if (--bundle.m_ReferencedCount <= 0)
+            if (--bundle.ReferencedCount <= 0)
             {
                 if (m_LoadRequests.ContainsKey(abName))
                 {
                     return;     //如果当前AB处于Async Loading过程中，卸载会崩溃，只减去引用计数即可
                 }
-                bundle.m_AssetBundle.Unload(isThorough);
+                bundle.AssetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
                 Log.GameFrameworkLog.Log(TextUtil.FormatDefault(abName, " has been unloaded successfully"));
             }
@@ -418,6 +415,7 @@ namespace GameFrameWork.Resources
             m_Dependencies.Clear();
             m_LoadedAssetBundles.Clear();
             m_LoadRequests.Clear();
+            m_DicAssetVerson.Clear();
         }
 
         public const int UNLOAD_TIME = 60 * 15;

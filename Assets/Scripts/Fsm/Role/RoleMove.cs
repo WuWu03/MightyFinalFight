@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RoleMove : BaseFsmState
 {
-    private BaseRole m_Owner = null;
-    public bool CanChangeDir;
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -25,8 +23,11 @@ public class RoleMove : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (CanChangeDir)
+        if (m_CanChangeDir)
+        {
             m_Owner.SetDir(m_Owner.MoveDir.x);
+        }
+
         Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
         m_Owner.SetPos(ownerPos);
     }
@@ -41,4 +42,12 @@ public class RoleMove : BaseFsmState
     {
 
     }
+
+    public override void SetParam(object[] args)
+    {
+        m_CanChangeDir = (bool)args[0];
+    }
+
+    private bool m_CanChangeDir = false;
+    private BaseRole m_Owner = null;
 }

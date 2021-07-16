@@ -13,9 +13,19 @@ namespace GameFrameWork.Camera
         public float Speed = 2.0f;
         public float Delta = 1.5f;
 
-        public UnityEngine.Camera MainCamera = null;
+        public UnityEngine.Camera Camera
+        {
+            get
+            {
+                return m_Camera;
+            }
+            set
+            {
+                m_Camera = value;
+            }
+        }
 
-        void Start()
+        private void Start()
         {
             m_InitSpeed = Speed;
         }
@@ -25,7 +35,7 @@ namespace GameFrameWork.Camera
             m_Target = target;
         }
 
-        public Rect GetVision()//获取当前摄像机的视野范围 左 下 右 上
+        public Rect GetVision()//获取当前摄像机的视野范围 左 右 下 上
         {
             m_VisionRect.width = Screen.width * m_CurrAspectRate;
             m_VisionRect.height = Screen.height * m_CurrAspectRate;
@@ -36,7 +46,7 @@ namespace GameFrameWork.Camera
             return m_VisionRect;
         }
 
-        public void InitFollow(int width, int height, float orthographicSize = 0)
+        public void SetFollowSize(int width, int height, float orthographicSize = 0)
         {
             if (m_Target == null)
             {
@@ -46,15 +56,19 @@ namespace GameFrameWork.Camera
 
             if (orthographicSize <= 0)
             {
-                if (MainCamera)
+                if (m_Camera)
                 {
-                    orthographicSize = MainCamera.orthographicSize;
+                    orthographicSize = m_Camera.orthographicSize;
                 }
             }
 
             m_CurrAspectRate = orthographicSize / (Screen.height / 2f / 100f);
-            m_XBorder.left = (float)(-width + Screen.width * m_CurrAspectRate) / 100 / 2;
+            m_XBorder.left = -(float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
             m_XBorder.right = (float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
+
+            float a = (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
+            float b = -(float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
+
             m_YBorder.left = 0;// (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
             m_YBorder.right = 0;//(float)(-height + Screen.height * m_CurrAspectRate) / 100 / 2;
 
@@ -102,6 +116,7 @@ namespace GameFrameWork.Camera
         private float m_InitSpeed;
         private bool m_IsStart = false;
         private Vector2 m_CameraClamp = Vector2.zero;
+        private UnityEngine.Camera m_Camera = null;
         private Transform m_Target = null;
         private MapBorder m_XBorder = new MapBorder();
         private MapBorder m_YBorder = new MapBorder();

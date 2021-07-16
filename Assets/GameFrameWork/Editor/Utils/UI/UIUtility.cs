@@ -14,9 +14,14 @@ namespace GameFrameWork.Editor
     [InitializeOnLoad]
     public class UIUtility
     {
-        private static Scene scene { get { return SceneManager.GetActiveScene(); } }
+        private static UnityEngine.SceneManagement.Scene scene
+        {
+            get
+            {
+                return SceneManager.GetActiveScene();
+            }
+        }
 
-        private static UIRefSetting m_UIRefSetting;
         public static UIRefSetting UIRefSetting
         {
             get
@@ -39,18 +44,25 @@ namespace GameFrameWork.Editor
 
             m_CSharpExporter = new CSharpExporter();
             m_LuaExporter = new LuaExporter();
-    }
+        }
 
         public static void NewUIScene()
         {
             string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...");
 
-            if (string.IsNullOrEmpty(path)) return;
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            {
+                return;
+            }
 
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
 
-            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>("Assets/FrameWork/UI/UIRoot.prefab"));
+            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(PathUtil.EditorUIRootPath));
             root.name = "UIRoot";
 
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
@@ -59,6 +71,7 @@ namespace GameFrameWork.Editor
 
             GameObject rootObj = root as GameObject;
             rootObj.transform.SetAsLastSibling();
+
             GameObject panel = new GameObject("Panel");
             RectTransform rect = panel.AddComponent<RectTransform>();
             panel.gameObject.AddComponent<UIRefRoot>();
@@ -75,7 +88,7 @@ namespace GameFrameWork.Editor
 
         private static void DuringSceneGUI(SceneView scnView)
         {
-            if (!EditorApplication.isPlayingOrWillChangePlaymode && UIUtility.IsUIScene())
+            if (!EditorApplication.isPlayingOrWillChangePlaymode && IsUIScene())
             {
                 GUI.color = Color.green;
                 Handles.BeginGUI();
@@ -110,10 +123,17 @@ namespace GameFrameWork.Editor
 
         private static void HierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode || !UIUtility.IsUIScene()) return;
+            if (EditorApplication.isPlayingOrWillChangePlaymode || !IsUIScene())
+            {
+                return;
+            }
 
             GameObject gameObject = UnityEditor.EditorUtility.InstanceIDToObject(instanceID) as GameObject;
-            if (gameObject == null || gameObject.transform.parent == null) return;
+
+            if (gameObject == null || gameObject.transform.parent == null)
+            {
+                return;
+            }
 
             if (gameObject.name[0] >= '0' && gameObject.name[0] <= '9')
             {
@@ -125,7 +145,11 @@ namespace GameFrameWork.Editor
             }
 
             UIRef component = gameObject.GetComponent<UIRef>();
-            if (component == null) return;
+
+            if (component == null)
+            {
+                return;
+            }
 
             GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
             GUIStyle labelStyle2 = new GUIStyle(EditorStyles.label);
@@ -141,91 +165,11 @@ namespace GameFrameWork.Editor
             GUI.Label(new Rect(x, y, width, height), "*", component.IsCopyRefStr ? labelStyle2 : labelStyle);
         }
 
-        private static bool CopyRefStr()
-        {
-            if (Selection.activeGameObject == null)
-            {
-                Debug.LogError("没有选中节点对象");
-                return false;
-            }
-
-            string currObjPath = EditorUtility.GetHierarchy(Selection.activeGameObject);
-            if (!currObjPath.StartsWith("UIRoot\\UICanvas\\Panel"))
-            {
-                Debug.LogError("应该选择Panel下面的对象作为根节点");
-                return false;
-            }
-
-            UIRef[] components = Selection.activeGameObject.GetComponentsInChildren<UIRef>(true);
-            HashSet<string> hashSet = new HashSet<string>();
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < components.Length; i++)
-            {
-                UIRef component = components[i];
-                if (!component.IsCopyRefStr) continue;
-
-                string name = component.GetName();
-                string path = EditorUtility.GetHierarchy(component.gameObject);
-                if (!hashSet.Add(name))
-                {
-                    Debug.LogError("有重复的引用名称 => " + component.Name + "; 引用对象=>" + path);
-                    Selection.activeGameObject = component.gameObject;
-                    return false;
-                }
-                string value;
-                if (path == currObjPath)
-                {
-                    if (string.IsNullOrEmpty(component.ComponentName) || component.ComponentName == "Transform")
-                    {
-                        value = string.Format("{0} = targetTrans;", name);
-                    }
-                    else if (component.ComponentName == "GameObject")
-                    {
-                        value = string.Format("{0} = targetTrans.gameObject;", name);
-                    }
-                    else
-                    {
-                        value = string.Format("{0} = targetTrans:GetComponent(\"{1}\");", name, component.ComponentName);
-                    }
-                }
-                else
-                {
-                    path = path.Substring(currObjPath.Length + 1).Replace("\\", "/");
-                    if (string.IsNullOrEmpty(component.ComponentName) || component.ComponentName == "Transform")
-                    {
-                        value = string.Format("{0} = targetTrans:Find(\"{1}\");", name, path);
-                    }
-                    else if (component.ComponentName == "GameObject")
-                    {
-                        value = string.Format("{0} = targetTrans:Find(\"{1}\").gameObject;", name, path);
-                    }
-                    else
-                    {
-                        value = string.Format("{0} = targetTrans:Find(\"{1}\"):GetComponent(\"{2}\");", name, path, component.ComponentName);
-                    }
-                }
-                stringBuilder.Append("\t").AppendLine(value);
-            }
-
-            if (stringBuilder.Length == 0)
-            {
-                Debug.LogWarning("没有需要导出到剪切板的对象");
-            }
-            else
-            {
-                stringBuilder.Insert(0, "{\n\tmTargetTrans = targetTrans;\n");
-                stringBuilder.Append("}");
-                Debug.Log(stringBuilder.ToString());
-                GUIUtility.systemCopyBuffer = stringBuilder.ToString();
-            }
-
-            return true;
-        }
 
         private static void AddUIRef()
         {
             GameObject[] gameObjects = Selection.gameObjects;
+
             for (int i = 0; i < gameObjects.Length; i++)
             {
                 GameObject obj = gameObjects[i];
@@ -243,39 +187,37 @@ namespace GameFrameWork.Editor
             uiRef.SetName(obj.name);
         }
 
-        private static bool IsUIScene()
-        {
-            return GameObject.FindObjectOfType<UIRefSetting>() != null;
-        }
-
         private static bool ExportUIRef()
         {
-            UIRefSetting setting = UIUtility.UIRefSetting;
-            if (setting == null) return false;
+            if (UIRefSetting == null)
+            {
+                return false;
+            }
 
-            if (string.IsNullOrEmpty(setting.PanelName) || setting.PanelName.Contains("/"))
+            if (string.IsNullOrEmpty(UIRefSetting.PanelName) || UIRefSetting.PanelName.Contains("/"))
             {
                 Debug.LogError("界面名字未设置正确");
-                Selection.activeGameObject = setting.gameObject;
+                Selection.activeGameObject = UIRefSetting.gameObject;
                 return false;
             }
 
             GameObject gameObject = GameObject.Find("UIRoot/UICanvas/Panel");
             UIRefRoot rootComponent = gameObject.GetComponent<UIRefRoot>();
             UIRef[] components = gameObject.GetComponentsInChildren<UIRef>(true);
-            HashSet<string> repeat = new HashSet<string>();
 
+            List<UIRef> retList = new List<UIRef>();
+            HashSet<string> repeat = new HashSet<string>();
             List<UnityObject> listComponent = new List<UnityObject>();
 
             for (int i = 0; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                if (component.IsCopyRefStr) continue;
+                if (component.IsCopyRefStr || component.IsLayoutItemVariable) continue;
 
                 string name = component.GetName();
                 if (!repeat.Add(name))
                 {
-                    Debug.LogError(string.Concat(new string[]
+                    string errorStr = string.Concat(new string[]
                     {
                         "有重复的引用名称 => ",
                         component.Name,
@@ -283,12 +225,13 @@ namespace GameFrameWork.Editor
                         EditorUtility.GetHierarchy(component.gameObject),
                         "; ",
                         EditorUtility.GetHierarchy(component.gameObject)
-                    }));
+                    });
+
+                    Debug.LogError(errorStr);
                     Selection.activeGameObject = component.gameObject;
                     return false;
                 }
 
-                //if (component.IsLayoutItem) continue;
                 if (string.IsNullOrEmpty(component.ComponentName) || component.ComponentName == typeof(Transform).Name)
                 {
                     listComponent.Add(component.transform);
@@ -305,37 +248,93 @@ namespace GameFrameWork.Editor
                 {
                     listComponent.Add(component.GetComponent(component.ComponentName));
                 }
+
+                retList.Add(component);
             }
 
             rootComponent.Objects = listComponent.ToArray();
             UnityEditor.EditorUtility.SetDirty(rootComponent);
 
-            if (setting.ScriptType == UIRefSetting.ExoprtScriptType.CSharp)
+            if (UIRefSetting.ScriptType == UIRefSetting.ExoprtScriptType.CSharp)
             {
-                m_CSharpExporter.Export(components, setting);
+                m_CSharpExporter.Export(retList.ToArray(), UIRefSetting);
             }
             else
             {
-                m_LuaExporter.Export(components, setting);
+                m_LuaExporter.Export(retList.ToArray(), UIRefSetting);
             }
+
+            return true;
+        }
+
+        private static bool CopyRefStr()
+        {
+            if(!CanExprot())
+            {
+                return false;
+            }
+
+            if (UIRefSetting == null)
+            {
+                return false;
+            }
+
+            GameObject root = GameObject.Find("UIRoot");
+            GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
+
+            UIRef[] components = panel.GetComponentsInChildren<UIRef>(true);
+            List<UIRef> listRef = new List<UIRef>();
+            HashSet<string> hashSet = new HashSet<string>();
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                UIRef component = components[i];
+                if (!component.IsCopyRefStr) continue;
+
+                string name = component.GetName();
+                string path = EditorUtility.GetHierarchy(component.gameObject);
+
+                if (!hashSet.Add(name))
+                {
+                    Debug.LogError("有重复的引用名称 => " + component.Name + "; 引用对象=>" + path);
+                    Selection.activeGameObject = component.gameObject;
+                    return false;
+                }
+            }
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                if (components[i].IsLayoutItemVariable) continue;
+                listRef.Add(components[i]);
+            }
+
+            string value = string.Empty;
+
+            if (UIRefSetting.ScriptType == UIRefSetting.ExoprtScriptType.CSharp)
+            {
+                value = m_CSharpExporter.CopyRef(listRef.ToArray());
+            }
+            else if (UIRefSetting.ScriptType == UIRefSetting.ExoprtScriptType.Lua)
+            {
+                value = m_LuaExporter.CopyRef(listRef.ToArray());
+            }
+
+            if (string.IsNullOrEmpty(value))
+            {
+                Debug.LogWarning("没有需要导出到剪切板的对象");
+            }
+            else
+            {
+                EditorWindow.focusedWindow.ShowNotification(new GUIContent("已复制到剪切板"));
+                GUIUtility.systemCopyBuffer = value;
+            }
+
             return true;
         }
 
         private static string ExportUIPrefab(bool showExist = true)
         {
-            if (!IsUIScene())
-            {
-                Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
-                return null;
-            }
-
-            GameObject root = GameObject.Find("UIRoot");
-            if (root == null || root.transform.Find("UICanvas/Panel") == null)
-            {
-                Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
-                return null;
-            }
-
+            if (!CanExprot()) return null;
             if (!ExportUIRef()) return null;
 
             string path = UIRefSetting.PanelPrefabPath;
@@ -348,6 +347,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
+            GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
             FileUitl.VerifyDirectory(Path.GetDirectoryName(path));
 
@@ -368,6 +368,31 @@ namespace GameFrameWork.Editor
             return path;
         }
 
+        private static bool IsUIScene()
+        {
+            return GameObject.FindObjectOfType<UIRefSetting>() != null;
+        }
+
+        private static bool CanExprot()
+        {
+            if (!IsUIScene())
+            {
+                Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
+                return false;
+            }
+
+            GameObject root = GameObject.Find("UIRoot");
+
+            if (root == null || root.transform.Find("UICanvas/Panel") == null)
+            {
+                Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
+                return false;
+            }
+
+            return true;
+        }
+
+        private static UIRefSetting m_UIRefSetting;
         private static IExporter m_CSharpExporter = null;
         private static IExporter m_LuaExporter = null;
     }

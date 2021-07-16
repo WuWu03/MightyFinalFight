@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-7-9 15:58**************************************/
+/**2021-7-14 15:32**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -27,6 +27,7 @@ public class MainPanelComponent : BasePanelComponent
 	public LayoutGroupView<LevelListItem> LevelListGroupView { get; private set; }
 
 	public MainPanelComponent(UIRefRoot root) : base(root) { }
+
 	protected override void InitComponent(UIRefRoot root)
 	{
 		PlayerHpBar = root.Objects[0] as Slider;
@@ -35,7 +36,7 @@ public class MainPanelComponent : BasePanelComponent
 		TxtPlayerLife = root.Objects[3] as Text;
 		LevelList = root.Objects[4] as GameObject;
 		ItemGO = root.Objects[5] as GameObject;
-		TxtExp = root.Objects[11] as Text;
+		TxtExp = root.Objects[6] as Text;
 		LevelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 

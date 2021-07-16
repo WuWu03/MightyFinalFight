@@ -8,6 +8,7 @@ using GameFrameWork.Sound;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Scene;
 
 namespace GameFrameWork
 {
@@ -33,7 +34,7 @@ namespace GameFrameWork
             CameraMgr.Init(m_Manager);
             SoundMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
-
+            SceneMgr.Init(m_Manager);
             OnInit();
         }
 
@@ -56,6 +57,7 @@ namespace GameFrameWork
             CameraMgr.Ins.ShutDown();
             SoundMgr.Ins.ShutDown();
             EventMgr.Ins.ShutDown();
+            SceneMgr.Ins.ShutDown();
             Destroy(m_Manager);
             OnExit();
         }

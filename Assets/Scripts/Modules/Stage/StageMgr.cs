@@ -6,6 +6,7 @@ using GameFrameWork.Sound;
 using GameFrameWork.UI;
 using GameFrameWork.Utility;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
@@ -58,7 +59,7 @@ public class StageMgr : BaseMgr<StageMgr>
         m_Height = m_CurrStageData.Height;
         m_CurrAreaIndex = 0;
         m_StageIndex = m_CurrStageData.StageIndex;
-        string resPath = ResDefine.TEX_PATH + m_CurrStageData.AssetName;
+        string resPath = ResDefine.TEX_PATH + m_CurrStageData.SceneName;
         ResMgr.Ins.LoadAssetAsync(resPath, OnLoadComplete, true, typeof(Sprite));
     }
 
@@ -191,13 +192,13 @@ public class StageMgr : BaseMgr<StageMgr>
         return m_AreaBound;
     }
 
-    private void OnLoadComplete(Object obj, object[] param)
+    private void OnLoadComplete(string resPath, Object obj, object[] param)
     {
         Sprite sprite = obj as Sprite;
         m_MapRenderer.sprite = sprite;
 
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
-        CameraMgr.Ins.InitFollow(m_CurrStageData.Width, m_CurrStageData.Height);
+        CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
         SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm2", true, 0.2f);
 
 

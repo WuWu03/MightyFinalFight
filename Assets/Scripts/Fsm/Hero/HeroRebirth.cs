@@ -52,5 +52,10 @@ public class HeroRebirth : BaseFsmState
         CameraMgr.Ins.StartFollow();
     }
 
+    public override void SetParam(object[] args)
+    {
+
+    }
+
     private BaseRole m_Owner = null;
 }

@@ -15,14 +15,26 @@ namespace GameFrameWork.Fsm
 
         public string Name
         {
-            get { return m_Name; }
-            protected set { this.m_Name = value; }
+            get 
+            { 
+                return m_Name;
+            }
+            protected set 
+            {
+                this.m_Name = value;
+            }
         }
 
         public System.Object Owner
         {
-            get { return m_Owner; }
-            protected set { this.m_Owner = value; }
+            get 
+            { 
+                return m_Owner;
+            }
+            protected set 
+            { 
+                this.m_Owner = value;
+            }
         }
 
         public Type OwnerType

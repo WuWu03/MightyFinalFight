@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class BarrelDead : BaseFsmState
 {
-    public float AttackerDir;
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as Barrel;
@@ -16,7 +15,7 @@ public class BarrelDead : BaseFsmState
         m_Owner.BarrelAnimator.animation.timeScale = 1;
         m_Owner.BarrelAnimator.animation.Play(AnimName.Dead, 1);
         m_Owner.SetPos(m_Owner.Pos);
-        m_Owner.SetDir(-AttackerDir);
+        m_Owner.SetDir(-m_AttackerDir);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -37,6 +36,11 @@ public class BarrelDead : BaseFsmState
         m_Owner = null;
     }
 
+    public override void SetParam(object[] args)
+    {
+        m_AttackerDir = (float)args[0];
+    }
 
+    private float m_AttackerDir = 0f;
     private Barrel m_Owner = null;
 }

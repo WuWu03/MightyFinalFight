@@ -1,6 +1,4 @@
 ﻿using GameFrameWork.Fsm;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BarrelMove : BaseFsmState
@@ -29,6 +27,11 @@ public class BarrelMove : BaseFsmState
     }
 
     public override void OnDestroy(BaseFsm fsm)
+    {
+
+    }
+
+    public override void SetParam(object[] args)
     {
 
     }

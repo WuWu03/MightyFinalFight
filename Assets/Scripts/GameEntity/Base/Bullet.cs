@@ -30,8 +30,14 @@ public class Bullet : BaseSceneItem
         }
         else
         {
-            if (m_IsHit && m_Animator.animation.isCompleted) Release();
-            if (!m_IsHit && m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
+            if (m_IsHit)
+            {
+                if (m_Animator.animation.isCompleted) Release();
+            }
+            else
+            {
+                if(m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
+            }
         }
     }
 

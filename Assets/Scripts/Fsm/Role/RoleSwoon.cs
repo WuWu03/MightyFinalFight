@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class RoleSwoon : BaseFsmState
 {
-    public Vector2 Force
-    {
-        get;
-        set;
-    }
-
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -20,7 +14,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.OnGroundEvent.AddListener(OnBounce);
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.AddForce(Force);
+        m_Owner.Rigidbody.AddForce(m_Force);
         m_Owner.PlayAnimation(AnimName.SwoonUp, 0);
     }
 
@@ -55,6 +49,7 @@ public class RoleSwoon : BaseFsmState
     {
         m_IsBounce = false;
         m_IsAddGroundEvent = false;
+        m_Force = Vector2.zero;
         m_Owner.StopAnimation(AnimName.SwoonDown);
     }
 
@@ -63,6 +58,12 @@ public class RoleSwoon : BaseFsmState
         m_Owner = null;
     }
 
+    public override void SetParam(object[] args)
+    {
+        m_Force = (Vector2)args[0];
+    }
+
+    private Vector2 m_Force = Vector2.zero;
     private bool m_IsAddGroundEvent = false;
     private bool m_IsBounce = false;
     private BaseRole m_Owner = null;

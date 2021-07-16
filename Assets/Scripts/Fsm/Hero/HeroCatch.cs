@@ -1,6 +1,4 @@
 ﻿using GameFrameWork.Fsm;
-using GameFrameWork.Camera;
-using UnityEngine;
 
 public class HeroCatch : BaseFsmState
 {
@@ -29,9 +27,9 @@ public class HeroCatch : BaseFsmState
         m_Owner.ActorAnimator.animation.Stop(AnimName.Catch);
     }
 
-    private void OnGround()
+    public override void SetParam(object[] args)
     {
-        CameraMgr.Ins.StartFollow();
+
     }
 
     private BaseHero m_Owner = null;

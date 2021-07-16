@@ -7,9 +7,16 @@ using UnityEditor;
 public class EditorMgr : MonoBehaviour
 {
     [MenuItem("Tools/CharacterTriggerEditor")]
-    public static void OpenCharacterTriggerEditor()
+    public static void OpenCharacterTriggerEditorWindow()
     {
         EditorWindow.GetWindow<CharacterTriggerEditor>(false, "CharacterTriggerEditor", false).Show();
+    }
+
+    [MenuItem("Tools/MapEditor")]
+    public static void OpenMapEditorWindow()
+    {
+        MapEditorWindow window = EditorWindow.GetWindow<MapEditorWindow>();
+        window.Show();
     }
 
     [MenuItem("Assets/Config/CreateSkillData")]

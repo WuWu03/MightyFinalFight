@@ -13,10 +13,9 @@ namespace GameFrameWork.Resources
 #if UNITY_EDITOR
         class LoadRequest 
         {
-            public Action<UnityEngine.Object, object[]> action;
+            public GameFrameWorkAction<string, UnityEngine.Object, object[]> action;
             public object[] param;
         }
-
 
         public ResMgrEditor()
         {
@@ -61,7 +60,7 @@ namespace GameFrameWork.Resources
             return obj;
         }
 
-        public void LoadForEditorAsync(string resourcePath, Action<UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
+        public void LoadForEditorAsync(string resourcePath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
         {
             List<LoadRequest> list = null;
 
@@ -96,7 +95,7 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i].action?.Invoke(obj, list[i].param);
+                    list[i].action?.Invoke(resourcePath, obj, list[i].param);
                 }
 
                 m_DicLoadRequest.Remove(resourcePath);

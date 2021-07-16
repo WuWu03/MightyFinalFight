@@ -13,7 +13,7 @@ public class TaskConfig : BaseScriptableObject<TaskConfigData>
 public class TaskConfigData : BaseConfigData
 {
     [Serializable]
-    public enum ConditionType
+    public enum TaskConditionType
     {
         None,
         MoveToPos,//到达指定位置
@@ -22,7 +22,7 @@ public class TaskConfigData : BaseConfigData
     }
 
     [Serializable]
-    public enum EffectType
+    public enum TaskTriggerType
     {
         None,
         Enemy,//产生敌人
@@ -32,7 +32,7 @@ public class TaskConfigData : BaseConfigData
     }
 
     [Serializable]
-    public enum PosType
+    public enum TaskPosType
     {
         X,
         Y,
@@ -50,18 +50,18 @@ public class TaskConfigData : BaseConfigData
     [Serializable]
     public class TaskPositon
     {
-        public PosType PosType;
+        public TaskPosType PosType;
         public Vector2Int Pos;
     }
 
-    public ConditionType TriggerCondition;
-    public TaskPositon PosCondition;
+    public TaskConditionType ConditionType;
+    public TaskPositon Position;
     public int[] KillIDs;
     public int BarrelsCount;
     public bool KillAll;
     public bool BarrelsAll;
 
-    public EffectType TriggerEffect;
+    public TaskTriggerType TriggerType;
     public InsTarget[] Targets;
     public bool TriggerStopCamera;
     public bool ExitStartCamera;

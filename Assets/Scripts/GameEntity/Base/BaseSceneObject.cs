@@ -120,11 +120,6 @@ public class BaseSceneObject : BaseEntity
         m_ListTargets = new List<GameObject>();
     }
 
-    public T GetData<T>() where T : BaseSceneObjectData
-    {
-        return m_Data != null ? m_Data as T : null;
-    }
-
     public virtual void SetData(BaseSceneObjectData data)
     {
         m_EntityID = data.Id;

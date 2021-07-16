@@ -823,11 +823,6 @@ MonoBehaviour:
   - {fileID: 322625190}
   - {fileID: 1746242803}
   - {fileID: 2006755757}
-  - {fileID: 1655960279}
-  - {fileID: 1007864715}
-  - {fileID: 562871414}
-  - {fileID: 2115285214}
-  - {fileID: 1073889341}
   - {fileID: 305565307}
 --- !u!1 &873496741
 GameObject:
@@ -1241,8 +1236,8 @@ RectTransform:
   m_Father: {fileID: 1970342132}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}

@@ -1,5 +1,7 @@
 ﻿using GameFrameWork.BehaviourTree;
 using GameFrameWork.UI;
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -77,5 +79,26 @@ namespace GameFrameWork.Editor
         {
 			FontMaker.CreateMyFontSprite();
 		}
+
+		[MenuItem("Assets/Add scene to Building Setting")]
+		public static void AddScene()
+        {
+			if (Selection.objects.Length > 0)
+			{
+				List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
+				sceneList.AddRange(EditorBuildSettings.scenes);
+
+                for (int i = 0; i < Selection.objects.Length; i++)
+                {
+					string assetPath = AssetDatabase.GetAssetPath(Selection.objects[i]);
+					if (!Path.GetExtension(assetPath).Equals(".unity")) continue;
+					EditorBuildSettingsScene editorBuildSettings = new EditorBuildSettingsScene(assetPath, true);
+					sceneList.Add(editorBuildSettings);
+                }
+
+				EditorBuildSettings.scenes = sceneList.ToArray();
+				AssetDatabase.Refresh();
+			}
+        }
 	}
 }

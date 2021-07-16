@@ -60,7 +60,7 @@ public static class SceneEntityFactory
         BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
 
         enemyData.Id = engityID;
-        enemyData.Health = 20;
+        enemyData.Health = 1;
         enemyData.MaxHealth = 20;
         enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
         enemyData.AttackValue = 1;

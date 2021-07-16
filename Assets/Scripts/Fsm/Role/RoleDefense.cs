@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class RoleDefense : BaseFsmState
 {
-    private float m_Timer = 0f;
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -35,5 +34,11 @@ public class RoleDefense : BaseFsmState
         m_Owner = null;
     }
 
+    public override void SetParam(object[] args)
+    {
+
+    }
+
+    private float m_Timer = 0f;
     private BaseRole m_Owner = null;
 }

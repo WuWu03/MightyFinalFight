@@ -37,7 +37,7 @@ namespace GameFrameWork.Camera
             m_ListCamera.Add(InitCamera("MapCamera", CameraDepthDefine.MapCamera, "MainCamera", MaskName.Map));
             m_ListCamera.Add(InitCamera("RoleCamera", CameraDepthDefine.RoleCamera, maskName: MaskName.Unit));
 
-            m_CameraFollow.MainCamera = UnityEngine.Camera.main;
+            m_CameraFollow.Camera = UnityEngine.Camera.main;
             DontDestroyOnLoad(m_CameraRoot);
         }
 
@@ -46,9 +46,9 @@ namespace GameFrameWork.Camera
             m_CameraFollow.SetTarget(target);
         }
 
-        public void InitFollow(int width, int height)
+        public void SetFollowSize(int width, int height)
         {
-            m_CameraFollow.InitFollow(width, height);
+            m_CameraFollow.SetFollowSize(width, height);
         }
 
         public void StartFollow(bool forceStart = false)

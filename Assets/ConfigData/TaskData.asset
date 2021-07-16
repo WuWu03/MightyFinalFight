@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - ID: 1001
-    TriggerCondition: 1
-    PosCondition:
+    ConditionType: 1
+    Position:
       PosType: 0
-      Pos: {x: -380, y: 0}
+      Pos: {x: -240, y: 0}
     KillIDs: 
     BarrelsCount: 0
     KillAll: 1
     BarrelsAll: 0
-    TriggerEffect: 1
+    TriggerType: 1
     Targets:
     - EntityID: 1
       SourceID: 1001
@@ -51,15 +51,15 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1002
   - ID: 1002
-    TriggerCondition: 2
-    PosCondition:
+    ConditionType: 2
+    Position:
       PosType: 0
       Pos: {x: 0, y: 0}
     KillIDs: 
     BarrelsCount: 0
     KillAll: 1
     BarrelsAll: 0
-    TriggerEffect: 0
+    TriggerType: 4
     Targets: []
     TriggerStopCamera: 0
     ExitStartCamera: 1
@@ -67,15 +67,15 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1003
   - ID: 1003
-    TriggerCondition: 1
-    PosCondition:
+    ConditionType: 1
+    Position:
       PosType: 0
-      Pos: {x: 150, y: 0}
+      Pos: {x: 72, y: 0}
     KillIDs: 
     BarrelsCount: 0
     KillAll: 1
     BarrelsAll: 0
-    TriggerEffect: 1
+    TriggerType: 1
     Targets:
     - EntityID: 7
       SourceID: 1003
@@ -89,15 +89,15 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1004
   - ID: 1004
-    TriggerCondition: 2
-    PosCondition:
+    ConditionType: 2
+    Position:
       PosType: 0
-      Pos: {x: 90, y: 0}
+      Pos: {x: 0, y: 0}
     KillIDs: 
     BarrelsCount: 0
     KillAll: 1
     BarrelsAll: 0
-    TriggerEffect: 0
+    TriggerType: 4
     Targets:
     - EntityID: 7
       SourceID: 1003

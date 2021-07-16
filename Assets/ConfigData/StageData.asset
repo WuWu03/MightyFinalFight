@@ -15,7 +15,7 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Name: 1001
-    AssetName: Stage/1001_1
+    SceneName: Stage1_1
     StageIndex: 1
     Width: 1016
     Height: 152
@@ -28,7 +28,7 @@ MonoBehaviour:
       Size: {x: 1016, y: 40}
   - ID: 1002
     Name: 1002
-    AssetName: Stage/1001_2
+    SceneName: Stage1_2
     StageIndex: 1
     Width: 1016
     Height: 152

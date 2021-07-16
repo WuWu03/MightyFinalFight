@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-4-19 14:44**************************************/
+/**2021-7-14 15:31**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -8,22 +8,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
-public class RoleSelectPanelComponent:BasePanelComponent
+public class RoleSelectPanelComponent : BasePanelComponent
 {
 	//RoleContent,GameObject
-	public GameObject RoleContent { get; private set;}
+	public GameObject RoleContent { get; private set; }
 	//RoleContent/Item,GameObject
-	public GameObject ItemGO { get; private set;}
+	public GameObject ItemGO { get; private set; }
 	//ImgSelect,RectTransform
-	public RectTransform ImgSelectRect { get; private set;}
-	public LayoutGroupView<RoleContentItem> RoleContentGroupView { get; private set;}
+	public RectTransform ImgSelectRect { get; private set; }
+	public LayoutGroupView<RoleContentItem> RoleContentGroupView { get; private set; }
 
 	public RoleSelectPanelComponent(UIRefRoot root) : base(root) { }
+
 	protected override void InitComponent(UIRefRoot root)
 	{
 		RoleContent = root.Objects[0] as GameObject;
 		ItemGO = root.Objects[1] as GameObject;
-		ImgSelectRect = root.Objects[5] as RectTransform;
+		ImgSelectRect = root.Objects[2] as RectTransform;
 		RoleContentGroupView = new LayoutGroupView<RoleContentItem>();
 	}
 

@@ -182,6 +182,7 @@ public class BaseHero : BaseRole
             ResetCatch(false);
         if (data.IsSwoon)
         {
+            data.HurtSound = "Sound/OnBlow";
             m_DicAttacker.Clear();
             m_HitTime = -1f;
         }
@@ -215,7 +216,7 @@ public class BaseHero : BaseRole
         if(m_Weapon != null)
         {
             m_Weapon.SubHealth(1);
-            m_Weapon.Drop();
+            m_Weapon.Drop(data.AttackerDir);
             m_Weapon = null;
         }
 

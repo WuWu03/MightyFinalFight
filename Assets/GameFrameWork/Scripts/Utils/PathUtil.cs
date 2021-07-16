@@ -7,7 +7,8 @@ namespace GameFrameWork.Utility
 {
     public class PathUtil
     {
-        public const string EdiorConfiglPath = "Assets/FrameWork/Editor/Config/";
+        public const string EditorUIRootPath = "Assets/GameFrameWork/UI/UIRoot.prefab";
+        public const string EdiorConfiglPath = "Assets/GameFrameWork/Editor/Config/";
         public static string ConfigDataDefaultPath = Application.dataPath + "/ConfigData/";
 
         public static string BehaviourTreeWindowConfigFullPath = AppDataPath + EdiorConfiglPath.Substring(6);

@@ -15,6 +15,19 @@ namespace GameFrameWork.Editor
             ExportPanel(uiRefs, setting);
         }
 
+        public override string CopyRef(UIRef[] uiRefs)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < uiRefs.Length; i++)
+            {
+                if (!uiRefs[i].IsCopyRefStr) continue;
+                sb.AppendFormat("public {0} {1} ", uiRefs[i].ComponentName, uiRefs[i].GetName());
+                sb.Append("{ get; private set; };\n");
+                sb.AppendFormat("{0} = root.Objects[{1}] as {2}\n", uiRefs[i].GetName(), i, uiRefs[i].ComponentName);
+            }
+            return sb.ToString();
+        }
+
         private void ExportComponent(UIRef[] uiRefs, UIRefSetting setting)
         {
             StringBuilder sb = new StringBuilder();
@@ -40,12 +53,9 @@ namespace GameFrameWork.Editor
                 if (uiRefs[i].IsLayoutContent())
                 {
                     layoutRefList.Add(uiRefs[i]);
-                    normalRefList.Add(uiRefs[i]);
                 }
-                else if (!uiRefs[i].IsLayoutItemVariable)
-                {
-                    normalRefList.Add(uiRefs[i]);
-                }
+
+                normalRefList.Add(uiRefs[i]);
             }
 
             for (int i = 0; i < normalRefList.Count; i++)
@@ -68,23 +78,14 @@ namespace GameFrameWork.Editor
 
             sb.AppendLine();
             sb.AppendFormat("\tpublic {0}Component(UIRefRoot root) : base(root)", setting.PanelName);
-            sb.Append(" { }\n");
+            sb.Append(" { }\n\n");
             sb.AppendLine("\tprotected override void InitComponent(UIRefRoot root)");
             sb.AppendLine("\t{");
 
             for (int i = 0; i < normalRefList.Count; i++)
             {
-                int objIndex = i;
                 UIRef uiRef = normalRefList[i];
-                for (int j = 0; j < uiRefs.Length; j++)
-                {
-                    if (uiRefs[j] == uiRef)
-                    {
-                        objIndex = j;
-                        break;
-                    }
-                }
-                sb.AppendFormat("\t\t{0} = root.Objects[{1}] as {2};\n", uiRef.GetName(), objIndex, uiRef.ComponentName);
+                sb.AppendFormat("\t\t{0} = root.Objects[{1}] as {2};\n", uiRef.GetName(), i, uiRef.ComponentName);
             }
 
             for (int i = 0; i < layoutRefList.Count; i++)
@@ -165,22 +166,27 @@ namespace GameFrameWork.Editor
         private static void GenCSharpLayout(UIRef uiRef, StringBuilder sb)
         {
             UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
-
-
-            sb.AppendLine();
-            sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\n", uiRef.GetName() + "Item");
-            sb.AppendLine("\t{");
-
+            UIRef itemRef = null;
             string itemName = string.Empty;
 
             for (int i = 0; i < itemRefs.Length; i++)
             {
                 if (itemRefs[i].IsLayoutItem)
                 {
-                    itemName = itemRefs[i].name;
+                    itemRef = itemRefs[i];
+                    itemName = itemRefs[i].gameObject.name;
                     break;
                 }
             }
+
+            if(itemRef == null)
+            {
+                return;
+            }
+
+            sb.AppendLine();
+            sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\n", uiRef.GetName() + "Item");
+            sb.AppendLine("\t{");
 
             for (int i = 0; i < itemRefs.Length; i++)
             {

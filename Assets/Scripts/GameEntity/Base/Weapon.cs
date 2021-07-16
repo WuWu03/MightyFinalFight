@@ -12,6 +12,7 @@ public class Weapon : BaseSceneItem
         }
     }
 
+
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
@@ -23,13 +24,15 @@ public class Weapon : BaseSceneItem
         base.SubHealth(value);
     }
 
-    public void Drop()
+    public void Drop(float attackerDir)
     {
         if (!m_WeaponData.CanDrop) return;
-        gameObject.SetActive(true);
-        SetPos2(m_Owner.Pos.x, m_Owner.Bound.yMin + Bound.height / 2);
+    
+        SetActive(true);
+        SetPos2(m_Owner.Pos.x, m_Owner.Pos.y);
+
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody.AddForce(new Vector2(40 * -m_Owner.Dir, 150));
+        m_Rigidbody.AddForce(new Vector2(40f * attackerDir, 150f));
         m_Animator.animation.Play(AnimName.Drop, 0);
         m_Owner = null;
     }
@@ -54,16 +57,14 @@ public class Weapon : BaseSceneItem
         m_Animator.animation.Play(AnimName.Idle, 0);
     }
 
-    protected override void CheckGround()
+    protected override void OnGround()
     {
-        base.CheckGround();
-        if (!IsInGround || !m_IsResComplete) return;
         m_Rigidbody.velocity = Vector2.zero;
         m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
         SetPos(m_Pos);
 
-        if(m_Health <= 0)
+        if (m_Health <= 0)
         {
             Release();
         }

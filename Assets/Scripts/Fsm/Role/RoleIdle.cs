@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class RoleIdle : BaseFsmState
 {
-    private BaseRole m_Owner = null;
-
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -42,4 +40,11 @@ public class RoleIdle : BaseFsmState
     {
         m_Owner = null;
     }
+
+    public override void SetParam(object[] args)
+    {
+
+    }
+
+    private BaseRole m_Owner = null;
 }

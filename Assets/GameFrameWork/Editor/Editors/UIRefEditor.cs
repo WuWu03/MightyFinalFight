@@ -40,13 +40,6 @@ namespace GameFrameWork.Editor
             if (useDefaultName.boolValue)
             {
                 m_UIRef.SetName(m_UIRef.gameObject.name);
-                //foreach (UIRef current in GetOtherRef(m_UIRef))
-                //{
-    
-                //    if (!current.UseDefaultName) continue;
-                //    current.SetName();
-                //    break;
-                //}
             }
             else
             {
@@ -56,10 +49,12 @@ namespace GameFrameWork.Editor
                 }
 
                 string name = EditorGUILayout.TextField("字段名称", m_UIRef.Name, new GUILayoutOption[0]);
+
                 if (m_UIRef.Name != name)
                 {
                     UnityEditor.EditorUtility.SetDirty(this.m_UIRef);
                 }
+
                 m_UIRef.SetName(name);
             }
 
@@ -122,13 +117,23 @@ namespace GameFrameWork.Editor
                     m_UIRef.IsLayoutItemVariable = isLayoutItem.boolValue && isParentLayoutItem;
                 }
             }
-            else m_UIRef.IsLayoutItemVariable = false;
-
-            SerializedProperty isCopyRefStr = EditorUtility.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
-            if (m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)
+            else
             {
-                UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                m_UIRef.IsCopyRefStr = isCopyRefStr.boolValue;
+                m_UIRef.IsLayoutItemVariable = false;
+            }
+
+            if (!m_UIRef.IsLayoutItemVariable)
+            {
+                SerializedProperty isCopyRefStr = EditorUtility.DrawProperty("引用代码输出到剪切板", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
+                if (m_UIRef.IsCopyRefStr != isCopyRefStr.boolValue)
+                {
+                    UnityEditor.EditorUtility.SetDirty(m_UIRef);
+                    m_UIRef.IsCopyRefStr = isCopyRefStr.boolValue;
+                }
+            }
+            else
+            {
+                m_UIRef.IsCopyRefStr = false;
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -139,7 +144,6 @@ namespace GameFrameWork.Editor
             UIRef[] ret = uiref.gameObject.GetComponents<UIRef>();
             return ret;
         }
-
 
         private List<string> m_ListCompName = new List<string>();
         private UIRef m_UIRef;

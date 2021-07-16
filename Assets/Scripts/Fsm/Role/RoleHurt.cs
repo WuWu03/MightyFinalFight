@@ -2,12 +2,6 @@
 
 public class RoleHurt : BaseFsmState
 {
-    public HurtData HurtData
-    {
-        get;
-        set;
-    }
-
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -15,7 +9,7 @@ public class RoleHurt : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(HurtData.HurtAnim, 1, m_Owner.IsBeCatch ? 1f : 1.5f);
+        m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.IsBeCatch ? 1f : 1.5f);
         m_Owner.SetPos(m_Owner.Pos);
     }
 
@@ -35,12 +29,19 @@ public class RoleHurt : BaseFsmState
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Hurt);
+        m_HurtAnim = string.Empty;
     }
 
     public override void OnDestroy(BaseFsm fsm)
     {
-
+        m_Owner = null;
     }
 
+    public override void SetParam(object[] args)
+    {
+        m_HurtAnim = args[0].ToString();
+    }
+
+    private string m_HurtAnim;
     private BaseRole m_Owner = null;
 }
