@@ -40,13 +40,15 @@ public class StageMgr : BaseMgr<StageMgr>
 
     }
 
-    public void Enter(int id)
+    public void Enter(int id, GameFrameWorkAction onEnter = null)
     {
         if (m_CurrStageData != null && m_CurrStageData.ID == id)
         {
             return;
         }
 
+        PlayerMgr.Ins.CanContrl = false;
+        m_OnEnterEvent = onEnter;
         CameraMgr.Ins.EndFollow();
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
         SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
@@ -172,18 +174,21 @@ public class StageMgr : BaseMgr<StageMgr>
 
     private void LoadSceneSuccess(LoadSceneSuccessEventArgs t)
     {
-        AudioGroup[] group = new AudioGroup[m_CurrStageData.BGMs.Length];
-
-        for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
+        if (m_CurrStageData.BGMs.Length > 0)
         {
-            string clipName = m_CurrStageData.BGMs[i].ClipName;
-            bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
-            float volume = m_CurrStageData.BGMs[i].Volume;
-            float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
-            group[i] = AudioGroup.Create(ResDefine.AUDIO_CLIP_PATH, "BGM/" + clipName, isLoop, volume, lerpTime);
-        }
+            AudioGroup[] group = new AudioGroup[m_CurrStageData.BGMs.Length];
 
-        SoundMgr.Ins.PlayBGMGroup(group);
+            for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
+            {
+                string clipName = m_CurrStageData.BGMs[i].ClipName;
+                bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
+                float volume = m_CurrStageData.BGMs[i].Volume;
+                float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
+                group[i] = AudioGroup.Create(ResDefine.AUDIO_CLIP_PATH, "BGM/" + clipName, isLoop, volume, lerpTime);
+            }
+
+            SoundMgr.Ins.PlayBGMGroup(group);
+        }
 
         UIMgr.Ins.Open<MainPanel>();
 
@@ -194,10 +199,15 @@ public class StageMgr : BaseMgr<StageMgr>
 
         PlayerMgr.Ins.InitPlayer();
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
-        SceneEntityMgr.Ins.CreateSceneItemTest();
+        // SceneEntityMgr.Ins.CreateSceneItemTest();
         CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
         CameraMgr.Ins.StartFollow();
+
+        PlayerMgr.Ins.CanContrl = true;
+        m_OnEnterEvent?.Invoke();
+        m_OnEnterEvent = null;
     }
 
+    private GameFrameWorkAction m_OnEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
 }

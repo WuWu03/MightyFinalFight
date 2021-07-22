@@ -16,7 +16,7 @@ MonoBehaviour:
   - ID: 1001
     MapPath: Assets/ArtResources/Texture/Stage/1001_1.png
     SceneName: Stage1_1
-    CurrPos: {x: -188, y: -53}
+    CurrPos: {x: 455, y: -34}
     InitPos: {x: -451, y: -47}
     Width: 1016
     Height: 152
@@ -47,9 +47,9 @@ MonoBehaviour:
     ListSceneObj: []
   - ID: 0
     MapPath: Assets/ArtResources/Texture/Stage/1001_2.png
-    SceneName: 
-    CurrPos: {x: 234, y: 132}
-    InitPos: {x: 15, y: 120}
+    SceneName: Stage1_2
+    CurrPos: {x: -39, y: -32}
+    InitPos: {x: -492, y: -20}
     Width: 1016
     Height: 152
     ListMoveArea: []
@@ -61,8 +61,8 @@ MonoBehaviour:
     SceneName: 
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
-    Width: 0
-    Height: 0
+    Width: 504
+    Height: 152
     ListMoveArea: []
     ListTaskId: 
     ListBGM: []

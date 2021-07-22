@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - ID: 1001
-    ConditionType: 1
+    ConditionType: 2
     Position:
       PosType: 0
       Pos: {x: -240, y: 0}
@@ -47,11 +47,12 @@ MonoBehaviour:
       Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1002
   - ID: 1002
-    ConditionType: 2
+    ConditionType: 3
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
@@ -63,11 +64,12 @@ MonoBehaviour:
     Targets: []
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1003
   - ID: 1003
-    ConditionType: 1
+    ConditionType: 2
     Position:
       PosType: 0
       Pos: {x: 72, y: 0}
@@ -85,11 +87,12 @@ MonoBehaviour:
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1004
   - ID: 1004
-    ConditionType: 2
+    ConditionType: 3
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
@@ -107,6 +110,24 @@ MonoBehaviour:
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1005
+  - ID: 1005
+    ConditionType: 1
+    Position:
+      PosType: 2
+      Pos: {x: 455, y: -34}
+    KillIDs: 
+    BarrelsCount: 0
+    KillAll: 0
+    BarrelsAll: 0
+    TriggerType: 5
+    Targets: []
+    TriggerStopCamera: 1
+    ExitStartCamera: 0
+    MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 0

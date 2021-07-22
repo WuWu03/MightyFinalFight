@@ -38,12 +38,12 @@ MonoBehaviour:
       width: 1016
       height: 44
   - ID: 0
-    Name: 
-    SceneName: 
+    Name: Stage1_2
+    SceneName: Stage1_2
     StageIndex: 2
     Width: 1016
     Height: 152
-    InitPos: {x: 15, y: 120}
+    InitPos: {x: -492, y: -20}
     SceneObjs: []
     TaskIDs: 
     BGMs: []
@@ -52,8 +52,8 @@ MonoBehaviour:
     Name: 
     SceneName: 
     StageIndex: 3
-    Width: 0
-    Height: 0
+    Width: 504
+    Height: 152
     InitPos: {x: 0, y: 0}
     SceneObjs: []
     TaskIDs: 

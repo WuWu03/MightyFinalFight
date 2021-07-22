@@ -16,6 +16,7 @@ public class TaskConfigData : BaseConfigData
     public enum TaskConditionType
     {
         None,
+        AutoMoveToPos,//自动移动到指定位置
         MoveToPos,//到达指定位置
         KillEnemy,//杀死目标
         WaitBarrels,//等待桶
@@ -29,6 +30,7 @@ public class TaskConfigData : BaseConfigData
         Barrels,//产生桶
         Talk,//对话
         Finger,//出现手指
+        ChangeScene,//切换场景
     }
 
     [Serializable]
@@ -65,6 +67,7 @@ public class TaskConfigData : BaseConfigData
     public InsTarget[] Targets;
     public bool TriggerStopCamera;
     public bool ExitStartCamera;
+    public int MapID;
     public int TalkID;
     public int PrevID;
     public int NextID;

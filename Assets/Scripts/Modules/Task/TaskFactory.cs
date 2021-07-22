@@ -13,6 +13,8 @@ public static class TaskFactory
             ret = new TaskKillEnemy(data);
         else if (data.ConditionType == TaskConfigData.TaskConditionType.WaitBarrels)
             ret = new TaskWaitBarrels(data);
+        else if (data.ConditionType == TaskConfigData.TaskConditionType.AutoMoveToPos)
+            ret = new TaskAutoMoveToPos(data);
         return ret;
     }
 
@@ -21,8 +23,10 @@ public static class TaskFactory
         BaseTaskTrigger ret = null;
         if (data.TriggerType == TaskConfigData.TaskTriggerType.Enemy)
             ret = new TaskTriggerEnemy(data);
-        if (data.TriggerType == TaskConfigData.TaskTriggerType.Finger)
+        else if (data.TriggerType == TaskConfigData.TaskTriggerType.Finger)
             ret = new TaskTriggerFinger(data);
+        else if (data.TriggerType == TaskConfigData.TaskTriggerType.ChangeScene)
+            ret = new TaskTriggerChangeScene(data);
         return ret;
     }
 }
