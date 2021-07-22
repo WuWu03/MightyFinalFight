@@ -14,7 +14,7 @@ public class DoRunToRoundPos : Action
         Rect visionRect = CameraMgr.Ins.GetVision();
         Vector2 selfPos = m_Owner.Owner.Pos;
         Vector2 targetPos = PlayerMgr.Ins.Player.Pos;
-        float randomY = StageMgr.Ins.GetRandomY(targetPos);
+        float randomY = StageMgr.Ins.GetRandomPosY(targetPos);
         float dir = targetPos.x > selfPos.x ? 1 : -1;
         float radius = Random.Range(0.2f, Vector2.Distance(selfPos, targetPos));
         Vector2 to = targetPos + Vector2.right * radius * dir;

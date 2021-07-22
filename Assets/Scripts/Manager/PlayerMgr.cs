@@ -71,15 +71,28 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         set;
     }
 
-    public void InitPlayer(int roleID)
+    public int SelectId
     {
+        set
+        {
+            m_SelectId = value;
+        }
+    }
+
+    public void InitPlayer()
+    {
+        if(m_Player != null)
+        {
+            return;
+        }
+
         m_Life = 5;
         m_Continue = 3;
         m_Level = 1;
         m_EXP = 0;
 
-        m_HeroData = StaticConfig.HeroConfig.GetData(roleID);
-        m_LevelData = StaticConfig.LevelConfig.GetData(roleID).Levels[m_Level - 1];
+        m_HeroData = StaticConfig.HeroConfig.GetData(m_SelectId);
+        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectId).Levels[m_Level - 1];
         m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
@@ -236,5 +249,6 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_EXP = 0;
     private int m_Level = 0;
     private int m_Continue = 0;
+    private int m_SelectId = 0;
     private float m_CurrSpeed = 0f;
 }

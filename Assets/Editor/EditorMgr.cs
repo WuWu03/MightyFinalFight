@@ -22,7 +22,7 @@ public class EditorMgr : MonoBehaviour
     [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<SkillConfig, SkillConfigData>("StageData", ".asset");
+        GameFrameWork.Editor.EditorUtility.CreateConfigData<SkillConfig, SkillConfigData>("SkillData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateStageData")]

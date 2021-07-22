@@ -7,11 +7,11 @@ namespace GameFrameWork.Serialize
 {
     public abstract class BaseScriptableObject<T> : ScriptableObject where T : BaseConfigData
     {
-        public T[] Datas = null;
+        public List<T> Datas = null;
         public virtual T GetData(int id)
         {
             if (Datas == null) return null;
-            for (int i = 0; i < Datas.Length; i++)
+            for (int i = 0; i < Datas.Count; i++)
             {
                 if (Datas[i].ID.Equals(id))
                 {
@@ -22,6 +22,11 @@ namespace GameFrameWork.Serialize
             return null;
         }
 
+        public virtual void AddData(T data)
+        {
+            Datas.Add(data);
+        }
+
         public T Clone()
         {
             return Activator.CreateInstance<T>();
@@ -29,7 +34,7 @@ namespace GameFrameWork.Serialize
     }
 
     [Serializable]
-    public abstract class BaseConfigData:IComparable
+    public abstract class BaseConfigData : IComparable
     {
         public int ID;
 

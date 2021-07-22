@@ -58,7 +58,7 @@ namespace GameFrameWork.Editor
         private static bool GenerateBuildMap()
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
-            for (int i = 0; i < config.Datas.Length; i++)
+            for (int i = 0; i < config.Datas.Count; i++)
             {
                 if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)
                 {

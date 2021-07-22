@@ -6,16 +6,15 @@ using UnityEngine;
 namespace GameFrameWork.Serialize
 {
     [Serializable]
-    public class BehaviourTreeWindowConfig : ScriptableObject
+    public class BehaviourTreeWindowConfig : BaseScriptableObject<BehaviourTreeWindowData>
     {
         public string BehaviourConfigPath;
-        public List<BehaviourTreeWindowData> WindowDatas;
     }
 
     [Serializable]
-    public class BehaviourTreeWindowData
+    public class BehaviourTreeWindowData : BaseConfigData
     {
-        public BehaviourTreeWindowData(string name,int id,float x = 20,float y = 20)
+        public BehaviourTreeWindowData(string name, int id, float x = 20, float y = 20)
         {
             Name = name;
             ID = id;
@@ -24,8 +23,6 @@ namespace GameFrameWork.Serialize
             WindowRect = new Rect(x, y, 230, 150);
         }
 
-        [SerializeField]
-        public int ID;
         [SerializeField]
         public string Name;
         [SerializeField]

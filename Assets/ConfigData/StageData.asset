@@ -14,28 +14,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - ID: 1001
-    Name: 1001
+    Name: Stage1_1
     SceneName: Stage1_1
     StageIndex: 1
     Width: 1016
     Height: 152
-    InitPos: {x: -440, y: -53}
-    SceneObjIDs: 
+    InitPos: {x: -451, y: -47}
+    SceneObjs: []
     TaskIDs: e9030000
-    BGMs: []
+    BGMs:
+    - ClipName: bgm01_Start
+      IsLoop: 0
+      Volume: 0.3
+      LerpTime: 0.3
+    - ClipName: bgm01_Loop
+      IsLoop: 1
+      Volume: 0.3
+      LerpTime: 0.3
     MoveArea:
-    - Pos: {x: 0, y: -55}
-      Size: {x: 1016, y: 40}
-  - ID: 1002
-    Name: 1002
-    SceneName: Stage1_2
-    StageIndex: 1
+    - serializedVersion: 2
+      x: -508
+      y: -33
+      width: 1016
+      height: 44
+  - ID: 0
+    Name: 
+    SceneName: 
+    StageIndex: 2
     Width: 1016
     Height: 152
-    InitPos: {x: -440, y: -53}
-    SceneObjIDs: 
-    TaskIDs: e9030000ea030000
+    InitPos: {x: 15, y: 120}
+    SceneObjs: []
+    TaskIDs: 
     BGMs: []
-    MoveArea:
-    - Pos: {x: 0, y: -55}
-      Size: {x: 1016, y: 40}
+    MoveArea: []
+  - ID: 0
+    Name: 
+    SceneName: 
+    StageIndex: 3
+    Width: 0
+    Height: 0
+    InitPos: {x: 0, y: 0}
+    SceneObjs: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []

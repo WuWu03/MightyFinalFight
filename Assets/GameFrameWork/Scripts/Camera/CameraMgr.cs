@@ -51,33 +51,30 @@ namespace GameFrameWork.Camera
             m_CameraFollow.SetFollowSize(width, height);
         }
 
-        public void StartFollow(bool forceStart = false)
+        public void StartFollow(bool isForceStart = false)
         {
-            if (forceStart) m_IsForceEnd = false;
+            if (isForceStart) m_IsForceEnd = false;
             if (!m_IsForceEnd) m_CameraFollow.StartFollow();
         }
 
-        public void EndFollow(bool forceEnd = false)
+        public void EndFollow(bool isForceEnd = false)
         {
-            if(forceEnd) m_IsForceEnd = true;
+            if (isForceEnd) m_IsForceEnd = true;
             m_CameraFollow.EndFollow();
         }
 
         public void Shake(float time = 0.3f)
         {
             m_CameraFollow.EndFollow();
-            m_CameraRoot.transform.DOShakePosition(time,0.1f,20,100).OnComplete(()=> 
-            {
-                if (!m_IsForceEnd)
-                    m_CameraFollow.StartFollow();
-            });
+            m_CameraRoot.transform.DOShakePosition(time, 0.1f, 20, 100).OnComplete(OnShakeComplete);
         }
 
         public bool IsOutVision(Vector2 targetPos)
         {
             Rect visionRect = m_CameraFollow.GetVision();
-            return targetPos.x - 0.1 <= visionRect.xMin || targetPos.x + 0.1 >= visionRect.xMax ||
-                               targetPos.y - 0.1 <= visionRect.yMin || targetPos.y + 0.1 >= visionRect.yMax;
+            bool xOut = targetPos.x - 0.1 <= visionRect.xMin || targetPos.x + 0.1 >= visionRect.xMax;
+            bool yOut = targetPos.y - 0.1 <= visionRect.yMin || targetPos.y + 0.1 >= visionRect.yMax;
+            return xOut || yOut;
         }
 
         public Rect GetVision()
@@ -88,6 +85,12 @@ namespace GameFrameWork.Camera
         private void LateUpdate()
         {
 
+        }
+
+        private void OnShakeComplete()
+        {
+            if (!m_IsForceEnd)
+                m_CameraFollow.StartFollow();
         }
 
         private UnityEngine.Camera InitCamera(string name, int depth, string tag = "Untagged", params string[] maskName)
@@ -113,7 +116,7 @@ namespace GameFrameWork.Camera
             float cameraRate = (float)Screen.width / Screen.height;
             float sizeRate = cameraRate / m_NormalRate;
 
-            if(sizeRate < 1)
+            if (sizeRate < 1)
             {
                 sizeRate = 1;
             }

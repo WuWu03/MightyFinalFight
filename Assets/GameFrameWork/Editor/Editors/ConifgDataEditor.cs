@@ -18,7 +18,7 @@ namespace GameFrameWork.Editor
 
             if (GUILayout.Button("排序"))
             {
-                Array.Sort(Config.Datas);
+                Config.Datas.Sort();
             }
         }
     }

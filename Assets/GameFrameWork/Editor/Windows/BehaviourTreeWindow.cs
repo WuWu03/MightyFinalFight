@@ -53,15 +53,15 @@ namespace GameFrameWork.Editor
             m_BehaviourTreeWindowConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeWindowConfig>(PathUtil.BehaviourTreeWindowDataPath);
             m_WindowConfigSo = new SerializedObject(m_BehaviourTreeWindowConfig);
             m_DicFreeWindowNode = new Dictionary<int, List<BehaviourTreeWindowNode>>();
-            m_LeftList = new ReorderableList(m_WindowConfigSo, m_WindowConfigSo.FindProperty("WindowDatas"), true, false, false, false);
+            m_LeftList = new ReorderableList(m_WindowConfigSo, m_WindowConfigSo.FindProperty("Datas"), true, false, false, false);
             m_LeftList.headerHeight = 0;
             m_LeftList.footerHeight = 0;
             m_LeftList.elementHeight = 40;
             m_LeftList.showDefaultBackground = false;
             m_LeftList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
-                BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.WindowDatas[index];
-                m_BehaviourTreeWindowConfig.WindowDatas[index].ListRect = rect;
+                BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.Datas[index];
+                m_BehaviourTreeWindowConfig.Datas[index].ListRect = rect;
 
                 if(m_LeftOperation == 1 && m_CurrSelect == index)
                     windowData.Name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width,15), windowData.Name);
@@ -87,7 +87,7 @@ namespace GameFrameWork.Editor
 
                 if (oldIndex != m_CurrSelect)
                 {
-                    SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
+                    SetRightWindowNode(m_BehaviourTreeWindowConfig.Datas[m_CurrSelect]);
                 }
 
                 m_LeftOperation = -1;
@@ -143,9 +143,9 @@ namespace GameFrameWork.Editor
             if (e.button == 1 && e.type == EventType.MouseUp)
             {
                 bool isClickItem = false;
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.WindowDatas.Count; i++)
+                for (int i = 0; i < m_BehaviourTreeWindowConfig.Datas.Count; i++)
                 {
-                    if (m_BehaviourTreeWindowConfig.WindowDatas[i].ListRect.Contains(e.mousePosition) && i == m_CurrSelect)
+                    if (m_BehaviourTreeWindowConfig.Datas[i].ListRect.Contains(e.mousePosition) && i == m_CurrSelect)
                     {
                         isClickItem = true;
                         ShowLeftMenu(0);
@@ -189,8 +189,8 @@ namespace GameFrameWork.Editor
                     DeleteRootWindowNode();
                     break;
                 case 3:
-                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.WindowDatas.Count + 1);
-                    m_BehaviourTreeWindowConfig.WindowDatas.Add(data);
+                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.Datas.Count + 1);
+                    m_BehaviourTreeWindowConfig.Datas.Add(data);
                     break;
                 default:
                     m_LeftOperation = operation;
@@ -200,8 +200,8 @@ namespace GameFrameWork.Editor
 
         private void RightViewGUI(UnityEngine.Event e)
         {
-            if (m_BehaviourTreeWindowConfig.WindowDatas == null) return;
-            if (m_BehaviourTreeWindowConfig.WindowDatas.Count < 1) return;
+            if (m_BehaviourTreeWindowConfig.Datas == null) return;
+            if (m_BehaviourTreeWindowConfig.Datas.Count < 1) return;
 
             PopMenu(e);
 
@@ -256,7 +256,7 @@ namespace GameFrameWork.Editor
                 }
                 else
                 {
-                    if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.WindowDatas.Count - 1) return;
+                    if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.Datas.Count - 1) return;
                     m_CurrWindowNode = GetFreeWindowNode(e.mousePosition);
                     m_CurrMousePosition = e.mousePosition;
                     if (m_CurrWindowNode != null)
@@ -357,9 +357,9 @@ namespace GameFrameWork.Editor
 
         private void DeleteRootWindowNode()
         {
-            m_BehaviourTreeWindowConfig.WindowDatas.RemoveAt(m_CurrSelect);
-            if (m_CurrSelect < m_BehaviourTreeWindowConfig.WindowDatas.Count)
-                SetRightWindowNode(m_BehaviourTreeWindowConfig.WindowDatas[m_CurrSelect]);
+            m_BehaviourTreeWindowConfig.Datas.RemoveAt(m_CurrSelect);
+            if (m_CurrSelect < m_BehaviourTreeWindowConfig.Datas.Count)
+                SetRightWindowNode(m_BehaviourTreeWindowConfig.Datas[m_CurrSelect]);
             else
                 SetRightWindowNode(null);
         }

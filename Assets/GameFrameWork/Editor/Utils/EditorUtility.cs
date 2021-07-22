@@ -31,7 +31,7 @@ namespace GameFrameWork.Editor
 
 		private static void CreateScriptableObject(Type type,string name, string ext, string dir = null)
         {
-			string directory = PathUtil.ConfigDataDefaultPath;
+			string directory = PathUtil.ConfigDataDefaultFullPath;
 			if (!string.IsNullOrEmpty(dir)) directory = dir;
 
 			string fileName = directory + name + ext;

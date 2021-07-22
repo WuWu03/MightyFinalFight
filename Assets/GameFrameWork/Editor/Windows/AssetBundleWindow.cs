@@ -59,7 +59,7 @@ namespace GameFrameWork.Editor
             }
 
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
-            for (int i = 0; i < m_AssetBundleConfig.Datas.Length; i++)
+            for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
             {
                 AssetBundleData data = new AssetBundleData()
                 {
@@ -102,7 +102,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            m_AssetBundleConfig.Datas = m_ListData.ToArray();
+            m_AssetBundleConfig.Datas = m_ListData;
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
             UnityEditor.EditorUtility.SetDirty(m_AssetBundleConfig);
@@ -114,7 +114,7 @@ namespace GameFrameWork.Editor
             m_ListPatternIndex.Clear();
             m_ListDataHasRemove.Clear();
             m_ListBundleExtendIndex.Clear();
-            m_AssetBundleConfig.Datas = m_ListData.ToArray();
+            m_AssetBundleConfig.Datas = m_ListData;
         }
 
         Vector2 scrollPosition = Vector2.zero;

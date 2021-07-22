@@ -1,5 +1,7 @@
-﻿using GameFrameWork;
+﻿using DragonBones;
+using GameFrameWork;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Sound;
 using UnityEngine;
 
 public class BaseEffect : BaseSceneObject
@@ -13,6 +15,18 @@ public class BaseEffect : BaseSceneObject
         set
         {
             m_PlayTime = value;
+        }
+    }
+
+    public float Speed
+    {
+        get
+        {
+            return m_Speed;
+        }
+        set
+        {
+            m_Speed = value;
         }
     }
 
@@ -55,6 +69,7 @@ public class BaseEffect : BaseSceneObject
 
         if (m_UAC != null)
         {
+            m_UAC.animation.timeScale = m_Speed;
             m_UAC.animation.Play();
         }
     }
@@ -63,6 +78,7 @@ public class BaseEffect : BaseSceneObject
     {
         base.Release();
         m_UAC.animation.Stop();
+        m_UAC.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_PlayTime = 0;
         m_Timer = -1;
         m_IsAutoRelease = false;
@@ -76,9 +92,11 @@ public class BaseEffect : BaseSceneObject
         base.OnResComplete(go, param);
         m_UAC = go.GetComponent<DragonBones.UnityArmatureComponent>();
         m_UAC.animation.Stop();
+        m_UAC.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         if (m_IsPlaying)
         {
+            m_UAC.animation.timeScale = m_Speed;
             m_UAC.animation.Play();
         }
     }
@@ -107,8 +125,14 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
+    protected virtual void SoundEvent(string type, EventObject eventObject)
+    {
+        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/" + eventObject.name);
+    }
+
     private float m_PlayTime = 0;
     private float m_Timer = -1;
+    private float m_Speed = 1f;
     private bool m_IsAutoRelease = false;
     private bool m_IsPlaying = false;
     private GameFrameWorkAction m_PlayEndCallback = null;

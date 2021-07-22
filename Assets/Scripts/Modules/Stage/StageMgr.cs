@@ -2,6 +2,7 @@
 using GameFrameWork.Camera;
 using GameFrameWork.Pool;
 using GameFrameWork.Resources;
+using GameFrameWork.Scene;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
 using GameFrameWork.Utility;
@@ -14,14 +15,7 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         get
         {
-            return m_StageIndex;
-        }
-    }
-    public int CurrID
-    {
-        get
-        {
-            return m_CurrID;
+            return m_CurrStageData.StageIndex;
         }
     }
 
@@ -29,40 +23,48 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         get
         {
-            return m_Width;
+            return m_CurrStageData.Width;
         }
     }
+
     public int Heigth
     {
         get
         {
-            return m_Height;
+            return m_CurrStageData.Height;
         }
     }
 
     protected override void OnAwake()
     {
-        if (m_MapRenderer == null)
-        {
-            m_MapRenderer = new GameObject("Map").GetOrAddComponent<SpriteRenderer>();
-            m_MapRenderer.transform.SetParent(transform, false);
-            Util.SetLayer(m_MapRenderer.gameObject, LayerMask.NameToLayer("Map"), true);
-        }
+
     }
 
     public void Enter(int id)
     {
-        if (m_CurrID == id) return;
-        m_CurrID = id;
+        if (m_CurrStageData != null && m_CurrStageData.ID == id)
+        {
+            return;
+        }
+
+        CameraMgr.Ins.EndFollow();
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
-        m_Width = m_CurrStageData.Width;
-        m_Height = m_CurrStageData.Height;
-        m_CurrAreaIndex = 0;
-        m_StageIndex = m_CurrStageData.StageIndex;
-        string resPath = ResDefine.TEX_PATH + m_CurrStageData.SceneName;
-        ResMgr.Ins.LoadAssetAsync(resPath, OnLoadComplete, true, typeof(Sprite));
+        SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
+        SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
     }
 
+    public bool CanMovePos(Vector2 pos)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPos(m_CurrStageData.MoveArea[i], pos))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public bool CanMovePosX(float posX)
     {
@@ -90,68 +92,51 @@ public class StageMgr : BaseMgr<StageMgr>
         return false;
     }
 
-    public bool CanMovePos2(Vector2 pos)
+    public Vector2 GetRandomPos(Vector2 currPos, bool isCorrect = true)
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            if (IsInAreaPos2(m_CurrStageData.MoveArea[i], pos))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return new Vector2(GetRandomPosX(currPos, isCorrect), GetRandomPosY(currPos, isCorrect));
     }
 
-    public Vector2 GetRandomPos2(Vector2 currPos,bool isCorrect = true)
+    public float GetRandomPosX(Vector2 currPos, bool isCorrect = true)
     {
-        return new Vector2(GetRandomX(currPos, isCorrect), GetRandomY(currPos, isCorrect));
+        return GetRandomPos(currPos, isCorrect, false);
     }
 
-    public float GetRandomX(Vector2 currPos, bool isCorrect = true)
+    public float GetRandomPosY(Vector2 currPos, bool isCorrect = true)
+    {
+        return GetRandomPos(currPos, isCorrect, true);
+    }
+
+    private float GetRandomPos(Vector2 currPos, bool isCorrect, bool isY)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
         {
             bool conditoin = false;
             if (isCorrect) conditoin = IsInAreaPosX(m_CurrStageData.MoveArea[i], currPos.x);
-            else conditoin = IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos);
+            else conditoin = IsInAreaPos(m_CurrStageData.MoveArea[i], currPos);
 
             if (conditoin)
             {
                 Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
-                float x = Random.Range(currPos.x - 1.1f, currPos.x + 1.1f);
-                x = Mathf.Clamp(x, bound.xMin, bound.xMax);
-                return x;
+                float min = isY ? bound.yMin : bound.xMin;
+                float max = isY ? bound.yMax : bound.xMax;
+                float ret = isY ? Random.Range(min / 100f + 0.1f, max / 100f - 0.1f) : Random.Range(currPos.x - 1.1f, currPos.x + 1.1f);
+                return isY ? ret : Mathf.Clamp(ret, min, max);
             }
         }
 
         return 0;
     }
 
-    public float GetRandomY(Vector2 currPos, bool isCorrect = true)
+    private bool IsInAreaPos(Rect area, Vector2 pos)
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            bool conditoin = false;
-            if (isCorrect) conditoin = IsInAreaPosX(m_CurrStageData.MoveArea[i], currPos.x);
-            else conditoin = IsInAreaPos2(m_CurrStageData.MoveArea[i], currPos);
-
-            if (conditoin)
-            {
-                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
-                float y = Random.Range(bound.yMin / 100f + 0.1f, bound.yMax / 100f - 0.1f);
-                return y;
-            }
-        }
-
-        return 0;
+        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
     }
 
-    private bool IsInAreaPosX(Area area,float posX)
+    private bool IsInAreaPosX(Rect area,float posX)
     {
-        Rect bound = GetBound(area);
-
         posX *= 100;
+        Rect bound = GetBound(area);
 
         if (posX >= bound.xMin && posX <= bound.xMax)
         {
@@ -161,11 +146,10 @@ public class StageMgr : BaseMgr<StageMgr>
         return false;
     }
 
-    private bool IsInAreaPosY(Area area, float posY)
+    private bool IsInAreaPosY(Rect area, float posY)
     {
-        Rect bound = GetBound(area);
-
         posY *= 100;
+        Rect bound = GetBound(area);
 
         if (posY >= bound.yMin && posY <= bound.yMax)
         {
@@ -175,69 +159,45 @@ public class StageMgr : BaseMgr<StageMgr>
         return false;
     }
 
-    private bool IsInAreaPos2(Area area, Vector2 pos)
+    private Rect GetBound(Rect area)
     {
-        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
+        Rect bound = Rect.zero;
+        bound.xMin = area.x;
+        bound.xMax = area.x + area.width;
+        bound.yMin = area.y - area.height;
+        bound.yMax = area.position.y;
+
+        return bound;
     }
 
-    private Rect GetBound(Area area)
+    private void LoadSceneSuccess(LoadSceneSuccessEventArgs t)
     {
-        m_AreaBound.width = area.Size.x;
-        m_AreaBound.height = area.Size.y;
-        m_AreaBound.xMin = area.Pos.x - area.Size.x / 2f;
-        m_AreaBound.xMax = area.Pos.x + area.Size.x / 2f;
-        m_AreaBound.yMin = area.Pos.y - area.Size.y / 2f;
-        m_AreaBound.yMax = area.Pos.y + area.Size.y / 2f;
+        AudioGroup[] group = new AudioGroup[m_CurrStageData.BGMs.Length];
 
-        return m_AreaBound;
-    }
+        for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
+        {
+            string clipName = m_CurrStageData.BGMs[i].ClipName;
+            bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
+            float volume = m_CurrStageData.BGMs[i].Volume;
+            float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
+            group[i] = AudioGroup.Create(ResDefine.AUDIO_CLIP_PATH, "BGM/" + clipName, isLoop, volume, lerpTime);
+        }
 
-    private void OnLoadComplete(string resPath, Object obj, object[] param)
-    {
-        Sprite sprite = obj as Sprite;
-        m_MapRenderer.sprite = sprite;
-
-        PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
-        CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
-        SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm2", true, 0.2f);
-
-
-        //SoundMgr.Ins.PlayBGMGroup(new SoundMgr.AudioGroup[2]
-        //{
-        //    new SoundMgr.AudioGroup()
-        //    {
-        //        Path = ResDefine.AUDIO_CLIP_PATH +"/BGM",
-        //        Name = "bgm01_Start",
-        //        IsLoop = false,
-        //    },
-        //    new SoundMgr.AudioGroup()
-        //    {
-        //        Path = ResDefine.AUDIO_CLIP_PATH +"/BGM",
-        //        Name = "bgm01_Loop",
-        //        IsLoop = true,
-        //    },
-        //});
+        SoundMgr.Ins.PlayBGMGroup(group);
 
         UIMgr.Ins.Open<MainPanel>();
+
         for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
         {
             TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
         }
 
+        PlayerMgr.Ins.InitPlayer();
+        PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         SceneEntityMgr.Ins.CreateSceneItemTest();
-        CameraMgr.Ins.EndFollow();
+        CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
+        CameraMgr.Ins.StartFollow();
     }
 
-
-
-    private int m_Width;
-    private int m_Height;
-    private int m_CurrID = 0;
-    private int m_CurrAreaIndex = 1;
-    private int m_StageIndex = 0;
-
-    private Rect m_AreaBound = Rect.zero;
-    private SpriteRenderer m_MapRenderer = null;
     private StageConfigData m_CurrStageData = null;
-
 }

@@ -12,7 +12,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_ListCurrEnemy = new List<BaseEnemy>();
     }
 
-
     public void CreateEnemy(int sourceID, int engityID, Vector2Int pos)
     {
         BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);

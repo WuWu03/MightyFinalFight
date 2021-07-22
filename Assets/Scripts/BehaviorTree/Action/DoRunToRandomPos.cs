@@ -14,7 +14,7 @@ public class DoRunToRandomPos : Action
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.Ins.GetVision();
-        m_RandomPos = StageMgr.Ins.GetRandomPos2(PlayerMgr.Ins.Player.Pos);
+        m_RandomPos = StageMgr.Ins.GetRandomPos(PlayerMgr.Ins.Player.Pos);
         m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + m_Owner.Owner.Bound.width / 2, visionRect.xMax - m_Owner.Owner.Bound.width / 2);
     }
 

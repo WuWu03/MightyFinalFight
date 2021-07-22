@@ -5,17 +5,28 @@ using UnityEngine;
 
 public class EffectMgr : BaseMgr<EffectMgr>
 {
-    public BaseEffect PlayEffect(string effectName, Vector3 pos, float playTime, GameFrameWorkAction playEndCallback = null)
+    public BaseEffect PlayEffect(string effectName, Vector3 pos, float playTime, float speed, GameFrameWorkAction playEndCallback = null)
     {
-        return PlayEffect(effectName, null, pos, Vector3.zero, true, true, playTime, playEndCallback);
+        return PlayEffect<BaseEffect>(effectName, pos, playTime, speed, playEndCallback);
     }
 
-    public BaseEffect PlayEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease = true, float playTime = -1, GameFrameWorkAction playEndCallback = null)
+    public BaseEffect PlayEffect<T>(string effectName, Vector3 pos, float playTime, float speed, GameFrameWorkAction playEndCallback = null) where T : BaseEffect
     {
-        BaseEffect effect = EntityMgr.Ins.GetEntity<BaseEffect>(effectName, parent);
+        return PlayEffect<T>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
+    }
+
+    public BaseEffect PlayEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease = true, float playTime = -1,float speed = 1f, GameFrameWorkAction playEndCallback = null)
+    {
+        return PlayEffect<BaseEffect>(effectName, parent, pos, angles, isAutoPlay, isAutoRelease, playTime, speed, playEndCallback);
+    }
+
+    public BaseEffect PlayEffect<T>(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease, float playTime, float speed, GameFrameWorkAction playEndCallback) where T : BaseEffect
+    {
+        BaseEffect effect = EntityMgr.Ins.GetEntity<T>(effectName, parent);
         effect.transform.localPosition = pos;
         effect.transform.localRotation = Quaternion.Euler(angles);
         effect.PlayTime = playTime;
+        effect.Speed = speed;
         effect.PlayEndCallback = playEndCallback;
         effect.IsAutoRelease = isAutoRelease;
         effect.SetRes(PathUtil.FormatPath(ResDefine.EFFECT_PATH, effectName));

@@ -32,7 +32,7 @@ public class RoleSelectPanel : BasePanel
 		m_Component.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
 		m_Component.RoleContentGroupView.OnItemSelect = OnItemSelect;
 
-		m_Component.RoleContentGroupView.Update(StaticConfig.HeroConfig.Datas.Length);
+		m_Component.RoleContentGroupView.Update(StaticConfig.HeroConfig.Datas.Count);
 		m_Component.RoleContentGroupView.SelectItem(0);
 	}
 
@@ -44,12 +44,12 @@ public class RoleSelectPanel : BasePanel
 			if (axis.y > 0)
 			{
 				m_CurrSelectIndex++;
-				if (m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Length) m_CurrSelectIndex = 0;
+				if (m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Count) m_CurrSelectIndex = 0;
 			}
 			else
 			{
 				m_CurrSelectIndex--;
-				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Length - 1;
+				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.HeroConfig.Datas.Count - 1;
 			}
 
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelect");
@@ -59,7 +59,7 @@ public class RoleSelectPanel : BasePanel
 		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
-			PlayerMgr.Ins.InitPlayer(StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID);
+			PlayerMgr.Ins.SelectId = StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID;
 			StageMgr.Ins.Enter(1001);
 			InnerClose();
 		}

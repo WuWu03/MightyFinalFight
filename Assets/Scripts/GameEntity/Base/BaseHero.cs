@@ -173,7 +173,6 @@ public class BaseHero : BaseRole
         if (HasCatch())
             ResetCatch();
         base.OnJumpMsg(data);
-        OnGroundEvent.AddListener(OnGround);
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -315,7 +314,7 @@ public class BaseHero : BaseRole
         }
     }
 
-    private void OnGround()
+    protected override void OnGround()
     {
         m_IsOnGround = !IsAnyState(typeof(RoleHurt), typeof(RoleSwoon));
     }
