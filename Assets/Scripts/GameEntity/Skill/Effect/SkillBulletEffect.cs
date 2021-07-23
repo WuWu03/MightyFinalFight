@@ -36,6 +36,7 @@ public class SkillBulletEffect : SkillBaseEffect
             bulletData.TriggerSize = m_SkillEffect.Bullets[i].TriggerSize;
             bulletData.IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
             bulletData.SkillExp = m_SkillData.EXP;
+            bulletData.DamageMulity = m_SkillEffect.DamageMulity;
             bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);

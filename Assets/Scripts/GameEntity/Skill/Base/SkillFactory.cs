@@ -141,6 +141,23 @@ public class SkillFactory
         return ret;
     }
 
+    public static int CacDamage(int attack, int defense, int critical, float mulity)
+    {
+        int a = 2;
+        int b = 1;
+        float criMulity = 1.5f;
+        float fluctuate = Random.Range(0.8f, 1.1f);
+        bool isCri = Random.Range(1, 101) <= critical;
+        float damage = Mathf.Max(a * attack - b * defense, 0) * fluctuate * mulity;
+
+        if (isCri)
+        {
+            damage *= criMulity;
+        }
+
+        return Mathf.FloorToInt(damage);
+    }
+
     private static Regex m_RegexHPMoreThan = new Regex(@"(HPMoreThan:)([0-9]+)");
     private static Regex m_RegexHPLessThan = new Regex(@"(HPLessThan:)([0-9]+)");
 }

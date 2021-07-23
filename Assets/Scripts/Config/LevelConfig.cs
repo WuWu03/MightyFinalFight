@@ -15,6 +15,12 @@ public class LevelConfigData : BaseConfigData
     [Serializable]
     public class LevelInfo
     {
+        public float AttackSpeed;
+        public int AttackValue;
+        public int DefenseValue;
+        [Range(0, 100)] public int CriticalValue;
+        public float MoveSpeed;
+        public Vector2 JumpForce;
         public int Health;
         public float HPBarWidth;
         public int EXP;

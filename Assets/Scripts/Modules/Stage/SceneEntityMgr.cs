@@ -12,9 +12,9 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_ListCurrEnemy = new List<BaseEnemy>();
     }
 
-    public void CreateEnemy(int sourceID, int engityID, Vector2Int pos)
+    public void CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, Vector2Int pos)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, hp, attack, defense, pos);
         enemy.OnDead += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
     }
@@ -33,18 +33,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     public bool IsAllEnemyDead()
     {
         return m_ListCurrEnemy.Count <= 0;
-    }
-
-    public void CreateSceneItemTest()
-    {
-        //SceneItemData data = StaticConfig.SceneItemConfig.GetData(1002);
-        //StageFactory.CreateSceneItem(data, new Vector2Int(-320, -60));
-
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    data = StaticConfig.SceneItemConfig.GetData(1004 + i);
-        //    StageFactory.CreateSceneItem(data, new Vector2Int(-300 + i * 20, -60));
-        //}
     }
 
     public void CreateSceneItem(int id, Vector2Int pos)

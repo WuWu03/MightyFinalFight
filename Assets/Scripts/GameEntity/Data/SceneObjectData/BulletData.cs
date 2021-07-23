@@ -19,7 +19,7 @@ public class BulletData : BaseSceneObjectData
     public Vector2 TriggerSize { get; set; }
     public bool IsPenatrate { get; set; }//是否穿透
     public int SkillExp { get; set; }
-
+    public float DamageMulity { get; set; }
     public override void Clear()
     {
         base.Clear();

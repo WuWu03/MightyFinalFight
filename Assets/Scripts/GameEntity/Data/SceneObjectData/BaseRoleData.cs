@@ -5,8 +5,9 @@ using UnityEngine;
 public class BaseRoleData : BaseSceneObjectData
 {
     public float AttackSpeed { get; set; }
-    public float AttackValue { get; set; }
-    public float Defense { get; set; }
+    public int AttackValue { get; set; }
+    public int DefenseValue { get; set; }
+    public int CriticalValue { get; set; }
     public float MoveSpeed { get; set; }
     public Vector2 JumpForce { get; set; }
 
@@ -15,7 +16,7 @@ public class BaseRoleData : BaseSceneObjectData
         base.Clear();
         AttackSpeed = 0;
         AttackValue = 0;
-        Defense = 0;
+        DefenseValue = 0;
         MoveSpeed = 0;
         JumpForce = Vector2.zero;
     }

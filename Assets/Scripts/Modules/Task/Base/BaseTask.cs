@@ -69,7 +69,7 @@ public abstract class BaseTask
             if (isDistance)
             {
                 PlayerMgr.Ins.CanContrl = true;
-                PlayerMgr.Ins.SetSpeedZero(false);
+                PlayerMgr.Ins.RevertSpeed();
             }
             return isDistance;
         }

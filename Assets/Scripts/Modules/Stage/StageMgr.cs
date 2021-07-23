@@ -199,7 +199,6 @@ public class StageMgr : BaseMgr<StageMgr>
 
         PlayerMgr.Ins.InitPlayer();
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
-        // SceneEntityMgr.Ins.CreateSceneItemTest();
         CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
         CameraMgr.Ins.StartFollow();
 

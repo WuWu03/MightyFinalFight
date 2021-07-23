@@ -63,13 +63,18 @@ public class Bullet : BaseSceneItem
 
         if (isInRange && canBeHit)
         {
+            int defenseValue = 0;
+            if(hit is BaseRole)
+            {
+                defenseValue = (hit as BaseRole).DefenseValue;
+            }
             HurtData hurtData = HurtData.Create();
             hurtData.Id = m_BulletData.Id;
             hurtData.IsSwoon = m_BulletData.IsSmoon;
             hurtData.AttackerDir = m_Owner.Dir;
             hurtData.AttackerPos = m_Owner.Pos;
             hurtData.AttackForce = new Vector2(m_BulletData.AddTargetForce.x * m_Owner.Dir, m_BulletData.AddTargetForce.y);
-            hurtData.AttackValue = 1;
+            hurtData.AttackValue = SkillFactory.CacDamage(m_Owner.AttackValue, defenseValue, m_Owner.CriticalValue, m_BulletData.DamageMulity);
             hurtData.CanBeDefense = false;
             hurtData.SkillExp = m_BulletData.SkillExp;
             hit.OnHurtMsg(hurtData);

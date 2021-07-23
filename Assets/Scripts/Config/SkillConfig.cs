@@ -107,6 +107,7 @@ public class SkillConfigData : BaseConfigData
         public float AddSelfDrag;//自身的空气阻力
         public float MoveDistance;//施加力后的移动距离
         public float Gravity;//自身重力大小
+        public float DamageMulity;//伤害倍率
         public bool IsSmoon;//是否击昏
         public bool IsShakeCamera;//击中敌人是否震屏
         public bool IsOnGroundHurt;//是否落地才触发伤害

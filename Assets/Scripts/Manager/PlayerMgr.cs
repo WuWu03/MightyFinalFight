@@ -104,8 +104,9 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         roleData.Health = m_LevelData.Health;
         roleData.MaxHealth = m_LevelData.Health;
         roleData.AttackSpeed = m_HeroData.AttackSpeed;
-        roleData.AttackValue = 1;
-        roleData.Defense = 1;
+        roleData.AttackValue = m_LevelData.AttackValue;
+        roleData.DefenseValue = m_LevelData.DefenseValue;
+        roleData.CriticalValue = m_LevelData.CriticalValue;
         roleData.JumpForce = m_HeroData.JumpForce;
         roleData.MoveSpeed = m_HeroData.MoveSpeed;
 
@@ -191,17 +192,18 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     public void SetSpeedZero(bool isZero)
     {
-        if (isZero)
+        if (m_CurrSpeed == 0)
         {
-            if(m_CurrSpeed == 0)
-                m_CurrSpeed = m_Player.MoveSpeed;
-            m_Player.MoveSpeed = 0f;
+            m_CurrSpeed = m_Player.MoveSpeed;
         }
-        else
-        {
-            m_Player.MoveSpeed = m_CurrSpeed;
-            m_CurrSpeed = 0f;        
-        }
+
+        m_Player.MoveSpeed = 0f;
+    }
+
+    public void RevertSpeed()
+    {
+        m_Player.MoveSpeed = m_CurrSpeed;
+        m_CurrSpeed = 0f;
     }
 
     private bool AfterTrigger()

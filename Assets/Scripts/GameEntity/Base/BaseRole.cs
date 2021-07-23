@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
-    public float AttackValue
+    public int AttackValue
     {
         get
         {
@@ -20,6 +20,30 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public int DefenseValue
+    {
+        get
+        {
+            return m_DefenseValue;
+        }
+        set
+        {
+            m_DefenseValue = value;
+        }
+    }
+
+    public int CriticalValue
+    {
+        get
+        {
+            return m_CriticalValue;
+        }
+        set
+        {
+            m_CriticalValue = value;
+        }
+    }
+
     public float AttackSpeed
     {
         get
@@ -28,7 +52,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
         set
         {
-            m_AttackValue = value;
+            m_AttackSpeed = value;
         }
     }
 
@@ -44,17 +68,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public float Defense
-    {
-        get
-        {
-            return m_Defense;
-        }
-        set
-        {
-            m_Defense = value;
-        }
-    }
+
 
     public virtual bool CanBeHit
     {
@@ -182,9 +196,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         base.SetData(data);
         BaseRoleData baseRoleData = data as BaseRoleData;
-        m_AttackSpeed = baseRoleData.AttackSpeed;
         m_AttackValue = baseRoleData.AttackValue;
-        m_Defense = baseRoleData.Defense;
+        m_DefenseValue = baseRoleData.DefenseValue;
+        m_CriticalValue = baseRoleData.CriticalValue;
+        m_AttackSpeed = baseRoleData.AttackSpeed;   
         m_JumpForce = baseRoleData.JumpForce;
         m_MoveSpeed = baseRoleData.MoveSpeed;
     }
@@ -508,19 +523,23 @@ public class BaseRole : BaseAvatar, ICanBeHit
         });
     }
 
-    protected bool m_IsSmoon = false;
+
+    protected int m_AttackValue = 0;
+    protected int m_DefenseValue = 0;
+    protected int m_CriticalValue = 0;
     protected float m_AttackSpeed = 0.8f;
-    protected float m_AttackValue = 0;
-    protected float m_Defense = 0;
+    protected Vector2 m_JumpForce = Vector2.zero;
+
+    protected bool m_IsSmoon = false;
     protected bool m_IsJumpAttack = false;
     protected bool m_IsDropTrag = false;
     protected bool m_IsBeCatch = false;
     protected bool m_IsBeThrow = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
-    protected Vector2 m_JumpForce = Vector2.zero;
 
-    private float m_DropGourndTime = 0f;
     private bool m_IsDropGround = false;
+    private float m_DropGourndTime = 0f;
     private HurtData m_OnGroundHurtData = null;
     private TrapData m_TrapData = null;
+
 }

@@ -53,18 +53,18 @@ public static class SceneEntityFactory
         sceneItem.SetMapPos(pos);
     }
 
-    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, Vector2Int pos)
+    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, int hp, int attack, int defense, Vector2Int pos)
     {
         BaseEnemy enemy = GetEnemyEntity(enemyConfigData);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
         BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
 
         enemyData.Id = engityID;
-        enemyData.Health = 1;
-        enemyData.MaxHealth = 20;
+        enemyData.Health = hp;
+        enemyData.MaxHealth = hp;
         enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
-        enemyData.AttackValue = 1;
-        enemyData.Defense = 1;
+        enemyData.AttackValue = attack;
+        enemyData.DefenseValue = defense;
         enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
         enemyData.HurtAnim = enemyConfigData.HurtEnemy;
 
@@ -86,12 +86,6 @@ public static class SceneEntityFactory
 
     private static BaseEnemy GetEnemyEntity(EnemyConfigData enemyData)
     {
-        BaseEnemy enemy = null;
-        if(enemyData.Name == "Axl")
-            enemy = EntityMgr.Ins.GetEntity<DefenseEnemy>(enemyData.Name);
-        else
-            enemy = EntityMgr.Ins.GetEntity<BaseEnemy>(enemyData.Name);
-
-        return enemy;
+        return EntityMgr.Ins.GetEntity<BaseEnemy>(enemyData.Name);
     }
 }
