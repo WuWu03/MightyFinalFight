@@ -93,7 +93,7 @@ namespace GameFrameWork.Editor
                 GUI.color = Color.green;
                 Handles.BeginGUI();
 
-                if (GUI.Button(new Rect(0f, (float)(Screen.height - 70), 70f, 30f), "生成预制体"))
+                if (GUI.Button(new Rect((float)(Screen.width - 330), (float)(Screen.height - 70), 110f, 30f), "生成预制体"))
                 {
                     string exportPath = ExportUIPrefab(true);
                     if (string.IsNullOrEmpty(exportPath)) return;

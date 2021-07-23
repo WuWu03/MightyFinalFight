@@ -8,7 +8,6 @@
 		public abstract void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime);
 		public abstract void OnExit(BaseFsm fsm, bool isShutdown);
 		public abstract void OnDestroy(BaseFsm fsm);
-		public abstract void SetParam(object[] args);
 		protected void ChangeState<T>(BaseFsm fsm,bool isForce = false) where T : BaseFsmState
 		{
 			if(fsm != null)

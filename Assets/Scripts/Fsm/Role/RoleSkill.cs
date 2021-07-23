@@ -2,6 +2,23 @@
 
 public class RoleSkill : BaseFsmState
 {
+    public float Dir
+    {
+        set
+        {
+            m_Dir = value;
+        }
+    }
+
+
+    public bool CanChangeDir
+    {
+        set
+        {
+            m_CanChangeDir = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -28,12 +45,6 @@ public class RoleSkill : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
         m_Owner = null;
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_CanChangeDir = (bool)args[0];
-        m_Dir = (float)args[1];
     }
 
     private bool m_CanChangeDir = false;

@@ -2,6 +2,14 @@
 
 public class RoleHurt : BaseFsmState
 {
+    public string HurtAnim
+    {
+        set
+        {
+            m_HurtAnim = value;   
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -35,11 +43,6 @@ public class RoleHurt : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
         m_Owner = null;
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_HurtAnim = args[0].ToString();
     }
 
     private string m_HurtAnim;

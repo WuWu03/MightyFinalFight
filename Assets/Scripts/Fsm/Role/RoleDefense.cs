@@ -10,14 +10,18 @@ public class RoleDefense : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Timer = 0f;
+        m_Timer = -1f;
         m_Owner.PlayAnimation(AnimName.Defense, 0, 1);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        m_Timer += deltaTime;
-        if (m_Timer > 0.5f)
+        if(m_Timer <= 0f)
+        {
+            m_Timer = Time.time;
+        }
+
+        if (Time.time - m_Timer > 0.5f)
         {
             ChangeState<RoleIdle>(fsm);
         }
@@ -25,7 +29,7 @@ public class RoleDefense : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-        m_Timer = 0f;
+        m_Timer = -1f;
         m_Owner.StopAnimation(AnimName.Defense);
     }
 
@@ -34,11 +38,6 @@ public class RoleDefense : BaseFsmState
         m_Owner = null;
     }
 
-    public override void SetParam(object[] args)
-    {
-
-    }
-
-    private float m_Timer = 0f;
+    private float m_Timer = -1f;
     private BaseRole m_Owner = null;
 }

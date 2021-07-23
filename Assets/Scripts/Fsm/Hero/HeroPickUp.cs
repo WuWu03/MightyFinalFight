@@ -35,10 +35,5 @@ public class HeroPickUp : BaseFsmState
 
     }
 
-    public override void SetParam(object[] args)
-    {
-
-    }
-
     private BaseRole m_Owner = null;
 }

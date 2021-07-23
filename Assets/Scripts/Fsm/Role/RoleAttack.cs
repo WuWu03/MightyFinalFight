@@ -3,6 +3,23 @@ using UnityEngine;
 
 public class RoleAttack : BaseFsmState
 {
+    public float Dir
+    {
+        set
+        {
+            m_Dir = value;
+        }
+    }
+
+
+    public bool CanChangeDir
+    {
+        set
+        {
+            m_CanChangeDir = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -22,7 +39,7 @@ public class RoleAttack : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-
+        m_CanChangeDir = false;
     }
 
     public override void OnDestroy(BaseFsm fsm)
@@ -30,10 +47,9 @@ public class RoleAttack : BaseFsmState
 
     }
 
-    public override void SetParam(object[] args)
+    public void SetCanChangeDir(bool value)
     {
-        m_CanChangeDir = (bool)args[0];
-        m_Dir = (float)args[1];
+        m_CanChangeDir = value;
     }
 
     private bool m_CanChangeDir;

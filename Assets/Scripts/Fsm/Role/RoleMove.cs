@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class RoleMove : BaseFsmState
 {
+    public bool CanChangeDir
+    {
+        set
+        {
+            m_CanChangeDir = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -43,10 +51,6 @@ public class RoleMove : BaseFsmState
 
     }
 
-    public override void SetParam(object[] args)
-    {
-        m_CanChangeDir = (bool)args[0];
-    }
 
     private bool m_CanChangeDir = false;
     private BaseRole m_Owner = null;

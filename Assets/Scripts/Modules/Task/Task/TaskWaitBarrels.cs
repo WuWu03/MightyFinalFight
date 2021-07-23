@@ -12,7 +12,7 @@ public class TaskWaitBarrels : BaseTask
 
     public override void Enter()
     {
-       
+        base.Enter();
     }
 
     public override void Update()

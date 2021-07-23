@@ -94,9 +94,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         SubHealth(data.AttackValue);
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnHit");
+
         if (IsDead)
         {
-            SetStateParam<BarrelDead>(data.AttackerDir);
+            GetState<BarrelDead>().AttackerDir = data.AttackerDir;
             ChangeState<BarrelDead>();
             SceneEntityMgr.Ins.CreateSceneItem(m_BarrelData.ItemId, m_MapPos);
         }
@@ -213,9 +214,9 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_FsmMachine.ChangeState<T>();
     }
 
-    private void SetStateParam<T>(params object[] args) where T : BaseFsmState
+    private T GetState<T>() where T : BaseFsmState
     {
-        m_FsmMachine.GetState<T>().SetParam(args);
+        return m_FsmMachine.GetState<T>();
     }
 
     private FsmMachine m_FsmMachine = null;

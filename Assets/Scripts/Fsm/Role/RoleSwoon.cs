@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class RoleSwoon : BaseFsmState
 {
+    public Vector2 Force
+    {
+        set
+        {
+            m_Force = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -56,11 +64,6 @@ public class RoleSwoon : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
         m_Owner = null;
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_Force = (Vector2)args[0];
     }
 
     private Vector2 m_Force = Vector2.zero;

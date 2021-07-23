@@ -1,4 +1,5 @@
 ﻿using GameFrameWork.Resources;
+using GameFrameWork.Utility;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +8,30 @@ namespace GameFrameWork.Pool
 {
     public abstract class ResPool<T, P> : BaseMgr<P> where T : UnityEngine.Object where P : ResPool<T, P>, new()
     {
+        class LoadRequest
+        {
+            public LoadRequest(GameFrameWorkAction<T, object[]> callback, object[] args)
+            {
+                m_Callback = callback;
+                m_Args = args;
+            }
+
+            public void Call(T go)
+            {
+                m_Callback?.Invoke(go, m_Args);
+            }
+
+            private GameFrameWorkAction<T, object[]> m_Callback;
+            private object[] m_Args;
+        }
+
         private void Awake()
         {
             m_PoolRoot = new GameObject("Res" + GetType().Name).transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
             m_DicPool = new Dictionary<string, Queue<T>>();
-            m_DicLoadCallback = new Dictionary<string, List<GameFrameWorkAction<T, object[]>>>();
+            m_DicLoadCallback = new Dictionary<string, List<LoadRequest>>();
         }
 
         public virtual void Get(string resPath, GameFrameWorkAction<T, object[]> call, params object[] args)
@@ -33,16 +51,20 @@ namespace GameFrameWork.Pool
                 return;
             }
 
-            List<GameFrameWorkAction<T, object[]>> loadList = null;
+            List<LoadRequest> listLoadRequest = null;
+            LoadRequest request = new LoadRequest(call, args);
 
-            if (!m_DicLoadCallback.TryGetValue(resPath, out loadList))
+            if (!m_DicLoadCallback.TryGetValue(resPath, out listLoadRequest))
             {
-                loadList = new List<GameFrameWorkAction<T, object[]>>();
-                m_DicLoadCallback.Add(resPath, loadList);
+                listLoadRequest = new List<LoadRequest>();
+                listLoadRequest.Add(request);
+                m_DicLoadCallback.Add(resPath, listLoadRequest);
+                ResMgr.Ins.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
             }
-
-            loadList.Add(call);       
-            ResMgr.Ins.LoadAssetAsync(resPath, OnLoaded, true, typeof(T), args);
+            else
+            {
+                listLoadRequest.Add(request);
+            }
         }
 
         public virtual void Put(string resPath, T go)
@@ -64,18 +86,18 @@ namespace GameFrameWork.Pool
 
         private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
         {
-            List<GameFrameWorkAction<T, object[]>> loadListCurr = null;
+            List<LoadRequest> listLoadRequest = null;
 
-            if (!m_DicLoadCallback.TryGetValue(resPath, out loadListCurr))
+            if (!m_DicLoadCallback.TryGetValue(resPath, out listLoadRequest))
             {
-                Log.GameFrameworkLog.LogError("Resource load complete,but the callback is invalid.");
+                Log.GameFrameworkLog.LogError(TextUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));
                 return;
             }
 
-            for (int i = 0; i < loadListCurr.Count; i++)
+            for (int i = 0; i < listLoadRequest.Count; i++)
             {
                 T go = m_NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
-                loadListCurr[i](go, args);
+                listLoadRequest[i].Call(go);
             }
 
             m_DicLoadCallback.Remove(resPath);
@@ -107,6 +129,6 @@ namespace GameFrameWork.Pool
         protected abstract bool m_NeedInstantiate { get; }
         protected Transform m_PoolRoot = null;
         private Dictionary<string, Queue<T>> m_DicPool = null;
-        private Dictionary<string, List<GameFrameWorkAction<T, object[]>>> m_DicLoadCallback = null;
+        private Dictionary<string, List<LoadRequest>> m_DicLoadCallback = null;
     }
 }

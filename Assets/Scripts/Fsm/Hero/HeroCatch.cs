@@ -27,10 +27,5 @@ public class HeroCatch : BaseFsmState
         m_Owner.ActorAnimator.animation.Stop(AnimName.Catch);
     }
 
-    public override void SetParam(object[] args)
-    {
-
-    }
-
     private BaseHero m_Owner = null;
 }

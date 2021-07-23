@@ -118,7 +118,7 @@ MonoBehaviour:
     ConditionType: 1
     Position:
       PosType: 2
-      Pos: {x: 455, y: -34}
+      Pos: {x: 455, y: -35}
     KillIDs: 
     BarrelsCount: 0
     KillAll: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
     TriggerType: 5
     Targets: []
     TriggerStopCamera: 1
-    ExitStartCamera: 0
+    ExitStartCamera: 1
     MapID: 0
     TalkID: 0
     PrevID: 0

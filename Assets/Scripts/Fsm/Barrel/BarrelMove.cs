@@ -31,10 +31,5 @@ public class BarrelMove : BaseFsmState
 
     }
 
-    public override void SetParam(object[] args)
-    {
-
-    }
-
     private Barrel m_Owner = null;
 }

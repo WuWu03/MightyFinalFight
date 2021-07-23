@@ -43,11 +43,16 @@ MonoBehaviour:
     StageIndex: 2
     Width: 1016
     Height: 152
-    InitPos: {x: -492, y: -20}
+    InitPos: {x: -491, y: -29}
     SceneObjs: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MoveArea:
+    - serializedVersion: 2
+      x: -508
+      y: -15
+      width: 850
+      height: 44
   - ID: 0
     Name: 
     SceneName: 

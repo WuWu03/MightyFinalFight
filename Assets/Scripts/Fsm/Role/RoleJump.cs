@@ -3,6 +3,23 @@ using UnityEngine;
 
 public class RoleJump : BaseFsmState
 {
+    public float Dir
+    {
+        set
+        {
+            m_Dir = value;
+        }
+    }
+
+
+    public bool CanChangeDir
+    {
+        set
+        {
+            m_CanChangeDir = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -52,12 +69,6 @@ public class RoleJump : BaseFsmState
     {
         if (!m_Owner.IsAnyState(typeof(RoleAttack)))
             m_Owner.PlayAnimation(AnimName.JumpDown);
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_CanChangeDir = (bool)args[0];
-        m_Dir = (float)args[1];
     }
 
     private float m_Dir = 0;

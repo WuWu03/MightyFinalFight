@@ -9,7 +9,7 @@ public class EditorMgr : MonoBehaviour
     [MenuItem("Tools/CharacterTriggerEditor")]
     public static void OpenCharacterTriggerEditorWindow()
     {
-        EditorWindow.GetWindow<CharacterTriggerEditor>(false, "CharacterTriggerEditor", false).Show();
+        EditorWindow.GetWindow<CharacterTriggerEditorWindow>(false, "CharacterTriggerEditor", false).Show();
     }
 
     [MenuItem("Tools/MapEditor")]

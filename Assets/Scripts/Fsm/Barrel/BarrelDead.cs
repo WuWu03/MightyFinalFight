@@ -3,6 +3,14 @@ using UnityEngine;
 
 public class BarrelDead : BaseFsmState
 {
+    public float AttackerDir
+    {
+        set
+        {
+            m_AttackerDir = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as Barrel;
@@ -34,11 +42,6 @@ public class BarrelDead : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
         m_Owner = null;
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_AttackerDir = (float)args[0];
     }
 
     private float m_AttackerDir = 0f;

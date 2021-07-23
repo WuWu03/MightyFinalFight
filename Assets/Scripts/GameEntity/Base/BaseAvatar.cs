@@ -179,11 +179,6 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.ChangeState<T>(isForce);
     }
 
-    protected void SetStateParam<T>(params object[] args) where T : BaseFsmState
-    {
-        m_FsmMachine.GetState<T>().SetParam(args);
-    }
-
     protected void ChangeDefaultState()
     {
         m_FsmMachine.ChangeDefaultState();

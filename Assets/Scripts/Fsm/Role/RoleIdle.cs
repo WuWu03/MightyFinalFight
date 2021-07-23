@@ -41,10 +41,5 @@ public class RoleIdle : BaseFsmState
         m_Owner = null;
     }
 
-    public override void SetParam(object[] args)
-    {
-
-    }
-
     private BaseRole m_Owner = null;
 }

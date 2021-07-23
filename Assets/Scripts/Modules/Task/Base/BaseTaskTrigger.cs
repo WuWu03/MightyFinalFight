@@ -18,6 +18,11 @@ public abstract class BaseTaskTrigger : ITaskTrigger
         m_TaskData = data;
     }
 
+    public virtual void Enter()
+    {
+        m_IsComplete = false;
+    }
+
     public virtual void Trigger()
     {
         if(m_TaskData.TriggerStopCamera)

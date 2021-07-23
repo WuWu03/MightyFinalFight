@@ -234,7 +234,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
         }
 
-        SetStateParam<RoleAttack>(data.CanChangeDir, data.Dir);
+        GetState<RoleAttack>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleAttack>();
         PlayAnimation(data.AnimName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
@@ -242,7 +242,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnSkillMsg(SkillConfigData data)
     {
         if (data == null) return;
-        SetStateParam<RoleSkill>(data.CanChangeDir, m_Dir);
+        GetState<RoleSkill>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleSkill>();
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
     }
@@ -253,19 +253,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleJump)))
         {
-            SetStateParam<RoleJump>(data.CanChangeDir, data.Dir.x);
+            GetState<RoleJump>().Dir = data.Dir.x;
             return;
         }
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            SetStateParam<RoleAttack>(data.CanChangeDir, data.Dir.x);
+            GetState<RoleAttack>().Dir = data.Dir.x;
             return;
         }
 
         if (IsAnyState(typeof(RoleSkill)))
         {
-            SetStateParam<RoleSkill>(data.CanChangeDir, data.Dir.x);
+            GetState<RoleSkill>().Dir = data.Dir.x;
             return;
         }
 
@@ -277,7 +277,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         m_MoveDir = data.Dir;
         m_CurrCtrl.ExitSkill();
-        SetStateParam<RoleMove>(data.CanChangeDir);
+        GetState<RoleMove>().CanChangeDir = data.CanChangeDir;
         ChangeState<RoleMove>();
     }
 
@@ -285,7 +285,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         m_CurrCtrl.ExitSkill();
-        SetStateParam<RoleJump>(data.CanChangeDir, data.Dir.x);
+        RoleJump roleJump = GetState<RoleJump>();
+        roleJump.CanChangeDir = data.CanChangeDir;
+        roleJump.Dir = data.Dir.x;
         ChangeState<RoleJump>();
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultJump);
     }
@@ -304,12 +306,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_IsSmoon)
         {
-            SetStateParam<RoleSwoon>(data.AttackForce);
+            GetState<RoleSwoon>().Force = data.AttackForce;
             ChangeState<RoleSwoon>();
         }
         else
         {
-            SetStateParam<RoleHurt>(data.HurtAnim);
+            GetState<RoleHurt>().HurtAnim = data.HurtAnim;
             ChangeState<RoleHurt>();
         }
 
@@ -451,7 +453,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 SubHealth(m_TrapData.AttackValue);
                 if (m_Health <= 0)
                 {
-                    SetStateParam<RoleDead>(m_TrapData.Pos);
+                    GetState<RoleDead>().ReBirthPos = m_TrapData.Pos;
                     ChangeState<RoleDead>();
                 }
                 else

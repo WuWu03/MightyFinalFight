@@ -14,6 +14,7 @@ public class TaskAutoMoveToPos : BaseTask
   
     public override void Enter()
     {
+        base.Enter();
         PlayerMgr.Ins.CanContrl = false;
         m_XArrived = false;
         m_YArrived = false;
@@ -24,23 +25,23 @@ public class TaskAutoMoveToPos : BaseTask
         base.Update();
         Vector2 pos = PlayerMgr.Ins.Player.Pos;
 
-        m_YArrived = Mathf.Abs(m_TaskData.Position.Pos.y / 100 - pos.y) > 0.05f;
-
         if (!m_YArrived)
         {
+            float yOffest = (float)m_TaskData.Position.Pos.y / 100 - pos.y;
+            m_YArrived = Mathf.Abs(yOffest) <= 0.05f;
             MoveData data = MoveData.Create();
-            data.Dir = (Vector2.up * (m_TaskData.Position.Pos.y / 100 - pos.y)).normalized;
+            data.Dir = (Vector2.up * yOffest).normalized;
             PlayerMgr.Ins.Player.OnMoveMsg(data);
             ReferencePool.Release(data);
             return;
         }
 
-        m_XArrived = Mathf.Abs(m_TaskData.Position.Pos.x / 100 - pos.x) <= 0.05f;
-
         if (!m_XArrived)
         {
+            float xOffest = (float)m_TaskData.Position.Pos.x / 100 - pos.x;
+            m_XArrived = Mathf.Abs(xOffest) <= 0.05f;
             MoveData data = MoveData.Create();
-            data.Dir = (Vector2.right * (m_TaskData.Position.Pos.x / 100 - pos.x)).normalized;
+            data.Dir = (Vector2.right * xOffest).normalized;
             PlayerMgr.Ins.Player.OnMoveMsg(data);
             ReferencePool.Release(data);
             return;

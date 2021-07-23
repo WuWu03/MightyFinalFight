@@ -3,6 +3,14 @@ using GameFrameWork.Fsm;
 using UnityEngine;
 public class RoleDead : BaseFsmState
 {
+    public Vector2 ReBirthPos
+    {
+        set
+        {
+            m_ReBirthPos = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -38,11 +46,6 @@ public class RoleDead : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
 
-    }
-
-    public override void SetParam(object[] args)
-    {
-        m_ReBirthPos = (Vector2)args[0];
     }
 
     private Vector2 m_ReBirthPos = Vector2.zero;

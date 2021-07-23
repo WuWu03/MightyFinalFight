@@ -30,15 +30,22 @@ public abstract class BaseTask
 
     public virtual void Enter()
     {
-
+        if (m_Trigger != null)
+        {
+            m_Trigger.Enter();
+        }
     }
+
     public virtual void Update()
     {
         if (m_Trigger != null && m_Trigger.IsComplete)
+        {
             m_IsComplete = true;
+        }
     }
 
     public abstract bool CheckCondition();
+
     public virtual void Trigger()
     {
         if (!m_IsComplete)
