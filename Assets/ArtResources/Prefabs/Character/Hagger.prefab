@@ -1,0 +1,242 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1874959562291569875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2911353788478842045}
+  - component: {fileID: 5403221371030554181}
+  - component: {fileID: 1063800090604117218}
+  m_Layer: 0
+  m_Name: slot1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2911353788478842045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874959562291569875}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0555, y: 0.174, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6067007095886896267}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &5403221371030554181
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874959562291569875}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3bc177aee5ca1364d873adc0d998a789, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1063800090604117218
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874959562291569875}
+  m_Mesh: {fileID: 0}
+--- !u!1 &5721612530074531352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6067007095886896267}
+  - component: {fileID: 4975562521722516879}
+  - component: {fileID: 4559560707953703849}
+  - component: {fileID: 5312835766215792462}
+  m_Layer: 0
+  m_Name: Hagger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6067007095886896267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721612530074531352}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2911353788478842045}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4975562521722516879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721612530074531352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f825bb5ce93d6ab429dfa508444119b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityData: {fileID: 11400000, guid: 103a498a294aca84d99ff75212c51df7, type: 2}
+  armatureName: Hagger
+  isUGUI: 0
+  debugDraw: 0
+  animationName: 
+  _playTimes: 0
+  _timeScale: 1
+  _sortingMode: 0
+  _sortingLayerName: Default
+  _sortingOrder: 0
+  _zSpace: 0
+  _flipX: 0
+  _flipY: 0
+  _closeCombineMeshs: 0
+--- !u!114 &4559560707953703849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721612530074531352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dfe11beb597d1a40a892f995bd31b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNames: []
+  dirty: 0
+--- !u!114 &5312835766215792462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721612530074531352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Attack1
+    Offest: {x: 0.071342394, y: 0.17567891}
+    Size: {x: 0.3507441, y: 0.3567449}
+  - AnimName: Idle
+    Offest: {x: 0.0013513565, y: 0.1743275}
+    Size: {x: 0.24593216, y: 0.35944772}
+  - AnimName: Attack2
+    Offest: {x: 0.07567708, y: 0.17432746}
+    Size: {x: 0.35674492, y: 0.34323126}
+  - AnimName: Attack3
+    Offest: {x: 0.10405594, y: 0.17703027}
+    Size: {x: 0.3540423, y: 0.35404217}
+  - AnimName: Attack4
+    Offest: {x: -0.020270646, y: 0.17027336}
+    Size: {x: 0.41890824, y: 0.35133946}
+  - AnimName: Move
+    Offest: {x: 0.012162402, y: 0.16892207}
+    Size: {x: 0.24593207, y: 0.3324201}
+  - AnimName: Awaken
+    Offest: {x: -0.0027027428, y: 0.15811098}
+    Size: {x: 0.38377243, y: 0.32701468}
+  - AnimName: Catch
+    Offest: {x: 0.05405505, y: 0.17567888}
+    Size: {x: 0.26485136, y: 0.35674495}
+  - AnimName: Attack_Weapon
+    Offest: {x: 0.11621834, y: 0.17703024}
+    Size: {x: 0.37836704, y: 0.35404223}
+  - AnimName: Dead
+    Offest: {x: -0.0013514012, y: 0.07702845}
+    Size: {x: 0.39188078, y: 0.15944397}
+  - AnimName: Hurt
+    Offest: {x: -0.01891929, y: 0.16757071}
+    Size: {x: 0.3026899, y: 0.33512306}
+  - AnimName: Idle_Weapon
+    Offest: {x: 0.0013513714, y: 0.17703032}
+    Size: {x: 0.24593207, y: 0.35944772}
+  - AnimName: JumpAttack
+    Offest: {x: 0, y: 0.15000263}
+    Size: {x: 0.27566236, y: 0.2945816}
+  - AnimName: JumpUp
+    Offest: {x: 0.009459615, y: 0.17567894}
+    Size: {x: 0.2783652, y: 0.35674506}
+  - AnimName: JumpDown
+    Offest: {x: -0.028378904, y: 0.16216514}
+    Size: {x: 0.28377068, y: 0.32971746}
+  - AnimName: Knee
+    Offest: {x: 0.048649564, y: 0.1702734}
+    Size: {x: 0.25944582, y: 0.34593397}
+  - AnimName: Move_Weapon
+    Offest: {x: 0.010811001, y: 0.16486788}
+    Size: {x: 0.24863487, y: 0.3405285}
+  - AnimName: PickUp
+    Offest: {x: -0.0013513714, y: 0.15811098}
+    Size: {x: 0.20809361, y: 0.32701468}
+  - AnimName: Skill1
+    Offest: {x: 0.044595376, y: 0.1891926}
+    Size: {x: 0.29998723, y: 0.37836683}
+  - AnimName: Skill2
+    Offest: {x: 0.0067569017, y: 0.17973301}
+    Size: {x: 0.39188075, y: 0.3486367}
+  - AnimName: SmoonUp
+    Offest: {x: -0.0013513714, y: 0.1108129}
+    Size: {x: 0.39188072, y: 0.22701287}
+  - AnimName: SmoonDown
+    Offest: {x: -0.0027027726, y: 0.07702845}
+    Size: {x: 0.399989, y: 0.15403855}
+  - AnimName: Throw
+    Offest: {x: -0.0851367, y: 0.17432755}
+    Size: {x: 0.41890827, y: 0.35404217}
+  - AnimName: ThrowWeapon
+    Offest: {x: 0.06081195, y: 0.20135504}
+    Size: {x: 0.43512473, y: 0.40269172}

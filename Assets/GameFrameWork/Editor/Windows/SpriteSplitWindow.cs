@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
@@ -47,8 +48,13 @@ namespace GameFrameWork.Editor
                     break;
             }
 
-            m_SpriteWidth = EditorGUILayout.IntField("每张小图的宽度:", m_SpriteWidth);
-            m_SpriteHeight = EditorGUILayout.IntField("每张小图的高度:", m_SpriteHeight);
+            m_IsUseAuto = EditorGUILayout.Toggle("使用自动切图尺寸", m_IsUseAuto);
+
+            if (!m_IsUseAuto)
+            {
+                m_SpriteWidth = EditorGUILayout.IntField("每张小图的宽度:", m_SpriteWidth);
+                m_SpriteHeight = EditorGUILayout.IntField("每张小图的高度:", m_SpriteHeight);
+            }
             m_OutPutExtName = EditorGUILayout.TextField("导出图片格式:", m_OutPutExtName);
             m_OutPutType = (TextureImporterType)EditorGUILayout.EnumPopup("导出图片类型:", m_OutPutType);
             m_OutPutPath = EditorGUILayout.TextField("导出图片路径:", m_OutPutPath);
@@ -210,7 +216,7 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            if (m_SpriteWidth > texture.width || m_SpriteHeight > texture.height)
+            if (!m_IsUseAuto && (m_SpriteWidth > texture.width || m_SpriteHeight > texture.height))
             {
                 ShowNotification(new GUIContent("小图宽高不能比主图大，请重新输入正确的数值!"));
                 return false;
@@ -238,27 +244,45 @@ namespace GameFrameWork.Editor
             string selectionExt = System.IO.Path.GetExtension(selectionPath);
             string loadPath = selectionPath.Remove(selectionPath.Length - selectionExt.Length);
 
-            int row = Mathf.CeilToInt((float)texture.height / m_SpriteHeight);
-            int column = Mathf.CeilToInt((float)texture.width / m_SpriteWidth);
+            SpriteMetaData[] blocks = null;
 
-            SpriteMetaData[] blocks = new SpriteMetaData[row * column];
-
-            for (int i = 0; i < row; i++)
+            if (!m_IsUseAuto)
             {
-                for (int j = 0; j < column; j++)
+                int row = Mathf.CeilToInt((float)texture.height / m_SpriteHeight);
+                int column = Mathf.CeilToInt((float)texture.width / m_SpriteWidth);
+                blocks = new SpriteMetaData[row * column];
+
+                for (int i = 0; i < row; i++)
+                {
+                    for (int j = 0; j < column; j++)
+                    {
+                        SpriteMetaData tmp = new SpriteMetaData();
+                        int id = i * column + j;
+                        float x = j * m_SpriteWidth;
+                        float y = i * m_SpriteHeight;
+
+                        float width = (x + m_SpriteWidth) <= texture.width ? m_SpriteWidth : texture.width - x;
+                        float height = (y + m_SpriteHeight) <= texture.height ? m_SpriteHeight : texture.height - y;
+
+                        tmp.name = m_SelectObject.name + "_" + i * m_SpriteWidth + "_" + j * m_SpriteHeight;
+                        tmp.pivot = new Vector2(0.5f, 0.5f);
+                        tmp.rect = new Rect(x, y, width, height);
+                        blocks[id] = tmp;
+                    }
+                }
+            }
+            else
+            {
+                List<Rect> frames = new List<Rect>(InternalSpriteUtility.GenerateAutomaticSpriteRectangles((Texture2D)m_SelectObject, 1, 0));
+                frames = SortRects(frames, (m_SelectObject as Texture2D).width);
+                blocks = new SpriteMetaData[frames.Count];
+                for (int i = 0; i < frames.Count; i++)
                 {
                     SpriteMetaData tmp = new SpriteMetaData();
-                    int id = i * column + j;
-                    float x = j * m_SpriteWidth;
-                    float y = i * m_SpriteHeight;
-                    
-                    float width = (x + m_SpriteWidth) <= texture.width ? m_SpriteWidth : texture.width - x;
-                    float height = (y + m_SpriteHeight) <= texture.height ? m_SpriteHeight : texture.height - y;
-
-                    tmp.name = m_SelectObject.name + "_" + i * m_SpriteWidth + "_" + j * m_SpriteHeight;
+                    tmp.name = (i + 1).ToString();
                     tmp.pivot = new Vector2(0.5f, 0.5f);
-                    tmp.rect = new Rect(x, y, width, height);
-                    blocks[id] = tmp;
+                    tmp.rect = frames[i];
+                    blocks[i] = tmp;
                 }
             }
 
@@ -331,6 +355,53 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private List<Rect> SortRects(List<Rect> rects, int textureActualWidth)
+        {
+            List<Rect> result = new List<Rect>();
+
+            while (rects.Count > 0)
+            {
+                // Because the slicing algorithm works from bottom-up, the topmost rect is the last one in the array
+                Rect r = rects[rects.Count - 1];
+                Rect sweepRect = new Rect(0, r.yMin, textureActualWidth, r.height);
+
+                List<Rect> rowRects = RectSweep(rects, sweepRect);
+
+                if (rowRects.Count > 0)
+                    result.AddRange(rowRects);
+                else
+                {
+                    // We didn't find any rects, just dump the remaining rects and continue
+                    result.AddRange(rects);
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private List<Rect> RectSweep(List<Rect> rects, Rect sweepRect)
+        {
+            if (rects == null || rects.Count == 0)
+                return new List<Rect>();
+
+            List<Rect> containedRects = new List<Rect>();
+
+            foreach (Rect rect in rects)
+            {
+                if (rect.Overlaps(sweepRect))
+                    containedRects.Add(rect);
+            }
+
+            // Remove found rects from original list
+            foreach (Rect rect in containedRects)
+                rects.Remove(rect);
+
+            // Sort found rects by x position
+            containedRects.Sort((a, b) => a.x.CompareTo(b.x));
+
+            return containedRects;
+        }
+
         private void OnDestroy()
         {
             m_SelectObject = null;
@@ -348,6 +419,7 @@ namespace GameFrameWork.Editor
         private string m_OutPutPackTag = string.Empty;
         private bool m_OutPutGenMipmaps = false;
         private bool m_FoldOut = false;
+        private bool m_IsUseAuto = false;
         private TextureImporterType m_OutPutType = TextureImporterType.Sprite;
     }
 }

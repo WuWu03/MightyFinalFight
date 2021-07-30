@@ -26,24 +26,45 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 1001
+      Hp: 1
+      AttackValue: 1
+      DefenseValue: 1
       Pos: {x: -178, y: -38}
     - EntityID: 2
       SourceID: 1001
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -178, y: -46}
     - EntityID: 3
       SourceID: 1001
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -178, y: -54}
     - EntityID: 4
       SourceID: 1001
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -178, y: -62}
     - EntityID: 5
       SourceID: 1001
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -178, y: -70}
     - EntityID: 6
       SourceID: 1002
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -100, y: -54}
     - EntityID: 7
       SourceID: 1002
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -81,9 +102,15 @@ MonoBehaviour:
     Targets:
     - EntityID: 7
       SourceID: 1003
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: 300, y: -54}
     - EntityID: 8
       SourceID: 1003
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -104,9 +131,15 @@ MonoBehaviour:
     Targets:
     - EntityID: 7
       SourceID: 1003
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: 300, y: -54}
     - EntityID: 8
       SourceID: 1003
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 0
     ExitStartCamera: 1

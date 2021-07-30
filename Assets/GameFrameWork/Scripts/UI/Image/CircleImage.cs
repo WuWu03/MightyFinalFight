@@ -24,14 +24,16 @@ namespace GameFrameWork.UI
         public float fillPercent = 1f;
         [Tooltip("是否填充圆形")]
         public bool fill = true;
+        [Tooltip("是否启用雷达图")]
+        public bool useRadar = false;
         [Tooltip("圆环宽度")]
         public float thickness = 5;
         [Tooltip("圆形")]
         [Range(3, 100)]
         public int segements = 20;
-        [Range(1, 100)]
-        public float maxScore = 100;
-        public float[] scores;
+        [HideInInspector]
+        public int maxScore = 100;
+        public int[] scores;
         private List<Vector3> innerVertices;
         private List<Vector3> outterVertices;
 

@@ -15,35 +15,95 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Levels:
-    - Health: 10
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 10
       HPBarWidth: 300
       EXP: 33
-    - Health: 15
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 15
       HPBarWidth: 400
       EXP: 54
-    - Health: 25
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 25
       HPBarWidth: 550
       EXP: 0
-    - Health: 40
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 40
       HPBarWidth: 750
       EXP: 0
-    - Health: 60
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 60
       HPBarWidth: 900
       EXP: 0
   - ID: 2001
     Levels:
-    - Health: 10
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 10
       HPBarWidth: 300
       EXP: 33
-    - Health: 15
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 15
       HPBarWidth: 400
       EXP: 54
-    - Health: 25
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 25
       HPBarWidth: 550
       EXP: 0
-    - Health: 40
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 40
       HPBarWidth: 750
       EXP: 0
-    - Health: 60
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 60
       HPBarWidth: 900
       EXP: 0

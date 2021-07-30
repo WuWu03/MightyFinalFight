@@ -212,13 +212,7 @@ public class BaseHero : BaseRole
             m_HitTime = Time.time;
         }
 
-        if(m_Weapon != null)
-        {
-            m_Weapon.SubHealth(1);
-            m_Weapon.Drop(data.AttackerDir);
-            m_Weapon = null;
-        }
-
+        DropWeaponMsg(data.AttackerDir);
         base.OnHurtMsg(data);
     }
 
@@ -298,6 +292,16 @@ public class BaseHero : BaseRole
             }
         }
         else item.SetOwner(this);
+    }
+
+    public virtual void DropWeaponMsg(float dir)
+    {
+        if (m_Weapon != null)
+        {
+            m_Weapon.SubHealth(1);
+            m_Weapon.Drop(dir);
+            m_Weapon = null;
+        }
     }
 
     public virtual void UseWeaponMsg()

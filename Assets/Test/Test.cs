@@ -9,11 +9,13 @@ using GameFrameWork.Resources;
 using GameFrameWork.Scene;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using UnityEngine.U2D;
 
 public class Test : MonoBehaviour
 {
-    public Button btn1;
-    public Button btn2;
+    //public Button btn1;
+    //public Button btn2;
+    public Image img;
     //public Button btn3;
     //public GameObject parent;
     //public GameObject item;
@@ -29,15 +31,15 @@ public class Test : MonoBehaviour
         }
     }
 
-
+    public SpriteAtlas atlas;
     private void Awake()
     {
-        ResMgr.Init(this.gameObject);
-        SceneMgr.Init(this.gameObject);
-        DontDestroyOnLoad(gameObject);
+        //ResMgr.Init(this.gameObject);
+        //SceneMgr.Init(this.gameObject);
+        //DontDestroyOnLoad(gameObject);
         //EventMgr.Init(parent);
-        UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
-        UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
+        //UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
+        //UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
         //UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
         //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
 
@@ -61,6 +63,7 @@ public class Test : MonoBehaviour
         //}
 
         //anim.Play("attack_1", 0);
+        img.sprite = atlas.GetSprite("Cody");
     }
 
     private void Start()
