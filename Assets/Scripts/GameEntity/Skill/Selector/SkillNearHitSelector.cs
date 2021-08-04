@@ -25,7 +25,7 @@ public class SkillNearHitSelector : SkillBaseSelector
 
             if (Vector2.Angle(target, normal) <= m_SkillEffect.SelectorAngle / 2)
             {
-                isInRange = Mathf.Abs(hitObj.Pos.x - m_Owner.Pos.x) <= m_SkillEffect.SelectorRadius;
+                isInRange = Vector2.Distance(hitObj.Pos, m_Owner.Pos) <= m_SkillEffect.SelectorRadius;
             }
 
             if (isInRange && hit.CanBeHit)

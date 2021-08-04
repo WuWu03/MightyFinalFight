@@ -14,6 +14,10 @@ public class SkillManager
 
     public void DeploySkill(int id)
     {
+        if(id == 3007)
+        {
+
+        }
         if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillID == id) return;
         SkillBaseDeployer deployer = null;
         for (int i = 0; i < m_SkillDeployers.Length; i++)

@@ -36,7 +36,11 @@ MonoBehaviour:
     - 0.3
     - 0.3
     - -1
-    AttackNextTime: 0.15
+    AttackNextTime:
+    - 0.15
+    - 0.15
+    - 0.15
+    - 0.15
   - ID: 2001
     Name: Guy
     AssetName: Character/Guy
@@ -60,4 +64,36 @@ MonoBehaviour:
     - -1
     - -1
     - -1
-    AttackNextTime: 0.3
+    AttackNextTime:
+    - 0.3
+    - 0.3
+    - 0.3
+    - 0.3
+  - ID: 3001
+    Name: Hagger
+    AssetName: Character/Hagger
+    HitEffect: HaggerHit
+    Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
+
+      OF METRO CITY.'
+    HeadIcon: Character/Hagger
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 40, y: 140}
+    AttackIDs: b90b0000ba0b0000bb0b0000bc0b0000
+    JumpAttackIDs: bd0b0000
+    CatchAttackID: 3009
+    ThrowAttackID: 2010
+    WeaponAttackID: 2012
+    ThrowWeaponID: 2013
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000da070000db070000dc070000dd070000
+    AttackWait:
+    - 0.6
+    - 0.6
+    - 0.6
+    - -1
+    AttackNextTime:
+    - 0.2
+    - 0.2
+    - 0.2
+    - 0.4

@@ -25,5 +25,5 @@ public class HeroConfigData : BaseConfigData
     public int ThrowWeaponID;
     public int[] Skills;//技能序列
     public float[] AttackWait;//连击时间
-    public float AttackNextTime;
+    public float[] AttackNextTime;
 }

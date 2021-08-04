@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1874959562291569875
+--- !u!1 &4911007044370016020
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,90 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2911353788478842045}
-  - component: {fileID: 5403221371030554181}
-  - component: {fileID: 1063800090604117218}
+  - component: {fileID: 4911007044370016021}
+  - component: {fileID: 4911007044370016023}
+  - component: {fileID: 4911007044370016022}
+  m_Layer: 0
+  m_Name: slot2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4911007044370016021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911007044370016020}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1745, z: -0.001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4911007044937298928}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &4911007044370016023
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911007044370016020}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3bc177aee5ca1364d873adc0d998a789, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &4911007044370016022
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911007044370016020}
+  m_Mesh: {fileID: 0}
+--- !u!1 &4911007044377282604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4911007044377282605}
+  - component: {fileID: 4911007044377282607}
+  - component: {fileID: 4911007044377282606}
   m_Layer: 0
   m_Name: slot1
   m_TagString: Untagged
@@ -18,27 +99,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2911353788478842045
+--- !u!4 &4911007044377282605
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1874959562291569875}
+  m_GameObject: {fileID: 4911007044377282604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0555, y: 0.174, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1745, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6067007095886896267}
+  m_Father: {fileID: 4911007044937298928}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &5403221371030554181
+--- !u!23 &4911007044377282607
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1874959562291569875}
+  m_GameObject: {fileID: 4911007044377282604}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -73,15 +154,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1063800090604117218
+--- !u!33 &4911007044377282606
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1874959562291569875}
+  m_GameObject: {fileID: 4911007044377282604}
   m_Mesh: {fileID: 0}
---- !u!1 &5721612530074531352
+--- !u!1 &4911007044937298933
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,10 +170,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6067007095886896267}
-  - component: {fileID: 4975562521722516879}
-  - component: {fileID: 4559560707953703849}
-  - component: {fileID: 5312835766215792462}
+  - component: {fileID: 4911007044937298928}
+  - component: {fileID: 4911007044937298935}
+  - component: {fileID: 4911007044937298934}
+  - component: {fileID: 4141276037347006126}
   m_Layer: 0
   m_Name: Hagger
   m_TagString: Untagged
@@ -100,28 +181,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6067007095886896267
+--- !u!4 &4911007044937298928
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5721612530074531352}
+  m_GameObject: {fileID: 4911007044937298933}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2911353788478842045}
+  - {fileID: 4911007044377282605}
+  - {fileID: 4911007044370016021}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4975562521722516879
+--- !u!114 &4911007044937298935
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5721612530074531352}
+  m_GameObject: {fileID: 4911007044937298933}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f825bb5ce93d6ab429dfa508444119b0, type: 3}
@@ -131,9 +213,9 @@ MonoBehaviour:
   armatureName: Hagger
   isUGUI: 0
   debugDraw: 0
-  animationName: 
+  animationName: Idle
   _playTimes: 0
-  _timeScale: 1
+  _timeScale: 0.09
   _sortingMode: 0
   _sortingLayerName: Default
   _sortingOrder: 0
@@ -141,27 +223,27 @@ MonoBehaviour:
   _flipX: 0
   _flipY: 0
   _closeCombineMeshs: 0
---- !u!114 &4559560707953703849
+--- !u!114 &4911007044937298934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5721612530074531352}
+  m_GameObject: {fileID: 4911007044937298933}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0dfe11beb597d1a40a892f995bd31b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 0
---- !u!114 &5312835766215792462
+  dirty: 1
+--- !u!114 &4141276037347006126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5721612530074531352}
+  m_GameObject: {fileID: 4911007044937298933}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
@@ -181,8 +263,8 @@ MonoBehaviour:
     Offest: {x: 0.10405594, y: 0.17703027}
     Size: {x: 0.3540423, y: 0.35404217}
   - AnimName: Attack4
-    Offest: {x: -0.020270646, y: 0.17027336}
-    Size: {x: 0.41890824, y: 0.35133946}
+    Offest: {x: -0.008481108, y: 0.17027336}
+    Size: {x: 0.4424873, y: 0.35133946}
   - AnimName: Move
     Offest: {x: 0.012162402, y: 0.16892207}
     Size: {x: 0.24593207, y: 0.3324201}
@@ -204,39 +286,45 @@ MonoBehaviour:
   - AnimName: Idle_Weapon
     Offest: {x: 0.0013513714, y: 0.17703032}
     Size: {x: 0.24593207, y: 0.35944772}
-  - AnimName: JumpAttack
-    Offest: {x: 0, y: 0.15000263}
-    Size: {x: 0.27566236, y: 0.2945816}
+  - AnimName: JumpAttack1
+    Offest: {x: 0.000000029802322, y: 0.15076143}
+    Size: {x: 0.3048225, y: 0.29644668}
   - AnimName: JumpUp
-    Offest: {x: 0.009459615, y: 0.17567894}
-    Size: {x: 0.2783652, y: 0.35674506}
+    Offest: {x: 0.008375645, y: 0.17379433}
+    Size: {x: 0.29644692, y: 0.35088837}
   - AnimName: JumpDown
-    Offest: {x: -0.028378904, y: 0.16216514}
-    Size: {x: 0.28377068, y: 0.32971746}
+    Offest: {x: -0.020939052, y: 0.16332489}
+    Size: {x: 0.28807127, y: 0.3383249}
   - AnimName: Knee
-    Offest: {x: 0.048649564, y: 0.1702734}
-    Size: {x: 0.25944582, y: 0.34593397}
+    Offest: {x: 0.04397209, y: 0.16960657}
+    Size: {x: 0.25875655, y: 0.34251285}
   - AnimName: Move_Weapon
-    Offest: {x: 0.010811001, y: 0.16486788}
-    Size: {x: 0.24863487, y: 0.3405285}
+    Offest: {x: 0.010469556, y: 0.16332483}
+    Size: {x: 0.2755078, y: 0.33832502}
   - AnimName: PickUp
-    Offest: {x: -0.0013513714, y: 0.15811098}
-    Size: {x: 0.20809361, y: 0.32701468}
+    Offest: {x: 0.006281778, y: 0.16751266}
+    Size: {x: 0.24200526, y: 0.3383248}
   - AnimName: Skill1
-    Offest: {x: 0.044595376, y: 0.1891926}
-    Size: {x: 0.29998723, y: 0.37836683}
+    Offest: {x: 0.0064828694, y: 0.18973336}
+    Size: {x: 0.2674362, y: 0.3681398}
   - AnimName: Skill2
-    Offest: {x: 0.0067569017, y: 0.17973301}
-    Size: {x: 0.39188075, y: 0.3486367}
+    Offest: {x: 0.015527725, y: 0.17597702}
+    Size: {x: 0.39865106, y: 0.3600759}
   - AnimName: SmoonUp
-    Offest: {x: -0.0013513714, y: 0.1108129}
-    Size: {x: 0.39188072, y: 0.22701287}
+    Offest: {x: 0.0062817633, y: 0.10469538}
+    Size: {x: 0.37601537, y: 0.20431483}
   - AnimName: SmoonDown
-    Offest: {x: -0.0027027726, y: 0.07702845}
-    Size: {x: 0.399989, y: 0.15403855}
+    Offest: {x: -0.0041877925, y: 0.077474535}
+    Size: {x: 0.39695448, y: 0.15824878}
   - AnimName: Throw
-    Offest: {x: -0.0851367, y: 0.17432755}
-    Size: {x: 0.41890827, y: 0.35404217}
+    Offest: {x: -0.06491111, y: 0.17798227}
+    Size: {x: 0.41789356, y: 0.35926402}
   - AnimName: ThrowWeapon
-    Offest: {x: 0.06081195, y: 0.20135504}
-    Size: {x: 0.43512473, y: 0.40269172}
+    Offest: {x: 0.069098994, y: 0.2156725}
+    Size: {x: 0.45139608, y: 0.40951777}
+  - AnimName: JumpAttack2
+    Offest: {x: -0.0083756, y: 0.15076137}
+    Size: {x: 0.24619314, y: 0.30482244}
+  - AnimName: AttackEnd
+    Offest: {x: 0.0017416924, y: 0.16720238}
+    Size: {x: 0.22320578, y: 0.33815736}

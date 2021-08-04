@@ -23,6 +23,12 @@ public abstract class BaseCtrl
         OnUpdate();
     }
 
+    public void LateUpdate()
+    {
+        if (m_Owner == null || !m_Owner.IsResComplete) return;
+        OnLateUpdate();
+    }
+
     public void Release()
     {
         m_Owner = null;
@@ -31,6 +37,7 @@ public abstract class BaseCtrl
 
     protected virtual void OnInit() { }
     protected virtual void OnUpdate() { }
+    protected virtual void OnLateUpdate() { }
     protected virtual void OnRelease() { }
 
     protected BaseRole m_Owner = null;

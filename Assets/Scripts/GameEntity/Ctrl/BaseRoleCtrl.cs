@@ -98,11 +98,6 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected override void OnUpdate()
     {
-        if (m_SkillManager != null)
-        {
-            m_SkillManager.Update();
-        }
-
         if (m_AttackTimer > 0)
         {
             float currWait = m_Data.AttackWait[0];
@@ -134,11 +129,21 @@ public class BaseRoleCtrl : BaseCtrl
         }
     }
 
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
+
+        if (m_SkillManager != null)
+        {
+            m_SkillManager.Update();
+        }
+    }
+
     protected virtual void NormalAttack(Vector2 dir)
     {
         if (m_Data.AttackWait == null || m_Data.AttackWait.Length < 1) return;
         if (m_AttackIndex >= m_Data.AttackWait.Length) return;
-        if (m_AttackTimer > 0 && Time.time - m_AttackTimer < m_Data.AttackNextTime) return;
+        if (m_AttackTimer > 0 && Time.time - m_AttackTimer < m_Data.AttackNextTime[m_AttackIndex]) return;
 
         if (m_AttackIndex == 0) AttackSuccess = true;
         if (AttackSuccess) m_AttackIndex++;
@@ -147,12 +152,17 @@ public class BaseRoleCtrl : BaseCtrl
         m_AttackTimer = Time.time;
         m_CurrSkillID = m_Data.AttackIds[m_AttackIndex - 1];
         m_SkillManager.DeploySkill(m_CurrSkillID);
+
+        if (m_CurrSkillID == 3004)
+        {
+            m_Owner.FsmMachine.SetDefaultState<HeroAttackEnd>();
+        }
     }
 
     protected virtual void JumpAttack(Vector2 dir)
     {
         AttackSuccess = false;
-        m_CurrSkillID = dir.y < 0 ? m_Data.JumpAttackIds[1] : m_Data.JumpAttackIds[0];
+        m_CurrSkillID = (dir.y < 0 && m_Data.JumpAttackIds.Length > 1) ? m_Data.JumpAttackIds[1] : m_Data.JumpAttackIds[0];
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 

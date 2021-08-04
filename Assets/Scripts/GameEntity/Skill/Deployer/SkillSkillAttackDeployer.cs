@@ -9,6 +9,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
+        m_EnternalTriggerTimer = Time.time;
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
@@ -28,6 +29,11 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     {
         bool isComplete = base.IsAllComplete();
 
+        if(m_SkillData.TriggerType == SkillTriggerType.Enternal)
+        {
+            isComplete = isComplete && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
+        }
+
         if (isComplete)
         {
             m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
@@ -37,6 +43,16 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         }
 
         return isComplete;
+    }
+
+    public override void Update()
+    {
+        if(m_SkillData.TriggerType == SkillTriggerType.Enternal)
+        {
+            base.DeploySkill();
+        }
+
+        base.Update();
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -67,4 +83,6 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         if (!m_SkillData.IsInEffectPlaySound)
             m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
+
+    private float m_EnternalTriggerTimer = 0f;
 }

@@ -21,6 +21,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -29,6 +30,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 1
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -47,10 +49,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1002
     Level: 0
@@ -60,6 +64,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -68,6 +73,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -86,10 +92,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1003
     Level: 0
@@ -99,6 +107,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -107,6 +116,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -125,10 +135,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1004
     Level: 0
@@ -138,6 +150,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -146,6 +159,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -164,10 +178,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1005
     Level: 0
@@ -177,6 +193,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -185,6 +202,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
       Args: 
@@ -203,10 +221,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1006
     Level: 0
@@ -216,6 +236,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -224,6 +245,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
       Args: 
@@ -242,10 +264,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1007
     Level: 0
@@ -255,6 +279,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 0400000005000000
       AddTrigger: 1
@@ -263,6 +288,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -295,10 +321,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 1008
     Level: 0
@@ -308,6 +336,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 0100000005000000
       AddTrigger: 1
@@ -316,6 +345,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -334,10 +364,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 1
       Gravity: 1
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 1009
     Level: 0
@@ -347,6 +379,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -355,6 +388,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
       Args: 
@@ -371,12 +405,14 @@ MonoBehaviour:
       SelectorAngle: 0
       SelectorRadius: 0
       AddSelfDrag: 0
-      MoveDistance: 1
-      Gravity: 1
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 1010
     Level: 0
@@ -386,6 +422,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -394,6 +431,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
       Args: 
@@ -412,10 +450,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -431,10 +471,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 1011
     Level: 0
@@ -444,6 +486,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
@@ -452,6 +495,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 5
       Args: HPMoreThan:1
@@ -470,10 +514,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 6
       SelectorType: 0
@@ -489,10 +535,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: SubHP:1
   - ID: 1012
     Level: 0
@@ -502,6 +550,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -510,6 +559,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 1
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -528,10 +578,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 1013
     Level: 0
@@ -541,6 +593,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -549,6 +602,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 1
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -581,10 +635,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 2001
     Level: 0
@@ -594,6 +650,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -602,6 +659,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 1
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -620,10 +678,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -639,10 +699,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -658,10 +720,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2002
     Level: 0
@@ -671,6 +735,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -679,6 +744,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 1
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -697,10 +763,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -716,10 +784,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -735,10 +805,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2003
     Level: 0
@@ -748,6 +820,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -756,6 +829,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -774,10 +848,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2004
     Level: 0
@@ -787,6 +863,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -795,6 +872,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 1
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -813,10 +891,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2005
     Level: 0
@@ -826,6 +906,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -834,6 +915,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
       Args: 
@@ -852,10 +934,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2006
     Level: 0
@@ -865,6 +949,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -873,6 +958,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
       Args: 
@@ -891,10 +977,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2007
     Level: 0
@@ -904,6 +992,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 0500000004000000
       AddTrigger: 1
@@ -912,6 +1001,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -930,10 +1020,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -949,10 +1041,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
   - ID: 2008
     Level: 0
@@ -962,6 +1056,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 2
     TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
@@ -970,6 +1065,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 5
       Args: HPMoreThan:1
@@ -988,10 +1084,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 6
       SelectorType: 0
@@ -1007,10 +1105,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: SubHP:1
   - ID: 2009
     Level: 0
@@ -1020,6 +1120,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1028,6 +1129,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
       Args: 
@@ -1046,10 +1148,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 2010
     Level: 0
@@ -1059,6 +1163,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1067,6 +1172,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
       Args: 
@@ -1085,10 +1191,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1104,10 +1212,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1123,10 +1233,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
     - EffectorType: 4
       SelectorType: 1
@@ -1142,10 +1254,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
     - EffectorType: 1
       SelectorType: 1
@@ -1161,10 +1275,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 2011
     Level: 0
@@ -1174,6 +1290,7 @@ MonoBehaviour:
     Type: 2
     DeployerType: 3
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 0100000005000000
       AddTrigger: 1
@@ -1182,6 +1299,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 2
       Args: Pos:-1
@@ -1200,10 +1318,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: 
     - EffectorType: 3
       SelectorType: 1
@@ -1219,10 +1339,12 @@ MonoBehaviour:
       AddSelfDrag: 20
       MoveDistance: -1
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 1
+      HitOne: 0
       Args: OnGroundPickUp
   - ID: 2012
     Level: 0
@@ -1232,6 +1354,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1240,6 +1363,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -1272,10 +1396,12 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
   - ID: 2013
     Level: 0
@@ -1285,6 +1411,7 @@ MonoBehaviour:
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1293,6 +1420,7 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
       Args: 
@@ -1325,29 +1453,33 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
-  - ID: 4001
+  - ID: 3001
     Level: 0
-    Name: BredAttack
+    Name: HaggerAttack1
     AnimationName: Attack1
     HurtSound: 
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 0.4
+    AnimSpeed: 0.3
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1364,29 +1496,33 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
-  - ID: 5001
+  - ID: 3002
     Level: 0
-    Name: TwoPAttack
-    AnimationName: Attack1
+    Name: HaggerAttack2
+    AnimationName: Attack2
     HurtSound: 
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 1.5
+    AnimSpeed: 0.3
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1403,19 +1539,129 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
       Args: 
-  - ID: 6001
+  - ID: 3003
     Level: 0
-    Name: AxlAttack
-    AnimationName: Attack1
+    Name: HaggerAttack3
+    AnimationName: Attack3
     HurtSound: 
     Type: 1
     DeployerType: 1
     TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3004
+    Level: 0
+    Name: HaggerAttack4
+    AnimationName: Attack4
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 0
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 120}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3005
+    Level: 0
+    Name: HaggerJumpAttack1
+    AnimationName: JumpAttack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 2
+    TriggerType: 1
+    EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
@@ -1424,6 +1670,50 @@ MonoBehaviour:
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 3
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3006
+    Level: 0
+    Name: HaggerJumpAttack2
+    AnimationName: JumpAttack2
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 0
       Args: 
@@ -1442,8 +1732,268 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
+      DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3007
+    Level: 0
+    Name: HaggerSkill1
+    AnimationName: Skill1
+    HurtSound: 
+    Type: 2
+    DeployerType: 3
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 0400000005000000
+      AddTrigger: 1
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 3
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 100, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 5, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 10
+      MoveDistance: -1
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 1
+      Args: 
+  - ID: 3008
+    Level: 0
+    Name: HaggerSkill2
+    AnimationName: Skill2
+    HurtSound: 
+    Type: 2
+    DeployerType: 3
+    TriggerType: 3
+    EnternalTiggerTime: 2
+    Key:
+      Keys: 0500000006000000
+      AddTrigger: 1
+    AnimSpeed: 0.4
+    AnimTime: -1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 1
+    SkillPrevConditions:
+    - PrevConditionType: 1
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 360
+      SelectorRadius: 0.2
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 4001
+    Level: 0
+    Name: BredAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 5001
+    Level: 0
+    Name: TwoPAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 6001
+    Level: 0
+    Name: AxlAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3009
+    Level: 0
+    Name: HaggerKnee
+    AnimationName: Knee
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.8
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 4
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      CanBeDefense: 0
+      HitOne: 0
       Args: 

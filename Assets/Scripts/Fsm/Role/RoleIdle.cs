@@ -10,9 +10,7 @@ public class RoleIdle : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.Rigidbody.gravityScale = 1;
-        m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        m_Owner.ResetRigidbody();
         m_Owner.SetPos(m_Owner.Pos);
 
         if(m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)

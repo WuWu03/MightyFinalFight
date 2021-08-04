@@ -6,7 +6,7 @@ public class BaseRoleSkillData : BaseEventArgs
     public int[] JumpAttackIds;
     public int[] SkillIds;
     public float[] AttackWait;
-    public float AttackNextTime;
+    public float[] AttackNextTime;
 
     public override void Clear()
     {
@@ -14,6 +14,6 @@ public class BaseRoleSkillData : BaseEventArgs
         JumpAttackIds = null;
         SkillIds = null;
         AttackWait = null;
-        AttackNextTime = 0;
+        AttackNextTime = null;
     }
 }

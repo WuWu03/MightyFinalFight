@@ -62,6 +62,7 @@ public class SkillConfigData : BaseConfigData
         None,
         Just,//直接触发
         Animtion,//动画触发
+        Enternal,//持续出发
     }
 
     public enum SkillAddForceType
@@ -112,6 +113,7 @@ public class SkillConfigData : BaseConfigData
         public bool IsShakeCamera;//击中敌人是否震屏
         public bool IsOnGroundHurt;//是否落地才触发伤害
         public bool CanBeDefense;//能否被防御
+        public bool HitOne;//攻击到任何敌人就结束技能
         public string Args;//各种数值效果的参数 每种类型效果自行解析
     }
 
@@ -136,12 +138,14 @@ public class SkillConfigData : BaseConfigData
     public SkillType Type;//技能类型
     public SkillDeployerType DeployerType;//释放器类型
     public SkillTriggerType TriggerType;//技能触发方式
+    public float EnternalTiggerTime;//持续出发时间
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数
     public int EXP = 4;
     public bool IsInEffectPlaySound;//效果触发时是否播放声音
     public bool CanChangeDir;
+    public bool CanMove;
     public SkillPrevCondition[] SkillPrevConditions;//释放技能的前置条件
     public SkillEffect[] SkillEffects;
 }

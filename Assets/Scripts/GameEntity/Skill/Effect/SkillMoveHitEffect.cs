@@ -17,6 +17,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
     public override void Effect(ISkillSelector selector)
     {
         m_IsCompleted = false;
+        m_HasEffect = true;
         m_StartPos = m_Owner.transform.localPosition;
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.Rigidbody.velocity = new Vector2(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
@@ -38,6 +39,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.Rigidbody.gravityScale = 1.0f;
         m_Owner.Rigidbody.drag = 0f;
         m_IsCompleted = true;
+        m_HasEffect = false;
     }
 
     public override void Reset()
@@ -52,6 +54,11 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     public override void Update(ISkillSelector selector)
     {
+        if(!m_HasEffect)
+        {
+            return;
+        }
+
         CheckAttack(selector);
 
         if (m_SkillEffect.MoveDistance < 0)
@@ -88,9 +95,16 @@ public class SkillMoveHitEffect : SkillBaseEffect
                 hurtData.AttackValue = 1;
                 
                 targets[i].OnHurtMsg(hurtData);
+
+                if(m_SkillEffect.HitOne)
+                {
+                    m_IsCompleted = true;
+                    break;
+                }
             }
         }
     }
 
+    private bool m_HasEffect = false;
     private Vector3 m_StartPos = Vector3.zero;
 }

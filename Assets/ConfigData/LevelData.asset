@@ -15,12 +15,12 @@ MonoBehaviour:
   Datas:
   - ID: 1001
     Levels:
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
+    - AttackSpeed: 1
+      AttackValue: 1
+      DefenseValue: 1
       CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
+      MoveSpeed: 0.7
+      JumpForce: {x: 40, y: 140}
       Health: 10
       HPBarWidth: 300
       EXP: 33
@@ -62,12 +62,59 @@ MonoBehaviour:
       EXP: 0
   - ID: 2001
     Levels:
+    - AttackSpeed: 1
+      AttackValue: 1
+      DefenseValue: 1
+      CriticalValue: 0
+      MoveSpeed: 1
+      JumpForce: {x: 40, y: 150}
+      Health: 10
+      HPBarWidth: 300
+      EXP: 33
     - AttackSpeed: 0
       AttackValue: 0
       DefenseValue: 0
       CriticalValue: 0
       MoveSpeed: 0
       JumpForce: {x: 0, y: 0}
+      Health: 15
+      HPBarWidth: 400
+      EXP: 54
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 25
+      HPBarWidth: 550
+      EXP: 0
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 40
+      HPBarWidth: 750
+      EXP: 0
+    - AttackSpeed: 0
+      AttackValue: 0
+      DefenseValue: 0
+      CriticalValue: 0
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 60
+      HPBarWidth: 900
+      EXP: 0
+  - ID: 3001
+    Levels:
+    - AttackSpeed: 0.8
+      AttackValue: 1
+      DefenseValue: 1
+      CriticalValue: 0
+      MoveSpeed: 0.7
+      JumpForce: {x: 40, y: 150}
       Health: 10
       HPBarWidth: 300
       EXP: 33

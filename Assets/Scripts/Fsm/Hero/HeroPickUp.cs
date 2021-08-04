@@ -10,9 +10,7 @@ public class HeroPickUp : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.Rigidbody.gravityScale = 1;
-        m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.PickUp, 1, 1f);
     }
 

@@ -268,6 +268,11 @@ public class BaseSceneObject : BaseEntity
         OnUpdate();
     }
 
+    protected override void LateUpdate()
+    {
+        OnLateUpdate();
+    }
+
     protected Rect GetBound(Vector2 pos)
     {
         m_Bound.width = m_Collider.size.x;
@@ -331,6 +336,7 @@ public class BaseSceneObject : BaseEntity
     }
 
     protected virtual void OnUpdate() { }
+    protected virtual void OnLateUpdate() { }
     protected virtual void OnResComplete(GameObject go, object[] param) { }
 
 

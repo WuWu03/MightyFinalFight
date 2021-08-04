@@ -1,8 +1,9 @@
 ﻿using GameFrameWork.Fsm;
+using UnityEngine;
 
 public class RoleSkill : BaseFsmState
 {
-    public float Dir
+    public Vector2 Dir
     {
         set
         {
@@ -10,12 +11,19 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-
     public bool CanChangeDir
     {
         set
         {
             m_CanChangeDir = value;
+        }
+    }
+
+    public bool CanMove
+    {
+        set
+        {
+            m_CanMove = value;
         }
     }
 
@@ -31,15 +39,22 @@ public class RoleSkill : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
+        if(m_CanMove)
+        {
+            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
+            m_Owner.SetPos(ownerPos);
+        }
+
         if (m_CanChangeDir)
         {
-            m_Owner.SetDir(m_Dir);
+            m_Owner.SetDir(m_Dir.x);
         }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_CanChangeDir = false;
+        m_CanMove = false;
     }
 
     public override void OnDestroy(BaseFsm fsm)
@@ -47,7 +62,8 @@ public class RoleSkill : BaseFsmState
         m_Owner = null;
     }
 
+    private bool m_CanMove = false;
     private bool m_CanChangeDir = false;
-    private float m_Dir = 1f;
+    private Vector2 m_Dir = Vector2.zero;
     private BaseRole m_Owner = null;
 }

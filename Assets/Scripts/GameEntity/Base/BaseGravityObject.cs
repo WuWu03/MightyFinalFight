@@ -85,6 +85,16 @@ public class BaseGravityObject : BaseSceneObject
         OnGround();
     }
 
+    public void ResetRigidbody()
+    {
+        m_Rigidbody.gravityScale = 1;
+        m_Rigidbody.velocity = Vector2.zero;
+        m_Rigidbody.drag = 0;
+        m_Rigidbody.angularDrag = 0;
+        m_Rigidbody.angularVelocity = 0;
+        m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+    }
+
     public override void Release()
     {
         base.Release();

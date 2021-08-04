@@ -124,7 +124,7 @@ public class BaseEnemy : BaseRole
             EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         }
 
-        base.OnGroundHurtMsg(data);     
+        base.OnGroundHurtMsg(data);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)

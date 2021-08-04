@@ -237,6 +237,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_CurrCtrl.Update();
     }
 
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
+
+        if (m_CurrCtrl != null)
+            m_CurrCtrl.LateUpdate();
+    }
+
     public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)
     {
         if (data == null) return;
@@ -257,7 +265,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnSkillMsg(SkillConfigData data)
     {
         if (data == null) return;
-        GetState<RoleSkill>().CanChangeDir = data.CanChangeDir;
+        RoleSkill skillState = GetState<RoleSkill>();
+        skillState.CanChangeDir = data.CanChangeDir;
+        skillState.CanMove = data.CanMove;
         ChangeState<RoleSkill>();
         PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
     }
@@ -280,7 +290,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleSkill)))
         {
-            GetState<RoleSkill>().Dir = data.Dir.x;
+            GetState<RoleSkill>().Dir = data.Dir;
             return;
         }
 

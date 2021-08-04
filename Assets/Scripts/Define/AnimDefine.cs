@@ -1,6 +1,10 @@
 ﻿public struct AnimName
 {
-    public const string Attack = "Attack";
+    public const string Attack1 = "Attack1";
+    public const string Attack2 = "Attack2";
+    public const string Attack3 = "Attack3";
+    public const string Attack4 = "Attack4";
+    public const string AttackEnd = "AttackEnd";
     public const string Attack_Weapon = "Attack_Weapon";
     public const string Idle = "Idle";
     public const string Idle_Weapon = "Idle_Weapon";

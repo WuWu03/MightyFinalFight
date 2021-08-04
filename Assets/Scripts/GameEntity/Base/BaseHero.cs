@@ -77,6 +77,7 @@ public class BaseHero : BaseRole
         AddState<HeroRebirth>();
         AddState<HeroCatch>();
         AddState<HeroPickUp>();
+        AddState<HeroAttackEnd>();
         m_DicAttacker = new Dictionary<int, int>();
         m_ListCatchTarget = new List<ICanBeHit>();
     }
@@ -121,6 +122,7 @@ public class BaseHero : BaseRole
         m_Slot1Renderer.enabled = true;
         m_Slot2Renderer.enabled = false;
     }
+
     public override List<ICanBeHit> OnHitStart()
     {
         if (m_ListCatchTarget.Count < 1) return null;
@@ -236,7 +238,7 @@ public class BaseHero : BaseRole
 
     public override void SetPos(Vector2 pos)
     {
-        if (IsAnyState(typeof(RoleMove)))
+        if (IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
         {
             if (!CanMove) return;
 
@@ -253,9 +255,9 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!isMapXCanMove) 
+            if (!isMapXCanMove)
                 pos.x = m_Pos.x;
-            if (!isMapYCanMove) pos.y = m_Pos.y;       
+            if (!isMapYCanMove) pos.y = m_Pos.y;
         }
 
         base.SetPos(pos);

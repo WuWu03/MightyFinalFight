@@ -148,13 +148,14 @@ public class SkillFactory
         float criMulity = 1.5f;
         float fluctuate = Random.Range(0.8f, 1.1f);
         bool isCri = Random.Range(1, 101) <= critical;
-        float damage = Mathf.Max(a * attack - b * defense, 0) * fluctuate * mulity;
+        float damage = Mathf.Max(a * attack - b * defense, 0) * fluctuate * mulity > 0 ? mulity : 1;
 
         if (isCri)
         {
             damage *= criMulity;
         }
 
+        Debug.Log("伤害计算" + Mathf.FloorToInt(damage));
         return Mathf.FloorToInt(damage);
     }
 

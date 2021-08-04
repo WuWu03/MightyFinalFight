@@ -41,7 +41,7 @@ public class RoleSelectPanel : BasePanel
 		Vector2 axis = InputMgr.GetAxis(true);
 		if (axis.y != 0)
 		{
-			if (axis.y > 0)
+			if (axis.y < 0)
 			{
 				m_CurrSelectIndex++;
 				if (m_CurrSelectIndex >= StaticConfig.HeroConfig.Datas.Count) m_CurrSelectIndex = 0;
