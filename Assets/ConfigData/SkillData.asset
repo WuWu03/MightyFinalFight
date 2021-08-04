@@ -1715,7 +1715,9 @@ MonoBehaviour:
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 3
+      Args: 
+    - PrevConditionType: 4
       Args: 
     SkillEffects:
     - EffectorType: 1
