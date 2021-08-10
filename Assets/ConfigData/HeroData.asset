@@ -41,6 +41,7 @@ MonoBehaviour:
     - 0.15
     - 0.15
     - 0.15
+    CatchControl: 0
   - ID: 2001
     Name: Guy
     AssetName: Character/Guy
@@ -69,6 +70,7 @@ MonoBehaviour:
     - 0.3
     - 0.3
     - 0.3
+    CatchControl: 0
   - ID: 3001
     Name: Hagger
     AssetName: Character/Hagger
@@ -79,14 +81,14 @@ MonoBehaviour:
     HeadIcon: Character/Hagger
     AttackSpeed: 1
     MoveSpeed: 1
-    JumpForce: {x: 40, y: 140}
+    JumpForce: {x: 40, y: 160}
     AttackIDs: b90b0000ba0b0000bb0b0000bc0b0000
-    JumpAttackIDs: bd0b0000
+    JumpAttackIDs: bd0b0000be0b0000
     CatchAttackID: 3009
-    ThrowAttackID: 2010
+    ThrowAttackID: 3010
     WeaponAttackID: 2012
     ThrowWeaponID: 2013
-    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000da070000db070000dc070000dd070000
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000db070000dc070000dd070000
     AttackWait:
     - 0.6
     - 0.6
@@ -97,3 +99,4 @@ MonoBehaviour:
     - 0.2
     - 0.2
     - 0.4
+    CatchControl: 1

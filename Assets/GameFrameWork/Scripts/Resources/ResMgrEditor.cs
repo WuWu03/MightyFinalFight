@@ -52,7 +52,7 @@ namespace GameFrameWork.Resources
 
             if (obj == null)
             {
-                Debug.Log(TextUtil.FormatDefault("无效的资源路径 => ", resourcePath));
+                GameFrameworkLog.Log(TextUtil.FormatDefault("无效的资源路径 => ", resourcePath));
                 return null;
             }
 

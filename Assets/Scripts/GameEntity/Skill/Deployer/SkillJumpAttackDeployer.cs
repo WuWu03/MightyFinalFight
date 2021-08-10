@@ -31,11 +31,6 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         attackData.Dir = m_Owner.Dir;
         attackData.CanChangeDir = false;
        
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
-        {
-            attackData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
-        }
-
         m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
         m_Owner.OnDropEvent.AddListener(OnDropEvent);
         m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);

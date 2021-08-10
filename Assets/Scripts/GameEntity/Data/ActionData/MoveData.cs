@@ -6,7 +6,7 @@ public class MoveData : BaseEventArgs
 {
     public Vector2 Dir { get; set; }
     public bool CanChangeDir { get; set; }
-
+    public bool IsCatch { get; set; }
     public static MoveData Create()
     {
         return ReferencePool.Acquire<MoveData>();

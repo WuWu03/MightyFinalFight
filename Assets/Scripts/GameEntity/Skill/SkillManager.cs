@@ -14,15 +14,11 @@ public class SkillManager
 
     public void DeploySkill(int id)
     {
-        if(id == 3007)
-        {
-
-        }
-        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillID == id) return;
+        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillId == id) return;
         SkillBaseDeployer deployer = null;
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
-            if (m_SkillDeployers[i].SkillID.Equals(id))
+            if (m_SkillDeployers[i].SkillId.Equals(id))
             {
                 deployer = m_SkillDeployers[i];
                 break;
@@ -36,6 +32,7 @@ public class SkillManager
                 return;
             }
 
+            deployer.AddEvent();
             deployer.DeploySkill();
             m_CurrSkillDeployer = deployer;
         }
@@ -60,14 +57,14 @@ public class SkillManager
     public bool IsCurrSkill(int id)
     {
         if (m_CurrSkillDeployer == null) return false;
-        if (!m_CurrSkillDeployer.SkillID.Equals(id)) return false;
+        if (!m_CurrSkillDeployer.SkillId.Equals(id)) return false;
         return true;
     }
 
     public bool IsSkillComplete(int id)
     {
         if (m_CurrSkillDeployer == null) return false;
-        if (!m_CurrSkillDeployer.SkillID.Equals(id)) return false;
+        if (!m_CurrSkillDeployer.SkillId.Equals(id)) return false;
 
         return m_CurrSkillDeployer.IsAllComplete();
     }

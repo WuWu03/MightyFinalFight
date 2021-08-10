@@ -9,7 +9,9 @@ public class HeroCatch : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.ActorAnimator.animation.Play(AnimName.Catch, 1);
+        m_Owner.ResetRigidbody();
+        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.PlayAnimation(AnimName.Catch, 1);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

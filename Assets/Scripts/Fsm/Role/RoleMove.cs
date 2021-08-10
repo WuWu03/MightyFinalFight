@@ -12,6 +12,14 @@ public class RoleMove : BaseFsmState
         }
     }
 
+    public bool IsCatch
+    {
+        set
+        {
+            m_IsCatch = value;   
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -21,17 +29,17 @@ public class RoleMove : BaseFsmState
     {
         if (m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
         {
-            m_Owner.PlayAnimation(AnimName.Move_Weapon, 0, m_Owner.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.MoveSpeed * 0.2f);
         }
         else
         {
-            m_Owner.PlayAnimation(AnimName.Move, 0, m_Owner.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.MoveSpeed * 0.2f);
         }
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (m_CanChangeDir)
+        if (m_CanChangeDir && !m_IsCatch)
         {
             m_Owner.SetDir(m_Owner.MoveDir.x);
         }
@@ -42,8 +50,11 @@ public class RoleMove : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
+        m_Owner.StopAnimation(AnimName.Move_Catch);
         m_Owner.StopAnimation(AnimName.Move);
         m_Owner.StopAnimation(AnimName.Move_Weapon);
+        m_CanChangeDir = false;
+        m_IsCatch = false;
     }
 
     public override void OnDestroy(BaseFsm fsm)
@@ -53,5 +64,6 @@ public class RoleMove : BaseFsmState
 
 
     private bool m_CanChangeDir = false;
+    private bool m_IsCatch = false;
     private BaseRole m_Owner = null;
 }

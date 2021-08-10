@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using DragonBones;
+using GameFrameWork.Log;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
@@ -104,11 +105,11 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Debug.LogError("Animator is invalid!");
+            GameFrameworkLog.LogError("Animator is invalid!");
             return;
         }
 
-        if(IsAnim(animName))
+        if (IsAnim(animName))
         {
             return;
         }
@@ -162,6 +163,11 @@ public abstract class BaseAvatar : BaseGravityObject
         }
 
         return false;
+    }
+
+    public bool IsCurrState<T>() where T : BaseFsmState, new()
+    {
+        return m_FsmMachine.CurrStateType == typeof(T);
     }
 
     protected void AddState<T>() where T : BaseFsmState, new()

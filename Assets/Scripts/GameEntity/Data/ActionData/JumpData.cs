@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class JumpData : BaseEventArgs
 {
-    public bool CanChangeDir;
-    public Vector2 Dir
-    {
-        get;
-        set;
-    }
+    public bool CanChangeDir { get; set; }
+    public Vector2 Dir { get; set; }
+    public bool IsCatch { get; set; }
 
     public static JumpData Create()
     {
@@ -20,10 +17,6 @@ public class JumpData : BaseEventArgs
     {
         Dir = Vector2.zero;
         CanChangeDir = false;
-    }
-
-    public override GameFrameWorkEventArgs Clone()
-    {
-        return Activator.CreateInstance<AttackData>();
+        IsCatch = false;
     }
 }

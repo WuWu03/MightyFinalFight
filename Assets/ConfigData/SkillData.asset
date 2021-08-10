@@ -33,6 +33,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -43,6 +44,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -53,6 +55,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -76,6 +79,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -86,6 +90,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -96,6 +101,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -119,6 +125,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -129,6 +136,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -139,6 +147,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -162,6 +171,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -172,6 +182,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 30, y: 180}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -182,6 +193,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -205,6 +217,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -215,6 +228,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -225,6 +239,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -248,6 +263,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -258,6 +274,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -268,6 +285,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -290,7 +308,8 @@ MonoBehaviour:
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 1
+    - PrevConditionType: 6
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -315,6 +334,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -325,6 +345,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -348,6 +369,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -358,6 +380,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 20, y: 180}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 15
       SelectorRadius: 10
@@ -368,6 +391,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -391,6 +415,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -401,6 +426,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
@@ -411,6 +437,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -434,6 +461,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 4
@@ -444,6 +472,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: -0.05, y: 0.15}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
@@ -454,6 +483,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -465,6 +495,7 @@ MonoBehaviour:
       AddTargetForce: {x: 80, y: 100}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
@@ -475,6 +506,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -498,6 +530,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 5
+      IsRevert: 0
       Args: HPMoreThan:1
     SkillEffects:
     - EffectorType: 1
@@ -508,9 +541,10 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 150}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 360
-      SelectorRadius: 10
+      SelectorRadius: 0.2
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -518,10 +552,11 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
-    - EffectorType: 6
+    - EffectorType: 7
       SelectorType: 0
       ForceType: 0
       Bullets: []
@@ -529,6 +564,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 0
       SelectorRadius: 0
@@ -539,6 +575,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
@@ -562,6 +599,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -572,6 +610,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -582,6 +621,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -605,6 +645,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -629,6 +670,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -639,6 +681,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -662,6 +705,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -672,6 +716,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -682,6 +727,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -693,6 +739,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -703,6 +750,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -714,6 +762,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -724,6 +773,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -747,6 +797,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -757,6 +808,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -767,6 +819,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -778,6 +831,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -788,6 +842,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -799,6 +854,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -809,6 +865,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -832,6 +889,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -842,6 +900,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -852,6 +911,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -875,6 +935,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -885,6 +946,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 130}
       AddSelfForce: {x: 0, y: 140}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -895,6 +957,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -918,6 +981,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -928,6 +992,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -938,6 +1003,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -961,6 +1027,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -971,6 +1038,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -981,6 +1049,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -1003,7 +1072,8 @@ MonoBehaviour:
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 1
+    - PrevConditionType: 5
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1014,6 +1084,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1024,6 +1095,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -1035,6 +1107,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 120}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1045,6 +1118,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -1068,6 +1142,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 5
+      IsRevert: 0
       Args: HPMoreThan:1
     SkillEffects:
     - EffectorType: 1
@@ -1078,9 +1153,10 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 150}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 360
-      SelectorRadius: 10
+      SelectorRadius: 0.2
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -1088,10 +1164,11 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
-    - EffectorType: 6
+    - EffectorType: 7
       SelectorType: 0
       ForceType: 0
       Bullets: []
@@ -1099,6 +1176,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1109,6 +1187,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
@@ -1132,6 +1211,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1142,6 +1222,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1152,6 +1233,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1175,6 +1257,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 4
@@ -1185,6 +1268,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: -0.09, y: 0.065}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1195,6 +1279,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1206,6 +1291,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.12, y: 0.14}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1216,6 +1302,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1227,6 +1314,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.18, y: 0.14}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1237,6 +1325,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1248,6 +1337,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0.24, y: 0.14}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1258,6 +1348,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1269,6 +1360,7 @@ MonoBehaviour:
       AddTargetForce: {x: 60, y: 80}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1279,6 +1371,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 1
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1302,6 +1395,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 2
+      IsRevert: 0
       Args: Pos:-1
     SkillEffects:
     - EffectorType: 0
@@ -1312,6 +1406,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 100}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1322,6 +1417,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: 
@@ -1333,6 +1429,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 100, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 10, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1343,6 +1440,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
       Args: OnGroundPickUp
@@ -1366,6 +1464,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1390,6 +1489,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1400,6 +1500,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1423,6 +1524,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 2
@@ -1447,6 +1549,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1457,6 +1560,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1476,10 +1580,11 @@ MonoBehaviour:
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
-    CanChangeDir: 0
+    CanChangeDir: 1
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1490,6 +1595,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1500,6 +1606,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1523,6 +1630,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1533,6 +1641,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1543,6 +1652,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1566,6 +1676,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1576,6 +1687,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1586,6 +1698,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1609,6 +1722,7 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 0
@@ -1617,8 +1731,9 @@ MonoBehaviour:
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 120}
+      AddSelfForce: {x: 10, y: 120}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1629,6 +1744,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1640,6 +1756,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1650,6 +1767,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1673,6 +1791,10 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
+      Args: 
+    - PrevConditionType: 4
+      IsRevert: 1
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1683,6 +1805,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1693,6 +1816,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1701,36 +1825,85 @@ MonoBehaviour:
     Name: HaggerJumpAttack2
     AnimationName: JumpAttack2
     HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
+    Type: 2
+    DeployerType: 3
+    TriggerType: 1
     EnternalTiggerTime: 0
     Key:
       Keys: 
       AddTrigger: 0
     AnimSpeed: 0.2
-    AnimTime: 1
+    AnimTime: 0
     EXP: 4
     IsInEffectPlaySound: 0
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 3
+      IsRevert: 0
       Args: 
     - PrevConditionType: 4
+      IsRevert: 0
       Args: 
     SkillEffects:
-    - EffectorType: 1
+    - EffectorType: 4
       SelectorType: 1
       ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 150}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0.045, y: 0.245}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 5
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: -1, y: -1}
       AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 5
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: -1, y: 1}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
@@ -1738,6 +1911,30 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 1
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 120}
+      AddSelfForce: {x: 0, y: 120}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 1
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 1
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1760,7 +1957,8 @@ MonoBehaviour:
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 0
+    - PrevConditionType: 5
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 3
@@ -1771,6 +1969,7 @@ MonoBehaviour:
       AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 100, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 5, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1781,6 +1980,7 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 1
       Args: 
@@ -1804,6 +2004,7 @@ MonoBehaviour:
     CanMove: 1
     SkillPrevConditions:
     - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1814,6 +2015,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 360
       SelectorRadius: 0.2
@@ -1824,135 +2026,7 @@ MonoBehaviour:
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
-      CanBeDefense: 0
-      HitOne: 0
-      Args: 
-  - ID: 4001
-    Level: 0
-    Name: BredAttack
-    AnimationName: Attack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 0.4
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 0
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      CanBeDefense: 0
-      HitOne: 0
-      Args: 
-  - ID: 5001
-    Level: 0
-    Name: TwoPAttack
-    AnimationName: Attack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 1.5
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 0
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      CanBeDefense: 0
-      HitOne: 0
-      Args: 
-  - ID: 6001
-    Level: 0
-    Name: AxlAttack
-    AnimationName: Attack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 0.2
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 150}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 1
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 
@@ -1976,6 +2050,10 @@ MonoBehaviour:
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 4
+      IsRevert: 0
+      Args: 
+    - PrevConditionType: 1
+      IsRevert: 0
       Args: 
     SkillEffects:
     - EffectorType: 1
@@ -1986,6 +2064,7 @@ MonoBehaviour:
       AddTargetForce: {x: 0, y: 0}
       AddSelfForce: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 10
@@ -1996,6 +2075,237 @@ MonoBehaviour:
       IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 3010
+    Level: 0
+    Name: HaggerThrow
+    AnimationName: Throw
+    HurtSound: 
+    Type: 1
+    DeployerType: 3
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 4
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0.25}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 4
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0.35, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 10, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 4001
+    Level: 0
+    Name: BredAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 5001
+    Level: 0
+    Name: TwoPAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - ID: 6001
+    Level: 0
+    Name: AxlAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
       Args: 

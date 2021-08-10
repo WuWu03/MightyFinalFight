@@ -67,11 +67,14 @@ public class SkillFactory
                 case SkillEffectorType.MoveHitEffect:
                     ret[i] = new SkillMoveHitEffect(skillData, owner, i);
                     break;
-                case SkillEffectorType.MoveTargetEffect:
-                    ret[i] = new SkillMoveTargetEffect(skillData, owner, i);
+                case SkillEffectorType.TargetPositionEffect:
+                    ret[i] = new SkillTargetTransformEffect(skillData, owner, i);
                     break;
-                case SkillEffectorType.MoveSelfEffect:
-                    ret[i] = new SkillNoneEffect(skillData, owner, i);
+                case SkillEffectorType.TargetScaleEffect:
+                    ret[i] = new SkillTargetTransformEffect(skillData, owner, i);
+                    break;
+                case SkillEffectorType.SelfTransformEffect:
+                    ret[i] = new SkillSelfTransformEffect(skillData, owner, i);
                     break;
                 case SkillEffectorType.SubHP:
                     ret[i] = new SkillSubHPEffect(skillData, owner, i);
@@ -94,6 +97,7 @@ public class SkillFactory
         {
             bool isCondition = false;
             SkillPrevConditionType status = conditions[i].PrevConditionType;
+            bool isRevert = conditions[i].IsRevert;
             switch (status)
             {
                 case SkillPrevConditionType.None:
@@ -101,13 +105,8 @@ public class SkillFactory
                     break;
                 case SkillPrevConditionType.Ground:
                     isCondition = owner.IsInGround;
-                    if (owner is BaseHero)
-                        isCondition = isCondition && !(owner as BaseHero).IsCatch;
-                    else if (owner is BaseEnemy)
-                        isCondition = isCondition && !(owner as BaseEnemy).IsBeCatch;
                     break;
                 case SkillPrevConditionType.DropGround:
-                    Debug.Log(owner.IsDropGround);
                     isCondition = owner.IsDropGround;
                     break;
                 case SkillPrevConditionType.Float:
@@ -116,8 +115,11 @@ public class SkillFactory
                 case SkillPrevConditionType.Catch:
                     isCondition = (owner as BaseHero).IsCatch;
                     break;
-                case SkillPrevConditionType.GroundOrCatch:
-                    isCondition = owner.IsInGround || (owner as BaseHero).IsCatch;
+                case SkillPrevConditionType.GroundNotCatch:
+                    isCondition = owner.IsInGround;
+                    isCondition = isCondition && !owner.IsBeCatch;
+                    if (owner is BaseHero)
+                        isCondition = isCondition && !(owner as BaseHero).IsCatch;
                     break;
                 case SkillPrevConditionType.HPMoreThan:
                     Match m1 = m_RegexHPMoreThan.Match(conditions[i].Args);
@@ -129,6 +131,11 @@ public class SkillFactory
                     break;
                 default:
                     break;
+            }
+
+            if(isRevert)
+            {
+                isCondition = !isCondition;
             }
 
             if (!isCondition)
@@ -155,7 +162,6 @@ public class SkillFactory
             damage *= criMulity;
         }
 
-        Debug.Log("伤害计算" + Mathf.FloorToInt(damage));
         return Mathf.FloorToInt(damage);
     }
 

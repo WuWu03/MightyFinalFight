@@ -10,7 +10,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanMove && !HasCatch();
+            return (base.CanMove || IsAnyState(typeof(HeroCatch))) && (!HasCatch() || m_IsCatchControl);
         }
     }
 
@@ -43,7 +43,12 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanChangeDefaultState || HasCatch() || m_Weapon != null || IsAnim(AnimName.ThrowWeapon);
+            bool condition = base.CanChangeDefaultState || m_Weapon != null || IsAnim(AnimName.ThrowWeapon);
+            if(HasCatch() && m_IsCatchControl)
+            {
+                condition = false;
+            }
+            return condition;
         }
     }
 
@@ -135,7 +140,7 @@ public class BaseHero : BaseRole
 
         if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3) return;
 
-        if (skillData.Type == SkillConfigData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
+        if (skillData.Type == SkillConfigData.SkillType.Skill && !m_IsCatchControl)//捕捉状态下技能攻击不进行次数累积
         {
             ResetCatch(false);
             return;
@@ -170,10 +175,26 @@ public class BaseHero : BaseRole
         base.OnAttackMsg(data, isForceJumpAttack);
     }
 
+    public override void OnMoveMsg(MoveData data)
+    {
+        data.IsCatch = HasCatch() && m_IsCatchControl;
+        base.OnMoveMsg(data);
+    }
+
     public override void OnJumpMsg(JumpData data)
     {
+        data.IsCatch = false;
         if (HasCatch())
-            ResetCatch();
+        {
+            if (!m_IsCatchControl)
+                ResetCatch();
+            else
+            {
+                m_CatchStamp = Time.time;
+                data.IsCatch = true;
+            }
+        }
+           
         base.OnJumpMsg(data);
     }
 
@@ -322,6 +343,15 @@ public class BaseHero : BaseRole
 
     protected override void OnGround()
     {
+        if (HasCatch() && IsCurrState<RoleSkill>())
+        {
+            BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
+            float distance = GetCatchDistance(target);
+            float offest = target.transform.localScale.y < 0 ? target.GetAnimTriggerSize(AnimName.Idle).y : 0;
+            target.SetPos2(m_Pos.x + distance * m_Dir, transform.localPosition.y - offest);
+            target.SetDepth(target.Pos.y);
+            ResetCatch();
+        }
         m_IsOnGround = !IsAnyState(typeof(RoleHurt), typeof(RoleSwoon));
     }
 
@@ -347,18 +377,17 @@ public class BaseHero : BaseRole
                 ICanBeHit temp = m_ListTargets[i].GetComponent<ICanBeHit>();
                 if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
 
-                BaseAvatar targetObj = temp as BaseAvatar;
-                Vector2 targetSize = targetObj.GetAnimTriggerSize(AnimName.Idle);
-                Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
+                BaseAvatar tempAvatar = temp as BaseAvatar;
 
-                float distance = targetSize.x / 2 + selfSize.x / 2 - 0.01f;
-                bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) <= 0.03f &&
-                                 Mathf.Abs(targetObj.Pos.x - m_Pos.x) < distance &&
-                                    (targetObj.Pos.x - m_Pos.x) * m_Dir > 0;
+                float distance = GetCatchDistance(tempAvatar);
+                bool isInRange = Mathf.Abs(tempAvatar.Pos.y - m_Pos.y) <= 0.03f &&
+                                 Mathf.Abs(tempAvatar.Pos.x - m_Pos.x) < distance &&
+                                    (tempAvatar.Pos.x - m_Pos.x) * m_Dir > 0;
                 if (isInRange)
                 {
-                    targetObj.SetDir(m_Dir * -1);
-                    targetObj.SetPos2(m_Pos.x + distance * m_Dir, m_Pos.y);
+                    tempAvatar.SetDir(m_Dir * -1);
+                    tempAvatar.SetPos2(m_Pos.x + distance * m_Dir, m_Pos.y);
+                    tempAvatar.SetDepth(m_Pos.y + 0.05f);
                     temp.SetCatch(true);
                     ChangeState<HeroCatch>();
                     SetDefaultState<HeroCatch>();
@@ -375,11 +404,37 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if (Time.time - m_CatchStamp >= m_CatchTime || m_ListCatchTarget[0].IsDead)
+        if ((Time.time - m_CatchStamp >= m_CatchTime && IsInGround) || m_ListCatchTarget[0].IsDead)
         {
             ResetCatch();
             return;
         }
+
+        if (IsAnyState(typeof(RoleMove), typeof(RoleJump),typeof(RoleSkill)))
+        {
+            if (IsCurrState<RoleSkill>() && !IsFloat && !IsDrop) return;
+
+            if (m_ListCatchTarget.Count > 0 && m_IsCatchControl)
+            {
+                BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
+                float distance = GetCatchDistance(target);
+                float y = target.Pos.y;
+                float offest = target.transform.localScale.y < 0 ? target.GetAnimTriggerSize(AnimName.Idle).y : 0;
+                target.SetPos2(m_Pos.x + distance * m_Dir, transform.localPosition.y + offest);
+                if (IsFloat || IsDrop)
+                    target.UpdatePos2(target.Pos.x, y);
+                target.SetDepth(m_Pos.y + 0.05f);
+            }
+        }
+    }
+
+    private float GetCatchDistance(BaseAvatar target)
+    {
+        Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
+        Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
+        float distance = targetSize.x / 2 + selfSize.x / 2 - 0.01f;
+
+        return distance;
     }
 
     private void CheckRebirthState()

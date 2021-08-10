@@ -109,6 +109,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         roleData.CriticalValue = m_LevelData.CriticalValue;
         roleData.JumpForce = m_LevelData.JumpForce;
         roleData.MoveSpeed = m_LevelData.MoveSpeed;
+        roleData.CatchControl = m_HeroData.CatchControl;
 
         heroSkillData.Id = m_HeroData.ID;
         heroSkillData.AttackIds = m_HeroData.AttackIDs;

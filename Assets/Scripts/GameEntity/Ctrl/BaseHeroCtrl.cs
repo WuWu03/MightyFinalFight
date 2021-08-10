@@ -11,6 +11,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
         m_WeaponAttackID = heroSkillData.WeaponAttackID;
         m_ThrowWeaponID = heroSkillData.ThrowWeaponID;
+        m_JumpAttackID = heroSkillData.JumpAttackIds[1];
     }
 
     protected override void NormalAttack(Vector2 dir)
@@ -32,6 +33,13 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
             if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CATCH_ATTACK_STAMP))//正在捕捉攻击
             {
+                return;
+            }
+
+            if(m_Owner.IsFloat && dir.y < 0)
+            {
+                m_CatchAttackTimer = 0;
+                m_SkillManager.DeploySkill(m_JumpAttackID);
                 return;
             }
 
@@ -118,6 +126,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_ThrowAttackID;
     private int m_ThrowWeaponID;
     private int m_WeaponAttackID;
+    private int m_JumpAttackID;
     private float m_CatchAttackTimer = 0f;
 
     private const float CATCH_ATTACK_STAMP = 0.2f;

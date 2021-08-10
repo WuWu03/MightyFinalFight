@@ -10,6 +10,7 @@ public class BaseRoleData : BaseSceneObjectData
     public int CriticalValue { get; set; }
     public float MoveSpeed { get; set; }
     public Vector2 JumpForce { get; set; }
+    public bool CatchControl { get; set; }
 
     public override void Clear()
     {
@@ -19,5 +20,6 @@ public class BaseRoleData : BaseSceneObjectData
         DefenseValue = 0;
         MoveSpeed = 0;
         JumpForce = Vector2.zero;
+        CatchControl = false;
     }
 }

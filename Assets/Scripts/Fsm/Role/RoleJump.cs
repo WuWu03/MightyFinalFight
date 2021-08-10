@@ -20,6 +20,14 @@ public class RoleJump : BaseFsmState
         }
     }
 
+    public bool IsCatch
+    {
+        set
+        {
+            m_IsCatch = value;
+        }
+    }
+
     public override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.Owner as BaseRole;
@@ -29,9 +37,12 @@ public class RoleJump : BaseFsmState
     {
         m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.Rigidbody.AddForce(new Vector2(m_Dir * m_Owner.JumpForce.x, m_Owner.JumpForce.y));
-        m_Owner.PlayAnimation(AnimName.JumpUp);
+        m_Owner.PlayAnimation(m_IsCatch ? AnimName.Catch : AnimName.JumpUp);
         m_HasAddXForce = m_Dir != 0;
-        m_Owner.SetDir(m_Dir);
+
+        if (m_CanChangeDir)
+            m_Owner.SetDir(m_Dir);
+
         m_Owner.OnDropEvent.AddListener(OnDrop);
     }
 
@@ -47,7 +58,7 @@ public class RoleJump : BaseFsmState
                     m_Owner.SetDir(m_Dir);
             }
 
-            if (m_HasAddXForce)
+            if (m_HasAddXForce && !m_IsCatch)
             {
                 m_Owner.PlayAnimation(AnimName.JumpRoll, -1, 0.5f);
             }
@@ -56,8 +67,9 @@ public class RoleJump : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
+        m_Dir = 0;
+        m_CanChangeDir = false;
         m_HasAddXForce = false;
-        m_Owner.StopAnimation(AnimName.JumpUp);
     }
 
     public override void OnDestroy(BaseFsm fsm)
@@ -67,12 +79,13 @@ public class RoleJump : BaseFsmState
 
     private void OnDrop()
     {
-        if (!m_Owner.IsAnyState(typeof(RoleAttack)))
+        if (!m_IsCatch && !m_Owner.IsAnyState(typeof(RoleAttack)))
             m_Owner.PlayAnimation(AnimName.JumpDown);
     }
 
     private float m_Dir = 0;
     private bool m_CanChangeDir = false;
     private bool m_HasAddXForce = false;
+    private bool m_IsCatch = false;
     private BaseRole m_Owner = null;
 }

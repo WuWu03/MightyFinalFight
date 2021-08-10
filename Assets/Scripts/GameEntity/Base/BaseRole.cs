@@ -202,6 +202,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_AttackSpeed = baseRoleData.AttackSpeed;   
         m_JumpForce = baseRoleData.JumpForce;
         m_MoveSpeed = baseRoleData.MoveSpeed;
+        m_IsCatchControl = baseRoleData.CatchControl;
     }
 
     public T AddCtrl<T>() where T : BaseRoleCtrl,new()
@@ -296,13 +297,21 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (data.Dir == Vector2.zero)
         {
-            ChangeState<RoleIdle>();
+            if (data.IsCatch)
+            {
+                if (this is BaseHero)
+                    ChangeState<HeroCatch>();
+            }
+            else
+                ChangeState<RoleIdle>();
             return;
         }
 
         m_MoveDir = data.Dir;
         m_CurrCtrl.ExitSkill();
-        GetState<RoleMove>().CanChangeDir = data.CanChangeDir;
+        RoleMove roleMove = GetState<RoleMove>();
+        roleMove.CanChangeDir = data.CanChangeDir;
+        roleMove.IsCatch = data.IsCatch;
         ChangeState<RoleMove>();
     }
 
@@ -311,8 +320,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (data == null) return;
         m_CurrCtrl.ExitSkill();
         RoleJump roleJump = GetState<RoleJump>();
-        roleJump.CanChangeDir = data.CanChangeDir;
+        roleJump.CanChangeDir = !data.IsCatch && data.CanChangeDir;
         roleJump.Dir = data.Dir.x;
+        roleJump.IsCatch = data.IsCatch;
+
         ChangeState<RoleJump>();
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultJump);
     }
@@ -444,6 +455,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_DropGourndTime = Time.time;
         OnGroundEvent.Invoke();
         OnGroundEvent.RemoveAllListeners();
+        OnGround();
         m_IsJumpAttack = false;
         m_CurrCtrl.ExitSkill();
 
@@ -545,6 +557,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsDropTrag = false;
     protected bool m_IsBeCatch = false;
     protected bool m_IsBeThrow = false;
+    protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
 
     private bool m_IsDropGround = false;

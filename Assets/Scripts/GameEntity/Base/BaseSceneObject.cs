@@ -63,6 +63,14 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
+    public float Depth
+    {
+        get
+        {
+            return m_Depth;
+        }
+    }
+
     public virtual bool IsInGround
     {
         get
@@ -165,6 +173,14 @@ public class BaseSceneObject : BaseEntity
         m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
     }
 
+    public void SetDepth(float depth)
+    {
+        float x = transform.localPosition.x;
+        float y = transform.localPosition.y;
+        m_Depth = depth;
+        transform.localPosition = new Vector3(x, y, depth);
+    }
+
     public void SetPos2(float x, float y)
     {
         SetPos(new Vector2(x, y));
@@ -181,7 +197,19 @@ public class BaseSceneObject : BaseEntity
         m_Pos = pos;
         m_MapPos.x = Mathf.CeilToInt(m_Pos.x * 100);
         m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
+        m_Depth = pos.y;
         transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
+    }
+
+    public void SetScale2(float x,float y)
+    {
+        SetScale(new Vector2(x, y));
+    }
+
+    public virtual void SetScale(Vector2 scale)
+    {
+        SetDir(scale.x);
+        transform.localScale = new Vector3(Mathf.Abs(scale.x), scale.y, 1);
     }
 
     public void SetDir(float dir)
@@ -342,6 +370,7 @@ public class BaseSceneObject : BaseEntity
 
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
+    protected float m_Depth = 0f;
     protected int m_EntityID = 0;
     protected string m_ResPath = string.Empty;
     protected int m_Health = 0;

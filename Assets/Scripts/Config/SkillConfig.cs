@@ -25,8 +25,9 @@ public class SkillConfigData : BaseConfigData
         NearHitEffect,
         BulletHitEffect,
         MoveHitEffect,
-        MoveTargetEffect,
-        MoveSelfEffect,
+        TargetPositionEffect,
+        TargetScaleEffect,
+        SelfTransformEffect,
         SubHP,
     }
 
@@ -45,7 +46,7 @@ public class SkillConfigData : BaseConfigData
         DropGround,//刚刚落到地上
         Float,//浮空
         Catch,//抓人
-        GroundOrCatch,//着陆或抓人
+        GroundNotCatch,//着陆且没有抓人
         HPMoreThan,//hp大于
         HPLessThan,//hp小于
     }
@@ -102,6 +103,7 @@ public class SkillConfigData : BaseConfigData
         public Vector2 AddTargetForce;//对目标施加力
         public Vector2 AddSelfForce;//对自身施加力
         public Vector2 MoveTarget;//把目标移动
+        public Vector2 ScaleTarget;//目标缩放
         public Vector2 AddSelfVelocity;//自身速度
         public float SelectorAngle;//选择器角度
         public float SelectorRadius;//选择器半径
@@ -112,6 +114,7 @@ public class SkillConfigData : BaseConfigData
         public bool IsSmoon;//是否击昏
         public bool IsShakeCamera;//击中敌人是否震屏
         public bool IsOnGroundHurt;//是否落地才触发伤害
+        public bool IsOnGroundEffect;//落地才触发效果
         public bool CanBeDefense;//能否被防御
         public bool HitOne;//攻击到任何敌人就结束技能
         public string Args;//各种数值效果的参数 每种类型效果自行解析
@@ -128,6 +131,7 @@ public class SkillConfigData : BaseConfigData
     public class SkillPrevCondition
     {
         public SkillPrevConditionType PrevConditionType;
+        public bool IsRevert;
         public string Args;
     }
 
