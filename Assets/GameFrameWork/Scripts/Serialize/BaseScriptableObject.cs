@@ -13,7 +13,7 @@ namespace GameFrameWork.Serialize
             if (Datas == null) return null;
             for (int i = 0; i < Datas.Count; i++)
             {
-                if (Datas[i].ID.Equals(id))
+                if (Datas[i].Id.Equals(id))
                 {
                     return Datas[i];
                 }
@@ -36,12 +36,12 @@ namespace GameFrameWork.Serialize
     [Serializable]
     public abstract class BaseConfigData : IComparable
     {
-        public int ID;
+        public int Id;
 
         public int CompareTo(object obj)
         {
             BaseConfigData data = obj as BaseConfigData;
-            if (data.ID < this.ID)
+            if (data.Id < this.Id)
                 return 1;
             else
                 return -1;

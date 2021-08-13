@@ -12,11 +12,11 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public int ID
+        public int Id
         {
             get
             {
-                return m_ID;
+                return m_Id;
             }
         }
 
@@ -30,7 +30,7 @@ namespace GameFrameWork.GameEntity
 
         public virtual void Init(int id, string name)
         {
-            m_ID = id;
+            m_Id = id;
             m_Name = name;
             gameObject.name = name;
         }
@@ -45,7 +45,7 @@ namespace GameFrameWork.GameEntity
 
         public void SetID(int id)
         {
-            m_ID = id;
+            m_Id = id;
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
@@ -69,7 +69,7 @@ namespace GameFrameWork.GameEntity
         protected virtual void LateUpdate() { }
         protected virtual void OnDestroy() { }
        
-        protected int m_ID = 0;
+        protected int m_Id = 0;
         protected string m_Name = string.Empty;
         protected string m_Layer = "Unit";   
     }

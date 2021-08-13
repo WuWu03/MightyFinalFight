@@ -16,9 +16,9 @@ public abstract class SkillBaseDeployer
 
     public SkillConfigData SkillData
     {
-        get 
-        { 
-            return m_SkillData; 
+        get
+        {
+            return m_SkillData;
         }
     }
 
@@ -27,20 +27,42 @@ public abstract class SkillBaseDeployer
         m_SkillId = skillId;
         m_Owner = owner;
         m_SkillData = StaticConfig.SkillConfig.GetData(skillId);
-        m_SkillSelector = SkillFactory.CreateSelector(m_SkillData, owner);
+        m_SkillSelectors = SkillFactory.CreateSelector(m_SkillData, owner);
         m_SkillEffects = SkillFactory.CreateEffects(m_SkillData, owner);
         m_ListGroundEffect = new List<int>();
     }
 
     public void AddEvent()
     {
-        m_Owner.OnGroundEvent.AddListener(OnGround);
+        m_HasAddForce = false;
+        m_HasAddGroundForce = false;
+
+        for (int i = 0; i < m_SkillEffects.Length; i++)
+        {
+            if (m_SkillEffects[m_CurrEffectIndex] == null)
+            {
+                continue;
+            }
+
+            if (m_SkillData.SkillEffects[i].IsOnGroundEffect)
+            {
+                m_Owner.OnGroundEvent.AddListener(OnGround);
+                break;
+            }
+        }
+    }
+
+    public void RemoveEvent()
+    {
+        m_Owner.OnGroundEvent.RemoveListener(OnGround);
     }
 
     public virtual void DeploySkill()
     {
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        {
             m_EnternalTriggerTimer = Time.time;
+        }
 
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
@@ -77,8 +99,8 @@ public abstract class SkillBaseDeployer
         {
             for (int i = 0; i < m_SkillEffects.Length; i++)
                 m_SkillEffects[i].Reset();
-            for (int i = 0; i < m_SkillSelector.Length; i++)
-                m_SkillSelector[i].Reset();
+            for (int i = 0; i < m_SkillSelectors.Length; i++)
+                m_SkillSelectors[i].Reset();
         }
 
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
@@ -94,7 +116,7 @@ public abstract class SkillBaseDeployer
         if (!m_SkillData.SkillEffects[m_CurrEffectIndex].IsOnGroundEffect)
         {
             CheckAddSelfForce(m_SkillData.SkillEffects[m_CurrEffectIndex].AddSelfForce);
-            m_SkillEffects[m_CurrEffectIndex].Effect(m_SkillSelector[m_CurrEffectIndex]);
+            m_SkillEffects[m_CurrEffectIndex].Effect(m_SkillSelectors[m_CurrEffectIndex]);
         }
         else
         {
@@ -106,7 +128,7 @@ public abstract class SkillBaseDeployer
 
         if (m_CurrEffectIndex >= m_SkillEffects.Length)
         {
-            OnEffectComplete();
+            OnAnimationEffectComplete();
             m_CurrEffectIndex = 0;
         }
     }
@@ -121,8 +143,11 @@ public abstract class SkillBaseDeployer
             if (!m_SkillData.SkillEffects[i].IsOnGroundEffect)
             {
                 if (!m_HasAddForce)
+                {
                     CheckAddSelfForce(m_SkillData.SkillEffects[i].AddSelfForce);
-                m_SkillEffects[i].Effect(m_SkillSelector[i]);
+                }
+
+                m_SkillEffects[i].Effect(m_SkillSelectors[i]);
             }
             else
             {
@@ -134,12 +159,16 @@ public abstract class SkillBaseDeployer
         m_HasAddForce = true;
     }
 
-    private void CheckAddSelfForce(Vector2 addSelfForce)
+    private void CheckAddSelfForce(Vector2 addSelfForce, bool isGround = false)
     {
         if (addSelfForce.x != 0 || addSelfForce.y != 0)
         {
-            m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            m_Owner.Rigidbody.AddForce(new Vector2(addSelfForce.x * m_Owner.Dir, addSelfForce.y));
+            if (isGround)
+            {
+                m_Owner.SetVelocity(Vector2.zero);
+            }
+
+            m_Owner.AddForce(addSelfForce.x * m_Owner.Dir, addSelfForce.y, isGround);
         }
     }
 
@@ -148,10 +177,16 @@ public abstract class SkillBaseDeployer
         for (int i = 0; i < m_ListGroundEffect.Count; i++)
         {
             int index = m_ListGroundEffect[i];
-            CheckAddSelfForce(m_SkillData.SkillEffects[index].AddSelfForce);
-            m_SkillEffects[index].Effect(m_SkillSelector[index]);      
+
+            if (!m_HasAddGroundForce)
+            {
+                CheckAddSelfForce(m_SkillData.SkillEffects[index].AddSelfForce, true);
+            }
+
+            m_SkillEffects[index].Effect(m_SkillSelectors[index]);
         }
 
+        m_HasAddGroundForce = true;
         m_ListGroundEffect.Clear();
     }
 
@@ -159,15 +194,14 @@ public abstract class SkillBaseDeployer
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
             m_SkillEffects[i].Exit();
-        for (int i = 0; i < m_SkillSelector.Length; i++)
-            if (m_SkillSelector[i] != null)
-                m_SkillSelector[i].Exit();
+        for (int i = 0; i < m_SkillSelectors.Length; i++)
+            if (m_SkillSelectors[i] != null)
+                m_SkillSelectors[i].Exit();
 
         m_CurrEffectIndex = 0;
-        m_HasAddForce = false;
     }
 
-    public virtual void Update() 
+    public virtual void Update()
     {
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
@@ -177,18 +211,24 @@ public abstract class SkillBaseDeployer
         for (int i = 0; i < m_SkillEffects.Length; i++)
         {
             if (!m_SkillEffects[i].IsCompleted)
-                m_SkillEffects[i].Update(m_SkillSelector[i]);
+                m_SkillEffects[i].Update(m_SkillSelectors[i]);
         }
     }
 
-    protected virtual void OnEffectComplete() { }
+    protected virtual void OnAnimationEffectComplete() 
+    {
+
+    }
+
     protected BaseRole m_Owner = null;
     protected SkillConfigData m_SkillData = null;
-    protected List<int> m_ListGroundEffect = null;
+
+    private List<int> m_ListGroundEffect = null;
     private int m_SkillId = 0;
     private int m_CurrEffectIndex = 0;
     private float m_EnternalTriggerTimer = 0f;
+    private bool m_HasAddGroundForce = false;
     private bool m_HasAddForce = false;
-    private ISkillSelector[] m_SkillSelector = null;
+    private ISkillSelector[] m_SkillSelectors = null;
     private ISkillEffect[] m_SkillEffects = null;
 }

@@ -172,7 +172,7 @@ namespace GameFrameWork.Utility
             return dt.ToString("yyyy/MM/dd HH:mm");
         }
 
-        public Vector2 ScreenPosToUGUIPos(Vector2 screenPos, RectTransform rectTrans, UnityEngine.Camera camera)
+        public static Vector2 ScreenPosToUGUIPos(Vector2 screenPos, RectTransform rectTrans, UnityEngine.Camera camera)
         {
             Vector2 resultPos = Vector2.zero;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTrans, screenPos, camera, out resultPos);

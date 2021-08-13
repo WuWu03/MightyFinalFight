@@ -69,9 +69,9 @@ namespace GameFrameWork.Editor
                     EditorGUI.LabelField(new Rect(rect.x, rect.y - 10, rect.width, rect.height), windowData.Name);
 
                 if (m_LeftOperation == 2 && m_CurrSelect == index)
-                    windowData.ID = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.ID.ToString()));
+                    windowData.Id = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.Id.ToString()));
                 else
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.ID.ToString());
+                    EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.Id.ToString());
 
                 EditorGUI.DrawRect(new Rect(rect.x, rect.y + 22, rect.width, 1), Color.gray);
                 EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y, rect.width + 25, 1), Color.black);

@@ -24,7 +24,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         AttackData attackData = AttackData.Create();
-        attackData.SkillID = m_SkillData.ID;
+        attackData.SkillID = m_SkillData.Id;
         attackData.AnimName = m_SkillData.AnimationName;
         attackData.AnimSpeed = m_SkillData.AnimSpeed;
         attackData.AnimTime = m_SkillData.AnimTime;
@@ -41,30 +41,35 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         ReferencePool.Release(attackData);
     }
 
+
     public override bool IsAllComplete()
     {
-        bool isComplete = m_IsOnGround;//(base.IsAllComplete() && m_Owner.HitSuccess) || m_IsOnGround;
-
-        if (isComplete)
+        if (m_IsOnGround)
         {
+            m_CanEffect = false;
             m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         }
 
-        return isComplete;
+        return m_IsOnGround;
     }
 
     public override void Update()
     {
-        base.Update();
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
         {
             if (m_CanEffect)
             {
-                base.DeploySkill();
                 if (m_Owner.HitSuccess)
+                {
                     m_CanEffect = false;
+                    return;
+                }   
+                
+                base.DeploySkill();  
             }
         }
+
+        base.Update();
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -83,7 +88,6 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     private void OnDropEvent()
     {
         m_CanEffect = true;
-        m_Owner.OnDropEvent.RemoveListener(OnDropEvent);
     }
 
     private void OnGroundEvent()

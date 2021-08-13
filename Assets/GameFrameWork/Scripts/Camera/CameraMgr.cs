@@ -82,6 +82,11 @@ namespace GameFrameWork.Camera
             return m_CameraFollow.GetVision();
         }
 
+        public Vector3 WorldPosToScreenPos(Vector3 worldPos)
+        {
+            return m_ListCamera[0].WorldToScreenPoint(worldPos);
+        }
+
         private void LateUpdate()
         {
 

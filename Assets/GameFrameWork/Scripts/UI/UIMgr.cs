@@ -44,6 +44,14 @@ namespace GameFrameWork.UI
             }
         }
 
+        public UnityEngine.Camera UICamera
+        {
+            get
+            {
+                return m_UICamera;
+            }
+        }
+
         protected override void OnAwake()
         {
             m_ListOpenPanel = new List<BasePanel>();

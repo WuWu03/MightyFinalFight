@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HeroData
   m_EditorClassIdentifier: Assembly-CSharp:Runtime.Config:PlayerConfig
   Datas:
-  - ID: 1001
+  - Id: 1001
     Name: Cody
     AssetName: Character/Cody
     HitEffect: CodyHit
@@ -42,7 +42,7 @@ MonoBehaviour:
     - 0.15
     - 0.15
     CatchControl: 0
-  - ID: 2001
+  - Id: 1002
     Name: Guy
     AssetName: Character/Guy
     HitEffect: GuyHit
@@ -71,7 +71,7 @@ MonoBehaviour:
     - 0.3
     - 0.3
     CatchControl: 0
-  - ID: 3001
+  - Id: 1003
     Name: Hagger
     AssetName: Character/Hagger
     HitEffect: HaggerHit

@@ -18,8 +18,7 @@ public class BarrelDead : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-        m_Owner.Rigidbody.velocity = Vector2.zero;
+        m_Owner.ResetRigidbody();
         m_Owner.BarrelAnimator.animation.timeScale = 1;
         m_Owner.BarrelAnimator.animation.Play(AnimName.Dead, 1);
         m_Owner.SetPos(m_Owner.Pos);

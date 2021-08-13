@@ -38,7 +38,7 @@ public static class SceneEntityFactory
         if (sceneItem == null) return;
 
         SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
-        sceneItemData.Id = data.ID;
+        sceneItemData.Id = data.Id;
         sceneItemData.Type = type;
         sceneItemData.Health = data.Value;
         sceneItemData.MaxHealth = data.Value;
@@ -53,7 +53,7 @@ public static class SceneEntityFactory
         sceneItem.SetMapPos(pos);
     }
 
-    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, int hp, int attack, int defense, Vector2Int pos)
+    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = GetEnemyEntity(enemyConfigData);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
@@ -62,12 +62,13 @@ public static class SceneEntityFactory
         enemyData.Id = engityID;
         enemyData.Health = hp;
         enemyData.MaxHealth = hp;
+        enemyData.HpBarWdith = hpBarWidth;
         enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
         enemyData.AttackValue = attack;
         enemyData.DefenseValue = defense;
         enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
         enemyData.HurtAnim = enemyConfigData.HurtEnemy;
-
+  
         enemySkillData.AttackIds = enemyConfigData.AttackIDs;
         enemySkillData.SkillIds = enemyConfigData.Skills;
         enemySkillData.AttackWait = enemyConfigData.AttackWait;

@@ -32,8 +32,7 @@ public class Consume : BaseSceneItem
         SetPos(m_Pos);
         m_Collider.isTrigger = true;
         m_Collider.enabled = true;
-        m_Rigidbody.gravityScale = 1.0f;
-        m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        ResetRigidbody();
     }
 
     private void AddHP()

@@ -60,7 +60,16 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void Skill(int skillID)
     {
-        if (!m_Owner.CanSkill) return;
+        if (!m_Owner.CanSkill)
+        {
+            return;
+        }
+
+        if(m_SkillManager.IsCurrSkill(skillID) && !m_SkillManager.IsSkillComplete(skillID))
+        {
+            return;
+        }
+
         ExitSkill();
         m_CurrSkillID = skillID;
         m_SkillManager.DeploySkill(m_CurrSkillID);
@@ -70,7 +79,7 @@ public class BaseRoleCtrl : BaseCtrl
     {
         if (m_SkillManager == null) return;
 
-        for(int i = 0; i < m_Data.AttackIds.Length; i++)
+        for (int i = 0; i < m_Data.AttackIds.Length; i++)
         {
             if(m_CurrSkillID == m_Data.AttackIds[i])
             {

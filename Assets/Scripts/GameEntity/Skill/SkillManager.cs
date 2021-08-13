@@ -6,6 +6,7 @@ public class SkillManager
     {
         m_Owner = owner;
         m_SkillDeployers = new SkillBaseDeployer[skillIDs.Length];
+
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
             m_SkillDeployers[i] = SkillFactory.CreateDeployer(skillIDs[i], owner);
@@ -14,8 +15,13 @@ public class SkillManager
 
     public void DeploySkill(int id)
     {
-        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillId == id) return;
+        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillId == id)
+        {
+            return;
+        }
+
         SkillBaseDeployer deployer = null;
+
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
             if (m_SkillDeployers[i].SkillId.Equals(id))
@@ -36,42 +42,70 @@ public class SkillManager
             deployer.DeploySkill();
             m_CurrSkillDeployer = deployer;
         }
-        else GameFrameWork.Log.GameFrameworkLog.LogError("Skill not found id:", id);
+        else
+        {
+            GameFrameWork.Log.GameFrameworkLog.LogError("Skill not found id:", id);
+        }
     }
 
     public void Update()
     {
-        if (m_CurrSkillDeployer == null) return;
+        if (m_CurrSkillDeployer == null)
+        {
+            return;
+        }
 
         m_CurrSkillDeployer.Update();
 
         if (m_CurrSkillDeployer.IsAllComplete())
         {
-            m_CurrSkillDeployer.OnExit();
-            m_CurrSkillDeployer = null;
-            if (m_Owner.CanChangeDefaultState)
+            ExitSkill();
+
+            if (m_Owner.CanChangeDefaultState && !m_Owner.IsAddGroundForce)
+            {
                 m_Owner.FsmMachine.ChangeDefaultState();
+            }
         }
     }
 
     public bool IsCurrSkill(int id)
     {
-        if (m_CurrSkillDeployer == null) return false;
-        if (!m_CurrSkillDeployer.SkillId.Equals(id)) return false;
+        if (m_CurrSkillDeployer == null)
+        {
+            return false;
+        }
+
+        if (!m_CurrSkillDeployer.SkillId.Equals(id))
+        {
+            return false;
+        }
+
         return true;
     }
 
     public bool IsSkillComplete(int id)
     {
-        if (m_CurrSkillDeployer == null) return false;
-        if (!m_CurrSkillDeployer.SkillId.Equals(id)) return false;
+        if (m_CurrSkillDeployer == null)
+        {
+            return false;
+        }
+
+        if (!m_CurrSkillDeployer.SkillId.Equals(id))
+        {
+            return false;
+        }
 
         return m_CurrSkillDeployer.IsAllComplete();
     }
 
     public void ExitSkill()
     {
-        if (m_CurrSkillDeployer == null) return;
+        if (m_CurrSkillDeployer == null)
+        {
+            return;
+        }
+
+        m_CurrSkillDeployer.RemoveEvent();
         m_CurrSkillDeployer.OnExit();
         m_CurrSkillDeployer = null;
     }

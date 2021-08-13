@@ -22,10 +22,11 @@ public class SkillNearHitSelector : SkillBaseSelector
 
             Vector2 target = (hitObj.Pos - m_Owner.Pos).normalized;
             Vector2 normal = m_Owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+            Vector2 pos = m_Owner.Pos + m_SkillEffect.SelectorOffest;
 
             if (Vector2.Angle(target, normal) <= m_SkillEffect.SelectorAngle / 2)
             {
-                isInRange = Vector2.Distance(hitObj.Pos, m_Owner.Pos) <= m_SkillEffect.SelectorRadius;
+                isInRange = Vector2.Distance(hitObj.Pos, pos) <= m_SkillEffect.SelectorRadius;
             }
 
             if (isInRange && hit.CanBeHit)

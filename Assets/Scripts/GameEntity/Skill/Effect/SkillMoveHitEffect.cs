@@ -19,10 +19,9 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_IsCompleted = false;
         m_HasEffect = true;
         m_StartPos = m_Owner.transform.localPosition;
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Owner.Rigidbody.velocity = new Vector2(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
-        m_Owner.Rigidbody.drag = m_SkillEffect.AddSelfDrag;
-        m_Owner.Rigidbody.gravityScale = m_SkillEffect.Gravity;
+        m_Owner.SetVelocity(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
+        m_Owner.SetDrag(m_SkillEffect.AddSelfDrag);
+        m_Owner.SetGravityScale(m_SkillEffect.Gravity);
 
         if (m_SkillEffect.Args == "OnGroundPickUp")
             m_Owner.OnGroundEvent.AddListener(OnGround);
@@ -35,9 +34,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     private void Complete()
     {
-        m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.gravityScale = 1.0f;
-        m_Owner.Rigidbody.drag = 0f;
+        m_Owner.ResetRigidbody(false);
         m_IsCompleted = true;
         m_HasEffect = false;
     }
@@ -87,7 +84,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
             if (targets[i].CanBeHit)
             {
                 HurtData hurtData = HurtData.Create();
-                hurtData.AttackerID = m_Owner.ID;
+                hurtData.AttackerId = m_Owner.Id;
                 hurtData.AttackerDir = m_Owner.Dir;
                 hurtData.AttackerPos = m_Owner.Pos;
                 hurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y);

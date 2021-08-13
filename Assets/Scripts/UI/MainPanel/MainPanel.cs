@@ -6,8 +6,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using GameFrameWork;
 using GameFrameWork.UI;
 using GameFrameWork.Utility;
+using GameFrameWork.Pool;
+using GameFrameWork.Camera;
 
 public class MainPanel : BasePanel
 {
@@ -31,6 +34,9 @@ public class MainPanel : BasePanel
 		SetRound(StageMgr.Ins.StageIndex);
 		SetPlayerLife(PlayerMgr.Ins.Life);
 		SetPlayerHP(PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.HPBarWidth);
+
+		PoolMgr.Ins.AddPool("PlayerDamageText", m_Component.TxtPlayerDamage.gameObject);
+		PoolMgr.Ins.AddPool("EmenyDamageText", m_Component.TxtEnemyDamage.gameObject);
 	}
 
     protected override void OnUpdate()
@@ -103,6 +109,36 @@ public class MainPanel : BasePanel
 		}
 
 		m_EnemyHpBarHideTimer = Time.time;
+	}
+
+	public void ShowEnemyDamage(int value,Vector3 pos)
+    {
+		ShowDamageText("EmenyDamageText", value, pos);
+	}
+
+	public void ShowPlayerDamage(int value, Vector3 pos)
+	{
+		ShowDamageText("PlayerDamageText", value, pos);
+	}
+
+	private void ShowDamageText(string textName, int value, Vector3 pos)
+	{
+		GameObject go = PoolMgr.Ins.Spawn(textName, transform, "UI", true);
+		Text text = go.GetComponent<Text>();
+		RectTransform textRect = text.GetComponent<RectTransform>();
+
+		text.text = value.ToString();
+		text.DOFade(1, 0);
+		text.transform.localScale = Vector3.one * 2f;
+		text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
+		Vector3 screenPos = CameraMgr.Ins.WorldPosToScreenPos(pos);
+		Vector2 uguiPos = Util.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.Ins.UICamera);
+		textRect.localPosition = uguiPos;
+		textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
+		text.DOFade(0, 2f).OnComplete(() =>
+		{
+			PoolMgr.Ins.UnSpawn("EmenyDamageText", go);
+		});
 	}
 
 	public void SetRound(int round)

@@ -51,7 +51,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
             }
-               
+
             if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_STAMP)
             {
                 m_CatchAttackTimer = Time.time;

@@ -40,7 +40,9 @@ public class BaseEnemy : BaseRole
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
-        m_HurtAnim = (data as BaseEnemyData).HurtAnim;
+        BaseEnemyData enemyData = data as BaseEnemyData;
+        m_HurtAnim = enemyData.HurtAnim;
+        m_HpBarWidth = enemyData.HpBarWdith;
     }
 
     public override void SetPos(Vector2 pos)
@@ -62,7 +64,7 @@ public class BaseEnemy : BaseRole
     public override void SubHealth(int value)
     {
         base.SubHealth(value);
-        UIMgr.Ins.GetPanel<MainPanel>().SetEnemyHP(m_Health, m_MaxHealth, 400f);
+        UIMgr.Ins.GetPanel<MainPanel>().SetEnemyHP(m_Health, m_MaxHealth, m_HpBarWidth);
     }
 
     public override void OnHurtMsg(HurtData data)
@@ -80,7 +82,7 @@ public class BaseEnemy : BaseRole
         {
             m_SkillExp = data.SkillExp;
         }
-
+        
         base.OnHurtMsg(data);
     }
 
@@ -110,7 +112,7 @@ public class BaseEnemy : BaseRole
         {
             if (!StageMgr.Ins.CanMovePosX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
             {
-                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+                SetVelocityX(0);
             }
         }
     }
@@ -124,6 +126,8 @@ public class BaseEnemy : BaseRole
             EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         }
 
+        Vector3 damagePos = transform.position + Vector3.up * m_Collider.size.y / 2f + Vector3.right * m_Collider.size.x / 2 * data.AttackerDir;
+        UIMgr.Ins.GetPanel<MainPanel>().ShowEnemyDamage(data.AttackValue, damagePos);
         base.OnGroundHurtMsg(data);
     }
 
@@ -147,8 +151,8 @@ public class BaseEnemy : BaseRole
         hurtData.AttackerPos = m_Pos;
         hurtData.CanBeDefense = false;
         hurtData.IsSwoon = true;
-        hurtData.AttackerID = m_ID;
-        hurtData.AttackValue = 1;
+        hurtData.AttackerId = m_Id;
+        hurtData.AttackValue = Mathf.FloorToInt(m_MaxHealth * 0.1f);
         hurtData.HurtSound = string.Empty;
         hurtData.HurtAnim = string.Empty;
         hurtData.IsGroundHurt = true;
@@ -158,5 +162,6 @@ public class BaseEnemy : BaseRole
 
     private GameFrameWorkAction<int> m_OnDeadEventHandler = null;
     private int m_SkillExp = 0;
+    private int m_HpBarWidth = 0;
     private string[] m_HurtAnim = null;
 }

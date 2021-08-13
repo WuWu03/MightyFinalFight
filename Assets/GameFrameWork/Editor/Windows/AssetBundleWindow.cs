@@ -159,7 +159,7 @@ namespace GameFrameWork.Editor
             {
                 if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i]) continue;
                 index++;
-                m_ListData[i].ID = index;
+                m_ListData[i].Id = index;
                 EditorUtility.GUIBoxScope(() => 
                 {
                     GUILayout.BeginVertical();

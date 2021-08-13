@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SceneItemData
   m_EditorClassIdentifier: 
   Datas:
-  - ID: 1001
+  - Id: 1001
     Name: CodyWeapon
     AssetName: Weapon/CodyWeapon
     Type: 0
@@ -21,7 +21,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0.05}
     Value: 500
     CanDrop: 1
-  - ID: 1002
+  - Id: 1002
     Name: GuyWeapon
     AssetName: Weapon/GuyWeapon
     Type: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0.04}
     Value: 500
     CanDrop: 0
-  - ID: 1003
+  - Id: 1003
     Name: HaggarWeapon
     AssetName: Item/Tea
     Type: 1
@@ -37,7 +37,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0}
     Value: 5
     CanDrop: 0
-  - ID: 1004
+  - Id: 1004
     Name: Tea
     AssetName: Item/Tea
     Type: 1
@@ -45,7 +45,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0.06}
     Value: 1
     CanDrop: 0
-  - ID: 1005
+  - Id: 1005
     Name: Apple
     AssetName: Item/Apple
     Type: 1
@@ -53,7 +53,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0.06}
     Value: 2
     CanDrop: 0
-  - ID: 1006
+  - Id: 1006
     Name: Cake
     AssetName: Item/Cake
     Type: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     TriggerOffest: {x: 0, y: 0.05}
     Value: 3
     CanDrop: 0
-  - ID: 1007
+  - Id: 1007
     Name: Meat
     AssetName: Item/Meat
     Type: 1

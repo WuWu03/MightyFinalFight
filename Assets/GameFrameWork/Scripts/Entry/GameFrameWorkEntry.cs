@@ -29,6 +29,7 @@ namespace GameFrameWork
             GameObjectPool.Init(m_Manager);
             AudioClipPool.Init(m_Manager);
             SpritePool.Init(m_Manager);
+            PoolMgr.Init(m_Manager);
             EntityMgr.Init(m_Manager);
             FsmMgr.Init(m_Manager);
             CameraMgr.Init(m_Manager);

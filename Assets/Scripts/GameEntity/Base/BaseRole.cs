@@ -68,8 +68,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-
-
     public virtual bool CanBeHit
     {
         get
@@ -250,15 +248,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (data == null) return;
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
-
-        if (m_IsJumpAttack && data.AddSelfForce != Vector2.zero)
-        {
-            m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-            m_Rigidbody.velocity = Vector2.zero;
-            m_Rigidbody.AddForce(new Vector2(data.AddSelfForce.x * m_Dir, data.AddSelfForce.y));
-        }
-
-        GetState<RoleAttack>().CanChangeDir = data.CanChangeDir;
+        RoleAttack roleAttack = GetState<RoleAttack>();
+        roleAttack.CanChangeDir = data.CanChangeDir;
+        roleAttack.Dir = data.Dir;
         ChangeState<RoleAttack>();
         PlayAnimation(data.AnimName, data.AnimTime, data.AnimSpeed * m_AttackSpeed);
     }
@@ -375,7 +367,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_TrapData = data;
-        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+        SetBodyType(RigidbodyType2D.Dynamic);
         m_IsDropTrag = true;
         m_CurrCtrl.ExitSkill();
     }
@@ -463,11 +455,16 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (!IsPlayComplete()) return;
             CheckGroundHurt();
-            m_Rigidbody.velocity = Vector2.zero;
-            m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            ResetRigidbody();
         }
         else
         {
+            if (m_IsAddGroundForce)
+            {
+                OnGroundEvent.AddListener(OnGroundCheck);
+                return;
+            }
+
             if (m_Health > 0)
             {
                 ChangeDefaultState();
@@ -545,6 +542,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         });
     }
 
+    private void OnGroundCheck()
+    {
+        Debug.Log("落地力消除");
+        m_IsAddGroundForce = false;
+    }
 
     protected int m_AttackValue = 0;
     protected int m_DefenseValue = 0;

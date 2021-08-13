@@ -95,7 +95,7 @@ namespace GameFrameWork.Editor
 
         public void AddChild(BehaviourTreeWindowNode node)
         {
-            node.m_Data.ID = m_Data.ID * 100 + m_Children.Count + 1;
+            node.m_Data.Id = m_Data.Id * 100 + m_Children.Count + 1;
             m_Children.Add(node);
             m_Data.Children.Add(node.m_Data);
         }
@@ -111,7 +111,7 @@ namespace GameFrameWork.Editor
         {
             if (m_Data != null)
             {
-                m_Data.WindowRect = GUI.Window(m_Data.ID, m_Data.WindowRect, DrawNodeWindow, m_Data.Name);
+                m_Data.WindowRect = GUI.Window(m_Data.Id, m_Data.WindowRect, DrawNodeWindow, m_Data.Name);
 
                 for (int i = 0; i < m_Children.Count; i++)
                 {

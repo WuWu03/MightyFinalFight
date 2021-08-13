@@ -74,14 +74,14 @@ public class SkillNearHitEffect : SkillBaseEffect
             }
 
             HurtData hurtData = HurtData.Create();
-            hurtData.Id = m_SkillData.ID;
+            hurtData.Id = m_SkillData.Id;
             hurtData.SkillExp = m_SkillData.EXP;
             hurtData.AttackerDir = m_Owner.Dir;
             hurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * dir, m_SkillEffect.AddTargetForce.y);
             hurtData.AttackerPos = m_Owner.Pos;
             hurtData.CanBeDefense = m_SkillEffect.CanBeDefense;
             hurtData.IsSwoon = m_SkillEffect.IsSmoon;
-            hurtData.AttackerID = m_Owner.ID;
+            hurtData.AttackerId = m_Owner.Id;
             hurtData.AttackValue = SkillFactory.CacDamage(m_Owner.AttackValue, defenseValue, m_Owner.CriticalValue, m_SkillEffect.DamageMulity);
             hurtData.HurtSound = m_SkillData.HurtSound;
             hurtData.HurtAnim = string.Empty;

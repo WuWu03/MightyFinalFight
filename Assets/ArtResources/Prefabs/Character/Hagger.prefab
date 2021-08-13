@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4911007044370016020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.055999998, y: 0.1581, z: -0.001}
+  m_LocalPosition: {x: 0, y: 0.1691, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4911007044937298928}
@@ -107,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4911007044377282604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.055999998, y: 0.1581, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1691, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4911007044937298928}
@@ -263,8 +263,8 @@ MonoBehaviour:
     Offest: {x: 0.10405594, y: 0.17703027}
     Size: {x: 0.3540423, y: 0.35404217}
   - AnimName: Attack4
-    Offest: {x: -0.008481108, y: 0.17027336}
-    Size: {x: 0.4424873, y: 0.35133946}
+    Offest: {x: -0.008481115, y: 0.17736588}
+    Size: {x: 0.4424873, y: 0.42881152}
   - AnimName: Move
     Offest: {x: 0.012162402, y: 0.16892207}
     Size: {x: 0.24593207, y: 0.3324201}

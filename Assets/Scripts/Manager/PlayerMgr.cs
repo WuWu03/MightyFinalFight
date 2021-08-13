@@ -111,7 +111,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         roleData.MoveSpeed = m_LevelData.MoveSpeed;
         roleData.CatchControl = m_HeroData.CatchControl;
 
-        heroSkillData.Id = m_HeroData.ID;
+        heroSkillData.Id = m_HeroData.Id;
         heroSkillData.AttackIds = m_HeroData.AttackIDs;
         heroSkillData.JumpAttackIds = m_HeroData.JumpAttackIDs;
         heroSkillData.SkillIds = m_HeroData.Skills;
@@ -134,7 +134,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.ID, OnComboKeyEvent);
+                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
             }
         }
  
@@ -170,7 +170,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         {
             m_Level++;
             m_EXP -= m_LevelData.EXP;
-            m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.ID).Levels[m_Level - 1];
+            m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.Id).Levels[m_Level - 1];
             m_Player.SetMaxHealth(m_LevelData.Health);
             m_Player.SetHealth(m_LevelData.Health);
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
@@ -225,7 +225,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         if (Input.GetButtonDown("B") || Input.GetButton("Y"))
         {
-            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.ID != 2001);
+            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.Id != 2001);
             resutl = true;
         }
         return resutl;

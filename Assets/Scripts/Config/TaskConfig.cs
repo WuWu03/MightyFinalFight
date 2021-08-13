@@ -49,6 +49,7 @@ public class TaskConfigData : BaseConfigData
         [Min(1)] public int Hp;
         [Min(1)] public int AttackValue;
         [Min(1)] public int DefenseValue;
+        public int HpBarWidth;
         public Vector2Int Pos;
     }
 

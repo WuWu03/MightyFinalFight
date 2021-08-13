@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TaskData
   m_EditorClassIdentifier: 
   Datas:
-  - ID: 1001
+  - Id: 1001
     ConditionType: 2
     Position:
       PosType: 0
@@ -26,45 +26,52 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 1001
-      Hp: 1
-      AttackValue: 1
-      DefenseValue: 1
+      Hp: 800
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 300
       Pos: {x: -178, y: -38}
     - EntityID: 2
       SourceID: 1001
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 800
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 300
       Pos: {x: -178, y: -46}
     - EntityID: 3
       SourceID: 1001
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 300
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 300
       Pos: {x: -178, y: -54}
     - EntityID: 4
       SourceID: 1001
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 800
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 250
       Pos: {x: -178, y: -62}
     - EntityID: 5
       SourceID: 1001
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 300
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 300
       Pos: {x: -178, y: -70}
     - EntityID: 6
       SourceID: 1002
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 800
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 200
       Pos: {x: -100, y: -54}
     - EntityID: 7
       SourceID: 1002
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
+      Hp: 800
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 200
       Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -72,7 +79,7 @@ MonoBehaviour:
     TalkID: 0
     PrevID: 0
     NextID: 1002
-  - ID: 1002
+  - Id: 1002
     ConditionType: 3
     Position:
       PosType: 0
@@ -89,7 +96,7 @@ MonoBehaviour:
     TalkID: 0
     PrevID: 0
     NextID: 1003
-  - ID: 1003
+  - Id: 1003
     ConditionType: 2
     Position:
       PosType: 0
@@ -105,12 +112,14 @@ MonoBehaviour:
       Hp: 0
       AttackValue: 0
       DefenseValue: 0
+      HpBarWidth: 0
       Pos: {x: 300, y: -54}
     - EntityID: 8
       SourceID: 1003
       Hp: 0
       AttackValue: 0
       DefenseValue: 0
+      HpBarWidth: 0
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -118,7 +127,7 @@ MonoBehaviour:
     TalkID: 0
     PrevID: 0
     NextID: 1004
-  - ID: 1004
+  - Id: 1004
     ConditionType: 3
     Position:
       PosType: 0
@@ -134,12 +143,14 @@ MonoBehaviour:
       Hp: 0
       AttackValue: 0
       DefenseValue: 0
+      HpBarWidth: 0
       Pos: {x: 300, y: -54}
     - EntityID: 8
       SourceID: 1003
       Hp: 0
       AttackValue: 0
       DefenseValue: 0
+      HpBarWidth: 0
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 0
     ExitStartCamera: 1
@@ -147,7 +158,7 @@ MonoBehaviour:
     TalkID: 0
     PrevID: 0
     NextID: 1005
-  - ID: 1005
+  - Id: 1005
     ConditionType: 1
     Position:
       PosType: 2

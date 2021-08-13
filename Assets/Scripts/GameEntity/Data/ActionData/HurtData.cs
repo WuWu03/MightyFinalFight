@@ -7,7 +7,7 @@ public class HurtData : BaseEventArgs
     public Vector2 AttackForce { get; set; }
     public Vector2 AttackerPos { get; set; }
     public int AttackValue { get; set; }
-    public int AttackerID { get; set; }
+    public int AttackerId { get; set; }
     public int SkillExp { get; set; }
     public bool IsSwoon { get; set; }//是否击飞
     public bool IsGroundHurt { get; set; }//是否落地触发
@@ -26,7 +26,7 @@ public class HurtData : BaseEventArgs
         AttackForce = Vector2.zero;
         AttackerPos = Vector2.zero;
         AttackValue = 0;
-        AttackerID = 0;
+        AttackerId = 0;
         SkillExp = 0;
         IsSwoon = false;
         IsGroundHurt = false;

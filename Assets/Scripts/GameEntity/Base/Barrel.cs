@@ -57,6 +57,14 @@ public class Barrel : BaseSceneItem, ICanBeHit
         }
     }
 
+    public FsmMachine BarrelFsm
+    {
+        get
+        {
+            return m_FsmMachine;
+        }
+    }
+
     public bool IsBeThrow
     {
         get
@@ -156,7 +164,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
         else
         {
             UpdatePos2(m_Pos.x, m_BarrelData.GroundY / 100f);
-            m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            SetBodyType(RigidbodyType2D.Dynamic);
         }
     }
 
@@ -201,7 +209,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
         hurtData.AttackForce = new Vector2(40, 150);
         hurtData.AttackerPos = m_Pos;
         hurtData.IsSwoon = true;
-        hurtData.AttackerID = ID;
+        hurtData.AttackerId = Id;
         hurtData.AttackValue = 1;
         hurtData.HurtAnim = string.Empty;
         hurtData.IsGroundHurt = false;

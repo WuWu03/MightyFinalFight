@@ -42,7 +42,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public void Enter(int id, GameFrameWorkAction onEnter = null)
     {
-        if (m_CurrStageData != null && m_CurrStageData.ID == id)
+        if (m_CurrStageData != null && m_CurrStageData.Id == id)
         {
             return;
         }

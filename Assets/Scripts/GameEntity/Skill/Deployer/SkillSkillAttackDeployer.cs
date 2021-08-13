@@ -44,7 +44,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         base.DeploySkill();
     }
 
-    protected override void OnEffectComplete()
+    protected override void OnAnimationEffectComplete()
     {
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);

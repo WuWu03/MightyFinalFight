@@ -13,11 +13,12 @@ public class TaskTriggerEnemy : BaseTaskTrigger
         {
             int sourceId = m_TaskData.Targets[i].SourceID;
             int entityId = m_TaskData.Targets[i].EntityID;
-            int hp = 50;// m_TaskData.Targets[i].Hp;
+            int hp = m_TaskData.Targets[i].Hp;
             int attack = m_TaskData.Targets[i].AttackValue;
             int defense = m_TaskData.Targets[i].DefenseValue;
+            int hpBarWidth = m_TaskData.Targets[i].HpBarWidth;
             Vector2Int pos = m_TaskData.Targets[i].Pos;
-            SceneEntityMgr.Ins.CreateEnemy(sourceId, entityId, hp, attack, defense, pos);
+            SceneEntityMgr.Ins.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
         }
 
         SceneEntityMgr.Ins.CreateBarrels();

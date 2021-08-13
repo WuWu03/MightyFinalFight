@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using GameFrameWork.Log;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using static SkillConfigData;
 
@@ -117,9 +118,12 @@ public class SkillFactory
                     break;
                 case SkillPrevConditionType.GroundNotCatch:
                     isCondition = owner.IsInGround;
-                    isCondition = isCondition && !owner.IsBeCatch;
+             
                     if (owner is BaseHero)
                         isCondition = isCondition && !(owner as BaseHero).IsCatch;
+                    else
+                        isCondition = isCondition && !owner.IsBeCatch;
+
                     break;
                 case SkillPrevConditionType.HPMoreThan:
                     Match m1 = m_RegexHPMoreThan.Match(conditions[i].Args);
@@ -155,13 +159,24 @@ public class SkillFactory
         float criMulity = 1.5f;
         float fluctuate = Random.Range(0.8f, 1.1f);
         bool isCri = Random.Range(1, 101) <= critical;
-        float damage = Mathf.Max(a * attack - b * defense, 0) * fluctuate * mulity > 0 ? mulity : 1;
+        float baseDamage = Mathf.Max(a * attack - b * defense, 0);
+        float damage = baseDamage * fluctuate * (mulity > 0 ? mulity : 1);
 
         if (isCri)
         {
             damage *= criMulity;
         }
 
+        string str =   "[基础伤害: " + baseDamage + "]" +
+                     "\n[最终伤害： " + damage + "]" +
+                     "\n[攻击: " + attack + "]" +
+                     "\n[防御: " + defense + "]" +
+                     "\n[暴击率: " + critical + "]" +
+                     "\n[倍率: " + (mulity > 0 ? mulity : 1) + "]" +
+                     "\n[偏移: " + fluctuate + "]" +
+                     "\n[是否暴击： " + isCri + "]";
+
+        GameFrameworkLog.Log(str);
         return Mathf.FloorToInt(damage);
     }
 

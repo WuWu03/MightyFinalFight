@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: Assembly-CSharp::EnemyConfig
   Datas:
-  - ID: 1001
+  - Id: 1001
     Name: Bred
     AssetName: Character/Bred
     AttackSpeed: 0.5
@@ -23,13 +23,13 @@ MonoBehaviour:
     Skills: a10f0000
     AttackWait:
     - -1
-    AttackNextTime: 1
+    AttackNextTime: []
     BehaviourRate: 03000000080000000500000008000000
     BehaviourTreeIDs: e9030000
     HurtEnemy:
     - Hurt1
     - Hurt2
-  - ID: 1002
+  - Id: 1002
     Name: TwoP
     AssetName: Character/TwoP
     AttackSpeed: 0.5
@@ -39,12 +39,12 @@ MonoBehaviour:
     Skills: 89130000
     AttackWait:
     - -1
-    AttackNextTime: 0.3
+    AttackNextTime: []
     BehaviourRate: 02000000c80000006400000096000000
     BehaviourTreeIDs: ea030000
     HurtEnemy:
     - Hurt
-  - ID: 1003
+  - Id: 1003
     Name: Axl
     AssetName: Character/Axl
     AttackSpeed: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
     Skills: 71170000
     AttackWait:
     - -1
-    AttackNextTime: 0.3
+    AttackNextTime: []
     BehaviourRate: 0f0000000a0000000a00000014000000
     BehaviourTreeIDs: eb030000
     HurtEnemy:

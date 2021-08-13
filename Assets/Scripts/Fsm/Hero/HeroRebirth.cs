@@ -19,6 +19,7 @@ public class HeroRebirth : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
+        m_Owner.ResetRigidbody();
         m_Owner.OnGroundEvent.AddListener(OnGround);
         m_Owner.SetDir(1);
         CameraMgr.Ins.EndFollow();
@@ -35,8 +36,7 @@ public class HeroRebirth : BaseFsmState
             m_Owner.transform.localPosition = new Vector3(m_ReBirthPos.x, m_ReBirthPos.y, m_ReBirthPos.y);
         }
 
-        m_Owner.Rigidbody.gravityScale = 1;
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+        m_Owner.SetBodyType(RigidbodyType2D.Dynamic);
         m_Owner.PlayAnimation(AnimName.JumpDown);
     }
 

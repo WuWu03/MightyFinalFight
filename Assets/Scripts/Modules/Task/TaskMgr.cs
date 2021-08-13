@@ -24,7 +24,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         for (int i = 0; i < m_CurrTaskList.Count; i++)
         {
-            if (m_CurrTaskList[i].TaskData.ID.Equals(id))
+            if (m_CurrTaskList[i].TaskData.Id.Equals(id))
             {
                 return true;
             }

@@ -59,7 +59,7 @@ public class RoleSelectPanel : BasePanel
 		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
-			PlayerMgr.Ins.SelectId = StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].ID;
+			PlayerMgr.Ins.SelectId = StaticConfig.HeroConfig.Datas[m_CurrSelectIndex].Id;
 			StageMgr.Ins.Enter(1001);
 			InnerClose();
 		}

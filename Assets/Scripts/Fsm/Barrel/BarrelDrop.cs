@@ -1,4 +1,5 @@
 ﻿using GameFrameWork.Fsm;
+using System;
 using UnityEngine;
 
 public class BarrelDrop : BaseFsmState
@@ -10,21 +11,14 @@ public class BarrelDrop : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.Rigidbody.gravityScale = 1;
-        m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        m_Owner.ResetRigidbody();
         m_Owner.SetPos(m_Owner.Pos);
-        m_Owner.BarrelAnimator.animation.timeScale = 1;
-        m_Owner.BarrelAnimator.animation.Play(AnimName.Drop, 1);
+        m_Owner.OnGroundEvent.AddListener(OnGround);
+        m_Owner.AddForce(0, 50);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if(m_Owner.BarrelAnimator.animation.isCompleted)
-        {
-            if (m_Owner.BarrelData.MoveSpeed > 0) ChangeState<BarrelMove>(fsm);
-            else ChangeState<BarrelIdle>(fsm);
-        }
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
@@ -35,6 +29,12 @@ public class BarrelDrop : BaseFsmState
     public override void OnDestroy(BaseFsm fsm)
     {
         m_Owner = null;
+    }
+
+    private void OnGround()
+    {
+        if (m_Owner.BarrelData.MoveSpeed > 0) ChangeState<BarrelMove>(m_Owner.BarrelFsm);
+        else ChangeState<BarrelIdle>(m_Owner.BarrelFsm);
     }
 
     private Barrel m_Owner = null;

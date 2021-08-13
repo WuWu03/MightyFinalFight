@@ -106,8 +106,8 @@ public class BaseHero : BaseRole
         {
             Rect bound = GetBound(transform.localPosition);
             float x = m_Rigidbody.velocity.x > 0 ? bound.xMax : bound.xMin;
-            if (IsOutVersionX(x))
-                m_Rigidbody.velocity = new Vector2(0, m_Rigidbody.velocity.y);
+
+            if (IsOutVersionX(x)) SetVelocityX(0);
         }
 
         if (m_HitTime < 0) return;
@@ -213,13 +213,13 @@ public class BaseHero : BaseRole
             int hitTime = 0;
             if (!IsDrop)
             {
-                if (!m_DicAttacker.TryGetValue(data.AttackerID, out hitTime))
+                if (!m_DicAttacker.TryGetValue(data.AttackerId, out hitTime))
                 {
-                    m_DicAttacker.Add(data.AttackerID, hitTime);
+                    m_DicAttacker.Add(data.AttackerId, hitTime);
                 }
 
                 hitTime++;
-                m_DicAttacker[data.AttackerID] = hitTime;
+                m_DicAttacker[data.AttackerId] = hitTime;
             }
             else
                 hitTime = 3;
@@ -471,9 +471,9 @@ public class BaseHero : BaseRole
         m_IsOnGround = false;
         SetDefaultState<RoleIdle>();
 
-        if (changeState)
+        if (changeState && !m_IsAddGroundForce)
         {
-            ChangeState<RoleIdle>();
+            ChangeDefaultState();
         }
     }
 

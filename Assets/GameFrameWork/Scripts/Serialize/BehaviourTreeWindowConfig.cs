@@ -17,7 +17,7 @@ namespace GameFrameWork.Serialize
         public BehaviourTreeWindowData(string name, int id, float x = 20, float y = 20)
         {
             Name = name;
-            ID = id;
+            Id = id;
             Children = new List<BehaviourTreeWindowData>();
             PreConditions = new List<BehaviourTreeWindowData>();
             WindowRect = new Rect(x, y, 230, 150);

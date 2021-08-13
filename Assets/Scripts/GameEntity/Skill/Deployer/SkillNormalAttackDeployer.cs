@@ -18,7 +18,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         AttackData attackData = AttackData.Create();
         attackData.Dir = m_Owner.Dir;
-        attackData.SkillID = m_SkillData.ID;
+        attackData.SkillID = m_SkillData.Id;
         attackData.AnimName = m_SkillData.AnimationName;
         attackData.AnimSpeed = m_SkillData.AnimSpeed;
         attackData.AnimTime = m_SkillData.AnimTime;
@@ -47,7 +47,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_QueueSound.Enqueue(eventObject.name);
     }
 
-    protected override void OnEffectComplete()
+    protected override void OnAnimationEffectComplete()
     {
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);

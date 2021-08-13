@@ -27,11 +27,11 @@ public static class MapEditorHelper
     {
         get
         {
-            return m_CurrData.ID;
+            return m_CurrData.Id;
         }
         set
         {
-            m_CurrData.ID = value;
+            m_CurrData.Id = value;
         }
     }
 
@@ -316,7 +316,7 @@ public static class MapEditorHelper
         {
             MapEditorConfigData configData = m_MapEditorConfig.Datas[i];
             StageConfigData data = new StageConfigData();
-            data.ID = configData.ID;
+            data.Id = configData.Id;
             data.Name = configData.SceneName;
             data.SceneName = configData.SceneName;
             data.StageIndex = i + 1;

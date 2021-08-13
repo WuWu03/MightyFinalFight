@@ -59,7 +59,7 @@ public class Bullet : BaseSceneItem
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
 
         bool canBeHit = hit != null && hit.CanBeHit;
-        bool isInRange = true;//Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
+        bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
 
         if (isInRange && canBeHit)
         {
@@ -80,7 +80,7 @@ public class Bullet : BaseSceneItem
             hit.OnHurtMsg(hurtData);
 
             if (!m_BulletData.IsPenatrate)
-                m_Rigidbody.velocity = Vector2.zero;
+                SetVelocity(Vector2.zero);
            
             if(!string.IsNullOrEmpty(m_BulletData.HitAnim))
             {
@@ -96,16 +96,17 @@ public class Bullet : BaseSceneItem
     {
         base.OnResComplete(go, param);
         go.SetActive(true);
-        SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
-        m_Rigidbody.drag = m_BulletData.Drag;    
+        
         m_Collider.enabled = true;
         m_Collider.isTrigger = true;
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         m_Animator.animation.timeScale = m_BulletData.NormalAnimSpeed;
         m_Animator.animation.Play(m_BulletData.NormalAnim, 0);
-        m_Rigidbody.gravityScale = 0f;
-        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody.velocity = new Vector2(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
+
+        SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
+        SetDrag(m_BulletData.Drag);
+        SetGravityScale(0f);
+        SetVelocity(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
     }
 
     public override void Release()

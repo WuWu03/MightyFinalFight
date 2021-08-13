@@ -13,54 +13,54 @@ MonoBehaviour:
   m_Name: LevelData
   m_EditorClassIdentifier: 
   Datas:
-  - ID: 1001
+  - Id: 1001
     Levels:
     - AttackSpeed: 1
-      AttackValue: 1
-      DefenseValue: 1
-      CriticalValue: 0
+      AttackValue: 20
+      DefenseValue: 10
+      CriticalValue: 30
       MoveSpeed: 0.7
       JumpForce: {x: 40, y: 140}
-      Health: 10
+      Health: 100
       HPBarWidth: 300
       EXP: 33
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 15
+    - AttackSpeed: 1
+      AttackValue: 25
+      DefenseValue: 15
+      CriticalValue: 30
+      MoveSpeed: 0.7
+      JumpForce: {x: 40, y: 140}
+      Health: 150
       HPBarWidth: 400
       EXP: 54
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
+    - AttackSpeed: 1
+      AttackValue: 35
+      DefenseValue: 25
+      CriticalValue: 30
+      MoveSpeed: 0.7
       JumpForce: {x: 0, y: 0}
-      Health: 25
+      Health: 250
       HPBarWidth: 550
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
+      EXP: 80
+    - AttackSpeed: 1
+      AttackValue: 55
+      DefenseValue: 40
+      CriticalValue: 30
       MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
+      JumpForce: {x: 40, y: 140}
       Health: 40
       HPBarWidth: 750
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
+      EXP: 110
+    - AttackSpeed: 1
+      AttackValue: 80
+      DefenseValue: 60
+      CriticalValue: 30
       MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
+      JumpForce: {x: 40, y: 140}
       Health: 60
       HPBarWidth: 900
-      EXP: 0
-  - ID: 2001
+      EXP: -1
+  - Id: 1002
     Levels:
     - AttackSpeed: 1
       AttackValue: 1
@@ -107,7 +107,7 @@ MonoBehaviour:
       Health: 60
       HPBarWidth: 900
       EXP: 0
-  - ID: 3001
+  - Id: 1003
     Levels:
     - AttackSpeed: 0.8
       AttackValue: 1

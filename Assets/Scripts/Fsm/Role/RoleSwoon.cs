@@ -20,9 +20,8 @@ public class RoleSwoon : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.OnGroundEvent.AddListener(OnBounce);
-        m_Owner.Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Owner.Rigidbody.velocity = Vector2.zero;
-        m_Owner.Rigidbody.AddForce(m_Force);
+        m_Owner.SetVelocity(Vector2.zero);
+        m_Owner.AddForce(m_Force);
         m_Owner.PlayAnimation(AnimName.SwoonUp, 0);
     }
 
@@ -40,7 +39,7 @@ public class RoleSwoon : BaseFsmState
     private void OnBounce()
     {
         m_IsBounce = true;
-        m_Owner.Rigidbody.velocity = new Vector2(m_Owner.Rigidbody.velocity.x, 1.5f);
+        m_Owner.SetVelocityY(1.5f);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown,0);
         GameFrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnFallDown");
