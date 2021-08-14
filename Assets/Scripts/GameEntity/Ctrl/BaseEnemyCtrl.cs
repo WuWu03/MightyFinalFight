@@ -14,10 +14,8 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         base.SetData(data);
         BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
-        m_BehaviourRate = baseEnemySkillInfo.BehaviourRate;
-        m_BehaviourState = new bool[m_BehaviourRate.Length];  
         m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreesID);
-        //m_BehaviourTreeMgr.Start();
+        m_BehaviourTreeMgr.Start();
     }
  
     protected override void OnUpdate()
@@ -40,42 +38,8 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     public bool HasBehaviour()
     {
-        RandomBehaviour();
-        for (int i = 0; i < m_BehaviourState.Length; i++)
-        {
-            if (m_BehaviourState[i])
-                return true;
-        }
-
         return false;
     }
 
-    public bool GetBehaviourState(int index)
-    {
-        RandomBehaviour();
-        return m_BehaviourState[index];
-    }
-
-    public void SetBehaviourState(int index)
-    {
-        m_BehaviourState[index] = false;   
-    }
-
-    private void RandomBehaviour()
-    {
-        for (int i = 0; i < m_BehaviourState.Length; i++)
-        {
-            if (m_BehaviourState[i]) return;
-        }
-
-        for (int i = 0; i < m_BehaviourState.Length; i++)
-        {
-            m_BehaviourState[i] = Random.Range(1, 1001) <= m_BehaviourRate[i];
-            if (m_BehaviourState[i]) break;
-        }
-    }
-
-    private bool[] m_BehaviourState = null;
-    private int[] m_BehaviourRate = null;
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;
 }

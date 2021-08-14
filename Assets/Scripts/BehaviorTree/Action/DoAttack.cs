@@ -7,6 +7,7 @@ public class DoAttack : Action
     public DoAttack(string name, string args, object owner) : base(name, args, owner) 
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
+
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
@@ -41,7 +42,6 @@ public class DoAttack : Action
             m_CurrAttackCount++;
             if (m_CurrAttackCount >= m_AttackCount)
             {
-                m_Owner.SetBehaviourState(BehaviourType.Attack);
                 return BehaviorTreeState.Success;
             }
         }
@@ -53,7 +53,6 @@ public class DoAttack : Action
     public override void Reset()
     {
         base.Reset();
-        m_Owner.SetBehaviourState(BehaviourType.Attack);
         m_CurrAttackCount = 0;
     }
 

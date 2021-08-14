@@ -34,7 +34,6 @@ public class DoRunToRoundPos : Action
             {
                 m_Owner.Move(Vector2.zero, false);
                 m_Owner.OppositePlayer();
-                m_Owner.SetBehaviourState(BehaviourType.RoundPos);
                 return BehaviorTreeState.Success;
             }
 
@@ -58,7 +57,6 @@ public class DoRunToRoundPos : Action
     {
         base.Reset();
         m_IsArravied = false;
-        m_Owner.SetBehaviourState(BehaviourType.RoundPos);
     }
 
     private int m_CurrIndex = 0;

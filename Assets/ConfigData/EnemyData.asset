@@ -24,9 +24,8 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: []
-    BehaviourRate: 03000000080000000500000008000000
     BehaviourTreeIDs: e9030000
-    HurtEnemy:
+    HurtAnim:
     - Hurt1
     - Hurt2
   - Id: 1002
@@ -40,9 +39,8 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: []
-    BehaviourRate: 02000000c80000006400000096000000
     BehaviourTreeIDs: ea030000
-    HurtEnemy:
+    HurtAnim:
     - Hurt
   - Id: 1003
     Name: Axl
@@ -55,7 +53,20 @@ MonoBehaviour:
     AttackWait:
     - -1
     AttackNextTime: []
-    BehaviourRate: 0f0000000a0000000a00000014000000
     BehaviourTreeIDs: eb030000
-    HurtEnemy:
+    HurtAnim:
+    - Hurt
+  - Id: 1004
+    Name: Andore
+    AssetName: Character/Andore
+    AttackSpeed: 1
+    MoveSpeed: 0.5
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: 71170000
+    Skills: 71170000
+    AttackWait:
+    - -1
+    AttackNextTime: []
+    BehaviourTreeIDs: eb030000
+    HurtAnim:
     - Hurt

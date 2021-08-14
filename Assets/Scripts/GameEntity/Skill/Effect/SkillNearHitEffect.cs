@@ -8,6 +8,7 @@ public class SkillNearHitEffect : SkillBaseEffect
 {
     public SkillNearHitEffect(SkillConfigData m_SkillData, BaseRole owner, int effectIndex) : base(m_SkillData, owner, effectIndex)
     {
+
     }
 
     public override bool IsCompleted

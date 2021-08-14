@@ -18,7 +18,7 @@ public class PreIsPlayerDistance : PreCondition
     protected override bool OnCheckPreCondition()
     {
         float distance = Vector2.Distance(PlayerMgr.Ins.Player.Pos, (m_Owner as BaseRoleCtrl).Owner.Pos);
-        if(m_Distance < 0)
+        if (m_Distance < 0)
         {
             return distance >= Mathf.Abs(m_Distance);
         }

@@ -4,7 +4,7 @@ using GameFrameWork.Sound;
 using GameFrameWork.Timer;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
@@ -75,7 +75,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return m_FsmMachine.CurrStateType != typeof(RoleSwoon) &&
                    m_FsmMachine.CurrStateType != typeof(RoleDead) &&
                    m_FsmMachine.CurrStateType != typeof(RoleAwaken) &&
-                   m_Health > 0;
+                   m_Health > 0 && m_IsResComplete;
         }
     }
 
@@ -176,6 +176,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public event GameFrameWorkBooleanAction<HurtData> OnHurtEvent
+    {
+        add
+        {
+            m_OnHurtEvent += value;
+        }
+        remove
+        {
+            m_OnHurtEvent -= value;
+        }
+    }
+
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -188,6 +200,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleDead>();
         AddState<RoleAwaken>();
         AddState<RoleSkill>();
+        AddState<RoleDefense>();
     }
 
     public override void SetData(BaseSceneObjectData data)
@@ -322,8 +335,16 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHurtMsg(HurtData data)
     {
-        if (data == null) return;
-        if (!CanBeHit) return;
+        if (data == null || !CanBeHit) 
+        {
+            return;
+        }
+
+        if (m_OnHurtEvent != null && !m_OnHurtEvent.Invoke(data))
+        {
+            return;
+        }
+
         m_CurrCtrl.ExitSkill();
         m_IsSmoon = data.IsSwoon;
 
@@ -344,16 +365,20 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         if (data.IsGroundHurt && data.AttackForce.y > 0)
+        {
             m_OnGroundHurtData = data;
+        }
         else if (data.AttackValue > 0)
         {
             OnGroundHurtMsg(data);
         }
     }
 
-    public virtual void OnDefenseMsg(HurtData data)
+    public virtual void OnDefenseMsg(float attackerDir)
     {
-
+        SetDir(-attackerDir);
+        SetPos2(m_Pos.x + attackerDir * 0.07f, m_Pos.y);
+        ChangeState<RoleDefense>(true);
     }
 
     public virtual void OnDropTragMsg(TrapData data)
@@ -384,6 +409,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void SetThrow(bool value)
     {
         m_IsBeThrow = value;
+
         if (value)
         {
             m_CurrCtrl.ExitSkill();
@@ -544,7 +570,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void OnGroundCheck()
     {
-        Debug.Log("落地力消除");
         m_IsAddGroundForce = false;
     }
 
@@ -561,6 +586,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeThrow = false;
     protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
+    protected event GameFrameWorkBooleanAction<HurtData> m_OnHurtEvent = null;
 
     private bool m_IsDropGround = false;
     private float m_DropGourndTime = 0f;

@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class BaseEnemy : BaseRole
 {
-    public bool IsThrowing 
-    {
-        get
-        {
-            return m_IsBeThrow;
-        }
-    }
-
     public override bool CanJump
     {
         get
@@ -49,7 +41,11 @@ public class BaseEnemy : BaseRole
     {
         if (IsAnyState(typeof(RoleMove)))
         {
-            if (!CanMove) return;
+            if (!CanMove)
+            {
+                return;
+            }
+
             Rect bound = GetBound(pos);
             bool isMapXCanMove = StageMgr.Ins.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
             bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y);

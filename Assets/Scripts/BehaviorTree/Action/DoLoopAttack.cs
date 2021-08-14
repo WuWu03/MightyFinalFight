@@ -33,7 +33,6 @@ public class DoLoopAttack : DoAttack
     {
         if (m_CurrAttackCount >= m_AttackCount)
         {
-            m_Owner.SetBehaviourState(BehaviourType.Attack);
             m_CurrAttackCount = 0;
             m_AttackCount = 0;
         }

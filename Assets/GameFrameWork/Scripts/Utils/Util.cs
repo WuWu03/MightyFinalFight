@@ -180,6 +180,35 @@ namespace GameFrameWork.Utility
             return resultPos;
         }
 
+        public static int RandomByWeight(int[] weights)
+        {
+            if(weights == null || weights.Length < 1)
+            {
+                return -1;
+            }
+
+            int sum = 0;
+
+            for (int i = 0; i < weights.Length; i++)
+            {
+                sum += weights[i];
+            }
+
+            int random = UnityEngine.Random.Range(1, sum + 1);
+            int sum_temp = 0;
+
+            for (int i = 0; i < weights.Length; i++)
+            {
+                sum_temp += weights[i];
+                if (random <= sum_temp)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public static string ToRGBHex(Color c)
         {
             if (c == default(Color)) c = Color.black;

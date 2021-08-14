@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+
 namespace GameFrameWork.BehaviourTree
 {
-    public class RandomSelector : Composites
+    public class RandomSequence : Composites
     {
-        public RandomSelector(string name, string args, object owner) : base(name, args, owner)
+        public RandomSequence(string name, string args, object owner) : base(name, args, owner)
         {
             m_CurrChildIndex = 0;
             m_LastChildIndex = -1;
@@ -44,10 +45,9 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnUpdate(float deltaTime)
         {
             Node child = GetChild(m_CurrChildIndex);
-
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition() && this.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition() && CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {
@@ -57,15 +57,14 @@ namespace GameFrameWork.BehaviourTree
 
                     child.Update(deltaTime);
                     BehaviorTreeState state = child.Excute();
-
                     if (state != BehaviorTreeState.Running)
                     {
                         m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
                         m_ListWeight.Remove(m_CurrChildIndex);
 
-                        if (state == BehaviorTreeState.Success)
+                        if (state == BehaviorTreeState.Failure)
                         {
-                            m_State = BehaviorTreeState.Success;
+                            m_State = BehaviorTreeState.Failure;
                             return;
                         }
                     }
@@ -79,13 +78,13 @@ namespace GameFrameWork.BehaviourTree
 
             if (m_ListWeight.Count < 1)
             {
-                m_State = BehaviorTreeState.Failure;
+                m_State = BehaviorTreeState.Success;
             }
         }
 
         public override bool CanExcute()
         {
-            return m_ListWeight.Count > 0 && m_State != BehaviorTreeState.Success;
+            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Failure;
         }
 
         public override void Reset()

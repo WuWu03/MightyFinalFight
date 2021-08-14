@@ -214,7 +214,11 @@ public class BaseSceneObject : BaseEntity
 
     public void SetDir(float dir)
     {
-        if (dir == 0) return;
+        if (dir == 0)
+        {
+            return;
+        }
+
         m_Dir = dir;
         if (m_Dir > 0) m_Dir = 1;
         if (m_Dir < 0) m_Dir = -1;
@@ -287,12 +291,17 @@ public class BaseSceneObject : BaseEntity
     protected override void Update()
     {
         base.Update();
-        if (!m_IsResComplete) return;
+        if (!m_IsResComplete)
+        {
+            return;
+        }
+
         if (m_ResGO == null)
         {
             Release();
             return;
         }
+
         OnUpdate();
     }
 
@@ -345,9 +354,17 @@ public class BaseSceneObject : BaseEntity
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (m_ListTargets == null || collision.gameObject.Equals(gameObject)) return;
+        if (m_ListTargets == null || collision.gameObject.Equals(gameObject))
+        {
+            return;
+        }
+
         BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
-        if (bso == null || bso.ObjectType == ObjectType.CantBreakItem || bso.ObjectType == m_ObjectType) return;
+
+        if (bso == null || bso.ObjectType == ObjectType.CantBreakItem || bso.ObjectType == m_ObjectType)
+        {
+            return;
+        }
 
         if (!m_ListTargets.Contains(collision.gameObject))
         {

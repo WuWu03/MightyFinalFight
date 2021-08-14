@@ -67,13 +67,12 @@ public static class SceneEntityFactory
         enemyData.AttackValue = attack;
         enemyData.DefenseValue = defense;
         enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
-        enemyData.HurtAnim = enemyConfigData.HurtEnemy;
+        enemyData.HurtAnim = enemyConfigData.HurtAnim;
   
         enemySkillData.AttackIds = enemyConfigData.AttackIDs;
         enemySkillData.SkillIds = enemyConfigData.Skills;
         enemySkillData.AttackWait = enemyConfigData.AttackWait;
         enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
-        enemySkillData.BehaviourRate = enemyConfigData.BehaviourRate;
         enemySkillData.BehaviourTreesID = enemyConfigData.BehaviourTreeIDs;
 
         enemy.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, enemyConfigData.AssetName));

@@ -19,40 +19,28 @@ MonoBehaviour:
     Args: LoopTimes:-1
     Childs:
     - Id: 0
-      Name: "\u968F\u673A\u884C\u4E3A"
-      ClassType: Sequence
-      Args: 
+      Name: "\u73A9\u5BB6\u8FDC\u8DDD\u79BB\u65F6\u7684\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10,20,30,25]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"
         ClassType: DoRunToRandomPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRandomPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
         ClassType: DoRunToRoundPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRoundPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u5F85\u673A"
         ClassType: DoIdle
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsIdle
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u4E3B\u52A8\u653B\u51FB"
         ClassType: Sequence
@@ -74,42 +62,56 @@ MonoBehaviour:
             Name: 
             ClassType: PreIsPlayerDistance
             Args: Distance:0.4
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsAttack
-          Args: 
+        PreConditions: []
       PreConditions:
       - Id: 0
-        Name: "\u5B58\u5728\u968F\u673A\u884C\u4E3A"
-        ClassType: PreIsRandomBehaviour
-        Args: 
+        Name: "\u73A9\u5BB6\u8DDD\u79BB\u5927\u4E8E0.5"
+        ClassType: PreIsPlayerDistance
+        Args: Distance:0.5,TheNot:true
     - Id: 0
-      Name: "\u88AB\u52A8\u653B\u51FB"
-      ClassType: Sequence
-      Args: 
+      Name: "\u73A9\u5BB6\u8FD1\u8DDD\u79BB\u65F6\u7684\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10,20,15]
       Childs:
       - Id: 0
-        Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
-        ClassType: DoRunToPlayer
+        Name: "\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        Childs:
+        - Id: 0
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          Childs: []
+          PreConditions: []
+        - Id: 0
+          Name: "\u653B\u51FB"
+          ClassType: DoAttack
+          Args: AttackTime:3
+          Childs: []
+          PreConditions:
+          - Id: 0
+            Name: 
+            ClassType: PreIsPlayerDistance
+            Args: Distance:0.4
+        PreConditions: []
+      - Id: 0
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
         Args: 
         Childs: []
         PreConditions: []
       - Id: 0
-        Name: "\u653B\u51FB"
-        ClassType: DoAttack
-        Args: AttackTime:3
+        Name: "\u8FDC\u79BB\u73A9\u5BB6"
+        ClassType: DoRunAwayPlayer
+        Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsPlayerDistance
-          Args: Distance:0.4
+        PreConditions: []
       PreConditions:
       - Id: 0
-        Name: "\u73A9\u5BB6\u8FD1\u8EAB"
+        Name: "\u73A9\u5BB6\u8DDD\u79BB\u5C0F\u4E8E0.5"
         ClassType: PreIsPlayerDistance
-        Args: Distance:0.2
+        Args: Distance:0.5
     PreConditions:
     - Id: 0
       Name: 
@@ -125,40 +127,28 @@ MonoBehaviour:
     Args: LoopTimes:-1
     Childs:
     - Id: 0
-      Name: "\u968F\u673A\u884C\u4E3A"
-      ClassType: Sequence
-      Args: 
+      Name: "\u73A9\u5BB6\u8FDC\u8DDD\u79BB\u65F6\u7684\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[20,15,10,20]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"
         ClassType: DoRunToRandomPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRandomPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
         ClassType: DoRunToRoundPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRoundPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u5F85\u673A"
         ClassType: DoIdle
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsIdle
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u4E3B\u52A8\u653B\u51FB"
         ClassType: Sequence
@@ -182,12 +172,40 @@ MonoBehaviour:
           Args: BackDistance:0.4
           Childs: []
           PreConditions: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsAttack
-          Args: 
-      PreConditions: []
+        PreConditions: []
+      PreConditions:
+      - Id: 0
+        Name: "\u73A9\u5BB6\u8DDD\u79BB\u5927\u4E8E0.5"
+        ClassType: PreIsPlayerDistance
+        Args: Distance:0.5,TheNot:true
+    - Id: 0
+      Name: "\u73A9\u5BB6\u8FD1\u8DDD\u79BB\u65F6\u7684\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[20,30,10]
+      Childs:
+      - Id: 0
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        Childs: []
+        PreConditions: []
+      - Id: 0
+        Name: "\u8FDC\u79BB\u73A9\u5BB6"
+        ClassType: DoRunAwayPlayer
+        Args: 
+        Childs: []
+        PreConditions: []
+      - Id: 0
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        Childs: []
+        PreConditions: []
+      PreConditions:
+      - Id: 0
+        Name: "\u73A9\u5BB6\u8DDD\u79BB\u5C0F\u4E8E0.5"
+        ClassType: PreIsPlayerDistance
+        Args: Distance:0.5
     PreConditions:
     - Id: 0
       Name: 
@@ -212,31 +230,19 @@ MonoBehaviour:
         ClassType: DoRunToRandomPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRandomPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
         ClassType: DoRunToRoundPos
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsRoundPos
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u5F85\u673A"
         ClassType: DoIdle
         Args: 
         Childs: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsIdle
-          Args: 
+        PreConditions: []
       - Id: 0
         Name: "\u4E3B\u52A8\u653B\u51FB"
         ClassType: Sequence
@@ -260,12 +266,22 @@ MonoBehaviour:
           Args: BackDistance:0.4
           Childs: []
           PreConditions: []
-        PreConditions:
-        - Id: 0
-          Name: 
-          ClassType: PreIsAttack
-          Args: 
-      PreConditions: []
+        PreConditions: []
+      PreConditions:
+      - Id: 0
+        Name: 
+        ClassType: PreIsDefense
+        Args: TheNot:true
+    - Id: 0
+      Name: "\u9632\u5FA1"
+      ClassType: DoDefense
+      Args: 
+      Childs: []
+      PreConditions:
+      - Id: 0
+        Name: 
+        ClassType: PreIsDefense
+        Args: 
     PreConditions:
     - Id: 0
       Name: 

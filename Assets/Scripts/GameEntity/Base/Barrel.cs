@@ -20,7 +20,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         get
         {
-            return !IsDead;
+            return !IsDead && m_IsResComplete;
         }
     }
 

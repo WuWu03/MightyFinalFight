@@ -23,7 +23,6 @@ public class DoRunToRandomPos : Action
         if (m_IsArravied)
         {
             m_Owner.Move(Vector2.zero, false);
-            m_Owner.SetBehaviourState(BehaviourType.RandomPos);
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Success;
         }
@@ -44,7 +43,6 @@ public class DoRunToRandomPos : Action
     {
         base.Reset();
         m_IsArravied = false;
-        m_Owner.SetBehaviourState(BehaviourType.RandomPos);
     }
 
     private Vector2 m_RandomPos = Vector2.zero;

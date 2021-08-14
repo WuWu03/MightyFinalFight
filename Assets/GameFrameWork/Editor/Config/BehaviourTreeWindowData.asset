@@ -12,41 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b7ba53bb566f748b44ebac9f7d2bff, type: 3}
   m_Name: BehaviourTreeWindowData
   m_EditorClassIdentifier: 
-  Datas:
-  - ID: 0
-    Name: BredTree
-    ClassType: DoAttack
-    Args: 
-    ListRect:
-      serializedVersion: 2
-      x: 20
-      y: 1
-      width: -25
-      height: 40
-    WindowRect:
-      serializedVersion: 2
-      x: 39
-      y: 115
-      width: 230
-      height: 150
-    Children:
-    - ID: 0
-      Name: "\u672A\u547D\u540D"
-      ClassType: DoAttack
-      Args: 
-      ListRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      WindowRect:
-        serializedVersion: 2
-        x: 274
-        y: 345
-        width: 230
-        height: 150
-      Children: []
-      PreConditions: []
-    PreConditions: []
+  Datas: []
   BehaviourConfigPath: Assets/BehaviourTreeData.asset

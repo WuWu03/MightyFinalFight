@@ -8,8 +8,14 @@ public abstract class BaseAvatar : BaseGravityObject
 {
     public float MoveSpeed
     {
-        get {return m_MoveSpeed; }
-        set { m_MoveSpeed = value; }
+        get 
+        {
+            return m_MoveSpeed; 
+        }
+        set 
+        {
+            m_MoveSpeed = value; 
+        }
     }
 
     public Vector2 MoveToPoint
@@ -65,9 +71,18 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine = null;
     }
 
+    public Vector2 GetCurrTriggerSize()
+    {
+        return m_Collider.size;
+    }
+
     public Vector2 GetAnimTriggerSize(string animName)
     {
-        if (m_DBTrigger == null) return Vector2.zero;
+        if (m_DBTrigger == null)
+        {
+            return Vector2.zero;
+        }
+
         TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
@@ -80,12 +95,17 @@ public abstract class BaseAvatar : BaseGravityObject
 
     protected void SetTrigger(string animName)
     {
-        if (m_DBTrigger == null) return;
+        if (m_DBTrigger == null)
+        {
+            return;
+        }
 
         TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
+        {
             SetCollider(triggerData.Offest, triggerData.Size);
+        }
     }
 
     protected override void OnUpdate()
