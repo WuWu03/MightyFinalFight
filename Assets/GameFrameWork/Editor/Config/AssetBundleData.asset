@@ -160,6 +160,20 @@ MonoBehaviour:
     Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/Weapon/
     AssetBundlePath: ArtResources/Prefabs/Weapon/
+  - Id: 22
+    BundleType: 1
+    BundleName: Models/Character/Hagger
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Hagger/
+    AssetBundlePath: Models/Character/Hagger/
+  - Id: 23
+    BundleType: 1
+    BundleName: Models/Character/Andore
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/Character/Andore/
+    AssetBundlePath: Models/Character/Andore/
   LockConfig: 0
   PlatFormIndex: 0
   AssetBuildDir: Assets/StreamingAssets/

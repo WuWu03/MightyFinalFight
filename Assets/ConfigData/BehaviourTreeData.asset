@@ -222,8 +222,8 @@ MonoBehaviour:
     Childs:
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
-      ClassType: Sequence
-      Args: 
+      ClassType: RandomSelector
+      Args: Weight:[15,20,25,15]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"

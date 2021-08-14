@@ -181,8 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CheckVersion: 0
   OpenUpdate: 0
-  LoadAB: 0
-  OpenLog: 1
+  LoadAB: 1
+  OpenLog: 0
   UseLua: 0
   LoadLuaAB: 0
   LuaByteMode: 0
