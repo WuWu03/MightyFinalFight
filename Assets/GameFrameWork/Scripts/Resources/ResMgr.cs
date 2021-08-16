@@ -28,6 +28,7 @@ namespace GameFrameWork.Resources
             public bool LoadMainAsset;
             public Type AssetType;
             public string AssetName;
+            public string AssetPath;
             public object[] Args;
         }
 
@@ -69,7 +70,9 @@ namespace GameFrameWork.Resources
                 {
                     string[] data = version[i].Split('|');
                     if (!data[1].Equals(".manifest"))
+                    {
                         m_DicAssetVerson.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
+                    }
                 }
             }
         }
@@ -203,21 +206,22 @@ namespace GameFrameWork.Resources
         {
             Log.GameFrameworkLog.Log("LoadAsset：" + abName);
 
-            abName = GetRealAssetPath(abName);
+            string realAssetPath = GetRealAssetPath(abName);
             LoadAssetRequest request = new LoadAssetRequest();
             request.SharpFunc = action;
             request.LoadMainAsset = loadMainAsset;
             request.AssetType = t;
             request.Args = param;
-            request.AssetName = Path.GetFileNameWithoutExtension(abName);
+            request.AssetName = Path.GetFileNameWithoutExtension(realAssetPath);
+            request.AssetPath = abName;
             List<LoadAssetRequest> requests = null;
-            if (!m_LoadRequests.TryGetValue(abName, out requests))
+            if (!m_LoadRequests.TryGetValue(realAssetPath, out requests))
             {
                 requests = new List<LoadAssetRequest>();
                 requests.Add(request);
-                m_LoadRequests.Add(abName, requests);
-                LoadDependencies(abName);
-                StartCoroutine(OnLoadAsset(abName));
+                m_LoadRequests.Add(realAssetPath, requests);
+                LoadDependencies(realAssetPath);
+                StartCoroutine(OnLoadAsset(realAssetPath));
             }
             else
             {
@@ -225,31 +229,31 @@ namespace GameFrameWork.Resources
             }
         }
 
-        private IEnumerator OnLoadAsset(string abName)
+        private IEnumerator OnLoadAsset(string realAssetPath)
         {
             yield return new WaitForSeconds(0);
-            AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
+            AssetBundleInfo bundleInfo = GetLoadedAssetBundle(realAssetPath);
             if (bundleInfo == null)
             {
-                yield return StartCoroutine(OnLoadAssetBundleAsync(abName));
+                yield return StartCoroutine(OnLoadAssetBundleAsync(realAssetPath));
 
-                bundleInfo = GetLoadedAssetBundle(abName);
+                bundleInfo = GetLoadedAssetBundle(realAssetPath);
                 if (bundleInfo == null)
                 {
-                    m_LoadRequests.Remove(abName);
-                    Log.GameFrameworkLog.LogError("OnLoadAsset--->>>" + abName);
+                    m_LoadRequests.Remove(realAssetPath);
+                    Log.GameFrameworkLog.LogError("OnLoadAsset--->>>" + realAssetPath);
                     yield break;
                 }
             }
             List<LoadAssetRequest> list = null;
-            if (!m_LoadRequests.TryGetValue(abName, out list))
+            if (!m_LoadRequests.TryGetValue(realAssetPath, out list))
             {
-                m_LoadRequests.Remove(abName);
+                m_LoadRequests.Remove(realAssetPath);
                 yield break;
             }
 
             string[] dependencies = null;
-            if (m_Dependencies.TryGetValue(abName, out dependencies))
+            if (m_Dependencies.TryGetValue(realAssetPath, out dependencies))
             {
                 while (!DependenciesLoaded(dependencies))
                 {
@@ -264,13 +268,13 @@ namespace GameFrameWork.Resources
                 {
                     if (list[i].LoadMainAsset)
                     {
-                        list[i].SharpFunc(abName, ab.GetAsset(list[i].AssetName, list[i].AssetType), list[i].Args);
+                        list[i].SharpFunc(list[i].AssetPath, ab.GetAsset(list[i].AssetName, list[i].AssetType), list[i].Args);
                         list[i].SharpFunc = null;
                     }
                 }
                 bundleInfo.ReferencedCount++;
             }
-            m_LoadRequests.Remove(abName);
+            m_LoadRequests.Remove(realAssetPath);
         }
 
 
