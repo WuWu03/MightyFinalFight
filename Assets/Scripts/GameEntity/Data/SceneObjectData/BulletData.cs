@@ -15,8 +15,6 @@ public class BulletData : BaseSceneObjectData
     public Vector2 Velocity { get; set; }
     public float HitRange { get; set; }
     public float Drag { get; set; }
-    public Vector2 TriggerOffest { get; set; }
-    public Vector2 TriggerSize { get; set; }
     public bool IsPenatrate { get; set; }//是否穿透
     public int SkillExp { get; set; }
     public float DamageMulity { get; set; }
@@ -34,8 +32,6 @@ public class BulletData : BaseSceneObjectData
         Velocity = Vector2.zero;
         HitRange = 0;
         Drag = 0;
-        TriggerOffest = Vector2.zero;
-        TriggerSize = Vector2.zero;
         IsPenatrate = false;
         SkillExp = 0;
     }

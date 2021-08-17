@@ -32,8 +32,6 @@ public class SkillBulletEffect : SkillBaseEffect
             bulletData.Velocity = m_SkillEffect.Bullets[i].Velocity;
             bulletData.HitRange = m_SkillEffect.Bullets[i].HitRange;
             bulletData.Drag = m_SkillEffect.Bullets[i].Drag;
-            bulletData.TriggerOffest = m_SkillEffect.Bullets[i].TriggerOffest;
-            bulletData.TriggerSize = m_SkillEffect.Bullets[i].TriggerSize;
             bulletData.IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
             bulletData.SkillExp = m_SkillData.EXP;
             bulletData.DamageMulity = m_SkillEffect.DamageMulity;

@@ -31,6 +31,8 @@ public class Weapon : BaseSceneItem
         SetActive(true);
         SetPos2(m_Owner.Pos.x, m_Owner.Pos.y);
         AddForce(40f * attackerDir, 150f);
+        SetTrigger(AnimName.Drop);
+
         m_Animator.animation.Play(AnimName.Drop, 0);
         m_Owner = null;
     }
@@ -46,13 +48,10 @@ public class Weapon : BaseSceneItem
     {
         base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        SetCollider(m_WeaponData.TriggerOffest, m_WeaponData.TriggerSize);
-        SetPos(m_Pos);
-        SetGravityScale(1f);
-        SetBodyType(RigidbodyType2D.Kinematic);
-        m_Collider.isTrigger = true;
-        m_Collider.enabled = true;
         m_Animator.animation.Play(AnimName.Idle, 0);
+        SetPos(m_Pos);
+        ResetRigidbody();
+        SetTrigger(AnimName.Idle);
     }
 
     protected override void OnGround()

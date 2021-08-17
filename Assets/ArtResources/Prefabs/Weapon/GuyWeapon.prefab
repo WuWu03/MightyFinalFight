@@ -47,6 +47,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -71,6 +72,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &6675416664935568496
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -90,6 +92,7 @@ GameObject:
   - component: {fileID: 9138492471041370098}
   - component: {fileID: 7043686556025828171}
   - component: {fileID: 7255846034352698837}
+  - component: {fileID: 5680276464719950094}
   m_Layer: 0
   m_Name: GuyWeapon
   m_TagString: Untagged
@@ -151,4 +154,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 0
+  dirty: 1
+--- !u!114 &5680276464719950094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8337187325293083088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Idle
+    Offest: {x: -0.003741309, y: 0.041154176}
+    Size: {x: 0.11705521, y: 0.087125}
+  - AnimName: Hit
+    Offest: {x: 0.0018706769, y: -0.0037412941}
+    Size: {x: 0.08338371, y: 0.10209018}

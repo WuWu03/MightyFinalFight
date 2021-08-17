@@ -106,7 +106,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             BaseSceneItem item = list[i].GetComponent<BaseSceneItem>();
             if (item == null) continue;
 
-            bool isInRange = Mathf.Abs(item.Bound.yMin - m_Owner.Bound.yMin) <= item.Bound.height/2 &&
+            bool isInRange = Mathf.Abs(item.Bound.yMin - m_Owner.Bound.yMin) <= 0.2f &&
                              Mathf.Abs(item.Pos.x - m_Owner.Pos.x) <= item.Bound.width / 2;
             if (isInRange)
                 return item;

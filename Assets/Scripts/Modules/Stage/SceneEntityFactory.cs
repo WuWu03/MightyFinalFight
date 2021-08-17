@@ -7,7 +7,10 @@ public static class SceneEntityFactory
 {
     public static void CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        }
 
         BaseSceneItem sceneItem = null;
         SceneItemData.ItemType type = SceneItemData.ItemType.None;
@@ -15,6 +18,7 @@ public static class SceneEntityFactory
 
         if (data.Type == SceneItemConfigData.ItemType.Weapon)
         {
+            data = StaticConfig.SceneItemConfig.GetData(PlayerMgr.Ins.HeroData.WeaponId);
             type = SceneItemData.ItemType.Weapon;
             objectType = ObjectType.Weapon;
             sceneItem = EntityMgr.Ins.GetEntity<Weapon>(data.Name);
@@ -35,15 +39,16 @@ public static class SceneEntityFactory
             sceneItem = EntityMgr.Ins.GetEntity<Consume>(data.Name);
         }
 
-        if (sceneItem == null) return;
+        if (sceneItem == null)
+        {
+            return;
+        }
 
         SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
         sceneItemData.Id = data.Id;
         sceneItemData.Type = type;
         sceneItemData.Health = data.Value;
         sceneItemData.MaxHealth = data.Value;
-        sceneItemData.TriggerOffest = data.TriggerOffest;
-        sceneItemData.TriggerSize = data.TriggerSize;
         sceneItemData.Value = data.Value;
         sceneItemData.CanDrop = data.CanDrop;
 

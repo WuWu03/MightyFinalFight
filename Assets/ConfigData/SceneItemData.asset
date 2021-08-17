@@ -14,58 +14,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - Id: 1001
-    Name: CodyWeapon
+    Name: Weapon
     AssetName: Weapon/CodyWeapon
     Type: 0
-    TriggerSize: {x: 0.1240074, y: 0.1058722}
-    TriggerOffest: {x: 0, y: 0.05}
     Value: 500
     CanDrop: 1
   - Id: 1002
     Name: GuyWeapon
     AssetName: Weapon/GuyWeapon
     Type: 0
-    TriggerSize: {x: 0.11, y: 0.08}
-    TriggerOffest: {x: 0, y: 0.04}
     Value: 500
     CanDrop: 0
   - Id: 1003
-    Name: HaggarWeapon
-    AssetName: Item/Tea
-    Type: 1
-    TriggerSize: {x: 0.07, y: 0.06}
-    TriggerOffest: {x: 0, y: 0}
+    Name: HaggerWeapon
+    AssetName: Weapon/HaggerWeapon
+    Type: 0
     Value: 5
-    CanDrop: 0
+    CanDrop: 1
   - Id: 1004
     Name: Tea
     AssetName: Item/Tea
     Type: 1
-    TriggerSize: {x: 0.07, y: 0.12}
-    TriggerOffest: {x: 0, y: 0.06}
     Value: 1
     CanDrop: 0
   - Id: 1005
     Name: Apple
     AssetName: Item/Apple
     Type: 1
-    TriggerSize: {x: 0.11, y: 0.12}
-    TriggerOffest: {x: 0, y: 0.06}
     Value: 2
     CanDrop: 0
   - Id: 1006
     Name: Cake
     AssetName: Item/Cake
     Type: 1
-    TriggerSize: {x: 0.1, y: 0.1}
-    TriggerOffest: {x: 0, y: 0.05}
     Value: 3
     CanDrop: 0
   - Id: 1007
     Name: Meat
     AssetName: Item/Meat
     Type: 1
-    TriggerSize: {x: 0.16, y: 0.13}
-    TriggerOffest: {x: 0, y: 0.065}
     Value: 34
     CanDrop: 0

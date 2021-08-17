@@ -26,5 +26,6 @@ public class HeroConfigData : BaseConfigData
     public int[] Skills;//技能序列
     public float[] AttackWait;//连击时间
     public float[] AttackNextTime;
+    public int WeaponId;//武器id
     public bool CatchControl;//抓取的时候是否可以控制敌人进行移动
 }

@@ -28,8 +28,14 @@ public class Consume : BaseSceneItem
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        SetCollider(m_ConsumeInfo.TriggerOffest, m_ConsumeInfo.TriggerSize);
-        SetPos(m_Pos);
+        BoxCollider2D boxCollider2D = go.GetComponent<BoxCollider2D>();
+
+        if (boxCollider2D != null)
+        {
+            SetCollider(boxCollider2D.offset, boxCollider2D.size);
+            boxCollider2D.enabled = false;
+        }
+
         ResetRigidbody();
     }
 

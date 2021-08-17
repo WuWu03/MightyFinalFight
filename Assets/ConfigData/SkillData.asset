@@ -330,8 +330,6 @@ MonoBehaviour:
         Velocity: {x: 8, y: 0}
         HitRange: 0.2
         Drag: 20
-        TriggerOffest: {x: 0, y: 0}
-        TriggerSize: {x: 0.1, y: 0.25}
         IsPenatrate: 0
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 100}
@@ -669,8 +667,6 @@ MonoBehaviour:
         Velocity: {x: 10, y: 0}
         HitRange: 0.5
         Drag: 0
-        TriggerOffest: {x: 0, y: 0}
-        TriggerSize: {x: 0.16, y: 0.06}
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
@@ -969,52 +965,6 @@ MonoBehaviour:
       Args: 
   - Id: 2005
     Level: 0
-    Name: GuyJumpAttack1
-    AnimationName: JumpAttack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 2
-    TriggerType: 1
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 1.5
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 3
-      IsRevert: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 120}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      ScaleTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 1
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      IsOnGroundEffect: 0
-      CanBeDefense: 1
-      HitOne: 0
-      Args: 
-  - Id: 2005
-    Level: 0
     Name: GuyJumpAttack2
     AnimationName: JumpAttack2
     HurtSound: 
@@ -1053,6 +1003,52 @@ MonoBehaviour:
       Gravity: 0
       DamageMulity: 0
       IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 1
+      HitOne: 0
+      Args: 
+  - Id: 2005
+    Level: 0
+    Name: GuyJumpAttack1
+    AnimationName: JumpAttack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 2
+    TriggerType: 1
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 3
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 120}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0
@@ -1488,8 +1484,6 @@ MonoBehaviour:
         Velocity: {x: 6, y: 0}
         HitRange: 0
         Drag: 0
-        TriggerOffest: {x: 0, y: 0}
-        TriggerSize: {x: 0.08, y: 0.08}
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
@@ -1548,8 +1542,6 @@ MonoBehaviour:
         Velocity: {x: 8, y: 0}
         HitRange: 0.5
         Drag: 0
-        TriggerOffest: {x: 0, y: 0}
-        TriggerSize: {x: 0.08, y: 0.08}
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 150}
@@ -1926,7 +1918,7 @@ MonoBehaviour:
       ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 120}
+      AddTargetForce: {x: 40, y: 130}
       AddSelfForce: {x: -20, y: 120}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
@@ -1936,7 +1928,7 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
-      DamageMulity: 0
+      DamageMulity: 3
       IsSmoon: 1
       IsShakeCamera: 1
       IsOnGroundHurt: 0
@@ -2177,6 +2169,110 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
+  - Id: 3011
+    Level: 0
+    Name: HaggerAttack_Weapon
+    AnimationName: Attack_Weapon
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 1
+    CanChangeDir: 1
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 5
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 1, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 1.5
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - Id: 3012
+    Level: 0
+    Name: HaggerThrowWeapon
+    AnimationName: ThrowWeapon
+    HurtSound: Sound/Impact
+    Type: 2
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 1
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 5
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 2
+      SelectorType: 1
+      ForceType: 1
+      Bullets:
+      - Name: HaggerBullet
+        AssetName: Weapon/HaggerWeapon
+        NormalAnim: Drop
+        HitAnim: 
+        NormalAnimSpeed: 1
+        HitAnimSpeed: 0
+        Dir: {x: 1, y: 0}
+        Pos: {x: 0.2, y: 0.13}
+        Velocity: {x: 5, y: 0}
+        HitRange: 0.1
+        Drag: 0
+        IsPenatrate: 1
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 1, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
   - Id: 4001
     Level: 0
     Name: BredAttack
@@ -2271,52 +2367,6 @@ MonoBehaviour:
       Args: 
   - Id: 6001
     Level: 0
-    Name: AxlAttack
-    AnimationName: Attack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 0.2
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 0
-      IsRevert: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 150}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      ScaleTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 1
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      IsOnGroundEffect: 0
-      CanBeDefense: 0
-      HitOne: 0
-      Args: 
-  - Id: 6001
-    Level: 0
     Name: AndoreAttack
     AnimationName: Attack1
     HurtSound: 
@@ -2355,6 +2405,52 @@ MonoBehaviour:
       Gravity: 0
       DamageMulity: 0
       IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - Id: 6001
+    Level: 0
+    Name: AxlAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.2
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0

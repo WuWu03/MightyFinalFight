@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 7513431564327556360}
   - component: {fileID: 15554807757749525}
   - component: {fileID: 2803349423097902451}
+  - component: {fileID: 90122919359296055}
   m_Layer: 0
   m_Name: CodyBullet
   m_TagString: Untagged
@@ -212,8 +213,8 @@ MonoBehaviour:
   armatureName: CodyBullet
   isUGUI: 0
   debugDraw: 0
-  animationName: 
-  _playTimes: 0
+  animationName: Normal
+  _playTimes: 1
   _timeScale: 0.2
   _sortingMode: 0
   _sortingLayerName: Default
@@ -235,4 +236,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 1
+  dirty: 0
+--- !u!114 &90122919359296055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4633487452403678284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Normal
+    Offest: {x: 0.0018578768, y: -0.0037157238}
+    Size: {x: 0.111940086, y: 0.25685376}
+  - AnimName: Hit
+    Offest: {x: -0.000000014901161, y: -0.0037158132}
+    Size: {x: 0.07849845, y: 0.1751076}

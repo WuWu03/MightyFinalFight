@@ -102,6 +102,10 @@ public class BaseGravityObject : BaseSceneObject
 
     public void AddForce(Vector2 force, bool isGroundForce = false)
     {
+        if(this is BaseEnemy)
+        {
+            Debug.Log("增加力 : " + force.ToString());
+        }
         m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody.AddForce(force);
         m_IsAddGroundForce = isGroundForce;

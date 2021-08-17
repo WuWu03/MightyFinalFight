@@ -61,6 +61,9 @@ public class EditorMgr : MonoBehaviour
         {
             Debug.LogError("Build windows error : [" + buildSummary.ToString() + "]");
         }
+
+        appConfig.LoadAB = false;
+        appConfig.OpenLog = true;
     }
 
     [MenuItem("Tools/MapEditor")]

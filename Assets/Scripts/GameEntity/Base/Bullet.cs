@@ -25,8 +25,10 @@ public class Bullet : BaseSceneItem
         if (m_BulletData.IsPenatrate)
         {
             bool isOutVersion = IsOutVersionX(transform.localPosition.x) || IsOutVersionY(transform.localPosition.y);
-            if (isOutVersion || m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1) 
+            if (isOutVersion || m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+            {
                 Release();
+            }
         }
         else
         {
@@ -39,6 +41,8 @@ public class Bullet : BaseSceneItem
                 if(m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
             }
         }
+
+        UpdatePos(transform.localPosition);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -59,7 +63,7 @@ public class Bullet : BaseSceneItem
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
 
         bool canBeHit = hit != null && hit.CanBeHit;
-        bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Owner.Pos.y) < m_BulletData.HitRange;
+        bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) < m_BulletData.HitRange;
 
         if (isInRange && canBeHit)
         {
@@ -84,12 +88,15 @@ public class Bullet : BaseSceneItem
             hit.OnHurtMsg(hurtData);
 
             if (!m_BulletData.IsPenatrate)
+            {
                 SetVelocity(Vector2.zero);
-           
+            }
+
             if(!string.IsNullOrEmpty(m_BulletData.HitAnim))
             {
                 m_Animator.animation.timeScale = m_BulletData.HitAnimSpeed;
                 m_Animator.animation.Play(m_BulletData.HitAnim, 1);
+                SetTrigger(m_BulletData.HitAnim);
             }
             
             m_IsHit = true;
@@ -106,8 +113,7 @@ public class Bullet : BaseSceneItem
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         m_Animator.animation.timeScale = m_BulletData.NormalAnimSpeed;
         m_Animator.animation.Play(m_BulletData.NormalAnim, 0);
-
-        SetCollider(m_BulletData.TriggerOffest, m_BulletData.TriggerSize);
+        SetTrigger(m_BulletData.NormalAnim);
         SetDrag(m_BulletData.Drag);
         SetGravityScale(0f);
         SetVelocity(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);

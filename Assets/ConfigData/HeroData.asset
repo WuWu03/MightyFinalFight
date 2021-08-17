@@ -41,6 +41,7 @@ MonoBehaviour:
     - 0.15
     - 0.15
     - 0.15
+    WeaponId: 1001
     CatchControl: 0
   - Id: 1002
     Name: Guy
@@ -70,6 +71,7 @@ MonoBehaviour:
     - 0.3
     - 0.3
     - 0.3
+    WeaponId: 1002
     CatchControl: 0
   - Id: 1003
     Name: Hagger
@@ -86,9 +88,9 @@ MonoBehaviour:
     JumpAttackIDs: bd0b0000be0b0000
     CatchAttackID: 3009
     ThrowAttackID: 3010
-    WeaponAttackID: 2012
-    ThrowWeaponID: 2013
-    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000
+    WeaponAttackID: 3011
+    ThrowWeaponID: 3012
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000c30b0000c40b0000
     AttackWait:
     - 0.6
     - 0.6
@@ -99,4 +101,5 @@ MonoBehaviour:
     - 0.2
     - 0.2
     - 0.4
+    WeaponId: 1003
     CatchControl: 1

@@ -87,7 +87,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         base.SetData(info);
         m_BarrelData = info as BarrelData;
-        SetCollider(m_BarrelData.TriggerOffest, m_BarrelData.TriggerSize);
     }
 
     public override void Release()
@@ -105,6 +104,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
         if (IsDead)
         {
+            SetTrigger(AnimName.Dead);
             GetState<BarrelDead>().AttackerDir = data.AttackerDir;
             ChangeState<BarrelDead>();
             SceneEntityMgr.Ins.CreateSceneItem(m_BarrelData.ItemId, m_MapPos);
@@ -153,11 +153,13 @@ public class Barrel : BaseSceneItem, ICanBeHit
         {
             if (m_BarrelData.MoveSpeed > 0)
             {
+                SetTrigger(AnimName.Move);
                 m_FsmMachine.Start<BarrelMove>();
                 SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Barrel");
             }
             else
             {
+                SetTrigger(AnimName.Idle);
                 m_FsmMachine.Start<BarrelIdle>();
             }
         }
@@ -170,6 +172,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     protected override void OnGround()
     {
+        SetTrigger(AnimName.Drop);
         m_FsmMachine.Start<BarrelDrop>();
     }
 

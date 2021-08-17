@@ -50,8 +50,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             barrelData.Id = 1;
             barrelData.Health = 1;
             barrelData.MaxHealth = 1;
-            barrelData.TriggerOffest = new Vector2(0, 0.13f);
-            barrelData.TriggerSize = new Vector2(0.17f, 0.25f);
             barrelData.Value = 0;
             barrelData.CanDrop = false;
             barrelData.Dir = 1;
@@ -62,7 +60,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             sceneItem.SetData(barrelData);
             sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, "Item/Barrel"));
-            sceneItem.SetObjectType(ObjectType.Monster);
+            sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
         }
     }

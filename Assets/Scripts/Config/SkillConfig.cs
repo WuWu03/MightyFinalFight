@@ -87,8 +87,6 @@ public class SkillConfigData : BaseConfigData
         public Vector2 Velocity;
         public float HitRange;
         public float Drag;
-        public Vector2 TriggerOffest;
-        public Vector2 TriggerSize;
         public bool IsPenatrate;//是否穿透
     }
 
