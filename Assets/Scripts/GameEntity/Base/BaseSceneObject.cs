@@ -125,6 +125,7 @@ public class BaseSceneObject : BaseEntity
         m_Pos = transform.localPosition;
         m_Collider = gameObject.GetOrAddComponent<BoxCollider2D>();
         m_Collider.isTrigger = true;
+        m_Collider.enabled = false;
         m_ListTargets = new List<GameObject>();
     }
 
@@ -284,6 +285,7 @@ public class BaseSceneObject : BaseEntity
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
         m_IsResComplete = true;
+        m_Collider.enabled = true;
         SetLayer(m_Layer);
         OnResComplete(go, param);
     }

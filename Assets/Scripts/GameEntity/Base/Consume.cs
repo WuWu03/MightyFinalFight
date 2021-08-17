@@ -30,8 +30,6 @@ public class Consume : BaseSceneItem
         base.OnResComplete(go, param);
         SetCollider(m_ConsumeInfo.TriggerOffest, m_ConsumeInfo.TriggerSize);
         SetPos(m_Pos);
-        m_Collider.isTrigger = true;
-        m_Collider.enabled = true;
         ResetRigidbody();
     }
 

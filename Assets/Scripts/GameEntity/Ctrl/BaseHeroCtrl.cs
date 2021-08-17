@@ -62,8 +62,8 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
 
         m_CatchAttackTimer = 0f;
-
         BaseSceneItem item = IsNearSceneItem();
+
         if (item != null && item.CanPickUp)
         {
             hero.PickUpSceneItemMsg(item);
@@ -93,7 +93,9 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
 
         if (!m_Owner.IsAnim(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
+        {
             base.NormalAttack(dir);
+        }
     }
 
     private BaseSceneItem IsNearSceneItem()

@@ -11,6 +11,7 @@ public class HurtData : BaseEventArgs
     public int SkillExp { get; set; }
     public bool IsSwoon { get; set; }//是否击飞
     public bool IsGroundHurt { get; set; }//是否落地触发
+    public bool IsCritical { get; set; }
     public float AttackerDir { get; set; }
     public string HurtSound { get; set; }
     public string HurtAnim { get; set; }
@@ -30,6 +31,7 @@ public class HurtData : BaseEventArgs
         SkillExp = 0;
         IsSwoon = false;
         IsGroundHurt = false;
+        IsCritical = false;
         CanBeDefense = false;
         AttackerDir = 0;
         HurtSound = string.Empty;

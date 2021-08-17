@@ -5,6 +5,7 @@ using System;
 using Object = UnityEngine.Object;
 using System.IO;
 using GameFrameWork.Utility;
+using UnityEngine.U2D;
 
 namespace GameFrameWork.Resources
 {

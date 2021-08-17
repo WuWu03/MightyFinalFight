@@ -26,52 +26,52 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 1001
-      Hp: 1
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 300
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
       Pos: {x: -178, y: -38}
     - EntityID: 2
       SourceID: 1001
-      Hp: 1
-      AttackValue: 10
-      DefenseValue: 5
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 7
       HpBarWidth: 300
       Pos: {x: -178, y: -46}
     - EntityID: 3
       SourceID: 1001
-      Hp: 1
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 300
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
       Pos: {x: -178, y: -54}
     - EntityID: 4
       SourceID: 1001
-      Hp: 1
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 250
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 100
       Pos: {x: -178, y: -62}
     - EntityID: 5
       SourceID: 1001
-      Hp: 1
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 300
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 100
       Pos: {x: -178, y: -70}
     - EntityID: 6
-      SourceID: 1001
-      Hp: 1
+      SourceID: 1002
+      Hp: 250
       AttackValue: 10
       DefenseValue: 5
-      HpBarWidth: 200
+      HpBarWidth: 80
       Pos: {x: -100, y: -54}
     - EntityID: 7
-      SourceID: 1001
-      Hp: 1
+      SourceID: 1002
+      Hp: 250
       AttackValue: 10
       DefenseValue: 5
-      HpBarWidth: 200
+      HpBarWidth: 80
       Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -109,17 +109,17 @@ MonoBehaviour:
     Targets:
     - EntityID: 7
       SourceID: 1003
-      Hp: 1000
-      AttackValue: 1
-      DefenseValue: 1
-      HpBarWidth: 100
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 10
+      HpBarWidth: 300
       Pos: {x: 300, y: -54}
     - EntityID: 8
       SourceID: 1003
-      Hp: 1000
-      AttackValue: 1
-      DefenseValue: 1
-      HpBarWidth: 100
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 10
+      HpBarWidth: 300
       Pos: {x: 300, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
     Targets: []
     TriggerStopCamera: 1
     ExitStartCamera: 1
-    MapID: 0
+    MapID: 1002
     TalkID: 0
     PrevID: 0
     NextID: 0

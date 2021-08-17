@@ -152,7 +152,7 @@ public class SkillFactory
         return ret;
     }
 
-    public static int CacDamage(int attack, int defense, int critical, float mulity)
+    public static int CacDamage(int attack, int defense, int critical, float mulity,out bool isCritical)
     {
         int a = 2;
         int b = 1;
@@ -177,6 +177,7 @@ public class SkillFactory
                      "\n[是否暴击： " + isCri + "]";
 
         GameFrameworkLog.Log(str);
+        isCritical = isCri;
         return Mathf.FloorToInt(damage);
     }
 

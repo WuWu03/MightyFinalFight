@@ -1,5 +1,5 @@
 ﻿using UnityEditor;
-
+using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
@@ -32,6 +32,21 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(useLua);
             EditorGUILayout.PropertyField(logColor);
 
+#if UNITY_IOS
+            SerializedProperty iOSBuildPath = serializedObject.FindProperty("iOSBuildPath");
+            EditorGUILayout.PropertyField(iOSBuildPath);
+#endif
+
+#if UNITY_STANDALONE_WIN
+            SerializedProperty pcBuildPath = serializedObject.FindProperty("PCBuildPath");
+            EditorGUILayout.PropertyField(pcBuildPath);
+#endif
+
+#if UNITY_ANDROID
+            SerializedProperty androidBuildPath = serializedObject.FindProperty("AndroidBuildPath");
+            EditorGUILayout.PropertyField(androidBuildPath);
+#endif
+
             if (appConfig.UseLua)
             {
                 EditorGUILayout.PropertyField(loadLuaAB);
@@ -58,6 +73,30 @@ namespace GameFrameWork.Editor
             appConfig.OpenLog = openLog.boolValue;
             appConfig.UseLua = useLua.boolValue;
             appConfig.LogColor = logColor.colorValue;
+
+#if UNITY_IOS
+            if(appConfig.iOSBuildPath != iOSBuildPath.stringValue)
+            {
+                UnityEditor.EditorUtility.SetDirty(target);
+            }
+            appConfig.iOSBuildPath = iOSBuildPath.stringValue;
+#endif
+
+#if UNITY_STANDALONE_WIN
+            if (appConfig.PCBuildPath != pcBuildPath.stringValue)
+            {
+                UnityEditor.EditorUtility.SetDirty(target);
+            }
+            appConfig.PCBuildPath = pcBuildPath.stringValue;
+#endif
+
+#if UNITY_ANDROID
+            if (appConfig.AndroidBuildPath != androidBuildPath.stringValue)
+            {
+                UnityEditor.EditorUtility.SetDirty(target);
+            }
+            appConfig.AndroidBuildPath = androidBuildPath.stringValue;
+#endif
 
             if (appConfig.UseLua)
             {

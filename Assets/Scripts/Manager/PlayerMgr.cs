@@ -158,7 +158,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             return;
         }
 
-        m_Player.SetHealth(10);
+        m_Player.SetHealth(m_Player.MaxHealth);
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
@@ -227,6 +227,20 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         {
             m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.Id != 2001);
             resutl = true;
+        }
+
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            HurtData hurtData = HurtData.Create();
+            hurtData.Id = 1;
+            hurtData.IsSwoon = false;
+            hurtData.AttackerDir = 1;
+            hurtData.AttackForce = new Vector2(40, 150);
+            hurtData.AttackValue = 1;
+            hurtData.CanBeDefense = false;
+            hurtData.IsCritical = true;
+            hurtData.SkillExp = 4;
+            m_Player.OnHurtMsg(hurtData);
         }
         return resutl;
     }

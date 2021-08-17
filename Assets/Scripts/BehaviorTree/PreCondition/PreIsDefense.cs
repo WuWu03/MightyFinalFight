@@ -15,15 +15,17 @@ public class PreIsDefense : PreCondition
 
     private bool OnHurtEvent(HurtData data)
     {
-        if (m_Owner.Owner.IsAnyState(typeof(RoleHurt)))
+        if (m_Owner.Owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.IsSwoon)
         {
+            m_IsDefense = false;
             m_HurtTimer = Time.time;
-            return false;
+            return true;
         }
 
-        if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.3f)
+        if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
         {
-            return false;
+            m_IsDefense = false;
+            return true;
         }
 
         m_HurtTimer = -1;

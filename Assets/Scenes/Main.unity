@@ -188,6 +188,9 @@ MonoBehaviour:
   LuaByteMode: 0
   LuaDirectory: Assets/Scripts/Lua
   LogColor: {r: 1, g: 1, b: 1, a: 1}
+  PCBuildPath: E:/Build/MightyFinalFight/MightyFinalFight.exe
+  AndroidBuildPath: 
+  iOSBuildPath: 
 --- !u!850595691 &806011820
 LightingSettings:
   m_ObjectHideFlags: 0

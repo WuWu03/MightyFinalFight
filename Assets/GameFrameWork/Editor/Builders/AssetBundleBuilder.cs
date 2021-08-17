@@ -11,7 +11,7 @@ namespace GameFrameWork.Editor
         /// <summary>
         /// 打包
         /// </summary>
-        public static void Build(BuildTarget target)
+        public static void Build(BuildTarget target, bool isShowNotify = true)
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
 
@@ -46,6 +46,11 @@ namespace GameFrameWork.Editor
                 }
 
                 AssetDatabase.Refresh();
+
+                if (!isShowNotify)
+                {
+                    return;
+                }
 
                 Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.AssetBuildDir);
                 UnityEditor.EditorUtility.DisplayDialog("提示", "打包成功", "确定");

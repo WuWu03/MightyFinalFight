@@ -51,7 +51,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     public override void Update(ISkillSelector selector)
     {
-        if(!m_HasEffect)
+        if (!m_HasEffect || m_IsCompleted)
         {
             return;
         }
@@ -95,7 +95,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
                 if(m_SkillEffect.HitOne)
                 {
-                    m_IsCompleted = true;
+                    Complete();
                     break;
                 }
             }

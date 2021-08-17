@@ -22,135 +22,135 @@ MonoBehaviour:
       MoveSpeed: 0.7
       JumpForce: {x: 40, y: 140}
       Health: 100
-      HPBarWidth: 300
+      HPBarWidth: 200
       EXP: 33
     - AttackSpeed: 1
-      AttackValue: 25
-      DefenseValue: 15
+      AttackValue: 24
+      DefenseValue: 14
       CriticalValue: 30
       MoveSpeed: 0.7
       JumpForce: {x: 40, y: 140}
-      Health: 150
-      HPBarWidth: 400
+      Health: 160
+      HPBarWidth: 250
       EXP: 54
     - AttackSpeed: 1
-      AttackValue: 35
-      DefenseValue: 25
+      AttackValue: 32
+      DefenseValue: 22
       CriticalValue: 30
       MoveSpeed: 0.7
       JumpForce: {x: 0, y: 0}
-      Health: 250
-      HPBarWidth: 550
+      Health: 280
+      HPBarWidth: 350
       EXP: 80
     - AttackSpeed: 1
-      AttackValue: 55
-      DefenseValue: 40
+      AttackValue: 44
+      DefenseValue: 34
       CriticalValue: 30
       MoveSpeed: 0
       JumpForce: {x: 40, y: 140}
-      Health: 40
-      HPBarWidth: 750
+      Health: 460
+      HPBarWidth: 500
       EXP: 110
     - AttackSpeed: 1
-      AttackValue: 80
-      DefenseValue: 60
+      AttackValue: 60
+      DefenseValue: 50
       CriticalValue: 30
       MoveSpeed: 0
       JumpForce: {x: 40, y: 140}
-      Health: 60
-      HPBarWidth: 900
+      Health: 700
+      HPBarWidth: 800
       EXP: -1
   - Id: 1002
     Levels:
     - AttackSpeed: 1
-      AttackValue: 1
-      DefenseValue: 1
-      CriticalValue: 0
+      AttackValue: 15
+      DefenseValue: 10
+      CriticalValue: 55
       MoveSpeed: 1
       JumpForce: {x: 40, y: 150}
-      Health: 10
-      HPBarWidth: 300
+      Health: 100
+      HPBarWidth: 200
       EXP: 33
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
+    - AttackSpeed: 1
+      AttackValue: 18
+      DefenseValue: 14
+      CriticalValue: 55
+      MoveSpeed: 1
+      JumpForce: {x: 0, y: 0}
+      Health: 140
+      HPBarWidth: 250
+      EXP: 53
+    - AttackSpeed: 1
+      AttackValue: 25
+      DefenseValue: 22
+      CriticalValue: 55
       MoveSpeed: 0
       JumpForce: {x: 0, y: 0}
-      Health: 15
+      Health: 220
+      HPBarWidth: 300
+      EXP: 93
+    - AttackSpeed: 1
+      AttackValue: 35
+      DefenseValue: 34
+      CriticalValue: 55
+      MoveSpeed: 0
+      JumpForce: {x: 0, y: 0}
+      Health: 340
       HPBarWidth: 400
-      EXP: 54
+      EXP: 153
     - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
+      AttackValue: 49
+      DefenseValue: 50
+      CriticalValue: 55
       MoveSpeed: 0
       JumpForce: {x: 0, y: 0}
-      Health: 25
-      HPBarWidth: 550
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 40
-      HPBarWidth: 750
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 60
-      HPBarWidth: 900
-      EXP: 0
+      Health: 500
+      HPBarWidth: 600
+      EXP: -1
   - Id: 1003
     Levels:
-    - AttackSpeed: 0.8
-      AttackValue: 1
-      DefenseValue: 1
-      CriticalValue: 0
-      MoveSpeed: 0.7
-      JumpForce: {x: 40, y: 150}
-      Health: 10
-      HPBarWidth: 300
-      EXP: 33
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 15
+    - AttackSpeed: 0.7
+      AttackValue: 25
+      DefenseValue: 15
+      CriticalValue: 40
+      MoveSpeed: 0.5
+      JumpForce: {x: 25, y: 150}
+      Health: 200
       HPBarWidth: 400
-      EXP: 54
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 25
-      HPBarWidth: 550
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 40
+      EXP: 60
+    - AttackSpeed: 0.7
+      AttackValue: 30
+      DefenseValue: 19
+      CriticalValue: 40
+      MoveSpeed: 0.5
+      JumpForce: {x: 25, y: 150}
+      Health: 280
+      HPBarWidth: 500
+      EXP: 90
+    - AttackSpeed: 0.7
+      AttackValue: 40
+      DefenseValue: 28
+      CriticalValue: 40
+      MoveSpeed: 0.5
+      JumpForce: {x: 25, y: 150}
+      Health: 440
+      HPBarWidth: 600
+      EXP: 150
+    - AttackSpeed: 0.7
+      AttackValue: 55
+      DefenseValue: 41
+      CriticalValue: 40
+      MoveSpeed: 0.5
+      JumpForce: {x: 25, y: 150}
+      Health: 680
       HPBarWidth: 750
-      EXP: 0
-    - AttackSpeed: 0
-      AttackValue: 0
-      DefenseValue: 0
-      CriticalValue: 0
-      MoveSpeed: 0
-      JumpForce: {x: 0, y: 0}
-      Health: 60
+      EXP: 240
+    - AttackSpeed: 0.7
+      AttackValue: 75
+      DefenseValue: 59
+      CriticalValue: 40
+      MoveSpeed: 0.5
+      JumpForce: {x: 25, y: 150}
+      Health: 1000
       HPBarWidth: 900
-      EXP: 0
+      EXP: -1

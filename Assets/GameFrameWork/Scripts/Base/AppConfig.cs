@@ -31,5 +31,14 @@ namespace GameFrameWork
 
         [Header("* 日志文本颜色")]
         public Color LogColor = Color.white;
+
+        [Header("* PC打包路径")]
+        public string PCBuildPath = string.Empty;
+
+        [Header("* 安卓打包路径")]
+        public string AndroidBuildPath = string.Empty;
+
+        [Header("* 苹果打包路径")]
+        public string iOSBuildPath = string.Empty;
     }
 }

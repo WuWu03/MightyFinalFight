@@ -310,8 +310,6 @@ public static class MapEditorHelper
         StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(PathUtil.ConfigDataDefaultPath + "StageData.asset");
         stageConfig.Datas.Clear();
 
-  
-
         for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)
         {
             MapEditorConfigData configData = m_MapEditorConfig.Datas[i];
