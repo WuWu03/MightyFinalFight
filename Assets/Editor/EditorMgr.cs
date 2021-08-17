@@ -28,7 +28,6 @@ public class EditorMgr : MonoBehaviour
         BuildGame(true);
     }
 
-
     private static void BuildGame(bool openLog)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/Main.unity");
@@ -55,15 +54,14 @@ public class EditorMgr : MonoBehaviour
 
         if(buildSummary.result == BuildResult.Succeeded)
         {
+            appConfig.LoadAB = false;
+            appConfig.OpenLog = true;
             Debug.Log("Build success");
         }
         else if (buildSummary.result == BuildResult.Failed)
         {
             Debug.LogError("Build windows error : [" + buildSummary.ToString() + "]");
         }
-
-        appConfig.LoadAB = false;
-        appConfig.OpenLog = true;
     }
 
     [MenuItem("Tools/MapEditor")]

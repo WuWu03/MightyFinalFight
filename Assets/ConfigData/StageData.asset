@@ -25,11 +25,11 @@ MonoBehaviour:
     BGMs:
     - ClipName: bgm01_Start
       IsLoop: 0
-      Volume: 0.3
+      Volume: 0.6
       LerpTime: 0.3
     - ClipName: bgm01_Loop
       IsLoop: 1
-      Volume: 0.3
+      Volume: 0.6
       LerpTime: 0.3
     MoveArea:
     - serializedVersion: 2
