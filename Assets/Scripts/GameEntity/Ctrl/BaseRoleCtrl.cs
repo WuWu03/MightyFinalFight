@@ -168,7 +168,7 @@ public class BaseRoleCtrl : BaseCtrl
     protected virtual void NormalAttack(Vector2 dir)
     {
         if (m_Data.AttackWait == null || m_Data.AttackWait.Length < 1) return;
-        if (m_AttackIndex >= m_Data.AttackWait.Length) return;
+        if (m_AttackIndex >= m_Data.AttackWait.Length - 1) return;
 
         if (m_AttackTimer > 0 && m_Data.AttackNextTime != null && m_Data.AttackNextTime.Length > 0)
         {
@@ -177,11 +177,6 @@ public class BaseRoleCtrl : BaseCtrl
 
         if (AttackSuccess) m_AttackIndex++;
         else m_AttackIndex = 0;
-
-        if(m_AttackIndex >= m_Data.AttackWait.Length)
-        {
-            m_AttackIndex = m_Data.AttackWait.Length - 1;
-        }
 
         m_AttackTimer = Time.time;
         m_CurrSkillID = m_Data.AttackIds[m_AttackIndex];

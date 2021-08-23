@@ -795,7 +795,7 @@ MonoBehaviour:
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
-    CanChangeDir: 1
+    CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
     - PrevConditionType: 1
@@ -963,7 +963,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2005
+  - Id: 2006
     Level: 0
     Name: GuyJumpAttack2
     AnimationName: JumpAttack2
@@ -1055,7 +1055,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2006
+  - Id: 2007
     Level: 0
     Name: GuySkill1
     AnimationName: Skill1
@@ -1124,7 +1124,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2007
+  - Id: 2008
     Level: 0
     Name: GuySkill2
     AnimationName: Skill2
@@ -1193,7 +1193,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
-  - Id: 2008
+  - Id: 2009
     Level: 0
     Name: GuyKnee
     AnimationName: Knee
@@ -1239,7 +1239,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2009
+  - Id: 2010
     Level: 0
     Name: GuyThrow
     AnimationName: Throw
@@ -1377,7 +1377,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2010
+  - Id: 2011
     Level: 0
     Name: GuySkill3
     AnimationName: Skill3
@@ -1446,7 +1446,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: OnGroundPickUp
-  - Id: 2011
+  - Id: 2012
     Level: 0
     Name: GuyAttack_Weapon
     AnimationName: Attack_Weapon
@@ -1504,7 +1504,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2012
+  - Id: 2013
     Level: 0
     Name: GuyThrowWeapon
     AnimationName: ThrowWeapon

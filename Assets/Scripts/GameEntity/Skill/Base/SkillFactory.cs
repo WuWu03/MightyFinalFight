@@ -5,21 +5,22 @@ using static SkillConfigData;
 
 public class SkillFactory
 {
-    public static SkillBaseDeployer CreateDeployer(int skillID, BaseRole owner)
+    public static SkillBaseDeployer CreateDeployer(int skillId, BaseRole owner)
     {
         SkillBaseDeployer ret = null;
-        SkillConfigData data = StaticConfig.SkillConfig.GetData(skillID);
+        SkillConfigData data = StaticConfig.SkillConfig.GetData(skillId);
 
+        Debug.Log(skillId);
         switch (data.DeployerType)
         {
             case SkillDeployerType.NormalAttack:
-                ret = new SkillNormalAttackDeployer(skillID, owner);
+                ret = new SkillNormalAttackDeployer(skillId, owner);
                 break;
             case SkillDeployerType.JumpAttack:
-                ret = new SkillJumpAttackDeployer(skillID, owner);
+                ret = new SkillJumpAttackDeployer(skillId, owner);
                 break;
             case SkillDeployerType.SkillAttack:
-                ret = new SkillSkillAttackDeployer(skillID, owner);
+                ret = new SkillSkillAttackDeployer(skillId, owner);
                 break;
         }
 

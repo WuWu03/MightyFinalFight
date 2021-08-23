@@ -8,7 +8,6 @@ using System;
 using System.Reflection;
 using UnityEngine.Networking;
 using UnityEditor;
-
 /// <summary>
 /// 游戏里常用的实用工具
 /// </summary>
@@ -202,11 +201,6 @@ namespace GameFrameWork.Utility
                 sum_temp += weights[i];
                 if (random <= sum_temp)
                 {
-                    if(i == 3)
-                    {
-
-                    }
-                    Debug.Log("随机行为索引 : " + i);
                     return i;
                 }
             }
@@ -216,14 +210,17 @@ namespace GameFrameWork.Utility
 
         public static string ToRGBHex(Color c)
         {
-            if (c == default(Color)) c = Color.black;
-            return TextUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b), ToByte(c.a));
-        }
+            if (c == default(Color))
+            {
+                c = Color.black;
+            }
 
-        private static byte ToByte(float f)
-        {
-            f = Mathf.Clamp01(f);
-            return (byte)(f * 255);
+            byte r = (byte)(Mathf.Clamp01(c.r) * 255);
+            byte g = (byte)(Mathf.Clamp01(c.g) * 255);
+            byte b = (byte)(Mathf.Clamp01(c.b) * 255);
+            byte a = (byte)(Mathf.Clamp01(c.a) * 255);
+
+            return TextUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
         }
     }
 }
