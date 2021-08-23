@@ -72,10 +72,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return m_FsmMachine.CurrStateType != typeof(RoleSwoon) &&
-                   m_FsmMachine.CurrStateType != typeof(RoleDead) &&
-                   m_FsmMachine.CurrStateType != typeof(RoleAwaken) &&
-                   m_Health > 0 && m_IsResComplete;
+            return !IsAnyState(typeof(RoleSwoon), typeof(RoleDead), typeof(RoleAwaken)) && m_Health > 0 && m_IsResComplete;
         }
     }
 

@@ -133,7 +133,10 @@ public class BaseHero : BaseRole
 
     public override List<ICanBeHit> OnHitStart()
     {
-        if (m_ListCatchTarget.Count < 1) return null;
+        if (m_ListCatchTarget.Count < 1)
+        {
+            return null;
+        }
         return m_ListCatchTarget;
     }
 
@@ -141,11 +144,15 @@ public class BaseHero : BaseRole
     {
         base.OnHitEnd(skillData, isHurtTarget);
 
-        if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3) return;
-
-        if (skillData.Type == SkillConfigData.SkillType.Skill && !m_IsCatchControl)//捕捉状态下技能攻击不进行次数累积
+        if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3)
         {
-            ResetCatch(false);
+            return;
+        }
+
+        if (skillData.Type == SkillConfigData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
+        {
+            if (!m_IsCatchControl)
+                ResetCatch(false);
             return;
         }
 
@@ -204,7 +211,10 @@ public class BaseHero : BaseRole
     public override void OnHurtMsg(HurtData data)
     {
         if (HasCatch())
+        {
             ResetCatch(false);
+        }
+
         if (data.IsSwoon)
         {
             data.HurtSound = "Sound/OnBlow";
@@ -225,7 +235,9 @@ public class BaseHero : BaseRole
                 m_DicAttacker[data.AttackerId] = hitTime;
             }
             else
+            {
                 hitTime = 3;
+            }
 
             if (hitTime >= 3)
             {
@@ -337,6 +349,7 @@ public class BaseHero : BaseRole
         {
             m_Weapon.Release();
             m_Weapon = null;
+
             if (IsAnyState(typeof(RoleIdle)))
             {
                 PlayAnimation(AnimName.Idle, 0, 1);
@@ -369,19 +382,27 @@ public class BaseHero : BaseRole
             isCheck = isCheck || IsAnyState(typeof(RoleMove));
             m_IsDropInGround = false;
 
-            if (!isCheck || m_ListTargets.Count < 1) return;
+            if (!isCheck || m_ListTargets.Count < 1)
+            {
+                return;
+            }
 
             for (int i = 0; i < m_ListTargets.Count; i++)
             {
                 ICanBeHit temp = m_ListTargets[i].GetComponent<ICanBeHit>();
-                if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar)) continue;
+                if (temp == null || !temp.CanBeHit || !(temp is BaseAvatar))
+                {
+                    continue;
+                }
 
                 BaseAvatar tempAvatar = temp as BaseAvatar;
 
                 float distance = GetCatchDistance(tempAvatar);
-                bool isInRange = Mathf.Abs(tempAvatar.Pos.y - m_Pos.y) <= 0.03f &&
-                                 Mathf.Abs(tempAvatar.Pos.x - m_Pos.x) < distance &&
-                                    (tempAvatar.Pos.x - m_Pos.x) * m_Dir > 0;
+                float yOffest = Mathf.Abs(tempAvatar.Pos.y - m_Pos.y);
+                float xOffest = Mathf.Abs(tempAvatar.Pos.x - m_Pos.x);
+                float dirOffest = (tempAvatar.Pos.x - m_Pos.x) * m_Dir;
+                bool isInRange = yOffest <= 0.03f && xOffest <= distance && dirOffest > 0;
+
                 if (isInRange)
                 {
                     tempAvatar.SetDir(m_Dir * -1);
@@ -416,9 +437,15 @@ public class BaseHero : BaseRole
                 return;
             }
 
+            BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
+
+            if(target.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken)))
+            {
+                return;
+            }
+
             if (IsAnyState(typeof(RoleMove), typeof(RoleJump), typeof(RoleSkill)))
             {
-                BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
                 float distance = GetCatchDistance(target);
                 float y = target.Pos.y;
                 float offest = target.transform.localScale.y < 0 ? target.GetAnimTriggerSize(AnimName.Idle).y : 0;
@@ -443,9 +470,12 @@ public class BaseHero : BaseRole
 
     private void CheckRebirthState()
     {
-        if (!m_IsRebirthState) return;
+        if (!m_IsRebirthState) 
+        {
+            return;
+        }
 
-        if(Time.time - m_RebirthStateTimer >= m_RebirthStateTime)
+        if (Time.time - m_RebirthStateTimer >= m_RebirthStateTime)
         {
             m_RebirthStateTimer = 0;
             m_RebirthLightTimer = 0;
