@@ -19,7 +19,6 @@ public class BaseHeroCtrl : BaseRoleCtrl
         BaseHero hero = m_Owner as BaseHero;
         if (hero.IsCatch)
         {
-            m_AttackIndex = 0;
             bool isThrowing = m_SkillManager.IsCurrSkill(m_ThrowAttackID);
             bool isThrowingComplete = m_SkillManager.IsSkillComplete(m_ThrowAttackID);
             bool isCatchAttack = m_SkillManager.IsCurrSkill(m_CatchAttackID);

@@ -418,11 +418,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return null;
     }
 
-    public virtual void OnHitEnd(SkillConfigData skillData,bool isHurtTarget) 
+    public virtual void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
         if (skillData.Type != SkillConfigData.SkillType.Skill && m_CurrCtrl != null)
         {
-            m_CurrCtrl.AttackSuccess = isHurtTarget;
+            m_CurrCtrl.OnAttackSuccess(isHurtTarget);
         }
     }
 

@@ -25,12 +25,16 @@ public class DoAttack : Action
         {
             m_AttackCount = Random.Range(1, 9);
         }
+
+        m_AttackTimer = -1;
     }
 
     public override BehaviorTreeState Excute()
     {
         if (m_AttackTimer > 0 && Time.time - m_AttackTimer < 0.5f)
+        {
             return BehaviorTreeState.Running;
+        }
 
         m_Owner.Attack(Vector2.zero);
         m_Owner.OppositePlayer();
@@ -54,6 +58,7 @@ public class DoAttack : Action
     {
         base.Reset();
         m_CurrAttackCount = 0;
+        m_AttackTimer = -1;
     }
 
     protected int m_CurrAttackCount = 0;

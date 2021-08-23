@@ -21,7 +21,7 @@ MonoBehaviour:
     - Id: 0
       Name: "\u73A9\u5BB6\u8FDC\u8DDD\u79BB\u65F6\u7684\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10,20,30,10]
+      Args: Weight:[10,20,30,20,20]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -57,12 +57,22 @@ MonoBehaviour:
           ClassType: DoAttack
           Args: AttackTime:3
           Childs: []
-          PreConditions:
-          - Id: 0
-            Name: 
-            ClassType: PreIsPlayerDistance
-            Args: Distance:0.4
-        PreConditions: []
+          PreConditions: []
+        PreConditions:
+        - Id: 0
+          Name: "\u53EF\u4EE5\u653B\u51FB\u624D\u653B\u51FB"
+          ClassType: PreIsPlayerCanBeHit
+          Args: 
+      - Id: 0
+        Name: "\u8FDC\u79BB\u73A9\u5BB6"
+        ClassType: DoRunAwayPlayer
+        Args: 
+        Childs: []
+        PreConditions:
+        - Id: 0
+          Name: 
+          ClassType: PreIsPlayerDistance
+          Args: Distance:1
       PreConditions: []
     PreConditions:
     - Id: 0
@@ -103,8 +113,8 @@ MonoBehaviour:
         PreConditions: []
       - Id: 0
         Name: "\u4E3B\u52A8\u653B\u51FB"
-        ClassType: Sequence
-        Args: 
+        ClassType: LoopSequence
+        Args: LoopTimes:0
         Childs:
         - Id: 0
           Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
@@ -114,8 +124,8 @@ MonoBehaviour:
           PreConditions: []
         - Id: 0
           Name: "\u653B\u51FB"
-          ClassType: DoLoopAttack
-          Args: AttackTime:0
+          ClassType: DoAttack
+          Args: AttackTime:1
           Childs: []
           PreConditions: []
         - Id: 0
@@ -124,7 +134,11 @@ MonoBehaviour:
           Args: BackDistance:0.4
           Childs: []
           PreConditions: []
-        PreConditions: []
+        PreConditions:
+        - Id: 0
+          Name: "\u53EF\u4EE5\u653B\u51FB\u653B\u51FB"
+          ClassType: PreIsPlayerCanBeHit
+          Args: 
       PreConditions: []
     PreConditions:
     - Id: 0
@@ -143,7 +157,7 @@ MonoBehaviour:
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[15,20,25,15]
+      Args: Weight:[10,15,30,10]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -186,7 +200,11 @@ MonoBehaviour:
           Args: BackDistance:0.4
           Childs: []
           PreConditions: []
-        PreConditions: []
+        PreConditions:
+        - Id: 0
+          Name: "\u53EF\u4EE5\u653B\u51FB\u624D\u653B\u51FB"
+          ClassType: PreIsPlayerCanBeHit
+          Args: 
       PreConditions:
       - Id: 0
         Name: 

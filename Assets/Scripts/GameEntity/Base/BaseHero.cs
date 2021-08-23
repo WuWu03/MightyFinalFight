@@ -142,7 +142,7 @@ public class BaseHero : BaseRole
 
     public override void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
-        base.OnHitEnd(skillData, isHurtTarget);
+        base.OnHitEnd(skillData, HasCatch() ? false : isHurtTarget);
 
         if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3)
         {
@@ -359,9 +359,9 @@ public class BaseHero : BaseRole
 
     protected override void OnGround()
     {
-        m_IsDropInGround = !IsAnyState(typeof(RoleHurt), typeof(RoleSwoon));
+        m_IsDropInGround = IsCurrState<RoleSkill>();
 
-        if (HasCatch() && IsCurrState<RoleSkill>())
+        if (HasCatch() && m_IsDropInGround)
         {
             ResetCatch();
         }

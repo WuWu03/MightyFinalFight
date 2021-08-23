@@ -99,7 +99,7 @@ MonoBehaviour:
     AttackNextTime:
     - 0.2
     - 0.2
-    - 0.2
+    - 0.4
     - 0.4
     WeaponId: 1003
     CatchControl: 1

@@ -1,11 +1,12 @@
-﻿using System.Text.RegularExpressions;
-
+﻿
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
     public class LoopSelector : Composites
     {
-        public LoopSelector(string name, string args, object owner) : base(name, args, owner) 
+        public LoopSelector(string name, string args, object owner) : base(name, args, owner)
         {
             m_CurrChildIndex = 0;
             m_LastChildIndex = -1;
@@ -16,17 +17,25 @@ namespace GameFrameWork.BehaviourTree
             {
                 Match m = m_Regex.Match(args);
                 if (m.Success) m_LoopTimes = int.Parse(m.Groups[2].Value);
+                m_IsRandomLoop = m_LoopTimes == 0;
             }
+        }
+
+        protected override void OnEnter()
+        {
+            m_CurrLoopTimes = 0;
+            if (m_IsRandomLoop)
+                m_LoopTimes = Random.Range(1, 9);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
             Node child = GetChild(m_CurrChildIndex);
-            if(child != null)
+            if (child != null)
             {
-                if(child.CanExcute() && child.CheckPreCondition())
+                if (child.CanExcute() && child.CheckPreCondition())
                 {
-                    if(m_CurrChildIndex != m_LastChildIndex)
+                    if (m_CurrChildIndex != m_LastChildIndex)
                     {
                         m_LastChildIndex = m_CurrChildIndex;
                         child.Enter();
@@ -34,7 +43,7 @@ namespace GameFrameWork.BehaviourTree
 
                     child.Update(deltaTime);
                     BehaviorTreeState state = child.Excute();
-                    if(state != BehaviorTreeState.Running)
+                    if (state != BehaviorTreeState.Running)
                     {
                         m_CurrChildIndex++;
                         if (state == BehaviorTreeState.Success)
@@ -50,7 +59,7 @@ namespace GameFrameWork.BehaviourTree
                 }
             }
 
-            if(m_CurrChildIndex >= GetChildCount())
+            if (m_CurrChildIndex >= GetChildCount())
             {
                 CheckLoopTimes();
             }
@@ -71,12 +80,13 @@ namespace GameFrameWork.BehaviourTree
         private void CheckLoopTimes()
         {
             m_CurrLoopTimes++;
-            if(m_LoopTimes == -1 || m_CurrLoopTimes < m_LoopTimes)
+            if (m_LoopTimes == -1 || m_CurrLoopTimes < m_LoopTimes)
             {
                 Reset();
             }
         }
 
+        private bool m_IsRandomLoop = false;
         private int m_CurrChildIndex;
         private int m_LastChildIndex;
         private int m_LoopTimes;

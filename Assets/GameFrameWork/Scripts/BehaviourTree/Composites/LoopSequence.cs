@@ -22,6 +22,7 @@ namespace GameFrameWork.BehaviourTree
 
         protected override void OnEnter()
         {
+            m_CurrLoopTimes = 0;
             if (m_IsRandomLoop)
                 m_LoopTimes = Random.Range(1, 9);
         }

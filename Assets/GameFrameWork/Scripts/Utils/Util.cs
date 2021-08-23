@@ -202,6 +202,11 @@ namespace GameFrameWork.Utility
                 sum_temp += weights[i];
                 if (random <= sum_temp)
                 {
+                    if(i == 3)
+                    {
+
+                    }
+                    Debug.Log("随机行为索引 : " + i);
                     return i;
                 }
             }
