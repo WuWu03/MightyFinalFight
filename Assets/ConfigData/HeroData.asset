@@ -40,7 +40,6 @@ MonoBehaviour:
     - 0.15
     - 0.15
     - 0.15
-    - 0.15
     WeaponId: 1001
     CatchControl: 0
   - Id: 1002
@@ -67,7 +66,6 @@ MonoBehaviour:
     - -1
     - -1
     AttackNextTime:
-    - 0.3
     - 0.3
     - 0.3
     - 0.3
@@ -99,7 +97,6 @@ MonoBehaviour:
     AttackNextTime:
     - 0.2
     - 0.2
-    - 0.4
     - 0.4
     WeaponId: 1003
     CatchControl: 1
