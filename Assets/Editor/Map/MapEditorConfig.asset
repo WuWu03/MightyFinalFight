@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MapEditorConfig
   m_EditorClassIdentifier: 
   Datas:
-  - ID: 1001
+  - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/1001_1.png
     SceneName: Stage1_1
     CurrPos: {x: 456, y: -35}
@@ -45,7 +45,7 @@ MonoBehaviour:
       Volume: 0.3
       LerpTime: 0.3
     ListSceneObj: []
-  - ID: 0
+  - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/1001_2.png
     SceneName: Stage1_2
     CurrPos: {x: -39, y: -32}
@@ -69,12 +69,23 @@ MonoBehaviour:
     ListTaskId: 
     ListBGM: []
     ListSceneObj: []
-  - ID: 0
+  - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/1001_3.png
     SceneName: 
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
     Width: 504
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneObj: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
+    SceneName: 
+    CurrPos: {x: 0, y: 0}
+    InitPos: {x: 0, y: 0}
+    Width: 1016
     Height: 152
     ListMoveArea: []
     ListTaskId: 

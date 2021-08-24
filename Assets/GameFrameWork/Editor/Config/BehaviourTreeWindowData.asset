@@ -12,5 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b7ba53bb566f748b44ebac9f7d2bff, type: 3}
   m_Name: BehaviourTreeWindowData
   m_EditorClassIdentifier: 
-  Datas: []
+  Datas:
+  - Id: 1
+    Name: "\u672A\u547D\u540D"
+    ClassType: DoAttack
+    Args: 
+    ListRect:
+      serializedVersion: 2
+      x: 20
+      y: 1
+      width: -25
+      height: 40
+    WindowRect:
+      serializedVersion: 2
+      x: -91
+      y: 460
+      width: 230
+      height: 150
+    Children:
+    - Id: 101
+      Name: "\u672A\u547D\u540D"
+      ClassType: DoAttack
+      Args: 
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 245
+        y: 308
+        width: 230
+        height: 150
+      Children: []
+      PreConditions: []
+    PreConditions: []
   BehaviourConfigPath: Assets/BehaviourTreeData.asset

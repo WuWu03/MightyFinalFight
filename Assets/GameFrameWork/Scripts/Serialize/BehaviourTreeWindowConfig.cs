@@ -19,8 +19,8 @@ namespace GameFrameWork.Serialize
             Name = name;
             Id = id;
             Children = new List<BehaviourTreeWindowData>();
-            PreConditions = new List<BehaviourTreeWindowData>();
-            WindowRect = new Rect(x, y, 230, 150);
+            PreConditions = new List<BehaviourTreeWindowPreConditon>();
+            WindowRect = new Rect(x, y, 230, 200);
         }
 
         [SerializeField]
@@ -36,6 +36,17 @@ namespace GameFrameWork.Serialize
         [SerializeField]
         public List<BehaviourTreeWindowData> Children;
         [SerializeField]
-        public List<BehaviourTreeWindowData> PreConditions;
+        public List<BehaviourTreeWindowPreConditon> PreConditions;
+    }
+
+    [Serializable]
+    public class BehaviourTreeWindowPreConditon
+    {
+        [SerializeField]
+        public string ClassType;
+        [SerializeField]
+        public int SelectIndex;
+        [SerializeField]
+        public string Args;
     }
 }

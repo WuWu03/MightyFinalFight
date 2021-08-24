@@ -11,7 +11,7 @@ namespace GameFrameWork.Editor
     {
         public override void OnInspectorGUI()
         {
-            GUI.enabled = false;
+            //GUI.enabled = false;
             base.OnInspectorGUI();
             GUI.enabled = true;
         }
