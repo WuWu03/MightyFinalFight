@@ -28,7 +28,7 @@ public class TaskConfigData : BaseConfigData
         None,
         Enemy,//产生敌人
         Barrels,//产生桶
-        Talk,//对话
+        Story,//剧情
         Finger,//出现手指
         ChangeScene,//切换场景
     }
@@ -63,12 +63,15 @@ public class TaskConfigData : BaseConfigData
     public TaskConditionType ConditionType;
     public TaskPositon Position;
     public int[] KillIDs;
+    public int StoryId;
     public int BarrelsCount;
     public bool KillAll;
     public bool BarrelsAll;
 
     public TaskTriggerType TriggerType;
     public InsTarget[] Targets;
+    public bool TriggerPlayerCantCtrl;
+    public bool ExitPlayerCanCtrl;
     public bool TriggerStopCamera;
     public bool ExitStartCamera;
     public int MapID;

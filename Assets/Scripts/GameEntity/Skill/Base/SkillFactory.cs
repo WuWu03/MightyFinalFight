@@ -10,7 +10,6 @@ public class SkillFactory
         SkillBaseDeployer ret = null;
         SkillConfigData data = StaticConfig.SkillConfig.GetData(skillId);
 
-        Debug.Log(skillId);
         switch (data.DeployerType)
         {
             case SkillDeployerType.NormalAttack:

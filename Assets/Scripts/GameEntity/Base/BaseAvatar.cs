@@ -6,34 +6,6 @@ using GameFrameWork.Log;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    public float MoveSpeed
-    {
-        get 
-        {
-            return m_MoveSpeed; 
-        }
-        set 
-        {
-            m_MoveSpeed = value; 
-        }
-    }
-
-    public Vector2 MoveToPoint
-    {
-        get
-        {
-            return m_MoveToPoint;
-        }
-    }
-
-    public Vector2 MoveDir
-    {
-        get
-        {
-            return m_MoveDir;
-        }
-    }
-
     public UnityArmatureComponent ActorAnimator
     {
         get
@@ -221,9 +193,6 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
     protected string m_CurrAnimName = string.Empty;
-    protected float m_MoveSpeed = 0.8f;
-    protected Vector2 m_MoveToPoint = Vector2.zero;
-    protected Vector2 m_MoveDir = Vector2.zero;
     protected DBTrigger m_DBTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;

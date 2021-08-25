@@ -56,6 +56,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public float MoveSpeed
+    {
+        get
+        {
+            return m_MoveSpeed;
+        }
+        set
+        {
+            m_MoveSpeed = value;
+        }
+    }
+
     public Vector2 JumpForce
     {
         get
@@ -65,6 +77,22 @@ public class BaseRole : BaseAvatar, ICanBeHit
         set
         {
             m_JumpForce = value;
+        }
+    }
+
+    public Vector2 MoveToPos
+    {
+        get
+        {
+            return m_MoveToPos;
+        }
+    }
+
+    public Vector2 MoveDir
+    {
+        get
+        {
+            return m_MoveDir;
         }
     }
 
@@ -157,6 +185,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public bool IsAutoMove
+    {
+        get
+        {
+            return m_IsAutoMove;
+        }
+    }
+
     public virtual bool CanChangeDefaultState
     {
         get
@@ -244,6 +280,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (m_CurrCtrl != null)
             m_CurrCtrl.Update();
+
+        CheckAutoMove();
     }
 
     protected override void OnLateUpdate()
@@ -256,7 +294,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        }
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
         RoleAttack roleAttack = GetState<RoleAttack>();
         roleAttack.CanChangeDir = data.CanChangeDir;
@@ -267,7 +308,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnSkillMsg(SkillConfigData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        }
         RoleSkill skillState = GetState<RoleSkill>();
         skillState.CanChangeDir = data.CanChangeDir;
         skillState.CanMove = data.CanMove;
@@ -277,7 +321,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnMoveMsg(MoveData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        } 
 
         if (IsAnyState(typeof(RoleJump)))
         {
@@ -317,9 +364,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleMove>();
     }
 
+    public virtual void AutoMoveToPos(Vector2 pos)
+    {
+        m_MoveToPos = pos;
+        m_IsAutoMove = true;
+    }
+
     public virtual void OnJumpMsg(JumpData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        }
         m_CurrCtrl.ExitSkill();
         RoleJump roleJump = GetState<RoleJump>();
         roleJump.CanChangeDir = !data.IsCatch && data.CanChangeDir;
@@ -380,8 +436,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnDropTragMsg(TrapData data)
     {
-        if (data == null) return;
-        if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump)) && !m_IsJumpAttack) return;
+        if (data == null)
+        {
+            return;
+        }
+
+        if (!IsAnyState(typeof(RoleMove), typeof(RoleIdle), typeof(RoleJump)) && !m_IsJumpAttack)
+        {
+            return;
+        }
 
         if (IsAnyState(typeof(RoleMove), typeof(RoleIdle)))
         {
@@ -570,11 +633,48 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_IsAddGroundForce = false;
     }
 
+    private void CheckAutoMove()
+    {
+        if(!m_IsAutoMove)
+        {
+            return;
+        }
+
+        if (!m_YArrived)
+        {
+            float yOffest = m_MoveToPos.y - m_Pos.y;
+            m_YArrived = Mathf.Abs(yOffest) <= 0.05f;
+            MoveData data = MoveData.Create();
+            data.Dir = (Vector2.up * yOffest).normalized;
+            OnMoveMsg(data);
+            ReferencePool.Release(data);
+            return;
+        }
+
+        if (!m_XArrived)
+        {
+            float xOffest = m_MoveToPos.x - m_Pos.x;
+            m_XArrived = Mathf.Abs(xOffest) <= 0.05f;
+            MoveData data = MoveData.Create();
+            data.Dir = (Vector2.right * xOffest).normalized;
+            OnMoveMsg(data);
+            ReferencePool.Release(data);
+            return;
+        }
+
+        m_XArrived = false;
+        m_YArrived = false;
+        m_IsAutoMove = false;
+    }
+
     protected int m_AttackValue = 0;
     protected int m_DefenseValue = 0;
     protected int m_CriticalValue = 0;
     protected float m_AttackSpeed = 0.8f;
+    protected float m_MoveSpeed = 0.8f;
     protected Vector2 m_JumpForce = Vector2.zero;
+    protected Vector2 m_MoveToPos = Vector2.zero;
+    protected Vector2 m_MoveDir = Vector2.zero;
 
     protected bool m_IsSmoon = false;
     protected bool m_IsJumpAttack = false;
@@ -585,6 +685,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected event GameFrameWorkBooleanAction<HurtData> m_OnHurtEvent = null;
 
+    private bool m_IsAutoMove = false;
+    private bool m_XArrived = false;
+    private bool m_YArrived = false;
     private bool m_IsDropGround = false;
     private float m_DropGourndTime = 0f;
     private HurtData m_OnGroundHurtData = null;

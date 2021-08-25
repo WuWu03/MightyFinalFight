@@ -36,7 +36,7 @@ MonoBehaviour:
     AssetBundlePath: ArtResources/UI/Icon/Character/
   - Id: 4
     BundleType: 1
-    BundleName: CommonAtlas/commonatlas
+    BundleName: UIAtlas/CommonAtlas
     BundleExtend: .assetbundle
     Pattern: '*.png'
     AssetPath: Assets/ArtResources/UI/UIAtlas/CommonAtlas/
@@ -174,7 +174,7 @@ MonoBehaviour:
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/Character/Andore/
     AssetBundlePath: Models/Character/Andore/
-  LockConfig: 0
+  LockConfig: 1
   PlatFormIndex: 0
   AssetBuildDir: Assets/StreamingAssets/
   AssetCopyDir: 

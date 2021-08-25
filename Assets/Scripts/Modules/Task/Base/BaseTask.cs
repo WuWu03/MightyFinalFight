@@ -74,6 +74,11 @@ public abstract class BaseTask
             return isDistance;
         }
 
+        if (m_TaskData.ExitPlayerCanCtrl)
+        {
+            PlayerMgr.Ins.CanContrl = true;
+        }
+
         return true;
     }
 

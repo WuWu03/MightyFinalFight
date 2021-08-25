@@ -29,7 +29,7 @@ namespace GameFrameWork.Editor
 
             if (GenerateBuildMap())
             {
-                BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.None, target);
+                BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
                 BuildFileIndex();
 
                 if (AppConfig.Ins.UseLua)
@@ -90,7 +90,8 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            string[] files = Directory.GetFiles(path, pattern);
+            string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
+
             if (files.Length < 1)
             {
                 UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n" + path, "确定");
@@ -106,6 +107,7 @@ namespace GameFrameWork.Editor
             build.assetBundleName = bundleName;
             build.assetNames = files;
             m_BuildMaps.Add(build);
+
             return true;
         }
 
@@ -117,7 +119,7 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            string[] files = Directory.GetFiles(path, pattern);
+            string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
             if (files.Length < 1)
             {
                 UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n"+ path, "确定"); 
@@ -135,6 +137,26 @@ namespace GameFrameWork.Editor
             }
 
             return true;
+        }
+
+        private static string[] GetFilesWithoutMetaFile(string[] files)
+        {
+            List<string> fileList = new List<string>();
+
+            if (files != null && files.Length > 0)
+            {
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (Path.GetExtension(files[i]).ToLower() == ".meta")
+                    {
+                        continue;
+                    }
+
+                    fileList.Add(files[i]);
+                }
+            }
+
+            return fileList.ToArray();
         }
 
        

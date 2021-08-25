@@ -12,20 +12,13 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        m_IsLoadScene = false;
+        UIMgr.Ins.Open<LoadPanel>();
+        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1, 0.3f, 0.5f, ChangeScene);
     }
 
     public override void Trigger()
     {
         base.Trigger();
-
-        if (!m_IsLoadScene)
-        {
-            PlayerMgr.Ins.CanContrl = false;
-            UIMgr.Ins.Open<LoadPanel>();
-            UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1, 0.3f, 0.5f, ChangeScene);
-            m_IsLoadScene = true;
-        }
     }
 
     private void ChangeScene()
@@ -43,6 +36,4 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
         m_IsComplete = true;
         UIMgr.Ins.Close<LoadPanel>();
     }
-
-    private bool m_IsLoadScene = false;
 }

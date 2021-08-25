@@ -25,7 +25,12 @@ public abstract class BaseTaskTrigger : ITaskTrigger
 
     public virtual void Trigger()
     {
-        if(m_TaskData.TriggerStopCamera)
+        if(m_TaskData.TriggerPlayerCantCtrl)
+        {
+            PlayerMgr.Ins.CanContrl = false;
+        }
+
+        if (m_TaskData.TriggerStopCamera)
         {
             CameraMgr.Ins.EndFollow(true);
         }

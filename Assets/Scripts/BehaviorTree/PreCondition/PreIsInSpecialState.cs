@@ -12,16 +12,17 @@ public class PreIsInSpecialState : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        if (m_Owner.Owner.IsBeCatch || m_Owner.Owner.IsAnyState(typeof(RoleHurt),
-                                                                typeof(RoleDead),
-                                                                typeof(RoleSwoon),
-                                                                typeof(RoleSkill),
-                                                                typeof(RoleAwaken)))
+        if(m_Owner.Owner.IsAutoMove)
+        {
+            return true;
+        }
+
+        if (m_Owner.Owner.IsBeCatch || m_Owner.Owner.IsAnyState(typeof(RoleHurt), typeof(RoleDead), typeof(RoleSwoon), typeof(RoleSkill), typeof(RoleAwaken)))
         {
             m_Timer = Time.time;
             return true;
         }
-       
+
         if (m_Timer > 0 && Time.time - m_Timer < 0.5f)
         {
             return true;
