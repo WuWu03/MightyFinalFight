@@ -963,52 +963,6 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2006
-    Level: 0
-    Name: GuyJumpAttack2
-    AnimationName: JumpAttack2
-    HurtSound: 
-    Type: 1
-    DeployerType: 2
-    TriggerType: 1
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 1.5
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 3
-      IsRevert: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      ScaleTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 0
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      IsOnGroundEffect: 0
-      CanBeDefense: 1
-      HitOne: 0
-      Args: 
   - Id: 2005
     Level: 0
     Name: GuyJumpAttack1
@@ -1049,6 +1003,52 @@ MonoBehaviour:
       Gravity: 0
       DamageMulity: 0
       IsSmoon: 1
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 1
+      HitOne: 0
+      Args: 
+  - Id: 2006
+    Level: 0
+    Name: GuyJumpAttack2
+    AnimationName: JumpAttack2
+    HurtSound: 
+    Type: 1
+    DeployerType: 2
+    TriggerType: 1
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 1.5
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 3
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 0, y: 0}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0
@@ -2365,52 +2365,6 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 7001
-    Level: 0
-    Name: AndoreAttack
-    AnimationName: Attack1
-    HurtSound: 
-    Type: 1
-    DeployerType: 1
-    TriggerType: 2
-    EnternalTiggerTime: 0
-    Key:
-      Keys: 
-      AddTrigger: 0
-    AnimSpeed: 0.15
-    AnimTime: 1
-    EXP: 4
-    IsInEffectPlaySound: 0
-    CanChangeDir: 0
-    CanMove: 0
-    SkillPrevConditions:
-    - PrevConditionType: 0
-      IsRevert: 0
-      Args: 
-    SkillEffects:
-    - EffectorType: 1
-      SelectorType: 1
-      ForceType: 1
-      Bullets: []
-      SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 40, y: 150}
-      AddSelfForce: {x: 0, y: 0}
-      MoveTarget: {x: 0, y: 0}
-      ScaleTarget: {x: 0, y: 0}
-      AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 20
-      SelectorRadius: 10
-      AddSelfDrag: 0
-      MoveDistance: 0
-      Gravity: 0
-      DamageMulity: 0
-      IsSmoon: 0
-      IsShakeCamera: 0
-      IsOnGroundHurt: 0
-      IsOnGroundEffect: 0
-      CanBeDefense: 0
-      HitOne: 0
-      Args: 
   - Id: 6001
     Level: 0
     Name: AxlAttack
@@ -2457,6 +2411,52 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
+  - Id: 7001
+    Level: 0
+    Name: AndoreAttack
+    AnimationName: Attack1
+    HurtSound: 
+    Type: 1
+    DeployerType: 1
+    TriggerType: 2
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.15
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 0
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 20
+      SelectorRadius: 10
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
   - Id: 7002
     Level: 0
     Name: AndoreSkill1
@@ -2495,7 +2495,7 @@ MonoBehaviour:
       AddSelfDrag: 0
       MoveDistance: 1.5
       Gravity: 0
-      DamageMulity: 0
+      DamageMulity: 1.5
       IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0

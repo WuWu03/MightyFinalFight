@@ -106,7 +106,9 @@ public class BaseEnemy : BaseRole
 
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
-            if (!StageMgr.Ins.CanMovePosX(transform.localPosition.x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            Rect rect = GetBound(transform.localPosition);
+            float x = m_Dir > 0 ? rect.xMax + 0.1f : rect.xMin - 0.1f;
+            if (!StageMgr.Ins.CanMovePosX(x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
             {
                 SetVelocityX(0);
             }
@@ -147,7 +149,7 @@ public class BaseEnemy : BaseRole
         hurtData.AttackerPos = m_Pos;
         hurtData.CanBeDefense = false;
         hurtData.IsSwoon = true;
-        hurtData.AttackerId = m_Id;
+        hurtData.AttackerId = Id;
         hurtData.AttackValue = Mathf.FloorToInt(m_MaxHealth * 0.1f);
         hurtData.HurtSound = string.Empty;
         hurtData.HurtAnim = string.Empty;

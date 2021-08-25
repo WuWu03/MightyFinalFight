@@ -90,7 +90,7 @@ public class SkillManager
             return false;
         }
 
-        if (!m_CurrSkillDeployer.SkillId.Equals(id))
+		if (!m_CurrSkillDeployer.SkillId.Equals(id))
         {
             return false;
         }
@@ -104,7 +104,6 @@ public class SkillManager
         {
             return;
         }
-
         m_CurrSkillDeployer.RemoveEvent();
         m_CurrSkillDeployer.OnExit();
         m_CurrSkillDeployer = null;

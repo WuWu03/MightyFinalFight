@@ -56,15 +56,16 @@ public class SkillMoveHitEffect : SkillBaseEffect
             return;
         }
 
-        CheckAttack(selector);
-
-        if (m_SkillEffect.MoveDistance < 0)
+        if (m_Owner.Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
         {
-            if (m_Owner.Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
-                Complete();
+            Complete();
             return;
         }
-        else
+
+        m_Owner.UpdatePosX(m_Owner.transform.localPosition.x);
+        CheckAttack(selector);
+
+        if (m_SkillEffect.MoveDistance > 0)
         {
             float dis = Mathf.Abs(m_SkillEffect.MoveDistance - Vector3.Distance(m_StartPos, m_Owner.transform.localPosition));
             if (dis <= 0.1f)
@@ -83,17 +84,25 @@ public class SkillMoveHitEffect : SkillBaseEffect
         {
             if (targets[i].CanBeHit)
             {
+                int defenseValue = 0;
+                bool isCritical = false;
+
+                if (targets[i] is BaseRole)
+                {
+                    defenseValue = (targets[i] as BaseRole).DefenseValue;
+                }
+
                 HurtData hurtData = HurtData.Create();
                 hurtData.AttackerId = m_Owner.Id;
                 hurtData.AttackerDir = m_Owner.Dir;
                 hurtData.AttackerPos = m_Owner.Pos;
                 hurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y);
                 hurtData.IsSwoon = m_SkillEffect.IsSmoon;
-                hurtData.AttackValue = 1;
-                
+                hurtData.AttackValue = SkillFactory.CacDamage(m_Owner.AttackValue, defenseValue, m_Owner.CriticalValue, m_SkillEffect.DamageMulity, out isCritical);
+                hurtData.IsCritical = isCritical;
                 targets[i].OnHurtMsg(hurtData);
 
-                if(m_SkillEffect.HitOne)
+                if (m_SkillEffect.HitOne)
                 {
                     Complete();
                     break;

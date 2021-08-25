@@ -162,6 +162,16 @@ public class BaseSceneObject : BaseEntity
         m_ObjectType = type;
     }
 
+    public void UpdatePosX(float x)
+    {
+        UpdatePos(new Vector2(x, m_Pos.y));
+    }
+
+    public void UpdatePosY(float y)
+    {
+        UpdatePos(new Vector2(m_Pos.x, y));
+    }
+
     public void UpdatePos2(float x, float y)
     {
         UpdatePos(new Vector2(x, y));
@@ -286,7 +296,7 @@ public class BaseSceneObject : BaseEntity
         m_ResGO.SetActive(true);
         m_IsResComplete = true;
         m_Collider.enabled = true;
-        SetLayer(m_Layer);
+        SetLayer("Unit");
         OnResComplete(go, param);
     }
 

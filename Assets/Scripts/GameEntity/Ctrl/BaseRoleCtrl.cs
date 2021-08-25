@@ -68,6 +68,11 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void OnAttackSuccess(bool success)
     {
+        if (m_AttackSuccess && !success)
+        {
+            ExitSkill();
+        }
+
         m_AttackSuccess = success;
     }
 

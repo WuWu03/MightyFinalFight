@@ -25,8 +25,8 @@ MonoBehaviour:
       height: 40
     WindowRect:
       serializedVersion: 2
-      x: 153
-      y: 500
+      x: -189
+      y: 488
       width: 233
       height: 258.1
     Children:
@@ -42,8 +42,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 467
-        y: 528
+        x: 125
+        y: 516
         width: 236
         height: 206
       Children:
@@ -59,8 +59,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 827
-          y: 68
+          x: 485
+          y: 56
           width: 236
           height: 206
         Children: []
@@ -77,8 +77,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 828
-          y: 297
+          x: 486
+          y: 285
           width: 236
           height: 206
         Children: []
@@ -95,8 +95,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 830
-          y: 529
+          x: 488
+          y: 517
           width: 236
           height: 206
         Children: []
@@ -113,8 +113,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 829
-          y: 755
+          x: 487
+          y: 743
           width: 236
           height: 206
         Children:
@@ -130,8 +130,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 1203
-            y: 607
+            x: 861
+            y: 595
             width: 233
             height: 203
           Children: []
@@ -148,8 +148,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 1203
-            y: 858
+            x: 861
+            y: 846
             width: 233
             height: 203
           Children: []
@@ -170,8 +170,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 827
-          y: 980
+          x: 485
+          y: 968
           width: 236
           height: 206
         Children: []
@@ -565,15 +565,15 @@ MonoBehaviour:
       height: 40
     WindowRect:
       serializedVersion: 2
-      x: -264
-      y: 412
+      x: -83
+      y: 368
       width: 230
       height: 250
     Children:
     - Id: 100401
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10,20,30,20,5]
+      Args: Weight:[10,20,30,20,30]
       ListRect:
         serializedVersion: 2
         x: 0
@@ -582,8 +582,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 49
-        y: 427
+        x: 230
+        y: 383
         width: 230
         height: 200
       Children:
@@ -599,8 +599,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 342
-          y: -8
+          x: 523
+          y: -52
           width: 230
           height: 200
         Children: []
@@ -617,8 +617,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 338
-          y: 212
+          x: 519
+          y: 168
           width: 230
           height: 200
         Children: []
@@ -635,8 +635,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 339
-          y: 426
+          x: 520
+          y: 382
           width: 230
           height: 200
         Children: []
@@ -653,8 +653,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 341
-          y: 650
+          x: 522
+          y: 606
           width: 230
           height: 200
         Children:
@@ -670,8 +670,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 654
-            y: 522
+            x: 835
+            y: 478
             width: 230
             height: 200
           Children: []
@@ -688,8 +688,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 655
-            y: 737
+            x: 836
+            y: 693
             width: 230
             height: 200
           Children: []
@@ -710,8 +710,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 341
-          y: 876
+          x: 522
+          y: 832
           width: 230
           height: 250
         Children: []

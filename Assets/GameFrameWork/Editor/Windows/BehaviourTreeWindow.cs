@@ -32,8 +32,13 @@ namespace GameFrameWork.Editor
         private void OnGUI()
         {
             InitConfig();
-            CreateBehaviourTreeGUI();
-            MainGUI();
+
+            if (m_BehaviourTreeWindowConfig != null)
+            {
+                CreateBehaviourTreeGUI();
+                MainGUI();
+            }
+
             Repaint();
         }
 

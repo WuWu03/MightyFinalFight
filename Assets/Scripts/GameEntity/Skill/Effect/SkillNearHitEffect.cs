@@ -65,12 +65,12 @@ public class SkillNearHitEffect : SkillBaseEffect
             int defenseValue = 0;
             bool isCritical = false;
 
-            if(m_SkillEffect.ForceType == SkillConfigData.SkillAddForceType.SelfDir)
+            if (m_SkillEffect.ForceType == SkillConfigData.SkillAddForceType.SelfDir)
             {
                 dir = m_Owner.Dir;
             }
 
-            if(hit is BaseRole)
+            if (hit is BaseRole)
             {
                 defenseValue = (hit as BaseRole).DefenseValue;
             }
@@ -91,7 +91,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             hurtData.IsGroundHurt = m_SkillEffect.IsOnGroundHurt;
             hit.OnHurtMsg(hurtData);
 
-            return true;
+            return !hit.IsDead;
         }
 
         return false;

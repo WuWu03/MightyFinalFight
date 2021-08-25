@@ -237,7 +237,7 @@ MonoBehaviour:
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10,20,30,20,5]
+      Args: Weight:[10,20,30,20,30]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"

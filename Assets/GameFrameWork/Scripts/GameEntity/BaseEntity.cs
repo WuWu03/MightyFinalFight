@@ -69,8 +69,8 @@ namespace GameFrameWork.GameEntity
         protected virtual void LateUpdate() { }
         protected virtual void OnDestroy() { }
        
-        protected int m_Id = 0;
-        protected string m_Name = string.Empty;
-        protected string m_Layer = "Unit";   
+        private int m_Id = 0;
+        private string m_Name = string.Empty;
+        private string m_Layer = string.Empty;   
     }
 }
