@@ -12,7 +12,7 @@ public class DoRunToPlayer : Action
     {
         base.OnEnter();
         m_TargetPos = PlayerMgr.Ins.Player.Pos;
-        float distance = PlayerMgr.Ins.Player.GetAnimTriggerSize(AnimName.Idle).x / 2 + m_Owner.Owner.GetAnimTriggerSize(AnimName.Idle).x / 2;
+        float distance = PlayerMgr.Ins.Player.GetCurrTriggerSize().x / 2 + m_Owner.Owner.GetCurrTriggerSize().x / 2 + 0.1f;
         m_TargetPos.x +=  distance * (m_TargetPos.x - m_Owner.Owner.Pos.x > 0 ? -1f : 1f);
     }
 

@@ -25,54 +25,12 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 1001
+      SourceID: 1004
       Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -38}
-    - EntityID: 2
-      SourceID: 1001
-      Hp: 500
-      AttackValue: 15
-      DefenseValue: 7
-      HpBarWidth: 300
-      Pos: {x: -178, y: -46}
-    - EntityID: 3
-      SourceID: 1001
-      Hp: 300
-      AttackValue: 15
-      DefenseValue: 7
-      HpBarWidth: 150
-      Pos: {x: -178, y: -54}
-    - EntityID: 4
-      SourceID: 1001
-      Hp: 300
-      AttackValue: 15
-      DefenseValue: 7
-      HpBarWidth: 100
-      Pos: {x: -178, y: -62}
-    - EntityID: 5
-      SourceID: 1001
-      Hp: 300
-      AttackValue: 15
-      DefenseValue: 7
-      HpBarWidth: 100
-      Pos: {x: -178, y: -70}
-    - EntityID: 6
-      SourceID: 1002
-      Hp: 250
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 80
-      Pos: {x: -100, y: -54}
-    - EntityID: 7
-      SourceID: 1002
-      Hp: 250
-      AttackValue: 10
-      DefenseValue: 5
-      HpBarWidth: 80
-      Pos: {x: -495, y: -62}
     TriggerStopCamera: 1
     ExitStartCamera: 0
     MapID: 0

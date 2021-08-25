@@ -52,6 +52,39 @@ namespace GameFrameWork.Editor
             InitPreConditionName();
             UpdateData(data, isParent, parent);
            
+            if (!string.IsNullOrEmpty(m_Data.ClassType))
+            {
+                string[] names = m_IsParent ? m_ParentCompositesNames : m_CompositesNames;
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if(m_Data.ClassType == names[i])
+                    {
+                        m_CurrSelectComposite = i;
+                        break;
+                    }
+                }
+            }
+
+            if(m_Data.PreConditions != null && m_Data.PreConditions.Count > 0)
+            {
+                for (int i = 0; i < m_Data.PreConditions.Count; i++)
+                {
+                    if(string.IsNullOrEmpty(m_Data.PreConditions[i].ClassType))
+                    {
+                        continue;
+                    }
+
+                    for (int j = 0; j < m_PreConditionNames.Length; j++)
+                    {
+                        if(m_Data.PreConditions[i].ClassType == m_PreConditionNames[j])
+                        {
+                            m_Data.PreConditions[i].SelectIndex = j;
+                            break;
+                        }
+                    }
+                }
+            }
+
             m_PreConditionList.elementHeight = 50;
             m_PreConditionList.drawHeaderCallback = (Rect rect) =>
              {

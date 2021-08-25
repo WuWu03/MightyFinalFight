@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: BehaviourTreeWindowData
   m_EditorClassIdentifier: 
   Datas:
-  - Id: 1
-    Name: "\u672A\u547D\u540D"
-    ClassType: DoAttack
-    Args: 
+  - Id: 1001
+    Name: BredTree
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
     ListRect:
       serializedVersion: 2
       x: 20
@@ -25,14 +25,509 @@ MonoBehaviour:
       height: 40
     WindowRect:
       serializedVersion: 2
-      x: -91
-      y: 460
-      width: 230
-      height: 150
+      x: 153
+      y: 500
+      width: 233
+      height: 258.1
     Children:
     - Id: 101
-      Name: "\u672A\u547D\u540D"
-      ClassType: DoAttack
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10,20,30,20,20]
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 467
+        y: 528
+        width: 236
+        height: 206
+      Children:
+      - Id: 10101
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 827
+          y: 68
+          width: 236
+          height: 206
+        Children: []
+        PreConditions: []
+      - Id: 10102
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 828
+          y: 297
+          width: 236
+          height: 206
+        Children: []
+        PreConditions: []
+      - Id: 10103
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 830
+          y: 529
+          width: 236
+          height: 206
+        Children: []
+        PreConditions: []
+      - Id: 10104
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 829
+          y: 755
+          width: 236
+          height: 206
+        Children:
+        - Id: 1010401
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 1203
+            y: 607
+            width: 233
+            height: 203
+          Children: []
+          PreConditions: []
+        - Id: 1010402
+          Name: "\u653B\u51FB"
+          ClassType: DoAttack
+          Args: AttackTime:3
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 1203
+            y: 858
+            width: 233
+            height: 203
+          Children: []
+          PreConditions: []
+        PreConditions:
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 5
+          Args: 
+      - Id: 10105
+        Name: "\u8FDC\u79BB\u73A9\u5BB6"
+        ClassType: DoRunAwayPlayer
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 827
+          y: 980
+          width: 236
+          height: 206
+        Children: []
+        PreConditions:
+        - ClassType: PreIsPlayerDistance
+          SelectIndex: 6
+          Args: Distance:1
+      PreConditions: []
+    PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 4
+      Args: Distance:10
+    - ClassType: PreIsInSpecialState
+      SelectIndex: 3
+      Args: TheNot:true
+  - Id: 1002
+    Name: TwoPTree
+    ClassType: LoopSequence
+    Args: 
+    ListRect:
+      serializedVersion: 2
+      x: 20
+      y: 41
+      width: -25
+      height: 40
+    WindowRect:
+      serializedVersion: 2
+      x: -233
+      y: 176
+      width: 230
+      height: 250
+    Children:
+    - Id: 201
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[20,15,5,30]
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 63
+        y: 200
+        width: 230
+        height: 200
+      Children:
+      - Id: 20101
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 365
+          y: -125
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 20102
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 365
+          y: 92
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 20103
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 362
+          y: 316
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 20104
+        Name: "\u653B\u51FB"
+        ClassType: LoopSequence
+        Args: LoopTimes:0
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 364
+          y: 538
+          width: 230
+          height: 200
+        Children:
+        - Id: 2010401
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 705
+            y: 296
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        - Id: 2010402
+          Name: "\u653B\u51FB"
+          ClassType: DoAttack
+          Args: AttackTime:1
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 701
+            y: 538
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        - Id: 2010403
+          Name: "\u540E\u9000"
+          ClassType: DoBack
+          Args: BackDistance:0.4
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 701
+            y: 761
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        PreConditions:
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 5
+          Args: 
+      PreConditions: []
+    PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 4
+      Args: Distance:10
+    - ClassType: PreIsInSpecialState
+      SelectIndex: 3
+      Args: TheNot:true
+  - Id: 1003
+    Name: AxlTree
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    ListRect:
+      serializedVersion: 2
+      x: 20
+      y: 81
+      width: -25
+      height: 40
+    WindowRect:
+      serializedVersion: 2
+      x: -424
+      y: 110
+      width: 230
+      height: 250
+    Children:
+    - Id: 301
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10,15,30,10]
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: -147
+        y: -21
+        width: 230
+        height: 200
+      Children:
+      - Id: 30101
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 177
+          y: -349
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 30102
+        Name: "\u7ED5\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRoundPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 177
+          y: -127
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 30103
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 178
+          y: 93
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 30104
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 177
+          y: 315
+          width: 230
+          height: 200
+        Children:
+        - Id: 3010401
+          Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
+          ClassType: DoRunToPlayer
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 508
+            y: 79
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        - Id: 3010402
+          Name: "\u653B\u51FB"
+          ClassType: DoAttack
+          Args: AttackTime:1
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 518
+            y: 307
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        - Id: 3010403
+          Name: "\u540E\u9000"
+          ClassType: DoBack
+          Args: BackDistance:0.4
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 521
+            y: 532
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        PreConditions:
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 5
+          Args: 
+      PreConditions:
+      - ClassType: PreIsDefense
+        SelectIndex: 2
+        Args: TheNot:true
+    - Id: 100302
+      Name: "\u9632\u5FA1"
+      ClassType: DoDefense
       Args: 
       ListRect:
         serializedVersion: 2
@@ -42,11 +537,197 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 245
-        y: 308
+        x: -144
+        y: 261
         width: 230
-        height: 150
+        height: 200
       Children: []
+      PreConditions:
+      - ClassType: PreIsDefense
+        SelectIndex: 2
+        Args: 
+    PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 4
+      Args: Distance:10
+    - ClassType: PreIsInSpecialState
+      SelectIndex: 3
+      Args: TheNot:true
+  - Id: 1004
+    Name: AndoreTree
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    ListRect:
+      serializedVersion: 2
+      x: 20
+      y: 121
+      width: -25
+      height: 40
+    WindowRect:
+      serializedVersion: 2
+      x: -264
+      y: 412
+      width: 230
+      height: 250
+    Children:
+    - Id: 100401
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10,20,30,20,5]
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 49
+        y: 427
+        width: 230
+        height: 200
+      Children:
+      - Id: 10040101
+        Name: "\u968F\u673A\u79FB\u52A8"
+        ClassType: DoRunToRandomPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 342
+          y: -8
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 10040102
+        Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u540E"
+        ClassType: DoRunToRandomPos
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 338
+          y: 212
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 10040103
+        Name: "\u5F85\u673A"
+        ClassType: DoIdle
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 339
+          y: 426
+          width: 230
+          height: 200
+        Children: []
+        PreConditions: []
+      - Id: 10040104
+        Name: "\u653B\u51FB"
+        ClassType: Sequence
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 341
+          y: 650
+          width: 230
+          height: 200
+        Children:
+        - Id: 1004010401
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoRunToPlayer
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 654
+            y: 522
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        - Id: 1004010402
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoAttack
+          Args: AttackTime:3
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 655
+            y: 737
+            width: 230
+            height: 200
+          Children: []
+          PreConditions: []
+        PreConditions:
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 5
+          Args: 
+      - Id: 10040105
+        Name: "\u672A\u547D\u540D"
+        ClassType: DoSkill
+        Args: SkillId:7002
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 341
+          y: 876
+          width: 230
+          height: 250
+        Children: []
+        PreConditions:
+        - ClassType: PreIsCanSkill
+          SelectIndex: 1
+          Args: 
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 5
+          Args: 
       PreConditions: []
-    PreConditions: []
-  BehaviourConfigPath: Assets/BehaviourTreeData.asset
+    PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 4
+      Args: Distance:10
+    - ClassType: PreIsInSpecialState
+      SelectIndex: 3
+      Args: TheNot:true
+  BehaviourConfigPath: Assets/ConfigData/BehaviourTreeData.asset

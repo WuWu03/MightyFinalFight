@@ -88,6 +88,16 @@ public class BaseRoleCtrl : BaseCtrl
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
+    public bool IsCurrSkill(int skillId)
+    {
+        return m_SkillManager.IsCurrSkill(skillId);
+    }
+
+    public bool IsSkillComplete(int skillId)
+    {
+        return m_SkillManager.IsSkillComplete(skillId);
+    }
+
     public virtual void ExitSkill()
     {
         if (m_SkillManager == null)
@@ -99,7 +109,7 @@ public class BaseRoleCtrl : BaseCtrl
         {
             if(m_CurrSkillID == m_Data.AttackIds[i])
             {
-                m_AttackIndex = 0;
+                m_AttackIndex = -1;
                 m_AttackTimer = 0;
                 m_AttackSuccess = false;
                 break;
@@ -134,7 +144,7 @@ public class BaseRoleCtrl : BaseCtrl
             {
                 if (m_Owner.IsPlayComplete())
                 {
-                    m_AttackIndex = 0;
+                    m_AttackIndex = -1;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
                     if (m_Owner.IsInGround)
@@ -146,7 +156,7 @@ public class BaseRoleCtrl : BaseCtrl
                 float attckStamp = Time.time - m_AttackTimer;
                 if (attckStamp > currWait)
                 {
-                    m_AttackIndex = 0;
+                    m_AttackIndex = -1;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
                     m_Owner.FsmMachine.ChangeDefaultState();
@@ -196,7 +206,7 @@ public class BaseRoleCtrl : BaseCtrl
     }
 
     private int m_CurrSkillID = 0;
-    private int m_AttackIndex = 0;
+    private int m_AttackIndex = -1;
     private bool m_AttackSuccess = false;
     private float m_AttackTimer = 0;
     private BaseRoleSkillData m_Data = null;

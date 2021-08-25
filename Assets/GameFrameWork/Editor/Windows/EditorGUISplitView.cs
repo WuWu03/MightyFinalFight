@@ -21,7 +21,7 @@ namespace GameFrameWork.Editor
 
 		public EditorGUISplitView(Direction splitDirection)
 		{
-			splitNormalizedPosition = 0.3f;
+			splitNormalizedPosition = 0.2f;
 			this.splitDirection = splitDirection;
 	
 		}

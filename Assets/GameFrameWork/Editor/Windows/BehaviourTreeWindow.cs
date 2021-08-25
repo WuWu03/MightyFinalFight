@@ -243,6 +243,16 @@ namespace GameFrameWork.Editor
                 if (m_RightWindowNode != null && m_MouseDownPos != Vector2.zero && e.alt)
                 {
                     m_RightWindowNode.MouseMove(e.mousePosition - m_MouseDownPos);
+
+                    List<BehaviourTreeWindowNode> list = null;
+
+                    if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+                    {
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            list[i].MouseMove(e.mousePosition - m_MouseDownPos);
+                        }
+                    }
                 }
 
                 m_MouseDownPos = e.mousePosition;
@@ -490,6 +500,7 @@ namespace GameFrameWork.Editor
                     ExportConfig(config.Datas[i], m_BehaviourTreeWindowConfig.Datas[i]);
                 }
 
+                UnityEditor.EditorUtility.SetDirty(config);
                 ShowNotification(new GUIContent("保存成功"));
             }
         }

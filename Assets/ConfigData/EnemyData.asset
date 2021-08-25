@@ -62,11 +62,11 @@ MonoBehaviour:
     AttackSpeed: 1
     MoveSpeed: 0.5
     JumpForce: {x: 0, y: 0}
-    AttackIDs: 71170000
-    Skills: 71170000
+    AttackIDs: 591b0000
+    Skills: 591b00005a1b0000
     AttackWait:
     - -1
     AttackNextTime: []
-    BehaviourTreeIDs: eb030000
+    BehaviourTreeIDs: ec030000
     HurtAnim:
     - Hurt
