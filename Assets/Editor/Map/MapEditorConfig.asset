@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: MapEditorConfig
   m_EditorClassIdentifier: 
   Datas:
-  - Id: 0
+  - Id: 1001
     MapPath: Assets/ArtResources/Texture/Stage/1001_1.png
     SceneName: Stage1_1
-    CurrPos: {x: 456, y: -35}
-    InitPos: {x: -451, y: -47}
+    StageIndex: 1
+    Level: 1
+    CurrPos: {x: -449, y: -45}
+    InitPos: {x: -450, y: -50}
     Width: 1016
     Height: 152
     ListMoveArea:
@@ -44,34 +46,87 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 0.3
       LerpTime: 0.3
-    ListSceneObj: []
-  - Id: 0
+    ListSceneBuilding:
+    - SceneObjType: 1
+      Id: 1
+      Name: Cafe
+      Pos: {x: -500, y: 58}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Cafe
+    - SceneObjType: 1
+      Id: 2
+      Name: 
+      Pos: {x: 188, y: 58}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Cafe
+  - Id: 1002
     MapPath: Assets/ArtResources/Texture/Stage/1001_2.png
     SceneName: Stage1_2
-    CurrPos: {x: -39, y: -32}
-    InitPos: {x: -491, y: -29}
+    StageIndex: 1
+    Level: 2
+    CurrPos: {x: -116, y: -30}
+    InitPos: {x: -505, y: -28}
     Width: 1016
     Height: 152
     ListMoveArea:
     - Color: {r: 0.23208582, g: 0.85470915, b: 0.55486125, a: 0.3}
       Rect:
         serializedVersion: 2
-        x: 0
+        x: 38.100006
         y: 91
-        width: 850
+        width: 785.2
         height: 44
       RealRect:
         serializedVersion: 2
-        x: -508
+        x: -469.9
         y: -15
-        width: 850
+        width: 785.2
         height: 44
-    ListTaskId: 
+    ListTaskId: ef030000
     ListBGM: []
-    ListSceneObj: []
+    ListSceneBuilding:
+    - SceneObjType: 1
+      Id: 1
+      Name: WoodDoorOpen
+      Pos: {x: -492, y: -6}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/WoodDoorOpen
+    - SceneObjType: 1
+      Id: 2
+      Name: WoodDoorClose
+      Pos: {x: -492, y: -6}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/WoodDoorClose
+    - SceneObjType: 1
+      Id: 3
+      Name: Movie1
+      Pos: {x: -324, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 4
+      Name: Movie2
+      Pos: {x: 172, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 5
+      Name: Movie3
+      Pos: {x: 284, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/1001_3.png
     SceneName: 
+    StageIndex: 0
+    Level: 0
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
     Width: 504
@@ -79,10 +134,12 @@ MonoBehaviour:
     ListMoveArea: []
     ListTaskId: 
     ListBGM: []
-    ListSceneObj: []
+    ListSceneBuilding: []
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
     SceneName: 
+    StageIndex: 0
+    Level: 0
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
     Width: 1016
@@ -90,5 +147,31 @@ MonoBehaviour:
     ListMoveArea: []
     ListTaskId: 
     ListBGM: []
-    ListSceneObj: []
+    ListSceneBuilding: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/4001_1.png
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    CurrPos: {x: 0, y: 0}
+    InitPos: {x: 0, y: 0}
+    Width: 1016
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneBuilding: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/5001_3.png
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    CurrPos: {x: 0, y: 0}
+    InitPos: {x: 0, y: 0}
+    Width: 760
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneBuilding: []
   MapPath: Assets/ArtResources/Texture/Stage/

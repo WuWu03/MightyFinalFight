@@ -47,6 +47,30 @@ public static class MapEditorHelper
         }
     }
 
+    public static int StageIndex
+    {
+        get
+        {
+            return m_CurrData.StageIndex;
+        }
+        set
+        {
+            m_CurrData.StageIndex = value;
+        }
+    }
+
+    public static int Level
+    {
+        get
+        {
+            return m_CurrData.Level;
+        }
+        set
+        {
+            m_CurrData.Level = value;
+        }
+    }
+
     public static List<int> ListTaskId
     {
         get
@@ -60,6 +84,14 @@ public static class MapEditorHelper
         get
         {
             return m_CurrData.ListBGM;
+        }
+    }
+
+    public static List<StageConfigData.SceneBuilding> ListSceneBuilding
+    {
+        get
+        {
+            return m_CurrData.ListSceneBuilding;
         }
     }
 
@@ -121,10 +153,6 @@ public static class MapEditorHelper
         {
             return m_CurrData.CurrPos;
         }
-        set
-        {
-            m_CurrData.CurrPos = ConvertPos(value);
-        }
     }
 
     public static Vector2 InitPos
@@ -132,10 +160,6 @@ public static class MapEditorHelper
         get
         {
             return m_CurrData.InitPos;
-        }
-        set
-        {
-            m_CurrData.InitPos = ConvertPos(value);
         }
     }
 
@@ -174,12 +198,23 @@ public static class MapEditorHelper
             m_CurrData.ListMoveArea = new List<MapEditorConfigData.MoveArea>();
             m_CurrData.ListTaskId = new List<int>();
             m_CurrData.ListBGM = new List<StageConfigData.BGM>();
+            m_CurrData.ListSceneBuilding = new List<StageConfigData.SceneBuilding>();
             m_MapEditorConfig.AddData(m_CurrData);
         }
 
         m_NormalSizeMinimum = (float)m_Textrue.height / 100 / 2;
         m_CurrData.Width = m_Textrue.width;
         m_CurrData.Height = m_Textrue.height;
+    }
+
+    public static void SetInitPos(Vector2 pos, bool convert = false)
+    {
+        m_CurrData.InitPos = convert ? ConvertPos(pos) : pos;
+    }
+
+    public static void SetCurrPos(Vector2 pos, bool convert = false)
+    {
+        m_CurrData.CurrPos = convert ? ConvertPos(pos) : pos;
     }
 
     public static Vector2 GetTextureSize(bool ignoreScale = false)
@@ -317,12 +352,14 @@ public static class MapEditorHelper
             data.Id = configData.Id;
             data.Name = configData.SceneName;
             data.SceneName = configData.SceneName;
-            data.StageIndex = i + 1;
+            data.StageIndex = configData.StageIndex;
+            data.Level = configData.Level;
             data.Width = configData.Width;
             data.Height = configData.Height;
             data.InitPos = new Vector2Int((int)configData.InitPos.x, (int)configData.InitPos.y);
             data.TaskIDs = configData.ListTaskId.ToArray();
             data.BGMs = configData.ListBGM.ToArray();
+            data.SceneBuildings = configData.ListSceneBuilding.ToArray();
             data.MoveArea = new Rect[configData.ListMoveArea.Count];
 
             for (int j = 0; j < configData.ListMoveArea.Count; j++)

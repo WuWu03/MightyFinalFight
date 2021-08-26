@@ -86,7 +86,7 @@ MonoBehaviour:
   - Id: 1002
     Name: TwoPTree
     ClassType: LoopSequence
-    Args: 
+    Args: LoopTimes:-1
     Childs:
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"

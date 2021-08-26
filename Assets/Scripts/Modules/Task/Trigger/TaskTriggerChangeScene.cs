@@ -33,7 +33,7 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
 
     private void OnComplete()
     {
-        m_IsComplete = true;
         UIMgr.Ins.Close<LoadPanel>();
+        Complete();
     }
 }

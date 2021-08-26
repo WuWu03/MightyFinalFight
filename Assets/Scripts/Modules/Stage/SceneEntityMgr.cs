@@ -10,6 +10,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         m_ListDeadEnemy = new List<int>();
         m_ListCurrEnemy = new List<BaseEnemy>();
+        m_ListSceneBuilding = new List<BaseSceneObject>();
     }
 
     public void CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
@@ -39,6 +40,37 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         SceneItemConfigData data = StaticConfig.SceneItemConfig.GetData(id);
         SceneEntityFactory.CreateSceneItem(data, pos);
+    }
+
+    public void CreateSceneBuildings(StageConfigData data)
+    {
+        for (int i = 0; i < data.SceneBuildings.Length; i++)
+        {
+            m_ListSceneBuilding.Add(SceneEntityFactory.CreateSceneBuilding(data.SceneBuildings[i]));
+        }
+    }
+
+    public BaseSceneObject GetSceneBuildingByName(string name)
+    {
+        for (int i = 0; i < m_ListSceneBuilding.Count; i++)
+        {
+            if (m_ListSceneBuilding[i].Name == name)
+            {
+                return m_ListSceneBuilding[i];
+            }
+        }
+
+        return null;
+    }
+
+    public void ReleaseSceneOjbect()
+    {
+        for (int i = 0; i < m_ListSceneBuilding.Count; i++)
+        {
+            m_ListSceneBuilding[i].Release();
+        }
+
+        m_ListSceneBuilding.Clear();
     }
 
     public void CreateBarrels()
@@ -79,6 +111,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
     }
 
+    private List<BaseSceneObject> m_ListSceneBuilding = null;
     private List<int> m_ListDeadEnemy;
     private List<BaseEnemy> m_ListCurrEnemy;
 }

@@ -19,13 +19,19 @@ public class EditorMgr : MonoBehaviour
     [MenuItem("Tools/Build Game")]
     public static void BuildGame()
     {
-        BuildGame(false);
+        if (UnityEditor.EditorUtility.DisplayDialog("提示", "点击确认开始打包", "确认", "取消"))
+        {
+            BuildGame(false);
+        }
     }
 
     [MenuItem("Tools/Build Game Log")]
     public static void BuildGameLog()
     {
-        BuildGame(true);
+        if (UnityEditor.EditorUtility.DisplayDialog("提示", "点击确认开始打包", "确认", "取消"))
+        {
+            BuildGame(true);
+        }
     }
 
     private static void BuildGame(bool openLog)
@@ -52,7 +58,7 @@ public class EditorMgr : MonoBehaviour
         BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
         BuildSummary buildSummary = buildReport.summary;
 
-        if(buildSummary.result == BuildResult.Succeeded)
+        if (buildSummary.result == BuildResult.Succeeded)
         {
             appConfig.LoadAB = false;
             appConfig.OpenLog = true;

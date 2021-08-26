@@ -16,7 +16,6 @@ public class TaskConfigData : BaseConfigData
     public enum TaskConditionType
     {
         None,
-        AutoMoveToPos,//自动移动到指定位置
         MoveToPos,//到达指定位置
         KillEnemy,//杀死目标
         WaitBarrels,//等待桶
@@ -31,6 +30,7 @@ public class TaskConfigData : BaseConfigData
         Story,//剧情
         Finger,//出现手指
         ChangeScene,//切换场景
+        AutoMoveToPos,//自动移动
     }
 
     [Serializable]

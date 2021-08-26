@@ -21,7 +21,7 @@ public class TaskTriggerEnemy : BaseTaskTrigger
             SceneEntityMgr.Ins.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
         }
 
-        SceneEntityMgr.Ins.CreateBarrels();
-        m_IsComplete = true;
+        //SceneEntityMgr.Ins.CreateBarrels();
+        Complete();
     }
 }

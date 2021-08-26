@@ -113,7 +113,6 @@ public class MapEditorWindow : EditorWindow
 
     private void MainGUI()
     {
-        Debug.Log(position.position);
         Vector2 texSize = MapEditorHelper.GetTextureSize();
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
@@ -132,9 +131,15 @@ public class MapEditorWindow : EditorWindow
         }
 
         MapEditorHelper.Id = EditorGUILayout.IntField("地图Id", MapEditorHelper.Id);
+        MapEditorHelper.StageIndex = EditorGUILayout.IntField("关卡索引", MapEditorHelper.StageIndex);
+        MapEditorHelper.Level = EditorGUILayout.IntField("小节", MapEditorHelper.Level);
         MapEditorHelper.SceneName = EditorGUILayout.TextField("地图名称", MapEditorHelper.SceneName);
-        EditorGUILayout.Vector2Field("当前坐标", MapEditorHelper.CurrPos);
-        EditorGUILayout.Vector2Field("出生坐标", MapEditorHelper.InitPos);
+
+        Vector2 currPos = EditorGUILayout.Vector2Field("当前坐标", MapEditorHelper.CurrPos);
+        Vector2 initPos = EditorGUILayout.Vector2Field("出生坐标", MapEditorHelper.InitPos);
+        MapEditorHelper.SetCurrPos(currPos);
+        MapEditorHelper.SetInitPos(initPos);
+
         float scale = EditorGUILayout.Slider("地图缩放", MapEditorHelper.Scale, 1, 2);
         float normalSize = EditorGUILayout.Slider("正交尺寸", MapEditorHelper.NormalSize, MapEditorHelper.NormalSizeMinimum, 10);
         m_CameraX = EditorGUILayout.Slider("相机位置", m_CameraX, 0, Mathf.Max(texSize.x - screenSize.x, 0));
@@ -187,6 +192,7 @@ public class MapEditorWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         TaskConfigGUI();
         BGMConfigGUI();
+        SceneObjectConfigGUI();
         EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button("导出配置"))
@@ -200,7 +206,7 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景任务配置");
-        m_ScollPosTask = GUILayout.BeginScrollView(m_ScollPosTask, GUILayout.Width(position.width / 2), GUILayout.Height(150));
+        m_ScollPosTask = GUILayout.BeginScrollView(m_ScollPosTask, GUILayout.Width(position.width / 3), GUILayout.Height(150));
 
         for (int i = 0; i < MapEditorHelper.ListTaskId.Count; i++)
         {
@@ -242,7 +248,7 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景BGM配置");
-        m_ScollPosBGM = GUILayout.BeginScrollView(m_ScollPosBGM, GUILayout.Width(position.width / 2), GUILayout.Height(150));
+        m_ScollPosBGM = GUILayout.BeginScrollView(m_ScollPosBGM, GUILayout.Width(position.width / 3), GUILayout.Height(150));
 
         for (int i = 0; i < MapEditorHelper.ListBGM.Count; i++)
         {
@@ -281,6 +287,63 @@ public class MapEditorWindow : EditorWindow
         GUILayout.EndVertical();
     }
 
+    private void SceneObjectConfigGUI()
+    {
+        GUILayout.BeginVertical();
+        GUILayout.Space(5);
+        GUILayout.Label("场景物体配置");
+        m_ScollPosSceneObject = GUILayout.BeginScrollView(m_ScollPosSceneObject, GUILayout.Width(position.width / 3), GUILayout.Height(150));
+
+        for (int i = 0; i < MapEditorHelper.ListSceneBuilding.Count; i++)
+        {
+            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            {
+                GUILayout.BeginVertical();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label((i + 1) + ".");
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button("×"))//删除本条数据
+                {
+                    if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
+                    {
+                        MapEditorHelper.ListSceneBuilding.RemoveAt(i);
+                        for (int j = 0; j < MapEditorHelper.ListSceneBuilding.Count; j++)
+                        {
+                            MapEditorHelper.ListSceneBuilding[j].Id = j + 1;
+                        }
+                        return;
+                    }
+                }
+
+                GUILayout.EndHorizontal();
+
+                MapEditorHelper.ListSceneBuilding[i].SceneObjType = (StageConfigData.SceneObjType)EditorGUILayout.EnumPopup("类型", MapEditorHelper.ListSceneBuilding[i].SceneObjType);
+                MapEditorHelper.ListSceneBuilding[i].Name = EditorGUILayout.TextField("名称", MapEditorHelper.ListSceneBuilding[i].Name);
+                MapEditorHelper.ListSceneBuilding[i].Pos = EditorGUILayout.Vector2IntField("位置", MapEditorHelper.ListSceneBuilding[i].Pos);
+
+                if (MapEditorHelper.ListSceneBuilding[i].SceneObjType == StageConfigData.SceneObjType.Trap)
+                {
+                    MapEditorHelper.ListSceneBuilding[i].TriggerSize = EditorGUILayout.Vector2Field("触发器尺寸", MapEditorHelper.ListSceneBuilding[i].TriggerSize);
+                    MapEditorHelper.ListSceneBuilding[i].TriggerOffest = EditorGUILayout.Vector2Field("触发器偏移", MapEditorHelper.ListSceneBuilding[i].TriggerOffest);
+                }
+                MapEditorHelper.ListSceneBuilding[i].AssetName = EditorGUILayout.TextField("资源路径", MapEditorHelper.ListSceneBuilding[i].AssetName);
+                GUILayout.EndVertical();
+            });
+        }
+
+        GUILayout.EndScrollView();
+
+        if (GUILayout.Button("增加场景物体配置"))
+        {
+            StageConfigData.SceneBuilding sceneObj = new StageConfigData.SceneBuilding();
+            sceneObj.Id = MapEditorHelper.ListSceneBuilding.Count + 1;
+            MapEditorHelper.ListSceneBuilding.Add(sceneObj);
+        }
+
+        GUILayout.EndVertical();
+    }
+
     private void ConfigPoint(UnityEngine.Event e)
     {
         if (e.type == EventType.MouseDown)
@@ -312,7 +375,8 @@ public class MapEditorWindow : EditorWindow
         if (m_IsMouse0Down)
         {
             if (!MapEditorHelper.IsPointInTexture(e.mousePosition)) return;
-            MapEditorHelper.CurrPos = e.mousePosition;
+
+            MapEditorHelper.SetCurrPos(e.mousePosition, true);
         }
     }
 
@@ -320,8 +384,8 @@ public class MapEditorWindow : EditorWindow
     {
         int operation = (int)args;
         if (operation == 0)
-        {   
-            MapEditorHelper.InitPos = m_Mouse1Pos;
+        {
+            MapEditorHelper.SetInitPos(m_Mouse1Pos, true);
         }
         else if(operation == 1)
         {
@@ -354,7 +418,7 @@ public class MapEditorWindow : EditorWindow
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
         float width = Mathf.Max(screenSize.x, texSize.x);
-        float height = Mathf.Max(screenSize.y, texSize.y) + 500;
+        float height = Mathf.Max(screenSize.y, texSize.y) + 540;
 
         minSize = new Vector2(width, height);
         maxSize = minSize;  
@@ -367,6 +431,7 @@ public class MapEditorWindow : EditorWindow
 
     private Vector2 m_ScollPosTask = Vector2.zero;
     private Vector2 m_ScollPosBGM = Vector2.zero;
+    private Vector2 m_ScollPosSceneObject = Vector2.zero;
     private Vector2 m_Mouse1Pos = Vector2.zero;
     private int m_CurrMap = 0;
     private int m_CurrMoveArea = 0;

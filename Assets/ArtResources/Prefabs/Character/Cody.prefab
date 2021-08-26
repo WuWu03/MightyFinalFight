@@ -53,7 +53,7 @@ MonoBehaviour:
   debugDraw: 0
   animationName: Skill2
   _playTimes: 0
-  _timeScale: 0.05
+  _timeScale: 0.03
   _sortingMode: 0
   _sortingLayerName: Default
   _sortingOrder: 0
@@ -89,8 +89,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: -0.016202614, y: 0.16411537}
-    Size: {x: 0.16495585, y: 0.3384087}
+    Offest: {x: -0.0035014339, y: 0.16502258}
+    Size: {x: 0.19035822, y: 0.33659428}
   - AnimName: Idle
     Offest: {x: 0.00037012994, y: 0.16126686}
     Size: {x: 0.23246732, y: 0.32385993}

@@ -12,9 +12,7 @@ public static class TaskFactory
         switch (data.ConditionType)
         {
             case TaskConfigData.TaskConditionType.None:
-                break;
-            case TaskConfigData.TaskConditionType.AutoMoveToPos:
-                ret = new TaskAutoMoveToPos(data);
+                ret = new TaskNone(data);
                 break;
             case TaskConfigData.TaskConditionType.MoveToPos:
                 ret = new TaskMoveToPos(data);
@@ -55,6 +53,9 @@ public static class TaskFactory
                 break;
             case TaskConfigData.TaskTriggerType.ChangeScene:
                 ret = new TaskTriggerChangeScene(data);
+                break;
+            case TaskConfigData.TaskTriggerType.AutoMoveToPos:
+                ret = new TaskTriggerAutoMoveToPos(data);
                 break;
         }
 

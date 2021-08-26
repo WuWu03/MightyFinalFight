@@ -106,6 +106,11 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
+        if(this is BaseHero)
+        {
+            Debug.Log(animName);
+        }
+
         SetTrigger(animName);
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;

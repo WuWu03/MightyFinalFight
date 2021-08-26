@@ -50,6 +50,7 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.Ins.CanContrl = false;
         m_OnEnterEvent = onEnter;
         CameraMgr.Ins.EndFollow();
+        SceneEntityMgr.Ins.ReleaseSceneOjbect();
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
         SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
         SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
@@ -189,7 +190,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
             SoundMgr.Ins.PlayBGMGroup(group);
         }
-
+        
         UIMgr.Ins.Open<MainPanel>();
 
         for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
@@ -197,6 +198,7 @@ public class StageMgr : BaseMgr<StageMgr>
             TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
         }
 
+        SceneEntityMgr.Ins.CreateSceneBuildings(m_CurrStageData);
         PlayerMgr.Ins.InitPlayer();
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);

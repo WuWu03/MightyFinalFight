@@ -10,7 +10,11 @@ namespace GameFrameWork.Serialize
         public List<T> Datas = null;
         public virtual T GetData(int id)
         {
-            if (Datas == null) return null;
+            if (Datas == null)
+            {
+                return null;
+            }
+
             for (int i = 0; i < Datas.Count; i++)
             {
                 if (Datas[i].Id.Equals(id))
@@ -20,6 +24,21 @@ namespace GameFrameWork.Serialize
             }
 
             return null;
+        }
+
+        public virtual T GetDataByIndex(int index)
+        {
+            if (Datas == null)
+            {
+                return null;
+            }
+
+            if(index < 0 || index >= Datas.Count)
+            {
+                return null;
+            }
+
+            return Datas[index];
         }
 
         public virtual void AddData(T data)

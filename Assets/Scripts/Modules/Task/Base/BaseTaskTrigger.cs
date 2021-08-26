@@ -36,6 +36,11 @@ public abstract class BaseTaskTrigger : ITaskTrigger
         }
     }
 
-    protected bool m_IsComplete = false;
+    public virtual void Complete()
+    {
+        m_IsComplete = true;
+    }
+
+    private bool m_IsComplete = false;
     protected TaskConfigData m_TaskData = null;
 }

@@ -4,36 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskAutoMoveToPos : BaseTask
+public class TaskTriggerAutoMoveToPos : BaseTaskTrigger
 {
-    public TaskAutoMoveToPos(TaskConfigData data) : base(data) 
+    public TaskTriggerAutoMoveToPos(TaskConfigData data) : base(data) 
     {
 
     }
-  
+
     public override void Enter()
     {
         base.Enter();
         float x = (float)m_TaskData.Position.Pos.x / 100f;
         float y = (float)m_TaskData.Position.Pos.y / 100f;
-
-        PlayerMgr.Ins.CanContrl = false;
         PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(x, y));
     }
 
-    public override void Update()
+    public override void Trigger()
     {
-        base.Update();
-    }
-
-    public override bool CheckCondition()
-    {
+        base.Trigger();
         if(!PlayerMgr.Ins.Player.IsAutoMove)
         {
-            PlayerMgr.Ins.CanContrl = true;
-            return true;
+            Complete();
         }
-
-        return false;
     }
 }

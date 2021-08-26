@@ -10,6 +10,6 @@ public class TaskTriggerFinger : BaseTaskTrigger
         Rect vision = CameraMgr.Ins.GetVision();
         Vector2 pos = new Vector2(vision.xMax - 0.4f, vision.yMax - 0.5f);
         EffectMgr.Ins.PlayEffect("Go", pos, 3, 0.5f);
-        m_IsComplete = true;
+        Complete();
     }
 }

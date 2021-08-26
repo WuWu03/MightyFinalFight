@@ -60,7 +60,7 @@ public static class SceneEntityFactory
 
     public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
-        BaseEnemy enemy = GetEnemyEntity(enemyConfigData);
+        BaseEnemy enemy = EntityMgr.Ins.GetEntity<BaseEnemy>(enemyConfigData.Name);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
         BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
 
@@ -89,8 +89,25 @@ public static class SceneEntityFactory
         return enemy;
     }
 
-    private static BaseEnemy GetEnemyEntity(EnemyConfigData enemyData)
+    public static BaseSceneObject CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
     {
-        return EntityMgr.Ins.GetEntity<BaseEnemy>(enemyData.Name);
+        BaseSceneObject sceneObject = null;
+        if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Trap)
+        {
+            sceneObject = EntityMgr.Ins.GetEntity<Trap>(sceneObjData.Name);
+            TrapData trapData = ReferencePool.Acquire<TrapData>();
+            trapData.TriggerSize = sceneObjData.TriggerSize;
+            trapData.TriggerOffest = sceneObjData.TriggerOffest;
+            sceneObject.SetData(trapData);
+        }
+        else if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Normal)
+        {
+            sceneObject = EntityMgr.Ins.GetEntity<BaseSceneObject>(sceneObjData.Name);
+            sceneObject.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, sceneObjData.AssetName));
+        }
+
+        sceneObject.SetMapPos(sceneObjData.Pos);
+        return sceneObject;
     }
+
 }

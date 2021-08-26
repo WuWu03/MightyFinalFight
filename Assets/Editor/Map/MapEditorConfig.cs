@@ -35,13 +35,15 @@ public class MapEditorConfigData : BaseConfigData
 
     public string MapPath;
     public string SceneName;
-    public Vector2 CurrPos = Vector2.zero;
-    public Vector2 InitPos = Vector2.zero;
+    public int StageIndex;
+    public int Level;
+    public Vector2 CurrPos = Vector2Int.zero;
+    public Vector2 InitPos = Vector2Int.zero;
     public int Width;
     public int Height;
   
     public List<MoveArea> ListMoveArea;
     public List<int> ListTaskId;
     public List<StageConfigData.BGM> ListBGM;
-    public List<StageConfigData.SceneObj> ListSceneObj;
+    public List<StageConfigData.SceneBuilding> ListSceneBuilding;
 }

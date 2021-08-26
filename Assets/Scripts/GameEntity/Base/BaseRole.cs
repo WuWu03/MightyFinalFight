@@ -434,7 +434,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleDefense>(true);
     }
 
-    public virtual void OnDropTragMsg(TrapData data)
+    public virtual void OnDropTragMsg(DropTrapData data)
     {
         if (data == null)
         {
@@ -573,12 +573,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 SubHealth(m_TrapData.AttackValue);
                 if (m_Health <= 0)
                 {
-                    GetState<RoleDead>().ReBirthPos = m_TrapData.Pos;
+                    GetState<RoleDead>().ReBirthPos = m_TrapData.RebirthPos;
                     ChangeState<RoleDead>();
                 }
                 else
                 {
-                    SetPos(m_TrapData.Pos);
+                    SetPos(m_TrapData.RebirthPos);
                     ChangeState<RoleIdle>();
                     CameraMgr.Ins.StartFollow();
                 }
@@ -662,9 +662,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        m_IsAutoMove = false;
         m_XArrived = false;
         m_YArrived = false;
-        m_IsAutoMove = false;
+        m_MoveToPos = Vector2.zero;
     }
 
     protected int m_AttackValue = 0;
@@ -691,6 +692,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private bool m_IsDropGround = false;
     private float m_DropGourndTime = 0f;
     private HurtData m_OnGroundHurtData = null;
-    private TrapData m_TrapData = null;
+    private DropTrapData m_TrapData = null;
 
 }

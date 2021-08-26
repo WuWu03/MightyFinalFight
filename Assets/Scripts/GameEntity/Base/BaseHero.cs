@@ -254,7 +254,7 @@ public class BaseHero : BaseRole
         base.OnHurtMsg(data);
     }
 
-    public override void OnDropTragMsg(TrapData data)
+    public override void OnDropTragMsg(DropTrapData data)
     {
         base.OnDropTragMsg(data);
         CameraMgr.Ins.EndFollow();
@@ -274,7 +274,7 @@ public class BaseHero : BaseRole
 
     public override void SetPos(Vector2 pos)
     {
-        if (IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
+        if (!IsAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
         {
             if (!CanMove) return;
 

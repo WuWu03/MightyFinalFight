@@ -19,8 +19,8 @@ public class RoleSwoon : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
+        m_Owner.ResetRigidbody();
         m_Owner.OnGroundEvent.AddListener(OnBounce);
-        m_Owner.SetVelocity(Vector2.zero);
         m_Owner.AddForce(m_Force);
         m_Owner.PlayAnimation(AnimName.SwoonUp, 0);
     }

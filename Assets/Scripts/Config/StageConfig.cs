@@ -23,24 +23,29 @@ public class StageConfigData : BaseConfigData
     public enum SceneObjType
     {
         Trap,//陷阱
-        Effect,//特效
+        Normal,//特效
     }
 
     [Serializable]
-    public class SceneObj
+    public class SceneBuilding
     {
         public SceneObjType SceneObjType;
-        public Vector2 Pos;
-        public Vector2 Size;
+        public int Id;
+        public string Name;
+        public Vector2Int Pos;
+        public Vector2 TriggerSize;
+        public Vector2 TriggerOffest;
+        public string AssetName;
     }
 
     public string Name;
     public string SceneName;
     public int StageIndex;
+    public int Level;
     public int Width;
     public int Height;
     public Vector2Int InitPos;//主角出生地点
-    public SceneObj[] SceneObjs;//场景出现的物体（陷阱，障碍物等）
+    public SceneBuilding[] SceneBuildings;//场景出现的物体（陷阱，障碍物等）
     public int[] TaskIDs;//场景的任务
     public BGM[] BGMs;//场景音乐组
     public Rect[] MoveArea;//可行走区域

@@ -43,7 +43,7 @@ namespace GameFrameWork.GameEntity
         {
             get
             {
-                return m_ListUsingEntity.Count;
+                return m_DicUsingEntity.Count;
             }
         }
 
@@ -51,7 +51,7 @@ namespace GameFrameWork.GameEntity
         {
             get
             {
-                return m_QueueUnUsedEntity.Count;
+                return m_DicUnUsedEntity.Count;
             }
         }
 
@@ -60,35 +60,37 @@ namespace GameFrameWork.GameEntity
             m_PoolRoot = new GameObject("EntityMgr").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);
-            m_ListUsingEntity = new List<BaseEntity>();
-            m_QueueUnUsedEntity = new Queue<BaseEntity>();
+            m_DicUsingEntity = new Dictionary<Type, List<BaseEntity>>();
+            m_DicUnUsedEntity = new Dictionary<Type, Queue<BaseEntity>>();
         }
 
         public T GetEntity<T>(string name = null,Transform parent = null) where T : BaseEntity
         {
-            T obj = null;
+            T entity = null;
+            Type key = typeof(T);
+            Queue<BaseEntity> unUsedQueue = GetUnUsedQueue(key);
 
-            if (m_QueueUnUsedEntity.Count > 0)
+            if (unUsedQueue.Count > 0)
             {
-                obj = m_QueueUnUsedEntity.Dequeue() as T;
+                entity = unUsedQueue.Dequeue() as T;
             }
 
-            if(obj == null)
+            if(entity == null)
             {
-                obj = new GameObject().GetOrAddComponent<T>();
-                DontDestroyOnLoad(obj);
+                entity = new GameObject().GetOrAddComponent<T>();
+                DontDestroyOnLoad(entity);
                 m_CreateCount++;
             }
 
             m_AcquireCount++;
-            m_ListUsingEntity.Add(obj);
 
-            obj.Init(m_ListUsingEntity.Count, name);
-            obj.SetParent(parent, false);
-            obj.transform.localPosition = Vector3.zero;
-            obj.SetActive(true);
+            entity.Init(m_DicUsingEntity.Count, name);
+            entity.SetParent(parent, false);
+            entity.transform.localPosition = Vector3.zero;
+            entity.SetActive(true);
+            GetUsingList(key).Add(entity);
 
-            return obj;
+            return entity;
         }
 
         public void PutEntities(BaseEntity[] entities)
@@ -103,9 +105,12 @@ namespace GameFrameWork.GameEntity
         {
             entity.SetActive(false);
             entity.transform.localPosition = Vector3.zero;
-            entity.SetParent(m_PoolRoot, false);    
-            m_QueueUnUsedEntity.Enqueue(entity);
-            m_ListUsingEntity.Remove(entity);
+            entity.SetParent(m_PoolRoot, false);
+
+            Type key = entity.GetType();
+
+            GetUnUsedQueue(key).Enqueue(entity);
+            GetUsingList(key).Remove(entity);
             m_ReleaseCount++;
         }
 
@@ -120,24 +125,21 @@ namespace GameFrameWork.GameEntity
         public void DestroyEntity(BaseEntity entity)
         {
             entity.Release();
-            m_ListUsingEntity.Remove(entity);
-            GameObject.DestroyImmediate(entity);
+            GetUsingList(entity.GetType()).Remove(entity);
+            GameObject.DestroyImmediate(entity.gameObject);
             m_DestroyCount++;
         }
 
         public T[] FindEntities<T>(string name = null) where T : BaseEntity
         {
             List<T> ret = new List<T>();
-            Type entityType = typeof(T);
+            List<BaseEntity> usingList = GetUsingList(typeof(T));
 
-            for (int i = 0; i < m_ListUsingEntity.Count; i++)
+            for (int i = 0; i < usingList.Count; i++)
             {
-                if(m_ListUsingEntity[i].GetType().Equals(entityType))
+                if (string.IsNullOrEmpty(name) || usingList[i].name.Equals(name))
                 {
-                    if(string.IsNullOrEmpty(name)|| m_ListUsingEntity[i].name.Equals(name))
-                    {
-                        ret.Add(m_ListUsingEntity[i] as T);
-                    }
+                    ret.Add(usingList[i] as T);
                 }
             }
 
@@ -146,16 +148,13 @@ namespace GameFrameWork.GameEntity
 
         public T FindEntity<T>(string name = null) where T : BaseEntity
         {
-            Type entityType = typeof(T);
+            List<BaseEntity> usingList = GetUsingList(typeof(T));
 
-            for (int i = 0; i < m_ListUsingEntity.Count; i++)
+            for (int i = 0; i < usingList.Count; i++)
             {
-                if (m_ListUsingEntity[i].GetType().Equals(entityType))
+                if (string.IsNullOrEmpty(name) || usingList[i].name.Equals(name))
                 {
-                    if (string.IsNullOrEmpty(name) || m_ListUsingEntity[i].name.Equals(name))
-                    {
-                        return m_ListUsingEntity[i] as T;
-                    }
+                    return usingList[i] as T;
                 }
             }
 
@@ -167,10 +166,36 @@ namespace GameFrameWork.GameEntity
             return FindEntity<T>(name) != null;
         }
 
+        private List<BaseEntity> GetUsingList(Type type)
+        {
+            List<BaseEntity> usingList = null;
+
+            if (!m_DicUsingEntity.TryGetValue(type, out usingList))
+            {
+                usingList = new List<BaseEntity>();
+                m_DicUsingEntity.Add(type, usingList);
+            }
+
+            return usingList;
+        }
+
+        private Queue<BaseEntity> GetUnUsedQueue(Type type)
+        {
+            Queue<BaseEntity> unUsedQueue = null;
+
+            if (!m_DicUnUsedEntity.TryGetValue(type, out unUsedQueue))
+            {
+                unUsedQueue = new Queue<BaseEntity>();
+                m_DicUnUsedEntity.Add(type, unUsedQueue);
+            }
+
+            return unUsedQueue;
+        }
+
         protected override void OnShutDown()
         {
-            m_ListUsingEntity.Clear();
-            m_QueueUnUsedEntity.Clear();
+            m_DicUsingEntity.Clear();
+            m_DicUnUsedEntity.Clear();
             m_AcquireCount = 0;
             m_CreateCount = 0;
             m_ReleaseCount = 0;
@@ -182,7 +207,7 @@ namespace GameFrameWork.GameEntity
         private int m_ReleaseCount = 0;
         private int m_DestroyCount = 0;
         private Transform m_PoolRoot = null;
-        private List<BaseEntity> m_ListUsingEntity = null;
-        private Queue<BaseEntity> m_QueueUnUsedEntity = null;
+        private Dictionary<Type,List<BaseEntity>> m_DicUsingEntity = null;
+        private Dictionary<Type,Queue<BaseEntity>> m_DicUnUsedEntity = null;
     }
 }

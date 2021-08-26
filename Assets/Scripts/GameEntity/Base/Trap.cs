@@ -14,7 +14,6 @@ public class Trap : BaseSceneItem
     {
         base.SetData(info);
         m_TrapData = info as TrapData;
-        SetPos(m_TrapData.Pos);
     }
 
     public override void SetPos(Vector2 pos)
@@ -51,11 +50,11 @@ public class Trap : BaseSceneItem
         else
             rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.Pos.y);
 
-        TrapData trapData = ReferencePool.Acquire<TrapData>();
-        trapData.Pos = rebirthPos;
-        trapData.AttackValue = m_TrapData.AttackValue;
+        DropTrapData dropTrapData = ReferencePool.Acquire<DropTrapData>();
+        dropTrapData.RebirthPos = rebirthPos;
+        dropTrapData.AttackValue = 1;
 
-        target.OnDropTragMsg(trapData);
+        target.OnDropTragMsg(dropTrapData);
     }
 
     private TrapData m_TrapData = null;

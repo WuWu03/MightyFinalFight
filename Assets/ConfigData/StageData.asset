@@ -17,19 +17,34 @@ MonoBehaviour:
     Name: Stage1_1
     SceneName: Stage1_1
     StageIndex: 1
+    Level: 1
     Width: 1016
     Height: 152
-    InitPos: {x: -451, y: -47}
-    SceneObjs: []
+    InitPos: {x: -450, y: -50}
+    SceneBuildings:
+    - SceneObjType: 1
+      Id: 1
+      Name: Cafe
+      Pos: {x: -500, y: 58}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Cafe
+    - SceneObjType: 1
+      Id: 2
+      Name: 
+      Pos: {x: 188, y: 58}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Cafe
     TaskIDs: e9030000
     BGMs:
     - ClipName: bgm01_Start
       IsLoop: 0
-      Volume: 0.6
+      Volume: 0.3
       LerpTime: 0.3
     - ClipName: bgm01_Loop
       IsLoop: 1
-      Volume: 0.6
+      Volume: 0.3
       LerpTime: 0.3
     MoveArea:
     - serializedVersion: 2
@@ -40,27 +55,100 @@ MonoBehaviour:
   - Id: 1002
     Name: Stage1_2
     SceneName: Stage1_2
-    StageIndex: 2
+    StageIndex: 1
+    Level: 2
     Width: 1016
     Height: 152
-    InitPos: {x: -491, y: -29}
-    SceneObjs: []
-    TaskIDs: 
+    InitPos: {x: -505, y: -28}
+    SceneBuildings:
+    - SceneObjType: 1
+      Id: 1
+      Name: WoodDoorOpen
+      Pos: {x: -492, y: -6}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/WoodDoorOpen
+    - SceneObjType: 1
+      Id: 2
+      Name: WoodDoorClose
+      Pos: {x: -492, y: -6}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/WoodDoorClose
+    - SceneObjType: 1
+      Id: 3
+      Name: Movie1
+      Pos: {x: -324, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 4
+      Name: Movie2
+      Pos: {x: 172, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 5
+      Name: Movie3
+      Pos: {x: 284, y: 30}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Movie
+    TaskIDs: ef030000
     BGMs: []
     MoveArea:
     - serializedVersion: 2
-      x: -508
+      x: -469.9
       y: -15
-      width: 850
+      width: 785.2
       height: 44
-  - Id: 1003
+  - Id: 0
     Name: 
     SceneName: 
-    StageIndex: 3
+    StageIndex: 0
+    Level: 0
     Width: 504
     Height: 152
     InitPos: {x: 0, y: 0}
-    SceneObjs: []
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 1016
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 1016
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 760
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
     TaskIDs: 
     BGMs: []
     MoveArea: []
