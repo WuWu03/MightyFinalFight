@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BehaviourTreeData
   m_EditorClassIdentifier: 
   Datas:
-  - Id: 1001
+  - Id: 2001
     Name: BredTree
     ClassType: LoopSequence
     Args: LoopTimes:-1
@@ -83,7 +83,7 @@ MonoBehaviour:
       Name: 
       ClassType: PreIsInSpecialState
       Args: TheNot:true
-  - Id: 1002
+  - Id: 2002
     Name: TwoPTree
     ClassType: LoopSequence
     Args: LoopTimes:-1
@@ -149,7 +149,7 @@ MonoBehaviour:
       Name: 
       ClassType: PreIsInSpecialState
       Args: TheNot:true
-  - Id: 1003
+  - Id: 2003
     Name: AxlTree
     ClassType: LoopSequence
     Args: LoopTimes:-1
@@ -229,7 +229,7 @@ MonoBehaviour:
       Name: 
       ClassType: PreIsInSpecialState
       Args: TheNot:true
-  - Id: 1004
+  - Id: 2004
     Name: AndoreTree
     ClassType: LoopSequence
     Args: LoopTimes:-1

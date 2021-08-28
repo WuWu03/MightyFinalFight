@@ -16,7 +16,21 @@ public class EditorMgr : MonoBehaviour
         EditorWindow.GetWindow<CharacterTriggerEditorWindow>(false, "CharacterTriggerEditor", false).Show();
     }
 
-    [MenuItem("Tools/Build Game")]
+    [MenuItem("Tools/MapEditor")]
+    public static void OpenMapEditorWindow()
+    {
+        MapEditorWindow window = EditorWindow.GetWindow<MapEditorWindow>();
+        window.Show();
+    }
+
+    [MenuItem("Tools/SkillEditor")]
+    public static void OpenSkillEditorWindow()
+    {
+        SkillEditorWindow window = EditorWindow.GetWindow<SkillEditorWindow>();
+        window.Show();
+    }
+
+    [MenuItem("Tools/Build/Build Game")]
     public static void BuildGame()
     {
         if (UnityEditor.EditorUtility.DisplayDialog("提示", "点击确认开始打包", "确认", "取消"))
@@ -25,7 +39,7 @@ public class EditorMgr : MonoBehaviour
         }
     }
 
-    [MenuItem("Tools/Build Game Log")]
+    [MenuItem("Tools/Build/Build Game Log")]
     public static void BuildGameLog()
     {
         if (UnityEditor.EditorUtility.DisplayDialog("提示", "点击确认开始打包", "确认", "取消"))
@@ -70,13 +84,6 @@ public class EditorMgr : MonoBehaviour
         }
     }
 
-    [MenuItem("Tools/MapEditor")]
-    public static void OpenMapEditorWindow()
-    {
-        MapEditorWindow window = EditorWindow.GetWindow<MapEditorWindow>();
-        window.Show();
-    }
-
     [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
@@ -89,16 +96,10 @@ public class EditorMgr : MonoBehaviour
         GameFrameWork.Editor.EditorUtility.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
     }
 
-    [MenuItem("Assets/Config/CreateHeroData")]
+    [MenuItem("Assets/Config/CreateCharacterData")]
     public static void CreatePlayerData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<HeroConfig, HeroConfigData>("HeroData", ".asset");
-    }
-
-    [MenuItem("Assets/Config/CreateEnemyData")]
-    public static void CreateEnemyData()
-    {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<EnemyConfig, EnemyConfigData>("EnemyData", ".asset");
+        GameFrameWork.Editor.EditorUtility.CreateConfigData<CharacterConfig, CharacterConfigData>("CharacterData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateSceneItemData")]

@@ -17,11 +17,11 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
-    public HeroConfigData HeroData
+    public CharacterConfigData CharacterData
     {
         get
         {
-            return m_HeroData;
+            return m_CharacterData;
         }
     }
 
@@ -91,36 +91,36 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Level = 1;
         m_EXP = 0;
 
-        m_HeroData = StaticConfig.HeroConfig.GetData(m_SelectId);
+        m_CharacterData = StaticConfig.CharacterConfig.GetData(m_SelectId);
         m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectId).Levels[m_Level - 1];
         m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_HeroData.AssetName));
+        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_CharacterData.AssetName));
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
 
         roleData.Health = m_LevelData.Health;
         roleData.MaxHealth = m_LevelData.Health;
-        roleData.AttackSpeed = m_HeroData.AttackSpeed;
+        roleData.AttackSpeed = m_CharacterData.AttackSpeed;
         roleData.AttackValue = m_LevelData.AttackValue;
         roleData.DefenseValue = m_LevelData.DefenseValue;
         roleData.CriticalValue = m_LevelData.CriticalValue;
         roleData.JumpForce = m_LevelData.JumpForce;
         roleData.MoveSpeed = m_LevelData.MoveSpeed;
-        roleData.CatchControl = m_HeroData.CatchControl;
+        roleData.CatchControl = m_CharacterData.CatchControl;
 
-        heroSkillData.Id = m_HeroData.Id;
-        heroSkillData.AttackIds = m_HeroData.AttackIDs;
-        heroSkillData.JumpAttackIds = m_HeroData.JumpAttackIDs;
-        heroSkillData.SkillIds = m_HeroData.Skills;
-        heroSkillData.AttackWait = m_HeroData.AttackWait;
-        heroSkillData.AttackNextTime = m_HeroData.AttackNextTime;
-        heroSkillData.CatchAttackID = m_HeroData.CatchAttackID;
-        heroSkillData.ThrowAttackID = m_HeroData.ThrowAttackID;
-        heroSkillData.WeaponAttackID = m_HeroData.WeaponAttackID;
-        heroSkillData.ThrowWeaponID = m_HeroData.ThrowWeaponID;
+        heroSkillData.Id = m_CharacterData.Id;
+        heroSkillData.AttackIds = m_CharacterData.AttackIDs;
+        heroSkillData.JumpAttackIds = m_CharacterData.JumpAttackIDs;
+        heroSkillData.SkillIds = m_CharacterData.Skills;
+        heroSkillData.AttackWait = m_CharacterData.AttackWait;
+        heroSkillData.AttackNextTime = m_CharacterData.AttackNextTime;
+        heroSkillData.CatchAttackID = m_CharacterData.CatchAttackID;
+        heroSkillData.ThrowAttackID = m_CharacterData.ThrowAttackID;
+        heroSkillData.WeaponAttackID = m_CharacterData.WeaponAttackID;
+        heroSkillData.ThrowWeaponID = m_CharacterData.ThrowWeaponID;
 
         m_Player.SetData(roleData);
         m_CurrCtrl.SetData(heroSkillData);
@@ -129,9 +129,9 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         InputMgr.Ins.AfterTrigger = AfterTrigger;
         InputMgr.Ins.GetPreconditon = GetPreCondition;
 
-        for (int i = 6; i < m_HeroData.Skills.Length; i++)
+        for (int i = 6; i < m_CharacterData.Skills.Length; i++)
         {
-            SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_HeroData.Skills[i]);
+            SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_CharacterData.Skills[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
                 InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
@@ -170,7 +170,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         {
             m_Level++;
             m_EXP -= m_LevelData.EXP;
-            m_LevelData = StaticConfig.LevelConfig.GetData(m_HeroData.Id).Levels[m_Level - 1];
+            m_LevelData = StaticConfig.LevelConfig.GetData(m_CharacterData.Id).Levels[m_Level - 1];
             m_Player.SetMaxHealth(m_LevelData.Health);
             m_Player.SetHealth(m_LevelData.Health);
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
@@ -225,7 +225,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
         if (Input.GetButtonDown("B") || Input.GetButton("Y"))
         {
-            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_HeroData.Id != 2001);
+            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_CharacterData.Id != 2001);
             resutl = true;
         }
 
@@ -258,7 +258,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     }
 
     private BaseRoleCtrl m_CurrCtrl = null;
-    private HeroConfigData m_HeroData = null;
+    private CharacterConfigData m_CharacterData = null;
     private BaseHero m_Player = null;
     private LevelConfigData.LevelInfo m_LevelData = null;
 

@@ -18,7 +18,7 @@ public static class SceneEntityFactory
 
         if (data.Type == SceneItemConfigData.ItemType.Weapon)
         {
-            data = StaticConfig.SceneItemConfig.GetData(PlayerMgr.Ins.HeroData.WeaponId);
+            data = StaticConfig.SceneItemConfig.GetData(PlayerMgr.Ins.CharacterData.WeaponId);
             type = SceneItemData.ItemType.Weapon;
             objectType = ObjectType.Weapon;
             sceneItem = EntityMgr.Ins.GetEntity<Weapon>(data.Name);
@@ -58,7 +58,7 @@ public static class SceneEntityFactory
         sceneItem.SetMapPos(pos);
     }
 
-    public static BaseEnemy CreateEnemy(EnemyConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
+    public static BaseEnemy CreateEnemy(CharacterConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = EntityMgr.Ins.GetEntity<BaseEnemy>(enemyConfigData.Name);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
@@ -78,7 +78,7 @@ public static class SceneEntityFactory
         enemySkillData.SkillIds = enemyConfigData.Skills;
         enemySkillData.AttackWait = enemyConfigData.AttackWait;
         enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
-        enemySkillData.BehaviourTreesID = enemyConfigData.BehaviourTreeIDs;
+        enemySkillData.BehaviourTreeIds = enemyConfigData.BehaviourTreeIds;
 
         enemy.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, enemyConfigData.AssetName));
         enemy.SetData(enemyData);

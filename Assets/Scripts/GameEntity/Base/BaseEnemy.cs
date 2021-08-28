@@ -121,7 +121,7 @@ public class BaseEnemy : BaseRole
         {
             int dir = data.AttackerPos.x > m_Pos.x ? -1 : 1;
             Vector3 pos = new Vector3(dir > 0 ? 0 : 0, Bound.size.y/2, 0.1f * -m_Dir);
-            EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.HeroData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+            EffectMgr.Ins.PlayEffect(PlayerMgr.Ins.CharacterData.HitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         }
 
         Vector3 damagePos = transform.position + Vector3.up * m_Collider.size.y / 2f + Vector3.right * m_Collider.size.x / 2 * data.AttackerDir;

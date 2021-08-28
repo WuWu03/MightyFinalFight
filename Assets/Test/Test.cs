@@ -10,12 +10,14 @@ using GameFrameWork.Scene;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEngine.U2D;
+using DragonBones;
 
 public class Test : MonoBehaviour
 {
     //public Button btn1;
     //public Button btn2;
     public Image img;
+    public UnityArmatureComponent aaa;
     //public Button btn3;
     //public GameObject parent;
     //public GameObject item;
@@ -63,7 +65,7 @@ public class Test : MonoBehaviour
         //}
 
         //anim.Play("attack_1", 0);
-        img.sprite = atlas.GetSprite("Cody");
+        
     }
 
     private void Start()

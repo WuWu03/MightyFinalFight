@@ -107,6 +107,10 @@ public abstract class SkillBaseDeployer
         {
             ret = ret && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
         }
+        else if(m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
+        {
+            ret = m_Owner.IsPlayComplete();
+        }
 
         return ret;
     }
@@ -128,8 +132,12 @@ public abstract class SkillBaseDeployer
 
         if (m_CurrEffectIndex >= m_SkillEffects.Length)
         {
-            OnAnimationEffectComplete();
             m_CurrEffectIndex = 0;
+
+            if(m_Owner.IsPlayComplete())
+            {
+                OnAnimationEffectComplete();
+            }
         }
     }
 

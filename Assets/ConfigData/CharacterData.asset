@@ -1,0 +1,221 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a0c01bc1716fc46a5d6bfd15b965e8, type: 3}
+  m_Name: CharacterData
+  m_EditorClassIdentifier: Assembly-CSharp:Runtime.Config:PlayerConfig
+  Datas:
+  - Id: 1001
+    Name: Cody
+    AssetName: Character/Cody
+    HitEffect: CodyHit
+    Desc: 'A TOUGH STREET FIGHTER WHO IS
+
+      SKILLED WITH KNIVES.'
+    HeadIcon: Character/Cody
+    AttackSpeed: 1
+    MoveSpeed: 0.7
+    JumpForce: {x: 40, y: 140}
+    AttackIDs: e9030000ea030000eb030000ec030000
+    JumpAttackIDs: ed030000ee030000
+    CatchAttackID: 1009
+    ThrowAttackID: 1010
+    WeaponAttackID: 1012
+    ThrowWeaponID: 1013
+    Skills: e9030000ea030000eb030000ec030000ed030000ee030000ef030000f0030000f1030000f2030000f3030000f4030000f5030000
+    AttackWait:
+    - 0.3
+    - 0.3
+    - 0.3
+    - -1
+    AttackNextTime:
+    - 0.15
+    - 0.15
+    - 0.15
+    WeaponId: 1001
+    CatchControl: 0
+    BehaviourTreeIds: 
+    HurtAnim: []
+  - Id: 1002
+    Name: Guy
+    AssetName: Character/Guy
+    HitEffect: GuyHit
+    Desc: 'DESCENDED FROM NINJA,HE POSSESSES
+
+      INCREDIBLE AGILITY.'
+    HeadIcon: Character/Guy
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 40, y: 140}
+    AttackIDs: d1070000d2070000d3070000d4070000
+    JumpAttackIDs: d5070000d6070000
+    CatchAttackID: 2009
+    ThrowAttackID: 2010
+    WeaponAttackID: 2012
+    ThrowWeaponID: 2013
+    Skills: d1070000d2070000d3070000d4070000d5070000d6070000d7070000d8070000d9070000da070000db070000dc070000dd070000
+    AttackWait:
+    - 0.6
+    - 0.6
+    - 0.6
+    - -1
+    AttackNextTime:
+    - 0.25
+    - 0.25
+    - 0.3
+    WeaponId: 1002
+    CatchControl: 0
+    BehaviourTreeIds: 
+    HurtAnim: []
+  - Id: 1003
+    Name: Hagger
+    AssetName: Character/Hagger
+    HitEffect: HaggerHit
+    Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
+
+      OF METRO CITY.'
+    HeadIcon: Character/Hagger
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 40, y: 160}
+    AttackIDs: b90b0000ba0b0000bb0b0000bc0b0000
+    JumpAttackIDs: bd0b0000be0b0000
+    CatchAttackID: 3009
+    ThrowAttackID: 3010
+    WeaponAttackID: 3011
+    ThrowWeaponID: 3012
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000c30b0000c40b0000
+    AttackWait:
+    - 0.6
+    - 0.6
+    - 0.6
+    - -1
+    AttackNextTime:
+    - 0.2
+    - 0.2
+    - 0.4
+    WeaponId: 1003
+    CatchControl: 1
+    BehaviourTreeIds: 
+    HurtAnim: []
+  - Id: 2001
+    Name: Bred
+    AssetName: Character/Bred
+    HitEffect: 
+    Desc: 
+    HeadIcon: 
+    AttackSpeed: 0.5
+    MoveSpeed: 0.6
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: a50d0300
+    JumpAttackIDs: 
+    CatchAttackID: 0
+    ThrowAttackID: 0
+    WeaponAttackID: 0
+    ThrowWeaponID: 0
+    Skills: a50d0300
+    AttackWait:
+    - -1
+    AttackNextTime: []
+    WeaponId: 0
+    CatchControl: 0
+    BehaviourTreeIds: d1070000
+    HurtAnim:
+    - Hurt1
+    - Hurt2
+  - Id: 2002
+    Name: TwoP
+    AssetName: Character/TwoP
+    HitEffect: 
+    Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
+
+      OF METRO CITY.'
+    HeadIcon: Character/Hagger
+    AttackSpeed: 0.5
+    MoveSpeed: 1
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: 090e0300
+    JumpAttackIDs: 
+    CatchAttackID: 0
+    ThrowAttackID: 0
+    WeaponAttackID: 0
+    ThrowWeaponID: 0
+    Skills: 090e0300
+    AttackWait:
+    - -1
+    AttackNextTime: []
+    WeaponId: 0
+    CatchControl: 0
+    BehaviourTreeIds: d2070000
+    HurtAnim:
+    - Hurt
+  - Id: 1003
+    Name: Hagger
+    AssetName: Character/Hagger
+    HitEffect: HaggerHit
+    Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
+
+      OF METRO CITY.'
+    HeadIcon: Character/Hagger
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 40, y: 160}
+    AttackIDs: b90b0000ba0b0000bb0b0000bc0b0000
+    JumpAttackIDs: bd0b0000be0b0000
+    CatchAttackID: 3009
+    ThrowAttackID: 3010
+    WeaponAttackID: 3011
+    ThrowWeaponID: 3012
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000c30b0000c40b0000
+    AttackWait:
+    - 0.6
+    - 0.6
+    - 0.6
+    - -1
+    AttackNextTime:
+    - 0.2
+    - 0.2
+    - 0.4
+    WeaponId: 1003
+    CatchControl: 1
+    BehaviourTreeIds: 
+    HurtAnim: []
+  - Id: 1003
+    Name: Hagger
+    AssetName: Character/Hagger
+    HitEffect: HaggerHit
+    Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
+
+      OF METRO CITY.'
+    HeadIcon: Character/Hagger
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 40, y: 160}
+    AttackIDs: b90b0000ba0b0000bb0b0000bc0b0000
+    JumpAttackIDs: bd0b0000be0b0000
+    CatchAttackID: 3009
+    ThrowAttackID: 3010
+    WeaponAttackID: 3011
+    ThrowWeaponID: 3012
+    Skills: b90b0000ba0b0000bb0b0000bc0b0000bd0b0000be0b0000bf0b0000c00b0000c10b0000c20b0000c30b0000c40b0000
+    AttackWait:
+    - 0.6
+    - 0.6
+    - 0.6
+    - -1
+    AttackNextTime:
+    - 0.2
+    - 0.2
+    - 0.4
+    WeaponId: 1003
+    CatchControl: 1
+    BehaviourTreeIds: 
+    HurtAnim: []

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkillData
   m_EditorClassIdentifier: 
   Datas:
-  - Id: 1001
+  - Id: 100101
     Level: 0
     Name: CodyAttack1
     AnimationName: Attack1
@@ -59,7 +59,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002
+  - Id: 100102
     Level: 0
     Name: CodyAttack2
     AnimationName: Attack2
@@ -105,7 +105,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1003
+  - Id: 100103
     Level: 0
     Name: CodyAttack3
     AnimationName: Attack3
@@ -151,7 +151,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1004
+  - Id: 100104
     Level: 0
     Name: CodyAttack4
     AnimationName: Attack4
@@ -197,7 +197,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1005
+  - Id: 100105
     Level: 0
     Name: CodyJumpAttack1
     AnimationName: JumpAttack1
@@ -243,7 +243,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1006
+  - Id: 100106
     Level: 0
     Name: CodyJumpAttack2
     AnimationName: JumpAttack2
@@ -289,7 +289,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1007
+  - Id: 100107
     Level: 0
     Name: CodySkill1
     AnimationName: Skill1

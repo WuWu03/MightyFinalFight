@@ -1,13 +1,9 @@
-﻿using GameFrameWork.BehaviourTree;
-using GameFrameWork.Editor;
+﻿using GameFrameWork.Editor;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(EnemyConfig), true)]
-public class EnemyConfigEditor : ConfigDataEditor<EnemyConfig, EnemyConfigData> { }
-
-[CustomEditor(typeof(HeroConfig), true)]
-public class HeroConfigEditor : ConfigDataEditor<HeroConfig, HeroConfigData>{}
+[CustomEditor(typeof(CharacterConfig), true)]
+public class HeroConfigEditor : ConfigDataEditor<CharacterConfig, CharacterConfigData>{}
 
 [CustomEditor(typeof(SceneItemConfig), true)]
 public class SceneItemConfigEditor : ConfigDataEditor<SceneItemConfig, SceneItemConfigData> { }

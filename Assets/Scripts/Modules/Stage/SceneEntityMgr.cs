@@ -15,7 +15,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.EnemyConfig.GetData(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.CharacterConfig.GetData(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
         enemy.OnDead += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
     }

@@ -14,7 +14,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         base.SetData(data);
         BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
-        m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreesID);
+        m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreeIds);
         m_BehaviourTreeMgr.Start();
     }
  
