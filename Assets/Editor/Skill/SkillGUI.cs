@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SkillGUI
 {
-    public SkillGUI(SkillConfigData skillConfigData)
+    public SkillGUI(EditorWindow window)
     {
-        m_CurrData = skillConfigData;
+        m_EditorWindow = window;
     }
 
-    public void UpdateData(SkillConfigData skillConfigData)
+    public void UpdateData()
     {
-        m_CurrData = skillConfigData;
         OnUpdateData();
     }
 
@@ -25,8 +25,8 @@ public class SkillGUI
 
     protected void ShowNotification(string content)
     {
-
+        m_EditorWindow.ShowNotification(new GUIContent(content));
     }
 
-    protected SkillConfigData m_CurrData = null;
+    private EditorWindow m_EditorWindow = null;
 }

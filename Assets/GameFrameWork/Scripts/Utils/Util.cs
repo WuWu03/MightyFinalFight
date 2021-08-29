@@ -32,7 +32,7 @@ namespace GameFrameWork.Utility
             uwr.timeout = 5;
             yield return uwr.SendWebRequest();
 
-            if (uwr.isNetworkError || uwr.isHttpError)
+            if (uwr.result != UnityWebRequest.Result.Success)
             {
                 if (error != null) error(uwr.error);
             }
@@ -221,6 +221,54 @@ namespace GameFrameWork.Utility
             byte a = (byte)(Mathf.Clamp01(c.a) * 255);
 
             return TextUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+        }
+
+        public static void AddElement<T>(T[] array, T newElement)
+        {
+            int length = array.Length;
+            T[] newArray = new T[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                newArray[i] = array[i];
+            }
+
+            array = new T[length + 1];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = newArray[i];
+            }
+
+            array[length] = newElement;
+        }
+
+        public static void DeleteElement<T>(T[] array, params int[] deletePos)
+        {
+            int length = array.Length;
+            T[] newArray = new T[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                newArray[i] = array[i];
+            }
+
+            length -= deletePos.Length;
+            array = new T[length];
+
+            int index = 0;
+            int currPos = deletePos[index];
+
+            for (int i = 0; i < length; i++)
+            {   
+                if (i + index >= currPos)
+                {
+                    index += 1;
+                    currPos = deletePos[index];
+                }
+
+                array[i] = newArray[i + index];
+            }
         }
     }
 }

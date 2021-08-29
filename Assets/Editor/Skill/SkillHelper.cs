@@ -7,6 +7,30 @@ using UnityEngine;
 
 public static class SkillHelper
 {
+    public static SkillConfigData CurrConfigData
+    {
+        get
+        {
+            if (!HasData())
+            {
+                return null;
+            }
+            return m_SkillConfig.Datas[m_CurrSelectIndex];
+        }
+    }
+
+    public static int CurrSelectIndex
+    {
+        get
+        {
+            return m_CurrSelectIndex;
+        }
+        set
+        {
+            m_CurrSelectIndex = value;
+        }
+    }
+
     public static string CurrShowName
     {
         get
@@ -20,6 +44,22 @@ public static class SkillHelper
         get
         {
             return m_ShowNames;
+        }
+    }
+
+    public static GUIStyle SelectButtonOnStyle
+    {
+        get
+        {
+            return m_SelectButtonOnStyle;
+        }
+    }
+
+    public static GUIStyle SelectButtonStyle
+    {
+        get
+        {
+            return m_SelectButtonStyle;
         }
     }
 
@@ -45,13 +85,45 @@ public static class SkillHelper
 
         m_SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>(PathUtil.ConfigDataDefaultPath + "SkillData.asset");
 
+   
+
+        SetShowNames();
+    }
+
+    public static void InitGUIStyle()
+    {
+        if(m_IndexLabelStyle != null)
+        {
+            return;
+        }
+
         m_IndexLabelStyle = new GUIStyle(GUI.skin.label);
         m_IndexLabelStyle.alignment = TextAnchor.MiddleLeft;
         m_IndexLabelStyle.fontSize = 18;
         m_IndexLabelStyle.fontStyle = FontStyle.Bold;
         m_IndexLabelStyle.fixedHeight = 20;
+        m_CurrSelectIndex = 0;
 
-        SetShowNames();
+        m_SelectButtonOnStyle = new GUIStyle("flow node 1");
+        m_SelectButtonOnStyle.stretchWidth = true;
+        m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
+        m_SelectButtonOnStyle.contentOffset = new Vector2(0, -15f);
+        m_SelectButtonOnStyle.fixedHeight = 15f;
+
+        m_SelectButtonStyle = new GUIStyle("flow node 0");
+        m_SelectButtonStyle.stretchWidth = true;
+        m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
+        m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
+        m_SelectButtonStyle.fixedHeight = 15f;
+    }
+    public static void AddData()
+    {
+
+    }
+
+    public static void RemoveData()
+    {
+
     }
 
     public static bool HasData()
@@ -82,8 +154,15 @@ public static class SkillHelper
         m_ShowNames = temp.ToArray();
     }
 
+    public static void SetSelectIndex(int index)
+    {
+        m_CurrSelectIndex = index;
+    }
+
     private static int m_CurrSelectIndex = 0;
     private static string[] m_ShowNames = null;
     private static GUIStyle m_IndexLabelStyle = null;
+    private static GUIStyle m_SelectButtonOnStyle = null;
+    private static GUIStyle m_SelectButtonStyle = null;
     private static SkillConfig m_SkillConfig = null;
 }

@@ -53,9 +53,15 @@ namespace GameFrameWork.Editor
 
 		public static void GUIBoxScope(System.Action action)
 		{
-			using (new GUILayout.VerticalScope(GUI.skin.label, new GUILayoutOption[0]))
+			GUIStyle style1 = GUI.skin.label;
+	
+			GUIStyle style2 = GUI.skin.window;
+			style2.padding.top = 5;
+			style2.padding.bottom = 0;
+
+			using (new GUILayout.VerticalScope(style1, new GUILayoutOption[0]))
 			{
-				using (new GUILayout.HorizontalScope(GUI.skin.textArea, new GUILayoutOption[0]))
+				using (new GUILayout.HorizontalScope(style2, new GUILayoutOption[0]))
 				{
 					action?.Invoke();
 				}
