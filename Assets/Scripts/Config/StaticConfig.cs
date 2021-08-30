@@ -12,6 +12,7 @@ public static class StaticConfig
     public static SceneItemConfig SceneItemConfig = null;
     public static TaskConfig TaskConfig = null;
     public static LevelConfig LevelConfig = null;
+    public static RoleSelectConfig RoleSelectConfig = null;
 
     public static void InitConfig()
     {
@@ -22,6 +23,7 @@ public static class StaticConfig
         SceneItemConfig = ResMgr.Ins.LoadAsset<SceneItemConfig>("ConfigData/SceneItemData");
         TaskConfig = ResMgr.Ins.LoadAsset<TaskConfig>("ConfigData/TaskData");
         LevelConfig = ResMgr.Ins.LoadAsset<LevelConfig>("ConfigData/LevelData");
+        RoleSelectConfig = ResMgr.Ins.LoadAsset<RoleSelectConfig>("ConfigData/RoleSelectData");
     }
 
     public static void Clear()

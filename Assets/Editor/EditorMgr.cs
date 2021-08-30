@@ -119,4 +119,10 @@ public class EditorMgr : MonoBehaviour
     {
         GameFrameWork.Editor.EditorUtility.CreateConfigData<LevelConfig, LevelConfigData>("LevelData", ".asset");
     }
+
+    [MenuItem("Assets/Config/CreateRoleSelectData")]
+    public static void CreateRoleSelectData()
+    {
+        GameFrameWork.Editor.EditorUtility.CreateConfigData<RoleSelectConfig, RoleSelectConfigData>("RoleSelectData", ".asset");
+    }
 }
