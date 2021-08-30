@@ -159,6 +159,11 @@ public static class SkillHelper
         m_CurrSelectIndex = index;
     }
 
+    public static void SaveConfig()
+    {
+        UnityEditor.EditorUtility.SetDirty(m_SkillConfig);
+    }
+
     private static int m_CurrSelectIndex = 0;
     private static string[] m_ShowNames = null;
     private static GUIStyle m_IndexLabelStyle = null;

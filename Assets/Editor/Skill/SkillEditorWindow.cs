@@ -20,6 +20,11 @@ public class SkillEditorWindow : EditorWindow
         m_SkillGUIs[2].UpdateData();
     }
 
+    public void OnDisable()
+    {
+        SkillHelper.SaveConfig();
+    }
+
     private void OnGUI()
     {
         SkillHelper.InitGUIStyle();

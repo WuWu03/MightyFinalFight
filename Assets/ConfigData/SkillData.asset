@@ -687,7 +687,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2001001
+  - Id: 1002001
     Level: 0
     Name: GuyAttack1
     AnimationName: Attack1
@@ -779,7 +779,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001002
+  - Id: 1002002
     Level: 0
     Name: GuyAttack2
     AnimationName: Attack2
@@ -871,7 +871,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001003
+  - Id: 1002003
     Level: 0
     Name: GuyAttack3
     AnimationName: Attack3
@@ -917,7 +917,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001004
+  - Id: 1002004
     Level: 0
     Name: GuyAttack4
     AnimationName: Attack4
@@ -963,7 +963,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001005
+  - Id: 1002005
     Level: 0
     Name: GuyJumpAttack1
     AnimationName: JumpAttack1
@@ -1009,7 +1009,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001006
+  - Id: 1002006
     Level: 0
     Name: GuyJumpAttack2
     AnimationName: JumpAttack2
@@ -1055,7 +1055,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001007
+  - Id: 1002007
     Level: 0
     Name: GuySkill1
     AnimationName: Skill1
@@ -1124,7 +1124,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 2001008
+  - Id: 1002008
     Level: 0
     Name: GuySkill2
     AnimationName: Skill2
@@ -1193,7 +1193,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
-  - Id: 2001009
+  - Id: 1002009
     Level: 0
     Name: GuyKnee
     AnimationName: Knee
@@ -1239,7 +1239,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2001010
+  - Id: 1002010
     Level: 0
     Name: GuyThrow
     AnimationName: Throw
@@ -1377,7 +1377,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2001011
+  - Id: 1002011
     Level: 0
     Name: GuySkill3
     AnimationName: Skill3
@@ -1446,7 +1446,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: OnGroundPickUp
-  - Id: 2001012
+  - Id: 1002012
     Level: 0
     Name: GuyAttack_Weapon
     AnimationName: Attack_Weapon
@@ -1504,7 +1504,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2001013
+  - Id: 1002013
     Level: 0
     Name: GuyThrowWeapon
     AnimationName: ThrowWeapon
@@ -1562,7 +1562,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001001
+  - Id: 1003001
     Level: 0
     Name: HaggerAttack1
     AnimationName: Attack1
@@ -1608,7 +1608,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 3001002
+  - Id: 1003002
     Level: 0
     Name: HaggerAttack2
     AnimationName: Attack2
@@ -1654,7 +1654,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 3001003
+  - Id: 1003003
     Level: 0
     Name: HaggerAttack3
     AnimationName: Attack3
@@ -1700,7 +1700,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 3001004
+  - Id: 1003004
     Level: 0
     Name: HaggerAttack4
     AnimationName: Attack4
@@ -1769,7 +1769,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001005
+  - Id: 1003005
     Level: 0
     Name: HaggerJumpAttack1
     AnimationName: JumpAttack1
@@ -1818,7 +1818,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001006
+  - Id: 1003006
     Level: 0
     Name: HaggerJumpAttack2
     AnimationName: JumpAttack2
@@ -1936,7 +1936,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001007
+  - Id: 1003007
     Level: 0
     Name: HaggerSkill1
     AnimationName: Skill1
@@ -1982,7 +1982,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 1
       Args: 
-  - Id: 3001008
+  - Id: 1003008
     Level: 0
     Name: HaggerSkill2
     AnimationName: Skill2
@@ -2028,7 +2028,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001009
+  - Id: 1003009
     Level: 0
     Name: HaggerKnee
     AnimationName: Knee
@@ -2077,7 +2077,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001010
+  - Id: 1003010
     Level: 0
     Name: HaggerThrow
     AnimationName: Throw
@@ -2169,7 +2169,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001011
+  - Id: 1003011
     Level: 0
     Name: HaggerAttack_Weapon
     AnimationName: Attack_Weapon
@@ -2215,7 +2215,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 3001012
+  - Id: 1003012
     Level: 0
     Name: HaggerThrowWeapon
     AnimationName: ThrowWeapon
@@ -2273,7 +2273,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 4001001
+  - Id: 2001001
     Level: 0
     Name: BredAttack
     AnimationName: Attack1
@@ -2319,7 +2319,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 4002001
+  - Id: 2002001
     Level: 0
     Name: TwoPAttack
     AnimationName: Attack1
@@ -2365,7 +2365,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 5001001
+  - Id: 2003001
     Level: 0
     Name: AxlAttack
     AnimationName: Attack1
@@ -2411,7 +2411,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 6001001
+  - Id: 2004001
     Level: 0
     Name: AndoreAttack
     AnimationName: Attack1
@@ -2457,7 +2457,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 6001002
+  - Id: 2004002
     Level: 0
     Name: AndoreSkill1
     AnimationName: Skill1

@@ -67,11 +67,17 @@ public class BaseEnemy : BaseRole
     {
         if(m_IsBeCatch)
         {
-            data.HurtAnim = m_HurtAnim[m_HurtAnim.Length - 1];
+            if (m_HurtAnim != null && m_HurtAnim.Length > 0)
+            {
+                data.HurtAnim = m_HurtAnim[0];
+            }
         }
         else
         {
-            data.HurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
+            if(m_HurtAnim != null && m_HurtAnim.Length > 0)
+            {
+                data.HurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
+            }
         }
 
         if(m_Health - data.AttackValue <= 0)
