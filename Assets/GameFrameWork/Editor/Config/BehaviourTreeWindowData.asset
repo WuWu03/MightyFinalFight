@@ -565,8 +565,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: 29
-      y: 409
+      x: -288
+      y: 18
       width: 230
       height: 250
     Children:
@@ -582,8 +582,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 342
-        y: 424
+        x: 25
+        y: 33
         width: 230
         height: 200
       Children:
@@ -599,8 +599,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 635
-          y: -11
+          x: 318
+          y: -402
           width: 230
           height: 200
         Children: []
@@ -617,8 +617,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 631
-          y: 209
+          x: 314
+          y: -182
           width: 230
           height: 200
         Children: []
@@ -635,8 +635,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 632
-          y: 423
+          x: 315
+          y: 32
           width: 230
           height: 200
         Children: []
@@ -653,8 +653,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 634
-          y: 647
+          x: 317
+          y: 256
           width: 230
           height: 200
         Children:
@@ -670,8 +670,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 947
-            y: 519
+            x: 630
+            y: 128
             width: 230
             height: 200
           Children: []
@@ -688,8 +688,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 948
-            y: 734
+            x: 631
+            y: 343
             width: 230
             height: 200
           Children: []
@@ -701,7 +701,7 @@ MonoBehaviour:
       - Id: 10040105
         Name: "\u672A\u547D\u540D"
         ClassType: DoSkill
-        Args: SkillId:7002
+        Args: SkillId:2004002
         ListRect:
           serializedVersion: 2
           x: 0
@@ -710,8 +710,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 634
-          y: 873
+          x: 317
+          y: 482
           width: 230
           height: 250
         Children: []

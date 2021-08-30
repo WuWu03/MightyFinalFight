@@ -282,7 +282,7 @@ MonoBehaviour:
       - Id: 0
         Name: "\u672A\u547D\u540D"
         ClassType: DoSkill
-        Args: SkillId:7002
+        Args: SkillId:2004002
         Childs: []
         PreConditions:
         - Id: 0

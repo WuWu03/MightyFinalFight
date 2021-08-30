@@ -223,38 +223,40 @@ namespace GameFrameWork.Utility
             return TextUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
         }
 
-        public static void AddElement<T>(T[] array, T newElement)
+        public static T[] AddElement<T>(T[] array, T newElement)
         {
             int length = array.Length;
-            T[] newArray = new T[length];
+            T[] tempArray = new T[length];
 
             for (int i = 0; i < length; i++)
             {
-                newArray[i] = array[i];
+                tempArray[i] = array[i];
             }
 
-            array = new T[length + 1];
+            T[] newArray = new T[length + 1];
 
             for (int i = 0; i < length; i++)
             {
-                array[i] = newArray[i];
+                newArray[i] = tempArray[i];
             }
 
-            array[length] = newElement;
+            newArray[length] = newElement;
+            
+            return newArray;
         }
 
-        public static void DeleteElement<T>(T[] array, params int[] deletePos)
+        public static T[] DeleteElement<T>(T[] array, params int[] deletePos)
         {
             int length = array.Length;
-            T[] newArray = new T[length];
+            T[] tempArray = new T[length];
 
             for (int i = 0; i < length; i++)
             {
-                newArray[i] = array[i];
+                tempArray[i] = array[i];
             }
 
             length -= deletePos.Length;
-            array = new T[length];
+            T[] newArray = new T[length];
 
             int index = 0;
             int currPos = deletePos[index];
@@ -267,8 +269,10 @@ namespace GameFrameWork.Utility
                     currPos = deletePos[index];
                 }
 
-                array[i] = newArray[i + index];
+                newArray[i] = tempArray[i + index];
             }
+
+            return newArray;
         }
     }
 }

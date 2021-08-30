@@ -34,7 +34,7 @@ public class SkillEffectGUI : SkillGUI
                 GUILayout.Label((i + 1).ToString() + ".");
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
-                    Util.DeleteElement(SkillHelper.CurrConfigData.SkillEffects, i);
+                    SkillHelper.CurrConfigData.SkillEffects = Util.DeleteElement(SkillHelper.CurrConfigData.SkillEffects, i);
                     m_ListSkillEffect.RemoveAt(i);
                     return;
                 }
@@ -45,14 +45,12 @@ public class SkillEffectGUI : SkillGUI
 
                 if (skillEffect.EffectorType != SkillConfigData.SkillEffectorType.BulletHitEffect)
                 {
+                    skillEffect.Bullets = null;
                     NormalEffectGUI(skillEffect, tempEffect);
                 }
                 else
                 {
-                    GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
-                    {
-                        BulletEffectGUI(skillEffect, tempEffect);
-                    });
+                    BulletEffectGUI(skillEffect, tempEffect);
                 }
          
                 EditorGUILayout.EndVertical();
@@ -67,26 +65,147 @@ public class SkillEffectGUI : SkillGUI
         if (GUILayout.Button("增加技能效果器"))
         {
             m_ListSkillEffect.Add(new SkillConfigData.SkillEffect());
-            Util.AddElement(SkillHelper.CurrConfigData.SkillEffects, new SkillConfigData.SkillEffect());
+            SkillHelper.CurrConfigData.SkillEffects = Util.AddElement(SkillHelper.CurrConfigData.SkillEffects, new SkillConfigData.SkillEffect());
             return;
         }
     }
 
     private void BulletEffectGUI(SkillConfigData.SkillEffect skillEffect, SkillConfigData.SkillEffect tempEffect)
     {
+        if(skillEffect.Bullets == null)
+        {
+            skillEffect.Bullets = new SkillConfigData.Bullet[0];
+        }
+
         for (int i = 0; i < skillEffect.Bullets.Length; i++)
         {
             SkillConfigData.Bullet skillBullet = skillEffect.Bullets[i];
             SkillConfigData.Bullet tempBullet = tempEffect.Bullets[i];
 
-            EditorGUILayout.BeginHorizontal();
-            tempBullet.Name = EditorGUILayout.TextField("Name", tempBullet.Name);
-            if (GUILayout.Button("更改", GUILayout.Width(100)))
+            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
             {
-                skillBullet.Name = tempBullet.Name;
-                ShowNotification("更改成功");
-            }
-            EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginVertical();
+
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label((i + 1).ToString() + "." + skillBullet.Name);
+                if (GUILayout.Button("x", GUILayout.Width(20)))
+                {
+                    skillEffect.Bullets = Util.DeleteElement(skillEffect.Bullets, i);
+                    tempEffect.Bullets = Util.DeleteElement(tempEffect.Bullets, i);
+                    return;
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.Name = EditorGUILayout.TextField("Name", tempBullet.Name);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.Name = tempBullet.Name;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.AssetName = EditorGUILayout.TextField("AssetName", tempBullet.AssetName);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.AssetName = tempBullet.AssetName;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.NormalAnim = EditorGUILayout.TextField("NormalAnim", tempBullet.NormalAnim);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.NormalAnim = tempBullet.NormalAnim;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.HitAnim = EditorGUILayout.TextField("HitAnim", tempBullet.HitAnim);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.HitAnim = tempBullet.HitAnim;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.NormalAnimSpeed = EditorGUILayout.FloatField("NormalAnimSpeed", tempBullet.NormalAnimSpeed);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.NormalAnimSpeed = tempBullet.NormalAnimSpeed;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.HitAnimSpeed = EditorGUILayout.FloatField("HitAnimSpeed", tempBullet.HitAnimSpeed);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.HitAnimSpeed = tempBullet.HitAnimSpeed;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.HitRange = EditorGUILayout.FloatField("HitRange", tempBullet.HitRange);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.HitRange = tempBullet.HitRange;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.Drag = EditorGUILayout.FloatField("Drag", tempBullet.Drag);
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    skillBullet.Drag = tempBullet.Drag;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.Dir = EditorGUILayout.Vector2Field("Dir", tempBullet.Dir);
+                if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
+                {
+                    skillBullet.Dir = tempBullet.Dir;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.Pos = EditorGUILayout.Vector2Field("Pos", tempBullet.Pos);
+                if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
+                {
+                    skillBullet.Pos = tempBullet.Pos;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.BeginHorizontal();
+                tempBullet.Velocity = EditorGUILayout.Vector2Field("Velocity", tempBullet.Velocity);
+                if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
+                {
+                    skillBullet.Velocity = tempBullet.Velocity;
+                    ShowNotification("更改成功");
+                }
+                EditorGUILayout.EndHorizontal();
+
+                skillBullet.IsPenatrate = EditorGUILayout.Toggle("IsPenatrate", skillBullet.IsPenatrate);
+
+                EditorGUILayout.EndVertical();
+            });
+        }
+
+        if (GUILayout.Button("增加子弹效果器"))
+        {
+            skillEffect.Bullets = Util.AddElement(skillEffect.Bullets, new SkillConfigData.Bullet());
+            tempEffect.Bullets = Util.AddElement(tempEffect.Bullets, new SkillConfigData.Bullet());
+            return;
         }
     }
 
@@ -235,23 +354,27 @@ public class SkillEffectGUI : SkillGUI
         newSkillEffect.EffectorType = source.EffectorType;
         newSkillEffect.SelectorType = source.SelectorType;
         newSkillEffect.ForceType = source.ForceType;
-        newSkillEffect.Bullets = new SkillConfigData.Bullet[source.Bullets.Length];
 
-        for (int j = 0; j < source.Bullets.Length; j++)
+        if (source.Bullets != null)
         {
-            newSkillEffect.Bullets[j] = new SkillConfigData.Bullet();
-            newSkillEffect.Bullets[j].Name = source.Bullets[j].Name;
-            newSkillEffect.Bullets[j].AssetName = source.Bullets[j].AssetName;
-            newSkillEffect.Bullets[j].NormalAnim = source.Bullets[j].NormalAnim;
-            newSkillEffect.Bullets[j].HitAnim = source.Bullets[j].HitAnim;
-            newSkillEffect.Bullets[j].NormalAnimSpeed = source.Bullets[j].NormalAnimSpeed;
-            newSkillEffect.Bullets[j].HitAnimSpeed = source.Bullets[j].HitAnimSpeed;
-            newSkillEffect.Bullets[j].Dir = source.Bullets[j].Dir;
-            newSkillEffect.Bullets[j].Pos = source.Bullets[j].Pos;
-            newSkillEffect.Bullets[j].Velocity = source.Bullets[j].Velocity;
-            newSkillEffect.Bullets[j].HitRange = source.Bullets[j].HitRange;
-            newSkillEffect.Bullets[j].Drag = source.Bullets[j].Drag;
-            newSkillEffect.Bullets[j].IsPenatrate = source.Bullets[j].IsPenatrate;
+            newSkillEffect.Bullets = new SkillConfigData.Bullet[source.Bullets.Length];
+
+            for (int i = 0; i < source.Bullets.Length; i++)
+            {
+                newSkillEffect.Bullets[i] = new SkillConfigData.Bullet();
+                newSkillEffect.Bullets[i].Name = source.Bullets[i].Name;
+                newSkillEffect.Bullets[i].AssetName = source.Bullets[i].AssetName;
+                newSkillEffect.Bullets[i].NormalAnim = source.Bullets[i].NormalAnim;
+                newSkillEffect.Bullets[i].HitAnim = source.Bullets[i].HitAnim;
+                newSkillEffect.Bullets[i].NormalAnimSpeed = source.Bullets[i].NormalAnimSpeed;
+                newSkillEffect.Bullets[i].HitAnimSpeed = source.Bullets[i].HitAnimSpeed;
+                newSkillEffect.Bullets[i].Dir = source.Bullets[i].Dir;
+                newSkillEffect.Bullets[i].Pos = source.Bullets[i].Pos;
+                newSkillEffect.Bullets[i].Velocity = source.Bullets[i].Velocity;
+                newSkillEffect.Bullets[i].HitRange = source.Bullets[i].HitRange;
+                newSkillEffect.Bullets[i].Drag = source.Bullets[i].Drag;
+                newSkillEffect.Bullets[i].IsPenatrate = source.Bullets[i].IsPenatrate;
+            }
         }
 
         newSkillEffect.SelectorOffest = source.SelectorOffest;
