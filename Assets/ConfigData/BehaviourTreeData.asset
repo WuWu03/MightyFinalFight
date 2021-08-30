@@ -303,3 +303,13 @@ MonoBehaviour:
       Name: 
       ClassType: PreIsInSpecialState
       Args: TheNot:true
+  - Id: 2005
+    Name: Damnd
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    Childs: []
+    PreConditions:
+    - Id: 0
+      Name: 
+      ClassType: PreIsInSpecialState
+      Args: TheNot:true

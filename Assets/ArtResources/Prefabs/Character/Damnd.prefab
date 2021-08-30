@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159804156849249023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.185, z: 0}
+  m_LocalPosition: {x: 0.024999999, y: 0.155, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 789908681430574713}
@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 789908681430574713}
   - component: {fileID: 3774062147811778107}
   - component: {fileID: 2905285385336932279}
+  - component: {fileID: 7860914383366982191}
   m_Layer: 0
   m_Name: Damnd
   m_TagString: Untagged
@@ -154,3 +155,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotNames: []
   dirty: 0
+--- !u!114 &7860914383366982191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556697543503234132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerDatas:
+  - AnimName: Idle
+    Offest: {x: 0.0015436411, y: 0.19362074}
+    Size: {x: 0.2992018, y: 0.3966533}
+  - AnimName: Move
+    Offest: {x: 0.001840815, y: 0.19293566}
+    Size: {x: 0.29682115, y: 0.391849}
+  - AnimName: Attack
+    Offest: {x: 0.058905065, y: 0.21905302}
+    Size: {x: 0.41831285, y: 0.45881006}
+  - AnimName: JumpUp
+    Offest: {x: 0, y: 0.20248598}
+    Size: {x: 0.27841341, y: 0.4183129}
+  - AnimName: JumpDown
+    Offest: {x: 0.0055223554, y: 0.16567038}
+    Size: {x: 0.3262737, y: 0.3373184}
+  - AnimName: JumpAttack
+    Offest: {x: -0.0018406808, y: 0.16014801}
+    Size: {x: 0.33363676, y: 0.32627377}
+  - AnimName: Hurt
+    Offest: {x: 0.0018407851, y: 0.19328214}
+    Size: {x: 0.2968212, y: 0.399905}
+  - AnimName: SmoonUp
+    Offest: {x: -0.000000014901161, y: 0.1141285}
+    Size: {x: 0.39622357, y: 0.22687155}
+  - AnimName: SmoonDown
+    Offest: {x: -0.000000044703484, y: 0.09019832}
+    Size: {x: 0.3814973, y: 0.1790112}
+  - AnimName: Awaken
+    Offest: {x: 0.023930222, y: 0.16567041}
+    Size: {x: 0.29682118, y: 0.34468153}

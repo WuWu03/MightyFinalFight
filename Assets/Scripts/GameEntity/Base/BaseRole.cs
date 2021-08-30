@@ -96,6 +96,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public BaseRoleCtrl CurrCtrl
+    {
+        get
+        {
+            return m_CurrCtrl;
+        }
+    }
+
     public virtual bool CanBeHit
     {
         get
@@ -249,9 +257,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_IsCatchControl = baseRoleData.CatchControl;
     }
 
-    public T AddCtrl<T>() where T : BaseRoleCtrl,new()
+    public T AddCtrl<T>() where T : BaseRoleCtrl, new()
     {
-        if(m_CurrCtrl == null)
+        if (m_CurrCtrl == null)
         {
             m_CurrCtrl = new T();
             m_CurrCtrl.SetOwner(this);

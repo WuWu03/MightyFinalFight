@@ -115,14 +115,14 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 7
-      SourceID: 1003
+      SourceID: 2003
       Hp: 500
       AttackValue: 15
       DefenseValue: 10
       HpBarWidth: 300
       Pos: {x: 300, y: -54}
     - EntityID: 8
-      SourceID: 1003
+      SourceID: 2003
       Hp: 500
       AttackValue: 15
       DefenseValue: 10
@@ -243,7 +243,7 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 1004
+      SourceID: 2004
       Hp: 300
       AttackValue: 20
       DefenseValue: 20

@@ -182,7 +182,7 @@ MonoBehaviour:
   - Id: 2004
     Name: Andore
     AssetName: Character/Andore
-    HitEffect: HaggerHit
+    HitEffect: 
     Desc: 
     HeadIcon: 
     AttackSpeed: 1
@@ -201,4 +201,27 @@ MonoBehaviour:
     WeaponId: 0
     CatchControl: 0
     BehaviourTreeIds: d4070000
+    HurtAnim: []
+  - Id: 2005
+    Name: Damnd
+    AssetName: Character/Damnd
+    HitEffect: 
+    Desc: 
+    HeadIcon: 
+    AttackSpeed: 1
+    MoveSpeed: 1
+    JumpForce: {x: 0, y: 0}
+    AttackIDs: 09981e00
+    JumpAttackIDs: 
+    CatchAttackID: 0
+    ThrowAttackID: 0
+    WeaponAttackID: 0
+    ThrowWeaponID: 0
+    Skills: 09981e00
+    AttackWait:
+    - -1
+    AttackNextTime: []
+    WeaponId: 0
+    CatchControl: 0
+    BehaviourTreeIds: d5070000
     HurtAnim: []

@@ -565,8 +565,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -288
-      y: 18
+      x: 23
+      y: 105
       width: 230
       height: 250
     Children:
@@ -582,8 +582,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 25
-        y: 33
+        x: 336
+        y: 120
         width: 230
         height: 200
       Children:
@@ -599,8 +599,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 318
-          y: -402
+          x: 629
+          y: -315
           width: 230
           height: 200
         Children: []
@@ -617,8 +617,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 314
-          y: -182
+          x: 625
+          y: -95
           width: 230
           height: 200
         Children: []
@@ -635,8 +635,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 315
-          y: 32
+          x: 626
+          y: 119
           width: 230
           height: 200
         Children: []
@@ -653,8 +653,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 317
-          y: 256
+          x: 628
+          y: 343
           width: 230
           height: 200
         Children:
@@ -670,8 +670,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 630
-            y: 128
+            x: 941
+            y: 215
             width: 230
             height: 200
           Children: []
@@ -688,8 +688,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 631
-            y: 343
+            x: 942
+            y: 430
             width: 230
             height: 200
           Children: []
@@ -710,8 +710,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 317
-          y: 482
+          x: 628
+          y: 569
           width: 230
           height: 250
         Children: []
@@ -727,6 +727,27 @@ MonoBehaviour:
     - ClassType: PreIsLockPlayer
       SelectIndex: 4
       Args: Distance:10
+    - ClassType: PreIsInSpecialState
+      SelectIndex: 3
+      Args: TheNot:true
+  - Id: 2005
+    Name: Damnd
+    ClassType: LoopSequence
+    Args: LoopTimes:-1
+    ListRect:
+      serializedVersion: 2
+      x: 20
+      y: 169
+      width: -25
+      height: 42
+    WindowRect:
+      serializedVersion: 2
+      x: 40
+      y: 288
+      width: 230
+      height: 200
+    Children: []
+    PreConditions:
     - ClassType: PreIsInSpecialState
       SelectIndex: 3
       Args: TheNot:true
