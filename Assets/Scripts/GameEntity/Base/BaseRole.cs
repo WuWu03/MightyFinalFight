@@ -360,7 +360,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
                     ChangeState<HeroCatch>();
             }
             else
+            {
                 ChangeState<RoleIdle>();
+            }
             return;
         }
 

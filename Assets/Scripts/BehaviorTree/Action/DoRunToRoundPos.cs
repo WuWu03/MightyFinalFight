@@ -37,6 +37,7 @@ public class DoRunToRoundPos : Action
                 return BehaviorTreeState.Success;
             }
 
+            m_IsArravied = false;
             m_Owner.OppositePlayer();
             m_CurrIndex++;
         }
