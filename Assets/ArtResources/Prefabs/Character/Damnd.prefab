@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159804156849249023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.024999999, y: 0.155, z: 0}
+  m_LocalPosition: {x: 0.0374, y: 0.1907, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 789908681430574713}
@@ -132,7 +132,7 @@ MonoBehaviour:
   isUGUI: 0
   debugDraw: 0
   animationName: Idle
-  _playTimes: 66
+  _playTimes: 0
   _timeScale: 1.05
   _sortingMode: 0
   _sortingLayerName: Default
@@ -175,8 +175,8 @@ MonoBehaviour:
     Offest: {x: 0.001840815, y: 0.19293566}
     Size: {x: 0.29682115, y: 0.391849}
   - AnimName: Attack
-    Offest: {x: 0.058905065, y: 0.21905302}
-    Size: {x: 0.41831285, y: 0.45881006}
+    Offest: {x: 0.089247406, y: 0.21905302}
+    Size: {x: 0.47899753, y: 0.45881006}
   - AnimName: JumpUp
     Offest: {x: 0, y: 0.20248598}
     Size: {x: 0.27841341, y: 0.4183129}

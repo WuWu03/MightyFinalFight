@@ -20,7 +20,7 @@ namespace GameFrameWork.Serialize
             Id = id;
             Children = new List<BehaviourTreeWindowData>();
             PreConditions = new List<BehaviourTreeWindowPreConditon>();
-            WindowRect = new Rect(x, y, 230, 200);
+            WindowRect = new Rect(x, y, 230, 205);
         }
 
         [SerializeField]

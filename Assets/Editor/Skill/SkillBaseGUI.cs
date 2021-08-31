@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class SkillBaseGUI:SkillGUI
+public class SkillBaseGUI : SkillGUI
 {
     public SkillBaseGUI(EditorWindow window) : base(window)
     {
@@ -22,7 +22,11 @@ public class SkillBaseGUI:SkillGUI
         m_AnimSpeed = SkillHelper.CurrConfigData.AnimSpeed;
         m_AnimTime = SkillHelper.CurrConfigData.AnimTime;
         m_Exp = SkillHelper.CurrConfigData.EXP;
-        m_ListKey.AddRange(SkillHelper.CurrConfigData.Key.Keys);
+
+        if (SkillHelper.CurrConfigData.Key.Keys != null)
+        {
+            m_ListKey.AddRange(SkillHelper.CurrConfigData.Key.Keys);
+        }
     }
 
     protected override void OnGUI()
@@ -30,14 +34,7 @@ public class SkillBaseGUI:SkillGUI
         EditorGUILayout.Space(10f);
 
         m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
-        EditorGUILayout.BeginHorizontal();
         GUILayout.Label(SkillHelper.CurrShowName, SkillHelper.IndexLabelStyle);
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button("x"))
-        {
-            SkillHelper.RemoveData();
-        }
-        EditorGUILayout.EndHorizontal();
 
         GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
         {

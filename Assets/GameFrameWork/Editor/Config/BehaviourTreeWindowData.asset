@@ -25,10 +25,10 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -538
-      y: 310
+      x: -373
+      y: 280
       width: 233
-      height: 258.1
+      height: 257
     Children:
     - Id: 101
       Name: "\u968F\u673A\u884C\u4E3A"
@@ -42,10 +42,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -224
-        y: 338
+        x: -59
+        y: 308
         width: 236
-        height: 206
+        height: 205
       Children:
       - Id: 10101
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -59,10 +59,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 136
-          y: -122
+          x: 301
+          y: -152
           width: 236
-          height: 206
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10102
@@ -77,10 +77,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 137
-          y: 107
+          x: 302
+          y: 77
           width: 236
-          height: 206
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10103
@@ -95,10 +95,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 139
-          y: 339
+          x: 304
+          y: 309
           width: 236
-          height: 206
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10104
@@ -113,10 +113,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 138
-          y: 565
+          x: 303
+          y: 535
           width: 236
-          height: 206
+          height: 205
         Children:
         - Id: 1010401
           Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
@@ -130,10 +130,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 512
-            y: 417
+            x: 677
+            y: 387
             width: 233
-            height: 203
+            height: 205
           Children: []
           PreConditions: []
         - Id: 1010402
@@ -148,10 +148,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 512
-            y: 668
+            x: 677
+            y: 638
             width: 233
-            height: 203
+            height: 205
           Children: []
           PreConditions: []
         PreConditions:
@@ -170,10 +170,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 136
-          y: 790
+          x: 301
+          y: 760
           width: 236
-          height: 206
+          height: 205
         Children: []
         PreConditions:
         - ClassType: PreIsPlayerDistance
@@ -199,10 +199,10 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: 73
-      y: 252
+      x: -153
+      y: 508
       width: 230
-      height: 250
+      height: 257
     Children:
     - Id: 201
       Name: "\u968F\u673A\u884C\u4E3A"
@@ -216,10 +216,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 369
-        y: 276
+        x: 143
+        y: 532
         width: 230
-        height: 200
+        height: 205
       Children:
       - Id: 20101
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -233,10 +233,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 671
-          y: -49
+          x: 445
+          y: 207
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 20102
@@ -251,10 +251,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 671
-          y: 168
+          x: 445
+          y: 424
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 20103
@@ -269,10 +269,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 668
-          y: 392
+          x: 442
+          y: 648
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 20104
@@ -287,10 +287,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 670
-          y: 614
+          x: 444
+          y: 870
           width: 230
-          height: 200
+          height: 205
         Children:
         - Id: 2010401
           Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
@@ -304,10 +304,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 1011
-            y: 372
+            x: 785
+            y: 628
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         - Id: 2010402
@@ -322,10 +322,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 1007
-            y: 614
+            x: 781
+            y: 870
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         - Id: 2010403
@@ -340,10 +340,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 1007
-            y: 837
+            x: 781
+            y: 1093
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         PreConditions:
@@ -370,10 +370,10 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -424
-      y: 110
+      x: -240
+      y: 211
       width: 230
-      height: 250
+      height: 257
     Children:
     - Id: 301
       Name: "\u968F\u673A\u884C\u4E3A"
@@ -387,10 +387,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -147
-        y: -21
+        x: 37
+        y: 80
         width: 230
-        height: 200
+        height: 205
       Children:
       - Id: 30101
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -404,10 +404,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 177
-          y: -349
+          x: 361
+          y: -248
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 30102
@@ -422,10 +422,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 177
-          y: -127
+          x: 361
+          y: -26
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 30103
@@ -440,10 +440,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 178
-          y: 93
+          x: 362
+          y: 194
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 30104
@@ -458,10 +458,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 177
-          y: 315
+          x: 361
+          y: 416
           width: 230
-          height: 200
+          height: 205
         Children:
         - Id: 3010401
           Name: "\u79FB\u52A8\u5230\u73A9\u5BB6\u8EAB\u8FB9"
@@ -475,10 +475,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 508
-            y: 79
+            x: 692
+            y: 180
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         - Id: 3010402
@@ -493,10 +493,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 518
-            y: 307
+            x: 702
+            y: 408
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         - Id: 3010403
@@ -511,10 +511,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 521
-            y: 532
+            x: 705
+            y: 633
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         PreConditions:
@@ -537,10 +537,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -144
-        y: 261
+        x: 40
+        y: 362
         width: 230
-        height: 200
+        height: 205
       Children: []
       PreConditions:
       - ClassType: PreIsDefense
@@ -565,10 +565,10 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: 23
-      y: 105
+      x: 136
+      y: 270
       width: 230
-      height: 250
+      height: 257
     Children:
     - Id: 100401
       Name: "\u968F\u673A\u884C\u4E3A"
@@ -582,10 +582,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 336
-        y: 120
+        x: 449
+        y: 285
         width: 230
-        height: 200
+        height: 205
       Children:
       - Id: 10040101
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -599,10 +599,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 629
-          y: -315
+          x: 742
+          y: -150
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10040102
@@ -617,10 +617,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 625
-          y: -95
+          x: 738
+          y: 70
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10040103
@@ -635,10 +635,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 626
-          y: 119
+          x: 739
+          y: 284
           width: 230
-          height: 200
+          height: 205
         Children: []
         PreConditions: []
       - Id: 10040104
@@ -653,10 +653,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 628
-          y: 343
+          x: 741
+          y: 508
           width: 230
-          height: 200
+          height: 205
         Children:
         - Id: 1004010401
           Name: "\u672A\u547D\u540D"
@@ -670,10 +670,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 941
-            y: 215
+            x: 1054
+            y: 380
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         - Id: 1004010402
@@ -688,10 +688,10 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 942
-            y: 430
+            x: 1055
+            y: 595
             width: 230
-            height: 200
+            height: 205
           Children: []
           PreConditions: []
         PreConditions:
@@ -710,10 +710,10 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 628
-          y: 569
+          x: 741
+          y: 734
           width: 230
-          height: 250
+          height: 257
         Children: []
         PreConditions:
         - ClassType: PreIsCanSkill
@@ -732,7 +732,7 @@ MonoBehaviour:
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
-    ClassType: LoopSequence
+    ClassType: LoopSelector
     Args: LoopTimes:-1
     ListRect:
       serializedVersion: 2
@@ -742,11 +742,107 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: 40
-      y: 288
+      x: 48
+      y: 496.59998
       width: 230
-      height: 200
-    Children: []
+      height: 205
+    Children:
+    - Id: 200501
+      Name: "\u653B\u51FB"
+      ClassType: DoAttack
+      Args: 
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 343
+        y: 605
+        width: 230
+        height: 205
+      Children: []
+      PreConditions:
+      - ClassType: PreIsPlayerDistance
+        SelectIndex: 6
+        Args: Distance:0.15
+    - Id: 200502
+      Name: "\u968F\u673A\u884C\u4E3A"
+      ClassType: RandomSelector
+      Args: Weight:[10]
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 341
+        y: 331
+        width: 230
+        height: 205
+      Children:
+      - Id: 20050201
+        Name: "\u56F4\u7ED5\u884C\u8D70"
+        ClassType: Sequence
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 635
+          y: -41
+          width: 230
+          height: 205
+        Children:
+        - Id: 2005020101
+          Name: "\u79FB\u52A8\u5230\u8FB9\u7F18"
+          ClassType: DoRunToBorder
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 944
+            y: -196
+            width: 230
+            height: 205
+          Children: []
+          PreConditions: []
+        - Id: 2005020102
+          Name: "\u884C\u8D70"
+          ClassType: DoRoundMap
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 957
+            y: 88
+            width: 230
+            height: 205
+          Children: []
+          PreConditions: []
+        PreConditions: []
+      PreConditions:
+      - ClassType: PreIsPlayerDistance
+        SelectIndex: 6
+        Args: Distance:-0.15
     PreConditions:
     - ClassType: PreIsInSpecialState
       SelectIndex: 3

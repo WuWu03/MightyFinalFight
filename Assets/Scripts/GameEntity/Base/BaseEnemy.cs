@@ -112,9 +112,9 @@ public class BaseEnemy : BaseRole
 
         if (m_Rigidbody.bodyType == RigidbodyType2D.Dynamic)
         {
-            Rect rect = GetBound(transform.localPosition);
-            float x = m_Dir > 0 ? rect.xMax + 0.1f : rect.xMin - 0.1f;
-            if (!StageMgr.Ins.CanMovePosX(x) && Mathf.Abs(m_Rigidbody.velocity.x) > 0)
+            Rect bound = GetBound(transform.localPosition);
+            float x = m_Rigidbody.velocity.x > 0 ? bound.xMax : bound.xMin;
+            if (!StageMgr.Ins.CanMovePosX(x))
             {
                 SetVelocityX(0);
             }

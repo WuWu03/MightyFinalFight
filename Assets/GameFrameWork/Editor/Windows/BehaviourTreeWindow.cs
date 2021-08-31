@@ -540,7 +540,6 @@ namespace GameFrameWork.Editor
             }
         }
 
-
         private void SetRightWindowNode(BehaviourTreeWindowData data)
         {
             if (m_RightWindowNode == null)

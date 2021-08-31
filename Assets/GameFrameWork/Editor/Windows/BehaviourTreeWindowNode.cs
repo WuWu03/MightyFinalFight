@@ -51,7 +51,7 @@ namespace GameFrameWork.Editor
             InitCompositesName();
             InitPreConditionName();
             UpdateData(data, isParent, parent);
-           
+
             if (!string.IsNullOrEmpty(m_Data.ClassType))
             {
                 string[] names = m_IsParent ? m_ParentCompositesNames : m_CompositesNames;
@@ -94,14 +94,14 @@ namespace GameFrameWork.Editor
             m_PreConditionList.onAddCallback = (ReorderableList list) =>
             {
                 m_Data.PreConditions.Add(new BehaviourTreeWindowPreConditon());
-                m_Data.WindowRect.height += m_Data.PreConditions.Count > 1 ? 50 : 0;
+                m_Data.WindowRect.height += m_Data.PreConditions.Count > 1 ? 52 : 0;
                 list.list = m_Data.PreConditions;
             };
 
             m_PreConditionList.onRemoveCallback = (ReorderableList list) =>
             {
                 m_Data.PreConditions.RemoveAt(list.index);
-                m_Data.WindowRect.height -= m_Data.PreConditions.Count > 0 ? 50 : 0;
+                m_Data.WindowRect.height -= m_Data.PreConditions.Count > 0 ? 52 : 0;
                 list.list = m_Data.PreConditions;
             };
 
@@ -187,8 +187,7 @@ namespace GameFrameWork.Editor
         {
             if (m_Data != null)
             {
-                string name = m_IsChangeName ? string.Empty : m_Data.Name + (m_IsParent ? "(父节点)" : "");
-                m_Data.WindowRect = GUI.Window(m_Data.Id, m_Data.WindowRect, DrawNodeWindow, name);
+                m_Data.WindowRect = GUI.Window(m_Data.Id, m_Data.WindowRect, DrawNodeWindow, string.Empty);
 
                 for (int i = 0; i < m_Children.Count; i++)
                 {
@@ -233,15 +232,22 @@ namespace GameFrameWork.Editor
 
         private void DrawNodeWindow(int id)
         {
+            float width = m_Data.WindowRect.width - 20;
+            float height = 20;
+            float x = 20 / 2;
+            float y = 5;
+
             if (m_IsChangeName)
             {
-                float width = m_Data.WindowRect.width - 20;
-                float height = 20;
-                float x = 20/2;
-                float y = -18;
-            
-                m_Data.Name = EditorGUI.TextField(new Rect(x, y + 20, width, height), m_Data.Name);
+                m_Data.Name = EditorGUI.TextField(new Rect(x, y, width, height), m_Data.Name);
             }
+            else
+            {
+                string name = m_IsChangeName ? string.Empty : m_Data.Name + (m_IsParent ? "(父节点)" : string.Empty);
+                EditorGUI.LabelField(new Rect(x, y, width, height), name);
+            }
+
+            EditorGUILayout.Space(25);
 
             EditorUtility.GUIBoxScope(() =>
             {

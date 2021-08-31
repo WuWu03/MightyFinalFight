@@ -56,7 +56,7 @@ namespace GameFrameWork.Editor
 			GUIStyle style1 = GUI.skin.label;
 			GUIStyle style2 = GUI.skin.window;
 			style2.padding.top = 0;
-			style2.padding.bottom = 0;
+			style2.padding.bottom = 5;
 			style2.stretchHeight = false;
 
 			using (new GUILayout.VerticalScope(style1, new GUILayoutOption[0]))

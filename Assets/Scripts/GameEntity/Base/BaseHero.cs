@@ -110,7 +110,10 @@ public class BaseHero : BaseRole
             Rect bound = GetBound(transform.localPosition);
             float x = m_Rigidbody.velocity.x > 0 ? bound.xMax : bound.xMin;
 
-            if (IsOutVersionX(x)) SetVelocityX(0);
+            if (IsOutVersionX(x))
+            {
+                SetVelocityX(0);
+            }
         }
 
         if (m_HitTime < 0) return;
@@ -463,7 +466,7 @@ public class BaseHero : BaseRole
     {
         Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
         Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
-        float distance = targetSize.x / 2 + selfSize.x / 2 - 0.01f;
+        float distance = targetSize.x / 2 + selfSize.x / 2 - 0.05f;
 
         return distance;
     }

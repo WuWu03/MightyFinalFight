@@ -36,7 +36,11 @@ namespace GameFrameWork.BehaviourTree
                     m_ListWeight.Add(1);
                 }
             }
+        }
 
+        protected override void OnEnter()
+        {
+            m_ListWeight.AddRange(m_Weights);
             m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
             m_ListWeight.Remove(m_CurrChildIndex);
         }
@@ -79,13 +83,14 @@ namespace GameFrameWork.BehaviourTree
 
             if (m_ListWeight.Count < 1)
             {
+                Reset();
                 m_State = BehaviorTreeState.Failure;
             }
         }
 
         public override bool CanExcute()
         {
-            return m_ListWeight.Count > 0 && m_State != BehaviorTreeState.Success;
+            return (m_ListWeight.Count > 0 || m_Weights.Length > 0) && m_State != BehaviorTreeState.Success;
         }
 
         public override void Reset()
@@ -93,9 +98,6 @@ namespace GameFrameWork.BehaviourTree
             base.Reset();
             m_ListWeight.Clear();
             m_LastChildIndex = -1;
-            m_ListWeight.AddRange(m_Weights);
-            m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
-            m_ListWeight.Remove(m_CurrChildIndex);
         }
 
         private int m_CurrChildIndex;

@@ -39,6 +39,7 @@ public class SkillEditorWindow : EditorWindow
             if (GUILayout.Button(m_TabNames[i], i == m_CurrPage ? SkillHelper.SelectButtonOnStyle : SkillHelper.SelectButtonStyle))
             {
                 m_CurrPage = i;
+                m_SkillGUIs[m_CurrPage].UpdateData();
                 return;
             }
         }
@@ -57,9 +58,18 @@ public class SkillEditorWindow : EditorWindow
         m_AddName = EditorGUILayout.TextField("增加项", m_AddName);
         if (GUILayout.Button("增加", GUILayout.Width(100)))
         {
-            SkillHelper.AddData();
+            SkillHelper.AddData(m_AddName);
+            m_SkillGUIs[m_CurrPage].UpdateData();
+            return;
         }
         EditorGUILayout.EndHorizontal();
+
+        if (GUILayout.Button("删除当前项"))
+        {
+            SkillHelper.RemoveData();
+            m_SkillGUIs[m_CurrPage].UpdateData();
+            return;
+        }
 
         if (SkillHelper.CurrConfigData != null)
         {

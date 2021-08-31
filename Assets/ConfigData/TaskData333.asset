@@ -26,12 +26,54 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 1002
-      Hp: 30
+      SourceID: 2001
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -38}
+    - EntityID: 2
+      SourceID: 2001
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 300
+      Pos: {x: -178, y: -46}
+    - EntityID: 3
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -54}
+    - EntityID: 4
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 100
+      Pos: {x: -178, y: -62}
+    - EntityID: 5
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 100
+      Pos: {x: -178, y: -70}
+    - EntityID: 6
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 80
+      Pos: {x: -100, y: -54}
+    - EntityID: 7
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 80
+      Pos: {x: -495, y: -62}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -68,17 +110,24 @@ MonoBehaviour:
     KillIDs: 
     StoryId: 0
     BarrelsCount: 0
-    KillAll: 0
+    KillAll: 1
     BarrelsAll: 0
     TriggerType: 1
     Targets:
     - EntityID: 7
-      SourceID: 1003
-      Hp: 30
+      SourceID: 2003
+      Hp: 500
       AttackValue: 15
       DefenseValue: 10
       HpBarWidth: 300
       Pos: {x: 300, y: -54}
+    - EntityID: 8
+      SourceID: 2003
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 10
+      HpBarWidth: 300
+      Pos: {x: 300, y: -62}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -147,7 +196,7 @@ MonoBehaviour:
       PosType: 2
       Pos: {x: 0, y: 0}
     KillIDs: 
-    StoryId: 1001
+    StoryId: 0
     BarrelsCount: 0
     KillAll: 0
     BarrelsAll: 0
@@ -194,7 +243,7 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 1004
+      SourceID: 2004
       Hp: 300
       AttackValue: 20
       DefenseValue: 20

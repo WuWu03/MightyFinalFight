@@ -56,6 +56,24 @@ public class StageMgr : BaseMgr<StageMgr>
         SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
     }
 
+    public Rect GetMoveArea(Vector2 pos)
+    {
+        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        {
+            if (IsInAreaPos(m_CurrStageData.MoveArea[i], pos))
+            {
+                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
+                bound.xMin /= 100f;
+                bound.xMax /= 100f;
+                bound.yMin /= 100f;
+                bound.yMax /= 100f;
+                return bound;
+            }
+        }
+
+        return Rect.zero;
+    }
+
     public bool CanMovePos(Vector2 pos)
     {
         for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
@@ -162,7 +180,7 @@ public class StageMgr : BaseMgr<StageMgr>
         return false;
     }
 
-    private Rect GetBound(Rect area)
+    private Rect GetBound(Rect area)//左，右，下，上
     {
         Rect bound = Rect.zero;
         bound.xMin = area.x;

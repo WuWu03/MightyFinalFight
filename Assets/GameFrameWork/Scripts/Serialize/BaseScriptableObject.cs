@@ -43,6 +43,11 @@ namespace GameFrameWork.Serialize
 
         public virtual void AddData(T data)
         {
+            if(Datas == null)
+            {
+                Datas = new List<T>();
+            }
+
             Datas.Add(data);
         }
 

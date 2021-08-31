@@ -25,7 +25,9 @@ namespace GameFrameWork.BehaviourTree
         {
             m_CurrLoopTimes = 0;
             if (m_IsRandomLoop)
+            {
                 m_LoopTimes = Random.Range(1, 9);
+            }
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -91,6 +93,6 @@ namespace GameFrameWork.BehaviourTree
         private int m_LastChildIndex;
         private int m_LoopTimes;
         private int m_CurrLoopTimes;
-        private Regex m_Regex = new Regex(@"(LoopTimes:)([0-9]+)");
+        private Regex m_Regex = new Regex(@"(LoopTimes:)(-?[0-9]+)");
     }
 }

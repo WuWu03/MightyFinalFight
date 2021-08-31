@@ -116,14 +116,32 @@ public static class SkillHelper
         m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
         m_SelectButtonStyle.fixedHeight = 15f;
     }
-    public static void AddData()
+    public static void AddData(string name)
     {
-
+        SkillConfigData skillConfigData = new SkillConfigData();
+        skillConfigData.Name = name;
+        skillConfigData.Key = new SkillConfigData.SkillKey();
+        skillConfigData.Key.Keys = new GameFrameWork.Input.KeyType[0];
+        skillConfigData.SkillPrevConditions = new SkillConfigData.SkillPrevCondition[0];
+        skillConfigData.SkillEffects = new SkillConfigData.SkillEffect[0];
+        m_SkillConfig.AddData(skillConfigData);
+        m_CurrSelectIndex = m_SkillConfig.Datas.Count - 1;
+        SetShowNames();
     }
 
     public static void RemoveData()
     {
+        if (!HasData() || m_CurrSelectIndex < 0 || m_CurrSelectIndex >= m_SkillConfig.Datas.Count)
+        {
+            return;
+        }
 
+        m_SkillConfig.Datas.RemoveAt(m_CurrSelectIndex);
+
+        if(m_CurrSelectIndex >= m_SkillConfig.Datas.Count)
+        {
+            m_CurrSelectIndex = m_SkillConfig.Datas.Count - 1;
+        }
     }
 
     public static bool HasData()

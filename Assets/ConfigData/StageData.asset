@@ -104,18 +104,31 @@ MonoBehaviour:
       y: -15
       width: 785.2
       height: 44
-  - Id: 0
-    Name: 
-    SceneName: 
-    StageIndex: 0
-    Level: 0
+  - Id: 1003
+    Name: Stage1_3
+    SceneName: Stage1_3
+    StageIndex: 1
+    Level: 3
     Width: 504
     Height: 152
-    InitPos: {x: 0, y: 0}
+    InitPos: {x: -215, y: -53}
     SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MoveArea: []
+    TaskIDs: f2030000
+    BGMs:
+    - ClipName: bgm06Boss_Start
+      IsLoop: 0
+      Volume: 1
+      LerpTime: 1
+    - ClipName: bgm06Boss_Loop
+      IsLoop: 1
+      Volume: 1
+      LerpTime: 1
+    MoveArea:
+    - serializedVersion: 2
+      x: -252
+      y: -30
+      width: 504
+      height: 46
   - Id: 0
     Name: 
     SceneName: 
@@ -146,6 +159,18 @@ MonoBehaviour:
     StageIndex: 0
     Level: 0
     Width: 760
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 546
     Height: 152
     InitPos: {x: 0, y: 0}
     SceneBuildings: []

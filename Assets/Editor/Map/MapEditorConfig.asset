@@ -122,18 +122,39 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Movie
-  - Id: 0
+  - Id: 1003
     MapPath: Assets/ArtResources/Texture/Stage/1001_3.png
-    SceneName: 
-    StageIndex: 0
-    Level: 0
-    CurrPos: {x: 0, y: 0}
-    InitPos: {x: 0, y: 0}
+    SceneName: Stage1_3
+    StageIndex: 1
+    Level: 3
+    CurrPos: {x: -215, y: -53}
+    InitPos: {x: -215, y: -53}
     Width: 504
     Height: 152
-    ListMoveArea: []
-    ListTaskId: 
-    ListBGM: []
+    ListMoveArea:
+    - Color: {r: 0.8848076, g: 0.15839815, b: 0.4977222, a: 0.3}
+      Rect:
+        serializedVersion: 2
+        x: 0
+        y: 106
+        width: 504
+        height: 46
+      RealRect:
+        serializedVersion: 2
+        x: -252
+        y: -30
+        width: 504
+        height: 46
+    ListTaskId: f2030000
+    ListBGM:
+    - ClipName: bgm06Boss_Start
+      IsLoop: 0
+      Volume: 1
+      LerpTime: 1
+    - ClipName: bgm06Boss_Loop
+      IsLoop: 1
+      Volume: 1
+      LerpTime: 1
     ListSceneBuilding: []
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
@@ -169,6 +190,19 @@ MonoBehaviour:
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
     Width: 760
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneBuilding: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/3001_3.png
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    CurrPos: {x: -94, y: -36}
+    InitPos: {x: 0, y: 0}
+    Width: 546
     Height: 152
     ListMoveArea: []
     ListTaskId: 
