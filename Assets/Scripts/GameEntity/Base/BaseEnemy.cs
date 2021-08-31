@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class BaseEnemy : BaseRole
 {
-    public override bool CanJump
-    {
-        get
-        {
-            return false;
-        }
-    }
-
     public event GameFrameWorkAction<int> OnDead
     {
         add 
@@ -65,6 +57,7 @@ public class BaseEnemy : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
+        Debug.Log("受伤了啊啊啊");
         if(m_IsBeCatch)
         {
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)

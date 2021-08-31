@@ -15,6 +15,7 @@ public class GameEntry : GameFrameWorkEntry
         StageMgr.Init(m_Manager);
         SceneEntityMgr.Init(m_Manager);
         StaticConfig.InitConfig();
+        CameraMgr.Ins.SetLerp(false);
     }
 
     protected override void OnStartGame()

@@ -16,7 +16,7 @@ public class DoRoundMap : Action
     {
         m_ListPos.Clear();
         m_CurrIndex = 0;
-        m_MoveTime = Random.Range(2f, 7f);
+        m_MoveTime = Random.Range(4f, 8f);
         m_MoveTimer = -1;
 
         Vector2 pos = m_Owner.Owner.Pos;

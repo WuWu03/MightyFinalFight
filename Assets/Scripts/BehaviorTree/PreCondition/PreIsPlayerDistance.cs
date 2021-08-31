@@ -11,13 +11,20 @@ public class PreIsPlayerDistance : PreCondition
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
-            if (m.Success) m_Distance = float.Parse(m.Groups[2].Value);
+            if (m.Success)
+            {
+                m_Distance = float.Parse(m.Groups[2].Value);
+            }
         }
     }
 
     protected override bool OnCheckPreCondition()
     {
-        float distance = Vector2.Distance(PlayerMgr.Ins.Player.Pos, (m_Owner as BaseRoleCtrl).Owner.Pos);
+        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
+        Vector2 ownerPos = (m_Owner as BaseRoleCtrl).Owner.Pos;
+
+        float distance = Vector2.Distance(playerPos, ownerPos);
+       
         if (m_Distance < 0)
         {
             return distance >= Mathf.Abs(m_Distance);

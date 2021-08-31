@@ -305,7 +305,7 @@ MonoBehaviour:
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
-    ClassType: LoopSelector
+    ClassType: LoopSequence
     Args: LoopTimes:-1
     Childs:
     - Id: 0
@@ -316,12 +316,16 @@ MonoBehaviour:
       PreConditions:
       - Id: 0
         Name: 
-        ClassType: PreIsPlayerDistance
-        Args: Distance:0.15
+        ClassType: PreIsPlayerInRange
+        Args: Range:0.3
+      - Id: 0
+        Name: 
+        ClassType: PreIsPlayerCanBeHit
+        Args: 
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10]
+      Args: Weight:[40,30]
       Childs:
       - Id: 0
         Name: "\u56F4\u7ED5\u884C\u8D70"
@@ -341,11 +345,17 @@ MonoBehaviour:
           Childs: []
           PreConditions: []
         PreConditions: []
+      - Id: 0
+        Name: "\u539F\u5730\u8DF3\u8DC3"
+        ClassType: DoJumpAttack
+        Args: AttackTime:2
+        Childs: []
+        PreConditions: []
       PreConditions:
       - Id: 0
         Name: 
-        ClassType: PreIsPlayerDistance
-        Args: Distance:-0.15
+        ClassType: PreIsPlayerInRange
+        Args: Range:0.3,TheNot:true
     PreConditions:
     - Id: 0
       Name: 

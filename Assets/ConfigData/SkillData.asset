@@ -2536,13 +2536,59 @@ MonoBehaviour:
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
-      SelectorAngle: 17
+      SelectorAngle: 25
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 0
       DamageMulity: 0
       IsSmoon: 0
+      IsShakeCamera: 0
+      IsOnGroundHurt: 0
+      IsOnGroundEffect: 0
+      CanBeDefense: 0
+      HitOne: 0
+      Args: 
+  - Id: 2005002
+    Level: 0
+    Name: DamndJumpAttack
+    AnimationName: JumpDown
+    HurtSound: 
+    Type: 1
+    DeployerType: 2
+    TriggerType: 1
+    EnternalTiggerTime: 0
+    Key:
+      Keys: 
+      AddTrigger: 0
+    AnimSpeed: 0.4
+    AnimTime: 1
+    EXP: 4
+    IsInEffectPlaySound: 0
+    CanChangeDir: 0
+    CanMove: 0
+    SkillPrevConditions:
+    - PrevConditionType: 3
+      IsRevert: 0
+      Args: 
+    SkillEffects:
+    - EffectorType: 1
+      SelectorType: 1
+      ForceType: 1
+      Bullets: []
+      SelectorOffest: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
+      AddSelfForce: {x: 0, y: 0}
+      MoveTarget: {x: 0, y: 0}
+      ScaleTarget: {x: 0, y: 0}
+      AddSelfVelocity: {x: 0, y: 0}
+      SelectorAngle: 0
+      SelectorRadius: 0
+      AddSelfDrag: 0
+      MoveDistance: 0
+      Gravity: 0
+      DamageMulity: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0

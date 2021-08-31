@@ -41,8 +41,10 @@ namespace GameFrameWork.BehaviourTree
 
         protected override void OnEnter()
         {
+            m_ListWeight.Clear();
             m_ListWeight.AddRange(m_Weights);
             m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
+            m_LastChildIndex = -1;
             m_ListWeight.Remove(m_CurrChildIndex);
         }
 

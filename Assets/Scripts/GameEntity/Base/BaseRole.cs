@@ -409,6 +409,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_CurrCtrl.ExitSkill();
+
+        if(m_Health - data.AttackValue <= 0)
+        {
+            data.IsSwoon = true;
+            data.AttackForce = new Vector2(40 * data.AttackerDir, 120);
+        }
+
         m_IsSmoon = data.IsSwoon;
 
         if (string.IsNullOrEmpty(data.HurtAnim))

@@ -12,6 +12,7 @@ namespace GameFrameWork.Camera
 
         public float Speed = 2.0f;
         public float Delta = 1.5f;
+        public bool IsLerp = true;
 
         public UnityEngine.Camera Camera
         {
@@ -99,8 +100,15 @@ namespace GameFrameWork.Camera
             float distance = Vector3.Distance(transform.position, pos);
             if (distance < 0.02f) return;
 
-            Speed = (distance * distance / Delta) + m_InitSpeed;
-            transform.position = Vector3.Lerp(transform.position, GetClampPos(pos), Time.deltaTime * Speed);
+            if (IsLerp)
+            {
+                Speed = (distance * distance / Delta) + m_InitSpeed;
+                transform.position = Vector3.Lerp(transform.position, GetClampPos(pos), Time.deltaTime * Speed);
+            }
+            else
+            {
+                transform.position = GetClampPos(pos);
+            }
         }
 
         private Vector2 GetClampPos(Vector2 targetPos)

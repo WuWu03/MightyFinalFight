@@ -26,6 +26,7 @@ public class DoAttack : Action
             m_AttackCount = Random.Range(1, 9);
         }
 
+        m_CurrAttackCount = 0;
         m_AttackTimer = -1;
     }
 

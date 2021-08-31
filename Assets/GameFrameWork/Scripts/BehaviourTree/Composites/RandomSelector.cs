@@ -40,9 +40,11 @@ namespace GameFrameWork.BehaviourTree
 
         protected override void OnEnter()
         {
+            m_ListWeight.Clear();
             m_ListWeight.AddRange(m_Weights);
             m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
             m_ListWeight.Remove(m_CurrChildIndex);
+            m_LastChildIndex = -1;
         }
 
         protected override void OnUpdate(float deltaTime)

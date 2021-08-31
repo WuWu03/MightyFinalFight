@@ -68,6 +68,7 @@ public static class SceneEntityFactory
         enemyData.Health = hp;
         enemyData.MaxHealth = hp;
         enemyData.HpBarWdith = hpBarWidth;
+        enemyData.JumpForce = enemyConfigData.JumpForce;
         enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
         enemyData.AttackValue = attack;
         enemyData.DefenseValue = defense;
@@ -77,6 +78,7 @@ public static class SceneEntityFactory
         enemySkillData.AttackIds = enemyConfigData.AttackIDs;
         enemySkillData.SkillIds = enemyConfigData.Skills;
         enemySkillData.AttackWait = enemyConfigData.AttackWait;
+        enemySkillData.JumpAttackIds = enemyConfigData.JumpAttackIDs;
         enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
         enemySkillData.BehaviourTreeIds = enemyConfigData.BehaviourTreeIds;
 

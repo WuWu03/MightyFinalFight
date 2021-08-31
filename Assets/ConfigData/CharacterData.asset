@@ -210,14 +210,14 @@ MonoBehaviour:
     HeadIcon: 
     AttackSpeed: 1
     MoveSpeed: 1
-    JumpForce: {x: 0, y: 0}
+    JumpForce: {x: 40, y: 140}
     AttackIDs: 09981e00
-    JumpAttackIDs: 
+    JumpAttackIDs: 0a981e00
     CatchAttackID: 0
     ThrowAttackID: 0
     WeaponAttackID: 0
     ThrowWeaponID: 0
-    Skills: 09981e00
+    Skills: 09981e000a981e00
     AttackWait:
     - -1
     AttackNextTime: []

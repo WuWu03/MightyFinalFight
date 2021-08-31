@@ -69,6 +69,11 @@ namespace GameFrameWork.Camera
             m_CameraRoot.transform.DOShakePosition(time, 0.1f, 20, 100).OnComplete(OnShakeComplete);
         }
 
+        public void SetLerp(bool isLerp)
+        {
+            m_CameraFollow.IsLerp = isLerp;
+        }
+
         public bool IsOutVision(Vector2 targetPos)
         {
             Rect visionRect = m_CameraFollow.GetVision();

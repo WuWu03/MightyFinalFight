@@ -103,6 +103,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         base.OnExit();
         m_CanEffect = true;
         m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private bool m_CanEffect = true;
