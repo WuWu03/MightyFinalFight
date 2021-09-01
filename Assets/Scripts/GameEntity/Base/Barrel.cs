@@ -209,7 +209,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
         HurtData hurtData = HurtData.Create();
         hurtData.AttackerDir = -role.Dir;
-        hurtData.AttackForce = new Vector2(40, 150);
+        hurtData.AttackForce = SkillFactory.GetSmoonForce();
         hurtData.AttackerPos = m_Pos;
         hurtData.IsSwoon = true;
         hurtData.AttackerId = Id;

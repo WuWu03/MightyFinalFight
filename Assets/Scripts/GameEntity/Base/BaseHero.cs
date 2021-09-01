@@ -71,6 +71,14 @@ public class BaseHero : BaseRole
         }
     }
 
+    public bool IsRebirthState
+    {
+        get
+        {
+            return m_IsRebirthState;
+        }
+    }
+
     public Weapon Weapon
     {
         get
@@ -167,7 +175,7 @@ public class BaseHero : BaseRole
             hurtData.AttackerDir = m_Dir;
             hurtData.AttackValue = 0;
             hurtData.IsSwoon = true;
-            hurtData.AttackForce = new Vector2(40f * m_Dir, 150f);
+            hurtData.AttackForce = SkillFactory.GetSmoonForce(m_Dir);
 
             m_ListCatchTarget[0].OnHurtMsg(hurtData);
         }
@@ -239,12 +247,12 @@ public class BaseHero : BaseRole
             }
             else
             {
-                hitTime = 3;
+                hitTime = data.IsBoss ? 6 : 3;
             }
 
-            if (hitTime >= 3)
+            if (hitTime >= (data.IsBoss ? 6 : 3))
             {
-                data.AttackForce = new Vector2(40 * data.AttackerDir, 120);
+                data.AttackForce = SkillFactory.GetSmoonForce(data.AttackerDir);
                 data.IsSwoon = true;
                 data.HurtSound = "Sound/OnBlow";
                 data.IsGroundHurt = false;
@@ -305,12 +313,16 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
+        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
+    }
+
+    public void SetRebirthState()
+    {
         m_Slot1Renderer.enabled = true;
         m_Slot2Renderer.enabled = true;
         m_IsRebirthState = true;
         m_RebirthStateTimer = Time.time;
         m_RebirthLightTimer = Time.time;
-        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
     public virtual void PickUpSceneItemMsg(BaseSceneItem item)
@@ -399,6 +411,11 @@ public class BaseHero : BaseRole
                 }
 
                 BaseAvatar tempAvatar = temp as BaseAvatar;
+
+                if (!tempAvatar.IsInGround || tempAvatar.IsAnyState(typeof(RoleAttack), typeof(RoleSkill)))
+                {
+                    continue;
+                }
 
                 float distance = GetCatchDistance(tempAvatar);
                 float yOffest = Mathf.Abs(tempAvatar.Pos.y - m_Pos.y);

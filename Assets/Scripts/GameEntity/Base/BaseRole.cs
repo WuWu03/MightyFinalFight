@@ -140,12 +140,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag &&
-                   !m_IsBeCatch && IsAnyState(typeof(RoleIdle),
-                typeof(RoleMove),
-                typeof(RoleAttack),
-                typeof(RoleSkill),
-                typeof(RoleJump));
+            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleAttack), typeof(RoleSkill), typeof(RoleJump));
         }
     }
 
@@ -153,11 +148,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsJumpAttack &&
-                   !m_IsBeCatch && IsAnyState(typeof(RoleIdle),
-                typeof(RoleMove),
-                typeof(RoleJump),
-                typeof(RoleAttack));
+            return !m_IsDropTrag && !m_IsJumpAttack && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump), typeof(RoleAttack));
         }
     }
 
@@ -173,7 +164,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump),typeof(RoleAttack));
+            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleJump), typeof(RoleAttack));
         }
     }
 
@@ -280,6 +271,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnResComplete(go, param);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
+        m_CurrCtrl.Start();
     }
 
     protected override void OnUpdate()
@@ -413,7 +405,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if(m_Health - data.AttackValue <= 0)
         {
             data.IsSwoon = true;
-            data.AttackForce = new Vector2(40 * data.AttackerDir, 120);
+            data.AttackForce = SkillFactory.GetSmoonForce(data.AttackerDir);
         }
 
         m_IsSmoon = data.IsSwoon;
@@ -710,5 +702,4 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private float m_DropGourndTime = 0f;
     private HurtData m_OnGroundHurtData = null;
     private DropTrapData m_TrapData = null;
-
 }

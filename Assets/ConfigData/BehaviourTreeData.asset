@@ -297,11 +297,11 @@ MonoBehaviour:
     PreConditions:
     - Id: 0
       Name: 
-      ClassType: PreIsLockPlayer
+      ClassType: PreIsInSpecialState
       Args: Distance:10
     - Id: 0
       Name: 
-      ClassType: PreIsInSpecialState
+      ClassType: PreIsGround
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
@@ -309,9 +309,9 @@ MonoBehaviour:
     Args: LoopTimes:-1
     Childs:
     - Id: 0
-      Name: "\u653B\u51FB"
+      Name: "\u8FD1\u8EAB\u65F6\u653B\u51FB"
       ClassType: DoAttack
-      Args: 
+      Args: AttackTime:1
       Childs: []
       PreConditions:
       - Id: 0
@@ -320,12 +320,16 @@ MonoBehaviour:
         Args: Range:0.3
       - Id: 0
         Name: 
+        ClassType: PreIsGround
+        Args: 
+      - Id: 0
+        Name: 
         ClassType: PreIsPlayerCanBeHit
         Args: 
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[40,30]
+      Args: Weight:[40,30,30]
       Childs:
       - Id: 0
         Name: "\u56F4\u7ED5\u884C\u8D70"
@@ -344,11 +348,21 @@ MonoBehaviour:
           Args: 
           Childs: []
           PreConditions: []
-        PreConditions: []
+        PreConditions:
+        - Id: 0
+          Name: 
+          ClassType: PreIsGround
+          Args: 
       - Id: 0
-        Name: "\u539F\u5730\u8DF3\u8DC3"
+        Name: "\u539F\u5730\u8DF3\u8DC3\u653B\u51FB"
         ClassType: DoJumpAttack
         Args: AttackTime:2
+        Childs: []
+        PreConditions: []
+      - Id: 0
+        Name: "\u79FB\u52A8\u8DF3\u8DC3\u653B\u51FB"
+        ClassType: DoJumpAttack
+        Args: AttackTime:3,Move
         Childs: []
         PreConditions: []
       PreConditions:

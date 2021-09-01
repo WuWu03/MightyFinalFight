@@ -14,7 +14,7 @@ public class HeroRebirth : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.Owner as BaseHero;
     }
 
     public override void OnEnter(BaseFsm fsm)
@@ -38,6 +38,7 @@ public class HeroRebirth : BaseFsmState
 
         m_Owner.SetBodyType(RigidbodyType2D.Dynamic);
         m_Owner.PlayAnimation(AnimName.JumpDown);
+        m_Owner.SetRebirthState();
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -61,5 +62,5 @@ public class HeroRebirth : BaseFsmState
     }
 
     private Vector2 m_ReBirthPos = Vector2.zero;
-    private BaseRole m_Owner = null;
+    private BaseHero m_Owner = null;
 }

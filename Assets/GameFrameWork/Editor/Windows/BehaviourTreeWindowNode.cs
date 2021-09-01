@@ -126,23 +126,28 @@ namespace GameFrameWork.Editor
             m_Parent = parent;
             m_IsParent = isParent;
 
-            if (m_PreConditionList == null)
-            {
-                m_PreConditionList = new ReorderableList(m_Data.PreConditions, typeof(BehaviourTreeWindowData), true, true, true, true);
-            }
-            else
-            {
-                m_PreConditionList.list = m_Data.PreConditions;
-            }
-
             if (m_Data != null)
             {
-                if (m_Children == null)
-                    m_Children = new List<BehaviourTreeWindowNode>();
+                if (m_PreConditionList == null)
+                {
+                    m_PreConditionList = new ReorderableList(m_Data.PreConditions, typeof(BehaviourTreeWindowData), true, true, true, true);
+                }
                 else
+                {
+                    m_PreConditionList.list = m_Data.PreConditions;
+                }
+
+                if (m_Children == null)
+                {
+                    m_Children = new List<BehaviourTreeWindowNode>();
+                }
+                else
+                {
                     m_Children.Clear();
+                }
 
                 string[] assembly = isParent ? m_ParentCompositesNames : m_CompositesNames;
+
                 for (int i = 0; i < assembly.Length; i++)
                 {
                     if (assembly[i].Equals(m_Data.ClassType))
@@ -156,6 +161,11 @@ namespace GameFrameWork.Editor
                 {
                     m_Children.Add(new BehaviourTreeWindowNode(m_Data.Children[i],false, this));
                 }
+            }
+            else
+            {
+                m_Children.Clear();
+                m_PreConditionList.list.Clear();
             }
         }
 
@@ -193,14 +203,14 @@ namespace GameFrameWork.Editor
                 {
                     m_Children[i].OnGUI(e);
                 }
-            }
 
-            if(e.keyCode == KeyCode.Return)
-            {
-                m_IsChangeName = false;
-            }
+                if (e.keyCode == KeyCode.Return)
+                {
+                    m_IsChangeName = false;
+                }
 
-            DrawCurve();
+                DrawCurve();
+            }
         }
 
         public void MouseMove(Vector2 delta)

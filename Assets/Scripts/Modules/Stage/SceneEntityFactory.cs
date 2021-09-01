@@ -74,7 +74,8 @@ public static class SceneEntityFactory
         enemyData.DefenseValue = defense;
         enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
         enemyData.HurtAnim = enemyConfigData.HurtAnim;
-  
+        enemyData.IsBoss = enemyConfigData.IsBoss;
+
         enemySkillData.AttackIds = enemyConfigData.AttackIDs;
         enemySkillData.SkillIds = enemyConfigData.Skills;
         enemySkillData.AttackWait = enemyConfigData.AttackWait;

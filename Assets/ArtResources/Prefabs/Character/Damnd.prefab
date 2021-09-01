@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159804156849249023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0374, y: 0.1907, z: 0}
+  m_LocalPosition: {x: 0, y: 0.068, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 789908681430574713}
@@ -169,11 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Idle
-    Offest: {x: 0.0015436411, y: 0.19362074}
-    Size: {x: 0.2992018, y: 0.3966533}
+    Offest: {x: 0, y: 0.19362074}
+    Size: {x: 0.3, y: 0.3966533}
   - AnimName: Move
-    Offest: {x: 0.001840815, y: 0.19293566}
-    Size: {x: 0.29682115, y: 0.391849}
+    Offest: {x: 0, y: 0.19293566}
+    Size: {x: 0.3, y: 0.391849}
   - AnimName: Attack
     Offest: {x: 0.089247406, y: 0.21905302}
     Size: {x: 0.47899753, y: 0.45881006}
@@ -181,14 +181,11 @@ MonoBehaviour:
     Offest: {x: 0, y: 0.20248598}
     Size: {x: 0.27841341, y: 0.4183129}
   - AnimName: JumpDown
-    Offest: {x: 0.0055223554, y: 0.16567038}
-    Size: {x: 0.3262737, y: 0.3373184}
-  - AnimName: JumpAttack
-    Offest: {x: -0.0018406808, y: 0.16014801}
-    Size: {x: 0.33363676, y: 0.32627377}
+    Offest: {x: 0, y: 0.16567038}
+    Size: {x: 0.33, y: 0.3373184}
   - AnimName: Hurt
-    Offest: {x: 0.0018407851, y: 0.19328214}
-    Size: {x: 0.2968212, y: 0.399905}
+    Offest: {x: 0.0018407851, y: 0.19698566}
+    Size: {x: 0.2968212, y: 0.39261693}
   - AnimName: SmoonUp
     Offest: {x: -0.000000014901161, y: 0.1141285}
     Size: {x: 0.39622357, y: 0.22687155}
@@ -196,5 +193,8 @@ MonoBehaviour:
     Offest: {x: -0.000000044703484, y: 0.09019832}
     Size: {x: 0.3814973, y: 0.1790112}
   - AnimName: Awaken
-    Offest: {x: 0.023930222, y: 0.16567041}
-    Size: {x: 0.29682118, y: 0.34468153}
+    Offest: {x: 0.023930222, y: 0.16306753}
+    Size: {x: 0.29682118, y: 0.32906434}
+  - AnimName: Dead
+    Offest: {x: -0.000000014901161, y: 0.085}
+    Size: {x: 0.3911446, y: 0.16979307}

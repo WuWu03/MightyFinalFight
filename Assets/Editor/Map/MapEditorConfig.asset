@@ -41,11 +41,11 @@ MonoBehaviour:
     - ClipName: bgm01_Start
       IsLoop: 0
       Volume: 0.3
-      LerpTime: 0.3
+      LerpTime: 0
     - ClipName: bgm01_Loop
       IsLoop: 1
       Volume: 0.3
-      LerpTime: 0.3
+      LerpTime: 0
     ListSceneBuilding:
     - SceneObjType: 1
       Id: 1
@@ -150,11 +150,11 @@ MonoBehaviour:
     - ClipName: bgm06Boss_Start
       IsLoop: 0
       Volume: 1
-      LerpTime: 1
+      LerpTime: 0
     - ClipName: bgm06Boss_Loop
       IsLoop: 1
       Volume: 1
-      LerpTime: 1
+      LerpTime: 0
     ListSceneBuilding: []
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
@@ -203,6 +203,19 @@ MonoBehaviour:
     CurrPos: {x: -94, y: -36}
     InitPos: {x: 0, y: 0}
     Width: 546
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneBuilding: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/2001_3.png
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    CurrPos: {x: 0, y: 0}
+    InitPos: {x: 0, y: 0}
+    Width: 504
     Height: 152
     ListMoveArea: []
     ListTaskId: 

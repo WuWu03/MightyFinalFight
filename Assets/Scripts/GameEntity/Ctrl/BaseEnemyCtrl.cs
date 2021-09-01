@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
+
     protected override void OnInit()
     {
         base.OnInit();
@@ -15,13 +16,18 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         base.SetData(data);
         BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
         m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreeIds);
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
         m_BehaviourTreeMgr.Start();
     }
- 
+
     protected override void OnUpdate()
     {
-        m_BehaviourTreeMgr.Update(Time.deltaTime);
         base.OnUpdate();
+        m_BehaviourTreeMgr.Update(Time.deltaTime);
     }
 
     protected override void OnRelease()

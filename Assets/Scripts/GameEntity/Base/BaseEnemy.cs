@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class BaseEnemy : BaseRole
 {
+    public bool IsBoss
+    {
+        get
+        {
+            return m_IsBoss;
+        }
+    }
+
     public event GameFrameWorkAction<int> OnDead
     {
         add 
@@ -27,6 +35,7 @@ public class BaseEnemy : BaseRole
         BaseEnemyData enemyData = data as BaseEnemyData;
         m_HurtAnim = enemyData.HurtAnim;
         m_HpBarWidth = enemyData.HpBarWdith;
+        m_IsBoss = enemyData.IsBoss;
     }
 
     public override void SetPos(Vector2 pos)
@@ -57,7 +66,6 @@ public class BaseEnemy : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
-        Debug.Log("受伤了啊啊啊");
         if(m_IsBeCatch)
         {
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)
@@ -67,6 +75,12 @@ public class BaseEnemy : BaseRole
         }
         else
         {
+            if(IsDrop)
+            {
+                data.IsSwoon = true;
+                data.AttackForce = SkillFactory.GetSmoonForce(data.AttackerDir);
+            }
+
             if(m_HurtAnim != null && m_HurtAnim.Length > 0)
             {
                 data.HurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
@@ -107,7 +121,13 @@ public class BaseEnemy : BaseRole
         {
             Rect bound = GetBound(transform.localPosition);
             float x = m_Rigidbody.velocity.x > 0 ? bound.xMax : bound.xMin;
+
             if (!StageMgr.Ins.CanMovePosX(x))
+            {
+                SetVelocityX(0);
+            }
+
+            if (m_IsBoss && IsOutVersionX(x))
             {
                 SetVelocityX(0);
             }
@@ -144,7 +164,7 @@ public class BaseEnemy : BaseRole
         hurtData.Id = 0;
         hurtData.SkillExp = 2;
         hurtData.AttackerDir = -m_Dir;
-        hurtData.AttackForce = new Vector2(40 * -m_Dir, 150);
+        hurtData.AttackForce = SkillFactory.GetSmoonForce(-m_Dir);
         hurtData.AttackerPos = m_Pos;
         hurtData.CanBeDefense = false;
         hurtData.IsSwoon = true;
@@ -160,5 +180,6 @@ public class BaseEnemy : BaseRole
     private GameFrameWorkAction<int> m_OnDeadEventHandler = null;
     private int m_SkillExp = 0;
     private int m_HpBarWidth = 0;
+    private bool m_IsBoss = false;
     private string[] m_HurtAnim = null;
 }

@@ -348,7 +348,7 @@ namespace GameFrameWork.Editor
                 }
                 else
                 {
-                    if (m_CurrWindowNode.Parent == null)
+                    if (m_CurrWindowNode.Parent == null && !m_CurrWindowNode.IsParent)
                         menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
                     menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.Parent == null ? 4 : 5);
                 }

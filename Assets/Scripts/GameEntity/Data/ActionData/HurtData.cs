@@ -16,6 +16,7 @@ public class HurtData : BaseEventArgs
     public string HurtSound { get; set; }
     public string HurtAnim { get; set; }
     public bool CanBeDefense { get; set; }
+    public bool IsBoss { get; set; }
 
     public static HurtData Create()
     {
@@ -36,6 +37,7 @@ public class HurtData : BaseEventArgs
         AttackerDir = 0;
         HurtSound = string.Empty;
         HurtAnim = string.Empty;
+        IsBoss = false;
     }
 
     public override GameFrameWorkEventArgs Clone()

@@ -63,8 +63,7 @@ public class DoRoundMap : Action
         if (!m_IsArravied)
         {
             m_IsArravied = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.Owner.Pos) <= 0.05f;
-            m_Owner.OppositePlayer();
-            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.Owner.Pos).normalized);
+            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.Owner.Pos).normalized, false);
             m_Owner.OppositePlayer();
         }
         else

@@ -272,7 +272,7 @@ public class MapEditorWindow : EditorWindow
                 MapEditorHelper.ListBGM[i].ClipName = EditorGUILayout.TextField("音频资源名称", MapEditorHelper.ListBGM[i].ClipName);
                 MapEditorHelper.ListBGM[i].IsLoop = EditorGUILayout.Toggle("是否循环播放", MapEditorHelper.ListBGM[i].IsLoop);
                 MapEditorHelper.ListBGM[i].Volume = EditorGUILayout.Slider("音量大小", MapEditorHelper.ListBGM[i].Volume, 0, 1);
-                MapEditorHelper.ListBGM[i].LerpTime = EditorGUILayout.FloatField("过渡时间", MapEditorHelper.ListBGM[i].Volume);
+                MapEditorHelper.ListBGM[i].LerpTime = EditorGUILayout.FloatField("过渡时间", MapEditorHelper.ListBGM[i].LerpTime);
                 GUILayout.EndVertical();
             });
         }

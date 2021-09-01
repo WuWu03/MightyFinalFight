@@ -30,4 +30,5 @@ public class CharacterConfigData : BaseConfigData
     public bool CatchControl;//抓取的时候是否可以控制敌人进行移动
     public int[] BehaviourTreeIds;
     public string[] HurtAnim;
+    public bool IsBoss;//是否是boss
 }

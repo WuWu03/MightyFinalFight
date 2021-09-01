@@ -181,6 +181,11 @@ public class SkillFactory
         return Mathf.FloorToInt(damage);
     }
 
+    public static Vector2 GetSmoonForce(float dir = 1f)
+    {
+        return new Vector2(40f * dir, 150f);
+    }
+
     private static Regex m_RegexHPMoreThan = new Regex(@"(HPMoreThan:)([0-9]+)");
     private static Regex m_RegexHPLessThan = new Regex(@"(HPLessThan:)([0-9]+)");
 }

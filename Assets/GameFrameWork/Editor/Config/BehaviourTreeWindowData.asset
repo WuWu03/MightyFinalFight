@@ -696,7 +696,7 @@ MonoBehaviour:
           PreConditions: []
         PreConditions:
         - ClassType: PreIsPlayerCanBeHit
-          SelectIndex: 5
+          SelectIndex: 6
           Args: 
       - Id: 10040105
         Name: "\u672A\u547D\u540D"
@@ -720,14 +720,14 @@ MonoBehaviour:
           SelectIndex: 1
           Args: 
         - ClassType: PreIsPlayerCanBeHit
-          SelectIndex: 5
+          SelectIndex: 6
           Args: 
       PreConditions: []
     PreConditions:
-    - ClassType: PreIsLockPlayer
+    - ClassType: PreIsInSpecialState
       SelectIndex: 4
       Args: Distance:10
-    - ClassType: PreIsInSpecialState
+    - ClassType: PreIsGround
       SelectIndex: 3
       Args: TheNot:true
   - Id: 2005
@@ -742,15 +742,15 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -238
-      y: 591.6
+      x: -98
+      y: 298.59998
       width: 230
       height: 205
     Children:
     - Id: 200501
-      Name: "\u653B\u51FB"
+      Name: "\u8FD1\u8EAB\u65F6\u653B\u51FB"
       ClassType: DoAttack
-      Args: 
+      Args: AttackTime:1
       ListRect:
         serializedVersion: 2
         x: 0
@@ -759,22 +759,25 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 57
-        y: 700
+        x: 220
+        y: 428
         width: 230
-        height: 257
+        height: 309
       Children: []
       PreConditions:
       - ClassType: PreIsPlayerInRange
-        SelectIndex: 7
+        SelectIndex: 8
         Args: Range:0.3
+      - ClassType: PreIsGround
+        SelectIndex: 3
+        Args: 
       - ClassType: PreIsPlayerCanBeHit
-        SelectIndex: 5
+        SelectIndex: 6
         Args: 
     - Id: 200502
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[40,30]
+      Args: Weight:[40,30,30]
       ListRect:
         serializedVersion: 2
         x: 0
@@ -783,8 +786,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 55
-        y: 426
+        x: 203
+        y: 104
         width: 230
         height: 205
       Children:
@@ -800,8 +803,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 349
-          y: 54
+          x: 492
+          y: -381
           width: 230
           height: 205
         Children:
@@ -817,8 +820,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 658
-            y: -101
+            x: 809
+            y: -521
             width: 230
             height: 205
           Children: []
@@ -835,15 +838,18 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 671
-            y: 183
+            x: 804
+            y: -295
             width: 230
             height: 205
           Children: []
           PreConditions: []
-        PreConditions: []
+        PreConditions:
+        - ClassType: PreIsGround
+          SelectIndex: 3
+          Args: 
       - Id: 20050202
-        Name: "\u539F\u5730\u8DF3\u8DC3"
+        Name: "\u539F\u5730\u8DF3\u8DC3\u653B\u51FB"
         ClassType: DoJumpAttack
         Args: AttackTime:2
         ListRect:
@@ -854,18 +860,36 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 354
-          y: 371
+          x: 493
+          y: -152
+          width: 230
+          height: 205
+        Children: []
+        PreConditions: []
+      - Id: 20050203
+        Name: "\u79FB\u52A8\u8DF3\u8DC3\u653B\u51FB"
+        ClassType: DoJumpAttack
+        Args: AttackTime:3,Move
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 494
+          y: 76
           width: 230
           height: 205
         Children: []
         PreConditions: []
       PreConditions:
       - ClassType: PreIsPlayerInRange
-        SelectIndex: 7
+        SelectIndex: 8
         Args: Range:0.3,TheNot:true
     PreConditions:
     - ClassType: PreIsInSpecialState
-      SelectIndex: 3
+      SelectIndex: 4
       Args: TheNot:true
   BehaviourConfigPath: Assets/ConfigData/BehaviourTreeData.asset

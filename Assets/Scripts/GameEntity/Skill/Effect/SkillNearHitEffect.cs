@@ -63,6 +63,7 @@ public class SkillNearHitEffect : SkillBaseEffect
         {
             float dir = (hit as BaseSceneObject).Pos.x - m_Owner.Pos.x >= 0 ? 1 : -1;
             int defenseValue = 0;
+            bool isBoss = false;
             bool isCritical = false;
 
             if (m_SkillEffect.ForceType == SkillConfigData.SkillAddForceType.SelfDir)
@@ -73,6 +74,11 @@ public class SkillNearHitEffect : SkillBaseEffect
             if (hit is BaseRole)
             {
                 defenseValue = (hit as BaseRole).DefenseValue;
+            }
+
+            if(m_Owner is BaseEnemy)
+            {
+                isBoss = (m_Owner as BaseEnemy).IsBoss;
             }
 
             HurtData hurtData = HurtData.Create();
@@ -89,6 +95,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             hurtData.HurtSound = m_SkillData.HurtSound;
             hurtData.HurtAnim = string.Empty;
             hurtData.IsGroundHurt = m_SkillEffect.IsOnGroundHurt;
+            hurtData.IsBoss = isBoss;
             hit.OnHurtMsg(hurtData);
 
             return !hit.IsDead;

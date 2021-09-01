@@ -6,10 +6,13 @@ public class BaseEnemyData :BaseRoleData
 {
     public string[] HurtAnim { get; set; }
     public int HpBarWdith { get; set; }
+    public bool IsBoss { get; set; }
+
     public override void Clear()
     {
         base.Clear();
         HurtAnim = null;
         HpBarWdith = 0;
+        IsBoss = false;
     }
 }

@@ -17,28 +17,49 @@ public abstract class BaseCtrl
         OnInit();
     }
 
+    public void Start()
+    {
+        m_IsRunning = true;
+        OnStart();
+    }
+
+    public void Stop()
+    {
+        m_IsRunning = false;
+    }
+
     public void Update()
     {
-        if (m_Owner == null || !m_Owner.IsResComplete) return;
+        if (m_Owner == null || !m_IsRunning)
+        {
+            return;
+        }
         OnUpdate();
     }
 
     public void LateUpdate()
     {
-        if (m_Owner == null || !m_Owner.IsResComplete) return;
+        if (m_Owner == null || !m_IsRunning)
+        {
+            return;
+        }
         OnLateUpdate();
     }
 
     public void Release()
     {
         m_Owner = null;
+        m_IsRunning = false;
         OnRelease();
     }
 
     protected virtual void OnInit() { }
+
+    protected virtual void OnStart() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
     protected virtual void OnRelease() { }
 
     protected BaseRole m_Owner = null;
+    private bool m_IsRunning = false;
 }

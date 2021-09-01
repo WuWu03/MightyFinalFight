@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
+  m_Name: ConveyorBelt_Data
+  m_EditorClassIdentifier: 
+  dataName: ConveyorBelt
+  dragonBonesJSON: {fileID: 4900000, guid: b9ba738c50227b4418b49a6954e8e81d, type: 3}
+  textureAtlas:
+  - textureAtlasJSON: {fileID: 4900000, guid: b3440cf65e38643418dcff2965469bec, type: 3}
+    texture: {fileID: 2800000, guid: e16395a09233f0242a8328b255d6562c, type: 3}
+    material: {fileID: 2100000, guid: 1806269d3aee630479eba643298d368e, type: 2}
+    uiMaterial: {fileID: 0}
