@@ -47,14 +47,14 @@ MonoBehaviour:
       Volume: 0.3
       LerpTime: 0
     ListSceneBuilding:
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 1
       Name: Cafe1
       Pos: {x: -500, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Cafe
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 2
       Name: Cafe2
       Pos: {x: 188, y: 58}
@@ -101,21 +101,21 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/WoodDoorClose
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 3
       Name: Movie1
       Pos: {x: -324, y: 30}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Movie
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 4
       Name: Movie2
       Pos: {x: 172, y: 30}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Movie
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 5
       Name: Movie3
       Pos: {x: 284, y: 30}
@@ -156,21 +156,21 @@ MonoBehaviour:
       Volume: 1
       LerpTime: 0
     ListSceneBuilding:
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 1
       Name: ConveyorBelt1
       Pos: {x: 121, y: 64}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBelt
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 2
       Name: ConveyorBelt2
       Pos: {x: 145, y: 40}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBelt
-    - SceneObjType: 1
+    - SceneObjType: 2
       Id: 3
       Name: ConveyorBelt3
       Pos: {x: 157, y: 17}
