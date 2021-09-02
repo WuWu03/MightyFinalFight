@@ -155,7 +155,28 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 1
       LerpTime: 0
-    ListSceneBuilding: []
+    ListSceneBuilding:
+    - SceneObjType: 1
+      Id: 1
+      Name: ConveyorBelt1
+      Pos: {x: 121, y: 64}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBelt
+    - SceneObjType: 1
+      Id: 2
+      Name: ConveyorBelt2
+      Pos: {x: 145, y: 40}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBelt
+    - SceneObjType: 1
+      Id: 3
+      Name: ConveyorBelt3
+      Pos: {x: 157, y: 17}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBeltLastst
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
     SceneName: 
@@ -216,6 +237,19 @@ MonoBehaviour:
     CurrPos: {x: 0, y: 0}
     InitPos: {x: 0, y: 0}
     Width: 504
+    Height: 152
+    ListMoveArea: []
+    ListTaskId: 
+    ListBGM: []
+    ListSceneBuilding: []
+  - Id: 0
+    MapPath: Assets/ArtResources/Texture/Stage/2001_1.png
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    CurrPos: {x: 0, y: 0}
+    InitPos: {x: 0, y: 0}
+    Width: 1016
     Height: 152
     ListMoveArea: []
     ListTaskId: 

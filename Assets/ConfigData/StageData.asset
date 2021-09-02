@@ -112,7 +112,28 @@ MonoBehaviour:
     Width: 504
     Height: 152
     InitPos: {x: -215, y: -53}
-    SceneBuildings: []
+    SceneBuildings:
+    - SceneObjType: 1
+      Id: 1
+      Name: ConveyorBelt1
+      Pos: {x: 121, y: 64}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBelt
+    - SceneObjType: 1
+      Id: 2
+      Name: ConveyorBelt2
+      Pos: {x: 145, y: 40}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBelt
+    - SceneObjType: 1
+      Id: 3
+      Name: ConveyorBelt3
+      Pos: {x: 157, y: 17}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/ConveyorBeltLastst
     TaskIDs: f2030000
     BGMs:
     - ClipName: bgm06Boss_Start
@@ -171,6 +192,30 @@ MonoBehaviour:
     StageIndex: 0
     Level: 0
     Width: 546
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 504
+    Height: 152
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MoveArea: []
+  - Id: 0
+    Name: 
+    SceneName: 
+    StageIndex: 0
+    Level: 0
+    Width: 1016
     Height: 152
     InitPos: {x: 0, y: 0}
     SceneBuildings: []
