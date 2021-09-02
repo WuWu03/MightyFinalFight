@@ -16,3 +16,9 @@ public struct SoundName
     public const string DefaultDrop = "Sound/OnDrop";
     public const string DefaultJump = "Sound/Jump";
 }
+
+public struct LayerName
+{
+    public const string Map = "Map";
+    public const string Unit = "Unit";
+}

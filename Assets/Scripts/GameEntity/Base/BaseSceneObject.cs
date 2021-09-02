@@ -291,13 +291,13 @@ public class BaseSceneObject : BaseEntity
     private void ResComplete(GameObject go, object[] param)
     {
         m_ResGO = go;
-        m_ResGO.transform.SetParent(this.transform, false);
+        m_ResGO.transform.SetParent(transform, false);
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
-        m_IsResComplete = true;
         m_Collider.enabled = true;
-        SetLayer("Unit");
+        SetLayer();
         OnResComplete(go, param);
+        m_IsResComplete = true;
     }
 
     protected override void Update()

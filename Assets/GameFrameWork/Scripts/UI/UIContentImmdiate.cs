@@ -12,7 +12,7 @@ namespace GameFrameWork.UI
             GetPreferredSize();
         }
 
-        private RectTransform m_RectTransform;
+       
         private RectTransform rectTransform
         {
             get
@@ -23,7 +23,6 @@ namespace GameFrameWork.UI
             }
         }
 
-        private ContentSizeFitter m_ContentSizeFitter;
         private ContentSizeFitter contentSizeFitter
         {
             get
@@ -33,6 +32,7 @@ namespace GameFrameWork.UI
                 return m_ContentSizeFitter;
             }
         }
+
         //立即获取ContentSizeFitter的区域
         public Vector2 GetPreferredSize()
         {
@@ -52,5 +52,8 @@ namespace GameFrameWork.UI
                 return LayoutUtility.GetPreferredSize(rectTransform, axis);
             }
         }
+
+        private RectTransform m_RectTransform;
+        private ContentSizeFitter m_ContentSizeFitter;
     }
 }

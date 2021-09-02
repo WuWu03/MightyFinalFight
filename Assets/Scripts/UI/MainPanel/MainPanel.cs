@@ -50,7 +50,7 @@ public class MainPanel : BasePanel
 
 	protected override void OnClose()
 	{
-
+		m_Component.LevelListGroupView.OnItemUpdate = null;
 	}
 
 	protected override void OnDestroy()
@@ -72,19 +72,26 @@ public class MainPanel : BasePanel
 	public void SetPlayerHP(int value, int max, float width = 0f)
 	{
 		if (width != 0)
+		{
 			m_Component.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		}
+
 		m_Component.PlayerHpBar.maxValue = max;
 		m_Component.PlayerHpBar.value = value;
 	}
 
 	public void SetEnemyHP(int value, int max, float width)
 	{
-		if (m_IsEnemyHpBarAnim) return;
+		if (m_IsEnemyHpBarAnim)
+		{
+			return;
+		}
 
-		m_Component.EnemyHpBar.value = value;
-		m_Component.EnemyHpBar.maxValue = max;
 		m_Component.EnemyHpBar.gameObject.SetActive(true);
 		m_Component.EnemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		m_Component.EnemyHpBar.maxValue = max;
+		m_Component.EnemyHpBar.value = value;
+
 		Image image = m_Component.EnemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
 
@@ -92,14 +99,12 @@ public class MainPanel : BasePanel
 		{
 			m_EnemyHpBarHideTimer = -1;
 			m_IsEnemyHpBarAnim = true;
+
 			Sequence sequence = DOTween.Sequence();
-			sequence.Append(image.DOFade(0, 0.2f));
-			sequence.Append(image.DOFade(1, 0.2f));
-			sequence.Append(image.DOFade(0, 0.2f));
-			sequence.Append(image.DOFade(1, 0.2f));
-			sequence.Append(image.DOFade(0, 0.2f));
-			sequence.Append(image.DOFade(1, 0.2f));
-			sequence.Append(image.DOFade(0, 0.2f));
+            for (int i = 0; i < 7; i++)
+            {
+				sequence.Append(image.DOFade(i % 2, 0.2f));
+			}
 			sequence.AppendCallback(() =>
 			{
 				m_Component.EnemyHpBar.gameObject.SetActive(false);

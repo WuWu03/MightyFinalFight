@@ -68,6 +68,11 @@ namespace GameFrameWork.UI
             OnInit(param);
             m_IsInit = true;
             Open();
+
+            if (m_IsHide)
+            {
+                gameObject.SetActive(false);
+            }
         }
         
         public void Open()
@@ -90,6 +95,46 @@ namespace GameFrameWork.UI
             OnClose();
         }
 
+        public void Show()
+        {
+            if(!m_IsHide)
+            {
+                return;
+            }
+
+            m_IsHide = false;
+
+            if (gameObject != null)
+            {
+                gameObject.SetActive(true);
+            }
+        }
+
+        public void Hide()
+        {
+            if (m_IsHide)
+            {
+                return;
+            }
+
+            m_IsHide = true;
+
+            if(gameObject != null)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        public T GetComponent<T>()
+        {
+            if (gameObject != null)
+            {
+                return gameObject.GetComponent<T>();
+            }
+
+            return default(T);
+        }
+
         public void Destroy()
         {
             m_IsInit = false;
@@ -110,6 +155,7 @@ namespace GameFrameWork.UI
 
         private bool m_IsOpen = false;
         private bool m_IsInit = false;
+        private bool m_IsHide = false;
         private float m_DelayTime = 0f;
     }
 }

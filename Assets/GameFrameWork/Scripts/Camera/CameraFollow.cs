@@ -2,6 +2,13 @@
 
 namespace GameFrameWork.Camera
 {
+    public enum FollowMode
+    {
+        Just,
+        Lerp,
+        Linear,
+    }
+
     public class CameraFollow : MonoBehaviour
     {
         class MapBorder
@@ -10,9 +17,41 @@ namespace GameFrameWork.Camera
             public float right;
         }
 
-        public float Speed = 2.0f;
-        public float Delta = 1.5f;
-        public bool IsLerp = true;
+        public float Speed
+        {
+            get
+            {
+                return m_InitSpeed;
+            }
+            set
+            {
+                m_InitSpeed = value;
+            }
+        }
+
+        public float Delta 
+        {
+            get
+            {
+                return m_Delta;
+            }
+            set
+            {
+                m_Delta = value;
+            }
+        }
+
+        public FollowMode FollowMode
+        {
+            get
+            {
+                return m_FollowMode;
+            }
+            set
+            {
+                m_FollowMode = value;
+            }
+        }
 
         public UnityEngine.Camera Camera
         {
@@ -26,10 +65,6 @@ namespace GameFrameWork.Camera
             }
         }
 
-        private void Start()
-        {
-            m_InitSpeed = Speed;
-        }
 
         public void SetTarget(Transform target)
         {
@@ -51,7 +86,7 @@ namespace GameFrameWork.Camera
         {
             if (m_Target == null)
             {
-                GameFrameWork.Log.GameFrameworkLog.LogError("Don't have target to follow!");
+                Log.GameFrameworkLog.LogError("Don't have target to follow!");
                 return;
             }
 
@@ -92,38 +127,51 @@ namespace GameFrameWork.Camera
 
         private void LateUpdate()
         {
-            if (!m_IsStart || m_Target == null) return;
-            Vector3 pos = m_Target.position;
-
-            if (pos.x < transform.position.x) return;
-
-            float distance = Vector3.Distance(transform.position, pos);
-            if (distance < 0.02f) return;
-
-            if (IsLerp)
+            if (!m_IsStart || m_Target == null || m_Target.position.x < transform.position.x)
             {
-                Speed = (distance * distance / Delta) + m_InitSpeed;
-                transform.position = Vector3.Lerp(transform.position, GetClampPos(pos), Time.deltaTime * Speed);
+                return;
             }
-            else
+
+            Vector3 pos = m_Target.position;
+            float distance = Vector3.Distance(transform.position, pos);
+
+            if (distance <= (m_FollowMode == FollowMode.Lerp ? 0.02f : 0f))
             {
-                transform.position = GetClampPos(pos);
+                return;
+            }
+
+            float speed = distance * distance / m_Delta + m_InitSpeed;
+
+            switch (m_FollowMode)
+            {
+                case FollowMode.Just:
+                    transform.position = GetClampPos(pos);
+                    break;
+                case FollowMode.Lerp:                  
+                    transform.position = Vector3.Lerp(transform.position, GetClampPos(pos), Time.deltaTime * speed);
+                    break;
+                case FollowMode.Linear:
+                    transform.position += (GetClampPos(pos) - transform.position).normalized * speed * Time.deltaTime;
+                    break;
             }
         }
 
-        private Vector2 GetClampPos(Vector2 targetPos)
+        private Vector3 GetClampPos(Vector3 targetPos)
         {
             m_CameraClamp.x = Mathf.Clamp(targetPos.x, m_XBorder.left > targetPos.x ? m_XBorder.left : targetPos.x, m_XBorder.right < targetPos.x ? m_XBorder.right : targetPos.x);
             m_CameraClamp.y = Mathf.Clamp(targetPos.y, m_YBorder.left > targetPos.y ? m_YBorder.left : targetPos.y, m_YBorder.right < targetPos.y ? m_YBorder.right : targetPos.y);
+            m_CameraClamp.z = 0;
 
             return m_CameraClamp;
         }
 
         private Rect m_VisionRect = Rect.zero;
+        private Vector3 m_CameraClamp = Vector3.zero;
+        private FollowMode m_FollowMode = FollowMode.Just;
         private float m_CurrAspectRate = 0f;
-        private float m_InitSpeed;
+        private float m_InitSpeed = 0.5f;
+        private float m_Delta = 1f;
         private bool m_IsStart = false;
-        private Vector2 m_CameraClamp = Vector2.zero;
         private UnityEngine.Camera m_Camera = null;
         private Transform m_Target = null;
         private MapBorder m_XBorder = new MapBorder();

@@ -55,13 +55,22 @@ namespace GameFrameWork.GameEntity
 
         public void SetLayer(string layer, bool isChild = true)
         {
-            m_Layer = layer;
-            gameObject.SetLayer(layer, isChild);
+            if (!string.IsNullOrEmpty(layer))
+            {
+                m_Layer = layer;
+            }
+       
+            gameObject.SetLayer(m_Layer, isChild);
         }
 
         public void SetActive(bool active)
         {
             gameObject.SetActive(active);
+        }
+
+        protected void SetLayer(bool isChild = true)
+        {
+            SetLayer(m_Layer, isChild);
         }
 
         protected virtual void Awake() { }

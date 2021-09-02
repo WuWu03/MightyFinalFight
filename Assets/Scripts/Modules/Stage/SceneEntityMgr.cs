@@ -13,11 +13,12 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_ListSceneBuilding = new List<BaseSceneObject>();
     }
 
-    public void CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
+    public BaseEnemy CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
         BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.CharacterConfig.GetData(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
         enemy.OnDead += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
+        return enemy;
     }
 
     public bool IsEnemyDead(int id)

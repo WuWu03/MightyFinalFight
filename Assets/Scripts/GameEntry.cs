@@ -15,14 +15,12 @@ public class GameEntry : GameFrameWorkEntry
         StageMgr.Init(m_Manager);
         SceneEntityMgr.Init(m_Manager);
         StaticConfig.InitConfig();
-        CameraMgr.Ins.SetLerp(false);
     }
 
     protected override void OnStartGame()
     {
-        //Mathf.Lerp()
+        CameraMgr.Ins.SetFollowMode(FollowMode.Just);
         UIMgr.Ins.Open<RoleSelectPanel>();
-        //UIMgr.Ins.Open<TestMailPanel>();
     }
 
     protected override void OnExit()

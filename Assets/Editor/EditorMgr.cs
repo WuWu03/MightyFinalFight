@@ -125,4 +125,10 @@ public class EditorMgr : MonoBehaviour
     {
         GameFrameWork.Editor.EditorUtility.CreateConfigData<RoleSelectConfig, RoleSelectConfigData>("RoleSelectData", ".asset");
     }
+
+    [MenuItem("Assets/Config/CreateTalkData")]
+    public static void CreateTalkData()
+    {
+        GameFrameWork.Editor.EditorUtility.CreateConfigData<TalkConfig, TalkConfigData>("TalkData", ".asset");
+    }
 }

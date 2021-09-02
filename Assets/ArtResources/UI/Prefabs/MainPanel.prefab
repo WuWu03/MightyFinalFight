@@ -266,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -317,7 +318,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 343.8
+  m_PreferredWidth: 550
   m_PreferredHeight: 25
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -771,6 +772,7 @@ GameObject:
   m_Component:
   - component: {fileID: 743783145}
   - component: {fileID: 743783146}
+  - component: {fileID: 5394626839086763745}
   m_Layer: 0
   m_Name: MainPanel
   m_TagString: Untagged
@@ -828,6 +830,18 @@ MonoBehaviour:
   - {fileID: 305565307}
   - {fileID: 1149134742}
   - {fileID: 1725198712}
+--- !u!225 &5394626839086763745
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743783144}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &873496741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,6 +2082,7 @@ GameObject:
   - component: {fileID: 1970342132}
   - component: {fileID: 1970342134}
   - component: {fileID: 1970342133}
+  - component: {fileID: 1970342135}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2136,6 +2151,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &1970342135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970342131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc31639b0a648dd4fbd1f3808d196f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2006755757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,6 +2410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}

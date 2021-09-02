@@ -70,8 +70,45 @@ namespace GameFrameWork.Sound
             m_QueueAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
         }
 
+        public void StartBGM()
+        {
+            if (m_CurrPlayAudio == null)
+            {
+                return;
+            }
+
+            m_IsBGMStop = false;
+            m_PlayStamp = Time.time - m_StopStamp;
+
+            if (m_BGMSource != null)
+            {
+                m_BGMSource.Play();
+            }
+        }
+
+        public void StopBGM()
+        {
+            if (m_CurrPlayAudio == null)
+            {
+                return;
+            }
+
+            m_IsBGMStop = true;
+            m_StopStamp = Time.time - m_PlayStamp;
+
+            if (m_BGMSource != null)
+            {
+                m_BGMSource.Stop();
+            }
+        }
+
         public bool IsBGMPlaying(string fullName)
         {
+            if(m_IsBGMStop)
+            {
+                return false;
+            }
+
             if (m_CurrPlayAudio != null && m_CurrPlayAudio.GetPath().Equals(fullName))
             {
                 return true;
@@ -117,11 +154,15 @@ namespace GameFrameWork.Sound
             m_BGMSource.clip = clip;
             m_BGMSource.loop = isLoop;
             m_BGMSource.volume = fadeTime > 0f ? 0f : volume;
-            m_BGMSource.Play();
 
-            if (fadeTime > 0f)
+            if (!m_IsBGMStop)
             {
-                m_BGMSource.DOFade(volume, fadeTime);
+                m_BGMSource.Play();
+
+                if (fadeTime > 0f)
+                {
+                    m_BGMSource.DOFade(volume, fadeTime);
+                }
             }
         }
 
@@ -170,6 +211,11 @@ namespace GameFrameWork.Sound
 
         private void CheckAudioGroup()
         {
+            if(m_IsBGMStop)
+            {
+                return;
+            }
+
             if (m_CurrPlayAudio == null && m_QueueAudioGroup.Count > 0)
             {
                 m_CurrPlayAudio = m_QueueAudioGroup.Dequeue();
@@ -219,7 +265,9 @@ namespace GameFrameWork.Sound
             m_SoundStack.Clear();
         }
 
+        private bool m_IsBGMStop = false;
         private float m_PlayStamp = 0f;
+        private float m_StopStamp = 0f;
         private AudioSource m_BGMSource = null;
         private AudioGroup m_CurrPlayAudio = null;
         private Queue<AudioGroup> m_QueueAudioGroup = null;

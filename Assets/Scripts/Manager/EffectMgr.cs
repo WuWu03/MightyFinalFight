@@ -30,6 +30,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
         effect.PlayEndCallback = playEndCallback;
         effect.IsAutoRelease = isAutoRelease;
         effect.SetRes(PathUtil.FormatPath(ResDefine.EFFECT_PATH, effectName));
+        effect.SetLayer(LayerName.Unit);
 
         if (isAutoPlay)
         {

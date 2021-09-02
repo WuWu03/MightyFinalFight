@@ -97,6 +97,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_CharacterData.AssetName));
+        m_Player.SetLayer(LayerName.Unit);
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();

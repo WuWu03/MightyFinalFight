@@ -56,6 +56,7 @@ public static class SceneEntityFactory
         sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, data.AssetName));
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
+        sceneItem.SetLayer(LayerName.Unit);
     }
 
     public static BaseEnemy CreateEnemy(CharacterConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
@@ -88,29 +89,35 @@ public static class SceneEntityFactory
         enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
         enemy.SetObjectType(ObjectType.Monster);
         enemy.SetMapPos(pos);
+        enemy.SetLayer(LayerName.Unit);
 
         return enemy;
     }
 
     public static BaseSceneObject CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
     {
-        BaseSceneObject sceneObject = null;
         if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Trap)
         {
-            sceneObject = EntityMgr.Ins.GetEntity<Trap>(sceneObjData.Name);
             TrapData trapData = ReferencePool.Acquire<TrapData>();
             trapData.TriggerSize = sceneObjData.TriggerSize;
             trapData.TriggerOffest = sceneObjData.TriggerOffest;
-            sceneObject.SetData(trapData);
+
+            Trap trap = EntityMgr.Ins.GetEntity<Trap>(sceneObjData.Name);
+            trap.SetData(trapData);
+            trap.SetMapPos(sceneObjData.Pos);
+            trap.SetLayer(LayerName.Map);
+            return trap;
         }
         else if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Normal)
         {
-            sceneObject = EntityMgr.Ins.GetEntity<BaseSceneObject>(sceneObjData.Name);
-            sceneObject.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, sceneObjData.AssetName));
+            SceneBuilding sceneBuilding = EntityMgr.Ins.GetEntity<SceneBuilding>(sceneObjData.Name);
+            sceneBuilding.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, sceneObjData.AssetName));
+            sceneBuilding.SetMapPos(sceneObjData.Pos);
+            sceneBuilding.SetLayer(LayerName.Map);
+            return sceneBuilding;
         }
 
-        sceneObject.SetMapPos(sceneObjData.Pos);
-        return sceneObject;
+        return null;
     }
 
 }

@@ -24,14 +24,14 @@ MonoBehaviour:
     SceneBuildings:
     - SceneObjType: 1
       Id: 1
-      Name: Cafe
+      Name: Cafe1
       Pos: {x: -500, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Cafe
     - SceneObjType: 1
       Id: 2
-      Name: 
+      Name: Cafe2
       Pos: {x: 188, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
       Pos: {x: 157, y: 17}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/ConveyorBeltLastst
+      AssetName: SceneBuilding/ConveyorBeltLast
     TaskIDs: f2030000
     BGMs:
     - ClipName: bgm06Boss_Start

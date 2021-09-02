@@ -412,7 +412,7 @@ public class BaseHero : BaseRole
 
                 BaseAvatar tempAvatar = temp as BaseAvatar;
 
-                if (!tempAvatar.IsInGround || tempAvatar.IsAnyState(typeof(RoleAttack), typeof(RoleSkill)))
+                if (!tempAvatar.IsInGround)
                 {
                     continue;
                 }
@@ -483,7 +483,7 @@ public class BaseHero : BaseRole
     {
         Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
         Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
-        float distance = targetSize.x / 2 + selfSize.x / 2 - 0.05f;
+        float distance = targetSize.x / 2 + selfSize.x / 3 - 0.05f;
 
         return distance;
     }

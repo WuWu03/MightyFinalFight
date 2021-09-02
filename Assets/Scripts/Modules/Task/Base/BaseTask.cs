@@ -61,15 +61,17 @@ public abstract class BaseTask
         {
             PlayerMgr.Ins.CanContrl = false;
             PlayerMgr.Ins.SetSpeedZero(true);
+            CameraMgr.Ins.SetFollowMode(FollowMode.Linear);
             CameraMgr.Ins.StartFollow(true);
             float cameraX = CameraMgr.Ins.CameraRoot.transform.position.x;
             float playerX = PlayerMgr.Ins.Player.Pos.x;
-            bool isDistance = cameraX >= playerX || Mathf.Abs(cameraX - playerX) <= 0.03f;
+            bool isDistance = cameraX >= playerX || Mathf.Abs(cameraX - playerX) <= 0f;
 
             if (isDistance)
             {
                 PlayerMgr.Ins.CanContrl = true;
                 PlayerMgr.Ins.RevertSpeed();
+                CameraMgr.Ins.SetFollowMode(FollowMode.Just);
             }
             return isDistance;
         }

@@ -49,14 +49,14 @@ MonoBehaviour:
     ListSceneBuilding:
     - SceneObjType: 1
       Id: 1
-      Name: Cafe
+      Name: Cafe1
       Pos: {x: -500, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Cafe
     - SceneObjType: 1
       Id: 2
-      Name: 
+      Name: Cafe2
       Pos: {x: 188, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
     SceneName: Stage1_3
     StageIndex: 1
     Level: 3
-    CurrPos: {x: -215, y: -53}
+    CurrPos: {x: 82, y: -59}
     InitPos: {x: -215, y: -53}
     Width: 504
     Height: 152
@@ -176,7 +176,7 @@ MonoBehaviour:
       Pos: {x: 157, y: 17}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/ConveyorBeltLastst
+      AssetName: SceneBuilding/ConveyorBeltLast
   - Id: 0
     MapPath: Assets/ArtResources/Texture/Stage/5001_1.png
     SceneName: 

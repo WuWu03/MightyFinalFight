@@ -41,6 +41,19 @@ namespace GameFrameWork.Camera
             DontDestroyOnLoad(m_CameraRoot);
         }
 
+        public UnityEngine.Camera GetCamera(string name)
+        {
+            for (int i = 0; i < m_ListCamera.Count; i++)
+            {
+                if(m_ListCamera[i].name.Equals(name))
+                {
+                    return m_ListCamera[i];
+                }
+            }
+
+            return null;
+        }
+
         public void SetTarget(Transform target)
         {
             m_CameraFollow.SetTarget(target);
@@ -69,9 +82,9 @@ namespace GameFrameWork.Camera
             m_CameraRoot.transform.DOShakePosition(time, 0.1f, 20, 100).OnComplete(OnShakeComplete);
         }
 
-        public void SetLerp(bool isLerp)
+        public void SetFollowMode(FollowMode mode)
         {
-            m_CameraFollow.IsLerp = isLerp;
+            m_CameraFollow.FollowMode = mode;
         }
 
         public bool IsOutVision(Vector2 targetPos)
@@ -92,15 +105,12 @@ namespace GameFrameWork.Camera
             return m_ListCamera[0].WorldToScreenPoint(worldPos);
         }
 
-        private void LateUpdate()
-        {
-
-        }
-
         private void OnShakeComplete()
         {
             if (!m_IsForceEnd)
+            {
                 m_CameraFollow.StartFollow();
+            }
         }
 
         private UnityEngine.Camera InitCamera(string name, int depth, string tag = "Untagged", params string[] maskName)
