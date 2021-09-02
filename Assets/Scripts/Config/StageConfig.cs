@@ -23,7 +23,8 @@ public class StageConfigData : BaseConfigData
     public enum SceneObjType
     {
         Trap,//陷阱
-        Normal,//特效
+        Unit,//单位
+        Building,//建筑
     }
 
     [Serializable]

@@ -14,8 +14,8 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
     {
         base.Enter();
         m_IsAutoMove = false;
-
-        Timer.Register(1, () => 
+ 
+        Timer.Register(1, () =>
         {
             SceneEntityMgr.Ins.GetSceneBuildingByName("WoodDoorClose").SetActive(false);
             SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Break");

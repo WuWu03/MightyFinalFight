@@ -108,12 +108,13 @@ public static class SceneEntityFactory
             trap.SetLayer(LayerName.Map);
             return trap;
         }
-        else if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Normal)
+        else if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Building ||
+                sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit)
         {
             SceneBuilding sceneBuilding = EntityMgr.Ins.GetEntity<SceneBuilding>(sceneObjData.Name);
             sceneBuilding.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, sceneObjData.AssetName));
             sceneBuilding.SetMapPos(sceneObjData.Pos);
-            sceneBuilding.SetLayer(LayerName.Map);
+            sceneBuilding.SetLayer(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit ? LayerName.Unit : LayerName.Map);
             return sceneBuilding;
         }
 
