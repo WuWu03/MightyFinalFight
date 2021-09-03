@@ -60,7 +60,7 @@ public class RoleSelectPanel : BasePanel
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
 			PlayerMgr.Ins.SelectId = StaticConfig.RoleSelectConfig.Datas[m_CurrSelectIndex].CharacterId;
-			StageMgr.Ins.Enter(StaticConfig.StageConfig.GetDataByIndex(0).Id);
+			StageMgr.Ins.Enter(StaticConfig.StageConfig.GetDataByIndex(2).Id);
 			InnerClose();
 		}
 	}
