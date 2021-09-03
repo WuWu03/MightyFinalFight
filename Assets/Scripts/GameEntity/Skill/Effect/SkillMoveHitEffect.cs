@@ -29,7 +29,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     private void OnGround()
     {
-        m_Owner.FsmMachine.SetDefaultState<HeroPickUp>();
+        m_Owner.SetDefaultState<HeroPickUp>();
     }
 
     private void Complete()

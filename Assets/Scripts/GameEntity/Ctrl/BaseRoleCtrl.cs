@@ -153,7 +153,7 @@ public class BaseRoleCtrl : BaseCtrl
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
                     if (m_Owner.IsInGround)
-                        m_Owner.FsmMachine.ChangeDefaultState();
+                        m_Owner.ChangeDefaultState();
                 }
             }
             else
@@ -164,7 +164,7 @@ public class BaseRoleCtrl : BaseCtrl
                     m_AttackIndex = -1;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
-                    m_Owner.FsmMachine.ChangeDefaultState();
+                    m_Owner.ChangeDefaultState();
                 }
             }
         }
@@ -199,7 +199,7 @@ public class BaseRoleCtrl : BaseCtrl
 
         if (m_CurrSkillID == 3004)
         {
-            m_Owner.FsmMachine.SetDefaultState<HeroAttackEnd>();
+            m_Owner.SetDefaultState<HeroAttackEnd>();
         }
     }
 

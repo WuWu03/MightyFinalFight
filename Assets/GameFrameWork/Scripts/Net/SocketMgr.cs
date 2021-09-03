@@ -13,6 +13,7 @@ namespace GameFrameWork.Net
         public Action OnConnectSuccess = null;
         public Action OnConnectFail = null;
         public Action OnDisConnect = null;
+
         public bool IsConnected
         {
             get

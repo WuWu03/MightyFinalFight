@@ -25,7 +25,7 @@ namespace GameFrameWork.Pool
             private object[] m_Args;
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             m_PoolRoot = new GameObject("Res" + GetType().Name).transform;
             m_PoolRoot.SetParent(transform, false);
@@ -34,9 +34,21 @@ namespace GameFrameWork.Pool
             m_DicLoadCallback = new Dictionary<string, List<LoadRequest>>();
         }
 
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if (Time.time - m_CollectTimer >= COLLECT_TIME)
+            {
+                m_CollectTimer = Time.time;
+                UnityEngine.Resources.UnloadUnusedAssets();
+                GC.Collect();
+            }
+        }
+
         public virtual void Get(string resPath, GameFrameWorkAction<T, object[]> call, params object[] args)
         {
-            if (string.IsNullOrEmpty(resPath) || call == null)
+            if (string.IsNullOrEmpty(resPath))
             {
                 Log.GameFrameworkLog.LogError("Rescource param is invalid.");
                 return;
@@ -69,7 +81,11 @@ namespace GameFrameWork.Pool
 
         public virtual void Put(string resPath, T go)
         {
-            if (string.IsNullOrEmpty(resPath) || go == null) return;
+            if (string.IsNullOrEmpty(resPath) || go == null)
+            {
+                return;
+            }
+
             Queue<T> pool = GetOrCreatePool(resPath);
             pool.Enqueue(go);
         }
@@ -127,6 +143,9 @@ namespace GameFrameWork.Pool
         }
 
         protected abstract bool m_NeedInstantiate { get; }
+
+        public const int COLLECT_TIME = 15;
+        private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
         private Dictionary<string, Queue<T>> m_DicPool = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadCallback = null;

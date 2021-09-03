@@ -35,7 +35,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanJump || (HasCatch() && !IsAnim(AnimName.Throw));
+            return base.CanJump || (HasCatch() && !IsAnimation(AnimName.Throw));
         }
     }
 
@@ -43,7 +43,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            bool condition = base.CanChangeDefaultState || m_Weapon != null || IsAnim(AnimName.ThrowWeapon);
+            bool condition = base.CanChangeDefaultState || m_Weapon != null || IsAnimation(AnimName.ThrowWeapon);
             if(HasCatch())
             {
                 if (IsAnyState(typeof(RoleAttack)))
@@ -59,7 +59,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp)) && !IsAnim(AnimName.Throw);
+            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp)) && !IsAnimation(AnimName.Throw);
         }
     }
 

@@ -21,7 +21,7 @@ public class DoRunToBorder : Action
         m_BorderPosX = leftDistance < rightDistance ? vision.xMin : vision.xMax;
         m_MoveDir = leftDistance < rightDistance ? -1 : 1;
         m_IsArrived = false;
-        m_Owner.Owner.FsmMachine.ChangeDefaultState();
+        m_Owner.Owner.ChangeDefaultState();
     }
 
     public override BehaviorTreeState Excute()

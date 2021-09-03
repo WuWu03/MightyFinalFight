@@ -60,19 +60,32 @@ namespace GameFrameWork.Sound
             {
                 m_QueueAudioGroup.Enqueue(audioGroups[i]);
             }
+
+            if(audioGroups.Length > 1)
+            {
+                for (int i = 1; i < audioGroups.Length; i++)
+                {
+                    AudioClipPool.Ins.Get(audioGroups[i].GetPath(), null);
+                }
+            }
         }
 
         public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0, bool isForceReplay = false)
         {
-            if (!isForceReplay && IsBGMPlaying(PathUtil.FormatPath(path, name))) return;
+            if (!isForceReplay && IsBGMPlaying(PathUtil.FormatPath(path, name)))
+            {
+                return;
+            }
+
             StopCurrent();
+
             m_QueueAudioGroup.Clear();
             m_QueueAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
         }
 
         public void StartBGM()
         {
-            if (m_CurrPlayAudio == null)
+            if (m_CurrPlayAudio == null || !m_IsBGMStop)
             {
                 return;
             }
@@ -189,6 +202,7 @@ namespace GameFrameWork.Sound
             audioSoundPlay.Source.playOnAwake = false;
             audioSoundPlay.Source.loop = false;
             audioSoundPlay.Source.Stop();
+
             return audioSoundPlay;
         }
 

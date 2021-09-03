@@ -91,7 +91,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             return;
         }
 
-        if (!m_Owner.IsAnim(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
+        if (!m_Owner.IsAnimation(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
         {
             base.NormalAttack(dir);
         }

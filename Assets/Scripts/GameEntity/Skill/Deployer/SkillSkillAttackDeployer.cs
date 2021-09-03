@@ -9,8 +9,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         if (m_SkillData.TriggerType != SkillTriggerType.Animtion)
         {
@@ -19,8 +19,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
             return;
         }
 
-        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnSkillMsg(m_SkillData);
     }
 
@@ -30,10 +30,10 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
         if (isComplete)
         {
-            m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+            m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
 
             if (!m_SkillData.IsInEffectPlaySound)
-                m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+                m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         }
 
         return isComplete;
@@ -46,8 +46,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     protected override void OnAnimationEffectComplete()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private void SoundEvent(string type, EventObject eventObject)
@@ -58,8 +58,8 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     public override void OnExit()
     {
         base.OnExit();
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         if (!m_SkillData.IsInEffectPlaySound)
-            m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+            m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 }

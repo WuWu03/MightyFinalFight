@@ -63,7 +63,7 @@ public class SkillManager
 
             if (m_Owner.CanChangeDefaultState && !m_Owner.IsAddGroundForce)
             {
-                m_Owner.FsmMachine.ChangeDefaultState();
+                m_Owner.ChangeDefaultState();
             }
         }
     }

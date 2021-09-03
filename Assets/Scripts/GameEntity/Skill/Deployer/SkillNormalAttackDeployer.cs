@@ -13,8 +13,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         AttackData attackData = AttackData.Create();
         attackData.Dir = m_Owner.Dir;
@@ -29,8 +29,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
             attackData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
         }
 
-        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(attackData);
 
         ReferencePool.Release(attackData);
@@ -49,8 +49,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     protected override void OnAnimationEffectComplete()
     {
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private void RealPlaySound()
@@ -71,8 +71,8 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
     public override void OnExit()
     {
         base.OnExit();
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private Queue<string> m_QueueSound = null;

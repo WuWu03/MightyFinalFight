@@ -26,7 +26,7 @@ public class HeroCatch : BaseFsmState
 
     public override void OnDestroy(BaseFsm fsm)
     {
-        m_Owner.ActorAnimator.animation.Stop(AnimName.Catch);
+        m_Owner.StopAnimation(AnimName.Catch);
     }
 
     private BaseHero m_Owner = null;

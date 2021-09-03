@@ -47,8 +47,9 @@ namespace GameFrameWork.Resources
             }
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
+            base.OnAwake();
             m_Dependencies = new Dictionary<string, string[]>();
             m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_LoadRequests = new Dictionary<string, List<LoadAssetRequest>>();
@@ -75,16 +76,6 @@ namespace GameFrameWork.Resources
                         m_DicAssetVerson.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
                     }
                 }
-            }
-        }
-
-        private void Update()
-        {
-            if (Time.time - m_UnLoadTime >= UNLOAD_TIME)
-            {
-                m_UnLoadTime = Time.time;
-                UnityEngine.Resources.UnloadUnusedAssets();
-                GC.Collect();
             }
         }
 
@@ -309,7 +300,11 @@ namespace GameFrameWork.Resources
         {
             AssetBundleInfo bundle = null;
             m_LoadedAssetBundles.TryGetValue(abName, out bundle);
-            if (bundle == null) return null;
+
+            if (bundle == null)
+            {
+                return null;
+            }
             // No dependencies are recorded, only the bundle itself is required.
             //string[] dependencies = null;
             //if (!m_Dependencies.TryGetValue(abName, out dependencies))
@@ -324,7 +319,10 @@ namespace GameFrameWork.Resources
             {
                 AssetBundleInfo dependentBundle;
                 m_LoadedAssetBundles.TryGetValue(dependency, out dependentBundle);
-                if (dependentBundle == null) return false;
+                if (dependentBundle == null)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -362,16 +360,20 @@ namespace GameFrameWork.Resources
             }
             // Get dependecies from the AssetBundleManifest object..
             string[] dependencies = null;
+
             if (!m_Dependencies.TryGetValue(abName, out dependencies))
             {
                 dependencies = m_Manifest.GetAllDependencies(abName);
-                if (dependencies.Length > 0)
+                if (dependencies != null && dependencies.Length > 0)
                 {
                     m_Dependencies.Add(abName, dependencies);
                 }
             }
 
-            if (dependencies.Length <= 0) return;
+            if (dependencies == null || dependencies.Length <= 0)
+            {
+                return;
+            }
 
             for (int i = 0; i < dependencies.Length; i++)
             {
@@ -383,13 +385,16 @@ namespace GameFrameWork.Resources
         {
             string[] dependencies = null;
             if (!m_Dependencies.TryGetValue(abName, out dependencies))
+            {
                 return;
+            }
 
             // Loop dependencies.
             foreach (var dependency in dependencies)
             {
                 UnloadAssetBundleInternal(dependency, isThorough);
             }
+
             m_Dependencies.Remove(abName);
         }
 
@@ -423,8 +428,6 @@ namespace GameFrameWork.Resources
             m_DicAssetVerson.Clear();
         }
 
-        public const int UNLOAD_TIME = 60 * 15;
-        private float m_UnLoadTime;
         private AssetBundleManifest m_Manifest;
         private Dictionary<string, string[]> m_Dependencies = null;
         private Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = null;

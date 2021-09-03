@@ -20,8 +20,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_IsOnGround = false;
         m_CanEffect = true;
 
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         AttackData attackData = AttackData.Create();
         attackData.SkillID = m_SkillData.Id;
@@ -33,8 +33,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
        
         m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
         m_Owner.OnDropEvent.AddListener(OnDropEvent);
-        m_Owner.ActorAnimator.AddEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetCatch(false);
         m_Owner.OnAttackMsg(attackData, true);
 
@@ -47,7 +47,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         if (m_IsOnGround)
         {
             m_CanEffect = false;
-            m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
+            m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         }
 
         return m_IsOnGround;
@@ -92,8 +92,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnGroundEvent()
     {
-        m_Owner.OnGroundEvent.RemoveListener(OnGroundEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_IsOnGround = true;
         m_CanEffect = false;
     }
@@ -102,8 +101,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     {
         base.OnExit();
         m_CanEffect = true;
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.FRAME_EVENT, SkillEvent);
-        m_Owner.ActorAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
     private bool m_CanEffect = true;

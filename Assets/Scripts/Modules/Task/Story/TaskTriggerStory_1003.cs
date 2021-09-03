@@ -35,11 +35,11 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
     public override void Trigger()
     {
-        if(m_Boss.IsResComplete && !m_BossState)
+        if (m_Boss.IsResComplete && !m_BossState)
         {
             m_BossState = true;
             m_Boss.CurrCtrl.Stop();
-            m_Boss.FsmMachine.ChangeDefaultState();
+            m_Boss.ChangeDefaultState();
             m_Boss.SetDir(-1);
         }
 
@@ -63,7 +63,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
     {
         SoundMgr.Ins.StartBGM();
         PlayerMgr.Ins.Player.SetPos(PlayerMgr.Ins.Player.transform.localPosition);
-        PlayerMgr.Ins.Player.FsmMachine.ChangeState<RoleAwaken>();
+        PlayerMgr.Ins.Player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
         MainPanel mainPanel = UIMgr.Ins.GetPanel<MainPanel>();
         CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
@@ -74,7 +74,11 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         black.GetComponent<SpriteRenderer>().DOFade(0, 1).OnComplete(() =>
         {
             black.SetActive(false);
-            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(0.8f, -0.6f));
+            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(0.8f, -0.6f),()=> 
+            {
+                PlayerMgr.Ins.CanContrl = true;
+                m_Boss.CurrCtrl.Start();
+            });
         });
     }
 

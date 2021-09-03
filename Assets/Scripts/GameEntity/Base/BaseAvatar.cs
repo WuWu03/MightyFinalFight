@@ -6,19 +6,11 @@ using GameFrameWork.Log;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    public UnityArmatureComponent ActorAnimator
+    public UnityArmatureComponent Animator
     {
         get
         {
             return m_Animator;
-        }
-    }
-
-    public FsmMachine FsmMachine
-    {
-        get
-        {
-            return m_FsmMachine;
         }
     }
 
@@ -101,7 +93,7 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if (IsAnim(animName))
+        if (IsAnimation(animName))
         {
             return;
         }
@@ -112,7 +104,7 @@ public abstract class BaseAvatar : BaseGravityObject
         m_Animator.animation.Play(animName, playTimes);
     }
 
-    public bool IsAnim(string animName)
+    public bool IsAnimation(string animName)
     {
         bool result = m_CurrAnimName.Equals(animName);
 
@@ -139,6 +131,16 @@ public abstract class BaseAvatar : BaseGravityObject
         return m_Animator.animation.isCompleted;
     }
 
+    public void AddAnimationEvent(string eventName, ListenerDelegate<EventObject> listener)
+    {
+        m_Animator.AddEventListener(eventName, listener);
+    }
+
+    public void RemoveAnimationEvent(string eventName, ListenerDelegate<EventObject> listener)
+    {
+        m_Animator.RemoveEventListener(eventName, listener);
+    }
+
     public bool IsAnyState(params Type[] stateTypes)
     {
         if (m_FsmMachine == null || !m_FsmMachine.IsRunning || stateTypes == null || stateTypes.Length < 1)
@@ -162,32 +164,32 @@ public abstract class BaseAvatar : BaseGravityObject
         return m_FsmMachine.CurrStateType == typeof(T);
     }
 
-    protected void AddState<T>() where T : BaseFsmState, new()
+    public void AddState<T>() where T : BaseFsmState, new()
     {
         m_FsmMachine.AddState<T>();
     }
 
-    protected T GetState<T>() where T : BaseFsmState
+    public T GetState<T>() where T : BaseFsmState
     {
         return m_FsmMachine.GetState<T>();
     }
 
-    protected void ChangeState<T>(bool isForce = false) where T : BaseFsmState
+    public void ChangeState<T>(bool isForce = false) where T : BaseFsmState
     {
         m_FsmMachine.ChangeState<T>(isForce);
     }
 
-    protected void ChangeDefaultState()
+    public void ChangeDefaultState()
     {
         m_FsmMachine.ChangeDefaultState();
     }
 
-    protected void RemoveState<T>() where T : BaseFsmState
+    public void RemoveState<T>() where T : BaseFsmState
     {
         m_FsmMachine.RemoveState<T>();
     }
 
-    protected void SetDefaultState<T>() where T : BaseFsmState
+    public void SetDefaultState<T>() where T : BaseFsmState
     {
         m_FsmMachine.SetDefaultState<T>();
     }

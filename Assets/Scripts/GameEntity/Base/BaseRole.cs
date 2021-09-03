@@ -366,10 +366,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleMove>();
     }
 
-    public virtual void AutoMoveToPos(Vector2 pos)
+    public virtual void AutoMoveToPos(Vector2 pos, UnityAction moveComplete = null)
     {
         m_MoveToPos = pos;
         m_IsAutoMove = true;
+
+        if (moveComplete != null)
+        {
+            m_AutoMoveComplete.AddListener(moveComplete);
+        }
     }
 
     public virtual void OnJumpMsg(JumpData data)
@@ -673,6 +678,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         SetDefaultState<RoleIdle>();
         ChangeDefaultState();
+        m_AutoMoveComplete.Invoke();
+        m_AutoMoveComplete.RemoveAllListeners();
         m_IsAutoMove = false;
         m_XArrived = false;
         m_YArrived = false;
@@ -704,4 +711,5 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private float m_DropGourndTime = 0f;
     private HurtData m_OnGroundHurtData = null;
     private DropTrapData m_TrapData = null;
+    private UnityEvent m_AutoMoveComplete = new UnityEvent();
 }
