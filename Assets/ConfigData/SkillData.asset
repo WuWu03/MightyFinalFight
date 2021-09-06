@@ -369,7 +369,7 @@ MonoBehaviour:
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
-    - PrevConditionType: 1
+    - PrevConditionType: 5
       IsRevert: 0
       Args: 
     SkillEffects:

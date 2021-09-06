@@ -96,14 +96,26 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 6
+      Name: Pit
+      Pos: {x: 444, y: -40}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Pit
     TaskIDs: ef030000
     BGMs: []
     MoveArea:
     - serializedVersion: 2
-      x: -469.9
+      x: -505.6
       y: -15
-      width: 785.2
+      width: 847
       height: 44
+    - serializedVersion: 2
+      x: 340.09998
+      y: 4
+      width: 169
+      height: 47.8
   - Id: 1003
     Name: Stage1_3
     SceneName: Stage1_3
@@ -134,7 +146,7 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBeltLast
-    TaskIDs: f2030000
+    TaskIDs: f4030000
     BGMs:
     - ClipName: bgm06Boss_Start
       IsLoop: 0

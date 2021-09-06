@@ -5,6 +5,9 @@ using UnityEngine;
 [CustomEditor(typeof(CharacterConfig), true)]
 public class HeroConfigEditor : ConfigDataEditor<CharacterConfig, CharacterConfigData>{}
 
+[CustomEditor(typeof(TaskConfig), true)]
+public class TaskConfigEditor : ConfigDataEditor<TaskConfig, TaskConfigData> { }
+
 [CustomEditor(typeof(SceneItemConfig), true)]
 public class SceneItemConfigEditor : ConfigDataEditor<SceneItemConfig, SceneItemConfigData> { }
 

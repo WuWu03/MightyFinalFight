@@ -197,7 +197,7 @@ public class BaseRoleCtrl : BaseCtrl
         m_CurrSkillID = m_Data.AttackIds[m_AttackIndex];
         m_SkillManager.DeploySkill(m_CurrSkillID);
 
-        if (m_CurrSkillID == 3004)
+         if (m_CurrSkillID == 3004)
         {
             m_Owner.SetDefaultState<HeroAttackEnd>();
         }

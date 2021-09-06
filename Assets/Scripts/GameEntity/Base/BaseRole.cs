@@ -108,7 +108,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !IsAnyState(typeof(RoleSwoon), typeof(RoleDead), typeof(RoleAwaken)) && m_Health > 0 && m_IsResComplete;
+            return !IsAnyState(typeof(RoleSwoon), typeof(RoleDead), typeof(RoleAwaken)) && m_Health > 0 && m_IsResComplete && !IsFloat;
         }
     }
 

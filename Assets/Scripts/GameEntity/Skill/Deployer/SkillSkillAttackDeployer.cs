@@ -60,6 +60,15 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         base.OnExit();
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         if (!m_SkillData.IsInEffectPlaySound)
+        {
             m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
+        }
+    }
+
+    protected override void OnRemoveEvent()
+    {
+        base.OnRemoveEvent();
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 }

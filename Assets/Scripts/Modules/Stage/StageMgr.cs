@@ -227,6 +227,7 @@ public class StageMgr : BaseMgr<StageMgr>
         m_OnEnterEvent = null;
     }
 
+    private int m_CurrMoveAreaIndex = 0;
     private GameFrameWorkAction m_OnEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
 }

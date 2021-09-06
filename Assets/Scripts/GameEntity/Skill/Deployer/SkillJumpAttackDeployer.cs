@@ -105,6 +105,13 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
+    protected override void OnRemoveEvent()
+    {
+        base.OnRemoveEvent();
+        m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
+        m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
+    }
+
     private bool m_CanEffect = true;
     private bool m_IsOnGround = true;
 }

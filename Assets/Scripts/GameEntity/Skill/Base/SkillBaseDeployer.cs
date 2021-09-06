@@ -55,10 +55,12 @@ public abstract class SkillBaseDeployer
     public void RemoveEvent()
     {
         m_Owner.OnGroundEvent.RemoveListener(OnGround);
+        OnRemoveEvent();
     }
 
     public virtual void DeploySkill()
     {
+        UnityEngine.Debug.Log("放技能: " + m_SkillData.Id);
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             m_EnternalTriggerTimer = Time.time;
@@ -224,6 +226,11 @@ public abstract class SkillBaseDeployer
     }
 
     protected virtual void OnAnimationEffectComplete() 
+    {
+
+    }
+
+    protected virtual void OnRemoveEvent()
     {
 
     }

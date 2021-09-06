@@ -565,8 +565,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -316
-      y: 430
+      x: -437
+      y: 435
       width: 230
       height: 257
     Children:
@@ -582,8 +582,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -3
-        y: 445
+        x: -124
+        y: 450
         width: 230
         height: 205
       Children:
@@ -599,8 +599,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 290
-          y: 10
+          x: 169
+          y: 15
           width: 230
           height: 205
         Children: []
@@ -617,8 +617,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 286
-          y: 230
+          x: 165
+          y: 235
           width: 230
           height: 205
         Children: []
@@ -635,8 +635,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 287
-          y: 444
+          x: 166
+          y: 449
           width: 230
           height: 205
         Children: []
@@ -653,8 +653,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 289
-          y: 668
+          x: 168
+          y: 673
           width: 230
           height: 205
         Children:
@@ -670,8 +670,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 602
-            y: 540
+            x: 481
+            y: 545
             width: 230
             height: 205
           Children: []
@@ -688,8 +688,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 603
-            y: 755
+            x: 482
+            y: 760
             width: 230
             height: 205
           Children: []
@@ -710,8 +710,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 289
-          y: 894
+          x: 168
+          y: 899
           width: 230
           height: 257
         Children: []
@@ -724,11 +724,11 @@ MonoBehaviour:
           Args: 
       PreConditions: []
     PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 5
+      Args: Distance:10
     - ClassType: PreIsInSpecialState
       SelectIndex: 4
-      Args: Distance:10
-    - ClassType: PreIsGround
-      SelectIndex: 3
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
@@ -742,8 +742,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -98
-      y: 298.59998
+      x: 88
+      y: 297.59998
       width: 230
       height: 205
     Children:
@@ -759,8 +759,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 220
-        y: 428
+        x: 406
+        y: 427
         width: 230
         height: 309
       Children: []
@@ -786,8 +786,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 203
-        y: 104
+        x: 389
+        y: 103
         width: 230
         height: 205
       Children:
@@ -803,8 +803,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 492
-          y: -381
+          x: 678
+          y: -382
           width: 230
           height: 205
         Children:
@@ -820,8 +820,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 809
-            y: -521
+            x: 995
+            y: -522
             width: 230
             height: 205
           Children: []
@@ -838,8 +838,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 804
-            y: -295
+            x: 990
+            y: -296
             width: 230
             height: 205
           Children: []
@@ -860,8 +860,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 493
-          y: -152
+          x: 679
+          y: -153
           width: 230
           height: 205
         Children: []
@@ -878,8 +878,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 494
-          y: 76
+          x: 680
+          y: 75
           width: 230
           height: 205
         Children: []

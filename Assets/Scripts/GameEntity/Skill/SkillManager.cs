@@ -33,6 +33,8 @@ public class SkillManager
 
         if (deployer != null)
         {
+            RemoveAllEvent();
+
             if (!SkillFactory.CheckStatus(deployer.SkillData.SkillPrevConditions, m_Owner))
             {
                 return;
@@ -104,6 +106,7 @@ public class SkillManager
         {
             return;
         }
+
         m_CurrSkillDeployer.RemoveEvent();
         m_CurrSkillDeployer.OnExit();
         m_CurrSkillDeployer = null;
@@ -114,6 +117,14 @@ public class SkillManager
         m_Owner = null;
         m_SkillDeployers = null;
         m_CurrSkillDeployer = null;
+    }
+
+    private void RemoveAllEvent()
+    {
+        for (int i = 0; i < m_SkillDeployers.Length; i++)
+        {
+            m_SkillDeployers[i].RemoveEvent();
+        }
     }
 
     private BaseRole m_Owner = null;

@@ -66,7 +66,7 @@ MonoBehaviour:
     SceneName: Stage1_2
     StageIndex: 1
     Level: 2
-    CurrPos: {x: -116, y: -30}
+    CurrPos: {x: 431, y: -19}
     InitPos: {x: -505, y: -28}
     Width: 1016
     Height: 152
@@ -74,16 +74,29 @@ MonoBehaviour:
     - Color: {r: 0.23208582, g: 0.85470915, b: 0.55486125, a: 0.3}
       Rect:
         serializedVersion: 2
-        x: 38.100006
+        x: 2.399994
         y: 91
-        width: 785.2
+        width: 847
         height: 44
       RealRect:
         serializedVersion: 2
-        x: -469.9
+        x: -505.6
         y: -15
-        width: 785.2
+        width: 847
         height: 44
+    - Color: {r: 0.020650983, g: 0.9328828, b: 0.07050383, a: 0.3}
+      Rect:
+        serializedVersion: 2
+        x: 848.1
+        y: 72
+        width: 169
+        height: 47.8
+      RealRect:
+        serializedVersion: 2
+        x: 340.09998
+        y: 4
+        width: 169
+        height: 47.8
     ListTaskId: ef030000
     ListBGM: []
     ListSceneBuilding:
@@ -122,6 +135,13 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Movie
+    - SceneObjType: 1
+      Id: 6
+      Name: Pit
+      Pos: {x: 444, y: -40}
+      TriggerSize: {x: 0, y: 0}
+      TriggerOffest: {x: 0, y: 0}
+      AssetName: SceneBuilding/Pit
   - Id: 1003
     MapPath: Assets/ArtResources/Texture/Stage/1001_3.png
     SceneName: Stage1_3
@@ -145,7 +165,7 @@ MonoBehaviour:
         y: -30
         width: 504
         height: 46
-    ListTaskId: f2030000
+    ListTaskId: f4030000
     ListBGM:
     - ClipName: bgm06Boss_Start
       IsLoop: 0

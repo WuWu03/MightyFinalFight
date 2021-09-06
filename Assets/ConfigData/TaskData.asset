@@ -192,7 +192,7 @@ MonoBehaviour:
     ConditionType: 1
     Position:
       PosType: 0
-      Pos: {x: -310, y: 0}
+      Pos: {x: -270, y: 0}
     KillIDs: 
     StoryId: 0
     BarrelsCount: 0
@@ -207,9 +207,9 @@ MonoBehaviour:
       DefenseValue: 20
       HpBarWidth: 300
       Pos: {x: -116, y: -30}
-    TriggerPlayerCantCtrl: 1
-    ExitPlayerCanCtrl: 1
-    TriggerStopCamera: 0
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 1
     ExitStartCamera: 0
     MapID: 0
     TalkID: 0
@@ -237,12 +237,66 @@ MonoBehaviour:
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
+    ExitStartCamera: 1
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1010
+  - Id: 1010
+    ConditionType: 0
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillIDs: 
+    StoryId: 1002
+    BarrelsCount: 0
+    KillAll: 0
+    BarrelsAll: 0
+    TriggerType: 3
+    Targets:
+    - EntityID: 200501
+      SourceID: 2005
+      Hp: 30000
+      AttackValue: 20
+      DefenseValue: 20
+      HpBarWidth: 300
+      Pos: {x: 230, y: -43}
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
     ExitStartCamera: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
+    NextID: 1011
+  - Id: 1011
+    ConditionType: 0
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillIDs: 
+    StoryId: 0
+    BarrelsCount: 0
+    KillAll: 0
+    BarrelsAll: 0
+    TriggerType: 5
+    Targets:
+    - EntityID: 200501
+      SourceID: 2005
+      Hp: 30000
+      AttackValue: 20
+      DefenseValue: 20
+      HpBarWidth: 300
+      Pos: {x: 230, y: -43}
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    MapID: 1003
+    TalkID: 0
+    PrevID: 0
     NextID: 0
-  - Id: 1010
+  - Id: 1012
     ConditionType: 0
     Position:
       PosType: 0

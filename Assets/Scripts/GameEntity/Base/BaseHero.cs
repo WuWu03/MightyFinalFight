@@ -59,7 +59,7 @@ public class BaseHero : BaseRole
     {
         get
         {
-            return base.CanBeHit && !m_IsRebirthState && !IsFloat && !IsAnyState(typeof(HeroPickUp)) && !IsAnimation(AnimName.Throw);
+            return base.CanBeHit && !m_IsRebirthState && !IsAnyState(typeof(HeroPickUp)) && !IsAnimation(AnimName.Throw);
         }
     }
 
@@ -302,9 +302,8 @@ public class BaseHero : BaseRole
                 CameraMgr.Ins.StartFollow();
             }
 
-            if (!isMapXCanMove)
-                pos.x = m_Pos.x;
-            if (!isMapYCanMove) pos.y = m_Pos.y;
+            pos.x = !isMapXCanMove ? m_Pos.x : pos.x;
+            pos.y = !isMapYCanMove ? m_Pos.y : pos.y;
         }
 
         base.SetPos(pos);
@@ -540,7 +539,7 @@ public class BaseHero : BaseRole
         m_IsDropInGround = false;
         SetDefaultState<RoleIdle>();
 
-        if (changeState && !m_IsAddGroundForce)
+        if (changeState && !m_IsAddGroundForce && IsInGround)
         {
             ChangeDefaultState();
         }

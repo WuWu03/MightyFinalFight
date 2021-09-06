@@ -86,7 +86,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             return;
         }
 
-        m_Life = 5;
+        m_Life = 99;
         m_Continue = 3;
         m_Level = 1;
         m_EXP = 0;
@@ -232,6 +232,10 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             result = true;
         }
 
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            m_CurrCtrl.Skill(1001007);
+        }
         return result;
     }
 
