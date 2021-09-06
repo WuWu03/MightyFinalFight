@@ -49,5 +49,5 @@ public class StageConfigData : BaseConfigData
     public SceneBuilding[] SceneBuildings;//场景出现的物体（陷阱，障碍物等）
     public int[] TaskIDs;//场景的任务
     public BGM[] BGMs;//场景音乐组
-    public Rect[] MoveArea;//可行走区域
+    public Vector2Int[] MovePoints;//可行走区域
 }

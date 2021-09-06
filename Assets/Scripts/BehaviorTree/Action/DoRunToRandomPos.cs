@@ -13,9 +13,10 @@ public class DoRunToRandomPos : Action
 
     protected override void OnEnter()
     {
+        float size = m_Owner.Owner.GetCurrTriggerSize().x / 2;
         Rect visionRect = CameraMgr.Ins.GetVision();
-        m_RandomPos = StageMgr.Ins.GetRandomPos(PlayerMgr.Ins.Player.Pos);
-        m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + m_Owner.Owner.Bound.width / 2, visionRect.xMax - m_Owner.Owner.Bound.width / 2);
+        m_RandomPos = StageMgr.Ins.GetRandomPos();
+        m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + size, visionRect.xMax - size);
     }
 
     public override BehaviorTreeState Excute()

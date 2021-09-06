@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public static class SkillHelper
+public static class SkillEditorHelper
 {
     public static SkillConfigData CurrConfigData
     {

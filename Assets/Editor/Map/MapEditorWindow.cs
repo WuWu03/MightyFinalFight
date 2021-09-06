@@ -28,7 +28,11 @@ public class MapEditorWindow : EditorWindow
 
             for (int i = 0; i < files.Length; i++)
             {
-                if (Path.GetExtension(files[i]).Equals(".meta")) continue;
+                if (Path.GetExtension(files[i]).Equals(".meta"))
+                {
+                    continue;
+                }
+
                 listMapFile.Add(files[i].Substring(files[i].IndexOf("Assets")));
                 listMapName.Add(Path.GetFileNameWithoutExtension(files[i]));
             }
@@ -73,23 +77,17 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.MoveAreas.Count; i++)
         {
-            Rect rect = MapEditorHelper.GetDrawMoveRect(MapEditorHelper.MoveAreas[i].Rect);
+            int pos1Index = i;
+            int pos2Index = i + 1 >= MapEditorHelper.MoveAreas.Count ? 0 : i + 1;
+
+            Vector2 pos1 = MapEditorHelper.RevertPos(MapEditorHelper.MoveAreas[pos1Index].Point);
+            Vector2 pos2 = MapEditorHelper.RevertPos(MapEditorHelper.MoveAreas[pos2Index].Point);
             Color color = MapEditorHelper.MoveAreas[i].Color;
-            EditorGUI.DrawRect(rect, color);
 
-            if (m_CurrMoveArea == i)
-            {
-                Vector3 pos0 = new Vector3(rect.x, rect.y, 0);
-                Vector3 pos1 = new Vector3(rect.x + rect.width, rect.y, 0);
-                Vector3 pos2 = new Vector3(rect.x + rect.width, rect.y + rect.height, 0);
-                Vector3 pos3 = new Vector3(rect.x, rect.y + rect.height, 0);
-
-                Handles.color = new Color(color.r, color.g, color.b, 1);
-                Handles.DrawLine(pos0, pos1);
-                Handles.DrawLine(pos1, pos2);
-                Handles.DrawLine(pos2, pos3);
-                Handles.DrawLine(pos3, pos0);
-            }
+            int symbleX = pos1.x > MapEditorHelper.GetTextureSize().x / 2 ? -1 : 0;
+            EditorGUI.DrawRect(new Rect(pos1.x + 5f * symbleX, pos1.y - 2.5f, 5f, 5f), color);
+            Handles.color = Color.green;   
+            Handles.DrawLine(pos1, pos2);
         }
 
         EditorGUI.DrawRect(MapEditorHelper.GetCurrPointRect(), Color.red);
@@ -117,23 +115,26 @@ public class MapEditorWindow : EditorWindow
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
         GUILayout.FlexibleSpace();
-
         int select = EditorGUILayout.Popup("当前地图", m_CurrMap, m_MapNames);
 
         if(select != m_CurrMap)
         {
             m_CurrMap = select;
+            m_CurrMoveArea = 0;
             MapEditorHelper.ScrollX = 0;
             MapEditorHelper.Scale = 1;
             MapEditorHelper.NormalSize = 1;
             MapEditorHelper.LoadTexture(m_MapFiles[m_CurrMap]);
             SetWindowSize();
+            SetMapNames();
         }
 
         MapEditorHelper.Id = EditorGUILayout.IntField("地图Id", MapEditorHelper.Id);
         MapEditorHelper.StageIndex = EditorGUILayout.IntField("关卡索引", MapEditorHelper.StageIndex);
         MapEditorHelper.Level = EditorGUILayout.IntField("小节", MapEditorHelper.Level);
         MapEditorHelper.SceneName = EditorGUILayout.TextField("地图名称", MapEditorHelper.SceneName);
+        EditorGUILayout.FloatField("地图宽", MapEditorHelper.Texture.width);
+        EditorGUILayout.FloatField("地图高", MapEditorHelper.Texture.height);
 
         Vector2 currPos = EditorGUILayout.Vector2Field("当前坐标", MapEditorHelper.CurrPos);
         Vector2 initPos = EditorGUILayout.Vector2Field("出生坐标", MapEditorHelper.InitPos);
@@ -160,7 +161,7 @@ public class MapEditorWindow : EditorWindow
             MapEditorHelper.ScrollX = 0;
         }
 
-        if(MapEditorHelper.MoveAreas.Count > 0)
+        if (MapEditorHelper.MoveAreas.Count > 0)
         {
             GUILayout.BeginHorizontal();
             m_CurrMoveArea = EditorGUILayout.Popup("行走区域", m_CurrMoveArea, m_MapAreaNames);
@@ -169,7 +170,7 @@ public class MapEditorWindow : EditorWindow
             {
                 MapEditorHelper.MoveAreas.RemoveAt(m_CurrMoveArea);
 
-                if(MapEditorHelper.MoveAreas.Count < 1)
+                if (MapEditorHelper.MoveAreas.Count < 1)
                 {
                     m_CurrMoveArea = 0;
                     return;
@@ -184,16 +185,33 @@ public class MapEditorWindow : EditorWindow
             }
             GUILayout.EndHorizontal();
 
-            MapEditorHelper.MoveAreas[m_CurrMoveArea].RealRect = MapEditorHelper.ConvertMoveRect(MapEditorHelper.MoveAreas[m_CurrMoveArea].Rect);
-            MapEditorHelper.MoveAreas[m_CurrMoveArea].RealRect = EditorGUILayout.RectField(MapEditorHelper.MoveAreas[m_CurrMoveArea].RealRect);
-            MapEditorHelper.MoveAreas[m_CurrMoveArea].Rect = MapEditorHelper.RevertMoveRect(MapEditorHelper.MoveAreas[m_CurrMoveArea].RealRect);
+            Vector2 movePoint = EditorGUILayout.Vector2Field("", MapEditorHelper.MoveAreas[m_CurrMoveArea].Point);
+            MapEditorHelper.SetMovePoint(m_CurrMoveArea, movePoint);
         }
 
         EditorGUILayout.BeginHorizontal();
-        TaskConfigGUI();
-        BGMConfigGUI();
-        SceneObjectConfigGUI();
+        for (int i = 0; i < m_TabNames.Length; i++)
+        {
+            if (GUILayout.Button(m_TabNames[i], i == m_CurrPage ? MapEditorHelper.SelectButtonOnStyle : MapEditorHelper.SelectButtonStyle))
+            {
+                m_CurrPage = i;
+                return;
+            }
+        }
         EditorGUILayout.EndHorizontal();
+
+        if(m_CurrPage == 0)
+        {
+            TaskConfigGUI();
+        }
+        else if(m_CurrPage == 1)
+        {
+            BGMConfigGUI();
+        }
+        else if(m_CurrPage == 2)
+        {
+            SceneBuildingConfigGUI();
+        }
 
         if (GUILayout.Button("导出配置"))
         {
@@ -206,7 +224,7 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景任务配置");
-        m_ScollPosTask = GUILayout.BeginScrollView(m_ScollPosTask, GUILayout.Width(position.width / 3), GUILayout.Height(150));
+        m_ScollPosTask = GUILayout.BeginScrollView(m_ScollPosTask, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.ListTaskId.Count; i++)
         {
@@ -248,7 +266,7 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景BGM配置");
-        m_ScollPosBGM = GUILayout.BeginScrollView(m_ScollPosBGM, GUILayout.Width(position.width / 3), GUILayout.Height(150));
+        m_ScollPosBGM = GUILayout.BeginScrollView(m_ScollPosBGM, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.ListBGM.Count; i++)
         {
@@ -287,12 +305,12 @@ public class MapEditorWindow : EditorWindow
         GUILayout.EndVertical();
     }
 
-    private void SceneObjectConfigGUI()
+    private void SceneBuildingConfigGUI()
     {
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景物体配置");
-        m_ScollPosSceneObject = GUILayout.BeginScrollView(m_ScollPosSceneObject, GUILayout.Width(position.width / 3), GUILayout.Height(150));
+        m_ScollPosSceneObject = GUILayout.BeginScrollView(m_ScollPosSceneObject, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.ListSceneBuilding.Count; i++)
         {
@@ -374,7 +392,10 @@ public class MapEditorWindow : EditorWindow
 
         if (m_IsMouse0Down)
         {
-            if (!MapEditorHelper.IsPointInTexture(e.mousePosition)) return;
+            if (!MapEditorHelper.IsPointInTexture(e.mousePosition))
+            {
+                return;
+            }
 
             MapEditorHelper.SetCurrPos(e.mousePosition, true);
         }
@@ -389,15 +410,15 @@ public class MapEditorWindow : EditorWindow
         }
         else if(operation == 1)
         {
-            Rect rect = new Rect(m_Mouse1Pos.x, m_Mouse1Pos.y, 100, 100);
+            if (!MapEditorHelper.IsPointInTexture(m_Mouse1Pos))
+            {
+                return;
+            }
+
             float r = UnityEngine.Random.Range(0f, 1f);
             float g = UnityEngine.Random.Range(0f, 1f);
             float b = UnityEngine.Random.Range(0f, 1f);
-            MapEditorHelper.MoveAreas.Add(new MapEditorConfigData.MoveArea()
-            {
-                Rect = rect,
-                Color = new Color(r, g, b, 0.3f)
-            });
+            MapEditorHelper.AddMovePoint(m_Mouse1Pos, new Color(r, g, b, 1));
             SetMapNames();
         }
     }
@@ -418,7 +439,7 @@ public class MapEditorWindow : EditorWindow
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
         float width = Mathf.Max(screenSize.x, texSize.x);
-        float height = Mathf.Max(screenSize.y, texSize.y) + 540;
+        float height = Mathf.Max(screenSize.y, texSize.y) + 620;
 
         minSize = new Vector2(width, height);
         maxSize = minSize;  
@@ -441,4 +462,6 @@ public class MapEditorWindow : EditorWindow
     private float m_CameraX = 0;
     private bool m_IsMouse0Down = false;
     private Vector3[] m_ViewAreaPoints = null;
+    private int m_CurrPage = 0;
+    private string[] m_TabNames = new string[] { "TaskConfig", "BGMConfig", "SceneBuildingConfig" };
 }

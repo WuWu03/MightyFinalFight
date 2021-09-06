@@ -29,8 +29,7 @@ public class MapEditorConfigData : BaseConfigData
     public class MoveArea 
     {
         public Color Color;
-        public Rect Rect;
-        public Rect RealRect;
+        public Vector2 Point;
     }
 
     public string MapPath;
@@ -42,7 +41,7 @@ public class MapEditorConfigData : BaseConfigData
     public int Width;
     public int Height;
   
-    public List<MoveArea> ListMoveArea;
+    public List<MoveArea> ListMovePoints;
     public List<int> ListTaskId;
     public List<StageConfigData.BGM> ListBGM;
     public List<StageConfigData.SceneBuilding> ListSceneBuilding;

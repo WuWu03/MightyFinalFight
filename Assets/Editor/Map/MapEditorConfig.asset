@@ -18,24 +18,19 @@ MonoBehaviour:
     SceneName: Stage1_1
     StageIndex: 1
     Level: 1
-    CurrPos: {x: -449, y: -45}
+    CurrPos: {x: -73, y: -50}
     InitPos: {x: -450, y: -50}
     Width: 1016
     Height: 152
-    ListMoveArea:
-    - Color: {r: 0.21453369, g: 0.082408786, b: 0.9611994, a: 0.3}
-      Rect:
-        serializedVersion: 2
-        x: 0
-        y: 109
-        width: 1016
-        height: 44
-      RealRect:
-        serializedVersion: 2
-        x: -508
-        y: -33
-        width: 1016
-        height: 44
+    ListMovePoints:
+    - Color: {r: 0.13420546, g: 0.7370769, b: 0.44556683, a: 1}
+      Point: {x: -508, y: -31}
+    - Color: {r: 0.6504011, g: 0.20462346, b: 0.57561857, a: 1}
+      Point: {x: 508, y: -31}
+    - Color: {r: 0.15580237, g: 0.7449875, b: 0.36452204, a: 1}
+      Point: {x: 508, y: -76}
+    - Color: {r: 0.49458998, g: 0.77749324, b: 0.7238487, a: 1}
+      Point: {x: -508, y: -76}
     ListTaskId: e9030000
     ListBGM:
     - ClipName: bgm01_Start
@@ -66,37 +61,27 @@ MonoBehaviour:
     SceneName: Stage1_2
     StageIndex: 1
     Level: 2
-    CurrPos: {x: 431, y: -19}
-    InitPos: {x: -505, y: -28}
+    CurrPos: {x: -431, y: -30}
+    InitPos: {x: -505, y: -32}
     Width: 1016
     Height: 152
-    ListMoveArea:
-    - Color: {r: 0.23208582, g: 0.85470915, b: 0.55486125, a: 0.3}
-      Rect:
-        serializedVersion: 2
-        x: 2.399994
-        y: 91
-        width: 847
-        height: 44
-      RealRect:
-        serializedVersion: 2
-        x: -505.6
-        y: -15
-        width: 847
-        height: 44
-    - Color: {r: 0.020650983, g: 0.9328828, b: 0.07050383, a: 0.3}
-      Rect:
-        serializedVersion: 2
-        x: 848.1
-        y: 72
-        width: 169
-        height: 47.8
-      RealRect:
-        serializedVersion: 2
-        x: 340.09998
-        y: 4
-        width: 169
-        height: 47.8
+    ListMovePoints:
+    - Color: {r: 0.8017901, g: 0.53815776, b: 0.5861946, a: 1}
+      Point: {x: -473, y: -17}
+    - Color: {r: 0.2558679, g: 0.5030951, b: 0.7698418, a: 1}
+      Point: {x: 345.2, y: -17}
+    - Color: {r: 0.33592266, g: 0.20094657, b: 0.8198658, a: 1}
+      Point: {x: 360.6, y: 1}
+    - Color: {r: 0.26673323, g: 0.11007202, b: 0.26610464, a: 1}
+      Point: {x: 508, y: 1}
+    - Color: {r: 0.26509017, g: 0.8692683, b: 0.021642327, a: 1}
+      Point: {x: 508, y: -44}
+    - Color: {r: 0.19631696, g: 0.8853133, b: 0.49004966, a: 1}
+      Point: {x: 316, y: -43}
+    - Color: {r: 0.35294563, g: 0.12716603, b: 0.4131021, a: 1}
+      Point: {x: 316, y: -58}
+    - Color: {r: 0.7588613, g: 0.29950637, b: 0.5740307, a: 1}
+      Point: {x: -514, y: -58}
     ListTaskId: ef030000
     ListBGM: []
     ListSceneBuilding:
@@ -151,20 +136,15 @@ MonoBehaviour:
     InitPos: {x: -215, y: -53}
     Width: 504
     Height: 152
-    ListMoveArea:
-    - Color: {r: 0.8848076, g: 0.15839815, b: 0.4977222, a: 0.3}
-      Rect:
-        serializedVersion: 2
-        x: 0
-        y: 106
-        width: 504
-        height: 46
-      RealRect:
-        serializedVersion: 2
-        x: -252
-        y: -30
-        width: 504
-        height: 46
+    ListMovePoints:
+    - Color: {r: 0.61346716, g: 0.0019204617, b: 0.13383842, a: 1}
+      Point: {x: -252, y: -31}
+    - Color: {r: 0.26542717, g: 0.7551669, b: 0.7546375, a: 1}
+      Point: {x: 252, y: -31}
+    - Color: {r: 0.03376019, g: 0.26125664, b: 0.92274857, a: 1}
+      Point: {x: 252, y: -76}
+    - Color: {r: 0.26941448, g: 0.75491965, b: 0.8922688, a: 1}
+      Point: {x: -252, y: -76}
     ListTaskId: f4030000
     ListBGM:
     - ClipName: bgm06Boss_Start
@@ -206,7 +186,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 1016
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
@@ -219,7 +199,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 1016
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
@@ -232,7 +212,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 760
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
@@ -245,7 +225,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 546
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
@@ -258,7 +238,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 504
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
@@ -271,7 +251,7 @@ MonoBehaviour:
     InitPos: {x: 0, y: 0}
     Width: 1016
     Height: 152
-    ListMoveArea: []
+    ListMovePoints: []
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []

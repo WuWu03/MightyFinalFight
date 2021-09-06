@@ -742,8 +742,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: 88
-      y: 297.59998
+      x: -26
+      y: 100.599976
       width: 230
       height: 205
     Children:
@@ -759,10 +759,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 406
-        y: 427
+        x: 277
+        y: 187
         width: 230
-        height: 309
+        height: 361
       Children: []
       PreConditions:
       - ClassType: PreIsPlayerInRange
@@ -774,6 +774,9 @@ MonoBehaviour:
       - ClassType: PreIsPlayerCanBeHit
         SelectIndex: 6
         Args: 
+      - ClassType: PreIsPlayerSpecialState
+        SelectIndex: 9
+        Args: TheNot:true
     - Id: 200502
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
@@ -786,10 +789,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 389
-        y: 103
+        x: 275
+        y: -94
         width: 230
-        height: 205
+        height: 257
       Children:
       - Id: 20050201
         Name: "\u56F4\u7ED5\u884C\u8D70"
@@ -803,8 +806,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 678
-          y: -382
+          x: 564
+          y: -579
           width: 230
           height: 205
         Children:
@@ -820,8 +823,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 995
-            y: -522
+            x: 881
+            y: -719
             width: 230
             height: 205
           Children: []
@@ -838,8 +841,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 990
-            y: -296
+            x: 876
+            y: -493
             width: 230
             height: 205
           Children: []
@@ -860,8 +863,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 679
-          y: -153
+          x: 565
+          y: -350
           width: 230
           height: 205
         Children: []
@@ -878,8 +881,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 680
-          y: 75
+          x: 566
+          y: -122
           width: 230
           height: 205
         Children: []
@@ -888,6 +891,69 @@ MonoBehaviour:
       - ClassType: PreIsPlayerInRange
         SelectIndex: 8
         Args: Range:0.3,TheNot:true
+      - ClassType: PreIsPlayerSpecialState
+        SelectIndex: 9
+        Args: TheNot:true
+    - Id: 200503
+      Name: "\u56F4\u7ED5\u573A\u666F\u8D70\u52A8"
+      ClassType: Sequence
+      Args: 
+      ListRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      WindowRect:
+        serializedVersion: 2
+        x: 276
+        y: 568
+        width: 230
+        height: 257
+      Children:
+      - Id: 20050301
+        Name: "\u672A\u547D\u540D"
+        ClassType: DoRoundMap
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 639
+          y: 691
+          width: 230
+          height: 205
+        Children: []
+        PreConditions: []
+      - Id: 20050302
+        Name: "\u79FB\u52A8\u5230\u8FB9\u7F18"
+        ClassType: DoRunToBorder
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 635
+          y: 439
+          width: 230
+          height: 205
+        Children: []
+        PreConditions: []
+      PreConditions:
+      - ClassType: PreIsGround
+        SelectIndex: 3
+        Args: 
+      - ClassType: PreIsPlayerSpecialState
+        SelectIndex: 9
+        Args: 
     PreConditions:
     - ClassType: PreIsInSpecialState
       SelectIndex: 4

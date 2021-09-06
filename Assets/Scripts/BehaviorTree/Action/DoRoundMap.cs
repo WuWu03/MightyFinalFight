@@ -21,7 +21,7 @@ public class DoRoundMap : Action
 
         Vector2 pos = m_Owner.Owner.Pos;
         Rect vision = CameraMgr.Ins.GetVision();
-        Rect area = StageMgr.Ins.GetMoveArea(pos);
+        Rect area = StageMgr.Ins.GetMoveArea();
 
         float tirggerSize = m_Owner.Owner.GetCurrTriggerSize().x / 2f;
         Vector2 leftTop = new Vector2(vision.xMin + tirggerSize, area.yMax);

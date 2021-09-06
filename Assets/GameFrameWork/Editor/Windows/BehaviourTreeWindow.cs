@@ -9,6 +9,7 @@ using UnityEditorInternal;
 using System;
 using System.Reflection;
 using GameFrameWork.BehaviourTree;
+using UnityEditor.SceneManagement;
 
 namespace GameFrameWork.Editor
 {
@@ -27,6 +28,7 @@ namespace GameFrameWork.Editor
         private void OnDisable()
         {
             UnityEditor.EditorUtility.SetDirty(m_BehaviourTreeWindowConfig);
+            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
         }
 
         private void OnGUI()

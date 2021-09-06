@@ -47,148 +47,72 @@ public class StageMgr : BaseMgr<StageMgr>
             return;
         }
 
-        PlayerMgr.Ins.CanContrl = false;
         m_OnEnterEvent = onEnter;
+        m_CurrStageData = StaticConfig.StageConfig.GetData(id);
+
+        PlayerMgr.Ins.CanContrl = false; 
         CameraMgr.Ins.EndFollow();
         SceneEntityMgr.Ins.ReleaseSceneOjbect();
-        m_CurrStageData = StaticConfig.StageConfig.GetData(id);
         SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
         SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
     }
 
-    public Rect GetMoveArea(Vector2 pos)
+    public Rect GetMoveArea()
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            if (IsInAreaPos(m_CurrStageData.MoveArea[i], pos))
-            {
-                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
-                bound.xMin /= 100f;
-                bound.xMax /= 100f;
-                bound.yMin /= 100f;
-                bound.yMax /= 100f;
-                return bound;
-            }
-        }
+        int length = m_CurrStageData.MovePoints.Length;
+        int index = length / 2 + length % 2;
 
-        return Rect.zero;
+        Vector2Int pos1 = m_CurrStageData.MovePoints[0];
+        Vector2Int pos2 = m_CurrStageData.MovePoints[index];
+
+        Rect bound = Rect.zero;
+        bound.xMin = pos1.x / 100f;
+        bound.xMax = pos2.x / 100f;
+        bound.yMin = pos1.y / 100f;
+        bound.yMax = pos2.y / 100f;
+        return bound;
     }
 
-    public bool CanMovePos(Vector2 pos)
+    public bool CanMove(Vector2 pos)
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            if (IsInAreaPos(m_CurrStageData.MoveArea[i], pos))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        Vector2Int posInt = new Vector2Int((int)(pos.x * 100), (int)(pos.y * 100));
+        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosX(float posX)
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            if (IsInAreaPosX(m_CurrStageData.MoveArea[i], posX))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        Vector2Int posInt = new Vector2Int((int)(posX * 100), m_CurrStageData.MovePoints[0].y);
+        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosY(float posY)
     {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
+        Vector2Int posInt = new Vector2Int(m_CurrStageData.MovePoints[0].x, (int)(posY * 100));
+        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+    }
+
+    public float GetRandomPosX()
+    {
+        return GetRandomPos().x;
+    }
+
+    public float GetRandomPosY()
+    {
+        return GetRandomPos().y;
+    }
+
+    public Vector2 GetRandomPos()
+    {
+        Vector2Int[] pos = Util.PolygonRandomPoints(m_CurrStageData.MovePoints);
+        Vector2 ret = Vector2.zero;
+
+        if(pos.Length >0)
         {
-            if (IsInAreaPosY(m_CurrStageData.MoveArea[i], posY))
-            {
-                return true;
-            }
+            ret.x = (float)pos[0].x / 100f;
+            ret.y = (float)pos[0].y / 100f;
         }
 
-        return false;
-    }
-
-    public Vector2 GetRandomPos(Vector2 currPos, bool isCorrect = true)
-    {
-        return new Vector2(GetRandomPosX(currPos, isCorrect), GetRandomPosY(currPos, isCorrect));
-    }
-
-    public float GetRandomPosX(Vector2 currPos, bool isCorrect = true)
-    {
-        return GetRandomPos(currPos, isCorrect, false);
-    }
-
-    public float GetRandomPosY(Vector2 currPos, bool isCorrect = true)
-    {
-        return GetRandomPos(currPos, isCorrect, true);
-    }
-
-    private float GetRandomPos(Vector2 currPos, bool isCorrect, bool isY)
-    {
-        for (int i = 0; i < m_CurrStageData.MoveArea.Length; i++)
-        {
-            bool conditoin = false;
-            if (isCorrect) conditoin = IsInAreaPosX(m_CurrStageData.MoveArea[i], currPos.x);
-            else conditoin = IsInAreaPos(m_CurrStageData.MoveArea[i], currPos);
-
-            if (conditoin)
-            {
-                Rect bound = GetBound(m_CurrStageData.MoveArea[i]);
-                float min = isY ? bound.yMin : bound.xMin;
-                float max = isY ? bound.yMax : bound.xMax;
-                float ret = isY ? Random.Range(min / 100f + 0.1f, max / 100f - 0.1f) : Random.Range(currPos.x - 1.1f, currPos.x + 1.1f);
-                return isY ? ret : Mathf.Clamp(ret, min, max);
-            }
-        }
-
-        return 0;
-    }
-
-    private bool IsInAreaPos(Rect area, Vector2 pos)
-    {
-        return IsInAreaPosX(area, pos.x) && IsInAreaPosY(area, pos.y);
-    }
-
-    private bool IsInAreaPosX(Rect area,float posX)
-    {
-        posX *= 100;
-        Rect bound = GetBound(area);
-
-        if (posX >= bound.xMin && posX <= bound.xMax)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private bool IsInAreaPosY(Rect area, float posY)
-    {
-        posY *= 100;
-        Rect bound = GetBound(area);
-
-        if (posY >= bound.yMin && posY <= bound.yMax)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private Rect GetBound(Rect area)//左，右，下，上
-    {
-        Rect bound = Rect.zero;
-        bound.xMin = area.x;
-        bound.xMax = area.x + area.width;
-        bound.yMin = area.y - area.height;
-        bound.yMax = area.position.y;
-
-        return bound;
+        return ret;
     }
 
     private void LoadSceneSuccess(LoadSceneSuccessEventArgs t)
@@ -227,7 +151,7 @@ public class StageMgr : BaseMgr<StageMgr>
         m_OnEnterEvent = null;
     }
 
-    private int m_CurrMoveAreaIndex = 0;
+
     private GameFrameWorkAction m_OnEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
 }

@@ -327,6 +327,7 @@ namespace GameFrameWork.Scene
                     if (request.IsAutoAllowScene)
                     {
                         m_AsyncOperation.allowSceneActivation = true;
+                        yield return null;
                     }
 
                     LoadSceneSuccess(request.SceneName, request.Args);

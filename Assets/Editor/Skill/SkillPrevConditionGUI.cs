@@ -23,7 +23,7 @@ public class SkillPrevConditionGUI : SkillGUI
         EditorGUILayout.Space(10f);
         m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
 
-        for (int i = 0; i < SkillHelper.CurrConfigData.SkillPrevConditions.Length; i++)
+        for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillPrevConditions.Length; i++)
         {
             GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
             {
@@ -34,23 +34,23 @@ public class SkillPrevConditionGUI : SkillGUI
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
                     m_ListPrevCondition.RemoveAt(i);
-                    SkillHelper.CurrConfigData.SkillPrevConditions = Util.DeleteElement(SkillHelper.CurrConfigData.SkillPrevConditions, i);
+                    SkillEditorHelper.CurrConfigData.SkillPrevConditions = Util.DeleteElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, i);
                     return;
                 }
 
                 EditorGUILayout.EndHorizontal();
 
-                SkillConfigData.SkillPrevConditionType prevConditionType = SkillHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType;
+                SkillConfigData.SkillPrevConditionType prevConditionType = SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType;
                 SkillConfigData.SkillPrevConditionType conditionType = (SkillConfigData.SkillPrevConditionType)EditorGUILayout.EnumPopup("ConditionType", prevConditionType);
-                SkillHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType = conditionType;
+                SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType = conditionType;
 
-                SkillHelper.CurrConfigData.SkillPrevConditions[i].IsRevert = EditorGUILayout.Toggle("IsRevert", SkillHelper.CurrConfigData.SkillPrevConditions[i].IsRevert);
+                SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].IsRevert = EditorGUILayout.Toggle("IsRevert", SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].IsRevert);
 
                 EditorGUILayout.BeginHorizontal();
                 m_ListPrevCondition[i].Args = EditorGUILayout.TextField("Args", m_ListPrevCondition[i].Args);
                 if (GUILayout.Button("更改", GUILayout.Width(100)))
                 {
-                    SkillHelper.CurrConfigData.SkillPrevConditions[i].Args = m_ListPrevCondition[i].Args;
+                    SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].Args = m_ListPrevCondition[i].Args;
                     ShowNotification("更改成功");
                 }
                 EditorGUILayout.EndHorizontal();
@@ -65,7 +65,7 @@ public class SkillPrevConditionGUI : SkillGUI
         if (GUILayout.Button("增加前置条件"))
         {
             m_ListPrevCondition.Add(new SkillConfigData.SkillPrevCondition());
-            SkillHelper.CurrConfigData.SkillPrevConditions = Util.AddElement(SkillHelper.CurrConfigData.SkillPrevConditions, new SkillConfigData.SkillPrevCondition());
+            SkillEditorHelper.CurrConfigData.SkillPrevConditions = Util.AddElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, new SkillConfigData.SkillPrevCondition());
             return;
         }
     }
@@ -73,9 +73,9 @@ public class SkillPrevConditionGUI : SkillGUI
     private void CloneConditions()
     {
         m_ListPrevCondition.Clear();
-        for (int i = 0; i < SkillHelper.CurrConfigData.SkillPrevConditions.Length; i++)
+        for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillPrevConditions.Length; i++)
         {
-            m_ListPrevCondition.Add(Clone(SkillHelper.CurrConfigData.SkillPrevConditions[i]));
+            m_ListPrevCondition.Add(Clone(SkillEditorHelper.CurrConfigData.SkillPrevConditions[i]));
         }
     }
 

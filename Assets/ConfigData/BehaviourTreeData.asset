@@ -326,6 +326,10 @@ MonoBehaviour:
         Name: 
         ClassType: PreIsPlayerCanBeHit
         Args: 
+      - Id: 0
+        Name: 
+        ClassType: PreIsPlayerSpecialState
+        Args: TheNot:true
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
@@ -370,6 +374,36 @@ MonoBehaviour:
         Name: 
         ClassType: PreIsPlayerInRange
         Args: Range:0.3,TheNot:true
+      - Id: 0
+        Name: 
+        ClassType: PreIsPlayerSpecialState
+        Args: TheNot:true
+    - Id: 0
+      Name: "\u56F4\u7ED5\u573A\u666F\u8D70\u52A8"
+      ClassType: Sequence
+      Args: 
+      Childs:
+      - Id: 0
+        Name: "\u672A\u547D\u540D"
+        ClassType: DoRoundMap
+        Args: 
+        Childs: []
+        PreConditions: []
+      - Id: 0
+        Name: "\u79FB\u52A8\u5230\u8FB9\u7F18"
+        ClassType: DoRunToBorder
+        Args: 
+        Childs: []
+        PreConditions: []
+      PreConditions:
+      - Id: 0
+        Name: 
+        ClassType: PreIsGround
+        Args: 
+      - Id: 0
+        Name: 
+        ClassType: PreIsPlayerSpecialState
+        Args: 
     PreConditions:
     - Id: 0
       Name: 

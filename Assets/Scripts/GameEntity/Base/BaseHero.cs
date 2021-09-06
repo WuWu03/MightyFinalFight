@@ -287,10 +287,14 @@ public class BaseHero : BaseRole
     {
         if (!IsAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
         {
-            if (!CanMove) return;
+            if (!CanMove)
+            {
+                return;
+            }
 
             Rect bound = GetBound(pos);
-            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin) && !IsOutVersionX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
+            float border = m_MoveDir.x > 0 ? bound.xMax : bound.xMin;
+            bool isMapXCanMove = StageMgr.Ins.CanMovePosX(border) && !IsOutVersionX(border);
             bool isMapYCanMove = StageMgr.Ins.CanMovePosY(pos.y);
 
             if (!isMapXCanMove && !isMapYCanMove)

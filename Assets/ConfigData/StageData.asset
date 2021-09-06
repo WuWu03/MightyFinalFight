@@ -46,12 +46,11 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 0.3
       LerpTime: 0
-    MoveArea:
-    - serializedVersion: 2
-      x: -508
-      y: -33
-      width: 1016
-      height: 44
+    MovePoints:
+    - {x: -508, y: -31}
+    - {x: 508, y: -31}
+    - {x: 508, y: -76}
+    - {x: -508, y: -76}
   - Id: 1002
     Name: Stage1_2
     SceneName: Stage1_2
@@ -59,7 +58,7 @@ MonoBehaviour:
     Level: 2
     Width: 1016
     Height: 152
-    InitPos: {x: -505, y: -28}
+    InitPos: {x: -505, y: -32}
     SceneBuildings:
     - SceneObjType: 1
       Id: 1
@@ -105,17 +104,15 @@ MonoBehaviour:
       AssetName: SceneBuilding/Pit
     TaskIDs: ef030000
     BGMs: []
-    MoveArea:
-    - serializedVersion: 2
-      x: -505.6
-      y: -15
-      width: 847
-      height: 44
-    - serializedVersion: 2
-      x: 340.09998
-      y: 4
-      width: 169
-      height: 47.8
+    MovePoints:
+    - {x: -473, y: -17}
+    - {x: 345, y: -17}
+    - {x: 360, y: 1}
+    - {x: 508, y: 1}
+    - {x: 508, y: -44}
+    - {x: 316, y: -43}
+    - {x: 316, y: -58}
+    - {x: -514, y: -58}
   - Id: 1003
     Name: Stage1_3
     SceneName: Stage1_3
@@ -156,12 +153,11 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 1
       LerpTime: 0
-    MoveArea:
-    - serializedVersion: 2
-      x: -252
-      y: -30
-      width: 504
-      height: 46
+    MovePoints:
+    - {x: -252, y: -31}
+    - {x: 252, y: -31}
+    - {x: 252, y: -76}
+    - {x: -252, y: -76}
   - Id: 0
     Name: 
     SceneName: 
@@ -173,7 +169,7 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []
   - Id: 0
     Name: 
     SceneName: 
@@ -185,7 +181,7 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []
   - Id: 0
     Name: 
     SceneName: 
@@ -197,7 +193,7 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []
   - Id: 0
     Name: 
     SceneName: 
@@ -209,7 +205,7 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []
   - Id: 0
     Name: 
     SceneName: 
@@ -221,7 +217,7 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []
   - Id: 0
     Name: 
     SceneName: 
@@ -233,4 +229,4 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs: []
-    MoveArea: []
+    MovePoints: []

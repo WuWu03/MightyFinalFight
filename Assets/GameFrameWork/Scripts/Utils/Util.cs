@@ -274,5 +274,76 @@ namespace GameFrameWork.Utility
 
             return newArray;
         }
+
+        //某点是否在多边形内
+        public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int p)
+        {
+            var j = polyPoints.Length - 1;
+            var inside = false;
+            for (int i = 0; i < polyPoints.Length; j = i++)
+            {
+                var pi = polyPoints[i];
+                var pj = polyPoints[j];
+                if (((pi.y >= p.y && p.y > pj.y) || (pj.y >= p.y && p.y > pi.y)) &&
+                    (p.x < (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x))
+                    inside = !inside;
+            }
+            return inside;
+        }
+
+        public static Vector2Int[] PolygonRandomPoints(Vector2Int[] polyPoints, int maxCount = 1)
+        {
+            List<Vector2Int> result = new List<Vector2Int>();
+            Vector2Int centerPT = Vector2Int.zero;
+
+            for (int i = 0; i < polyPoints.Length; i++)
+            {
+                centerPT += polyPoints[i];
+            }
+
+            centerPT /= polyPoints.Length;
+            maxCount /= polyPoints.Length;
+
+            for (int i = 0; i < polyPoints.Length; i++)
+            {
+                int count = 0;
+                int index1 = i;
+                int index2 = i + 1;
+
+                if (i == polyPoints.Length - 1)
+                {
+                    index1 = 0;
+                    index2 = polyPoints.Length - 1;
+                }
+
+                while (count < maxCount)
+                {
+                    Vector2Int ab = polyPoints[index1] - centerPT;
+                    Vector2Int ac = polyPoints[index2] - centerPT;
+
+                    int x = UnityEngine.Random.Range(0, 10);
+                    int y = UnityEngine.Random.Range(0, 10);
+                    int x1 = 0;
+                    int y1 = 0;
+
+                    if (x + y > 10)
+                    {
+                        x1 = 10 - x;
+                        y1 = 10 - y;
+                    }
+                    else
+                    {
+                        x1 = x;
+                        y1 = y;
+                    }
+
+                    Vector2Int pt = centerPT + ab * x1 + ac * y1;
+                    result.Add(pt);
+                    count++;
+                }
+            }
+
+            return result.ToArray();
+        }
     }
 }

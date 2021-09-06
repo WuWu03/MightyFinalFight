@@ -7,6 +7,22 @@ using UnityEngine;
 
 public static class MapEditorHelper
 {
+    public static GUIStyle SelectButtonOnStyle
+    {
+        get
+        {
+            return m_SelectButtonOnStyle;
+        }
+    }
+
+    public static GUIStyle SelectButtonStyle
+    {
+        get
+        {
+            return m_SelectButtonStyle;
+        }
+    }
+
     public static Texture2D Texture
     {
         get
@@ -19,7 +35,7 @@ public static class MapEditorHelper
     {
         get
         {
-            return m_CurrData.ListMoveArea;
+            return m_CurrData.ListMovePoints;
         }
     }
 
@@ -179,6 +195,18 @@ public static class MapEditorHelper
             m_MapEditorConfig = AssetDatabase.LoadAssetAtPath<MapEditorConfig>("Assets/Editor/Map/" + fileName + ext);
             if (string.IsNullOrEmpty(m_MapEditorConfig.MapPath)) m_MapEditorConfig.MapPath = "Assets/ArtResources/Texture/Stage/";
         }
+
+        m_SelectButtonOnStyle = new GUIStyle("flow node 1");
+        m_SelectButtonOnStyle.stretchWidth = true;
+        m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
+        m_SelectButtonOnStyle.contentOffset = new Vector2(0, -15f);
+        m_SelectButtonOnStyle.fixedHeight = 15f;
+
+        m_SelectButtonStyle = new GUIStyle("flow node 0");
+        m_SelectButtonStyle.stretchWidth = true;
+        m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
+        m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
+        m_SelectButtonStyle.fixedHeight = 15f;
     }
 
     public static void LoadTexture(string path)
@@ -195,7 +223,7 @@ public static class MapEditorHelper
         {
             m_CurrData = new MapEditorConfigData();
             m_CurrData.MapPath = path;
-            m_CurrData.ListMoveArea = new List<MapEditorConfigData.MoveArea>();
+            m_CurrData.ListMovePoints = new List<MapEditorConfigData.MoveArea>();
             m_CurrData.ListTaskId = new List<int>();
             m_CurrData.ListBGM = new List<StageConfigData.BGM>();
             m_CurrData.ListSceneBuilding = new List<StageConfigData.SceneBuilding>();
@@ -215,6 +243,20 @@ public static class MapEditorHelper
     public static void SetCurrPos(Vector2 pos, bool convert = false)
     {
         m_CurrData.CurrPos = convert ? ConvertPos(pos) : pos;
+    }
+
+    public static void AddMovePoint(Vector2 pos, Color color)
+    {
+        Vector2 realPos = ConvertPos(pos);
+        MapEditorConfigData.MoveArea area = new MapEditorConfigData.MoveArea();
+        area.Point = realPos;
+        area.Color = color;
+        m_CurrData.ListMovePoints.Add(area);
+    }
+
+    public static void SetMovePoint(int index, Vector2 pos)
+    {
+        m_CurrData.ListMovePoints[index].Point = pos;
     }
 
     public static Vector2 GetTextureSize(bool ignoreScale = false)
@@ -312,7 +354,7 @@ public static class MapEditorHelper
         return new Rect(x, y, width, height);
     }
 
-    private static Vector2 ConvertPos(Vector2 pos)
+    public static Vector2 ConvertPos(Vector2 pos)
     {
         Vector2 ret = Vector2.zero;
         Vector2 texSize = GetTextureSize();
@@ -324,7 +366,7 @@ public static class MapEditorHelper
         return ret;
     }
 
-    private static Vector2 RevertPos(Vector2 pos)
+    public static Vector2 RevertPos(Vector2 pos)
     {
         Vector2 ret = pos * m_Scale;
         Vector2 texSize = GetTextureSize();
@@ -360,11 +402,13 @@ public static class MapEditorHelper
             data.TaskIDs = configData.ListTaskId.ToArray();
             data.BGMs = configData.ListBGM.ToArray();
             data.SceneBuildings = configData.ListSceneBuilding.ToArray();
-            data.MoveArea = new Rect[configData.ListMoveArea.Count];
+            data.MovePoints = new Vector2Int[configData.ListMovePoints.Count];
 
-            for (int j = 0; j < configData.ListMoveArea.Count; j++)
+            for (int j = 0; j < data.MovePoints.Length; j++)
             {
-                data.MoveArea[j] = configData.ListMoveArea[j].RealRect;
+                int x = (int)configData.ListMovePoints[j].Point.x;
+                int y = (int)configData.ListMovePoints[j].Point.y;
+                data.MovePoints[j] = new Vector2Int(x, y);
             }
 
             stageConfig.Datas.Add(data);
@@ -401,6 +445,8 @@ public static class MapEditorHelper
         m_CurrData = null;
     }
 
+    private static GUIStyle m_SelectButtonOnStyle = null;
+    private static GUIStyle m_SelectButtonStyle = null;
     private static MapEditorConfig m_MapEditorConfig = null;
     private static MapEditorConfigData m_CurrData = null;
     private static Texture2D m_Textrue = null;
