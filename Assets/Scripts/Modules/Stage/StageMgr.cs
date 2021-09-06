@@ -19,6 +19,14 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
+    public int StageLevel
+    {
+        get
+        {
+            return m_CurrStageData.Level;
+        }
+    }
+
     public int Width
     {
         get
