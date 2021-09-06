@@ -732,7 +732,7 @@ MonoBehaviour:
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
-    ClassType: LoopSequence
+    ClassType: LoopSelector
     Args: LoopTimes:-1
     ListRect:
       serializedVersion: 2
@@ -742,8 +742,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -26
-      y: 100.599976
+      x: -6
+      y: 196.59998
       width: 230
       height: 205
     Children:
@@ -759,8 +759,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 277
-        y: 187
+        x: 297
+        y: 283
         width: 230
         height: 361
       Children: []
@@ -789,8 +789,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 275
-        y: -94
+        x: 295
+        y: 2
         width: 230
         height: 257
       Children:
@@ -806,8 +806,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 564
-          y: -579
+          x: 584
+          y: -483
           width: 230
           height: 205
         Children:
@@ -823,8 +823,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 881
-            y: -719
+            x: 901
+            y: -623
             width: 230
             height: 205
           Children: []
@@ -841,8 +841,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 876
-            y: -493
+            x: 896
+            y: -397
             width: 230
             height: 205
           Children: []
@@ -863,8 +863,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 565
-          y: -350
+          x: 585
+          y: -254
           width: 230
           height: 205
         Children: []
@@ -881,8 +881,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 566
-          y: -122
+          x: 586
+          y: -26
           width: 230
           height: 205
         Children: []
@@ -906,8 +906,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 276
-        y: 568
+        x: 296
+        y: 664
         width: 230
         height: 257
       Children:
@@ -923,8 +923,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 639
-          y: 691
+          x: 659
+          y: 787
           width: 230
           height: 205
         Children: []
@@ -941,8 +941,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 635
-          y: 439
+          x: 655
+          y: 535
           width: 230
           height: 205
         Children: []

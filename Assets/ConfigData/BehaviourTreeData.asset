@@ -305,7 +305,7 @@ MonoBehaviour:
       Args: TheNot:true
   - Id: 2005
     Name: Damnd
-    ClassType: LoopSequence
+    ClassType: LoopSelector
     Args: LoopTimes:-1
     Childs:
     - Id: 0
