@@ -302,7 +302,6 @@ namespace GameFrameWork.Utility
             }
 
             centerPT /= polyPoints.Length;
-            maxCount /= polyPoints.Length;
 
             for (int i = 0; i < polyPoints.Length; i++)
             {
@@ -321,15 +320,15 @@ namespace GameFrameWork.Utility
                     Vector2Int ab = polyPoints[index1] - centerPT;
                     Vector2Int ac = polyPoints[index2] - centerPT;
 
-                    int x = UnityEngine.Random.Range(0, 10);
-                    int y = UnityEngine.Random.Range(0, 10);
-                    int x1 = 0;
-                    int y1 = 0;
+                    float x = UnityEngine.Random.Range(0, 1);
+                    float y = UnityEngine.Random.Range(0, 1);
+                    float x1 = 0;
+                    float y1 = 0;
 
                     if (x + y > 10)
                     {
-                        x1 = 10 - x;
-                        y1 = 10 - y;
+                        x1 = 1 - x;
+                        y1 = 1 - y;
                     }
                     else
                     {
@@ -337,7 +336,13 @@ namespace GameFrameWork.Utility
                         y1 = y;
                     }
 
-                    Vector2Int pt = centerPT + ab * x1 + ac * y1;
+                    int abx = Mathf.RoundToInt((float)ab.x * x1);
+                    int aby = Mathf.RoundToInt((float)ab.y * x1);
+
+                    int acx = Mathf.RoundToInt((float)ac.x * y1);
+                    int acy = Mathf.RoundToInt((float)ac.y * y1);
+
+                    Vector2Int pt = centerPT + new Vector2Int(abx, aby) + new Vector2Int(acx, acy);
                     result.Add(pt);
                     count++;
                 }

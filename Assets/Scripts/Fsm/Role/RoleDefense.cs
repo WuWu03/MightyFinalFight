@@ -11,6 +11,7 @@ public class RoleDefense : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Timer = -1f;
+        m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Defense, 0, 1);
     }
 

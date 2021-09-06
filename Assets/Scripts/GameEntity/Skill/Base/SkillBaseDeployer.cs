@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -60,7 +59,6 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        UnityEngine.Debug.Log("放技能: " + m_SkillData.Id);
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             m_EnternalTriggerTimer = Time.time;

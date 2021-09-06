@@ -76,8 +76,8 @@ public class StageMgr : BaseMgr<StageMgr>
         Rect bound = Rect.zero;
         bound.xMin = pos1.x / 100f;
         bound.xMax = pos2.x / 100f;
-        bound.yMin = pos1.y / 100f;
-        bound.yMax = pos2.y / 100f;
+        bound.yMin = pos2.y / 100f;
+        bound.yMax = pos1.y / 100f;
         return bound;
     }
 

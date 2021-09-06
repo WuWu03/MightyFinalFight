@@ -24,7 +24,9 @@ namespace GameFrameWork.BehaviourTree
         {
             m_CurrLoopTimes = 0;
             if (m_IsRandomLoop)
+            {
                 m_LoopTimes = Random.Range(1, 9);
+            }
         }
 
         protected override void OnUpdate(float deltaTime)

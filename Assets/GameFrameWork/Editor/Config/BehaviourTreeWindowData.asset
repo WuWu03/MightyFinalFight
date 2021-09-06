@@ -25,8 +25,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -373
-      y: 280
+      x: -811
+      y: 275
       width: 233
       height: 257
     Children:
@@ -42,8 +42,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -59
-        y: 308
+        x: -497
+        y: 303
         width: 236
         height: 205
       Children:
@@ -59,8 +59,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 301
-          y: -152
+          x: -137
+          y: -157
           width: 236
           height: 205
         Children: []
@@ -77,8 +77,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 302
-          y: 77
+          x: -136
+          y: 72
           width: 236
           height: 205
         Children: []
@@ -95,8 +95,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 304
-          y: 309
+          x: -134
+          y: 304
           width: 236
           height: 205
         Children: []
@@ -113,8 +113,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 303
-          y: 535
+          x: -135
+          y: 530
           width: 236
           height: 205
         Children:
@@ -130,8 +130,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 677
-            y: 387
+            x: 239
+            y: 382
             width: 233
             height: 205
           Children: []
@@ -148,15 +148,15 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 677
-            y: 638
+            x: 239
+            y: 633
             width: 233
             height: 205
           Children: []
           PreConditions: []
         PreConditions:
         - ClassType: PreIsPlayerCanBeHit
-          SelectIndex: 5
+          SelectIndex: 6
           Args: 
       - Id: 10105
         Name: "\u8FDC\u79BB\u73A9\u5BB6"
@@ -170,22 +170,22 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 301
-          y: 760
+          x: -137
+          y: 755
           width: 236
           height: 205
         Children: []
         PreConditions:
         - ClassType: PreIsPlayerDistance
-          SelectIndex: 6
+          SelectIndex: 7
           Args: Distance:1
       PreConditions: []
     PreConditions:
     - ClassType: PreIsLockPlayer
-      SelectIndex: 4
+      SelectIndex: 5
       Args: Distance:10
     - ClassType: PreIsInSpecialState
-      SelectIndex: 3
+      SelectIndex: 4
       Args: TheNot:true
   - Id: 2002
     Name: TwoPTree
@@ -199,8 +199,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -153
-      y: 508
+      x: -549
+      y: -59
       width: 230
       height: 257
     Children:
@@ -216,8 +216,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 143
-        y: 532
+        x: -253
+        y: -35
         width: 230
         height: 205
       Children:
@@ -233,8 +233,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 445
-          y: 207
+          x: 49
+          y: -360
           width: 230
           height: 205
         Children: []
@@ -251,8 +251,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 445
-          y: 424
+          x: 49
+          y: -143
           width: 230
           height: 205
         Children: []
@@ -269,8 +269,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 442
-          y: 648
+          x: 46
+          y: 81
           width: 230
           height: 205
         Children: []
@@ -287,8 +287,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 444
-          y: 870
+          x: 48
+          y: 303
           width: 230
           height: 205
         Children:
@@ -304,8 +304,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 785
-            y: 628
+            x: 389
+            y: 61
             width: 230
             height: 205
           Children: []
@@ -322,8 +322,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 781
-            y: 870
+            x: 385
+            y: 303
             width: 230
             height: 205
           Children: []
@@ -340,27 +340,27 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 781
-            y: 1093
+            x: 385
+            y: 526
             width: 230
             height: 205
           Children: []
           PreConditions: []
         PreConditions:
         - ClassType: PreIsPlayerCanBeHit
-          SelectIndex: 5
+          SelectIndex: 6
           Args: 
       PreConditions: []
     PreConditions:
-    - ClassType: PreIsLockPlayer
+    - ClassType: PreIsInSpecialState
       SelectIndex: 4
       Args: Distance:10
-    - ClassType: PreIsInSpecialState
+    - ClassType: PreIsGround
       SelectIndex: 3
       Args: TheNot:true
   - Id: 2003
     Name: AxlTree
-    ClassType: LoopSequence
+    ClassType: LoopSelector
     Args: LoopTimes:-1
     ListRect:
       serializedVersion: 2
@@ -370,15 +370,15 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -501
-      y: 306
+      x: -577
+      y: 121
       width: 230
       height: 257
     Children:
     - Id: 301
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10,15,30,10]
+      Args: Weight:[20,20,25,20]
       ListRect:
         serializedVersion: 2
         x: 0
@@ -387,8 +387,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -224
-        y: 175
+        x: -300
+        y: -10
         width: 230
         height: 205
       Children:
@@ -404,8 +404,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 100
-          y: -153
+          x: 24
+          y: -338
           width: 230
           height: 205
         Children: []
@@ -422,8 +422,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 100
-          y: 69
+          x: 24
+          y: -116
           width: 230
           height: 205
         Children: []
@@ -440,8 +440,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 101
-          y: 289
+          x: 25
+          y: 104
           width: 230
           height: 205
         Children: []
@@ -458,8 +458,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 100
-          y: 511
+          x: 24
+          y: 326
           width: 230
           height: 205
         Children:
@@ -475,8 +475,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 431
-            y: 275
+            x: 355
+            y: 90
             width: 230
             height: 205
           Children: []
@@ -493,8 +493,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 441
-            y: 503
+            x: 365
+            y: 318
             width: 230
             height: 205
           Children: []
@@ -511,15 +511,15 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 444
-            y: 728
+            x: 368
+            y: 543
             width: 230
             height: 205
           Children: []
           PreConditions: []
         PreConditions:
         - ClassType: PreIsPlayerCanBeHit
-          SelectIndex: 5
+          SelectIndex: 6
           Args: 
       PreConditions:
       - ClassType: PreIsDefense
@@ -537,8 +537,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -221
-        y: 457
+        x: -297
+        y: 272
         width: 230
         height: 205
       Children: []
@@ -548,10 +548,10 @@ MonoBehaviour:
         Args: 
     PreConditions:
     - ClassType: PreIsLockPlayer
-      SelectIndex: 4
+      SelectIndex: 5
       Args: Distance:10
     - ClassType: PreIsInSpecialState
-      SelectIndex: 3
+      SelectIndex: 4
       Args: TheNot:true
   - Id: 2004
     Name: AndoreTree
@@ -565,8 +565,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -437
-      y: 435
+      x: 47
+      y: 250
       width: 230
       height: 257
     Children:
@@ -582,8 +582,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -124
-        y: 450
+        x: 360
+        y: 265
         width: 230
         height: 205
       Children:
@@ -599,8 +599,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 169
-          y: 15
+          x: 653
+          y: -170
           width: 230
           height: 205
         Children: []
@@ -617,8 +617,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 165
-          y: 235
+          x: 649
+          y: 50
           width: 230
           height: 205
         Children: []
@@ -635,8 +635,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 166
-          y: 449
+          x: 650
+          y: 264
           width: 230
           height: 205
         Children: []
@@ -653,8 +653,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 168
-          y: 673
+          x: 652
+          y: 488
           width: 230
           height: 205
         Children:
@@ -670,8 +670,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 481
-            y: 545
+            x: 965
+            y: 360
             width: 230
             height: 205
           Children: []
@@ -688,8 +688,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 482
-            y: 760
+            x: 966
+            y: 575
             width: 230
             height: 205
           Children: []
@@ -710,8 +710,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 168
-          y: 899
+          x: 652
+          y: 714
           width: 230
           height: 257
         Children: []
@@ -742,15 +742,15 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -6
-      y: 196.59998
+      x: -332
+      y: -84.400024
       width: 230
       height: 205
     Children:
     - Id: 200501
-      Name: "\u8FD1\u8EAB\u65F6\u653B\u51FB"
-      ClassType: DoAttack
-      Args: AttackTime:1
+      Name: "\u8FD1\u8EAB\u65F6"
+      ClassType: Selector
+      Args: 
       ListRect:
         serializedVersion: 2
         x: 0
@@ -759,11 +759,89 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 297
-        y: 283
+        x: -73
+        y: 312
         width: 230
-        height: 361
-      Children: []
+        height: 257
+      Children:
+      - Id: 20050101
+        Name: "\u653B\u51FB"
+        ClassType: DoAttack
+        Args: AttackTime:1
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 250
+          y: 196
+          width: 230
+          height: 205
+        Children: []
+        PreConditions:
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 6
+          Args: 
+      - Id: 20050102
+        Name: "\u7ED5\u573A\u666F\u79FB\u52A8"
+        ClassType: Sequence
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 220
+          y: 495
+          width: 230
+          height: 205
+        Children:
+        - Id: 2005010201
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoRunToBorder
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 537
+            y: 392
+            width: 230
+            height: 205
+          Children: []
+          PreConditions: []
+        - Id: 2005010202
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoRoundMap
+          Args: 
+          ListRect:
+            serializedVersion: 2
+            x: 0
+            y: 0
+            width: 0
+            height: 0
+          WindowRect:
+            serializedVersion: 2
+            x: 495
+            y: 650
+            width: 230
+            height: 205
+          Children: []
+          PreConditions: []
+        PreConditions:
+        - ClassType: PreIsPlayerSpecialState
+          SelectIndex: 9
+          Args: 
       PreConditions:
       - ClassType: PreIsPlayerInRange
         SelectIndex: 8
@@ -771,16 +849,10 @@ MonoBehaviour:
       - ClassType: PreIsGround
         SelectIndex: 3
         Args: 
-      - ClassType: PreIsPlayerCanBeHit
-        SelectIndex: 6
-        Args: 
-      - ClassType: PreIsPlayerSpecialState
-        SelectIndex: 9
-        Args: TheNot:true
     - Id: 200502
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[40,30,30]
+      Args: Weight:[40,30,30,20]
       ListRect:
         serializedVersion: 2
         x: 0
@@ -789,10 +861,10 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: 295
-        y: 2
+        x: -31
+        y: -279
         width: 230
-        height: 257
+        height: 205
       Children:
       - Id: 20050201
         Name: "\u56F4\u7ED5\u884C\u8D70"
@@ -806,8 +878,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 584
-          y: -483
+          x: 258
+          y: -764
           width: 230
           height: 205
         Children:
@@ -823,8 +895,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 901
-            y: -623
+            x: 564
+            y: -885
             width: 230
             height: 205
           Children: []
@@ -841,8 +913,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 896
-            y: -397
+            x: 564
+            y: -646
             width: 230
             height: 205
           Children: []
@@ -863,8 +935,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 585
-          y: -254
+          x: 259
+          y: -535
           width: 230
           height: 205
         Children: []
@@ -881,79 +953,40 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 586
-          y: -26
+          x: 260
+          y: -307
           width: 230
           height: 205
         Children: []
         PreConditions: []
+      - Id: 20050204
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: DoRunToPlayer
+        Args: 
+        ListRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        WindowRect:
+          serializedVersion: 2
+          x: 259
+          y: -90
+          width: 230
+          height: 257
+        Children: []
+        PreConditions:
+        - ClassType: PreIsGround
+          SelectIndex: 3
+          Args: 
+        - ClassType: PreIsPlayerCanBeHit
+          SelectIndex: 6
+          Args: 
       PreConditions:
       - ClassType: PreIsPlayerInRange
         SelectIndex: 8
         Args: Range:0.3,TheNot:true
-      - ClassType: PreIsPlayerSpecialState
-        SelectIndex: 9
-        Args: TheNot:true
-    - Id: 200503
-      Name: "\u56F4\u7ED5\u573A\u666F\u8D70\u52A8"
-      ClassType: Sequence
-      Args: 
-      ListRect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      WindowRect:
-        serializedVersion: 2
-        x: 296
-        y: 664
-        width: 230
-        height: 257
-      Children:
-      - Id: 20050301
-        Name: "\u672A\u547D\u540D"
-        ClassType: DoRoundMap
-        Args: 
-        ListRect:
-          serializedVersion: 2
-          x: 0
-          y: 0
-          width: 0
-          height: 0
-        WindowRect:
-          serializedVersion: 2
-          x: 659
-          y: 787
-          width: 230
-          height: 205
-        Children: []
-        PreConditions: []
-      - Id: 20050302
-        Name: "\u79FB\u52A8\u5230\u8FB9\u7F18"
-        ClassType: DoRunToBorder
-        Args: 
-        ListRect:
-          serializedVersion: 2
-          x: 0
-          y: 0
-          width: 0
-          height: 0
-        WindowRect:
-          serializedVersion: 2
-          x: 655
-          y: 535
-          width: 230
-          height: 205
-        Children: []
-        PreConditions: []
-      PreConditions:
-      - ClassType: PreIsGround
-        SelectIndex: 3
-        Args: 
-      - ClassType: PreIsPlayerSpecialState
-        SelectIndex: 9
-        Args: 
     PreConditions:
     - ClassType: PreIsInSpecialState
       SelectIndex: 4

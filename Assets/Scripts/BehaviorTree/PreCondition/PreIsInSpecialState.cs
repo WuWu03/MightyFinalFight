@@ -12,7 +12,16 @@ public class PreIsInSpecialState : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        if(m_Owner.Owner.IsAutoMove)
+        if (m_Timer > 0 && Time.time - m_Timer < 0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            m_Timer = -1;
+        }
+
+        if (m_Owner.Owner.IsAutoMove)
         {
             return true;
         }
@@ -21,15 +30,6 @@ public class PreIsInSpecialState : PreCondition
         {
             m_Timer = Time.time;
             return true;
-        }
-
-        if (m_Timer > 0 && Time.time - m_Timer < 0.5f)
-        {
-            return true;
-        }
-        else
-        {
-            m_Timer = -1;
         }
 
         return false;

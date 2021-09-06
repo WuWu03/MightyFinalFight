@@ -26,7 +26,7 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 2005
+      SourceID: 2001
       Hp: 3
       AttackValue: 15
       DefenseValue: 7

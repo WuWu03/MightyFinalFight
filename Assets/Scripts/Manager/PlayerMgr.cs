@@ -67,8 +67,15 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     public bool CanContrl
     {
-        get;
-        set;
+        get
+        {
+            return m_CanCtrl;
+        }
+        set
+        {
+            m_CanCtrl = value;
+            InputMgr.Ins.IsRunning = value;
+        }
     }
 
     public int SelectId
@@ -126,10 +133,6 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.SetData(roleData);
         m_CurrCtrl.SetData(heroSkillData);
 
-        InputMgr.Ins.GetDirection = delegate () { return m_Player.Dir; };
-        InputMgr.Ins.AfterTrigger = AfterTrigger;
-        InputMgr.Ins.GetPreconditon = GetPreCondition;
-
         for (int i = 6; i < m_CharacterData.Skills.Length; i++)
         {
             SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_CharacterData.Skills[i]);
@@ -138,9 +141,14 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
                 InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
             }
         }
- 
+
+        m_CanCtrl = true;
+
         CameraMgr.Ins.SetTarget(m_Player.transform);
-        CanContrl = true;
+        InputMgr.Ins.GetDirection = delegate () { return m_Player.Dir; };
+        InputMgr.Ins.AfterTrigger = AfterTrigger;
+        InputMgr.Ins.GetPreconditon = GetPreCondition;
+        InputMgr.Ins.IsRunning = true;
     }
 
     public void Rebirth(Vector2 rebirthPos)
@@ -210,7 +218,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Health <= 0 || !CanContrl)
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Health <= 0 || !m_CanCtrl)
         {
             return false;
         }
@@ -241,6 +249,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     private bool GetPreCondition(int id)
     {
+        
         SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
         bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
         return a;
@@ -262,4 +271,5 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_Continue = 0;
     private int m_SelectId = 0;
     private float m_CurrSpeed = 0f;
+    private bool m_CanCtrl = false;
 }

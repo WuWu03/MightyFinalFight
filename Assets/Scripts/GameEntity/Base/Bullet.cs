@@ -57,9 +57,18 @@ public class Bullet : BaseSceneItem
 
     private void CheckHit(Collider2D collision)
     {
-        if (!m_IsResComplete || (!m_BulletData.IsPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject)) return;
+        if (!m_IsResComplete || (!m_BulletData.IsPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject))
+        {
+            return;
+        }
 
         ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+
+        if(hit == null)
+        {
+            return;
+        }
+
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
 
         bool canBeHit = hit != null && hit.CanBeHit;

@@ -407,7 +407,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         m_CurrCtrl.ExitSkill();
 
-        if(m_Health - data.AttackValue <= 0)
+        if (m_Health - data.AttackValue <= 0 && !data.IsSwoon)
         {
             data.IsSwoon = true;
             data.AttackForce = SkillFactory.GetSmoonForce(data.AttackerDir);

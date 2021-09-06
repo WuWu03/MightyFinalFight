@@ -11,6 +11,17 @@ namespace GameFrameWork.Input
         public GameFrameWorkFloatAction GetDirection;
         public GameFrameWorkBooleanAction AfterTrigger;
         public GameFrameWorkBooleanAction<int> GetPreconditon;
+        public bool IsRunning
+        {
+            get
+            {
+                return m_IsRunning;
+            }
+            set
+            {
+                m_IsRunning = value;
+            }
+        }
 
         protected override void OnAwake()
         {
@@ -20,6 +31,11 @@ namespace GameFrameWork.Input
 
         protected override void OnUpdate()
         {
+            if (!m_IsRunning)
+            {
+                return;
+            }
+
             if (m_ListEvent != null && m_ListEvent.Count > 0)
             {
                 if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME)
@@ -265,7 +281,7 @@ namespace GameFrameWork.Input
         private float m_CurrDir = 0;
         private float m_KeyDownTime = -1f;
         private const float KEY_DOWN_TIME = 0.04f;
-
+        private bool m_IsRunning = false;
         private List<KeyType> m_ListKeyType = null;
         private List<ComboKeyEventArgs> m_ListEvent = null;
     }

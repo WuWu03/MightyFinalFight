@@ -17,7 +17,7 @@ public class DoRunAwayPlayer : Action
     {
         if (PlayerMgr.Ins.Player.Dir != m_Owner.Owner.Dir)
         {
-            m_Owner.Move((PlayerMgr.Ins.Player.MoveDir).normalized, false);
+            m_Owner.Move((PlayerMgr.Ins.Player.Pos - m_Owner.Owner.Pos).normalized, false);
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Running;
         }

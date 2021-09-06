@@ -35,11 +35,11 @@ MonoBehaviour:
     ListBGM:
     - ClipName: bgm01_Start
       IsLoop: 0
-      Volume: 0.3
+      Volume: 1
       LerpTime: 0
     - ClipName: bgm01_Loop
       IsLoop: 1
-      Volume: 0.3
+      Volume: 1
       LerpTime: 0
     ListSceneBuilding:
     - SceneObjType: 2

@@ -143,21 +143,21 @@ MonoBehaviour:
     PreConditions:
     - Id: 0
       Name: 
-      ClassType: PreIsLockPlayer
+      ClassType: PreIsInSpecialState
       Args: Distance:10
     - Id: 0
       Name: 
-      ClassType: PreIsInSpecialState
+      ClassType: PreIsGround
       Args: TheNot:true
   - Id: 2003
     Name: AxlTree
-    ClassType: LoopSequence
+    ClassType: LoopSelector
     Args: LoopTimes:-1
     Childs:
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[10,15,30,10]
+      Args: Weight:[20,20,25,20]
       Childs:
       - Id: 0
         Name: "\u968F\u673A\u79FB\u52A8"
@@ -309,10 +309,42 @@ MonoBehaviour:
     Args: LoopTimes:-1
     Childs:
     - Id: 0
-      Name: "\u8FD1\u8EAB\u65F6\u653B\u51FB"
-      ClassType: DoAttack
-      Args: AttackTime:1
-      Childs: []
+      Name: "\u8FD1\u8EAB\u65F6"
+      ClassType: Selector
+      Args: 
+      Childs:
+      - Id: 0
+        Name: "\u653B\u51FB"
+        ClassType: DoAttack
+        Args: AttackTime:1
+        Childs: []
+        PreConditions:
+        - Id: 0
+          Name: 
+          ClassType: PreIsPlayerCanBeHit
+          Args: 
+      - Id: 0
+        Name: "\u7ED5\u573A\u666F\u79FB\u52A8"
+        ClassType: Sequence
+        Args: 
+        Childs:
+        - Id: 0
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoRunToBorder
+          Args: 
+          Childs: []
+          PreConditions: []
+        - Id: 0
+          Name: "\u672A\u547D\u540D"
+          ClassType: DoRoundMap
+          Args: 
+          Childs: []
+          PreConditions: []
+        PreConditions:
+        - Id: 0
+          Name: 
+          ClassType: PreIsPlayerSpecialState
+          Args: 
       PreConditions:
       - Id: 0
         Name: 
@@ -322,18 +354,10 @@ MonoBehaviour:
         Name: 
         ClassType: PreIsGround
         Args: 
-      - Id: 0
-        Name: 
-        ClassType: PreIsPlayerCanBeHit
-        Args: 
-      - Id: 0
-        Name: 
-        ClassType: PreIsPlayerSpecialState
-        Args: TheNot:true
     - Id: 0
       Name: "\u968F\u673A\u884C\u4E3A"
       ClassType: RandomSelector
-      Args: Weight:[40,30,30]
+      Args: Weight:[40,30,30,20]
       Childs:
       - Id: 0
         Name: "\u56F4\u7ED5\u884C\u8D70"
@@ -369,41 +393,25 @@ MonoBehaviour:
         Args: AttackTime:3,Move
         Childs: []
         PreConditions: []
+      - Id: 0
+        Name: "\u4E3B\u52A8\u653B\u51FB"
+        ClassType: DoRunToPlayer
+        Args: 
+        Childs: []
+        PreConditions:
+        - Id: 0
+          Name: 
+          ClassType: PreIsGround
+          Args: 
+        - Id: 0
+          Name: 
+          ClassType: PreIsPlayerCanBeHit
+          Args: 
       PreConditions:
       - Id: 0
         Name: 
         ClassType: PreIsPlayerInRange
         Args: Range:0.3,TheNot:true
-      - Id: 0
-        Name: 
-        ClassType: PreIsPlayerSpecialState
-        Args: TheNot:true
-    - Id: 0
-      Name: "\u56F4\u7ED5\u573A\u666F\u8D70\u52A8"
-      ClassType: Sequence
-      Args: 
-      Childs:
-      - Id: 0
-        Name: "\u672A\u547D\u540D"
-        ClassType: DoRoundMap
-        Args: 
-        Childs: []
-        PreConditions: []
-      - Id: 0
-        Name: "\u79FB\u52A8\u5230\u8FB9\u7F18"
-        ClassType: DoRunToBorder
-        Args: 
-        Childs: []
-        PreConditions: []
-      PreConditions:
-      - Id: 0
-        Name: 
-        ClassType: PreIsGround
-        Args: 
-      - Id: 0
-        Name: 
-        ClassType: PreIsPlayerSpecialState
-        Args: 
     PreConditions:
     - Id: 0
       Name: 

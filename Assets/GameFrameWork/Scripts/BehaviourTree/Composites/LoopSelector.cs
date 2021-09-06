@@ -35,7 +35,7 @@ namespace GameFrameWork.BehaviourTree
             Node child = GetChild(m_CurrChildIndex);
             if (child != null)
             {
-                if (child.CanExcute() && child.CheckPreCondition())
+                if (CheckPreCondition() && child.CanExcute() && child.CheckPreCondition())
                 {
                     if (m_CurrChildIndex != m_LastChildIndex)
                     {
