@@ -370,8 +370,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -577
-      y: 121
+      x: 140
+      y: 175
       width: 230
       height: 257
     Children:
@@ -387,8 +387,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -300
-        y: -10
+        x: 417
+        y: 44
         width: 230
         height: 205
       Children:
@@ -404,8 +404,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 24
-          y: -338
+          x: 741
+          y: -284
           width: 230
           height: 205
         Children: []
@@ -422,8 +422,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 24
-          y: -116
+          x: 741
+          y: -62
           width: 230
           height: 205
         Children: []
@@ -440,8 +440,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 25
-          y: 104
+          x: 742
+          y: 158
           width: 230
           height: 205
         Children: []
@@ -458,8 +458,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 24
-          y: 326
+          x: 741
+          y: 380
           width: 230
           height: 205
         Children:
@@ -475,8 +475,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 355
-            y: 90
+            x: 1072
+            y: 144
             width: 230
             height: 205
           Children: []
@@ -493,8 +493,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 365
-            y: 318
+            x: 1082
+            y: 372
             width: 230
             height: 205
           Children: []
@@ -511,8 +511,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 368
-            y: 543
+            x: 1085
+            y: 597
             width: 230
             height: 205
           Children: []
@@ -537,8 +537,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -297
-        y: 272
+        x: 420
+        y: 326
         width: 230
         height: 205
       Children: []
@@ -742,8 +742,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -332
-      y: -84.400024
+      x: 149
+      y: 475.59998
       width: 230
       height: 205
     Children:
@@ -759,8 +759,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -73
-        y: 312
+        x: 408
+        y: 872
         width: 230
         height: 257
       Children:
@@ -776,8 +776,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 250
-          y: 196
+          x: 731
+          y: 756
           width: 230
           height: 205
         Children: []
@@ -797,8 +797,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 220
-          y: 495
+          x: 702
+          y: 1055
           width: 230
           height: 205
         Children:
@@ -814,8 +814,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 537
-            y: 392
+            x: 1018
+            y: 952
             width: 230
             height: 205
           Children: []
@@ -832,8 +832,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 495
-            y: 650
+            x: 976
+            y: 1210
             width: 230
             height: 205
           Children: []
@@ -861,8 +861,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -31
-        y: -279
+        x: 450
+        y: 281
         width: 230
         height: 205
       Children:
@@ -878,8 +878,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 258
-          y: -764
+          x: 739
+          y: -204
           width: 230
           height: 205
         Children:
@@ -895,8 +895,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 564
-            y: -885
+            x: 1045
+            y: -325
             width: 230
             height: 205
           Children: []
@@ -913,8 +913,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 564
-            y: -646
+            x: 1045
+            y: -86
             width: 230
             height: 205
           Children: []
@@ -935,8 +935,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 259
-          y: -535
+          x: 740
+          y: 25
           width: 230
           height: 205
         Children: []
@@ -953,8 +953,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 260
-          y: -307
+          x: 741
+          y: 253
           width: 230
           height: 205
         Children: []
@@ -971,8 +971,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 259
-          y: -90
+          x: 740
+          y: 470
           width: 230
           height: 257
         Children: []

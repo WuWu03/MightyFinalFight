@@ -261,8 +261,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public override void Release()
     {
-        m_CurrCtrl.Release();
-        m_CurrCtrl = null;
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.Release();
+            m_CurrCtrl = null;
+        }
         base.Release();
     }
 
@@ -271,7 +274,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnResComplete(go, param);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
-        m_CurrCtrl.Start();
+
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.Start();
+        }
     }
 
     protected override void OnUpdate()
@@ -358,8 +365,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
+
         m_MoveDir = data.Dir;
-        m_CurrCtrl.ExitSkill();
         RoleMove roleMove = GetState<RoleMove>();
         roleMove.CanChangeDir = data.CanChangeDir;
         roleMove.IsCatch = data.IsCatch;
@@ -370,6 +381,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         m_MoveToPos = pos;
         m_IsAutoMove = true;
+
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
 
         if (moveComplete != null)
         {
@@ -383,7 +399,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             return;
         }
-        m_CurrCtrl.ExitSkill();
+
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
+
         RoleJump roleJump = GetState<RoleJump>();
         roleJump.CanChangeDir = !data.IsCatch && data.CanChangeDir;
         roleJump.Dir = data.Dir.x;
@@ -405,7 +426,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        m_CurrCtrl.ExitSkill();
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
 
         if (m_Health - data.AttackValue <= 0 && !data.IsSwoon)
         {
@@ -465,16 +489,20 @@ public class BaseRole : BaseAvatar, ICanBeHit
             PlayAnimation(AnimName.JumpDown);
         }
 
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
+
         m_TrapData = data;
-        SetBodyType(RigidbodyType2D.Dynamic);
         m_IsDropTrag = true;
-        m_CurrCtrl.ExitSkill();
+        SetBodyType(RigidbodyType2D.Dynamic);
     }
 
     public virtual void SetCatch(bool value)
     {
         m_IsBeCatch = value;
-        if (value)
+        if (value && m_CurrCtrl != null)
         {
             m_CurrCtrl.ExitSkill();
         }
@@ -484,7 +512,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         m_IsBeThrow = value;
 
-        if (value)
+        if (value && m_CurrCtrl != null)
         {
             m_CurrCtrl.ExitSkill();
         }
@@ -526,8 +554,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_IsDropGround = false;
         }
 
-        if (m_FsmMachine == null || !m_FsmMachine.IsRunning) return;
-        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
+        if (m_FsmMachine == null || !m_FsmMachine.IsRunning)
+        {
+            return;
+        }
+
+        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic)
+        {
+            return;
+        }
 
         UpdatePos2(transform.localPosition.x, Pos.y);
 
@@ -541,7 +576,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         CheckDropTrag();
 
-        if (!IsInGround || m_IsDropTrag) return;
+        if (!IsInGround || m_IsDropTrag)
+        {
+            return;
+        }
+
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.ExitSkill();
+        }
 
         m_IsDropGround = true;
         m_DropGourndTime = Time.time;
@@ -549,11 +592,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
         OnGroundEvent.RemoveAllListeners();
         OnGround();
         m_IsJumpAttack = false;
-        m_CurrCtrl.ExitSkill();
-
+ 
         if (IsAnyState(typeof(RoleSwoon)))
         {
-            if (!IsPlayComplete()) return;
+            if (!IsPlayComplete())
+            {
+                return;
+            }
             CheckGroundHurt();
             ResetRigidbody();
         }
@@ -576,7 +621,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckDropTrag()
     {
-        if (!m_IsDropTrag) return;
+        if (!m_IsDropTrag)
+        {
+            return;
+        }
 
         Rect visionRect = CameraMgr.Ins.GetVision();
 
@@ -649,7 +697,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckAutoMove()
     {
-        if(!m_IsAutoMove)
+        if (!m_IsResComplete || !IsInGround || !m_IsAutoMove)
         {
             return;
         }

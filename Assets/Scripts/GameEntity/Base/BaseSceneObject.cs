@@ -231,6 +231,7 @@ public class BaseSceneObject : BaseEntity
         }
 
         m_Dir = dir;
+
         if (m_Dir > 0) m_Dir = 1;
         if (m_Dir < 0) m_Dir = -1;
 
@@ -238,6 +239,7 @@ public class BaseSceneObject : BaseEntity
 
         if (m_Dir > 0) angleY = 0;
         else if (m_Dir < 0) angleY = 180;
+
         transform.localRotation = Quaternion.Euler(0, angleY, 0);
     }
 

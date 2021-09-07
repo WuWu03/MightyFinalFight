@@ -5,24 +5,34 @@ using UnityEngine;
 
 public class EffectMgr : BaseMgr<EffectMgr>
 {
-    public BaseEffect PlayEffect(string effectName, Vector3 pos, float playTime, float speed, GameFrameWorkAction playEndCallback = null)
+    public DBEffect PlayDBEffect(string effectName, Vector3 pos, float playTime = -1, float speed = 1f, GameFrameWorkAction playEndCallback = null)
     {
-        return PlayEffect<BaseEffect>(effectName, pos, playTime, speed, playEndCallback);
+        return PlayEffect<DBEffect>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
     }
 
-    public BaseEffect PlayEffect<T>(string effectName, Vector3 pos, float playTime, float speed, GameFrameWorkAction playEndCallback = null) where T : BaseEffect
+    public DBEffect PlayDBEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease, float playTime = -1, float speed = 1f, GameFrameWorkAction playEndCallback = null)
     {
-        return PlayEffect<T>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
+        return PlayEffect<DBEffect>(effectName, parent, pos, angles, isAutoPlay, isAutoRelease, playTime, speed, playEndCallback);
     }
 
-    public BaseEffect PlayEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease = true, float playTime = -1,float speed = 1f, GameFrameWorkAction playEndCallback = null)
+    public BaseEffect PlayEffect(string effectName, Vector3 pos, float playTime = -1, float speed = 1f, GameFrameWorkAction playEndCallback = null)
+    {
+        return PlayEffect<BaseEffect>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
+    }
+
+    public BaseEffect PlayEffect(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease = true, float playTime = -1, float speed = 1f, GameFrameWorkAction playEndCallback = null)
     {
         return PlayEffect<BaseEffect>(effectName, parent, pos, angles, isAutoPlay, isAutoRelease, playTime, speed, playEndCallback);
     }
 
-    public BaseEffect PlayEffect<T>(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease, float playTime, float speed, GameFrameWorkAction playEndCallback) where T : BaseEffect
+    public T PlayEffect<T>(string effectName, Vector3 pos, float playTime = -1, float speed = 1f, GameFrameWorkAction playEndCallback = null) where T : BaseEffect
     {
-        BaseEffect effect = EntityMgr.Ins.GetEntity<T>(effectName, parent);
+        return PlayEffect<T>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
+    }
+
+    public T PlayEffect<T>(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease, float playTime, float speed, GameFrameWorkAction playEndCallback) where T : BaseEffect
+    {
+        T effect = EntityMgr.Ins.GetEntity<T>(effectName, parent);
         effect.transform.localPosition = pos;
         effect.transform.localRotation = Quaternion.Euler(angles);
         effect.PlayTime = playTime;

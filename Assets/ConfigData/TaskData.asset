@@ -202,7 +202,7 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 2004
-      Hp: 300
+      Hp: 2
       AttackValue: 20
       DefenseValue: 20
       HpBarWidth: 300
@@ -280,14 +280,7 @@ MonoBehaviour:
     KillAll: 0
     BarrelsAll: 0
     TriggerType: 5
-    Targets:
-    - EntityID: 200501
-      SourceID: 2005
-      Hp: 30000
-      AttackValue: 20
-      DefenseValue: 20
-      HpBarWidth: 300
-      Pos: {x: 230, y: -43}
+    Targets: []
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0

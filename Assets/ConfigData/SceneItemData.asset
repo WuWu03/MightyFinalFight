@@ -33,25 +33,25 @@ MonoBehaviour:
     CanDrop: 1
   - Id: 1004
     Name: Tea
-    AssetName: Item/Tea
+    AssetName: SceneItem/Tea
     Type: 1
     Value: 1
     CanDrop: 0
   - Id: 1005
     Name: Apple
-    AssetName: Item/Apple
+    AssetName: SceneItem/Apple
     Type: 1
     Value: 2
     CanDrop: 0
   - Id: 1006
     Name: Cake
-    AssetName: Item/Cake
+    AssetName: SceneItem/Cake
     Type: 1
     Value: 3
     CanDrop: 0
   - Id: 1007
     Name: Meat
-    AssetName: Item/Meat
+    AssetName: SceneItem/Meat
     Type: 1
     Value: 34
     CanDrop: 0

@@ -62,42 +62,34 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public void Play()
+    public virtual void Play()
     {
         m_IsPlaying = true;
-        m_Timer = Time.time;
 
-        if (m_UAC != null)
+        if (m_IsResComplete)
         {
-            m_UAC.animation.timeScale = m_Speed;
-            m_UAC.animation.Play();
+            m_Timer = Time.time;
+            m_ResGO.SetActive(true);
         }
     }
 
     public override void Release()
     {
         base.Release();
-        m_UAC.animation.Stop();
-        m_UAC.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_PlayTime = 0;
         m_Timer = -1;
         m_IsAutoRelease = false;
         m_IsPlaying = false;
         m_PlayEndCallback = null;
-        m_UAC = null;
     }
 
     protected override void OnResComplete(GameObject go,object[] param)
     {
         base.OnResComplete(go, param);
-        m_UAC = go.GetComponent<DragonBones.UnityArmatureComponent>();
-        m_UAC.animation.Stop();
-        m_UAC.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
-
         if (m_IsPlaying)
         {
-            m_UAC.animation.timeScale = m_Speed;
-            m_UAC.animation.Play();
+            m_Timer = Time.time;
+            m_ResGO.SetActive(true);
         }
     }
 
@@ -125,16 +117,11 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    protected virtual void SoundEvent(string type, EventObject eventObject)
-    {
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/" + eventObject.name);
-    }
+    protected float m_Speed = 1f;
+    protected bool m_IsPlaying = false;
 
     private float m_PlayTime = 0;
     private float m_Timer = -1;
-    private float m_Speed = 1f;
     private bool m_IsAutoRelease = false;
-    private bool m_IsPlaying = false;
     private GameFrameWorkAction m_PlayEndCallback = null;
-    private DragonBones.UnityArmatureComponent m_UAC = null;
 }

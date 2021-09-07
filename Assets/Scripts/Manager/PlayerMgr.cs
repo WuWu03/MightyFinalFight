@@ -171,6 +171,11 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
+    public void Jump(Vector2 dir,bool canChangeDir,bool isForceJump)
+    {
+        m_CurrCtrl.Jump(dir, canChangeDir, isForceJump);
+    }
+
     public void AddExp(int value)
     {
         m_EXP += value;

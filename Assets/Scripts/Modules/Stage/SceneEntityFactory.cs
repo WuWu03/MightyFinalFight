@@ -5,6 +5,17 @@ using UnityEngine;
 
 public static class SceneEntityFactory
 {
+    public static BaseRole CreateRole(string name, string asset, float moveSpeed, Vector2 pos)
+    {
+        BaseRole role = EntityMgr.Ins.GetEntity<BaseRole>(name);
+        role.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, asset));
+        role.SetLayer(LayerName.Unit);
+        role.SetPos(pos);
+        role.MoveSpeed = moveSpeed;
+
+        return role;
+    }
+
     public static void CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
     {
         if (data == null)

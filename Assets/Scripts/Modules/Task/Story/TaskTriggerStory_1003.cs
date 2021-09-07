@@ -47,6 +47,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         {
             m_IsSwoon = true;
             Rect vision = CameraMgr.Ins.GetVision();
+            PlayerMgr.Ins.Player.SetActive(true);
             PlayerMgr.Ins.Player.SetPos2(vision.xMin + 0.5f, vision.yMax);
             PlayerMgr.Ins.Player.PlayAnimation(AnimName.SwoonUp);
             PlayerMgr.Ins.Player.transform.DOMoveY(-0.6f, 2.2f).SetEase(Ease.Linear).OnComplete(OnPlayComplete);
