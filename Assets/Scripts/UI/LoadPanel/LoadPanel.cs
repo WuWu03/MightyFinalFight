@@ -22,12 +22,22 @@ public class LoadPanel : BasePanel
 		m_Component = new LoadPanelComponent(UIRefRoot);
 	}
 
-    protected override void OnOpen()
+	protected override void OnOpen()
 	{
+		m_Component.ImgShade.color = new Color(0, 0, 0, 0);
+
 		if (m_IsDoFade)
 		{
+			if (!m_IsAuto)
+			{
+				m_Component.ImgShade.DOFade(m_EndValue, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
+			}
+			else
+			{
+				m_Component.ImgShade.DOFade(1, m_Duration).SetDelay(m_Delay).OnComplete(OnAutoFadeComplete);
+			}
+
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOFade(m_EndValue, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
 		}
 	}
 
@@ -38,6 +48,7 @@ public class LoadPanel : BasePanel
 		m_EndValue = endValue;
 		m_Delay = delay;
 		m_IsDoFade = true;
+		m_IsAuto = false;
 
 		if (m_Component != null)
 		{
@@ -46,8 +57,31 @@ public class LoadPanel : BasePanel
 		}
 	}
 
+	public void DOFadeAuto(float duration,float delay, GameFrameWorkAction onComplete)
+    {
+		m_OnComplete = onComplete;
+		m_Duration = duration;
+		m_EndValue = 0;
+		m_Delay = delay;
+		m_IsDoFade = true;
+		m_IsAuto = true;
+
+		if (m_Component != null)
+		{
+			m_IsDoFade = false;
+			m_Component.ImgShade.DOFade(1, duration).SetDelay(delay).OnComplete(OnAutoFadeComplete);
+		}
+	}
+
+	private void OnAutoFadeComplete()
+    {
+		m_Component.ImgShade.DOFade(0, m_Duration).OnComplete(OnComplete);
+	}
+
 	private void OnComplete()
 	{
+		m_IsAuto = false;
+		m_IsDoFade = false;
 		m_OnComplete?.Invoke();
 		m_OnComplete = null;
 	}
@@ -60,10 +94,12 @@ public class LoadPanel : BasePanel
 	protected override void OnClose()
 	{
 		m_IsDoFade = false;
+		m_IsAuto = false;
 		m_Duration = 0;
 		m_EndValue = 0;
 		m_Delay = 0;
 		m_OnComplete = null;
+		m_Component.ImgShade.color = new Color(0, 0, 0, 0);
 	}
 
 	protected override void OnDestroy()
@@ -72,6 +108,7 @@ public class LoadPanel : BasePanel
 	}
 
 	private bool m_IsDoFade = false;
+	private bool m_IsAuto = false;
 	private float m_Duration = 0;
 	private float m_EndValue = 0;
 	private float m_Delay = 0;

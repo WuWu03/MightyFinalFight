@@ -23,6 +23,45 @@ public class TitlePanel : BasePanel
 
 	protected override void OnOpen()
 	{
+		TitleAnim();
+	}
+
+	protected override void OnUpdate()
+	{
+		if(!m_CanStart)
+        {
+			return;
+        }
+
+		if (Input.GetButtonDown("Start") && !m_IsButtonDown)
+		{
+			m_IsButtonDown = true;
+			StartGame();
+		}
+	}
+
+	protected override void OnClose()
+	{
+
+	}
+
+	protected override void OnDestroy()
+	{
+	}
+
+	private void StartGame()
+	{
+		UIMgr.Ins.Open<LoadPanel>();
+		UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1,0.3f, 0.2f, ()=> 
+		{
+			UIMgr.Ins.Open<RoleSelectPanel>();
+		});
+	}
+
+	private void TitleAnim()
+    {
+		m_CanStart = false;
+		m_IsButtonDown = false;
 		m_Component.ImgCapcom.color = new Color(1, 1, 1, 0);
 		m_Component.TxtDeveloper.color = new Color(1, 1, 1, 0);
 		m_Component.ImgLogoBG.fillAmount = 0f;
@@ -37,6 +76,7 @@ public class TitlePanel : BasePanel
 
 		Sequence sequence = DOTween.Sequence();
 		sequence.Append(m_Component.ImgCapcom.DOFade(1, 2));
+		sequence.AppendInterval(1f);
 		sequence.Append(m_Component.ImgCapcom.DOFade(0, 2));
 		sequence.AppendCallback(() =>
 		{
@@ -44,6 +84,7 @@ public class TitlePanel : BasePanel
 			m_Component.TxtDeveloper.gameObject.SetActive(true);
 		});
 		sequence.Append(m_Component.TxtDeveloper.DOFade(1, 2));
+		sequence.AppendInterval(1f);
 		sequence.Append(m_Component.TxtDeveloper.DOFade(0, 2));
 		sequence.AppendCallback(() =>
 		{
@@ -52,7 +93,7 @@ public class TitlePanel : BasePanel
 			m_Component.ImgLogo.transform.localScale = Vector3.one * 3;
 		});
 		sequence.Append(m_Component.ImgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
-		sequence.InsertCallback(8.2f,() =>
+		sequence.InsertCallback(10.2f, () =>
 		{
 			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/BicycleKick");
 		});
@@ -67,32 +108,12 @@ public class TitlePanel : BasePanel
 		sequence.AppendCallback(() =>
 		{
 			m_Component.TxtStart.gameObject.SetActive(true);
-			SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm13Title", true);
+			SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm13Title", false);
 			m_CanStart = true;
 		});
 	}
 
-	protected override void OnUpdate()
-	{
-		if(!m_CanStart)
-        {
-			return;
-        }
-
-		if (Input.GetButtonDown("Start"))
-		{
-			UIMgr.Ins.Open<RoleSelectPanel>();
-		}
-	}
-
-	protected override void OnClose()
-	{
-	}
-
-	protected override void OnDestroy()
-	{
-	}
-
 	private TitlePanelComponent m_Component = null;
 	private bool m_CanStart = false;
+	private bool m_IsButtonDown = false;
 }
