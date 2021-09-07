@@ -62,7 +62,7 @@ namespace GameFrameWork.Serialize
     {
         public int Id;
 
-        public int CompareTo(object obj)
+        public virtual int CompareTo(object obj)
         {
             BaseConfigData data = obj as BaseConfigData;
             if (data.Id < this.Id)

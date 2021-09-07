@@ -389,6 +389,13 @@ namespace GameFrameWork.Editor
                 SaveConfig();
                 ShowNotification(new GUIContent("保存成功"));
             }
+
+            if (GUILayout.Button("重新排序"))
+            {
+                m_ListData.Sort();
+                SaveConfig();
+                ShowNotification(new GUIContent("排序成功"));
+            }
             GUI.enabled = true;
         }
 

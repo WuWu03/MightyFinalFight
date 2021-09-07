@@ -40,5 +40,11 @@ namespace GameFrameWork.Serialize
         public string Pattern;
         public string AssetPath;
         public string AssetBundlePath;
+
+        public override int CompareTo(object obj)
+        {
+            AssetBundleData data = obj as AssetBundleData;
+            return string.Compare(this.AssetPath, data.AssetPath);
+        }
     }
 }
