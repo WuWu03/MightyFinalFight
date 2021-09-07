@@ -199,8 +199,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -549
-      y: -59
+      x: -441
+      y: -66
       width: 230
       height: 257
     Children:
@@ -216,8 +216,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -253
-        y: -35
+        x: -145
+        y: -42
         width: 230
         height: 205
       Children:
@@ -233,8 +233,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 49
-          y: -360
+          x: 157
+          y: -367
           width: 230
           height: 205
         Children: []
@@ -251,8 +251,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 49
-          y: -143
+          x: 157
+          y: -150
           width: 230
           height: 205
         Children: []
@@ -269,8 +269,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 46
-          y: 81
+          x: 154
+          y: 74
           width: 230
           height: 205
         Children: []
@@ -287,8 +287,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: 48
-          y: 303
+          x: 156
+          y: 296
           width: 230
           height: 205
         Children:
@@ -304,8 +304,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 389
-            y: 61
+            x: 497
+            y: 54
             width: 230
             height: 205
           Children: []
@@ -322,8 +322,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 385
-            y: 303
+            x: 493
+            y: 296
             width: 230
             height: 205
           Children: []
@@ -340,8 +340,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 385
-            y: 526
+            x: 493
+            y: 519
             width: 230
             height: 205
           Children: []
@@ -352,11 +352,11 @@ MonoBehaviour:
           Args: 
       PreConditions: []
     PreConditions:
+    - ClassType: PreIsLockPlayer
+      SelectIndex: 5
+      Args: Distance:10
     - ClassType: PreIsInSpecialState
       SelectIndex: 4
-      Args: Distance:10
-    - ClassType: PreIsGround
-      SelectIndex: 3
       Args: TheNot:true
   - Id: 2003
     Name: AxlTree

@@ -54,6 +54,7 @@ public class TitlePanel : BasePanel
 		UIMgr.Ins.Open<LoadPanel>();
 		UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1,0.3f, 0.2f, ()=> 
 		{
+			UIMgr.Ins.Close<LoadPanel>();
 			UIMgr.Ins.Open<RoleSelectPanel>();
 		});
 	}

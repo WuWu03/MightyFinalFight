@@ -143,11 +143,11 @@ MonoBehaviour:
     PreConditions:
     - Id: 0
       Name: 
-      ClassType: PreIsInSpecialState
+      ClassType: PreIsLockPlayer
       Args: Distance:10
     - Id: 0
       Name: 
-      ClassType: PreIsGround
+      ClassType: PreIsInSpecialState
       Args: TheNot:true
   - Id: 2003
     Name: AxlTree

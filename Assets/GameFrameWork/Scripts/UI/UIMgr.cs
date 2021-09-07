@@ -311,9 +311,36 @@ namespace GameFrameWork.UI
                 panel.Destroy();
                 Destroy(panel.gameObject);
                 m_ListOpenPanel.Remove(panel);
+                SortMutex();
             }
 
             return panel;
+        }
+
+        private void SortMutex()
+        {
+            int count = m_StackMutexPanel.Count;
+            Stack<BasePanel> temp = new Stack<BasePanel>();
+
+            while (count > 0)
+            {
+                BasePanel basePanel = m_StackMutexPanel.Pop();
+
+                if(basePanel.IsInit)
+                {
+                    temp.Push(basePanel);
+                }
+
+                count--;
+            }
+
+            count = temp.Count;
+
+            while (count > 0)
+            {
+                m_StackMutexPanel.Push(temp.Pop());
+                count--;
+            }
         }
 
         private void OnResComplete(GameObject go, object[] param)
@@ -362,6 +389,9 @@ namespace GameFrameWork.UI
                     panel.Destroy();
                     Destroy(panel.gameObject);
                 }
+
+                if (m_ListAlways.Count <= 10)
+                    SortMutex();
             }
 
             for (int i = 0; i < m_ListOpenPanel.Count; i++)

@@ -27,11 +27,53 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 2001
-      Hp: 3
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -38}
+    - EntityID: 2
+      SourceID: 2001
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 300
+      Pos: {x: -178, y: -46}
+    - EntityID: 3
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -54}
+    - EntityID: 4
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -62}
+    - EntityID: 5
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -70}
+    - EntityID: 6
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 100
+      Pos: {x: -100, y: -54}
+    - EntityID: 7
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 100
+      Pos: {x: -495, y: -62}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
