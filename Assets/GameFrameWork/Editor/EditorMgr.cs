@@ -29,6 +29,13 @@ namespace GameFrameWork.Editor
 			EmojiBuilder.BuildEmoji();
 		}
 
+		[MenuItem("GameFrameWork/UI/AtlasMaker")]
+		public static void OpenAtlasMaker()
+		{
+			EditorWindow window = EditorWindow.GetWindow<UIAtlasMaker>();
+			window.Show();
+		}
+
 		[MenuItem("GameFrameWork/SpriteSpliter")]
 		public static void OpenSpriteSpliter()
 		{

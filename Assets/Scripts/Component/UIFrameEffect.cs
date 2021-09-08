@@ -8,10 +8,7 @@ public class UIFrameEffect : MonoBehaviour
     public Sprite[] Sprites;
     public bool IsLoop = true;
     public int FrameRate = 24;
-    private float m_PreFrameTime = 0;
-    private float m_FramteTimer = 0;
-    private int m_FrameIndex = 0;
-    private Image m_ImgSprite = null;
+  
 
     private void Awake()
     {
@@ -33,20 +30,21 @@ public class UIFrameEffect : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Sprites == null || Sprites.Length < 1)
+        if (m_IsStop || Sprites == null || Sprites.Length < 1)
         {
             return;
         }
 
         if (m_FrameIndex >= Sprites.Length - 1)
         {
-            if (!IsLoop) return;
+            if (!IsLoop)
+            {
+                return;
+            }
+
             m_FrameIndex = -1;
-
-
-
         }
 
         m_FramteTimer += Time.deltaTime;
@@ -58,4 +56,20 @@ public class UIFrameEffect : MonoBehaviour
             m_ImgSprite.sprite = Sprites[m_FrameIndex];
         }
     }
+
+    public void StartFrame()
+    {
+        m_IsStop = false;
+    }
+
+    public void StopFrame()
+    {
+        m_IsStop = true;
+    }
+
+    private bool m_IsStop = false;
+    private float m_PreFrameTime = 0;
+    private float m_FramteTimer = 0;
+    private int m_FrameIndex = 0;
+    private Image m_ImgSprite = null;
 }

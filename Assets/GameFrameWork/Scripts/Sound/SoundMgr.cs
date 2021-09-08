@@ -51,7 +51,10 @@ namespace GameFrameWork.Sound
                     }
                 }
 
-                if (isAllInPlaying) return;
+                if (isAllInPlaying)
+                {
+                    return;
+                }
             }
 
             StopCurrent();
@@ -79,18 +82,28 @@ namespace GameFrameWork.Sound
 
             StopCurrent();
 
+            if (name.Contains("bgm14Character"))
+            {
+                Debug.Log("播放角色了？？");
+            }
+
             m_QueueAudioGroup.Clear();
             m_QueueAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
         }
 
+        public void StopBGM()
+        {
+            StopCurrent();
+        }
+
         public void StartBGM()
         {
-            if (m_CurrPlayAudio == null || !m_IsBGMStop)
+            if (m_CurrPlayAudio == null || !m_IsBGMPause)
             {
                 return;
             }
 
-            m_IsBGMStop = false;
+            m_IsBGMPause = false;
             m_PlayStamp = Time.time - m_StopStamp;
 
             if (m_BGMSource != null)
@@ -99,14 +112,14 @@ namespace GameFrameWork.Sound
             }
         }
 
-        public void StopBGM()
+        public void PauseBGM()
         {
             if (m_CurrPlayAudio == null)
             {
                 return;
             }
 
-            m_IsBGMStop = true;
+            m_IsBGMPause = true;
             m_StopStamp = Time.time - m_PlayStamp;
 
             if (m_BGMSource != null)
@@ -117,7 +130,7 @@ namespace GameFrameWork.Sound
 
         public bool IsBGMPlaying(string fullName)
         {
-            if(m_IsBGMStop)
+            if(m_IsBGMPause)
             {
                 return false;
             }
@@ -168,7 +181,7 @@ namespace GameFrameWork.Sound
             m_BGMSource.loop = isLoop;
             m_BGMSource.volume = fadeTime > 0f ? 0f : volume;
 
-            if (!m_IsBGMStop)
+            if (!m_IsBGMPause)
             {
                 m_BGMSource.Play();
 
@@ -225,7 +238,7 @@ namespace GameFrameWork.Sound
 
         private void CheckAudioGroup()
         {
-            if(m_IsBGMStop)
+            if(m_IsBGMPause)
             {
                 return;
             }
@@ -279,7 +292,7 @@ namespace GameFrameWork.Sound
             m_SoundStack.Clear();
         }
 
-        private bool m_IsBGMStop = false;
+        private bool m_IsBGMPause = false;
         private float m_PlayStamp = 0f;
         private float m_StopStamp = 0f;
         private AudioSource m_BGMSource = null;

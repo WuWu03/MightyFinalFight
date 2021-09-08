@@ -121,14 +121,19 @@ namespace GameFrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-        public void Open<T>(params object[] param) where T : BasePanel, new()
+        public T Open<T>(params object[] param) where T : BasePanel, new()
         {
-            RealOpen(typeof(T).Name, param);
+            BasePanel panel = RealOpen(typeof(T).Name, param);
+            if (panel == null)
+            {
+                return default(T);
+            }
+            return panel as T;
         }
 
-        public void Open(string panelName, params object[] param)
+        public BasePanel Open(string panelName, params object[] param)
         {
-            RealOpen(panelName, param);
+            return RealOpen(panelName, param);
         }
 
         public T GetPanel<T>() where T : BasePanel
@@ -183,13 +188,13 @@ namespace GameFrameWork.UI
             RealClose(panel.PanelName, isForceDestroy);
         }
 
-        private void RealOpen(string panelName, object[] param)
+        private BasePanel RealOpen(string panelName, object[] param)
         {
             BasePanel openPanel = OpenPanel(panelName, param);
 
             if (openPanel == null || openPanel.PanelType == Type.Pop)
             {
-                return;
+                return openPanel;
             }
 
             if (m_StackMutexPanel.Count > 0)
@@ -198,6 +203,7 @@ namespace GameFrameWork.UI
             }
 
             m_StackMutexPanel.Push(openPanel);
+            return openPanel;
         }
 
         private void RealClose(string panelName, bool isForceDestroy)
@@ -254,7 +260,7 @@ namespace GameFrameWork.UI
 
             if (panel != null && panel.IsOpen)
             {
-                return null;
+                return panel;
             }
 
             if (panel == null)
@@ -349,7 +355,7 @@ namespace GameFrameWork.UI
             wait.Panel.Init(go, wait.Param);
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             if (m_QueueWaitLoadPanel.Count > 0)
             {

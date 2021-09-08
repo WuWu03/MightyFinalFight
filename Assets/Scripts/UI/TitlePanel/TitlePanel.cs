@@ -33,9 +33,9 @@ public class TitlePanel : BasePanel
 			return;
         }
 
-		if (Input.GetButtonDown("Start") && !m_IsButtonDown)
+		if (Input.GetButtonDown("Start"))
 		{
-			m_IsButtonDown = true;
+			m_CanStart = false;
 			StartGame();
 		}
 	}
@@ -51,18 +51,17 @@ public class TitlePanel : BasePanel
 
 	private void StartGame()
 	{
-		UIMgr.Ins.Open<LoadPanel>();
-		UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1,0.3f, 0.2f, ()=> 
+		UIMgr.Ins.Open<LoadPanel>().DOFade(0, 1, 0.3f, 0.2f, () =>
 		{
 			UIMgr.Ins.Close<LoadPanel>();
 			UIMgr.Ins.Open<RoleSelectPanel>();
+			InnerClose();
 		});
 	}
 
 	private void TitleAnim()
     {
 		m_CanStart = false;
-		m_IsButtonDown = false;
 		m_Component.ImgCapcom.color = new Color(1, 1, 1, 0);
 		m_Component.TxtDeveloper.color = new Color(1, 1, 1, 0);
 		m_Component.ImgLogoBG.fillAmount = 0f;
@@ -116,5 +115,4 @@ public class TitlePanel : BasePanel
 
 	private TitlePanelComponent m_Component = null;
 	private bool m_CanStart = false;
-	private bool m_IsButtonDown = false;
 }

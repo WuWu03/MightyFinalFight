@@ -16,9 +16,15 @@ namespace GameFrameWork.Pool
                 m_Args = args;
             }
 
-            public void Call(T go)
+            public bool Call(T go)
             {
-                m_Callback?.Invoke(go, m_Args);
+                if (m_Callback != null)
+                {
+                    m_Callback?.Invoke(go, m_Args);
+                    return true;
+                }
+
+                return false;
             }
 
             private GameFrameWorkAction<T, object[]> m_Callback;
@@ -113,7 +119,11 @@ namespace GameFrameWork.Pool
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
                 T go = m_NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
-                listLoadRequest[i].Call(go);
+
+                if (!listLoadRequest[i].Call(go))
+                {
+                    Put(resPath, go);
+                }
             }
 
             m_DicLoadCallback.Remove(resPath);

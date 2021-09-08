@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619928229}
   - component: {fileID: 619928230}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LoadPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 2056449679}
   - component: {fileID: 2056449682}
   - component: {fileID: 2056449681}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgShade
   m_TagString: Untagged
   m_Icon: {fileID: 0}

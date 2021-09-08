@@ -15,7 +15,19 @@ MonoBehaviour:
   Datas:
   - Id: 1001
     CharacterId: 1001
+    Asset: CharacterUI/CodyUI
+    Anim: Show
+    Sound: Sound/CodyBullet
+    ShowTime: 2.5
   - Id: 1002
     CharacterId: 1002
+    Asset: 
+    Anim: 
+    Sound: 
+    ShowTime: 0
   - Id: 1003
     CharacterId: 1003
+    Asset: 
+    Anim: 
+    Sound: 
+    ShowTime: 0

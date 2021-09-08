@@ -14,7 +14,7 @@ public class LoadPanel : BasePanel
 	public override string PanelName { get { return "LoadPanel"; } }
 	public override float PanelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type PanelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
+	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.ThirdLevel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Always; } }
 
 	protected override void OnInit(object[] param)
@@ -24,28 +24,29 @@ public class LoadPanel : BasePanel
 
 	protected override void OnOpen()
 	{
-		m_Component.ImgShade.color = new Color(0, 0, 0, 0);
-
 		if (m_IsDoFade)
 		{
+			m_IsDoFade = false;
+			m_Component.ImgShade.DOKill();
+			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
+
 			if (!m_IsAuto)
 			{
-				m_Component.ImgShade.DOFade(m_EndValue, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
+				m_Component.ImgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
 			}
 			else
 			{
-				m_Component.ImgShade.DOFade(1, m_Duration).SetDelay(m_Delay).OnComplete(OnAutoFadeComplete);
+				m_Component.ImgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnAutoFadeComplete);
 			}
-
-			m_IsDoFade = false;
 		}
 	}
 
-	public void DOFade(float endValue, float duration, float delay, GameFrameWorkAction onComplete)
+	public void DOFade(float from, float to, float duration, float delay, GameFrameWorkAction onComplete)
 	{
 		m_OnComplete = onComplete;
 		m_Duration = duration;
-		m_EndValue = endValue;
+		m_From = from;
+		m_To = to;
 		m_Delay = delay;
 		m_IsDoFade = true;
 		m_IsAuto = false;
@@ -53,15 +54,18 @@ public class LoadPanel : BasePanel
 		if (m_Component != null)
 		{
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOFade(endValue, duration).SetDelay(delay).OnComplete(OnComplete);
+			m_Component.ImgShade.DOKill();
+			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
+			m_Component.ImgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnComplete);
 		}
 	}
 
-	public void DOFadeAuto(float duration,float delay, GameFrameWorkAction onComplete)
-    {
+	public void DOFadeAuto(float duration, float delay, GameFrameWorkAction onComplete)
+	{
 		m_OnComplete = onComplete;
 		m_Duration = duration;
-		m_EndValue = 0;
+		m_From = 0;
+		m_To = 1;
 		m_Delay = delay;
 		m_IsDoFade = true;
 		m_IsAuto = true;
@@ -69,13 +73,16 @@ public class LoadPanel : BasePanel
 		if (m_Component != null)
 		{
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOFade(1, duration).SetDelay(delay).OnComplete(OnAutoFadeComplete);
+			m_Component.ImgShade.DOKill();
+			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
+			m_Component.ImgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnAutoFadeComplete);
 		}
 	}
 
 	private void OnAutoFadeComplete()
     {
-		m_Component.ImgShade.DOFade(0, m_Duration).OnComplete(OnComplete);
+		m_To = 0;
+		m_Component.ImgShade.DOFade(m_To, m_Duration).OnComplete(OnComplete);
 	}
 
 	private void OnComplete()
@@ -96,10 +103,9 @@ public class LoadPanel : BasePanel
 		m_IsDoFade = false;
 		m_IsAuto = false;
 		m_Duration = 0;
-		m_EndValue = 0;
+		m_To = 0;
 		m_Delay = 0;
 		m_OnComplete = null;
-		m_Component.ImgShade.color = new Color(0, 0, 0, 0);
 	}
 
 	protected override void OnDestroy()
@@ -110,7 +116,8 @@ public class LoadPanel : BasePanel
 	private bool m_IsDoFade = false;
 	private bool m_IsAuto = false;
 	private float m_Duration = 0;
-	private float m_EndValue = 0;
+	private float m_From = 0;
+	private float m_To = 0;
 	private float m_Delay = 0;
 	private GameFrameWorkAction m_OnComplete = null;
 	private LoadPanelComponent m_Component = null;

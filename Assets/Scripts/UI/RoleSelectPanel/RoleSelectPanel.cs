@@ -27,6 +27,8 @@ public class RoleSelectPanel : BasePanel
 
     protected override void OnOpen()
     {
+		Debug.Log("Open=============");
+		m_HasSelect = false;
 		SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm14Character", true);
 		m_Component.ImgSelectRect.gameObject.SetActive(true);
 		m_Component.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
@@ -38,6 +40,11 @@ public class RoleSelectPanel : BasePanel
 
     protected override void OnUpdate()
     {
+		if(m_HasSelect)
+        {
+			return;
+        }
+
 		Vector2 axis = InputMgr.GetAxis(true);
 		if (axis.y != 0)
 		{
@@ -56,12 +63,10 @@ public class RoleSelectPanel : BasePanel
 			m_Component.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
 		}
 
-		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButton("X")))
+		if (m_CurrSelectIndex != -1 && (Input.GetButtonDown("A") || Input.GetButtonDown("X")))
 		{
-			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
-			PlayerMgr.Ins.SelectId = StaticConfig.RoleSelectConfig.Datas[m_CurrSelectIndex].CharacterId;
-			StageMgr.Ins.Enter(StaticConfig.StageConfig.GetDataByIndex(0).Id);
-			InnerClose();
+			m_HasSelect = true;
+			EnterStage();
 		}
 	}
 
@@ -94,6 +99,23 @@ public class RoleSelectPanel : BasePanel
 		}
 	}
 
+	private void EnterStage()
+	{
+		SoundMgr.Ins.StopBGM();
+		SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
+		PlayerMgr.Ins.SelectId = StaticConfig.RoleSelectConfig.Datas[m_CurrSelectIndex].CharacterId;
+		PlayerMgr.Ins.StageId = StaticConfig.StageConfig.GetDataByIndex(0).Id;
+		m_Component.ImgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
+
+		UIMgr.Ins.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0.5f, () =>
+		{
+			UIMgr.Ins.Close<LoadPanel>();
+			UIMgr.Ins.Open<StagePanel>();
+			InnerClose();
+		});
+	}
+
+	private bool m_HasSelect = false;
 	private int m_CurrSelectIndex = -1;
 	private RoleSelectPanelComponent m_Component = null;
 }

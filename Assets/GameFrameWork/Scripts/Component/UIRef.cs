@@ -95,6 +95,18 @@ public class UIRef : MonoBehaviour
         }
     }
 
+    public bool IsLayout
+    {
+        get
+        {
+            return m_IsLayout;
+        }
+        set
+        {
+            m_IsLayout = value;
+        }
+    }
+
     /// <summary>
     /// 循环列表
     /// </summary>
@@ -131,6 +143,7 @@ public class UIRef : MonoBehaviour
     [SerializeField] private string m_Desc;
     [SerializeField] private bool m_IsLayoutItem;
     [SerializeField] private bool m_IsLayoutItemVariable;
+    [SerializeField] private bool m_IsLayout;
     [SerializeField] private bool m_IsLoopLayout;
     [SerializeField] private bool m_IsCopyRefStr;
 }

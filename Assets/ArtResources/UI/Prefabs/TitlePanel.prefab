@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 313977147}
   - component: {fileID: 313977150}
   - component: {fileID: 313977149}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgRetro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 315845260}
   - component: {fileID: 315845261}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TitlePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 671055483}
   - component: {fileID: 671055485}
   - component: {fileID: 671055484}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 701202343}
   - component: {fileID: 701202346}
   - component: {fileID: 701202345}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLogoBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 1151043728}
   - component: {fileID: 1151043730}
   - component: {fileID: 1151043729}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 1302789500}
   - component: {fileID: 1302789502}
   - component: {fileID: 1302789501}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 1472321394}
   - component: {fileID: 1472321396}
   - component: {fileID: 1472321395}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 1794442526}
   - component: {fileID: 1794442525}
   - component: {fileID: 1794442528}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtDeveloper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 2017069365}
   - component: {fileID: 2017069368}
   - component: {fileID: 2017069367}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgCapcom
   m_TagString: Untagged
   m_Icon: {fileID: 0}

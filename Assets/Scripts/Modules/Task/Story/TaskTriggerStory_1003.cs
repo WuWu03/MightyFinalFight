@@ -18,7 +18,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         m_IsSwoon = false;
         m_BossState = false;
         PlayerMgr.Ins.CanContrl = false;
-        SoundMgr.Ins.StopBGM();
+        SoundMgr.Ins.PauseBGM();
         SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/FallDownHigh");
         UIMgr.Ins.GetPanel<MainPanel>().Hide();
 

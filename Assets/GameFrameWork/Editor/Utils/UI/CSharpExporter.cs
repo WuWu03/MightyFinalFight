@@ -50,7 +50,7 @@ namespace GameFrameWork.Editor
 
             for (int i = 0; i < uiRefs.Length; i++)
             {
-                if (uiRefs[i].IsLayoutContent())
+                if (uiRefs[i].IsLayoutContent() && uiRefs[i].IsLayout)
                 {
                     layoutRefList.Add(uiRefs[i]);
                 }

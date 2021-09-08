@@ -28,7 +28,6 @@ using System.IO;
 
 public class EmojiBuilder
 {
-
 	private const string OutputPath = "Assets/Emoji/Output/";
 	private const string InputPath = "/Emoji/Input/";
 

@@ -76,14 +76,28 @@ namespace GameFrameWork.Editor
 
             if (m_UIRef.IsLayoutContent())
             {
-                SerializedProperty isLoopLayout = EditorUtility.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
-                if (m_UIRef.IsLoopLayout != isLoopLayout.boolValue)
+                SerializedProperty isLayout = EditorUtility.DrawProperty("列表", serializedObject, "m_IsLayout", new GUILayoutOption[0]);
+                if (m_UIRef.IsLayout != isLayout.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.IsLoopLayout = isLoopLayout.boolValue;
+                    m_UIRef.IsLayout = isLayout.boolValue;
+                }
+
+                if (m_UIRef.IsLayout)
+                {
+                    SerializedProperty isLoopLayout = EditorUtility.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
+                    if (m_UIRef.IsLoopLayout != isLoopLayout.boolValue)
+                    {
+                        UnityEditor.EditorUtility.SetDirty(m_UIRef);
+                        m_UIRef.IsLoopLayout = isLoopLayout.boolValue;
+                    }
                 }
             }
-            else m_UIRef.IsLoopLayout = false;
+            else
+            {
+                m_UIRef.IsLayout = false;
+                m_UIRef.IsLoopLayout = false;
+            }
 
             UIRef parentLayoutRef = m_UIRef.transform.parent == null ? null : m_UIRef.transform.parent.GetComponent<UIRef>();
             if (parentLayoutRef != null && parentLayoutRef.IsLayoutContent())

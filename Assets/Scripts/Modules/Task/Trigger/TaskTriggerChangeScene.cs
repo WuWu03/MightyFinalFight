@@ -12,8 +12,7 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        UIMgr.Ins.Open<LoadPanel>();
-        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1, 0.3f, 0.5f, ChangeScene);
+        UIMgr.Ins.Open<LoadPanel>().DOFade(0, 1, 0.3f, 0.5f, ChangeScene);
     }
 
     public override void Trigger()
@@ -28,7 +27,7 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
 
     private void LoadSceneSuccess()
     {
-        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(0f, 0.3f, 0.5f, OnComplete);
+        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0.5f, OnComplete);
     }
 
     private void OnComplete()

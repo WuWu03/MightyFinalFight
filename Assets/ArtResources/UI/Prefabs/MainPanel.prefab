@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 143870781}
   - component: {fileID: 143870784}
   - component: {fileID: 143870783}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 199984715}
   - component: {fileID: 199984714}
   - component: {fileID: 199984713}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 252952247}
   - component: {fileID: 252952246}
   - component: {fileID: 252952245}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PlayerHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 305565305}
   - component: {fileID: 305565308}
   - component: {fileID: 305565307}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtExp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 322625191}
   - component: {fileID: 322625190}
   - component: {fileID: 322625189}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtPlayerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 504768930}
   - component: {fileID: 504768932}
   - component: {fileID: 504768931}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 562871413}
   - component: {fileID: 562871415}
   - component: {fileID: 562871414}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLevel3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 674840360}
   - component: {fileID: 674840362}
   - component: {fileID: 674840361}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -734,7 +734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 693409553}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,7 +773,7 @@ GameObject:
   - component: {fileID: 743783145}
   - component: {fileID: 743783146}
   - component: {fileID: 5394626839086763745}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -853,7 +853,7 @@ GameObject:
   - component: {fileID: 873496742}
   - component: {fileID: 873496744}
   - component: {fileID: 873496743}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 1007864714}
   - component: {fileID: 1007864716}
   - component: {fileID: 1007864715}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLevel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,7 +1007,7 @@ GameObject:
   - component: {fileID: 1073889340}
   - component: {fileID: 1073889342}
   - component: {fileID: 1073889341}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLevel5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1084,7 +1084,7 @@ GameObject:
   - component: {fileID: 1149134742}
   - component: {fileID: 1149134745}
   - component: {fileID: 1149134746}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtEnemyDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1192,7 +1192,7 @@ GameObject:
   - component: {fileID: 1182122093}
   - component: {fileID: 1182122095}
   - component: {fileID: 1182122094}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 1186272848}
   - component: {fileID: 1186272850}
   - component: {fileID: 1186272849}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1343,7 +1343,7 @@ GameObject:
   - component: {fileID: 1363721682}
   - component: {fileID: 1363721681}
   - component: {fileID: 1363721680}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1437,7 +1437,7 @@ GameObject:
   - component: {fileID: 1416097193}
   - component: {fileID: 1416097192}
   - component: {fileID: 1416097191}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PlayerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1529,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514623960}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 1655960278}
   - component: {fileID: 1655960280}
   - component: {fileID: 1655960279}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLevel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1644,7 +1644,7 @@ GameObject:
   - component: {fileID: 1682481263}
   - component: {fileID: 1682481262}
   - component: {fileID: 1682481261}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1738,7 +1738,7 @@ GameObject:
   - component: {fileID: 1725198713}
   - component: {fileID: 1725198712}
   - component: {fileID: 1725198711}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtPlayerDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1831,7 +1831,7 @@ GameObject:
   - component: {fileID: 1746242804}
   - component: {fileID: 1746242807}
   - component: {fileID: 1746242806}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LevelList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1910,7 +1910,7 @@ GameObject:
   - component: {fileID: 1826900178}
   - component: {fileID: 1826900177}
   - component: {fileID: 1826900176}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TxtStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2003,7 +2003,7 @@ GameObject:
   - component: {fileID: 1861697064}
   - component: {fileID: 1861697066}
   - component: {fileID: 1861697065}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2083,7 +2083,7 @@ GameObject:
   - component: {fileID: 1970342134}
   - component: {fileID: 1970342133}
   - component: {fileID: 1970342135}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2174,7 +2174,7 @@ GameObject:
   - component: {fileID: 2006755758}
   - component: {fileID: 2006755761}
   - component: {fileID: 2006755760}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2254,7 +2254,7 @@ GameObject:
   - component: {fileID: 2032371814}
   - component: {fileID: 2032371816}
   - component: {fileID: 2032371815}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2331,7 +2331,7 @@ GameObject:
   - component: {fileID: 2072616669}
   - component: {fileID: 2072616668}
   - component: {fileID: 2072616667}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EnemyHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2478,7 +2478,7 @@ GameObject:
   - component: {fileID: 2115285213}
   - component: {fileID: 2115285215}
   - component: {fileID: 2115285214}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ImgLevel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

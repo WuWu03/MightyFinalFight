@@ -13,4 +13,8 @@ public class RoleSelectConfig : BaseScriptableObject<RoleSelectConfigData>
 public class RoleSelectConfigData: BaseConfigData
 {
     public int CharacterId;
+    public string Asset;
+    public string Anim;
+    public string Sound;
+    public float ShowTime;
 }

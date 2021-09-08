@@ -80,9 +80,25 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
 
     public int SelectId
     {
+        get
+        {
+            return m_SelectId;
+        }
         set
         {
             m_SelectId = value;
+        }
+    }
+
+    public int StageId
+    {
+        get
+        {
+            return m_StageId;
+        }
+        set
+        {
+            m_StageId = value;
         }
     }
 
@@ -275,6 +291,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_Level = 0;
     private int m_Continue = 0;
     private int m_SelectId = 0;
+    private int m_StageId = 0;
     private float m_CurrSpeed = 0f;
     private bool m_CanCtrl = false;
 }
