@@ -23,7 +23,6 @@ public class TitlePanel : BasePanel
 
 	protected override void OnOpen()
 	{
-		Sprite s = Resources.Load("sss_0") as Sprite;
 		TitleAnim();
 	}
 
