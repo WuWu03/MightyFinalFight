@@ -30,8 +30,10 @@ namespace GameFrameWork.Serialize
     {
         public enum AssetType
         {
-            MapSingle,
-            Map,
+            MapSingle,//路径下每个资源单独打ab
+            Multiple,//路径下所有资源打成一个ab
+            Single,//路径的资源打成ab
+            MapMultiple,//路径下所有子路径分别达成一个ab
         }
 
         public AssetType BundleType;
