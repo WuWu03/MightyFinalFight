@@ -21,7 +21,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         m_Danmd = SceneEntityFactory.CreateRole("Damnd", "Character/Damnd", 1f, new Vector2(4.7f, -0.08f));
         m_Danmd.SetDir(-1);
         PlayerMgr.Ins.CanContrl = false;
-        PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(3.2f, -0.27f),OnAutoMove1);
+        PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(3.2f, -0.27f), OnAutoMove1);
         m_Pit.SetActive(false);
     }
 
@@ -50,6 +50,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         });
 
         PlayerMgr.Ins.Player.PlayAnimation(AnimName.JumpDown);
+        SoundMgr.Ins.FadeBGM(0, 0.3f, 0.7f);
         PlayerMgr.Ins.Player.transform.DOLocalMoveY(-0.85f, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
             SceneMgr.Ins.LoadSceneSuccessEvent += OnSceneLoaded;
@@ -60,6 +61,8 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
 
     private void OnSceneLoaded(LoadSceneSuccessEventArgs t)
     {
+        SoundMgr.Ins.PauseBGM();
+        SoundMgr.Ins.FadeBGM(1, 0, 0.1f);
         UIMgr.Ins.GetPanel<MainPanel>().Hide();
     }
 

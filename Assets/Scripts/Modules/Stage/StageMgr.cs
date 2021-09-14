@@ -43,26 +43,56 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
+    public event GameFrameWorkAction OnStageStartEnterEvent
+    {
+        add
+        {
+            m_OnStageStartEnterEvent += value;
+        }
+        remove
+        {
+            m_OnStageStartEnterEvent -= value;
+        }
+    }
+
+    public event GameFrameWorkAction OnStageEndEnterEvent
+    {
+        add
+        {
+            m_OnStageEndEnterEvent += value;
+        }
+        remove
+        {
+            m_OnStageEndEnterEvent -= value;
+        }
+    }
+
     protected override void OnAwake()
     {
 
     }
 
-    public void Enter(int id, GameFrameWorkAction onEnter = null)
+
+    public void StageEnter(int id)
     {
         if (m_CurrStageData != null && m_CurrStageData.Id == id)
         {
             return;
         }
 
-        m_OnEnterEvent = onEnter;
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
 
         PlayerMgr.Ins.CanContrl = false; 
         CameraMgr.Ins.EndFollow();
         SceneEntityMgr.Ins.ReleaseSceneOjbect();
         SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
-        SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
+
+        UIMgr.Ins.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
+        {
+            m_OnStageStartEnterEvent?.Invoke();
+            m_OnStageStartEnterEvent = null;
+            SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
+        });  
     }
 
     public Rect GetMoveArea()
@@ -138,28 +168,35 @@ public class StageMgr : BaseMgr<StageMgr>
                 group[i] = AudioGroup.Create(ResDefine.AUDIO_CLIP_PATH, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
             }
 
-            SoundMgr.Ins.PlayBGMGroup(group);
+            SoundMgr.Ins.PlayBGMGroup(group, true);
         }
-        
-        UIMgr.Ins.Open<MainPanel>();
 
-        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
+        if (!UIMgr.Ins.IsPanelOpen<MainPanel>())
         {
-            TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
+            UIMgr.Ins.Open<MainPanel>();
         }
 
         SceneEntityMgr.Ins.CreateSceneBuildings(m_CurrStageData);
         PlayerMgr.Ins.InitPlayer();
         PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
-        CameraMgr.Ins.StartFollow();
 
-        PlayerMgr.Ins.CanContrl = true;
-        m_OnEnterEvent?.Invoke();
-        m_OnEnterEvent = null;
+        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
+        {
+            UIMgr.Ins.Close<LoadPanel>();
+            CameraMgr.Ins.StartFollow();
+            PlayerMgr.Ins.CanContrl = true;
+            m_OnStageEndEnterEvent?.Invoke();
+            m_OnStageEndEnterEvent = null;
+
+            for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
+            {
+                TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
+            }
+        });
     }
 
-
-    private GameFrameWorkAction m_OnEnterEvent = null;
+    private event GameFrameWorkAction m_OnStageStartEnterEvent = null;
+    private event GameFrameWorkAction m_OnStageEndEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
 }

@@ -12,7 +12,7 @@ public class TitlePanel : BasePanel
 {
 	public override string PanelName { get { return "TitlePanel"; } }
 	public override float PanelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
+	public override UIMgr.Type PanelType { get { return UIMgr.Type.Pop; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
 

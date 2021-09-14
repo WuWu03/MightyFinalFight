@@ -23,6 +23,11 @@ public class BaseRoleCtrl : BaseCtrl
     {
         m_Data = data;
         m_SkillManager = new SkillManager(m_Owner, data.SkillIds);
+
+        if (m_Owner.IsResComplete && !IsRunning())
+        {
+            Start();
+        }
     }
 
     protected override void OnRelease()
@@ -30,6 +35,7 @@ public class BaseRoleCtrl : BaseCtrl
         ReferencePool.Release(m_Data);
         m_SkillManager.Release();
         m_SkillManager = null;
+        base.OnRelease();
     }
 
     public void Move(Vector2 dir, bool canChangeDir = true)

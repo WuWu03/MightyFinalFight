@@ -1262,10 +1262,10 @@ MonoBehaviour:
   m_PanelName: StagePanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 2
+  PanelType: 3
   PanelPreLoadType: 0
-  PanelCloseMode: 1
-  PanelLayer: 2
+  PanelCloseMode: 2
+  PanelLayer: 3
   IsCustomLayer: 0
   UnLoadTime: 0
   PanelPath: Assets/Scripts/UI/StagePanel/StagePanel.cs

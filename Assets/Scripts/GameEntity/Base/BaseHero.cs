@@ -100,11 +100,11 @@ public class BaseHero : BaseRole
 
     public override void Release()
     {
-        base.Release();
         m_DicAttacker.Clear();
         m_ListCatchTarget.Clear();
         m_ListCatchTarget = null;
         m_DicAttacker = null;
+        base.Release();
     }
 
     protected override void OnUpdate()

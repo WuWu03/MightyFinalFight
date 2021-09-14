@@ -30,9 +30,9 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public override void Release()
     {
-        base.Release();
         m_FsmMachine.ShutDown();
         m_FsmMachine = null;
+        base.Release();
     }
 
     public Vector2 GetCurrTriggerSize()

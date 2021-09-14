@@ -47,8 +47,8 @@ public class BaseSceneItem : BaseGravityObject
 
     public override void Release()
     {
-        base.Release();
         m_Owner = null;
+        base.Release();
     }
 
     protected DBTrigger m_DBTrigger = null;

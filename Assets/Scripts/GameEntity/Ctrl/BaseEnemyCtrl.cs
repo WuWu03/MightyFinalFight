@@ -13,9 +13,9 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     public override void SetData(BaseRoleSkillData data)
     {
-        base.SetData(data);
         BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
         m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreeIds);
+        base.SetData(data);
     }
 
     protected override void OnStart()
@@ -32,9 +32,9 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     protected override void OnRelease()
     {
-        base.OnRelease();
         m_BehaviourTreeMgr.ShutDown();
         m_BehaviourTreeMgr = null;
+        base.OnRelease();
     }
 
     public void OppositePlayer()

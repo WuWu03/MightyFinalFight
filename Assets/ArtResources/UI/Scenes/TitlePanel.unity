@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &313977149
@@ -380,6 +381,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &701202342
@@ -438,6 +440,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &701202345
@@ -572,6 +575,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1302789499
@@ -1035,6 +1039,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1794442528
@@ -1181,6 +1186,7 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
   m_IsLoopLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2017069367
@@ -1254,10 +1260,10 @@ MonoBehaviour:
   m_PanelName: TitlePanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 2
+  PanelType: 3
   PanelPreLoadType: 0
   PanelCloseMode: 2
-  PanelLayer: 2
+  PanelLayer: 3
   IsCustomLayer: 0
   UnLoadTime: 0
   PanelPath: Assets/Scripts/UI/TitlePanel/TitlePanel.cs

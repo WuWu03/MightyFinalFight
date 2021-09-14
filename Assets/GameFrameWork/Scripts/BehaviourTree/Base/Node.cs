@@ -42,6 +42,10 @@ namespace GameFrameWork.BehaviourTree
         public void Destroy()
         {
             OnDestroy();
+            m_State = BehaviorTreeState.None;
+            m_Name = string.Empty;
+            m_Args = string.Empty;
+            m_Owner = null;
         }
 
         public virtual void AddChild(Node node) { }

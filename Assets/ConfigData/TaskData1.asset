@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 42e10e8fbf8634b44842e1807cf31514, type: 3}
-  m_Name: TaskData
+  m_Name: TaskData1
   m_EditorClassIdentifier: 
   Datas:
   - Id: 1001
@@ -26,12 +26,54 @@ MonoBehaviour:
     TriggerType: 1
     Targets:
     - EntityID: 1
-      SourceID: 2003
-      Hp: 1
+      SourceID: 2001
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -38}
+    - EntityID: 2
+      SourceID: 2001
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 300
+      Pos: {x: -178, y: -46}
+    - EntityID: 3
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -54}
+    - EntityID: 4
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -62}
+    - EntityID: 5
+      SourceID: 2001
+      Hp: 300
+      AttackValue: 15
+      DefenseValue: 7
+      HpBarWidth: 150
+      Pos: {x: -178, y: -70}
+    - EntityID: 6
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 100
+      Pos: {x: -100, y: -54}
+    - EntityID: 7
+      SourceID: 2002
+      Hp: 250
+      AttackValue: 10
+      DefenseValue: 5
+      HpBarWidth: 100
+      Pos: {x: -495, y: -62}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -74,11 +116,18 @@ MonoBehaviour:
     Targets:
     - EntityID: 7
       SourceID: 2003
-      Hp: 1
+      Hp: 500
       AttackValue: 15
       DefenseValue: 10
       HpBarWidth: 300
       Pos: {x: 300, y: -54}
+    - EntityID: 8
+      SourceID: 2003
+      Hp: 500
+      AttackValue: 15
+      DefenseValue: 10
+      HpBarWidth: 300
+      Pos: {x: 300, y: -62}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -219,7 +268,14 @@ MonoBehaviour:
     KillAll: 1
     BarrelsAll: 0
     TriggerType: 0
-    Targets: []
+    Targets:
+    - EntityID: 1
+      SourceID: 1004
+      Hp: 300
+      AttackValue: 20
+      DefenseValue: 20
+      HpBarWidth: 300
+      Pos: {x: -116, y: -30}
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0

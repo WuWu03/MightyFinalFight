@@ -16,7 +16,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     public BaseEnemy CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
         BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.CharacterConfig.GetData(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
-        enemy.OnDead += OnEnemyDead;
+        enemy.OnDeadEvent += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
         return enemy;
     }
@@ -106,7 +106,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         {
             if (m_ListCurrEnemy[i].EntityID == id)
             {
-                m_ListCurrEnemy[i].OnDead -= OnEnemyDead;
+                m_ListCurrEnemy[i].OnDeadEvent -= OnEnemyDead;
                 m_ListCurrEnemy.RemoveAt(i);
             }
         }

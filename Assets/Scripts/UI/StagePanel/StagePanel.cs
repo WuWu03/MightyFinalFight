@@ -18,7 +18,7 @@ public class StagePanel : BasePanel
 {
 	public override string PanelName { get { return "StagePanel"; } }
 	public override float PanelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type PanelType { get { return UIMgr.Type.Normal; } }
+	public override UIMgr.Type PanelType { get { return UIMgr.Type.Pop; } }
 	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
 	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Always; } }
 
@@ -62,22 +62,8 @@ public class StagePanel : BasePanel
 
 	private void OnTimer()
 	{
-		SceneMgr.Ins.LoadSceneSuccessEvent += OnSceneLoaded;
-		UIMgr.Ins.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
-		{
-			PlayerMgr.Ins.CanContrl = false;
-			StageMgr.Ins.Enter(PlayerMgr.Ins.StageId);
-		});
-	}
-
-	private void OnSceneLoaded(LoadSceneSuccessEventArgs t)
-	{
-		UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
-		{
-			PlayerMgr.Ins.CanContrl = true;
-			UIMgr.Ins.Close<LoadPanel>();
-			InnerClose();
-		});
+		StageMgr.Ins.OnStageStartEnterEvent += InnerClose;
+		StageMgr.Ins.StageEnter(PlayerMgr.Ins.StageId);
 	}
 
     protected override void OnUpdate()

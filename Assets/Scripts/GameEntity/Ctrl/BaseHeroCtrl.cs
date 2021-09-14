@@ -5,13 +5,13 @@ public class BaseHeroCtrl : BaseRoleCtrl
 {
     public override void SetData(BaseRoleSkillData data)
     {
-        base.SetData(data);
         BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
         m_CatchAttackID = heroSkillData.CatchAttackID;
         m_ThrowAttackID = heroSkillData.ThrowAttackID;
         m_WeaponAttackID = heroSkillData.WeaponAttackID;
         m_ThrowWeaponID = heroSkillData.ThrowWeaponID;
         m_JumpAttackID = heroSkillData.JumpAttackIds[1];
+        base.SetData(data);
     }
 
     protected override void NormalAttack(Vector2 dir)

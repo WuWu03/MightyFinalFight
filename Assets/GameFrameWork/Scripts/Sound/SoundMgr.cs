@@ -9,6 +9,18 @@ namespace GameFrameWork.Sound
 {
     public class SoundMgr : BaseMgr<SoundMgr>
     {
+        public event GameFrameWorkAction OnBGMFadeCompleteEvent
+        {
+            add
+            {
+                m_OnBGMFadeCompleteEvent += value;
+            }
+            remove
+            {
+                m_OnBGMFadeCompleteEvent -= value;
+            }
+        }
+
         protected override void OnAwake()
         {
             m_Root = new GameObject("SoundMgr");
@@ -36,15 +48,15 @@ namespace GameFrameWork.Sound
             InnerPlaySound(path, name, volume);
         }
 
-        public void PlayBGMGroup(AudioGroup[] audioGroups,bool forceReplay = false)
+        public void PlayBGMGroup(AudioGroup[] audioGroups, bool isForcePlay = false)
         {
-            if(!forceReplay)
+            if (!isForcePlay)
             {
                 bool isAllInPlaying = true;
 
                 for (int i = 0; i < audioGroups.Length; i++)
                 {
-                    if(!IsBGMPlaying(audioGroups[i].GetPath()))
+                    if (!IsBGMPlaying(audioGroups[i].GetPath()))
                     {
                         isAllInPlaying = false;
                         break;
@@ -57,14 +69,14 @@ namespace GameFrameWork.Sound
                 }
             }
 
-            StopCurrent();
+            StopCurrent(isForcePlay);
 
             for (int i = 0; i < audioGroups.Length; i++)
             {
                 m_QueueAudioGroup.Enqueue(audioGroups[i]);
             }
 
-            if(audioGroups.Length > 1)
+            if (audioGroups.Length > 1)
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
@@ -73,19 +85,14 @@ namespace GameFrameWork.Sound
             }
         }
 
-        public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0, bool isForceReplay = false)
+        public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0, bool isForcePlay = false)
         {
-            if (!isForceReplay && IsBGMPlaying(PathUtil.FormatPath(path, name)))
+            if (!isForcePlay && IsBGMPlaying(PathUtil.FormatPath(path, name)))
             {
                 return;
             }
 
-            StopCurrent();
-
-            if (name.Contains("bgm14Character"))
-            {
-                Debug.Log("播放角色了？？");
-            }
+            StopCurrent(isForcePlay);
 
             m_QueueAudioGroup.Clear();
             m_QueueAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
@@ -93,18 +100,22 @@ namespace GameFrameWork.Sound
 
         public void StopBGM()
         {
-            StopCurrent();
+            StopCurrent(true);
         }
 
         public void StartBGM()
         {
-            if (m_CurrPlayAudio == null || !m_IsBGMPause)
+            if (!m_IsBGMPause)
             {
                 return;
             }
 
             m_IsBGMPause = false;
-            m_PlayStamp = Time.time - m_StopStamp;
+
+            if (m_CurrPlayAudio == null)
+            {
+                m_PlayStamp = Time.time - m_StopStamp;
+            }
 
             if (m_BGMSource != null)
             {
@@ -114,17 +125,29 @@ namespace GameFrameWork.Sound
 
         public void PauseBGM()
         {
-            if (m_CurrPlayAudio == null)
+            if (m_IsBGMPause)
             {
                 return;
             }
 
             m_IsBGMPause = true;
-            m_StopStamp = Time.time - m_PlayStamp;
+
+            if (m_CurrPlayAudio == null)
+            {
+                m_StopStamp = Time.time - m_PlayStamp;
+            }
 
             if (m_BGMSource != null)
             {
                 m_BGMSource.Stop();
+            }
+        }
+
+        public void FadeBGM(float endValue, float delay, float duration)
+        {
+            if (m_BGMSource != null)
+            {
+                m_BGMSource.DOFade(endValue, duration).SetEase(Ease.Linear).SetDelay(delay).OnComplete(OnBGMFadeComplete);
             }
         }
 
@@ -146,6 +169,12 @@ namespace GameFrameWork.Sound
             }
 
             return false;
+        }
+
+        private void OnBGMFadeComplete()
+        {
+            m_OnBGMFadeCompleteEvent?.Invoke();
+            m_OnBGMFadeCompleteEvent = null;
         }
 
         private void InnerPlaySound(string path, string name, float volume)
@@ -273,7 +302,7 @@ namespace GameFrameWork.Sound
             }
         }
 
-        private void StopCurrent()
+        private void StopCurrent(bool isForceStop = false)
         {
             if (m_CurrPlayAudio != null)
             {
@@ -282,6 +311,11 @@ namespace GameFrameWork.Sound
                 m_BGMSource.Stop();
                 m_CurrPlayAudio = null;
                 m_BGMSource.clip = null;
+            }
+
+            if(isForceStop)
+            {
+                m_QueueAudioGroup.Clear();
             }
         }
 
@@ -295,6 +329,7 @@ namespace GameFrameWork.Sound
         private bool m_IsBGMPause = false;
         private float m_PlayStamp = 0f;
         private float m_StopStamp = 0f;
+        private event GameFrameWorkAction m_OnBGMFadeCompleteEvent = null;
         private AudioSource m_BGMSource = null;
         private AudioGroup m_CurrPlayAudio = null;
         private Queue<AudioGroup> m_QueueAudioGroup = null;

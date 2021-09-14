@@ -91,10 +91,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     public override void Release()
     {
-        base.Release();
         m_FsmMachine.ShutDown();
         m_FsmMachine = null;
         m_BarrelData = null;
+        base.Release();
     }
 
     public void OnHurtMsg(HurtData data)

@@ -45,6 +45,11 @@ public class PreIsDefense : PreCondition
         return false;
     }
 
+    protected override void OnDestroy()
+    {
+        m_Owner.Owner.OnHurtEvent -= OnHurtEvent;
+    }
+
     private float m_HurtTimer = -1;
     private bool m_IsDefense = false;
     private new BaseEnemyCtrl m_Owner = null;

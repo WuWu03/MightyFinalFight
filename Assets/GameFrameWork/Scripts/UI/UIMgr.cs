@@ -197,12 +197,24 @@ namespace GameFrameWork.UI
                 return openPanel;
             }
 
+            bool canMutex = false;
+
             if (m_StackMutexPanel.Count > 0)
             {
-                ClosePanel(m_StackMutexPanel.Peek().PanelName, false);
+                BasePanel panel = m_StackMutexPanel.Peek();
+
+                if (!panel.PanelName.Equals(panelName) && panel.PanelType != Type.Root)
+                {
+                    ClosePanel(panel.PanelName, false);
+                    canMutex = true;
+                }
             }
 
-            m_StackMutexPanel.Push(openPanel);
+            if (canMutex)
+            {
+                m_StackMutexPanel.Push(openPanel);
+            }
+
             return openPanel;
         }
 
@@ -227,9 +239,7 @@ namespace GameFrameWork.UI
 
             if (m_StackMutexPanel.Count > 0)
             {
-                BasePanel lastPanel = m_StackMutexPanel.Peek();
-                lastPanel.Open();
-                m_ListOpenPanel.Add(lastPanel);
+                m_StackMutexPanel.Peek().Open();
             }
         }
 

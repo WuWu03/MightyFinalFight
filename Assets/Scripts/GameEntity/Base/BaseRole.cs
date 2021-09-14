@@ -261,11 +261,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public override void Release()
     {
+        m_AutoMoveComplete.RemoveAllListeners();
+        m_OnHurtEvent = null;
+
         if (m_CurrCtrl != null)
         {
             m_CurrCtrl.Release();
             m_CurrCtrl = null;
         }
+
         base.Release();
     }
 

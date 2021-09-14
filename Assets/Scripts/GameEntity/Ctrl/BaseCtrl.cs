@@ -28,6 +28,11 @@ public abstract class BaseCtrl
         m_IsRunning = false;
     }
 
+    public bool IsRunning()
+    {
+        return m_IsRunning;
+    }
+
     public void Update()
     {
         if (m_Owner == null || !m_IsRunning)
@@ -48,9 +53,9 @@ public abstract class BaseCtrl
 
     public void Release()
     {
+        OnRelease();
         m_Owner = null;
         m_IsRunning = false;
-        OnRelease();
     }
 
     protected virtual void OnInit() { }
