@@ -43,7 +43,7 @@ namespace GameFrameWork.Pool
         protected override void OnUpdate()
         {
             base.OnUpdate();
-
+            
             if (Time.time - m_CollectTimer >= COLLECT_TIME)
             {
                 m_CollectTimer = Time.time;

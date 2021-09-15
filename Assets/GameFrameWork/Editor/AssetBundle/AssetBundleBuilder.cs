@@ -26,8 +26,7 @@ namespace GameFrameWork.Editor
                 else HandleLuaFile();
             }
 
-
-            if (GenerateBuildMap())
+            if (GenerateBuildMap(config))
             {
                 BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
                 BuildFileIndex();
@@ -60,9 +59,8 @@ namespace GameFrameWork.Editor
         /// <summary>
         /// 生成打包列表
         /// </summary>
-        private static bool GenerateBuildMap()
+        private static bool GenerateBuildMap(AssetBundleConfig config)
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
             for (int i = 0; i < config.Datas.Count; i++)
             {
                 if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)

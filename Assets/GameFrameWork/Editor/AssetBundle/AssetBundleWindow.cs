@@ -22,7 +22,6 @@ namespace GameFrameWork.Editor
 
         private void OnDisable()
         {
-            Debug.Log("保存数据");
             SaveConfig();
         }
 
@@ -208,6 +207,19 @@ namespace GameFrameWork.Editor
                         m_ListPatternIndex[i] = EditorGUILayout.Popup("文件过滤：", m_ListPatternIndex[i], m_AssetBundleConfig.ListPattern.ToArray());
                         m_ListData[i].Pattern = m_AssetBundleConfig.ListPattern[m_ListPatternIndex[i]];
                     }
+
+                    GUI.enabled = true;
+                    if (GUILayout.Button("选中该资源/路径"))
+                    {
+                        string assetPath = m_ListData[i].AssetPath.Substring(0, m_ListData[i].AssetPath.LastIndexOf("/"));
+                        UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath(assetPath);
+                        if (obj != null)
+                        {
+                            EditorGUIUtility.PingObject(obj);
+                            Selection.activeObject = obj;
+                        }
+                    }
+                    GUI.enabled = !m_AssetBundleConfig.LockConfig;
 
                     GUILayout.EndVertical();
                 });
