@@ -11,6 +11,18 @@ using UnityEngine.SceneManagement;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
+    public int NextStageId
+    {
+        get
+        {
+            return m_NextStageId;
+        }
+        set
+        {
+            m_NextStageId = value;
+        }
+    }
+
     public int StageIndex
     {
         get
@@ -72,6 +84,10 @@ public class StageMgr : BaseMgr<StageMgr>
 
     }
 
+    public void StageEnterNext()
+    {
+        StageEnter(m_NextStageId);
+    }
 
     public void StageEnter(int id)
     {
@@ -199,4 +215,5 @@ public class StageMgr : BaseMgr<StageMgr>
     private event GameFrameWorkAction m_OnStageStartEnterEvent = null;
     private event GameFrameWorkAction m_OnStageEndEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
+    private int m_NextStageId = 0;
 }

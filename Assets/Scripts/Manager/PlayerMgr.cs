@@ -5,9 +5,10 @@ using GameFrameWork.Input;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
 using GameFrameWork.Utility;
+using System;
 using UnityEngine;
 
-public class PlayerMgr : MonoSingleton<PlayerMgr>
+public class PlayerMgr : BaseMgr<PlayerMgr>
 {
     public BaseHero Player
     {
@@ -78,28 +79,32 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         }
     }
 
-    public int SelectId
+    public int SelectCharacterId
     {
         get
         {
-            return m_SelectId;
+            return m_SelectCharacterId;
         }
         set
         {
-            m_SelectId = value;
+            m_SelectCharacterId = value;
         }
     }
 
-    public int StageId
+    protected override void OnAwake()
     {
-        get
-        {
-            return m_StageId;
-        }
-        set
-        {
-            m_StageId = value;
-        }
+        base.OnAwake();
+        InputMgr.Ins.AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical");
+        InputMgr.Ins.AddKey(KeyType.A, "A");
+        InputMgr.Ins.AddKey(KeyType.B, "B");
+        InputMgr.Ins.AddKey(KeyType.X, "X", KeyType.A, true);
+        InputMgr.Ins.AddKey(KeyType.Y, "Y", KeyType.B, true);
+        InputMgr.Ins.AddKey(KeyType.Start, "Start");
+        InputMgr.Ins.AddKey(KeyType.Select, "Select");
+        InputMgr.Ins.AddKey(KeyType.LB, "LB");
+        InputMgr.Ins.AddKey(KeyType.RB, "RB");
+        InputMgr.Ins.AddKey(KeyType.LT, "LT");
+        InputMgr.Ins.AddKey(KeyType.RT, "RT");
     }
 
     public void InitPlayer()
@@ -114,8 +119,8 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_Level = 1;
         m_EXP = 0;
 
-        m_CharacterData = StaticConfig.CharacterConfig.GetData(m_SelectId);
-        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectId).Levels[m_Level - 1];
+        m_CharacterData = StaticConfig.CharacterConfig.GetData(m_SelectCharacterId);
+        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectCharacterId).Levels[m_Level - 1];
         m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
@@ -154,19 +159,21 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_CharacterData.Skills[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.Ins.AddKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
+                InputMgr.Ins.AddComboKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
             }
         }
 
         m_CanCtrl = true;
 
         CameraMgr.Ins.SetTarget(m_Player.transform);
-        InputMgr.Ins.GetDirection = delegate () { return m_Player.Dir; };
+
+        InputMgr.Ins.GetDirection = GetDirction;
         InputMgr.Ins.AfterTrigger = AfterTrigger;
         InputMgr.Ins.GetPreconditon = GetPreCondition;
         InputMgr.Ins.IsRunning = true;
     }
 
+ 
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
@@ -175,7 +182,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         if (Life < 1)
         {
             CameraMgr.Ins.EndFollow();
-            InputMgr.Ins.RemoveAllKeyEvent();
+            InputMgr.Ins.RemoveAllComboKeyEvent();
 
             m_Player.Release();
             m_Player = null;
@@ -237,6 +244,16 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
         m_CurrSpeed = 0f;
     }
 
+    private float GetDirction()
+    {
+        if (m_Player == null)
+        {
+            return 1;
+        }
+
+        return m_Player.Dir;
+    }
+
     private bool AfterTrigger()
     {
         if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Health <= 0 || !m_CanCtrl)
@@ -244,33 +261,28 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
             return false;
         }
 
-        Vector2 asix = InputMgr.GetAxis();
+        Vector2 asix = InputMgr.Ins.GetAxis(AxisType.LeftAxis);
         bool result = asix.x != 0 || asix.y != 0;
 
         m_CurrCtrl.Move(asix);
 
-        if (Input.GetButtonDown("A") || Input.GetButton("X"))
+        if (InputMgr.Ins.GetKeyDown(KeyType.A, true) || InputMgr.Ins.GetKeyDown(KeyType.X))
         {
-            m_CurrCtrl.Attack(InputMgr.GetAxis());
+            m_CurrCtrl.Attack(asix);
             result = true;
         }
 
-        if (Input.GetButtonDown("B") || Input.GetButton("Y"))
+        if (InputMgr.Ins.GetKeyDown(KeyType.B, true) || InputMgr.Ins.GetKeyDown(KeyType.Y))
         {
-            m_CurrCtrl.Jump(InputMgr.GetAxis(), m_CharacterData.Id != 2001);
+            m_CurrCtrl.Jump(asix, m_CharacterData.Id != 2001);
             result = true;
         }
 
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            m_CurrCtrl.Skill(1001007);
-        }
         return result;
     }
 
     private bool GetPreCondition(int id)
-    {
-        
+    {    
         SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
         bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
         return a;
@@ -290,8 +302,7 @@ public class PlayerMgr : MonoSingleton<PlayerMgr>
     private int m_EXP = 0;
     private int m_Level = 0;
     private int m_Continue = 0;
-    private int m_SelectId = 0;
-    private int m_StageId = 0;
+    private int m_SelectCharacterId = 0;
     private float m_CurrSpeed = 0f;
     private bool m_CanCtrl = false;
 }

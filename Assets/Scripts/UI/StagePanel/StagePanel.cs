@@ -29,8 +29,8 @@ public class StagePanel : BasePanel
 
 	protected override void OnOpen()
 	{
-		int stageId = PlayerMgr.Ins.StageId;
-		int characterId = PlayerMgr.Ins.SelectId;
+		int stageId = StageMgr.Ins.NextStageId;
+		int characterId = PlayerMgr.Ins.SelectCharacterId;
 
 		StageConfigData stageConfigData = StaticConfig.StageConfig.GetData(stageId);
 		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
@@ -48,7 +48,7 @@ public class StagePanel : BasePanel
 
     private void OnLoaded(GameObject go, object[] args)
     {
-		int characterId = PlayerMgr.Ins.SelectId;
+		int characterId = PlayerMgr.Ins.SelectCharacterId;
 		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
 
 		m_Role = go;
@@ -63,7 +63,7 @@ public class StagePanel : BasePanel
 	private void OnTimer()
 	{
 		StageMgr.Ins.OnStageStartEnterEvent += InnerClose;
-		StageMgr.Ins.StageEnter(PlayerMgr.Ins.StageId);
+		StageMgr.Ins.StageEnterNext();
 	}
 
     protected override void OnUpdate()

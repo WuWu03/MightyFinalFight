@@ -14,6 +14,7 @@ public class GameEntry : GameFrameWorkEntry
         TaskMgr.Init(m_Manager);
         StageMgr.Init(m_Manager);
         SceneEntityMgr.Init(m_Manager);
+        PlayerMgr.Init(m_Manager);
         StaticConfig.InitConfig();
     }
 

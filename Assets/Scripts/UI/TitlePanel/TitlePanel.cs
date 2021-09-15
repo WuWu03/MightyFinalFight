@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Sound;
+using GameFrameWork.Input;
 
 public class TitlePanel : BasePanel
 {
@@ -33,7 +34,7 @@ public class TitlePanel : BasePanel
 			return;
         }
 
-		if (Input.GetButtonDown("Start"))
+		if (InputMgr.Ins.GetKeyDown(KeyType.Start, true))
 		{
 			m_CanStart = false;
 			StartGame();

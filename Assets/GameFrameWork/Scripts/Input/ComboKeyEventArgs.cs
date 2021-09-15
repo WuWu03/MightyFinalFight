@@ -15,8 +15,20 @@ namespace GameFrameWork.Input
         B = 6,
         X = 7,
         Y = 8,
-        LB = 9,
-        RB = 10,
+        Start = 9,
+        Select = 10,
+        LB = 11,
+        RB = 12,
+        LT = 13,
+        RT = 14,
+        None = 0,
+    }
+
+    public enum AxisType
+    {
+        LeftAxis = 1,//左摇杆
+        RightAxis = 2,//右摇杆
+        CrossAxis = 3,//十字键
     }
 
     public class ComboKeyEventArgs : BaseEventArgs
