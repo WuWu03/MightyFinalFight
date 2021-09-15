@@ -87,7 +87,7 @@ namespace GameFrameWork.UI
         }
 
 
-        public RedPoint(string key, string subKey,bool isRoot, RedPointType type)
+        public RedPoint(string key, string subKey, bool isRoot, RedPointType type)
         {
             m_Key = key;
             m_SubKey = subKey;
@@ -128,12 +128,12 @@ namespace GameFrameWork.UI
 
         public RedPoint GetChild(string subKey)
         {
-            if(m_SubKey.Equals(subKey))
+            if (m_SubKey.Equals(subKey))
             {
                 return this;
             }
 
-            if(m_Children.Count < 1)
+            if (m_Children.Count < 1)
             {
                 return null;
             }
@@ -190,7 +190,7 @@ namespace GameFrameWork.UI
                     }
                 }
             }
-            
+
             m_OnShow?.Invoke(m_State, m_Data);
 
             if (m_Parent != null)
@@ -201,7 +201,7 @@ namespace GameFrameWork.UI
 
         private void OnClick()
         {
-            if(m_Type == RedPointType.Once)
+            if (m_Type == RedPointType.Once)
             {
                 HideChildren();
                 SetState(m_SubKey, RedPointState.Hide, m_Data);
@@ -236,7 +236,7 @@ namespace GameFrameWork.UI
         private bool m_IsRoot = false;
         private RedPointType m_Type = RedPointType.None;
         private RedPointState m_State = RedPointState.None;
-        private GameFrameWorkAction<RedPointState,int> m_OnShow = null;
+        private GameFrameWorkAction<RedPointState, int> m_OnShow = null;
         private Button m_Btn;
         private int m_Data = 0;
         private RedPoint m_Parent = null;
