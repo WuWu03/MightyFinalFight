@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class SkillBaseDeployer
@@ -53,7 +51,6 @@ public abstract class SkillBaseDeployer
 
     public void RemoveEvent()
     {
-        UnityEngine.Debug.Log("移除事件");
         m_Owner.OnGroundEvent.RemoveListener(OnGround);
         OnRemoveEvent();
     }
@@ -111,6 +108,11 @@ public abstract class SkillBaseDeployer
         else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
             ret = ret && m_Owner.IsPlayComplete();
+
+            if (ret)
+            {
+                OnAnimationEffectComplete();
+            }
         }
 
         return ret;
@@ -134,11 +136,6 @@ public abstract class SkillBaseDeployer
         if (m_CurrEffectIndex >= m_SkillEffects.Length)
         {
             m_CurrEffectIndex = 0;
-
-            if(m_Owner.IsPlayComplete())
-            {
-                OnAnimationEffectComplete();
-            }
         }
     }
 
@@ -224,15 +221,9 @@ public abstract class SkillBaseDeployer
         }
     }
 
-    protected virtual void OnAnimationEffectComplete() 
-    {
+    protected virtual void OnAnimationEffectComplete() { }
 
-    }
-
-    protected virtual void OnRemoveEvent()
-    {
-
-    }
+    protected virtual void OnRemoveEvent() { }
 
     protected BaseRole m_Owner = null;
     protected SkillConfigData m_SkillData = null;
