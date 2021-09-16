@@ -19,15 +19,18 @@ MonoBehaviour:
     Anim: Show
     Sound: Sound/CodyBullet
     ShowTime: 2.5
+    AnimSpeed: 0.3
   - Id: 1002
     CharacterId: 1002
-    Asset: 
-    Anim: 
-    Sound: 
-    ShowTime: 0
+    Asset: CharacterUI/GuyUI
+    Anim: Show
+    Sound: Sound/Jump
+    ShowTime: 1
+    AnimSpeed: 1
   - Id: 1003
     CharacterId: 1003
-    Asset: 
-    Anim: 
-    Sound: 
-    ShowTime: 0
+    Asset: CharacterUI/HaggerUI
+    Anim: Show
+    Sound: Sound/HaggerRollingLong
+    ShowTime: 2
+    AnimSpeed: 0.5

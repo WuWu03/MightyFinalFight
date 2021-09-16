@@ -47,8 +47,8 @@ MonoBehaviour:
       Volume: 1
       LerpTime: 0
     MovePoints:
-    - {x: -508, y: -31}
-    - {x: 508, y: -31}
+    - {x: -508, y: -34}
+    - {x: 508, y: -34}
     - {x: 508, y: -76}
     - {x: -508, y: -76}
   - Id: 1002

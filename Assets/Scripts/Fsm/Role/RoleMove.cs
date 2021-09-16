@@ -44,7 +44,7 @@ public class RoleMove : BaseFsmState
             m_Owner.SetDir(m_Owner.MoveDir.x);
         }
 
-        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
+        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y) * m_Owner.MoveSpeed * Time.deltaTime;
         m_Owner.SetPos(ownerPos);
     }
 

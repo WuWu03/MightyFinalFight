@@ -3,23 +3,14 @@ using UnityEngine;
 
 public class SkillNoneEffect : SkillBaseEffect
 {
-    public SkillNoneEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillNoneEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) 
+    { 
+
+    }
 
     public override void Effect(ISkillSelector selector)
     {
+        Complete();
     }
 
-    public override void Reset()
-    {
-    }
-
-    public override void Exit()
-    {
-
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-
-    }
 }

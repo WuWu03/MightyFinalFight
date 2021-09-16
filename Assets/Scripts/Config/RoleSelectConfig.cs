@@ -17,4 +17,5 @@ public class RoleSelectConfigData: BaseConfigData
     public string Anim;
     public string Sound;
     public float ShowTime;
+    public float AnimSpeed;
 }

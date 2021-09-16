@@ -6,18 +6,9 @@ using UnityEngine;
 public class SkillSubHPEffect : SkillBaseEffect
 {
     public SkillSubHPEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
-    public override bool IsCompleted
-    {
-        get
-        {
-            return m_IsCompleted;
-        }
-    }
-
 
     public override void Effect(ISkillSelector selector)
     {
-        if (m_IsCompleted) return;
         if (!m_Owner.HitSuccess) return;
 
         foreach (Match m in m_Regex.Matches(m_SkillEffect.Args))
@@ -25,22 +16,7 @@ public class SkillSubHPEffect : SkillBaseEffect
             m_Owner.SubHealth(int.Parse(m.Groups[2].Value));
         }
 
-        m_IsCompleted = true;
-    }
-
-    public override void Reset()
-    {
-        
-    }
-
-    public override void Exit()
-    {
-        m_IsCompleted = false;
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-
+        Complete();
     }
 
     private Regex m_Regex = new Regex(@"(SubHP:)([0-9]+)");

@@ -472,7 +472,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnDefenseMsg(float attackerDir)
     {
         SetDir(-attackerDir);
-        SetPos2(m_Pos.x + attackerDir * 0.07f, m_Pos.y);
+        SetPosX(m_Pos.x + attackerDir * 0.07f);
         ChangeState<RoleDefense>(true);
     }
 
@@ -568,7 +568,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        UpdatePos2(transform.localPosition.x, Pos.y);
+        UpdatePosX(transform.localPosition.x);
 
         if (IsFloat)
         {
@@ -585,18 +585,22 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
-
+ 
         m_IsDropGround = true;
         m_DropGourndTime = Time.time;
         OnGroundEvent.Invoke();
         OnGroundEvent.RemoveAllListeners();
         OnGround();
         m_IsJumpAttack = false;
- 
+
+        if (!m_IsAddGroundForce)
+        {
+            if (m_CurrCtrl != null)
+            {
+                m_CurrCtrl.ExitSkill();
+            }
+        }
+
         if (IsAnyState(typeof(RoleSwoon)))
         {
             if (!IsPlayComplete())

@@ -27,7 +27,7 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 2003
-      Hp: 1
+      Hp: 100
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150

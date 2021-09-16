@@ -10,17 +10,4 @@ public class SkillSelfTransformEffect : SkillBaseEffect
     {
     }
 
-    public override void Reset()
-    {
-    }
-
-    public override void Exit()
-    {
-
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-
-    }
 }

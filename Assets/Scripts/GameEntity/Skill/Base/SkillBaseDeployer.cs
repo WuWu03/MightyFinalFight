@@ -53,6 +53,7 @@ public abstract class SkillBaseDeployer
 
     public void RemoveEvent()
     {
+        UnityEngine.Debug.Log("移除事件");
         m_Owner.OnGroundEvent.RemoveListener(OnGround);
         OnRemoveEvent();
     }
@@ -107,9 +108,9 @@ public abstract class SkillBaseDeployer
         {
             ret = ret && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
         }
-        else if(m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
+        else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
-            ret = m_Owner.IsPlayComplete();
+            ret = ret && m_Owner.IsPlayComplete();
         }
 
         return ret;
@@ -159,7 +160,7 @@ public abstract class SkillBaseDeployer
             }
             else
             {
-                if (m_Owner.IsFloat && !m_ListGroundEffect.Contains(i))
+                if (!m_Owner.IsInGround && !m_ListGroundEffect.Contains(i))
                     m_ListGroundEffect.Add(i);
             }
         }

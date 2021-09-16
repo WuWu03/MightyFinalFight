@@ -447,7 +447,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if ((Time.time - m_CatchStamp >= m_CatchTime && IsInGround) || m_ListCatchTarget[0].IsDead)
+        if ((Time.time - m_CatchStamp >= m_CatchTime && IsInGround) || (m_ListCatchTarget[0].IsDead && IsPlayComplete()))
         {
             ResetCatch();
             return;
@@ -470,13 +470,9 @@ public class BaseHero : BaseRole
             if (IsAnyState(typeof(RoleMove), typeof(RoleJump), typeof(RoleSkill)))
             {
                 float distance = GetCatchDistance(target);
-                float y = target.Pos.y;
                 float offest = target.transform.localScale.y < 0 ? target.GetAnimTriggerSize(AnimName.Idle).y : 0;
-                target.SetPos2(m_Pos.x + distance * m_Dir, transform.localPosition.y + offest);
-                if (IsFloat || IsDrop)
-                {
-                    target.UpdatePos2(target.Pos.x, y);
-                }
+                target.SetPos2(m_Pos.x + distance * m_Dir, m_Pos.y);
+                target.SetPosZ(CurrPosZ + offest);
                 target.SetDepth(m_Pos.y + 0.01f);
             }
         }
@@ -486,7 +482,7 @@ public class BaseHero : BaseRole
     {
         Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
         Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
-        float distance = targetSize.x / 2 + selfSize.x / 3 - 0.05f;
+        float distance = targetSize.x / 2 + selfSize.x / 3;
 
         return distance;
     }
@@ -525,15 +521,16 @@ public class BaseHero : BaseRole
         BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
         target.SetDepth(target.Pos.y);
         target.SetScale2(target.Dir, 1);
+        target.UpdatePosZ(0);
 
-        if(m_IsDropInGround)
+        if (m_IsDropInGround)
         {
             target.SetPos2(target.Pos.x, m_Pos.y);
         }
 
         if (IsDrop)
         {
-            target.UpdatePos2(target.Pos.x, m_Pos.y);
+            target.UpdatePosX(target.Pos.x);
             target.SetBodyType(RigidbodyType2D.Dynamic);
         }
 

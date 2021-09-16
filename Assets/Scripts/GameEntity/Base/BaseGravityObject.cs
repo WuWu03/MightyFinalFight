@@ -20,6 +20,14 @@ public class BaseGravityObject : BaseSceneObject
         }
     }
 
+    public virtual bool IsInGround
+    {
+        get
+        {
+            return CurrPosZ <= m_PosZ;
+        }
+    }
+
     public Rigidbody2D Rigidbody
     {
         get
@@ -73,9 +81,12 @@ public class BaseGravityObject : BaseSceneObject
 
     protected virtual void CheckGround()
     {
-        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic) return;
+        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic)
+        {
+            return;
+        }
 
-        UpdatePos2(transform.localPosition.x, Pos.y);
+        UpdatePosX(transform.localPosition.x);
 
         if (IsFloat)
         {

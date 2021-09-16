@@ -5,13 +5,6 @@ using GameFrameWork.Utility;
 public class SkillBulletEffect : SkillBaseEffect
 {
     public SkillBulletEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
-    public override bool IsCompleted
-    {
-        get
-        {
-            return m_Owner.IsPlayComplete();
-        }
-    }
 
     public override void Effect(ISkillSelector selector)
     {
@@ -41,18 +34,7 @@ public class SkillBulletEffect : SkillBaseEffect
             bullet.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_SkillEffect.Bullets[i].AssetName));
             bullet.SetLayer(LayerName.Unit);
         }
-    }
 
-    public override void Reset()
-    {
-    }
-
-    public override void Exit()
-    {
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-
+        Complete();
     }
 }

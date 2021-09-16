@@ -11,35 +11,19 @@ public class SkillNearHitEffect : SkillBaseEffect
 
     }
 
-    public override bool IsCompleted
-    {
-        get
-        {
-            if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
-            {
-                m_IsCompleted = m_Owner.IsPlayComplete();
-            }
-
-            return m_IsCompleted;
-        }
-    }
-
-
     public override void Effect(ISkillSelector skillSelector)
     {
-        m_IsCompleted = false;
-
         bool hurtTarget = false;
         List<ICanBeHit> targets = m_Owner.OnHitStart();
-        
-        if(targets == null)
+
+        if (targets == null)
         {
             targets = skillSelector.GetTargets();
         }
-        
+
         for (int i = 0; i < targets.Count; i++)
         {
-            if(Hit(targets[i]))
+            if (Hit(targets[i]))
             {
                 hurtTarget = true;
             }
@@ -54,7 +38,8 @@ public class SkillNearHitEffect : SkillBaseEffect
         }
 
         m_Owner.OnHitEnd(m_SkillData, hurtTarget);
-        m_IsCompleted = true;
+
+        Complete();
     }
 
     private bool Hit(ICanBeHit hit)
@@ -102,20 +87,5 @@ public class SkillNearHitEffect : SkillBaseEffect
         }
 
         return false;
-    }
-
-    public override void Reset()
-    {
-        m_IsCompleted = false;
-    }
-
-    public override void Exit()
-    {
-
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-
     }
 }

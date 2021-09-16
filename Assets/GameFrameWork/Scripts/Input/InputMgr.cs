@@ -29,6 +29,7 @@ namespace GameFrameWork.Input
             m_ListComboKey = new List<KeyType>();
             m_DicKeys = new Dictionary<KeyType, KeyNameArgs>();
             m_DicAxis = new Dictionary<AxisType, AxisArgs>();
+            m_QueueKeyDown = new Queue<string>();
         }
 
         public void AddKey(KeyType keyType, string keyName)
@@ -74,33 +75,39 @@ namespace GameFrameWork.Input
 
         protected override void OnUpdate()
         {
-            if (!m_IsRunning)
+            if (m_QueueKeyDown.Count > 0)
+            {
+                lock (m_QueueKeyDown)
+                {
+                    while (m_QueueKeyDown.Count > 0)
+                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
+                }
+            }
+
+            if (!m_IsRunning || m_ListComboKeyEvent == null || m_ListComboKeyEvent.Count < 1)
             {
                 return;
             }
 
-            if (m_ListComboKeyEvent != null && m_ListComboKeyEvent.Count > 0)
+            if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME)
             {
-                if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME)
-                {
-                    ResetComboKeys();
-                }
+                ResetComboKeys();
+            }
 
-                if (CheckComboAxis(AxisType.LeftAxis)) m_KeyDownTime = Time.time;
-                //if (CheckComboAxis(AxisType.CrossAxis)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.A)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.B)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.X)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.Y)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.LB)) m_KeyDownTime = Time.time;
-                if (CheckComboKey(KeyType.RB)) m_KeyDownTime = Time.time;
-                //if (CheckComboKey(KeyType.LT)) m_KeyDownTime = Time.time;
-                //if (CheckComboKey(KeyType.RT)) m_KeyDownTime = Time.time;
+            if (CheckComboAxis(AxisType.LeftAxis)) m_KeyDownTime = Time.time;
+            //if (CheckComboAxis(AxisType.CrossAxis)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.A)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.B)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.X)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.Y)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.LB)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.RB)) m_KeyDownTime = Time.time;
+            //if (CheckComboKey(KeyType.LT)) m_KeyDownTime = Time.time;
+            //if (CheckComboKey(KeyType.RT)) m_KeyDownTime = Time.time;
 
-                if (!TriggerKeyEvent())
-                {
-                    AfterTrigger?.Invoke();
-                }
+            if (!TriggerKeyEvent())
+            {
+                AfterTrigger?.Invoke();
             }
         }
 
@@ -130,7 +137,13 @@ namespace GameFrameWork.Input
             {
                 if (isOneKey)
                 {
-                    m_DicIsKeyDown[x != 0 ? axisArgs.Horizontal : axisArgs.Vertical] = true;
+                    string axisName = x != 0 ? axisArgs.Horizontal : axisArgs.Vertical;
+                    if (!m_QueueKeyDown.Contains(axisName))
+                    {
+                        lock (m_QueueKeyDown)
+                            m_QueueKeyDown.Enqueue(axisName);
+                    }
+
                     if (!prevHorizontal && x != 0) axis.x = speed * (x > 0 ? 1 : -1);
                     if (!prevVertical && y != 0) axis.y = speed * (y > 0 ? 1 : -1);
                 }
@@ -307,7 +320,11 @@ namespace GameFrameWork.Input
             {
                 if (isOneKey)
                 {
-                    m_DicIsKeyDown[keyName] = true;
+                    if (!m_QueueKeyDown.Contains(keyName))
+                    {
+                        lock (m_QueueKeyDown)
+                            m_QueueKeyDown.Enqueue(keyName);
+                    }
                     return !prev;
                 }
 
@@ -335,6 +352,7 @@ namespace GameFrameWork.Input
             m_DicKeys.Clear();
             m_ListComboKey.Clear();
             m_ListComboKeyEvent.Clear();
+            m_QueueKeyDown.Clear();
             m_IsRunning = false;
         }
 
@@ -347,6 +365,7 @@ namespace GameFrameWork.Input
         private Dictionary<AxisType, AxisArgs> m_DicAxis = null;
         private Dictionary<KeyType, KeyNameArgs> m_DicKeys = null;
         private List<KeyType> m_ListComboKey = null;
+        private Queue<string> m_QueueKeyDown = null;
         private List<ComboKeyEventArgs> m_ListComboKeyEvent = null;
     }
 }

@@ -29,7 +29,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
     {
         PlayerMgr.Ins.Player.OnDropEvent.AddListener(() =>
         {
-            PlayerMgr.Ins.Player.UpdatePosY(-0.2f);
+            PlayerMgr.Ins.Player.UpdatePosZ(-0.2f);
         });
 
         PlayerMgr.Ins.Player.OnGroundEvent.AddListener(() =>

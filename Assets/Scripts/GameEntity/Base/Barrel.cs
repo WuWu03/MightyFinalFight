@@ -165,7 +165,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
         }
         else
         {
-            UpdatePos2(m_Pos.x, m_BarrelData.GroundY / 100f);
+            UpdatePosY(m_BarrelData.GroundY / 100f);
             SetBodyType(RigidbodyType2D.Dynamic);
         }
     }

@@ -7,12 +7,11 @@ public class SkillTargetTransformEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector selector)
     {
-        m_IsCompleted = false;
         List<ICanBeHit> targets = m_Owner.OnHitStart();
 
         if (targets == null || targets.Count < 1)
         {
-            m_IsCompleted = true;
+            Complete();
             return;
         }
 
@@ -34,15 +33,11 @@ public class SkillTargetTransformEffect : SkillBaseEffect
         {
             target.PlayAnimation(AnimName.SwoonUp);
         }
+
+        Complete();
     }
 
-    public override void Reset()
-    {
-        m_IsCompleted = false;
-        Exit();
-    }
-
-    public override void Exit()
+    protected override void OnExit()
     {
         if (m_Owner is BaseHero)
         {
@@ -57,14 +52,6 @@ public class SkillTargetTransformEffect : SkillBaseEffect
                     target.PlayAnimation(AnimName.Idle);
                 owner.ResetCatch(false);
             }
-        }
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-        if (m_Owner.IsPlayComplete())
-        {
-            m_IsCompleted = true;
         }
     }
 }

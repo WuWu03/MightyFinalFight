@@ -6,17 +6,9 @@ using UnityEngine;
 public class SkillMoveHitEffect : SkillBaseEffect
 {
     public SkillMoveHitEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
-    public override bool IsCompleted
-    {
-        get
-        {
-            return m_IsCompleted;
-        }
-    }
 
     public override void Effect(ISkillSelector selector)
     {
-        m_IsCompleted = false;
         m_HasEffect = true;
         m_StartPos = m_Owner.transform.localPosition;
         m_Owner.SetVelocity(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
@@ -24,7 +16,9 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.SetGravityScale(m_SkillEffect.Gravity);
 
         if (m_SkillEffect.Args == "OnGroundPickUp")
+        {
             m_Owner.OnGroundEvent.AddListener(OnGround);
+        }
     }
 
     private void OnGround()
@@ -32,26 +26,15 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.SetDefaultState<HeroPickUp>();
     }
 
-    private void Complete()
+    protected override void OnComplete()
     {
         m_Owner.ResetRigidbody(false);
-        m_IsCompleted = true;
         m_HasEffect = false;
     }
 
-    public override void Reset()
+    protected override void OnUpdate(ISkillSelector selector)
     {
-        m_IsCompleted = false;
-    }
-
-    public override void Exit()
-    {
-   
-    }
-
-    public override void Update(ISkillSelector selector)
-    {
-        if (!m_HasEffect || m_IsCompleted)
+        if (!m_HasEffect)
         {
             return;
         }

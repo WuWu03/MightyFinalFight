@@ -27,7 +27,7 @@ public class RoleSwoon : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
+        m_Owner.UpdatePosX(m_Owner.transform.localPosition.x);
 
         if(m_IsBounce && !m_IsAddGroundEvent)
         {

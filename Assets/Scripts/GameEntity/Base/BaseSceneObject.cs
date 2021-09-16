@@ -39,6 +39,22 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
+    public float CurrPosZ
+    {
+        get
+        {
+            return transform.localPosition.y - m_Pos.y;
+        }
+    }
+
+    public float PosZ
+    {
+        get
+        {
+            return m_PosZ;
+        }
+    }
+
     public Vector2Int MapPos
     {
         get
@@ -68,14 +84,6 @@ public class BaseSceneObject : BaseEntity
         get
         {
             return m_Depth;
-        }
-    }
-
-    public virtual bool IsInGround
-    {
-        get
-        {
-            return transform.localPosition.y <= m_Pos.y;
         }
     }
 
@@ -162,6 +170,14 @@ public class BaseSceneObject : BaseEntity
         m_ObjectType = type;
     }
 
+    public void SetDepth(float depth)
+    {
+        float x = transform.localPosition.x;
+        float y = transform.localPosition.y;
+        m_Depth = depth;
+        transform.localPosition = new Vector3(x, y, depth);
+    }
+
     public void UpdatePosX(float x)
     {
         UpdatePos(new Vector2(x, m_Pos.y));
@@ -171,6 +187,11 @@ public class BaseSceneObject : BaseEntity
     {
         UpdatePos(new Vector2(m_Pos.x, y));
     }
+
+    public void UpdatePosZ(float z)
+    {
+        m_PosZ = z;
+    }    
 
     public void UpdatePos2(float x, float y)
     {
@@ -184,23 +205,24 @@ public class BaseSceneObject : BaseEntity
         m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
     }
 
-    public void SetDepth(float depth)
+    public void SetPosX(float x)
     {
-        float x = transform.localPosition.x;
-        float y = transform.localPosition.y;
-        m_Depth = depth;
-        transform.localPosition = new Vector3(x, y, depth);
+        SetPos(new Vector2(x, m_Pos.y));
+    }
+
+    public void SetPosY(float y)
+    {
+        SetPos(new Vector2(m_Pos.x, y));
     }
 
     public void SetPos2(float x, float y)
     {
         SetPos(new Vector2(x, y));
     }
-
-    public virtual void SetMapPos(Vector2Int pos)
+    public void SetPosZ(float z)
     {
-        SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
-        m_MapPos = pos;
+        m_PosZ = z;
+        transform.localPosition = new Vector3(m_Pos.x, m_Pos.y + m_PosZ, m_Pos.y);
     }
 
     public virtual void SetPos(Vector2 pos)
@@ -209,7 +231,13 @@ public class BaseSceneObject : BaseEntity
         m_MapPos.x = Mathf.CeilToInt(m_Pos.x * 100);
         m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
         m_Depth = pos.y;
-        transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
+        transform.localPosition = new Vector3(pos.x, pos.y + m_PosZ, pos.y);
+    }
+
+    public virtual void SetMapPos(Vector2Int pos)
+    {
+        SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
+        m_MapPos = pos;
     }
 
     public void SetScale2(float x,float y)
@@ -402,6 +430,7 @@ public class BaseSceneObject : BaseEntity
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
     protected float m_Depth = 0f;
+    protected float m_PosZ = 0f;
     protected int m_EntityID = 0;
     protected string m_ResPath = string.Empty;
     protected int m_Health = 0;

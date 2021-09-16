@@ -53,7 +53,7 @@ public class StagePanel : BasePanel
 
 		m_Role = go;
 		m_Role.transform.SetParent(m_Component.HeroPosGO.transform, false);
-		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0.3f;
+		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfigData.AnimSpeed;
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfigData.Anim, 1);
 	
 		SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, roleSelectConfigData.Sound);
@@ -72,6 +72,7 @@ public class StagePanel : BasePanel
 
 	protected override void OnClose()
 	{
+		
 	}
 
 	protected override void OnDestroy()

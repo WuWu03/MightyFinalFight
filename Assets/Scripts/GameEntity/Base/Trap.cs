@@ -19,7 +19,7 @@ public class Trap : BaseSceneItem
     public override void SetPos(Vector2 pos)
     {
         m_Pos = pos;
-        transform.localPosition = new Vector3(pos.x, pos.y, 0);
+        transform.localPosition = new Vector3(pos.x, pos.y + m_PosZ, 0);
     }
 
     protected override void OnResComplete(GameObject go,object[] param)
