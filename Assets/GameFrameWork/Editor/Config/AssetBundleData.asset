@@ -92,194 +92,222 @@ MonoBehaviour:
     AssetBundlePath: Character/TwoP/
   - Id: 12
     BundleType: 1
+    BundleName: Models/CharacterUI/CodyUI
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/CharacterUI/CodyUI/
+    AssetBundlePath: 
+  - Id: 13
+    BundleType: 1
+    BundleName: Models/CharacterUI/GuyUI
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/CharacterUI/GuyUI/
+    AssetBundlePath: 
+  - Id: 14
+    BundleType: 1
+    BundleName: Models/CharacterUI/HaggerUI
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Models/CharacterUI/HaggerUI/
+    AssetBundlePath: Models/CharacterUI/HaggerUI/
+  - Id: 15
+    BundleType: 1
     BundleName: Models/FX/CodyBullet
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/FX/CodyBullet/
     AssetBundlePath: 
-  - Id: 13
+  - Id: 16
     BundleType: 1
     BundleName: Models/FX/CodyHit
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/FX/CodyHit/
     AssetBundlePath: 
-  - Id: 14
+  - Id: 17
     BundleType: 1
     BundleName: Models/FX/Go
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/FX/Go/
     AssetBundlePath: 
-  - Id: 15
+  - Id: 18
     BundleType: 1
     BundleName: Models/FX/GuyHit
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/FX/GuyHit/
     AssetBundlePath: 
-  - Id: 16
+  - Id: 19
     BundleType: 1
     BundleName: Models/FX/HaggerHit
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/FX/HaggerHit/
     AssetBundlePath: 
-  - Id: 17
+  - Id: 20
     BundleType: 1
     BundleName: Models/SceneBuilding/Barrel
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/Barrel/
     AssetBundlePath: 
-  - Id: 18
+  - Id: 21
     BundleType: 1
     BundleName: Models/SceneBuilding/Cafe
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/Cafe/
     AssetBundlePath: 
-  - Id: 19
+  - Id: 22
     BundleType: 1
     BundleName: Models/SceneBuilding/ConveyorBelt
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/ConveyorBelt/
     AssetBundlePath: 
-  - Id: 20
+  - Id: 23
     BundleType: 1
     BundleName: Models/SceneBuilding/ConveyorBeltLast
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/ConveyorBeltLast/
     AssetBundlePath: 
-  - Id: 21
+  - Id: 24
     BundleType: 1
     BundleName: Models/SceneBuilding/Movie
     BundleExtend: .assetbundle
-    Pattern: '*'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/Movie/
     AssetBundlePath: 
-  - Id: 22
+  - Id: 25
     BundleType: 1
     BundleName: Models/Weapon/CodyWeapon
     BundleExtend: .assetbundle
-    Pattern: '*'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Models/Weapon/CodyWeapon/
     AssetBundlePath: 
-  - Id: 23
+  - Id: 26
     BundleType: 1
     BundleName: Models/Weapon/GuyWeapon
     BundleExtend: .assetbundle
-    Pattern: '*'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Models/Weapon/GuyWeapon/
     AssetBundlePath: 
-  - Id: 24
+  - Id: 27
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/Character/
     AssetBundlePath: ArtResources/Prefabs/Character/
-  - Id: 25
-    BundleType: 0
-    BundleName: 
-    BundleExtend: .assetbundle
-    Pattern: '*.prefab'
-    AssetPath: Assets/ArtResources/Prefabs/FX/
-    AssetBundlePath: ArtResources/Prefabs/FX/
-  - Id: 26
-    BundleType: 0
-    BundleName: 
-    BundleExtend: .assetbundle
-    Pattern: '*.prefab'
-    AssetPath: Assets/ArtResources/Prefabs/SceneBuilding/
-    AssetBundlePath: ArtResources/Prefabs/SceneBuilding/
-  - Id: 27
-    BundleType: 0
-    BundleName: 
-    BundleExtend: .assetbundle
-    Pattern: '*.prefab'
-    AssetPath: Assets/ArtResources/Prefabs/SceneItem/
-    AssetBundlePath: ArtResources/Prefabs/SceneItem/
   - Id: 28
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.prefab'
-    AssetPath: Assets/ArtResources/Prefabs/Weapon/
-    AssetBundlePath: ArtResources/Prefabs/Weapon/
+    AssetPath: Assets/ArtResources/Prefabs/CharacterUI/
+    AssetBundlePath: ArtResources/Prefabs/CharacterUI/
   - Id: 29
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
+    AssetPath: Assets/ArtResources/Prefabs/FX/
+    AssetBundlePath: ArtResources/Prefabs/FX/
+  - Id: 30
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/Prefabs/SceneBuilding/
+    AssetBundlePath: ArtResources/Prefabs/SceneBuilding/
+  - Id: 31
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/Prefabs/SceneItem/
+    AssetBundlePath: ArtResources/Prefabs/SceneItem/
+  - Id: 32
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.png'
+    AssetPath: Assets/ArtResources/Prefabs/Weapon/
+    AssetBundlePath: ArtResources/Prefabs/Weapon/
+  - Id: 33
+    BundleType: 0
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Texture/SceneBuilding/
     AssetBundlePath: Texture/SceneBuilding/
-  - Id: 30
+  - Id: 34
     BundleType: 0
     BundleName: Texture/SceneItem
     BundleExtend: .assetbundle
     Pattern: '*.png'
     AssetPath: Assets/ArtResources/Texture/SceneItem/
     AssetBundlePath: Texture/SceneItem/
-  - Id: 31
+  - Id: 35
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
     AssetPath: Assets/ArtResources/Texture/Stage/
     AssetBundlePath: Texture/Stage/
-  - Id: 32
+  - Id: 36
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
     AssetPath: Assets/ArtResources/UI/Icon/Character/
     AssetBundlePath: ArtResources/UI/Icon/Character/
-  - Id: 33
+  - Id: 37
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*.png'
     AssetPath: Assets/ArtResources/UI/Prefabs/
     AssetBundlePath: ArtResources/UI/Prefabs/
-  - Id: 34
+  - Id: 38
     BundleType: 1
     BundleName: UIAtlas/CommonAtlas
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/CommonAtlas/
     AssetBundlePath: 
-  - Id: 35
+  - Id: 39
     BundleType: 1
     BundleName: UIAtlas/MainPanel
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/UI/UIAtlas/MainPanel/
     AssetBundlePath: 
-  - Id: 36
+  - Id: 40
     BundleType: 1
     BundleName: UIAtlas/SelectPlayerPanel
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/UI/UIAtlas/SelectPlayerPanel/
     AssetBundlePath: 
-  - Id: 37
+  - Id: 41
     BundleType: 1
     BundleName: UIAtlas/TitlePanel
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/UI/UIAtlas/TitlePanel/
     AssetBundlePath: 
-  - Id: 38
+  - Id: 42
     BundleType: 0
     BundleName: ConfigData
     BundleExtend: .assetbundle
-    Pattern: '*'
+    Pattern: '*.prefab'
     AssetPath: Assets/ConfigData/
     AssetBundlePath: ConfigData/
-  LockConfig: 1
+  LockConfig: 0
   PlatFormIndex: 0
   AssetBuildDir: Assets/StreamingAssets/
   AssetCopyDir: 
