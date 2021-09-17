@@ -27,9 +27,9 @@ namespace GameFrameWork.Input
         {
             m_ListComboKeyEvent = new List<ComboKeyEventArgs>();
             m_ListComboKey = new List<KeyType>();
-            m_DicKeys = new Dictionary<KeyType, KeyNameArgs>();
-            m_DicAxis = new Dictionary<AxisType, AxisArgs>();
             m_QueueKeyDown = new Queue<string>();
+
+            InputHelper.Init();
         }
 
         public void AddKey(KeyType keyType, string keyName)
@@ -39,12 +39,12 @@ namespace GameFrameWork.Input
 
         public void AddKey(KeyType keyType, string keyName, KeyType replaceKeyType, bool isShift)
         {
-            m_DicKeys.Add(keyType, KeyNameArgs.Create(keyName, replaceKeyType, isShift));
+            InputHelper.AddKey(keyType, keyName, replaceKeyType, isShift);
         }
 
         public void AddAxis(AxisType axisType, string horizontal, string vertical)
         {
-            m_DicAxis.Add(axisType, AxisArgs.Create(horizontal, vertical));
+            InputHelper.AddAxis(axisType, horizontal, vertical);
         }
 
         public void AddComboKeyEvent(KeyType[] keys, int eventId, GameFrameWorkAction<int, bool> keyEvent)
@@ -84,6 +84,13 @@ namespace GameFrameWork.Input
                 }
             }
 
+            if (m_AxisDownIndex >= 0)
+            {
+                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
+                m_AxisDownIndex = -1;
+                m_AxisDownType = AxisType.None;
+            }
+
             if (!m_IsRunning || m_ListComboKeyEvent == null || m_ListComboKeyEvent.Count < 1)
             {
                 return;
@@ -113,10 +120,10 @@ namespace GameFrameWork.Input
 
         public Vector2 GetAxis(AxisType axisType, bool isOneKey = false)
         {
-            AxisArgs axisArgs = null;
+            AxisArgs axisArgs = InputHelper.GetAxis(axisType);
             Vector2 axis = Vector2.zero;
 
-            if (!m_DicAxis.TryGetValue(axisType, out axisArgs))
+            if (axisArgs == null)
             {
                 return axis;
             }
@@ -124,25 +131,19 @@ namespace GameFrameWork.Input
             float x = UnityEngine.Input.GetAxis(axisArgs.Horizontal);
             float y = UnityEngine.Input.GetAxis(axisArgs.Vertical);
             float speed = 1f;
-            bool prevHorizontal = false;
-            bool prevVertical = false;
 
             axis.x = 0f;
             axis.y = 0f;
-
-            if (!m_DicIsKeyDown.TryGetValue(axisArgs.Horizontal, out prevHorizontal)) m_DicIsKeyDown.Add(axisArgs.Horizontal, false);
-            if (!m_DicIsKeyDown.TryGetValue(axisArgs.Vertical, out prevVertical)) m_DicIsKeyDown.Add(axisArgs.Vertical, false);
 
             if (x != 0 || y != 0)
             {
                 if (isOneKey)
                 {
-                    string axisName = x != 0 ? axisArgs.Horizontal : axisArgs.Vertical;
-                    if (!m_QueueKeyDown.Contains(axisName))
-                    {
-                        lock (m_QueueKeyDown)
-                            m_QueueKeyDown.Enqueue(axisName);
-                    }
+                    bool prevHorizontal = InputHelper.GetAxisDown(axisType, 0);
+                    bool prevVertical = InputHelper.GetAxisDown(axisType, 1);
+
+                    m_AxisDownIndex = x != 0 ? 0 : 1;
+                    m_AxisDownType = axisType;
 
                     if (!prevHorizontal && x != 0) axis.x = speed * (x > 0 ? 1 : -1);
                     if (!prevVertical && y != 0) axis.y = speed * (y > 0 ? 1 : -1);
@@ -157,8 +158,8 @@ namespace GameFrameWork.Input
             }
             else
             {
-                if (x == 0) m_DicIsKeyDown[axisArgs.Horizontal] = false;
-                if (y == 0) m_DicIsKeyDown[axisArgs.Vertical] = false;
+                if (x == 0) InputHelper.SetAxisDown(axisType, 0, false);
+                if (y == 0) InputHelper.SetAxisDown(axisType, 1, false);
             }
 
             return axis;
@@ -179,14 +180,14 @@ namespace GameFrameWork.Input
 
         public bool GetKeyDown(KeyType keyType, bool isOneKey = false)
         {
-            KeyNameArgs keyNameArgs = null;
+            KeyArgs key = InputHelper.GetKey(keyType);
 
-            if (!m_DicKeys.TryGetValue(keyType, out keyNameArgs))
+            if (key == null)
             {
                 return false;
             }
 
-            return GetKeyDown(keyNameArgs.KeyName, isOneKey);
+            return GetKeyDown(key.KeyName, isOneKey);
         }
  
         private bool CheckComboAxis(AxisType axisType)
@@ -220,32 +221,32 @@ namespace GameFrameWork.Input
             return keyDown;
         }
 
-        private bool CheckComboKey(KeyType key)
+        private bool CheckComboKey(KeyType keyType)
         {
-            KeyNameArgs keyNameArgs = null;
+            KeyArgs key = InputHelper.GetKey(keyType);
             bool keyDown = false;
 
-            if (!m_DicKeys.TryGetValue(key, out keyNameArgs))
+            if (key == null)
             {
                 return keyDown;
             }
 
-            if (keyNameArgs.IsShift)
+            if (key.IsShift)
             {
-                if (GetKeyDown(keyNameArgs.KeyName))
+                if (GetKeyDown(key.KeyName))
                 {
-                    KeyType trans = keyNameArgs.ReplaceKeyType != KeyType.None ? keyNameArgs.ReplaceKeyType : key;
-                    if (m_ListComboKey.Count < 1 || m_ListComboKey[m_ListComboKey.Count - 1] != trans)
+                    KeyType replaceKeyType = key.ReplaceKeyType != KeyType.None ? key.ReplaceKeyType : keyType;
+                    if (m_ListComboKey.Count < 1 || m_ListComboKey[m_ListComboKey.Count - 1] != replaceKeyType)
                     {
-                        m_ListComboKey.Add(trans);
+                        m_ListComboKey.Add(replaceKeyType);
                         keyDown = true;
                     }
                 }
             }
             else
             {
-                keyDown = GetKeyDown(keyNameArgs.KeyName, true);
-                if (keyDown) m_ListComboKey.Add(key);
+                keyDown = GetKeyDown(key.KeyName, true);
+                if (keyDown) m_ListComboKey.Add(keyType);
             }
 
             return keyDown;
@@ -347,9 +348,8 @@ namespace GameFrameWork.Input
 
         protected override void OnShutDown()
         {
+            InputHelper.Dispose();
             m_DicIsKeyDown.Clear();
-            m_DicAxis.Clear();
-            m_DicKeys.Clear();
             m_ListComboKey.Clear();
             m_ListComboKeyEvent.Clear();
             m_QueueKeyDown.Clear();
@@ -361,9 +361,9 @@ namespace GameFrameWork.Input
         private const float KEY_DOWN_TIME = 0.04f;
         private bool m_IsRunning = false;
 
+        private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
+        private AxisType m_AxisDownType = AxisType.None;
         private Dictionary<string, bool> m_DicIsKeyDown = new Dictionary<string, bool>();
-        private Dictionary<AxisType, AxisArgs> m_DicAxis = null;
-        private Dictionary<KeyType, KeyNameArgs> m_DicKeys = null;
         private List<KeyType> m_ListComboKey = null;
         private Queue<string> m_QueueKeyDown = null;
         private List<ComboKeyEventArgs> m_ListComboKeyEvent = null;

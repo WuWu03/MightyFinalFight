@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace GameFrameWork.Input
 {
-    public class KeyNameArgs : BaseEventArgs
+    public class KeyArgs : BaseEventArgs
     {
         public string KeyName { get; set; }
         public bool IsShift { get; set; }
         public KeyType ReplaceKeyType { get; set; }
 
-        public static KeyNameArgs Create(string keyName, KeyType replaceKeyType, bool isShift)
+        public static KeyArgs Create(string keyName, KeyType replaceKeyType, bool isShift)
         {
-            KeyNameArgs args = ReferencePool.Acquire<KeyNameArgs>();
+            KeyArgs args = ReferencePool.Acquire<KeyArgs>();
             args.KeyName = keyName;
             args.ReplaceKeyType = replaceKeyType;
             args.IsShift = isShift;

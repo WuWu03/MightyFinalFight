@@ -482,7 +482,7 @@ public class BaseHero : BaseRole
     {
         Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
         Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
-        float distance = targetSize.x / 2 + selfSize.x / 3;
+        float distance = targetSize.x / 2 + selfSize.x / 3 - 0.05f;
 
         return distance;
     }

@@ -21,7 +21,7 @@ namespace GameFrameWork.Input
         RB = 12,
         LT = 13,
         RT = 14,
-        None = 0,
+        None = 15,
     }
 
     public enum AxisType
@@ -29,6 +29,7 @@ namespace GameFrameWork.Input
         LeftAxis = 1,//左摇杆
         RightAxis = 2,//右摇杆
         CrossAxis = 3,//十字键
+        None = 4,//
     }
 
     public class ComboKeyEventArgs : BaseEventArgs
