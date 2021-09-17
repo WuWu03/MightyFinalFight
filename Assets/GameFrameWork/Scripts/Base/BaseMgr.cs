@@ -86,6 +86,11 @@ namespace GameFrameWork
 
         private void OnDestroy()
         {
+            if (!m_Running)
+            {
+                return;
+            }
+
             ShutDown();
         }
 
