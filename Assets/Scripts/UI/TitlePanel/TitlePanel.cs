@@ -65,7 +65,7 @@ public class TitlePanel : BasePanel
 		m_CanStart = false;
 		m_Component.ImgCapcom.color = new Color(1, 1, 1, 0);
 		m_Component.TxtDeveloper.color = new Color(1, 1, 1, 0);
-		m_Component.ImgStar.color = new Color(1, 1, 0.5f, 0);
+		m_Component.ImgStar.color = new Color(1, 1, 0.3f, 0);
 		m_Component.ImgLogoBG.fillAmount = 0f;
 		m_Component.ImgRetro.fillAmount = 0f;
 
@@ -103,15 +103,16 @@ public class TitlePanel : BasePanel
 		sequence.AppendCallback(() =>
 		{
 			m_Component.ImgLogoBG.gameObject.SetActive(true);
-			m_Component.ImgRetro.gameObject.SetActive(true);
-			m_Component.ImgStar.gameObject.SetActive(true);
+			m_Component.ImgRetro.gameObject.SetActive(true);		
 			m_Component.ImgLogoBG.DOFillAmount(1, 0.2f);
 			m_Component.ImgRetro.DOFillAmount(1, 0.2f);
-			m_Component.ImgStar.DOFade(1, 1f);
+			
 		});
 		sequence.AppendInterval(0.2f);
 		sequence.AppendCallback(() =>
 		{
+			m_Component.ImgStar.gameObject.SetActive(true);
+			m_Component.ImgStar.DOFade(1, 1f);
 			m_Component.TxtStart.gameObject.SetActive(true);
 			SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm13Title", false);
 			m_CanStart = true;

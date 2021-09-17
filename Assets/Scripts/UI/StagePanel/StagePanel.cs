@@ -68,11 +68,16 @@ public class StagePanel : BasePanel
 
     protected override void OnUpdate()
 	{
+
 	}
 
 	protected override void OnClose()
 	{
-		
+		int characterId = PlayerMgr.Ins.SelectCharacterId;
+		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
+
+		GameObjectPool.Ins.Put(PathUtil.FormatPath(ResDefine.PREFAB_PATH, roleSelectConfigData.Asset), m_Role);
+		m_Role = null;
 	}
 
 	protected override void OnDestroy()
