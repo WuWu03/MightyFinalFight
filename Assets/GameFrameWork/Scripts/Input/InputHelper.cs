@@ -66,11 +66,21 @@ namespace GameFrameWork.Input
         {
             for (int i = 0; i < m_Axis.Length; i++)
             {
+                if (m_Axis[i] == null)
+                {
+                    continue;
+                }
+
                 ReferencePool.Release(m_Axis[i]);
             }
 
             for (int i = 0; i < m_Keys.Length; i++)
             {
+                if (m_Keys[i] == null)
+                {
+                    continue;
+                }
+
                 ReferencePool.Release(m_Keys[i]);
             }
 
