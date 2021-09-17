@@ -93,16 +93,13 @@ public abstract class SkillBaseDeployer
             }
         }
 
-        if (ret)
-        {
-            for (int i = 0; i < m_SkillEffects.Length; i++)
-                m_SkillEffects[i].Reset();
-            for (int i = 0; i < m_SkillSelectors.Length; i++)
-                m_SkillSelectors[i].Reset();
-        }
-
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
+            if (ret)
+            {
+                ResetEffect();
+            }
+
             ret = ret && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
         }
         else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
@@ -112,10 +109,41 @@ public abstract class SkillBaseDeployer
             if (ret)
             {
                 OnAnimationEffectComplete();
+                ResetEffect();
             }
         }
+        else if(ret)
+        {
+            ResetEffect();
+        }
+
 
         return ret;
+    }
+
+    public virtual void OnExit()
+    {
+        for (int i = 0; i < m_SkillEffects.Length; i++)
+            m_SkillEffects[i].Exit();
+        for (int i = 0; i < m_SkillSelectors.Length; i++)
+            if (m_SkillSelectors[i] != null)
+                m_SkillSelectors[i].Exit();
+
+        m_CurrEffectIndex = 0;
+    }
+
+    public virtual void Update()
+    {
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        {
+            JustEffect();
+        }
+
+        for (int i = 0; i < m_SkillEffects.Length; i++)
+        {
+            if (!m_SkillEffects[i].IsCompleted)
+                m_SkillEffects[i].Update(m_SkillSelectors[i]);
+        }
     }
 
     private void AnimationEffect()
@@ -196,29 +224,12 @@ public abstract class SkillBaseDeployer
         m_ListGroundEffect.Clear();
     }
 
-    public virtual void OnExit()
+    private void ResetEffect()
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
-            m_SkillEffects[i].Exit();
+            m_SkillEffects[i].Reset();
         for (int i = 0; i < m_SkillSelectors.Length; i++)
-            if (m_SkillSelectors[i] != null)
-                m_SkillSelectors[i].Exit();
-
-        m_CurrEffectIndex = 0;
-    }
-
-    public virtual void Update()
-    {
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
-        {
-            JustEffect();
-        }
-
-        for (int i = 0; i < m_SkillEffects.Length; i++)
-        {
-            if (!m_SkillEffects[i].IsCompleted)
-                m_SkillEffects[i].Update(m_SkillSelectors[i]);
-        }
+            m_SkillSelectors[i].Reset();
     }
 
     protected virtual void OnAnimationEffectComplete() { }

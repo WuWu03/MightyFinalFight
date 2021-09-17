@@ -36,6 +36,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -56,6 +57,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -83,6 +85,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -117,6 +120,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -137,6 +141,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -157,6 +162,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 1002
     TalkID: 0
     PrevID: 0
@@ -177,6 +183,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -204,6 +211,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -224,6 +232,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -251,6 +260,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
@@ -271,6 +281,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 1003
     TalkID: 0
     PrevID: 0
@@ -298,6 +309,7 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0

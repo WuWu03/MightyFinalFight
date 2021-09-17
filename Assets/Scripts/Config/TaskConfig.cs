@@ -74,6 +74,7 @@ public class TaskConfigData : BaseConfigData
     public bool ExitPlayerCanCtrl;
     public bool TriggerStopCamera;
     public bool ExitStartCamera;
+    public float WaitTime;
     public int MapID;
     public int TalkID;
     public int PrevID;
