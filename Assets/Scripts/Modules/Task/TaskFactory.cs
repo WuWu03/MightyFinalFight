@@ -23,7 +23,11 @@ public static class TaskFactory
             case TaskConfigData.TaskConditionType.WaitBarrels:
                 ret = new TaskWaitBarrels(data);
                 break;
+            case TaskConfigData.TaskConditionType.PrevTask:
+                ret = new TaskPrev(data);
+                break;
         }
+
         return ret;
     }
 

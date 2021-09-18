@@ -19,6 +19,7 @@ public class TaskConfigData : BaseConfigData
         MoveToPos,//到达指定位置
         KillEnemy,//杀死目标
         WaitBarrels,//等待桶
+        PrevTask,//完成某任务
     }
 
     [Serializable]
@@ -79,4 +80,5 @@ public class TaskConfigData : BaseConfigData
     public int TalkID;
     public int PrevID;
     public int NextID;
+    public int FailureID;
 }

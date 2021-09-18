@@ -3,24 +3,33 @@ using System.Collections.Generic;
 
 public class TaskMgr : BaseMgr<TaskMgr>
 {
-    private void Awake()
+    protected override void OnAwake()
     {
         m_CurrTaskList = new List<BaseTask>();
+        m_CompleteTask = new List<BaseTask>();
+        m_FailureIdList = new List<int>();
         m_CurrTaskIndex = 0;
         m_LastTaskIndex = -1;
     }
 
     public void AcceptTask(int id)
     {
-        if(HasAccepted(id))
+        if (TaskHasAccepted(id) || TaskHasCompleted(id))
         {
             return;
         }
 
-        m_CurrTaskList.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
+        if (TaskHasFailure(id, true))
+        {
+            m_CompleteTask.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
+        }
+        else
+        {
+            m_CurrTaskList.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
+        }
     }
 
-    public bool HasAccepted(int id)
+    public bool TaskHasAccepted(int id)
     {
         for (int i = 0; i < m_CurrTaskList.Count; i++)
         {
@@ -33,9 +42,27 @@ public class TaskMgr : BaseMgr<TaskMgr>
         return false;
     }
 
-    private void Update()
+    public bool TaskHasCompleted(int id)
     {
-        if (m_CurrTaskList == null || m_CurrTaskList.Count < 1 || m_CurrTaskIndex >= m_CurrTaskList.Count) return;
+        for (int i = 0; i < m_CompleteTask.Count; i++)
+        {
+            if (m_CompleteTask[i].TaskData.Id.Equals(id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (m_CurrTaskList == null || m_CurrTaskList.Count < 1)
+        {
+            return;
+        }
 
         if (!m_CurrTaskList[m_CurrTaskIndex].IsComplete)
         {
@@ -51,20 +78,99 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
                 m_CurrTaskList[m_CurrTaskIndex].Trigger();
             }
+            else
+            {
+                NextTask();
+            }
         }
         else
         {
             if(m_CurrTaskList[m_CurrTaskIndex].Exit())
             {
-                if (m_CurrTaskList[m_CurrTaskIndex].TaskData.NextID != 0)
-                    AcceptTask(m_CurrTaskList[m_CurrTaskIndex].TaskData.NextID);
-                m_CurrTaskIndex++;
+                CompleteTask();
             }
         }
     }
 
+    private void NextTask()
+    {
+        m_CurrTaskIndex++;
+
+        if (m_CurrTaskIndex >= m_CurrTaskList.Count)
+        {
+            m_CurrTaskIndex = 0;
+        }
+    }
+
+    private void CompleteTask()
+    {
+        int nextId = m_CurrTaskList[m_CurrTaskIndex].TaskData.NextID;
+        int failureId = m_CurrTaskList[m_CurrTaskIndex].TaskData.FailureID;
+
+        m_CompleteTask.Add(m_CurrTaskList[m_CurrTaskIndex]);
+        m_CurrTaskList.RemoveAt(m_CurrTaskIndex);
+
+        if(m_CurrTaskList.Count < 1)
+        {
+            m_CurrTaskIndex = 0;
+        }
+        else if (m_CurrTaskIndex >= m_CurrTaskList.Count)
+        {
+            m_CurrTaskIndex = m_CurrTaskList.Count - 1;
+        }
+
+        if (nextId != 0)
+        {
+            AcceptTask(nextId);
+        }
+
+        if (failureId != 0)
+        {
+            bool hasFailure = false;
+
+            for (int i = 0; i < m_CurrTaskList.Count; i++)
+            {
+                if(m_CurrTaskList[i].TaskData.Id.Equals(failureId))
+                {
+                    hasFailure = true;
+                    m_CompleteTask.Add(m_CurrTaskList[i]);
+                    m_CurrTaskList.RemoveAt(m_CurrTaskIndex);
+                    break;
+                }
+            }
+
+            if(!hasFailure)
+            {
+                m_FailureIdList.Add(failureId);
+            }
+        }
+    }
+
+    private bool TaskHasFailure(int id, bool remove = false)
+    {
+        if(m_FailureIdList == null || m_FailureIdList.Count < 1)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < m_FailureIdList.Count; i++)
+        {
+            if(m_FailureIdList[i].Equals(id))
+            {
+                if (remove)
+                {
+                    m_FailureIdList.RemoveAt(i);
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private int m_CurrTaskIndex = 0;
     private int m_LastTaskIndex = -1;
+    private List<int> m_FailureIdList = null;
     private List<BaseTask> m_CurrTaskList = null;
+    private List<BaseTask> m_CompleteTask = null;
 }
