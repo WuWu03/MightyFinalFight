@@ -65,31 +65,10 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].CanBeHit)
+            if (SkillFactory.SkillHit(targets[i], m_Owner, m_SkillData, m_SkillEffect) && m_SkillEffect.HitOne)
             {
-                int defenseValue = 0;
-                bool isCritical = false;
-
-                if (targets[i] is BaseRole)
-                {
-                    defenseValue = (targets[i] as BaseRole).DefenseValue;
-                }
-
-                HurtData hurtData = HurtData.Create();
-                hurtData.AttackerId = m_Owner.Id;
-                hurtData.AttackerDir = m_Owner.Dir;
-                hurtData.AttackerPos = m_Owner.Pos;
-                hurtData.AttackForce = new Vector2(m_SkillEffect.AddTargetForce.x * m_Owner.Dir, m_SkillEffect.AddTargetForce.y);
-                hurtData.IsSwoon = m_SkillEffect.IsSmoon;
-                hurtData.AttackValue = SkillFactory.CacDamage(m_Owner.AttackValue, defenseValue, m_Owner.CriticalValue, m_SkillEffect.DamageMulity, out isCritical);
-                hurtData.IsCritical = isCritical;
-                targets[i].OnHurtMsg(hurtData);
-
-                if (m_SkillEffect.HitOne)
-                {
-                    Complete();
-                    break;
-                }
+                Complete();
+                return;
             }
         }
     }
