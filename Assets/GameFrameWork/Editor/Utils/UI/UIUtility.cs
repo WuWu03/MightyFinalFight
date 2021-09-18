@@ -93,7 +93,7 @@ namespace GameFrameWork.Editor
                 GUI.color = Color.green;
                 Handles.BeginGUI();
 
-                if (GUI.Button(new Rect(0,0, 110f, 30f), "生成预制体"))
+                if (GUI.Button(new Rect(10, 10, 150f, 30f), "生成预制体"))
                 {
                     string exportPath = ExportUIPrefab(true);
                     if (string.IsNullOrEmpty(exportPath)) return;
@@ -103,15 +103,26 @@ namespace GameFrameWork.Editor
                     Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(exportPath);
                 }
 
+                GUI.color = Color.red;
+                if (GUI.Button(new Rect(10, 50, 150f, 30f), "生成预制体(不生成代码)"))
+                {
+                    string exportPath = ExportUIPrefab(false);
+                    if (string.IsNullOrEmpty(exportPath)) return;
+
+                    AssetDatabase.Refresh();
+                    AssetDatabase.SaveAssets();
+                    Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(exportPath);
+                }
+
                 GUI.color = Color.white;
 
-                if (GUI.Button(new Rect(0, 40, 110f, 30f), "复制引用到剪切板"))
+                if (GUI.Button(new Rect(30, 90, 110f, 30f), "复制引用到剪切板"))
                 {
                     CopyRefStr();
                     UnityEngine.Event.current.Use();
                 }
 
-                if (GUI.Button(new Rect(0, 80, 110f, 30f), "添加引用"))
+                if (GUI.Button(new Rect(30, 130, 110f, 30f), "添加引用"))
                 {
                     AddUIRef();
                     UnityEngine.Event.current.Use();
@@ -332,10 +343,13 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        private static string ExportUIPrefab(bool showExist = true)
+        private static string ExportUIPrefab(bool generateCode)
         {
             if (!CanExprot()) return null;
-            if (!ExportUIRef()) return null;
+            if (generateCode)
+            {
+                 if(!ExportUIRef()) return null;
+            }
 
             string path = UIRefSetting.PanelPrefabPath;
 
