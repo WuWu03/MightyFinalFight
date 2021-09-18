@@ -20,7 +20,7 @@ MonoBehaviour:
     Desc: 'A TOUGH STREET FIGHTER WHO IS
 
       SKILLED WITH KNIVES.'
-    HeadIcon: Character/Cody
+    HeadIcon: Icon/Character/Cody
     AttackSpeed: 1
     MoveSpeed: 0.7
     JumpForce: {x: 40, y: 140}
@@ -52,7 +52,7 @@ MonoBehaviour:
     Desc: 'DESCENDED FROM NINJA,HE POSSESSES
 
       INCREDIBLE AGILITY.'
-    HeadIcon: Character/Guy
+    HeadIcon: Icon/Character/Guy
     AttackSpeed: 1
     MoveSpeed: 1
     JumpForce: {x: 40, y: 140}
@@ -84,7 +84,7 @@ MonoBehaviour:
     Desc: 'THE HOT-TEMPERED WRESTLER AND MAYOR
 
       OF METRO CITY.'
-    HeadIcon: Character/Hagger
+    HeadIcon: Icon/Character/Hagger
     AttackSpeed: 1
     MoveSpeed: 1
     JumpForce: {x: 40, y: 160}

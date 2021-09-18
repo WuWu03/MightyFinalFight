@@ -361,8 +361,8 @@ namespace GameFrameWork.UI
 
         private void OnResComplete(GameObject go, object[] param)
         {
-            WaitLoadPanel wait = (param[0] as WaitLoadPanel);
-            wait.Panel.Init(go, wait.Param);
+            WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
+            waitLoadPanel.Panel.Init(go, UITools.GetUIResPath(waitLoadPanel.Panel.PanelName), waitLoadPanel.Param);
         }
 
         protected override void OnUpdate()

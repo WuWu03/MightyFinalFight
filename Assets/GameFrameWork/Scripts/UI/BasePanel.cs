@@ -44,19 +44,18 @@ namespace GameFrameWork.UI
         {
             get
             {
-                return PanelCloseMode == UIMgr.CloseMode.DelayDestroy &&
-                       m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
+                return PanelCloseMode == UIMgr.CloseMode.DelayDestroy && m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
             }
         }
 
         protected UIRefRoot UIRefRoot { get; private set; }
 
-        public void Init(GameObject go, object[] param)
+        public void Init(GameObject go, string resPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
             UIRefRoot = go.GetComponent<UIRefRoot>();
-            ResPath = UITools.GetUIResPath(PanelName);
+            ResPath = resPath;
 
             if (UIRefRoot == null)
             {

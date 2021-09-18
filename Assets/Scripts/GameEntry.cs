@@ -8,14 +8,16 @@ using System;
 
 public class GameEntry : GameFrameWorkEntry
 {
-    protected override void OnInit()
+    protected override void OnInit(GameObject manager)
     {
-        EffectMgr.Init(m_Manager);
-        TaskMgr.Init(m_Manager);
-        StageMgr.Init(m_Manager);
-        SceneEntityMgr.Init(m_Manager);
-        PlayerMgr.Init(m_Manager);
+        EffectMgr.Init(manager);
+        TaskMgr.Init(manager);
+        StageMgr.Init(manager);
+        SceneEntityMgr.Init(manager);
+        PlayerMgr.Init(manager);
         StaticConfig.InitConfig();
+
+        UITools.InitUIResPath<UIResPath>();
     }
 
     protected override void OnStartGame()

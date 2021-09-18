@@ -263,8 +263,8 @@ MonoBehaviour:
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/UI/Icon/Character/
-    AssetBundlePath: ArtResources/UI/Icon/Character/
+    AssetPath: Assets/ArtResources/UI/Sprite/Icon/Character/
+    AssetBundlePath: ArtResources/UI/Sprite/Icon/Character/
   - Id: 37
     BundleType: 0
     BundleName: 

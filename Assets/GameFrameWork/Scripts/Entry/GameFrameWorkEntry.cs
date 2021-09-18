@@ -36,7 +36,7 @@ namespace GameFrameWork
             SoundMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
-            OnInit();
+            OnInit(m_Manager);
         }
 
         private void Start()
@@ -63,10 +63,10 @@ namespace GameFrameWork
             Destroy(m_Manager);
             OnExit();
         }
-        protected abstract void OnInit();
+        protected abstract void OnInit(GameObject manager);
         protected abstract void OnStartGame();
         protected abstract void OnExit();
 
-        protected GameObject m_Manager = null;
+        private GameObject m_Manager = null;
     }
 }

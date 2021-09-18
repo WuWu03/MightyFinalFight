@@ -1,9 +1,4 @@
 ﻿using GameFrameWork.Pool;
-using GameFrameWork.Resources;
-using GameFrameWork.Utility;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +6,19 @@ namespace GameFrameWork.UI
 {
     public static class UITools
     {
+        public static void InitUIResPath<T>() where T : UIResPath, new()
+        {
+            m_uiResPath = new T();
+        }
+
         public static string GetUIResPath(string name)
         {
-            return PathUtil.FormatPath(ResDefine.UI_PATH, name);
+            return m_uiResPath.GetUIResPath(name);
         }
 
         public static void SetSprite(this Image renderer, string name)
         {
-            string realPath = PathUtil.FormatPath(ResDefine.ICON_PATH, name);
+            string realPath = m_uiResPath.GetUISpritePath(name);
             SpritePool.Ins.Get(realPath, (Sprite sprite, object[] param) =>
             {
                 renderer.sprite = sprite;
@@ -28,6 +28,21 @@ namespace GameFrameWork.UI
         public static void LoadUI(string uiName, GameFrameWorkAction<GameObject, object[]> loadCallback, params object[] param)
         {
             GameObjectPool.Ins.Get(GetUIResPath(uiName), loadCallback, param);
+        }
+
+        private static UIResPath m_uiResPath = null;
+    }
+
+    public class UIResPath
+    {
+        public virtual string GetUIResPath(string name)
+        {
+            return string.Empty;
+        }
+
+        public virtual string GetUISpritePath(string name)
+        {
+            return string.Empty;
         }
     }
 }

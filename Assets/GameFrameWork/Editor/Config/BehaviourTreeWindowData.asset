@@ -25,8 +25,8 @@ MonoBehaviour:
       height: 42
     WindowRect:
       serializedVersion: 2
-      x: -811
-      y: 275
+      x: -466
+      y: 341
       width: 233
       height: 257
     Children:
@@ -42,8 +42,8 @@ MonoBehaviour:
         height: 0
       WindowRect:
         serializedVersion: 2
-        x: -497
-        y: 303
+        x: -152
+        y: 369
         width: 236
         height: 205
       Children:
@@ -59,8 +59,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: -137
-          y: -157
+          x: 208
+          y: -91
           width: 236
           height: 205
         Children: []
@@ -77,8 +77,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: -136
-          y: 72
+          x: 209
+          y: 138
           width: 236
           height: 205
         Children: []
@@ -95,8 +95,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: -134
-          y: 304
+          x: 211
+          y: 370
           width: 236
           height: 205
         Children: []
@@ -113,8 +113,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: -135
-          y: 530
+          x: 210
+          y: 596
           width: 236
           height: 205
         Children:
@@ -130,8 +130,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 239
-            y: 382
+            x: 584
+            y: 448
             width: 233
             height: 205
           Children: []
@@ -148,8 +148,8 @@ MonoBehaviour:
             height: 0
           WindowRect:
             serializedVersion: 2
-            x: 239
-            y: 633
+            x: 584
+            y: 699
             width: 233
             height: 205
           Children: []
@@ -170,8 +170,8 @@ MonoBehaviour:
           height: 0
         WindowRect:
           serializedVersion: 2
-          x: -137
-          y: 755
+          x: 208
+          y: 821
           width: 236
           height: 205
         Children: []
