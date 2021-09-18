@@ -22,7 +22,8 @@ public class TaskTriggerAutoMoveToPos : BaseTaskTrigger
     public override void Trigger()
     {
         base.Trigger();
-        if(!PlayerMgr.Ins.Player.IsAutoMove)
+
+        if (!PlayerMgr.Ins.Player.IsAutoMove)
         {
             Complete();
         }

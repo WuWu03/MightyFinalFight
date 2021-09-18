@@ -95,7 +95,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     private void NextTask()
     {
         m_CurrTaskIndex++;
-
+        m_LastTaskIndex = -1;
         if (m_CurrTaskIndex >= m_CurrTaskList.Count)
         {
             m_CurrTaskIndex = 0;
@@ -109,8 +109,9 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
         m_CompleteTask.Add(m_CurrTaskList[m_CurrTaskIndex]);
         m_CurrTaskList.RemoveAt(m_CurrTaskIndex);
+        m_LastTaskIndex = -1;
 
-        if(m_CurrTaskList.Count < 1)
+        if (m_CurrTaskList.Count < 1)
         {
             m_CurrTaskIndex = 0;
         }
