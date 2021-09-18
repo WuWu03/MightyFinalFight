@@ -152,83 +152,54 @@ public class SkillFactory
         return ret;
     }
 
-    public static bool SkillHit(ICanBeHit hit, BaseRole owner, BulletData bulletData)
-    {
-        int id = bulletData.Id;
-        int exp = bulletData.SkillExp;
-        bool canBeDefense = false;
-        bool isSmoon = bulletData.IsSmoon;
-        bool isOnGroundHurt = false;
-        float damageMulity = bulletData.DamageMulity;
-        string hurtSound = string.Empty;
-        SkillAddForceType forceType = SkillAddForceType.SelfDir;
-        Vector2 force = bulletData.AddTargetForce;
-        return SkillHit(hit, owner, id, exp, canBeDefense, isSmoon, isOnGroundHurt, damageMulity, hurtSound, forceType, force);
-    }
-
     public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
     {
-        int id = data.Id;
-        int exp = data.EXP;
-        bool canBeDefense = effect.CanBeDefense;
-        bool isSmoon = effect.IsSmoon;
-        bool isOnGroundHurt = effect.IsOnGroundHurt;
-        float damageMulity = effect.DamageMulity;
-        string hurtSound = data.HurtSound;
-        SkillAddForceType forceType = effect.ForceType;
-        Vector2 force = effect.AddTargetForce;
-
-        return SkillHit(hit, owner, id, exp, canBeDefense, isSmoon, isOnGroundHurt, damageMulity, hurtSound, forceType, force);
-    }
-
-    public static bool SkillHit(ICanBeHit hit, BaseRole owner, int id, int exp, bool canBeDefense, bool isSmoon, bool isGroundHurt, float damageMulity, string hurtSound, SkillAddForceType forceType, Vector2 force)
-    {
-        if (hit != null && hit.CanBeHit)
+        if (hit == null || !hit.CanBeHit)
         {
-            float dir = (hit as BaseSceneObject).Pos.x - owner.Pos.x >= 0 ? 1 : -1;
-            int defenseValue = 0;
-            bool isBoss = false;
-            bool isCritical = false;
-
-            if (forceType == SkillAddForceType.SelfDir)
-            {
-                dir = owner.Dir;
-            }
-
-            if (hit is BaseRole)
-            {
-                defenseValue = (hit as BaseRole).DefenseValue;
-            }
-
-            if (owner is BaseEnemy)
-            {
-                isBoss = (owner as BaseEnemy).IsBoss;
-            }
-
-            HurtData hurtData = HurtData.Create();
-            hurtData.Id = id;
-            hurtData.SkillExp = exp;
-            hurtData.AttackerDir = owner.Dir;
-            hurtData.AttackForce = new Vector2(force.x * dir, force.y);
-            hurtData.AttackerPos = owner.Pos;
-            hurtData.CanBeDefense = canBeDefense;
-            hurtData.IsSwoon = isSmoon;
-            hurtData.AttackerId = owner.Id;
-            hurtData.AttackValue = CacDamage(owner.AttackValue, defenseValue, owner.CriticalValue, damageMulity, out isCritical);
-            hurtData.IsCritical = isCritical;
-            hurtData.HurtSound = hurtSound;
-            hurtData.HurtAnim = string.Empty;
-            hurtData.IsGroundHurt = isGroundHurt;
-            hurtData.IsBoss = isBoss;
-            hit.OnHurtMsg(hurtData);
-
-            return !hit.IsDead;
+            return false;
         }
 
-        return false;
+        float dir = (hit as BaseSceneObject).Pos.x - owner.Pos.x >= 0 ? 1 : -1;
+        int defenseValue = 0;
+        bool isBoss = false;
+        bool isCritical = false;
+
+        if (effect.ForceType == SkillAddForceType.SelfDir)
+        {
+            dir = owner.Dir;
+        }
+
+        if (hit is BaseRole)
+        {
+            defenseValue = (hit as BaseRole).DefenseValue;
+        }
+
+        if (owner is BaseEnemy)
+        {
+            isBoss = (owner as BaseEnemy).IsBoss;
+        }
+
+        HurtData hurtData = HurtData.Create();
+        hurtData.Id = data.Id;
+        hurtData.SkillExp = data.EXP;
+        hurtData.AttackerDir = owner.Dir;
+        hurtData.AttackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
+        hurtData.AttackerPos = owner.Pos;
+        hurtData.CanBeDefense = effect.CanBeDefense;
+        hurtData.IsSwoon = effect.IsSmoon;
+        hurtData.AttackerId = owner.Id;
+        hurtData.AttackValue = CacDamage(owner.AttackValue, defenseValue, owner.CriticalValue, effect.DamageMulity, out isCritical);
+        hurtData.IsCritical = isCritical;
+        hurtData.HurtSound = data.HurtSound;
+        hurtData.HurtAnim = string.Empty;
+        hurtData.IsGroundHurt = effect.IsOnGroundHurt;
+        hurtData.IsBoss = isBoss;
+        hit.OnHurtMsg(hurtData);
+
+        return !hit.IsDead;
     }
 
-    public static int CacDamage(int attack, int defense, int critical, float mulity,out bool isCritical)
+    public static int CacDamage(int attack, int defense, int critical, float mulity, out bool isCritical)
     {
         int a = 2;
         int b = 1;
@@ -243,7 +214,7 @@ public class SkillFactory
             damage *= criMulity;
         }
 
-        string str =   "[基础伤害: " + baseDamage + "]" +
+        string str = "[基础伤害: " + baseDamage + "]" +
                      "\n[最终伤害： " + damage + "]" +
                      "\n[攻击: " + attack + "]" +
                      "\n[防御: " + defense + "]" +

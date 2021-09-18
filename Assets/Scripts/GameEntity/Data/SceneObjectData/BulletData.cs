@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class BulletData : BaseSceneObjectData
 {
-    public bool IsSmoon { get; set; }
-    public Vector2 AddTargetForce { get; set; }
+    public int BulletIndex { get; set; }
     public string NormalAnim { get; set; }
     public string HitAnim { get; set; }
     public float NormalAnimSpeed { get; set; }
@@ -16,13 +15,11 @@ public class BulletData : BaseSceneObjectData
     public float HitRange { get; set; }
     public float Drag { get; set; }
     public bool IsPenatrate { get; set; }//是否穿透
-    public int SkillExp { get; set; }
-    public float DamageMulity { get; set; }
+
     public override void Clear()
     {
         base.Clear();
-        IsSmoon = false;
-        AddTargetForce = Vector2.zero;
+        BulletIndex = 0;
         NormalAnim = string.Empty;
         HitAnim = string.Empty;
         NormalAnimSpeed = 0;
@@ -33,6 +30,5 @@ public class BulletData : BaseSceneObjectData
         HitRange = 0;
         Drag = 0;
         IsPenatrate = false;
-        SkillExp = 0;
     }
 }

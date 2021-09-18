@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SkillBase
 {
-    public SkillBase(SkillConfigData skillData,BaseRole owner,int effectIndex)
+    public SkillBase(SkillConfigData skillData, BaseRole owner, int effectIndex)
     {
         m_SkillData = skillData;
         m_Owner = owner;

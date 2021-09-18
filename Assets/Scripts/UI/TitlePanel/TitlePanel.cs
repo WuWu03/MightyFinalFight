@@ -106,15 +106,18 @@ public class TitlePanel : BasePanel
 			m_Component.ImgRetro.gameObject.SetActive(true);		
 			m_Component.ImgLogoBG.DOFillAmount(1, 0.2f);
 			m_Component.ImgRetro.DOFillAmount(1, 0.2f);
-			
 		});
 		sequence.AppendInterval(0.2f);
 		sequence.AppendCallback(() =>
 		{
 			m_Component.ImgStar.gameObject.SetActive(true);
-			m_Component.ImgStar.DOFade(1, 1f);
-			m_Component.TxtStart.gameObject.SetActive(true);
 			SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm13Title", false);
+		});
+		sequence.AppendInterval(0.1f);
+		sequence.Append(m_Component.ImgStar.DOFade(1, 1f));
+		sequence.AppendCallback(() => 
+		{
+			m_Component.TxtStart.gameObject.SetActive(true);
 			m_CanStart = true;
 		});
 	}

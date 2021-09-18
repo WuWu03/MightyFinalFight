@@ -46,6 +46,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             {
                 m_CatchAttackTimer = 0;
                 m_Owner.SetDir(dir.x);
+
                 hero.OnHitStart()[0].SetThrow(true);
                 m_SkillManager.DeploySkill(m_ThrowAttackID);
                 return;
@@ -130,6 +131,5 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_JumpAttackID;
     private float m_CatchAttackTimer = 0f;
 
-    private const float CATCH_ATTACK_STAMP = 0.2f;
+    private const float CATCH_ATTACK_STAMP = 0.3f;
 }
-

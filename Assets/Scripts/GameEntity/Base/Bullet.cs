@@ -18,6 +18,11 @@ public class Bullet : BaseSceneItem
         SetPos(owner.Pos + new Vector2(m_BulletData.Pos.x * owner.Dir, m_BulletData.Pos.y));
     }
 
+    public void SetSkillEffect(SkillBulletEffect skillBulletEffect)
+    {
+        m_SkillBulletEffect = skillBulletEffect;
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -62,13 +67,17 @@ public class Bullet : BaseSceneItem
             return;
         }
 
-
         BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
         bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) < m_BulletData.HitRange;
 
         if (isInRange)
         {
-            SkillFactory.SkillHit(collision.gameObject.GetComponent<ICanBeHit>(), m_Owner, m_BulletData);
+            ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+
+            if (m_SkillBulletEffect != null)
+            {
+                m_SkillBulletEffect.BulletEffect(hit);
+            }
 
             if (!m_BulletData.IsPenatrate)
             {
@@ -104,13 +113,14 @@ public class Bullet : BaseSceneItem
 
     public override void Release()
     {
-        base.Release();
-        m_Owner = null;
         m_BulletData = null;
         m_IsHit = false;
+        m_SkillBulletEffect = null;
+        base.Release();
     }
 
     private bool m_IsHit = false;
+    private SkillBulletEffect m_SkillBulletEffect = null;
     private UnityArmatureComponent m_Animator = null;
     private BulletData m_BulletData = null;
 }

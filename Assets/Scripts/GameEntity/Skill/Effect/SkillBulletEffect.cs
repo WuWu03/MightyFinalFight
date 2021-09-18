@@ -14,8 +14,7 @@ public class SkillBulletEffect : SkillBaseEffect
             BulletData bulletData = ReferencePool.Acquire<BulletData>();
             bulletData.Health = 1;
             bulletData.MaxHealth = 1;
-            bulletData.IsSmoon = m_SkillEffect.IsSmoon;
-            bulletData.AddTargetForce = m_SkillEffect.AddTargetForce;
+            bulletData.BulletIndex = i;
             bulletData.NormalAnim = m_SkillEffect.Bullets[i].NormalAnim;
             bulletData.HitAnim = m_SkillEffect.Bullets[i].HitAnim;
             bulletData.NormalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed;
@@ -26,8 +25,8 @@ public class SkillBulletEffect : SkillBaseEffect
             bulletData.HitRange = m_SkillEffect.Bullets[i].HitRange;
             bulletData.Drag = m_SkillEffect.Bullets[i].Drag;
             bulletData.IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
-            bulletData.SkillExp = m_SkillData.EXP;
-            bulletData.DamageMulity = m_SkillEffect.DamageMulity;
+
+            bullet.SetSkillEffect(this);
             bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
             bullet.SetOwner(m_Owner);
@@ -36,5 +35,10 @@ public class SkillBulletEffect : SkillBaseEffect
         }
 
         Complete();
+    }
+
+    public void BulletEffect(ICanBeHit hit)
+    {
+        SkillFactory.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect);
     }
 }
