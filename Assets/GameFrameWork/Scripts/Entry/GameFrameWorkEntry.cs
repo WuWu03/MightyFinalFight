@@ -36,6 +36,7 @@ namespace GameFrameWork
             SoundMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
+            UITools.InitUIResPath(InitUIResPath());
             OnInit(m_Manager);
         }
 
@@ -64,6 +65,7 @@ namespace GameFrameWork
             OnExit();
         }
         protected abstract void OnInit(GameObject manager);
+        protected abstract UI.UIResPath InitUIResPath();
         protected abstract void OnStartGame();
         protected abstract void OnExit();
 

@@ -6,9 +6,9 @@ namespace GameFrameWork.UI
 {
     public static class UITools
     {
-        public static void InitUIResPath<T>() where T : UIResPath, new()
+        public static void InitUIResPath(UIResPath uiResPath)
         {
-            m_uiResPath = new T();
+            m_uiResPath = uiResPath;
         }
 
         public static string GetUIResPath(string name)

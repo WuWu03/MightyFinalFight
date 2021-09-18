@@ -16,8 +16,11 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.Init(manager);
         PlayerMgr.Init(manager);
         StaticConfig.InitConfig();
+    }
 
-        UITools.InitUIResPath<UIResPath>();
+    protected override GameFrameWork.UI.UIResPath InitUIResPath()
+    {
+        return new UIResPath();
     }
 
     protected override void OnStartGame()
