@@ -53,6 +53,11 @@ namespace GameFrameWork.Editor
         {
             bool result = false;
 
+            if (m_AssetBundleConfig == null)
+            {
+                return result;
+            }
+
             if (!m_DicAssetContainer.TryGetValue(assetPath, out result))
             {
                 for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
