@@ -163,6 +163,11 @@ namespace GameFrameWork.Utility
 
             else go.layer = layer;
         }
+        public static bool CompareTo(double d1,double d2)
+        {
+            double difference = d1 * 0.0001;
+            return Math.Abs(d1 - d2) <= difference;
+        }
 
         public static string ConvertLongToDateTime(long time)
         {
