@@ -26,9 +26,12 @@
 
         public static Event<T> Create(object sender, T eventArgs)
         {
-            Event<T> @event = new Event<T>();
-            @event.m_Sender = sender;
-            @event.m_EventArgs = eventArgs;
+            Event<T> @event = new Event<T>()
+            {
+                m_Sender = sender,
+                m_EventArgs = eventArgs,
+            };
+          
             return @event;
         }
 

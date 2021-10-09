@@ -97,7 +97,10 @@ public class BaseGravityObject : BaseSceneObject
         m_OnDropEvent.RemoveAllListeners();
         OnDrop();
 
-        if (!IsInGround) return;
+        if (!IsInGround)
+        {
+            return;
+        }
 
         m_OnGroundEvent.Invoke();
         m_OnGroundEvent.RemoveAllListeners();

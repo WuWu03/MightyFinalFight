@@ -199,7 +199,7 @@ namespace GameFrameWork.Editor
 						object[] objs = field.GetCustomAttributes(typeof(EnumLabelAttribute), true);
 						if (objs != null && objs.Length > 0)
 						{
-							enumString[i] = ((EnumLabelAttribute)objs[0]).label;
+							enumString[i] = ((EnumLabelAttribute)objs[0]).Label;
 						}
 					}
 				}

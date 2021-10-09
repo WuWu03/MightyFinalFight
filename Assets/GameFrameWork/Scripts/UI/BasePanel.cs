@@ -131,7 +131,7 @@ namespace GameFrameWork.UI
                 return gameObject.GetComponent<T>();
             }
 
-            return default(T);
+            return default;
         }
 
         public void Destroy()

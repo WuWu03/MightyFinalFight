@@ -32,9 +32,7 @@ namespace GameFrameWork.Event
 
         public int Count(int id)
         {
-            List<EventHandler<T>> eventList = null;
-
-            if (m_EventHandlers.TryGetValue(id, out eventList))
+            if (m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 return eventList.Count;
             }
@@ -46,12 +44,9 @@ namespace GameFrameWork.Event
         {
             while (m_Events.Count > 0)
             {
-                Event<T> @event = null;
-                Queue<Event<T>> events = m_Events;
-
-                lock (events)
+                lock (m_Events)
                 {
-                    @event = m_Events.Dequeue();
+                    Event<T> @event = m_Events.Dequeue();
                     HandleEvent(@event.Sender, @event.EventArgs);
                 }
             }
@@ -64,9 +59,7 @@ namespace GameFrameWork.Event
                 throw new Exception("Event handler is invalid.");
             }
 
-            List<EventHandler<T>> eventList = null;
-
-            if (!m_EventHandlers.TryGetValue(id, out eventList))
+            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 eventList = new List<EventHandler<T>>();
                 m_EventHandlers.Add(id, eventList);
@@ -87,9 +80,7 @@ namespace GameFrameWork.Event
                 throw new Exception("Event handler is invalid.");
             }
 
-            List<EventHandler<T>> eventList = null;
-
-            if (!m_EventHandlers.TryGetValue(id, out eventList))
+            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
             }
@@ -112,9 +103,7 @@ namespace GameFrameWork.Event
                 throw new Exception("Event handler is invalid.");
             }
 
-            List<EventHandler<T>> eventList = null;
-
-            if(!m_EventHandlers.TryGetValue(id,out eventList))
+            if(!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 return false;
             }
@@ -125,8 +114,8 @@ namespace GameFrameWork.Event
         public void Dispatch(object sender, T args)
         {
             Event<T> item = Event<T>.Create(sender, args);
-            Queue<Event<T>> events = m_Events;
-            lock (events)
+
+            lock (m_Events)
             {
                 m_Events.Enqueue(item);
             }
@@ -139,9 +128,7 @@ namespace GameFrameWork.Event
 
         public void Clear()
         {
-            Queue<Event<T>> events = m_Events;
-
-            lock (events)
+            lock (m_Events)
             {
                 m_Events.Clear();
             }
@@ -156,9 +143,8 @@ namespace GameFrameWork.Event
         private void HandleEvent(object sender, T args)
         {
             int id = args.Id;
-            List<EventHandler<T>> eventList = null;
 
-            if (!m_EventHandlers.TryGetValue(id, out eventList))
+            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
             }

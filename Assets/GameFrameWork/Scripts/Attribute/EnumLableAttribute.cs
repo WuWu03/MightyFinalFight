@@ -8,18 +8,43 @@ namespace GameFrameWork
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
     public class EnumLabelAttribute : PropertyAttribute
     {
-        public string label;
-        public int[] order = new int[0];
-        public EnumLabelAttribute(string label)
+        public string Label
         {
-            this.label = label;
+            get
+            {
+                return m_Label;
+            }
+            set
+            {
+                m_Label = value;
+            }
         }
 
-        public EnumLabelAttribute(string label, params int[] order)
+        public int[] Orders
         {
-            this.label = label;
-            this.order = order;
+            get
+            {
+                return m_Orders;
+            }
+            set
+            {
+                m_Orders = value;
+            }
         }
+
+        public EnumLabelAttribute(string label)
+        {
+            m_Label = label;
+        }
+
+        public EnumLabelAttribute(string label, params int[] orders)
+        {
+            m_Label = label;
+            m_Orders = orders;
+        }
+
+        private string m_Label = string.Empty;
+        private int[] m_Orders = null;
     }
 
 }

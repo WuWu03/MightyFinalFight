@@ -5,11 +5,20 @@ using System.Collections;
 
 public class SetPropertyAttribute : PropertyAttribute
 {
-	public string Name { get; private set; }
+	public string Name 
+	{
+        get 
+		{
+			return m_Name;
+		}
+	}
+
 	public bool IsDirty { get; set; }
 
 	public SetPropertyAttribute(string name)
 	{
-		this.Name = name;
+		m_Name = name;
 	}
+
+	private string m_Name = string.Empty;
 }

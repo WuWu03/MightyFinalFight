@@ -43,21 +43,12 @@ namespace GameFrameWork.Net
                 m_ReceiveStream = new MemoryStreamEx();
                 m_IsConnected = true;
                 StartReceive();
-
-                if (OnConnectSuccess != null)
-                {
-                    OnConnectSuccess();
-                }
-
+                OnConnectSuccess?.Invoke();
                 Log.GameFrameworkLog.Log("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
-                if (OnConnectFail != null)
-                {
-                    OnConnectFail();
-                }
-
+                OnConnectFail?.Invoke();
                 Log.GameFrameworkLog.Log(e.ToString());
             }
         }
@@ -111,7 +102,7 @@ namespace GameFrameWork.Net
             if (m_OnEventCallQueue.Count > 0)
             {
                 Action a = m_OnEventCallQueue.Dequeue();
-                if (a != null) a();
+                a?.Invoke();
             }
         }
 
@@ -233,10 +224,7 @@ namespace GameFrameWork.Net
                         mse.Read(msgContent, 0, msgContent.Length);
                     }
 
-                    if (onReceive != null)
-                    {
-                        onReceive(msgCode, msgContent);
-                    }
+                    onReceive?.Invoke(msgCode, msgContent);
                 }
             }
         }

@@ -295,14 +295,14 @@ namespace GameFrameWork.Input
 
             if (input[inputIndex] != origin[originIndex])
             {
-                inputIndex = inputIndex + 1;
+                inputIndex++;
                 if (originIndex > 0) originIndex = 0;
                 return IsMatch(origin, input, originIndex, inputIndex);
             }
             else
             {
-                inputIndex = inputIndex + 1;
-                originIndex = originIndex + 1;
+                inputIndex++;
+                originIndex++;
                 return IsMatch(origin, input, originIndex, inputIndex);
             }
         }

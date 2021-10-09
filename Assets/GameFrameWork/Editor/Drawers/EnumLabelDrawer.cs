@@ -22,7 +22,8 @@ namespace GameFrameWork
                         .Select<string, string>(enumName => m_CustomEnumNames[enumName])
                         .ToArray();
 
-                int[] indexArray = GetIndexArray(((EnumLabelAttribute)attribute).order);
+                int[] indexArray = GetIndexArray(((EnumLabelAttribute)attribute).Orders);
+
                 if (indexArray.Length != displayedOptions.Length)
                 {
                     indexArray = new int[displayedOptions.Length];
@@ -31,13 +32,17 @@ namespace GameFrameWork
                         indexArray[i] = i;
                     }
                 }
+
                 string[] items = new string[displayedOptions.Length];
                 items[0] = displayedOptions[0];
+
                 for (int i = 0; i < displayedOptions.Length; i++)
                 {
                     items[i] = displayedOptions[indexArray[i]];
                 }
+
                 int index = -1;
+
                 for (int i = 0; i < indexArray.Length; i++)
                 {
                     if (indexArray[i] == property.enumValueIndex)
@@ -46,12 +51,21 @@ namespace GameFrameWork
                         break;
                     }
                 }
-                if ((index == -1) && (property.enumValueIndex != -1)) { SortingError(position, property, label); return; }
-                index = EditorGUI.Popup(position, ((EnumLabelAttribute)attribute).label, index, items);
+
+                if ((index == -1) && (property.enumValueIndex != -1)) 
+                { 
+                    SortingError(position, property, label); 
+                    return; 
+                }
+
+                index = EditorGUI.Popup(position, ((EnumLabelAttribute)attribute).Label, index, items);
+
                 if (EditorGUI.EndChangeCheck())
                 {
                     if (index >= 0)
+                    {
                         property.enumValueIndex = indexArray[index];
+                    }
                 }
             }
         }
@@ -59,6 +73,7 @@ namespace GameFrameWork
         public void SetUpCustomEnumNames(SerializedProperty property, string[] enumNames)
         {
             object[] customAttributes = fieldInfo.GetCustomAttributes(typeof(EnumLabelAttribute), false);
+
             foreach (EnumLabelAttribute customAttribute in customAttributes)
             {
                 Type enumType = fieldInfo.FieldType;
@@ -66,14 +81,19 @@ namespace GameFrameWork
                 foreach (string enumName in enumNames)
                 {
                     FieldInfo field = enumType.GetField(enumName);
-                    if (field == null) continue;
+
+                    if (field == null)
+                    {
+                        continue;
+                    }
+
                     EnumLabelAttribute[] attrs = (EnumLabelAttribute[])field.GetCustomAttributes(customAttribute.GetType(), false);
 
                     if (!m_CustomEnumNames.ContainsKey(enumName))
                     {
                         foreach (EnumLabelAttribute labelAttribute in attrs)
                         {
-                            m_CustomEnumNames.Add(enumName, labelAttribute.label);
+                            m_CustomEnumNames.Add(enumName, labelAttribute.Label);
                         }
                     }
                 }
@@ -83,6 +103,7 @@ namespace GameFrameWork
         private int[] GetIndexArray(int[] order)
         {
             int[] indexArray = new int[order.Length];
+
             for (int i = 0; i < order.Length; i++)
             {
                 int index = 0;
@@ -95,7 +116,8 @@ namespace GameFrameWork
                 }
                 indexArray[i] = index;
             }
-            return (indexArray);
+
+            return indexArray;
         }
 
         private void SortingError(Rect position, SerializedProperty property, GUIContent label)
@@ -104,6 +126,6 @@ namespace GameFrameWork
             EditorGUI.EndProperty();
         }
 
-        private Dictionary<string, string> m_CustomEnumNames = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> m_CustomEnumNames = new Dictionary<string, string>();
     }
 }
