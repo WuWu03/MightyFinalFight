@@ -100,13 +100,13 @@ public class StageMgr : BaseMgr<StageMgr>
 
         PlayerMgr.Ins.CanContrl = false; 
         CameraMgr.Ins.EndFollow();
-        SceneEntityMgr.Ins.ReleaseSceneOjbect();
         SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
 
         UIMgr.Ins.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
         {
             m_OnStageStartEnterEvent?.Invoke();
             m_OnStageStartEnterEvent = null;
+            SceneEntityMgr.Ins.ReleaseSceneBuildings();
             SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
         });  
     }

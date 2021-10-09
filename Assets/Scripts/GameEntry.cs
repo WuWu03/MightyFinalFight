@@ -26,7 +26,7 @@ public class GameEntry : GameFrameWorkEntry
     protected override void OnStartGame()
     {
         CameraMgr.Ins.SetFollowMode(FollowMode.Just);
-        UIMgr.Ins.Open<TitlePanel>();
+        UIMgr.Ins.Open<RoleSelectPanel>();
     }
 
     protected override void OnExit()

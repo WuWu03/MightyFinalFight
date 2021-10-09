@@ -16,13 +16,7 @@ public class Trap : BaseSceneItem
         m_TrapData = info as TrapData;
     }
 
-    public override void SetPos(Vector2 pos)
-    {
-        m_Pos = pos;
-        transform.localPosition = new Vector3(pos.x, pos.y + m_PosZ, 0);
-    }
-
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
         SetCollider(m_TrapData.TriggerOffest, m_TrapData.TriggerSize);

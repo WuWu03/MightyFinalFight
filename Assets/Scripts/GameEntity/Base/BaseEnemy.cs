@@ -38,7 +38,7 @@ public class BaseEnemy : BaseRole
         m_IsBoss = enemyData.IsBoss;
     }
 
-    public override void SetPos(Vector2 pos)
+    public override void SetPos(Vector2 pos, bool caculateZ = false)
     {
         if (IsAnyState(typeof(RoleMove)))
         {
@@ -55,7 +55,7 @@ public class BaseEnemy : BaseRole
             if (!isMapYCanMove) pos.y = m_Pos.y;
         }
 
-        base.SetPos(pos);
+        base.SetPos(pos, caculateZ);
     }
 
     public override void SubHealth(int value)

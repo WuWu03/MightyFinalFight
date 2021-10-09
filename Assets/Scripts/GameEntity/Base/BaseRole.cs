@@ -713,7 +713,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!m_YArrived)
         {
             float yOffest = m_MoveToPos.y - m_Pos.y;
-            m_YArrived = Mathf.Abs(yOffest) <= 0.02f;
+            m_YArrived = Mathf.Abs(yOffest) <= 0.05f;
             MoveData data = MoveData.Create();
             data.Dir = (Vector2.up * yOffest).normalized;
             OnMoveMsg(data);
@@ -724,7 +724,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!m_XArrived)
         {
             float xOffest = m_MoveToPos.x - m_Pos.x;
-            m_XArrived = Mathf.Abs(xOffest) <= 0.02f;
+            m_XArrived = Mathf.Abs(xOffest) <= 0.05f;
             MoveData data = MoveData.Create();
             data.Dir = (Vector2.right * xOffest).normalized;
             OnMoveMsg(data);

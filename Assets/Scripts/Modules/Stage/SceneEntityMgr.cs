@@ -64,7 +64,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         return null;
     }
 
-    public void ReleaseSceneOjbect()
+    public void ReleaseSceneBuildings()
     {
         for (int i = 0; i < m_ListSceneBuilding.Count; i++)
         {

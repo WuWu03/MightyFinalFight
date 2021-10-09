@@ -283,7 +283,7 @@ public class BaseHero : BaseRole
         UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
     }
 
-    public override void SetPos(Vector2 pos)
+    public override void SetPos(Vector2 pos ,bool caculateZ = false)
     {
         if (!IsAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
         {
@@ -310,7 +310,7 @@ public class BaseHero : BaseRole
             pos.y = !isMapYCanMove ? m_Pos.y : pos.y;
         }
 
-        base.SetPos(pos);
+        base.SetPos(pos, caculateZ);
     }
 
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
