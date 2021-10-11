@@ -7,11 +7,11 @@ public class UIResPath : GameFrameWork.UI.UIResPath
 {
     public override string GetUIResPath(string name)
     {
-        return PathUtil.FormatPath(ResDefine.UI_PATH, name);
+        return PathUtil.FormatPath(ResDefine.UIPath, name);
     }
 
     public override string GetUISpritePath(string name)
     {
-        return PathUtil.FormatPath(ResDefine.UISPRITE_PATH, name);
+        return PathUtil.FormatPath(ResDefine.UISpritePath, name);
     }
 }

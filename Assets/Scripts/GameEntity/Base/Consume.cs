@@ -45,19 +45,19 @@ public class Consume : BaseSceneItem
             AddExp();
         else
             m_Owner.AddHealth(m_ConsumeInfo.Value);
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnEat");
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }
 
     private void AddExp()
     {
         PlayerMgr.Ins.AddExp(m_ConsumeInfo.Value);
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnEat");
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }
 
     private void AddLife()
     {
         PlayerMgr.Ins.AddLife(m_ConsumeInfo.Value);
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/GetRobot");
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/GetRobot");
     }
 
     private void AddMoney()

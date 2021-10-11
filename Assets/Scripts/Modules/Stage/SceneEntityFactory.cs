@@ -8,7 +8,7 @@ public static class SceneEntityFactory
     public static BaseRole CreateRole(string name, string asset, float moveSpeed, Vector2 pos)
     {
         BaseRole role = EntityMgr.Ins.GetEntity<BaseRole>(name);
-        role.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, asset));
+        role.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, asset));
         role.SetLayer(LayerName.Unit);
         role.SetPos(pos);
         role.MoveSpeed = moveSpeed;
@@ -64,7 +64,7 @@ public static class SceneEntityFactory
         sceneItemData.CanDrop = data.CanDrop;
 
         sceneItem.SetData(sceneItemData);
-        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, data.AssetName));
+        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, data.AssetName));
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
         sceneItem.SetLayer(LayerName.Unit);
@@ -95,7 +95,7 @@ public static class SceneEntityFactory
         enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
         enemySkillData.BehaviourTreeIds = enemyConfigData.BehaviourTreeIds;
 
-        enemy.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, enemyConfigData.AssetName));
+        enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.AssetName));
         enemy.SetData(enemyData);
         enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
         enemy.SetObjectType(ObjectType.Monster);
@@ -123,7 +123,7 @@ public static class SceneEntityFactory
                 sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit)
         {
             SceneBuilding sceneBuilding = EntityMgr.Ins.GetEntity<SceneBuilding>(sceneObjData.Name);
-            sceneBuilding.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, sceneObjData.AssetName));
+            sceneBuilding.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, sceneObjData.AssetName));
             sceneBuilding.SetMapPos(sceneObjData.Pos);
             sceneBuilding.SetLayer(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit ? LayerName.Unit : LayerName.Map);
             return sceneBuilding;

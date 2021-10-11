@@ -30,7 +30,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CATCH_ATTACK_STAMP))//正在捕捉攻击
+            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CatchAttacTime))//正在捕捉攻击
             {
                 return;
             }
@@ -52,7 +52,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_STAMP)
+            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CatchAttacTime)
             {
                 m_CatchAttackTimer = Time.time;
                 m_SkillManager.DeploySkill(m_CatchAttackID);
@@ -101,15 +101,22 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private BaseSceneItem IsNearSceneItem()
     {
         List<GameObject> list = m_Owner.Targets;
+
         for (int i = 0; i < list.Count; i++)
         {
             BaseSceneItem item = list[i].GetComponent<BaseSceneItem>();
-            if (item == null) continue;
+
+            if (item == null)
+            {
+                continue;
+            }
 
             bool isInRange = Mathf.Abs(item.Bound.yMin - m_Owner.Bound.yMin) <= 0.2f &&
                              Mathf.Abs(item.Pos.x - m_Owner.Pos.x) <= item.Bound.width / 2;
             if (isInRange)
+            {
                 return item;
+            }
         }
 
         return null;
@@ -131,5 +138,5 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_JumpAttackID;
     private float m_CatchAttackTimer = 0f;
 
-    private const float CATCH_ATTACK_STAMP = 0.3f;
+    private const float CatchAttacTime = 0.3f;
 }

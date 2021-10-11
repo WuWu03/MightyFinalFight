@@ -39,7 +39,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
         effect.Speed = speed;
         effect.PlayEndCallback = playEndCallback;
         effect.IsAutoRelease = isAutoRelease;
-        effect.SetRes(PathUtil.FormatPath(ResDefine.EFFECT_PATH, effectName));
+        effect.SetRes(PathUtil.FormatPath(ResDefine.EffectPath, effectName));
         effect.SetLayer(LayerName.Unit);
 
         if (isAutoPlay)

@@ -44,7 +44,7 @@ namespace GameFrameWork.Pool
         {
             base.OnUpdate();
             
-            if (Time.time - m_CollectTimer >= COLLECT_TIME)
+            if (Time.time - m_CollectTimer >= CollectTime)
             {
                 m_CollectTimer = Time.time;
                 UnityEngine.Resources.UnloadUnusedAssets();
@@ -69,10 +69,9 @@ namespace GameFrameWork.Pool
                 return;
             }
 
-            List<LoadRequest> listLoadRequest = null;
             LoadRequest request = new LoadRequest(call, args);
 
-            if (!m_DicLoadCallback.TryGetValue(resPath, out listLoadRequest))
+            if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
             {
                 listLoadRequest = new List<LoadRequest>();
                 listLoadRequest.Add(request);
@@ -98,19 +97,17 @@ namespace GameFrameWork.Pool
 
         public int GetCount(string resPath)
         {
-            Queue<T> pool = null;
-            if (m_DicPool.TryGetValue(resPath, out pool))
+            if (m_DicPool.TryGetValue(resPath, out Queue<T> pool))
             {
                 return pool.Count;
             }
+
             return 0;
         }
 
         private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
         {
-            List<LoadRequest> listLoadRequest = null;
-
-            if (!m_DicLoadCallback.TryGetValue(resPath, out listLoadRequest))
+            if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
             {
                 Log.GameFrameworkLog.LogError(TextUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));
                 return;
@@ -136,8 +133,7 @@ namespace GameFrameWork.Pool
 
         private Queue<T> GetOrCreatePool(string path)
         {
-            Queue<T> pool = null;
-            if (!m_DicPool.TryGetValue(path, out pool))
+            if (!m_DicPool.TryGetValue(path, out Queue<T> pool))
             {
                 pool = new Queue<T>();
                 m_DicPool.Add(path, pool);
@@ -154,7 +150,7 @@ namespace GameFrameWork.Pool
 
         protected abstract bool m_NeedInstantiate { get; }
 
-        public const int COLLECT_TIME = 15;
+        public const int CollectTime = 15;
         private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
         private Dictionary<string, Queue<T>> m_DicPool = null;

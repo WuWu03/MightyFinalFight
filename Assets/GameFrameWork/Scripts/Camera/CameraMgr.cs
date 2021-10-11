@@ -11,14 +11,14 @@ namespace GameFrameWork.Camera
         public const string Unit = "Unit";
     }
 
+    public struct CameraDepthDefine
+    {
+        public const int MapCamera = 0;
+        public const int RoleCamera = 1;
+    }
+
     public class CameraMgr : BaseMgr<CameraMgr>
     {
-        public struct CameraDepthDefine
-        {
-            public const int MapCamera = 0;
-            public const int RoleCamera = 1;
-        }
-
         public GameObject CameraRoot
         {
             get
@@ -27,7 +27,7 @@ namespace GameFrameWork.Camera
             }
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             m_ListCamera = new List<UnityEngine.Camera>();
             m_CameraRoot = new GameObject("CameraRoot");
@@ -134,7 +134,7 @@ namespace GameFrameWork.Camera
         public float GetOrthgraphicSize()
         {
             float cameraRate = (float)Screen.width / Screen.height;
-            float sizeRate = cameraRate / m_NormalRate;
+            float sizeRate = cameraRate / NormalRate;
 
             if (sizeRate < 1)
             {
@@ -143,10 +143,10 @@ namespace GameFrameWork.Camera
 
             if (sizeRate > 1)
             {
-                sizeRate = m_NormalRate / cameraRate;
+                sizeRate = NormalRate / cameraRate;
             }
 
-            return sizeRate * m_NormalSize / 100;
+            return sizeRate * NormalSize / 100;
         }
 
         protected override void OnShutDown()
@@ -154,8 +154,8 @@ namespace GameFrameWork.Camera
             m_ListCamera.Clear();
         }
 
-        private const float m_NormalRate = 1280f / 720f;
-        private const float m_NormalSize = 200f / 2;
+        private const float NormalRate = 1280f / 720f;
+        private const float NormalSize = 200f / 2;
 
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;

@@ -41,7 +41,7 @@ public class Weapon : BaseSceneItem
     {
         base.SetOwner(owner);
         gameObject.SetActive(false);
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Bonus");
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
     }
 
     protected override void OnResComplete(GameObject go,object[] param)

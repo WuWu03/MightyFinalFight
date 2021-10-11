@@ -102,8 +102,8 @@ namespace GameFrameWork.Camera
             m_XBorder.left = -(float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
             m_XBorder.right = (float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
 
-            float a = (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
-            float b = -(float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
+            //float a = (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
+            //float b = -(float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
 
             m_YBorder.left = 0;// (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
             m_YBorder.right = 0;//(float)(-height + Screen.height * m_CurrAspectRate) / 100 / 2;

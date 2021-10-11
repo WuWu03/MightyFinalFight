@@ -60,11 +60,11 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         if (m_Owner.HitSuccess)
         {
-            if (m_SkillData.IsInEffectPlaySound) SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/" + soundName);
+            if (m_SkillData.IsInEffectPlaySound) SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
         }
         else
         {
-            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/" + soundName);
+            SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
         }
     }
 

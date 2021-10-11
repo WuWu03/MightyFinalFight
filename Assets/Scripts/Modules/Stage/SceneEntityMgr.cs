@@ -92,7 +92,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             barrelData.ItemId = 1001 + i;
 
             sceneItem.SetData(barrelData);
-            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, "Item/Barrel"));
+            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "Item/Barrel"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
         }

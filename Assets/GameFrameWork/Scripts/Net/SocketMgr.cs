@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GameFrameWork.Net
 {
-    public class SocketMgr : MonoBehaviour
+    public class SocketMgr : BaseMgr<SocketMgr>
     {
         public static SocketMgr Instance = null;
         public Action<ushort, byte[]> onReceive = null;
@@ -22,7 +22,7 @@ namespace GameFrameWork.Net
             }
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             Instance = this;
             m_ReceiveBuffer = new byte[1024 * 512];
@@ -94,7 +94,7 @@ namespace GameFrameWork.Net
             }
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             if (m_IsConnected)
                 CheckReceiveBuffer();
@@ -235,8 +235,10 @@ namespace GameFrameWork.Net
             CheckSendBuffer();
         }
 
-        private void OnDestroy()
+        protected override void OnShutDown()
         {
+            base.OnShutDown();
+
             Close();
             m_SendQueue = null;
             m_ReceiveQueue = null;

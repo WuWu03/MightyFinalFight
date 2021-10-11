@@ -25,7 +25,7 @@ public class BaseGravityObject : BaseSceneObject
     {
         get
         {
-            return CurrPosZ <= m_PosZ;
+            return Mathf.FloorToInt(CurrPosZ * 100f) <= m_MapPosZ;
         }
     }
 

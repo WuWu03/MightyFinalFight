@@ -100,7 +100,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
     public void OnHurtMsg(HurtData data)
     {
         SubHealth(data.AttackValue);
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnHit");
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnHit");
 
         if (IsDead)
         {
@@ -155,7 +155,7 @@ public class Barrel : BaseSceneItem, ICanBeHit
             {
                 SetTrigger(AnimName.Move);
                 m_FsmMachine.Start<BarrelMove>();
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/Barrel");
+                SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
             }
             else
             {

@@ -124,7 +124,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PREFAB_PATH, m_CharacterData.AssetName));
+        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_CharacterData.AssetName));
         m_Player.SetLayer(LayerName.Unit);
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
@@ -212,7 +212,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.SetHealth(m_LevelData.Health);
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
             mainPanel.SetPlayerLevel();
-            SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/LevelUp");
+            SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
         }
         mainPanel.SetPlayerExp(m_EXP, m_LevelData.EXP);
     }

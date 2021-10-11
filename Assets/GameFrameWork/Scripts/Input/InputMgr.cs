@@ -96,19 +96,19 @@ namespace GameFrameWork.Input
                 return;
             }
 
-            if (m_KeyDownTime > 0 && Time.time - m_KeyDownTime >= KEY_DOWN_TIME)
+            if (m_KeyDownTimer > 0 && Time.time - m_KeyDownTimer >= KeyDownTime)
             {
                 ResetComboKeys();
             }
 
-            if (CheckComboAxis(AxisType.LeftAxis)) m_KeyDownTime = Time.time;
+            if (CheckComboAxis(AxisType.LeftAxis)) m_KeyDownTimer = Time.time;
             //if (CheckComboAxis(AxisType.CrossAxis)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.A)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.B)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.X)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.Y)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.LB)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.RB)) m_KeyDownTime = Time.time;
+            if (CheckComboKey(KeyType.A)) m_KeyDownTimer = Time.time;
+            if (CheckComboKey(KeyType.B)) m_KeyDownTimer = Time.time;
+            if (CheckComboKey(KeyType.X)) m_KeyDownTimer = Time.time;
+            if (CheckComboKey(KeyType.Y)) m_KeyDownTimer = Time.time;
+            if (CheckComboKey(KeyType.LB)) m_KeyDownTimer = Time.time;
+            if (CheckComboKey(KeyType.RB)) m_KeyDownTimer = Time.time;
             //if (CheckComboKey(KeyType.LT)) m_KeyDownTime = Time.time;
             //if (CheckComboKey(KeyType.RT)) m_KeyDownTime = Time.time;
 
@@ -310,9 +310,8 @@ namespace GameFrameWork.Input
         private bool GetKeyDown(string keyName, bool isOneKey = false)
         {
             bool isKeyDown = UnityEngine.Input.GetButton(keyName);
-            bool prev = false;
 
-            if (!m_DicIsKeyDown.TryGetValue(keyName, out prev))
+            if (!m_DicIsKeyDown.TryGetValue(keyName, out bool prev))
             {
                 m_DicIsKeyDown.Add(keyName, false);
             }
@@ -342,7 +341,7 @@ namespace GameFrameWork.Input
         private void ResetComboKeys()
         {
             m_ListComboKey.Clear();
-            m_KeyDownTime = -1f;
+            m_KeyDownTimer = -1f;
             m_CurrDir = 0;
         }
 
@@ -357,8 +356,8 @@ namespace GameFrameWork.Input
         }
 
         private float m_CurrDir = 0;
-        private float m_KeyDownTime = -1f;
-        private const float KEY_DOWN_TIME = 0.04f;
+        private float m_KeyDownTimer = -1f;
+        private const float KeyDownTime = 0.04f;
         private bool m_IsRunning = false;
 
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical

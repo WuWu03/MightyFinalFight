@@ -415,7 +415,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         roleJump.IsCatch = data.IsCatch;
 
         ChangeState<RoleJump>();
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultJump);
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
     }
 
     public virtual void OnHurtMsg(HurtData data)
@@ -538,7 +538,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected virtual void OnGroundHurtMsg(HurtData data)
     {
         string hurtSound = string.IsNullOrEmpty(data.HurtSound) ? SoundName.DefaultHurt : data.HurtSound;
-        SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, hurtSound);
+        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, hurtSound);
         SubHealth(data.AttackValue);
 
         if (m_Health <= 0 && !m_IsSmoon)
@@ -621,7 +621,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (m_Health > 0)
             {
                 ChangeDefaultState();
-                SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, SoundName.DefaultDrop);
+                SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultDrop);
             }
             else ChangeState<RoleDead>();
         }

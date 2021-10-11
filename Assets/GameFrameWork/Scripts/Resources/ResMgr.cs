@@ -175,10 +175,9 @@ namespace GameFrameWork.Resources
                 }
             }
 
-            string[] dependencies = null;
             AssetBundle ab = null;
 
-            if (m_Dependencies.TryGetValue(abName, out dependencies))
+            if (m_Dependencies.TryGetValue(abName, out string[] dependencies))
             {
                 while (DependenciesLoaded(dependencies))
                 {
@@ -206,8 +205,8 @@ namespace GameFrameWork.Resources
             request.Args = param;
             request.AssetName = Path.GetFileNameWithoutExtension(realAssetPath);
             request.AssetPath = abName;
-            List<LoadAssetRequest> requests = null;
-            if (!m_LoadRequests.TryGetValue(realAssetPath, out requests))
+
+            if (!m_LoadRequests.TryGetValue(realAssetPath, out List<LoadAssetRequest> requests))
             {
                 requests = new List<LoadAssetRequest>();
                 requests.Add(request);
@@ -237,15 +236,14 @@ namespace GameFrameWork.Resources
                     yield break;
                 }
             }
-            List<LoadAssetRequest> list = null;
-            if (!m_LoadRequests.TryGetValue(realAssetPath, out list))
+
+            if (!m_LoadRequests.TryGetValue(realAssetPath, out List<LoadAssetRequest> list))
             {
                 m_LoadRequests.Remove(realAssetPath);
                 yield break;
             }
 
-            string[] dependencies = null;
-            if (m_Dependencies.TryGetValue(realAssetPath, out dependencies))
+            if (m_Dependencies.TryGetValue(realAssetPath, out string[] dependencies))
             {
                 while (!DependenciesLoaded(dependencies))
                 {
@@ -298,8 +296,7 @@ namespace GameFrameWork.Resources
 
         private AssetBundleInfo GetLoadedAssetBundle(string abName)
         {
-            AssetBundleInfo bundle = null;
-            m_LoadedAssetBundles.TryGetValue(abName, out bundle);
+            m_LoadedAssetBundles.TryGetValue(abName, out AssetBundleInfo bundle);
 
             if (bundle == null)
             {
@@ -317,9 +314,7 @@ namespace GameFrameWork.Resources
             // Make sure all dependencies are loaded
             foreach (var dependency in dependencies)
             {
-                AssetBundleInfo dependentBundle;
-                m_LoadedAssetBundles.TryGetValue(dependency, out dependentBundle);
-                if (dependentBundle == null)
+                if (!m_LoadedAssetBundles.ContainsKey(dependency))
                 {
                     return false;
                 }
@@ -331,9 +326,8 @@ namespace GameFrameWork.Resources
         private string GetRealAssetPath(string abName)
         {
             abName = abName.ToLower();
-            AssetVersion version = null;
 
-            if(m_DicAssetVerson.TryGetValue(abName,out version))
+            if (m_DicAssetVerson.TryGetValue(abName, out AssetVersion version))
             {
                 if (!abName.EndsWith(version.ExtendName))
                 {
@@ -359,9 +353,8 @@ namespace GameFrameWork.Resources
                 return;
             }
             // Get dependecies from the AssetBundleManifest object..
-            string[] dependencies = null;
 
-            if (!m_Dependencies.TryGetValue(abName, out dependencies))
+            if (!m_Dependencies.TryGetValue(abName, out string[] dependencies))
             {
                 dependencies = m_Manifest.GetAllDependencies(abName);
                 if (dependencies != null && dependencies.Length > 0)
@@ -383,8 +376,7 @@ namespace GameFrameWork.Resources
 
         private void UnloadDependencies(string abName, bool isThorough)
         {
-            string[] dependencies = null;
-            if (!m_Dependencies.TryGetValue(abName, out dependencies))
+            if (!m_Dependencies.TryGetValue(abName, out string[] dependencies))
             {
                 return;
             }

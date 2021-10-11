@@ -102,9 +102,9 @@ namespace GameFrameWork.BehaviourTree
             m_LastChildIndex = -1;
         }
 
-        private int m_CurrChildIndex;
-        private int m_LastChildIndex;
-        private int[] m_Weights;
+        private int m_CurrChildIndex = 0;
+        private int m_LastChildIndex = -1;
+        private int[] m_Weights = null;
         private List<int> m_ListWeight = null;
         private Regex m_Regex = new Regex(@"(Weight:)(\[)([^\[\]]+)(\])");
     }

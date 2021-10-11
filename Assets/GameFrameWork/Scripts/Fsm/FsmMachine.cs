@@ -182,9 +182,7 @@ namespace GameFrameWork.Fsm
 
         public override T GetState<T>()
         {
-            BaseFsmState ret = null;
-
-            if (!m_DicStates.TryGetValue(typeof(T), out ret))
+            if (!m_DicStates.TryGetValue(typeof(T), out BaseFsmState ret))
             {
                 return null;
             }

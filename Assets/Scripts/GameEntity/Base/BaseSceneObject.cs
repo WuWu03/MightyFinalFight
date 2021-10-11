@@ -39,19 +39,19 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public float CurrPosZ
-    {
-        get
-        {
-            return transform.localPosition.y - m_Pos.y - 0.05f;
-        }
-    }
-
     public float PosZ
     {
         get
         {
             return m_PosZ;
+        }
+    }
+
+    public float CurrPosZ
+    {
+        get
+        {
+            return transform.localPosition.y - m_Pos.y;
         }
     }
 
@@ -190,8 +190,14 @@ public class BaseSceneObject : BaseEntity
 
     public void UpdatePosZ(float z)
     {
-        m_PosZ = z;
+        m_PosZ = Mathf.Max(m_MapPosZ / 100f, z);
     }    
+
+    public void UpdateMapPosZ(int z)
+    {
+        m_MapPosZ = Mathf.Max(0, z);
+        m_PosZ = Mathf.Max(m_MapPosZ / 100f, z);
+    }
 
     public void UpdatePos2(float x, float y)
     {
@@ -217,13 +223,20 @@ public class BaseSceneObject : BaseEntity
 
     public void SetPosZ(float z)
     {
-        m_PosZ = z;
+        m_PosZ = Mathf.Max(m_MapPosZ / 100f, z);
         transform.localPosition = new Vector3(m_Pos.x, m_Pos.y + m_PosZ, m_Pos.y);
     }
 
-    public void SetPos2(float x, float y, bool cacZ = false)
+    public void SetMapPosZ(int z)
     {
-        SetPos(new Vector2(x, y), cacZ);
+        m_MapPosZ = Mathf.Max(0, z);
+        m_PosZ = Mathf.Max(m_MapPosZ / 100f, z);
+        transform.localPosition = new Vector3(m_Pos.x, m_Pos.y + m_PosZ, m_Pos.y);
+    }
+
+    public void SetPos2(float x, float y, bool caculateZ = false)
+    {
+        SetPos(new Vector2(x, y), caculateZ);
     }
 
     public virtual void SetPos(Vector2 pos, bool caculateZ = false)
@@ -235,11 +248,12 @@ public class BaseSceneObject : BaseEntity
         transform.localPosition = new Vector3(pos.x, caculateZ ? pos.y + m_PosZ : pos.y, pos.y);
     }
 
-    public virtual void SetMapPos(Vector2Int pos, float z = 0f)
+    public virtual void SetMapPos(Vector2Int pos, int z = 0)
     {
-        SetPos(new Vector2(pos.x / 100f, pos.y / 100f));
         m_MapPos = pos;
-        m_PosZ = z;
+        m_MapPosZ = Mathf.Max(0, z);
+        m_PosZ = m_MapPosZ / 100f;
+        SetPos(new Vector2(pos.x / 100f, pos.y / 100f), true);
     }
 
     public void SetScale2(float x,float y)
@@ -260,17 +274,8 @@ public class BaseSceneObject : BaseEntity
             return;
         }
 
-        m_Dir = dir;
-
-        if (m_Dir > 0) m_Dir = 1;
-        if (m_Dir < 0) m_Dir = -1;
-
-        float angleY = transform.localRotation.eulerAngles.y;
-
-        if (m_Dir > 0) angleY = 0;
-        else if (m_Dir < 0) angleY = 180;
-
-        transform.localRotation = Quaternion.Euler(0, angleY, 0);
+        m_Dir = dir > 0 ? 1 : -1;
+        transform.localRotation = Quaternion.Euler(0, dir > 0 ? 0f : 180f, 0);
     }
 
     public bool IsInRange2(Vector2 pos)
@@ -421,18 +426,20 @@ public class BaseSceneObject : BaseEntity
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (m_ListTargets != null && m_ListTargets.Contains(collision.gameObject))
+        {
             m_ListTargets.Remove(collision.gameObject);
+        }
     }
 
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
     protected virtual void OnResComplete(GameObject go, object[] param) { }
 
-
     protected bool m_IsResComplete = false;
     protected float m_Dir = 1f;
     protected float m_Depth = 0f;
     protected float m_PosZ = 0f;
+    protected int m_MapPosZ = 0;
     protected int m_EntityID = 0;
     protected string m_ResPath = string.Empty;
     protected int m_Health = 0;

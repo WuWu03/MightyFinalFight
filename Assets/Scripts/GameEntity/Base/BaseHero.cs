@@ -524,7 +524,7 @@ public class BaseHero : BaseRole
 
         if (m_IsDropInGround)
         {
-            target.SetPos2(target.Pos.x, m_Pos.y);
+            target.SetPos2(target.Pos.x, m_Pos.y, true);
         }
 
         if (IsDrop)

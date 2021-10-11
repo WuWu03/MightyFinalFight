@@ -55,7 +55,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
             m_PoolRoot = new GameObject("EntityMgr").transform;
             m_PoolRoot.SetParent(transform, false);
@@ -132,18 +132,18 @@ namespace GameFrameWork.GameEntity
 
         public T[] FindEntities<T>(string name = null) where T : BaseEntity
         {
-            List<T> ret = new List<T>();
+            List<T> entityList = new List<T>();
             List<BaseEntity> usingList = GetUsingList(typeof(T));
 
             for (int i = 0; i < usingList.Count; i++)
             {
                 if (string.IsNullOrEmpty(name) || usingList[i].name.Equals(name))
                 {
-                    ret.Add(usingList[i] as T);
+                    entityList.Add(usingList[i] as T);
                 }
             }
 
-            return ret.ToArray();
+            return entityList.ToArray();
         }
 
         public T FindEntity<T>(string name = null) where T : BaseEntity
@@ -168,9 +168,7 @@ namespace GameFrameWork.GameEntity
 
         private List<BaseEntity> GetUsingList(Type type)
         {
-            List<BaseEntity> usingList = null;
-
-            if (!m_DicUsingEntity.TryGetValue(type, out usingList))
+            if (!m_DicUsingEntity.TryGetValue(type, out List<BaseEntity> usingList))
             {
                 usingList = new List<BaseEntity>();
                 m_DicUsingEntity.Add(type, usingList);
@@ -181,9 +179,7 @@ namespace GameFrameWork.GameEntity
 
         private Queue<BaseEntity> GetUnUsedQueue(Type type)
         {
-            Queue<BaseEntity> unUsedQueue = null;
-
-            if (!m_DicUnUsedEntity.TryGetValue(type, out unUsedQueue))
+            if (!m_DicUnUsedEntity.TryGetValue(type, out Queue<BaseEntity> unUsedQueue))
             {
                 unUsedQueue = new Queue<BaseEntity>();
                 m_DicUnUsedEntity.Add(type, unUsedQueue);

@@ -28,7 +28,7 @@ public class RoleSelectPanel : BasePanel
     protected override void OnOpen()
     {
 		m_HasSelect = false;
-		SoundMgr.Ins.PlayBGM(ResDefine.AUDIO_CLIP_PATH, "BGM/bgm14Character", true);
+		SoundMgr.Ins.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm14Character", true);
 		m_Component.ImgSelectRect.gameObject.SetActive(true);
 		m_Component.RoleContentGroupView.OnItemUpdate = OnItemUpdate;
 		m_Component.RoleContentGroupView.OnItemSelect = OnItemSelect;
@@ -59,7 +59,7 @@ public class RoleSelectPanel : BasePanel
 				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = StaticConfig.RoleSelectConfig.Datas.Count - 1;
 			}
 
-			SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelect");
+			SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
 			m_Component.RoleContentGroupView.SelectItem(m_CurrSelectIndex);
 		}
 
@@ -102,7 +102,7 @@ public class RoleSelectPanel : BasePanel
 	private void EnterStage()
 	{
 		SoundMgr.Ins.StopBGM();
-		SoundMgr.Ins.PlaySound(ResDefine.AUDIO_CLIP_PATH, "Sound/OnSelected");
+		SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.Ins.SelectCharacterId = StaticConfig.RoleSelectConfig.Datas[m_CurrSelectIndex].CharacterId;
 		StageMgr.Ins.NextStageId = StaticConfig.StageConfig.GetDataByIndex(0).Id;
 		m_Component.ImgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
