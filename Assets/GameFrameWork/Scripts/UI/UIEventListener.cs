@@ -20,14 +20,15 @@ namespace GameFrameWork.UI
     IScrollHandler,
     IMoveHandler
     {
-        public delegate void UIEventHandle<T>(GameObject go, T eventData) where T : BaseEventData;
+        public delegate void UIEventHandle<T>(GameObject go, T eventData, object arg) where T : BaseEventData;
         public class UIEvent<T> where T : BaseEventData
         {
             public UIEvent() { }
 
-            public void AddListener(UIEventHandle<T> handle)
+            public void AddListener(UIEventHandle<T> handle, object arg = null)
             {
                 m_UIEventHandle += handle;
+                m_Arg = arg;
             }
 
             public void RemoveListener(UIEventHandle<T> handle)
@@ -43,12 +44,12 @@ namespace GameFrameWork.UI
 
             public void Invoke(GameObject go, T eventData)
             {
-                m_UIEventHandle?.Invoke(go, eventData);
+                m_UIEventHandle?.Invoke(go, eventData, m_Arg);
             }
 
+            private object m_Arg = null;
             private event UIEventHandle<T> m_UIEventHandle = null;
         }
-
 
         public UIEvent<PointerEventData> onClick = new UIEvent<PointerEventData>();
         public UIEvent<PointerEventData> onDoubleClick = new UIEvent<PointerEventData>();
