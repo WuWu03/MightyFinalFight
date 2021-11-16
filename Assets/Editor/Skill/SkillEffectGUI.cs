@@ -379,6 +379,7 @@ public class SkillEffectGUI : SkillGUI
 
         newSkillEffect.SelectorOffest = source.SelectorOffest;
         newSkillEffect.AddTargetForce = source.AddTargetForce;
+        newSkillEffect.AddSelfForce = source.AddSelfForce;
         newSkillEffect.AddSelfVelocity = source.AddSelfVelocity;
         newSkillEffect.SelectorAngle = source.SelectorAngle;
         newSkillEffect.SelectorRadius = source.SelectorRadius;
