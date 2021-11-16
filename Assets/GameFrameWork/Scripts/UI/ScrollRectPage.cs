@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using GameFrameWork.UI;
 
-public class ScrollDragPage : MonoBehaviour
+public class ScrollRectPage : MonoBehaviour
 {
     public int PageCount = 1;
     public GameObject[] PageIndex;//Ò³ÊýµÄ±êÇ©
