@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameFrameWork.Utility
+namespace GameFrameWork.Utilities
 {
     public class FileUitl
     {

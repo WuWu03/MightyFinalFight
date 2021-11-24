@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,7 +82,7 @@ namespace GameFrameWork.Event
 
             if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
-                throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
+                throw new Exception(StringUtil.FormatDefault("Dont't have event ID:", id, "."));
             }
 
             if (eventList.Contains(handler))
@@ -146,7 +146,7 @@ namespace GameFrameWork.Event
 
             if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
-                throw new Exception(TextUtil.FormatDefault("Dont't have event ID:", id, "."));
+                throw new Exception(StringUtil.FormatDefault("Dont't have event ID:", id, "."));
             }
 
             for (int i = 0; i < eventList.Count; i++)

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Pool;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System;
 using DragonBones;
 using GameFrameWork.Sound;

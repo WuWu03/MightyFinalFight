@@ -1,5 +1,5 @@
 ﻿using GameFrameWork;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using UnityEngine;
 
 namespace GameFrameWork.Log
@@ -21,12 +21,12 @@ namespace GameFrameWork.Log
         {
             m_LogColor = AppConfig.Ins.LogColor;
 
-            string logInfo = TextUtil.FormatDefault(args);
-            string color = Util.ToRGBHex(m_LogColor);
+            string logInfo = StringUtil.FormatDefault(args);
+            string color = CommonUtil.ToRGBHex(m_LogColor);
 
             if (!string.IsNullOrEmpty(color))
             {
-                logInfo = TextUtil.FormatDefault("<color=", color, ">", logInfo, "</color>");
+                logInfo = StringUtil.FormatDefault("<color=", color, ">", logInfo, "</color>");
             }
 
             return logInfo;

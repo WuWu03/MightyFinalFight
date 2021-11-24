@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using GameFrameWork.Serialize;
 
 namespace GameFrameWork.Editor

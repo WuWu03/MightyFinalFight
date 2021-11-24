@@ -20,8 +20,7 @@ public class SkillTargetTransformEffect : SkillBaseEffect
         if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetPositionEffect)
         {
             float targetY = target.Pos.y;
-            target.SetPos2(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,
-                       m_Owner.Pos.y + m_SkillEffect.MoveTarget.y);
+            target.SetPos2(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,m_Owner.Pos.y + m_SkillEffect.MoveTarget.y);
             target.UpdatePos2(target.Pos.x, targetY);
         }
         else if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetScaleEffect)

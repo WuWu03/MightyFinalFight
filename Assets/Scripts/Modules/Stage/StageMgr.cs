@@ -5,7 +5,7 @@ using GameFrameWork.Resources;
 using GameFrameWork.Scene;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -130,19 +130,19 @@ public class StageMgr : BaseMgr<StageMgr>
     public bool CanMove(Vector2 pos)
     {
         Vector2Int posInt = new Vector2Int((int)(pos.x * 100), (int)(pos.y * 100));
-        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosX(float posX)
     {
         Vector2Int posInt = new Vector2Int((int)(posX * 100), m_CurrStageData.MovePoints[0].y);
-        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosY(float posY)
     {
         Vector2Int posInt = new Vector2Int(m_CurrStageData.MovePoints[0].x, (int)(posY * 100));
-        return Util.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public float GetRandomPosX()
@@ -157,7 +157,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public Vector2 GetRandomPos()
     {
-        Vector2Int[] pos = Util.PolygonRandomPoints(m_CurrStageData.MovePoints);
+        Vector2Int[] pos = CommonUtil.PolygonRandomPoints(m_CurrStageData.MovePoints);
         Vector2 ret = Vector2.zero;
 
         if(pos.Length >0)

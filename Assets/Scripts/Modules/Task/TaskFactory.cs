@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ public static class TaskFactory
             case TaskConfigData.TaskTriggerType.Barrels:
                 break;
             case TaskConfigData.TaskTriggerType.Story:
-                string className = TextUtil.FormatDefault("TaskTriggerStory_", data.StoryId);
+                string className = StringUtil.FormatDefault("TaskTriggerStory_", data.StoryId);
                 Type t = Type.GetType(className);
                 if(t != null)
                 {

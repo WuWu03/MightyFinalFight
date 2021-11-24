@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace GameFrameWork.Utility
+namespace GameFrameWork.Utilities
 {
     public class PathUtil
     {

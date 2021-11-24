@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using GameFrameWork.Log;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 
 namespace GameFrameWork
 {
@@ -12,7 +12,7 @@ namespace GameFrameWork
             {
                 if (m_Ins == null)
                 {
-                    GameFrameworkLog.LogError(TextUtil.FormatDefault("The instance that Type of ", typeof(T).Name, " must be init"));
+                    GameFrameworkLog.LogError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name, " must be init"));
                     return null;
                 }
 
@@ -24,7 +24,7 @@ namespace GameFrameWork
         {
             if (m_Ins != null)
             {
-                GameFrameworkLog.LogError(TextUtil.FormatDefault("The instance that Type of ", typeof(T).Name), " has already init");
+                GameFrameworkLog.LogError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name), " has already init");
                 return;
             }
 

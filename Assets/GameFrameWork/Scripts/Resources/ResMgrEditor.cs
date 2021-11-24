@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using GameFrameWork.Log;
 
 namespace GameFrameWork.Resources
@@ -37,7 +37,7 @@ namespace GameFrameWork.Resources
             string fileName = Path.GetFileName(resourcePath);
 
             string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(resourcePath));
-            string paName = TextUtil.FormatDefault(fileName, "*");
+            string paName = StringUtil.FormatDefault(fileName, "*");
             string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
 
             // 加载本地资源
@@ -45,14 +45,14 @@ namespace GameFrameWork.Resources
             {
                 if (Path.GetExtension(files[i]) == ".meta") continue;
 
-                GameFrameworkLog.Log(TextUtil.FormatDefault("开始编辑器加载资源：", files[i]));
+                GameFrameworkLog.Log(StringUtil.FormatDefault("开始编辑器加载资源：", files[i]));
                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
                 break;
             }
 
             if (obj == null)
             {
-                GameFrameworkLog.Log(TextUtil.FormatDefault("无效的资源路径 => ", resourcePath));
+                GameFrameworkLog.Log(StringUtil.FormatDefault("无效的资源路径 => ", resourcePath));
                 return null;
             }
 

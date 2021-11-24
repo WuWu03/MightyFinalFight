@@ -5,9 +5,9 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-namespace GameFrameWork.Utility
+namespace GameFrameWork.Utilities
 {
-    public static class TextUtil
+    public static class StringUtil
     {
         public static string FormatDefault(params object[] args)
         {

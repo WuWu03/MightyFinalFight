@@ -3,7 +3,7 @@ using GameFrameWork;
 using GameFrameWork.Fsm;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine;
 
 public class Barrel : BaseSceneItem, ICanBeHit

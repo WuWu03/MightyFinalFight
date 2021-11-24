@@ -3,7 +3,7 @@ using GameFrameWork.Resources;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 
 namespace GameFrameWork.Sound
 {

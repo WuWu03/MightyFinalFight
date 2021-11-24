@@ -1,6 +1,6 @@
 ﻿using GameFrameWork;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 

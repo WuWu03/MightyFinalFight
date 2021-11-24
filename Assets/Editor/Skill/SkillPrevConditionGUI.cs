@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -34,7 +34,7 @@ public class SkillPrevConditionGUI : SkillGUI
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
                     m_ListPrevCondition.RemoveAt(i);
-                    SkillEditorHelper.CurrConfigData.SkillPrevConditions = Util.DeleteElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, i);
+                    SkillEditorHelper.CurrConfigData.SkillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, i);
                     return;
                 }
 
@@ -65,7 +65,7 @@ public class SkillPrevConditionGUI : SkillGUI
         if (GUILayout.Button("增加前置条件"))
         {
             m_ListPrevCondition.Add(new SkillConfigData.SkillPrevCondition());
-            SkillEditorHelper.CurrConfigData.SkillPrevConditions = Util.AddElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, new SkillConfigData.SkillPrevCondition());
+            SkillEditorHelper.CurrConfigData.SkillPrevConditions = CommonUtil.AddElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, new SkillConfigData.SkillPrevCondition());
             return;
         }
     }

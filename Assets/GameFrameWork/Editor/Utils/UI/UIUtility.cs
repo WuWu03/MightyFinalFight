@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityObject = UnityEngine.Object;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 
 namespace GameFrameWork.Editor
 {

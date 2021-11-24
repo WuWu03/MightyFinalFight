@@ -5,7 +5,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using GameFrameWork.Serialize;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using GameFrameWork.BehaviourTree;
 using System.Reflection;
 

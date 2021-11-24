@@ -12,9 +12,9 @@ using UnityEditor;
 /// 游戏里常用的实用工具
 /// </summary>
 
-namespace GameFrameWork.Utility
+namespace GameFrameWork.Utilities
 {
-    public class Util
+    public class CommonUtil
     {
         /// <summary>
         /// http下载
@@ -226,7 +226,7 @@ namespace GameFrameWork.Utility
             byte b = (byte)(Mathf.Clamp01(c.b) * 255);
             byte a = (byte)(Mathf.Clamp01(c.a) * 255);
 
-            return TextUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+            return StringUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
         }
 
         public static T[] AddElement<T>(T[] array, T newElement)

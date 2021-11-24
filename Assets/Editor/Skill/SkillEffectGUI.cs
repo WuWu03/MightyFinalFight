@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -34,7 +34,7 @@ public class SkillEffectGUI : SkillGUI
                 GUILayout.Label((i + 1).ToString() + ".");
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
-                    SkillEditorHelper.CurrConfigData.SkillEffects = Util.DeleteElement(SkillEditorHelper.CurrConfigData.SkillEffects, i);
+                    SkillEditorHelper.CurrConfigData.SkillEffects = CommonUtil.DeleteElement(SkillEditorHelper.CurrConfigData.SkillEffects, i);
                     m_ListSkillEffect.RemoveAt(i);
                     return;
                 }
@@ -65,7 +65,7 @@ public class SkillEffectGUI : SkillGUI
         if (GUILayout.Button("增加技能效果器"))
         {
             m_ListSkillEffect.Add(new SkillConfigData.SkillEffect());
-            SkillEditorHelper.CurrConfigData.SkillEffects = Util.AddElement(SkillEditorHelper.CurrConfigData.SkillEffects, new SkillConfigData.SkillEffect());
+            SkillEditorHelper.CurrConfigData.SkillEffects = CommonUtil.AddElement(SkillEditorHelper.CurrConfigData.SkillEffects, new SkillConfigData.SkillEffect());
             return;
         }
     }
@@ -90,8 +90,8 @@ public class SkillEffectGUI : SkillGUI
                 GUILayout.Label((i + 1).ToString() + "." + skillBullet.Name);
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
-                    skillEffect.Bullets = Util.DeleteElement(skillEffect.Bullets, i);
-                    tempEffect.Bullets = Util.DeleteElement(tempEffect.Bullets, i);
+                    skillEffect.Bullets = CommonUtil.DeleteElement(skillEffect.Bullets, i);
+                    tempEffect.Bullets = CommonUtil.DeleteElement(tempEffect.Bullets, i);
                     return;
                 }
                 EditorGUILayout.EndHorizontal();
@@ -203,8 +203,8 @@ public class SkillEffectGUI : SkillGUI
 
         if (GUILayout.Button("增加子弹效果器"))
         {
-            skillEffect.Bullets = Util.AddElement(skillEffect.Bullets, new SkillConfigData.Bullet());
-            tempEffect.Bullets = Util.AddElement(tempEffect.Bullets, new SkillConfigData.Bullet());
+            skillEffect.Bullets = CommonUtil.AddElement(skillEffect.Bullets, new SkillConfigData.Bullet());
+            tempEffect.Bullets = CommonUtil.AddElement(tempEffect.Bullets, new SkillConfigData.Bullet());
             return;
         }
     }

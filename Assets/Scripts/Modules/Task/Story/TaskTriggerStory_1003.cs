@@ -4,7 +4,7 @@ using GameFrameWork.GameEntity;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine;
 public class TaskTriggerStory_1003 : BaseTaskTrigger
 {

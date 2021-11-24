@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System;
 using System.IO;
 using GameFrameWork.Serialize;

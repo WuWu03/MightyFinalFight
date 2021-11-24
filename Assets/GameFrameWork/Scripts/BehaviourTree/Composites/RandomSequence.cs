@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utility;
+﻿using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -43,7 +43,7 @@ namespace GameFrameWork.BehaviourTree
         {
             m_ListWeight.Clear();
             m_ListWeight.AddRange(m_Weights);
-            m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
+            m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
             m_LastChildIndex = -1;
             m_ListWeight.Remove(m_CurrChildIndex);
         }
@@ -65,7 +65,7 @@ namespace GameFrameWork.BehaviourTree
                     BehaviorTreeState state = child.Excute();
                     if (state != BehaviorTreeState.Running)
                     {
-                        m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
+                        m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
                         m_ListWeight.Remove(m_CurrChildIndex);
 
                         if (state == BehaviorTreeState.Failure)
@@ -77,7 +77,7 @@ namespace GameFrameWork.BehaviourTree
                 }
                 else
                 {
-                    m_CurrChildIndex = Util.RandomByWeight(m_ListWeight.ToArray());
+                    m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
                     m_ListWeight.Remove(m_CurrChildIndex);
                 }
             }

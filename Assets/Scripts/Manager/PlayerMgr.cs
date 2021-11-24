@@ -4,7 +4,7 @@ using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System;
 using UnityEngine;
 

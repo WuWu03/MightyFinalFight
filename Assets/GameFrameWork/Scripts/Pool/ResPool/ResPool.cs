@@ -1,5 +1,5 @@
 ﻿using GameFrameWork.Resources;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -109,7 +109,7 @@ namespace GameFrameWork.Pool
         {
             if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
             {
-                Log.GameFrameworkLog.LogError(TextUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));
+                Log.GameFrameworkLog.LogError(StringUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));
                 return;
             }
 

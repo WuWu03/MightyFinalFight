@@ -1,6 +1,6 @@
 ﻿using GameFrameWork;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine;
 
 public static class SceneEntityFactory

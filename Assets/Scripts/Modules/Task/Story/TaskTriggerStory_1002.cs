@@ -1,7 +1,7 @@
 using GameFrameWork.GameEntity;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using System;
 using UnityEngine;
 using DG.Tweening;

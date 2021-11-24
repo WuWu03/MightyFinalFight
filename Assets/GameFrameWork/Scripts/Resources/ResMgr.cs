@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using Object = UnityEngine.Object;
 using System.IO;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using UnityEngine.U2D;
 
 namespace GameFrameWork.Resources
@@ -403,7 +403,7 @@ namespace GameFrameWork.Resources
                 }
                 bundle.AssetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
-                Log.GameFrameworkLog.Log(TextUtil.FormatDefault(abName, " has been unloaded successfully"));
+                Log.GameFrameworkLog.Log(StringUtil.FormatDefault(abName, " has been unloaded successfully"));
             }
         }
 

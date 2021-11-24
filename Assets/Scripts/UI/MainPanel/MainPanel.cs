@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork;
 using GameFrameWork.UI;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 using GameFrameWork.Pool;
 using GameFrameWork.Camera;
 
@@ -137,7 +137,7 @@ public class MainPanel : BasePanel
 		text.transform.localScale = Vector3.one * 2f;
 		text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
 		Vector3 screenPos = CameraMgr.Ins.WorldPosToScreenPos(pos);
-		Vector2 uguiPos = Util.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.Ins.UICamera);
+		Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.Ins.UICamera);
 		textRect.localPosition = uguiPos;
 		textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
 		text.DOFade(0, 2f).OnComplete(() =>
@@ -160,7 +160,7 @@ public class MainPanel : BasePanel
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.TxtExp.text = TextUtil.Format("{0}/{1}", currExpStr, maxExpStr);
+		m_Component.TxtExp.text = StringUtil.Format("{0}/{1}", currExpStr, maxExpStr);
 	}
 
 	public void SetPlayerLevel()

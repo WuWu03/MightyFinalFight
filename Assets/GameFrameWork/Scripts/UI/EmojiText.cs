@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using UnityEngine.EventSystems;
 using System;
-using GameFrameWork.Utility;
+using GameFrameWork.Utilities;
 
 namespace GameFrameWork.UI
 {
@@ -319,7 +319,7 @@ namespace GameFrameWork.UI
                 }
 
                 s_TextBuilder.Append(part);
-                s_TextBuilder.AppendFormat("<color={0}>", Utility.Util.ToRGBHex(HrefColor));
+                s_TextBuilder.AppendFormat("<color={0}>", Utilities.CommonUtil.ToRGBHex(HrefColor));
                 int startIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
                 s_TextBuilder.Append(match.Groups[2].Value);
                 int endIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
