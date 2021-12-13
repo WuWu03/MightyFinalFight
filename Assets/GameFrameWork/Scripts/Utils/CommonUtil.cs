@@ -16,40 +16,6 @@ namespace GameFrameWork.Utilities
 {
     public class CommonUtil
     {
-        /// <summary>
-        /// http下载
-        /// </summary>
-        /// <returns></returns>
-        public static void WebRequest(MonoBehaviour mb, string url, GameFrameWorkAction<UnityWebRequest> call, GameFrameWorkAction<string> error, GameFrameWorkAction<float> progressCall = null)
-        {
-            mb.StartCoroutine(StartUnityWebRequest(url, call, error, progressCall));
-        }
-
-        //uwr下载
-        private static IEnumerator StartUnityWebRequest(string url, GameFrameWorkAction<UnityWebRequest> call, GameFrameWorkAction<string> error, GameFrameWorkAction<float> progressCall)
-        {
-            UnityWebRequest uwr = UnityWebRequest.Get(url);
-            uwr.timeout = 5;
-            yield return uwr.SendWebRequest();
-
-            if (uwr.result != UnityWebRequest.Result.Success)
-            {
-                if (error != null) error(uwr.error);
-            }
-            else
-            {
-                while (!uwr.isDone)
-                {
-                    if (progressCall != null) progressCall(uwr.downloadProgress);
-                    yield return null;
-                }
-
-                if (uwr.isDone)
-                {
-                    if (call != null) call(uwr);
-                }
-            }
-        }
 
         public static Vector3 HexagonXToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
         {
