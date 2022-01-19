@@ -11,11 +11,13 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEngine.U2D;
 using DragonBones;
+using System;
 
 public class Test : MonoBehaviour
 {
     //public Button btn1;
     //public Button btn2;
+    public ScrollRect rect;
     public Image img;
     public UnityArmatureComponent aaa;
     //public Button btn3;
@@ -36,6 +38,7 @@ public class Test : MonoBehaviour
     public SpriteAtlas atlas;
     private void Awake()
     {
+        UIEventListener.Get(rect.gameObject).onDrag.AddListener(OnScroll);
         //ResMgr.Init(this.gameObject);
         //SceneMgr.Init(this.gameObject);
         //DontDestroyOnLoad(gameObject);
@@ -65,12 +68,18 @@ public class Test : MonoBehaviour
         //}
 
         //anim.Play("attack_1", 0);
-        
+
+    }
+
+    private void OnScroll(GameObject go, PointerEventData eventData, object arg)
+    {
+        Debug.Log(rect.verticalNormalizedPosition);
     }
 
     private void Start()
     {
-       // EventMgr.Ins.Subscribe(1,OnSub);
+        rect.verticalNormalizedPosition = 0.93f;// 2 / 14;
+        // EventMgr.Ins.Subscribe(1,OnSub);
     }
 
     private void Update()

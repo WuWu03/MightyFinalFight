@@ -71,7 +71,7 @@ namespace GameFrameWork.Editor
             {
                 string itemName = layoutRefList[i].GetName() + "Item";
                 string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-                string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
+                string layoutName = layoutRefList[i].IsLoopScroll ? "LayoutGroupLoopView" : "LayoutGroupView";
                 sb.AppendFormat("\tpublic {0}<{1}> {2}", layoutName, itemName, itemVarableName);
                 sb.Append(" { get; private set; }\n");
             }
@@ -92,7 +92,7 @@ namespace GameFrameWork.Editor
             {
                 string itemName = layoutRefList[i].GetName() + "Item";
                 string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-                string layoutName = layoutRefList[i].IsLoopLayout ? "LayoutGroupLoopView" : "LayoutGroupView";
+                string layoutName = layoutRefList[i].IsLoopScroll ? "LayoutGroupLoopView" : "LayoutGroupView";
                 sb.AppendFormat("\t\t{0} = new {1}<{2}>();\n", itemVarableName, layoutName, itemName);
             }
 

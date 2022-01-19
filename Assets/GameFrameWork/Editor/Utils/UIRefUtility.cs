@@ -88,8 +88,12 @@ namespace GameFrameWork.Editor
 
         public static bool IsLayoutContent(this UIRef uiRef)
         {
-            return uiRef.ComponentName.Contains("LayoutGroup") ||
-                   uiRef.GetComponent<UnityEngine.UI.LayoutGroup>() != null;
+            return uiRef.ComponentName.Contains("LayoutGroup") || uiRef.GetComponent<UnityEngine.UI.LayoutGroup>() != null;
+        }
+
+        public static bool IsScrollRect(this UIRef uiRef)
+        {
+            return uiRef.ComponentName.Contains("ScrollRect") || uiRef.GetComponent<UnityEngine.UI.ScrollRect>() != null;
         }
     }
 }

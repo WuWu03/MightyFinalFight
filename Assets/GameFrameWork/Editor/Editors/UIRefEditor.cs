@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameFrameWork.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -82,21 +83,10 @@ namespace GameFrameWork.Editor
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
                     m_UIRef.IsLayout = isLayout.boolValue;
                 }
-
-                if (m_UIRef.IsLayout)
-                {
-                    SerializedProperty isLoopLayout = EditorUtility.DrawProperty("循环列表", serializedObject, "m_IsLoopLayout", new GUILayoutOption[0]);
-                    if (m_UIRef.IsLoopLayout != isLoopLayout.boolValue)
-                    {
-                        UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                        m_UIRef.IsLoopLayout = isLoopLayout.boolValue;
-                    }
-                }
             }
             else
             {
                 m_UIRef.IsLayout = false;
-                m_UIRef.IsLoopLayout = false;
             }
 
             UIRef parentLayoutRef = m_UIRef.transform.parent == null ? null : m_UIRef.transform.parent.GetComponent<UIRef>();
@@ -109,8 +99,10 @@ namespace GameFrameWork.Editor
                     m_UIRef.IsLayoutItem = isLayoutItem.boolValue;
                 }
             }
-            else m_UIRef.IsLayoutItem = false;
-
+            else
+            {
+                m_UIRef.IsLayoutItem = false;
+            }
 
             UIRef[] parentLayoutItemRefs = m_UIRef.transform.parent == null ? null : m_UIRef.GetComponentsInParent<UIRef>(true);
             bool isParentLayoutItem = false;
@@ -134,6 +126,25 @@ namespace GameFrameWork.Editor
             else
             {
                 m_UIRef.IsLayoutItemVariable = false;
+            }
+
+            if (m_UIRef.IsScrollRect())
+            {
+                SerializedProperty isLoopLayout = EditorUtility.DrawProperty("循环列表", serializedObject, "m_IsLoopScroll", new GUILayoutOption[0]);
+                if (m_UIRef.IsLoopScroll != isLoopLayout.boolValue)
+                {
+                    UnityEditor.EditorUtility.SetDirty(m_UIRef);
+                    m_UIRef.IsLoopScroll = isLoopLayout.boolValue;
+                }
+
+                if (m_UIRef.IsLoopScroll && m_UIRef.GetComponent<EnhancedScroller>() == null)
+                {
+                    m_UIRef.gameObject.AddComponent<EnhancedScroller>();
+                }
+            }
+            else
+            {
+                m_UIRef.IsLoopScroll = false;
             }
 
             if (!m_UIRef.IsLayoutItemVariable)
