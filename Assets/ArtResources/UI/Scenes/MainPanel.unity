@@ -226,13 +226,13 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 752769401}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 50
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -351,7 +351,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -141.19922, y: -33}
+  m_AnchoredPosition: {x: -141, y: -33}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &199984713
@@ -578,7 +578,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &305565304
 GameObject:
@@ -636,7 +637,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &305565307
 MonoBehaviour:
@@ -716,7 +718,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 98.7, y: -0.000030517578}
+  m_AnchoredPosition: {x: 98.6875, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &322625189
@@ -793,7 +795,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &504768929
 GameObject:
@@ -964,7 +967,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &575058722
 GameObject:
@@ -1058,7 +1062,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.6992188, y: -34.11035}
+  m_AnchoredPosition: {x: 8, y: -34}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &674840361
@@ -1322,8 +1326,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 720
+    height: 1280
   near clip plane: -1000
   far clip plane: 1000
   field of view: 60
@@ -1352,7 +1356,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752769400}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2038030245}
@@ -1394,7 +1398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -19.700073, y: 5.4297485}
+  m_AnchoredPosition: {x: -20, y: 5.5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &873496743
@@ -1531,7 +1535,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1073889339
 GameObject:
@@ -1627,7 +1632,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1149134740
 GameObject:
@@ -1729,7 +1735,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1149134745
 MonoBehaviour:
@@ -2040,7 +2047,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -165.19922, y: -66}
+  m_AnchoredPosition: {x: -165, y: -66}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1416097191
@@ -2133,7 +2140,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 12, y: 5.4296875}
+  m_AnchoredPosition: {x: 12, y: 5.5}
   m_SizeDelta: {x: 306.5, y: 40}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &1655960277
@@ -2230,7 +2237,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1682481259
 GameObject:
@@ -2383,7 +2391,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1725198711
 MonoBehaviour:
@@ -2498,7 +2507,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1746242806
 MonoBehaviour:
@@ -2576,7 +2586,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 95.2, y: -0.000030517578}
+  m_AnchoredPosition: {x: 95.203125, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1826900176
@@ -2653,7 +2663,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1861697063
 GameObject:
@@ -2771,7 +2782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.6992188, y: -69.59961}
+  m_AnchoredPosition: {x: 8, y: -69.5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1970342133
@@ -2887,7 +2898,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 1
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2006755760
 MonoBehaviour:
@@ -3203,7 +3215,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2115285212
 GameObject:
@@ -3299,5 +3312,6 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0

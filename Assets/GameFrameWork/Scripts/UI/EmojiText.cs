@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Text;
 using UnityEngine.EventSystems;
 using System;
-using GameFrameWork.Utilities;
 
 namespace GameFrameWork.UI
 {
@@ -319,7 +318,7 @@ namespace GameFrameWork.UI
                 }
 
                 s_TextBuilder.Append(part);
-                s_TextBuilder.AppendFormat("<color={0}>", Utilities.CommonUtil.ToRGBHex(HrefColor));
+                s_TextBuilder.AppendFormat("<color={0}>", ToRGBHex(HrefColor));
                 int startIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
                 s_TextBuilder.Append(match.Groups[2].Value);
                 int endIndex = s_TextBuilder.Length * 4 - removeEmojiCount;
@@ -365,6 +364,21 @@ namespace GameFrameWork.UI
             return str;
         }
 
+        private string ToRGBHex(Color c)
+        {
+            if (c == default(Color))
+            {
+                c = Color.black;
+            }
+
+            byte r = (byte)(Mathf.Clamp01(c.r) * 255);
+            byte g = (byte)(Mathf.Clamp01(c.g) * 255);
+            byte b = (byte)(Mathf.Clamp01(c.b) * 255);
+            byte a = (byte)(Mathf.Clamp01(c.a) * 255);
+
+            return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+        }
+
         /// <summary>
         /// 点击事件检测是否点击到超链接文本
         /// </summary>
@@ -385,7 +399,7 @@ namespace GameFrameWork.UI
                         {
                             onHrefClick(hrefInfo.name);
                         }
-                        Log.GameFrameworkLog.Log("点击了:" + hrefInfo.name);
+                        Debug.Log("点击了:" + hrefInfo.name);
                         return;
                     }
                 }
@@ -405,5 +419,6 @@ namespace GameFrameWork.UI
         private static readonly StringBuilder s_TextBuilder = new StringBuilder();// 文本构造器
 
         private UIVertex vert = new UIVertex();
+
     }
 }

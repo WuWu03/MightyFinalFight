@@ -15,88 +15,26 @@ using System;
 
 public class Test : MonoBehaviour
 {
-    //public Button btn1;
-    //public Button btn2;
-    public ScrollRect rect;
-    public Image img;
-    public UnityArmatureComponent aaa;
-    //public Button btn3;
-    //public GameObject parent;
-    //public GameObject item;
-    //public ScrollRect scroll;
-    //public NavMeshAgent agent;
-    public class TestEventArg : GameEventArgs
-    {
-        public string fuck;
-
-        public override void Clear()
-        {
-            fuck = string.Empty;
-        }
-    }
-
-    public SpriteAtlas atlas;
+    public ScrollListEX ex;
     private void Awake()
     {
-        UIEventListener.Get(rect.gameObject).onDrag.AddListener(OnScroll);
-        //ResMgr.Init(this.gameObject);
-        //SceneMgr.Init(this.gameObject);
-        //DontDestroyOnLoad(gameObject);
-        //EventMgr.Init(parent);
-        //UIEventListener.Get(btn1.gameObject).onClick.AddListener(onClick1);
-        //UIEventListener.Get(btn2.gameObject).onClick.AddListener(onClick2);
-        //UIEventListener.Get(btn3.gameObject).onClick.AddListener(onClick3);
-        //EventTriggerListener.Get(btn.gameObject).onPress.AddListener(onPress);
-
-        //EventTriggerListener.Get(btn.gameObject).onDoubleClick.AddListener(onDoubleClick);
-        //EventManager.Init();
-
-        //AnimationEvent @event = new AnimationEvent();
-        //@event.functionName = "Attack";
-        //@event.objectReferenceParameter = btn;
-        //@event.time = 0.08f;
-
-        //AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
-
-        //for (int i = 0; i < clips.Length; i++)
-        //{
-        //    if (clips[i].name.Equals("attack"))
-        //    {
-        //        clips[i].AddEvent(@event);
-        //        break;
-        //    }
-        //}
-
-        //anim.Play("attack_1", 0);
+        ex.Init(50, 0, (ListItem item,int index, bool act) => 
+        {
+            //item.ItemObject.SetActive(true);
+        }, null);
+  
 
     }
 
-    private void OnScroll(GameObject go, PointerEventData eventData, object arg)
-    {
-        Debug.Log(rect.verticalNormalizedPosition);
-    }
 
     private void Start()
     {
-        rect.verticalNormalizedPosition = 0.93f;// 2 / 14;
-        // EventMgr.Ins.Subscribe(1,OnSub);
+
     }
 
     private void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //    RaycastHit hitinfo;
-        //    bool racast = Physics.Raycast(ray, out hitinfo, 100f, LayerMask.GetMask("Map"));
-
-        //    if (racast)
-        //    {
-        //        agent.destination = hitinfo.point;
-        //    }
-        //}
-
-       
+ 
     }
 
     private void onClick1(GameObject go, PointerEventData eventData)
@@ -140,10 +78,5 @@ public class Test : MonoBehaviour
         Debug.Log("草年末" + "," + (data is Button));
     }
 
-    private void OnSub(object seneder, GameEventArgs args)
-    {
-        TestEventArg e = args as TestEventArg;
-        Debug.Log(args.Id);
-        Debug.Log(e.fuck);
-    }
+
 }
