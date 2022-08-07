@@ -29,11 +29,11 @@ public class RoleMove : BaseFsmState
     {
         if (m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
         {
-            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.Attribute.MoveSpeed * 0.2f);
         }
         else
         {
-            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.Attribute.MoveSpeed * 0.2f);
         }
     }
 
@@ -44,8 +44,8 @@ public class RoleMove : BaseFsmState
             m_Owner.SetDir(m_Owner.MoveDir.x);
         }
 
-        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y) * m_Owner.MoveSpeed * Time.deltaTime;
-        m_Owner.SetPos(ownerPos);
+        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y) * m_Owner.Attribute.MoveSpeed * Time.deltaTime;
+        m_Owner.SetPos2(ownerPos);
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)

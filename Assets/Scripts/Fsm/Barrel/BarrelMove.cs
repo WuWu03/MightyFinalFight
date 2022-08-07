@@ -18,7 +18,7 @@ public class BarrelMove : BaseFsmState
     {
         m_Owner.SetDir(-m_Owner.BarrelData.Dir);
         Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.BarrelData.Dir, 0, 0) * m_Owner.BarrelData.MoveSpeed * Time.deltaTime;
-        m_Owner.SetPos(ownerPos);
+        m_Owner.SetPos2(ownerPos);
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)

@@ -28,6 +28,7 @@ public class SkillPrevConditionGUI : SkillGUI
             GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
+
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label((i + 1).ToString() + ".");
 
@@ -37,13 +38,11 @@ public class SkillPrevConditionGUI : SkillGUI
                     SkillEditorHelper.CurrConfigData.SkillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.CurrConfigData.SkillPrevConditions, i);
                     return;
                 }
-
                 EditorGUILayout.EndHorizontal();
 
                 SkillConfigData.SkillPrevConditionType prevConditionType = SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType;
                 SkillConfigData.SkillPrevConditionType conditionType = (SkillConfigData.SkillPrevConditionType)EditorGUILayout.EnumPopup("ConditionType", prevConditionType);
                 SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].PrevConditionType = conditionType;
-
                 SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].IsRevert = EditorGUILayout.Toggle("IsRevert", SkillEditorHelper.CurrConfigData.SkillPrevConditions[i].IsRevert);
 
                 EditorGUILayout.BeginHorizontal();

@@ -13,7 +13,7 @@ public class SkillSubHPEffect : SkillBaseEffect
 
         foreach (Match m in m_Regex.Matches(m_SkillEffect.Args))
         {
-            m_Owner.SubHealth(int.Parse(m.Groups[2].Value));
+            m_Owner.Attribute.SubHealth(int.Parse(m.Groups[2].Value));
         }
 
         Complete();

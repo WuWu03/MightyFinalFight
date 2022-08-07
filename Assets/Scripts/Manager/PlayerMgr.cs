@@ -129,15 +129,17 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
+        EntityAttribute roleAttribute = ReferencePool.Acquire<EntityAttribute>();
 
-        roleData.Health = m_LevelData.Health;
-        roleData.MaxHealth = m_LevelData.Health;
-        roleData.AttackSpeed = m_CharacterData.AttackSpeed;
-        roleData.AttackValue = m_LevelData.AttackValue;
-        roleData.DefenseValue = m_LevelData.DefenseValue;
-        roleData.CriticalValue = m_LevelData.CriticalValue;
-        roleData.JumpForce = m_LevelData.JumpForce;
-        roleData.MoveSpeed = m_LevelData.MoveSpeed;
+        roleAttribute.Health = m_LevelData.Health;
+        roleAttribute.MaxHealth = m_LevelData.Health;
+        roleAttribute.AttackSpeed = m_CharacterData.AttackSpeed;
+        roleAttribute.AttackValue = m_LevelData.AttackValue;
+        roleAttribute.DefenseValue = m_LevelData.DefenseValue;
+        roleAttribute.CriticalValue = m_LevelData.CriticalValue;
+        roleAttribute.JumpForce = m_LevelData.JumpForce;
+        roleAttribute.MoveSpeed = m_LevelData.MoveSpeed;
+
         roleData.CatchControl = m_CharacterData.CatchControl;
 
         heroSkillData.Id = m_CharacterData.Id;
@@ -151,6 +153,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         heroSkillData.WeaponAttackID = m_CharacterData.WeaponAttackID;
         heroSkillData.ThrowWeaponID = m_CharacterData.ThrowWeaponID;
 
+        m_Player.SetAttribute(roleAttribute);
         m_Player.SetData(roleData);
         m_CurrCtrl.SetData(heroSkillData);
 
@@ -190,7 +193,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        m_Player.SetHealth(m_Player.MaxHealth);
+        m_Player.Attribute.ResetHealth();
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
@@ -208,8 +211,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Level++;
             m_EXP -= m_LevelData.EXP;
             m_LevelData = StaticConfig.LevelConfig.GetData(m_CharacterData.Id).Levels[m_Level - 1];
-            m_Player.SetMaxHealth(m_LevelData.Health);
-            m_Player.SetHealth(m_LevelData.Health);
+            m_Player.Attribute.Health = m_LevelData.Health;
+            m_Player.Attribute.MaxHealth = m_LevelData.Health;
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
             mainPanel.SetPlayerLevel();
             SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
@@ -232,15 +235,15 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         if (m_CurrSpeed == 0)
         {
-            m_CurrSpeed = m_Player.MoveSpeed;
+            m_CurrSpeed = m_Player.Attribute.MoveSpeed;
         }
 
-        m_Player.MoveSpeed = 0f;
+        m_Player.Attribute.MoveSpeed = 0f;
     }
 
     public void RevertSpeed()
     {
-        m_Player.MoveSpeed = m_CurrSpeed;
+        m_Player.Attribute.MoveSpeed = m_CurrSpeed;
         m_CurrSpeed = 0f;
     }
 
@@ -256,7 +259,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Attribute.Health <= 0 || !m_CanCtrl)
         {
             return false;
         }

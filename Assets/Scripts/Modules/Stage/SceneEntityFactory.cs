@@ -8,10 +8,14 @@ public static class SceneEntityFactory
     public static BaseRole CreateRole(string name, string asset, float moveSpeed, Vector2 pos)
     {
         BaseRole role = EntityMgr.Ins.GetEntity<BaseRole>(name);
+        EntityAttribute attribute = ReferencePool.Acquire<EntityAttribute>();
+
+        attribute.MoveSpeed = moveSpeed;
+
+        role.SetAttribute(attribute);
         role.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, asset));
         role.SetLayer(LayerName.Unit);
-        role.SetPos(pos);
-        role.MoveSpeed = moveSpeed;
+        role.SetPos2(pos);
 
         return role;
     }
@@ -56,10 +60,9 @@ public static class SceneEntityFactory
         }
 
         SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
+
         sceneItemData.Id = data.Id;
         sceneItemData.Type = type;
-        sceneItemData.Health = data.Value;
-        sceneItemData.MaxHealth = data.Value;
         sceneItemData.Value = data.Value;
         sceneItemData.CanDrop = data.CanDrop;
 
@@ -70,23 +73,17 @@ public static class SceneEntityFactory
         sceneItem.SetLayer(LayerName.Unit);
     }
 
-    public static BaseEnemy CreateEnemy(CharacterConfigData enemyConfigData, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
+    public static BaseEnemy CreateEnemy(CharacterConfigData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = EntityMgr.Ins.GetEntity<BaseEnemy>(enemyConfigData.Name);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
         BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
+        EntityAttribute enemyAttribute = ReferencePool.Acquire<EntityAttribute>();
 
-        enemyData.Id = engityID;
-        enemyData.Health = hp;
-        enemyData.MaxHealth = hp;
-        enemyData.HpBarWdith = hpBarWidth;
-        enemyData.JumpForce = enemyConfigData.JumpForce;
-        enemyData.AttackSpeed = enemyConfigData.AttackSpeed;
-        enemyData.AttackValue = attack;
-        enemyData.DefenseValue = defense;
-        enemyData.MoveSpeed = enemyConfigData.MoveSpeed;
+        enemyData.EntityId = entityId;
         enemyData.HurtAnim = enemyConfigData.HurtAnim;
         enemyData.IsBoss = enemyConfigData.IsBoss;
+        enemyData.HpBarWdith = hpBarWidth;
 
         enemySkillData.AttackIds = enemyConfigData.AttackIDs;
         enemySkillData.SkillIds = enemyConfigData.Skills;
@@ -95,8 +92,17 @@ public static class SceneEntityFactory
         enemySkillData.AttackNextTime = enemyConfigData.AttackNextTime;
         enemySkillData.BehaviourTreeIds = enemyConfigData.BehaviourTreeIds;
 
+        enemyAttribute.Health = hp;
+        enemyAttribute.MaxHealth = hp;
+        enemyAttribute.JumpForce = enemyConfigData.JumpForce;
+        enemyAttribute.AttackSpeed = enemyConfigData.AttackSpeed;
+        enemyAttribute.AttackValue = attack;
+        enemyAttribute.DefenseValue = defense;
+        enemyAttribute.MoveSpeed = enemyConfigData.MoveSpeed;
+
         enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.AssetName));
         enemy.SetData(enemyData);
+        enemy.SetAttribute(enemyAttribute);
         enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
         enemy.SetObjectType(ObjectType.Monster);
         enemy.SetMapPos(pos);

@@ -21,7 +21,7 @@ public class BarrelDead : BaseFsmState
         m_Owner.ResetRigidbody();
         m_Owner.BarrelAnimator.animation.timeScale = 1;
         m_Owner.BarrelAnimator.animation.Play(AnimName.Dead, 1);
-        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.Pos);
         m_Owner.SetDir(-m_AttackerDir);
     }
 

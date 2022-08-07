@@ -35,7 +35,7 @@ public class RoleJump : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.AddForce(m_Dir * m_Owner.JumpForce.x, m_Owner.JumpForce.y);
+        m_Owner.AddForce(m_Dir * m_Owner.Attribute.JumpForce.x, m_Owner.Attribute.JumpForce.y);
         m_Owner.PlayAnimation(m_IsCatch ? AnimName.Catch : AnimName.JumpUp);
         m_HasAddXForce = m_Dir != 0;
 
@@ -52,7 +52,7 @@ public class RoleJump : BaseFsmState
             if (Mathf.Abs(m_Dir) > 0.01f && !m_HasAddXForce)
             {
                 m_HasAddXForce = true;
-                m_Owner.AddForce(m_Dir * m_Owner.JumpForce.x, 0f);
+                m_Owner.AddForce(m_Dir * m_Owner.Attribute.JumpForce.x, 0f);
                 if (m_CanChangeDir)
                     m_Owner.SetDir(m_Dir);
             }

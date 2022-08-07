@@ -40,7 +40,7 @@ public class SkillEditorWindow : EditorWindow
             {
                 m_CurrPage = i;
                 m_SkillGUIs[m_CurrPage].UpdateData();
-                return;
+                break;
             }
         }
         EditorGUILayout.EndHorizontal();

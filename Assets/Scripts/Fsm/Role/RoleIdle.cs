@@ -11,7 +11,7 @@ public class RoleIdle : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.SetPos(m_Owner.Pos, true);
+        m_Owner.SetPos2(m_Owner.Pos, true);
 
         if(m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
         {

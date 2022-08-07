@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemyData :BaseRoleData
+public class BaseEnemyData : BaseRoleData
 {
     public string[] HurtAnim { get; set; }
     public int HpBarWdith { get; set; }

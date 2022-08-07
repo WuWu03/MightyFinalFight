@@ -80,9 +80,9 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         {
             BaseSceneItem sceneItem = EntityMgr.Ins.GetEntity<Barrel>("Barrel");
             BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
+            EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
+
             barrelData.Id = 1;
-            barrelData.Health = 1;
-            barrelData.MaxHealth = 1;
             barrelData.Value = 0;
             barrelData.CanDrop = false;
             barrelData.Dir = 1;
@@ -91,6 +91,10 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             barrelData.MoveSpeed = 0f;
             barrelData.ItemId = 1001 + i;
 
+            barrelAttribute.Health = 1;
+            barrelAttribute.MaxHealth = 1;
+
+            sceneItem.SetAttribute(barrelAttribute);
             sceneItem.SetData(barrelData);
             sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "Item/Barrel"));
             sceneItem.SetObjectType(ObjectType.BreakItem);

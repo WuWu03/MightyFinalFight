@@ -72,7 +72,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         else if (hero.Weapon != null)
         {
             bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
-            if (hero.Weapon.Health <= 1)
+            if (hero.Weapon.Attribute.Health <= 1)
             {
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {

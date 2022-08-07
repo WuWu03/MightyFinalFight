@@ -12,7 +12,7 @@ public class RoleAwaken : BaseFsmState
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Awaken, 1, 0.2f);
-        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.Pos);
         m_Owner.SetThrow(false);
     }
 

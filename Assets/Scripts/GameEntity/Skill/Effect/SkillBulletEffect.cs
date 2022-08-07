@@ -12,8 +12,6 @@ public class SkillBulletEffect : SkillBaseEffect
         {
             Bullet bullet = EntityMgr.Ins.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
             BulletData bulletData = ReferencePool.Acquire<BulletData>();
-            bulletData.Health = 1;
-            bulletData.MaxHealth = 1;
             bulletData.BulletIndex = i;
             bulletData.NormalAnim = m_SkillEffect.Bullets[i].NormalAnim;
             bulletData.HitAnim = m_SkillEffect.Bullets[i].HitAnim;

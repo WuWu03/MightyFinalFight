@@ -29,12 +29,12 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
     {
         PlayerMgr.Ins.Player.OnDropEvent.AddListener(() =>
         {
-            PlayerMgr.Ins.Player.UpdateMapPosZ(7);
+            PlayerMgr.Ins.Player.UpdatePosZ(0.1f);
         });
 
         PlayerMgr.Ins.Player.OnGroundEvent.AddListener(() =>
         {
-            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(4.36f, -0.2f), OnAutoMove2);
+            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(4.36f, -0.27f), OnAutoMove2);
         });
 
         PlayerMgr.Ins.Jump(Vector2.right, false, true);

@@ -41,8 +41,8 @@ public class RoleSkill : BaseFsmState
     {
         if(m_CanMove)
         {
-            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.MoveSpeed * Time.deltaTime;
-            m_Owner.SetPos(ownerPos);
+            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.Attribute.MoveSpeed * Time.deltaTime;
+            m_Owner.SetPos2(ownerPos);
         }
 
         if (m_CanChangeDir)

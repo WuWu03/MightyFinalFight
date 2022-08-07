@@ -60,7 +60,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     private void CheckAttack(ISkillSelector selector)
     {
-        m_Owner.UpdatePos2(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
+        m_Owner.UpdatePosXY(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
         List<ICanBeHit> targets = selector.GetTargets();
 
         for (int i = 0; i < targets.Count; i++)

@@ -20,7 +20,7 @@ public class RoleDead : BaseFsmState
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4, 1);
-        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.Pos);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

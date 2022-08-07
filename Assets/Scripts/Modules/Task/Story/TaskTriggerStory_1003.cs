@@ -18,6 +18,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         m_IsSwoon = false;
         m_BossState = false;
         PlayerMgr.Ins.CanContrl = false;
+        PlayerMgr.Ins.Player.UpdatePosZ(0);
         SoundMgr.Ins.PauseBGM();
         SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
         UIMgr.Ins.GetPanel<MainPanel>().Hide();
@@ -48,7 +49,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
             m_IsSwoon = true;
             Rect vision = CameraMgr.Ins.GetVision();
             PlayerMgr.Ins.Player.SetActive(true);
-            PlayerMgr.Ins.Player.SetPos2(vision.xMin + 0.5f, vision.yMax);
+            PlayerMgr.Ins.Player.SetPosXY(vision.xMin + 0.5f, vision.yMax);
             PlayerMgr.Ins.Player.PlayAnimation(AnimName.SwoonUp);
             PlayerMgr.Ins.Player.transform.DOMoveY(-0.6f, 2.2f).SetEase(Ease.Linear).OnComplete(OnPlayComplete);
         }
@@ -63,7 +64,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
     private void MoveTo()
     {
         SoundMgr.Ins.StartBGM();
-        PlayerMgr.Ins.Player.SetPos(PlayerMgr.Ins.Player.transform.localPosition);
+        PlayerMgr.Ins.Player.SetPos2(PlayerMgr.Ins.Player.transform.localPosition);
         PlayerMgr.Ins.Player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
         MainPanel mainPanel = UIMgr.Ins.GetPanel<MainPanel>();

@@ -127,11 +127,11 @@ public class SkillFactory
                     break;
                 case SkillPrevConditionType.HPMoreThan:
                     Match m1 = m_RegexHPMoreThan.Match(conditions[i].Args);
-                    if (m1.Success) isCondition = owner.Health > int.Parse(m1.Groups[2].Value);
+                    if (m1.Success) isCondition = owner.Attribute.Health > int.Parse(m1.Groups[2].Value);
                     break;
                 case SkillPrevConditionType.HPLessThan:
                     Match m2 = m_RegexHPLessThan.Match(conditions[i].Args);
-                    if (m2.Success) isCondition = owner.Health < int.Parse(m2.Groups[2].Value);
+                    if (m2.Success) isCondition = owner.Attribute.Health < int.Parse(m2.Groups[2].Value);
                     break;
                 default:
                     break;
@@ -171,7 +171,7 @@ public class SkillFactory
 
         if (hit is BaseRole)
         {
-            defenseValue = (hit as BaseRole).DefenseValue;
+            defenseValue = (hit as BaseRole).Attribute.DefenseValue;
         }
 
         if (owner is BaseEnemy)
@@ -188,7 +188,7 @@ public class SkillFactory
         hurtData.CanBeDefense = effect.CanBeDefense;
         hurtData.IsSwoon = effect.IsSmoon;
         hurtData.AttackerId = owner.Id;
-        hurtData.AttackValue = CacDamage(owner.AttackValue, defenseValue, owner.CriticalValue, effect.DamageMulity, out isCritical);
+        hurtData.AttackValue = CacDamage(owner.Attribute.AttackValue, defenseValue, owner.Attribute.CriticalValue, effect.DamageMulity, out isCritical);
         hurtData.IsCritical = isCritical;
         hurtData.HurtSound = data.HurtSound;
         hurtData.HurtAnim = string.Empty;

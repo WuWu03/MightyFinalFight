@@ -12,7 +12,7 @@ public class BarrelDrop : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.SetPos(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.Pos);
         m_Owner.OnGroundEvent.AddListener(OnGround);
         m_Owner.AddForce(0, 50);
     }
