@@ -1,15 +1,14 @@
-using UnityEngine;
+using GameFrameWork.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
-using Object = UnityEngine.Object;
 using System.IO;
-using GameFrameWork.Utilities;
-using UnityEngine.U2D;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GameFrameWork.Resources
 {
-    public class ResMgr : BaseMgr<ResMgr>
+    public class ResourcesMgr : BaseMgr<ResourcesMgr>
     {
         class AssetBundleInfo
         {
@@ -106,7 +105,7 @@ namespace GameFrameWork.Resources
             bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
-                return ResMgrEditor.Instance.LoadForEditor(abName, t);
+                return EditorResourcesMgr.Instance.LoadForEditor(abName, t);
             else
 #endif
                 return Load(abName, loadMainAsset, t);
@@ -132,7 +131,7 @@ namespace GameFrameWork.Resources
             bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
-                ResMgrEditor.Instance.LoadForEditorAsync(abName, action, t, param);
+                EditorResourcesMgr.Instance.LoadForEditorAsync(abName, action, t, param);
             else
 #endif
                 LoadAsync(abName, action, loadMainAsset, t, param);

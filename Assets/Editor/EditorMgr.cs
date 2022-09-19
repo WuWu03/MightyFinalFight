@@ -109,13 +109,6 @@ public class EditorMgr : MonoBehaviour
         GameFrameWork.Editor.EditorUtil.CreateConfigData<TaskConfig, TaskConfigData>("TaskData", ".asset");
     }
 
-    [MenuItem("Assets/Config/CreateLevelData")]
-    public static void CreateLevelData()
-    {
-        GameFrameWork.Editor.EditorUtil.CreateConfigData<LevelConfig, LevelConfigData>("LevelData", ".asset");
-    }
-
-
     [MenuItem("Assets/Config/CreateTalkData")]
     public static void CreateTalkData()
     {

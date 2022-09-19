@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Pool;
+﻿using GameFrameWork.Resources;
 using UnityEngine;
 using UnityEngine.UI;
 

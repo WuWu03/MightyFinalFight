@@ -30,10 +30,10 @@ public class MainPanel : BasePanel
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
 		m_Component.levelListGroupView.Update(5);
-		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelData.EXP);
+		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelData.exp);
 		SetRound(StageMgr.instance.stageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
-		SetPlayerHP(PlayerMgr.instance.levelData.Health, PlayerMgr.instance.levelData.Health, PlayerMgr.instance.levelData.HPBarWidth);
+		SetPlayerHP(PlayerMgr.instance.levelData.hpValue, PlayerMgr.instance.levelData.hpValue, PlayerMgr.instance.levelData.hpBarWidth);
 
 		PoolMgr.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
 		PoolMgr.instance.AddPool("EmenyDamageText", m_Component.txtEnemyDamage.gameObject);

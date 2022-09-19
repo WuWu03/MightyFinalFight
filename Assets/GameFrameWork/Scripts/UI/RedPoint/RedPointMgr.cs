@@ -15,7 +15,7 @@ namespace GameFrameWork.UI
         {
             RedPoint root = GetRoot(key);
 
-            if (string.IsNullOrEmpty(subKey) && string.IsNullOrEmpty(parentKey))
+            if (string.IsNullOrEmpty(subKey) || key.Equals(subKey))
             {
                 if (root != null)
                 {

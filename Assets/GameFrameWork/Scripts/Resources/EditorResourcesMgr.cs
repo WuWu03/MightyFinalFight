@@ -8,7 +8,7 @@ using GameFrameWork.Log;
 
 namespace GameFrameWork.Resources
 {
-    public class ResMgrEditor:Singleton<ResMgrEditor>
+    public class EditorResourcesMgr:Singleton<EditorResourcesMgr>
     {
 #if UNITY_EDITOR
         class LoadRequest 
@@ -17,7 +17,7 @@ namespace GameFrameWork.Resources
             public object[] args;
         }
 
-        public ResMgrEditor()
+        public EditorResourcesMgr()
         {
             m_LoadedAssets = new Dictionary<string, UnityEngine.Object>();
             m_DicLoadRequest = new Dictionary<string, List<LoadRequest>>();
@@ -76,7 +76,7 @@ namespace GameFrameWork.Resources
             }
 
             list.Add(new LoadRequest() { onLoadEvent = action, args = param });
-            ResMgr.instance.StartCoroutine(InnerLoad(resourcePath, t));
+            ResourcesMgr.instance.StartCoroutine(InnerLoad(resourcePath, t));
         }
 
         public UnityEngine.Object LoadForEditor(string resourcePath, Type t = null)

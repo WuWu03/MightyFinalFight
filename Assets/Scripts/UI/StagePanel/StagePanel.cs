@@ -2,17 +2,14 @@
 /**2021-9-8 12:24****************************************/
 /**Create By GQY****************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using GameFrameWork.UI;
-using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
-using System;
 using DragonBones;
+using GameFrameWork.Resources;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
-using GameFrameWork.Scene;
+using GameFrameWork.UI;
+using GameFrameWork.Utilities;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class StagePanel : BasePanel
 {

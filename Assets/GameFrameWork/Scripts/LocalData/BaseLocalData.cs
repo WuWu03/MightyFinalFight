@@ -1,10 +1,4 @@
-﻿
-//数据实体基类
-using GameFrameWork.UI;
-using System.Collections.Generic;
-using System.Xml.Linq;
-
-namespace GameFrameWork.LocalData
+﻿namespace GameFrameWork.LocalData
 {
     public abstract class BaseLocalData
     {

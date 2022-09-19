@@ -1,16 +1,16 @@
-﻿using UnityEngine;
-using GameFrameWork.UI;
-using GameFrameWork.Input;
-using GameFrameWork.Pool;
-using GameFrameWork.Fsm;
-using GameFrameWork.Resources;
-using GameFrameWork.Sound;
+﻿using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
+using GameFrameWork.Fsm;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Input;
+using GameFrameWork.Pool;
+using GameFrameWork.Resources;
 using GameFrameWork.Scene;
-using GameFrameWork.BehaviourTree;
+using GameFrameWork.Sound;
+using GameFrameWork.UI;
 using GameFrameWork.Utilities;
+using UnityEngine;
 
 namespace GameFrameWork
 {
@@ -27,7 +27,7 @@ namespace GameFrameWork
             UIMgr.Init(m_Manager);
             RedPointMgr.Init(m_Manager);
             InputMgr.Init(m_Manager);
-            ResMgr.Init(m_Manager);
+            ResourcesMgr.Init(m_Manager);
             BehaviourTreeMgr.Init(PathUtil.behaviourTreeConfigDataPath);
             PoolMgr.Init(m_Manager);
             EntityMgr.Init(m_Manager);
@@ -53,7 +53,7 @@ namespace GameFrameWork
             UIMgr.instance.ShutDown();
             RedPointMgr.instance.ShutDown();
             InputMgr.instance.ShutDown();
-            ResMgr.instance.ShutDown();
+            ResourcesMgr.instance.ShutDown();
             GameObjectPool.instance.ShutDown();
             AudioClipPool.instance.ShutDown();
             SpritePool.instance.ShutDown();

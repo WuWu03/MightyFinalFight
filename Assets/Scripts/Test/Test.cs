@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
-using GameFrameWork.Log;
 
 public class Test : MonoBehaviour
 {

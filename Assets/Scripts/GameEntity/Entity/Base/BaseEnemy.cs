@@ -101,7 +101,7 @@ public class BaseEnemy : BaseRole
     public override void Release()
     {
         PlayerMgr.instance.AddExp(m_SkillExp);
-        m_OnDeadEventHandler?.Invoke(m_EntityID);
+        m_OnDeadEventHandler?.Invoke(m_EntityId);
         m_SkillExp = 0;
         m_HurtAnim = null;
         m_OnDeadEventHandler = null;

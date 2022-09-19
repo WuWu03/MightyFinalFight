@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GameFrameWork.Pool
+namespace GameFrameWork.Resources
 {
-    public class GameObjectPool : ResPool<GameObject, GameObjectPool>
+    public class GameObjectPool : ResourcesPool<GameObject, GameObjectPool>
     {
         protected override bool m_NeedInstantiate { get { return true; } }
 

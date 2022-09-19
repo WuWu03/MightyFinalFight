@@ -1,12 +1,11 @@
-﻿using GameFrameWork.Resources;
-using GameFrameWork.Utilities;
+﻿using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFrameWork.Pool
+namespace GameFrameWork.Resources
 {
-    public abstract class ResPool<T, P> : BaseMgr<P> where T : UnityEngine.Object where P : ResPool<T, P>, new()
+    public abstract class ResourcesPool<T, P> : BaseMgr<P> where T : UnityEngine.Object where P : ResourcesPool<T, P>, new()
     {
         class LoadRequest
         {
@@ -76,7 +75,7 @@ namespace GameFrameWork.Pool
                 listLoadRequest = new List<LoadRequest>();
                 listLoadRequest.Add(request);
                 m_DicLoadCallback.Add(resPath, listLoadRequest);
-                ResMgr.instance.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
+                ResourcesMgr.instance.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
             }
             else
             {

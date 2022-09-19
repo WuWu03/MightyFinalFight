@@ -2,7 +2,6 @@
 using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace GameFrameWork.LocalData
@@ -45,7 +44,7 @@ namespace GameFrameWork.LocalData
         {
             m_FieldNameDic = new Dictionary<string, int>();
 
-            TextAsset txt = ResMgr.instance.LoadAsset<TextAsset>(path);
+            TextAsset txt = ResourcesMgr.instance.LoadAsset<TextAsset>(path);
 
             //2解压缩
             byte[] buffer = ZlibHelper.DeCompressBytes(txt.bytes);

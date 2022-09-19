@@ -26,7 +26,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public LevelConfigData.LevelInfo levelData
+    public LevelData levelData
     {
         get
         {
@@ -120,7 +120,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_EXP = 0;
 
         m_RoleData = DataHelper.roleDatas.GetDataById(m_SelectRoleId);
-        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectRoleId).Levels[m_Level - 1];
+        m_LevelData = DataHelper.levelDatas.GetSingDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);// StaticConfig.LevelConfig.GetData(m_SelectRoleId).Levels[m_Level - 1];
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
@@ -131,14 +131,14 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
         EntityAttribute roleAttribute = ReferencePool.Acquire<EntityAttribute>();
 
-        roleAttribute.health = m_LevelData.Health;
-        roleAttribute.maxHealth = m_LevelData.Health;
+        roleAttribute.health = m_LevelData.hpValue;
+        roleAttribute.maxHealth = m_LevelData.hpValue;
         roleAttribute.attackSpeed = m_RoleData.attackSpeed;
-        roleAttribute.attackValue = m_LevelData.AttackValue;
-        roleAttribute.defenseValue = m_LevelData.DefenseValue;
-        roleAttribute.criticalValue = m_LevelData.CriticalValue;
-        roleAttribute.jumpForce = m_LevelData.JumpForce;
-        roleAttribute.moveSpeed = m_LevelData.MoveSpeed;
+        roleAttribute.attackValue = m_LevelData.attackValue;
+        roleAttribute.defenseValue = m_LevelData.defenseValue;
+        roleAttribute.criticalValue = m_LevelData.criticalValue;
+        roleAttribute.jumpForce = m_LevelData.jumpForce;
+        roleAttribute.moveSpeed = m_LevelData.moveSpeed;
 
         roleData.isCatchControl = m_RoleData.isCatchControl;
 
@@ -160,6 +160,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         for (int i = 6; i < m_RoleData.skillIds.Length; i++)
         {
             SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_RoleData.skillIds[i]);
+
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
                 InputMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
@@ -169,7 +170,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_CanCtrl = true;
 
         CameraMgr.instance.SetTarget(m_Player.transform);
-
         InputMgr.instance.getDirectionEvent = GetDirction;
         InputMgr.instance.afterTriggerEvent = AfterTrigger;
         InputMgr.instance.getPreconditonEvent = GetPreCondition;
@@ -206,18 +206,20 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         m_EXP += value;
         MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
-        if (m_EXP >= m_LevelData.EXP)
+
+        if (m_EXP >= m_LevelData.exp)
         {
             m_Level++;
-            m_EXP -= m_LevelData.EXP;
-            m_LevelData = StaticConfig.LevelConfig.GetData(m_RoleData.id).Levels[m_Level - 1];
-            m_Player.entityAttribute.health = m_LevelData.Health;
-            m_Player.entityAttribute.maxHealth = m_LevelData.Health;
-            mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
+            m_EXP -= m_LevelData.exp;
+            m_LevelData = DataHelper.levelDatas.GetSingDataByAttr("roleId=" + m_RoleData.id + ",level=" + m_Level);
+            m_Player.entityAttribute.health = m_LevelData.hpValue;
+            m_Player.entityAttribute.maxHealth = m_LevelData.hpValue;
+            mainPanel.SetPlayerHP(m_LevelData.hpValue, m_LevelData.hpValue, m_LevelData.hpBarWidth);
             mainPanel.SetPlayerLevel();
             SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
         }
-        mainPanel.SetPlayerExp(m_EXP, m_LevelData.EXP);
+
+        mainPanel.SetPlayerExp(m_EXP, m_LevelData.exp);
     }
 
     public void AddLife(int value)
@@ -299,7 +301,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     private BaseHeroCtrl m_CurrCtrl = null;
     private RoleData m_RoleData = null;
     private BaseHero m_Player = null;
-    private LevelConfigData.LevelInfo m_LevelData = null;
+    private LevelData m_LevelData = null;
 
     private int m_Life = 0;
     private int m_EXP = 0;

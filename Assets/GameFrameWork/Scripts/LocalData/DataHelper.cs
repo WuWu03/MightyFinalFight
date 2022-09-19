@@ -1,12 +1,10 @@
 using GameFrameWork.LocalData;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
-public static  partial class DataHelper
+public static partial class DataHelper
 {
     public static T[] LoadData<T>(string filePath, string fileName) where T : BaseLocalData, new()
     {
@@ -28,11 +26,11 @@ public static  partial class DataHelper
         return t;
     }
 
-    public static T GetDataById<T>(this T[] datas,int id) where T : BaseLocalData, new()
+    public static T GetDataById<T>(this T[] datas, int id) where T : BaseLocalData, new()
     {
         for (int i = 0; i < datas.Length; i++)
         {
-            if(datas[i].id == id)
+            if (datas[i].id == id)
             {
                 return datas[i];
             }
@@ -41,7 +39,24 @@ public static  partial class DataHelper
         return datas.Single(t => t.id == id);
     }
 
-    public static T[] GetDatasByAttr<T>(this T[] datas,string attr) where T : BaseLocalData, new()
+    public static T GetSingDataByAttr<T>(this T[] datas, string attr) where T : BaseLocalData, new()
+    {
+        T[] result = GetDataByAttr(datas, attr, true);
+
+        if(result != null && result.Length > 0)
+        {
+            return result[0];
+        }
+
+        return null;
+    }
+
+    public static T[] GetDatasByAttr<T>(this T[] datas, string attr) where T : BaseLocalData, new()
+    {
+        return GetDataByAttr(datas, attr);
+    }
+
+    private static T[] GetDataByAttr<T>(T[] datas, string attr, bool isSingle = false) where T : BaseLocalData, new()
     {
         attr = attr.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty);
 
@@ -73,6 +88,11 @@ public static  partial class DataHelper
                 if (isMatch)
                 {
                     values.Add(datas[i]);
+
+                    if (isSingle)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -81,5 +101,4 @@ public static  partial class DataHelper
 
         return null;
     }
-
 }

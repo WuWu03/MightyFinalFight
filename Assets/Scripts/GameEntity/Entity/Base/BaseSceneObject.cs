@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using GameFrameWork.GameEntity;
-using GameFrameWork.Pool;
-using GameFrameWork;
+﻿using GameFrameWork;
 using GameFrameWork.Camera;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Resources;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
 {
@@ -103,11 +103,11 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public int entityID
+    public int entityId
     {
         get
         {
-            return m_EntityID;
+            return m_EntityId;
         }
     }
 
@@ -151,7 +151,7 @@ public class BaseSceneObject : BaseEntity
 
     public virtual void SetData(BaseSceneObjectData data)
     {
-        m_EntityID = data.entityId;
+        m_EntityId = data.entityId;
     }
 
     public void SetAttribute(EntityAttribute attribute)
@@ -288,7 +288,11 @@ public class BaseSceneObject : BaseEntity
 
     public void SetRes(string resPath)
     {
-        if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath)) return;
+        if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath))
+        {
+            return;
+        }
+
         m_ResPath = resPath;
         GameObjectPool.instance.Get(resPath, ResComplete);
     }
@@ -408,7 +412,7 @@ public class BaseSceneObject : BaseEntity
     protected float m_Depth = 0f;
     protected float m_PosZ = 0f;
     protected int m_MapPosZ = 0;
-    protected int m_EntityID = 0;
+    protected int m_EntityId = 0;
     protected string m_ResPath = string.Empty;
     protected BoxCollider2D m_BoxCollider2D = null;
     protected GameObject m_ResGO;

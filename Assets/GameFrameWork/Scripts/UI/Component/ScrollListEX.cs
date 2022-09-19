@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public enum ListScrollType
 {
@@ -161,19 +160,18 @@ public class ListItem
 
 public class ScrollListEX : MonoBehaviour
 {
-    // test
-    //void Awake()
-    //{
-    //    Init(15, 0, delegate(ListItem item, int index, bool isSel)
-    //    {
-    //        if (item.ItemObject)
-    //            item.ItemObject.transform.Find("Label").GetComponent<Text>().text = index.ToString();
-    //    }, null);
-    //}
+    public RectTransform itemTemplete = null;                   //Item模板
+    public bool isFixedList = false;
+    public float upSizeEX = 0.0f;
+    public float downSizeEX = 0.0f;
+    public int itemPerLineCount = 1;                                //每行Item数量
+    public ListScrollType scrollType = ListScrollType.TopToBottom;  //滑动类型
+    public ListItemType itemType = ListItemType.Normal;
+
 
     public void Init(int itemCount, int selectIndex, System.Action<ListItem, int, bool> onUpdateItemByIndex, System.Action<ListItem, int, bool> onClick)
     {
-        if (tmpItemObjectRtf == null)
+        if (itemTemplete == null)
         {
             Debug.LogError("ScrollViewEX Init Failed! TmpItem is NULL!");
             return;
@@ -182,8 +180,9 @@ public class ScrollListEX : MonoBehaviour
             Debug.LogError("ScrollViewEX Init Failed! PerLineCount is not less than 0 !");
             return;
         }
-        m_scrollRect = gameObject.GetComponent<ScrollRect>();
-        if (m_scrollRect == null) 
+        m_ScrollRect = gameObject.GetComponent<ScrollRect>();
+
+        if (m_ScrollRect == null) 
         {
             Debug.LogError("ScrollViewEX Init Failed! ScrollRect component not found!");
             return;
@@ -192,33 +191,34 @@ public class ScrollListEX : MonoBehaviour
         m_isInit = true;
 
         ResetShowItem();
-        m_itemList.Clear();
-        m_itemTotalCount = 0;
-        m_curSelItemBtn = 0;
+
+        m_ItemList.Clear();
+        m_ItemTotalCount = 0;
+        m_CurSelItemBtn = 0;
 
         InitPool();
-        m_isTmpItemBtn = tmpItemObjectRtf.GetComponent<Button>() != null;
-            
-        m_isVertical = (scrollType == ListScrollType.TopToBottom || scrollType == ListScrollType.BottomToTop);
-        m_numSign = (scrollType == ListScrollType.TopToBottom || scrollType == ListScrollType.RightToLeft) ? (-1) : (1);
-        m_scrollRect.horizontal = !m_isVertical;
-        m_scrollRect.vertical = m_isVertical;
 
-        m_containerTrans = m_scrollRect.content;
-        m_viewPortRectTransform = m_scrollRect.viewport;
-        m_viewPortSize = (m_isVertical) ? (m_viewPortRectTransform.rect.height) : (m_viewPortRectTransform.rect.width);
+        m_IsTmpItemBtn = itemTemplete.GetComponent<Button>() != null;  
+        m_IsVertical = (scrollType == ListScrollType.TopToBottom || scrollType == ListScrollType.BottomToTop);
+        m_NumSign = (scrollType == ListScrollType.TopToBottom || scrollType == ListScrollType.RightToLeft) ? (-1) : (1);
+        m_ScrollRect.horizontal = !m_IsVertical;
+        m_ScrollRect.vertical = m_IsVertical;
 
-        AdjustPivot(m_viewPortRectTransform);
-        AdjustPivot(m_containerTrans);
-        AdjustAnchor(m_containerTrans);
-        AdjustPivot(tmpItemObjectRtf);
-        AdjustAnchor(tmpItemObjectRtf);
+        m_ContainerTrans = m_ScrollRect.content;
+        m_ViewPortRectTransform = m_ScrollRect.viewport;
+        m_ViewPortSize = (m_IsVertical) ? (m_ViewPortRectTransform.rect.height) : (m_ViewPortRectTransform.rect.width);
 
-        m_tmpItemSize = (m_isVertical) ? (tmpItemObjectRtf.rect.height) : (tmpItemObjectRtf.rect.width);
-        m_tmpItemLineOffset = (m_isVertical) ? (tmpItemObjectRtf.rect.width) : (tmpItemObjectRtf.rect.height);
+        AdjustPivot(m_ViewPortRectTransform);
+        AdjustPivot(m_ContainerTrans);
+        AdjustAnchor(m_ContainerTrans);
+        AdjustPivot(itemTemplete);
+        AdjustAnchor(itemTemplete);
+
+        m_TmpItemSize = (m_IsVertical) ? (itemTemplete.rect.height) : (itemTemplete.rect.width);
+        m_TmpItemLineOffset = (m_IsVertical) ? (itemTemplete.rect.width) : (itemTemplete.rect.height);
         
-        m_onUpdateItemByIndex = onUpdateItemByIndex;
-        m_onClickItem = onClick;
+        m_OnUpdateItemByIndex = onUpdateItemByIndex;
+        m_OnClickItem = onClick;
 
         SetItemCount(itemCount, true);
         SelectItem(selectIndex, true, true);
@@ -228,56 +228,62 @@ public class ScrollListEX : MonoBehaviour
     {
         SetItemCount(itemCount, false);
     }
+
     public void SetItemCount(int itemCount, bool resetPos)
     {
         ResetShowItem();
         
         if (resetPos)
         {
-            m_itemList.Clear();
-            m_itemTotalCount = 0;
-            m_curSelItemBtn = 0;
+            m_ItemList.Clear();
+            m_ItemTotalCount = 0;
+            m_CurSelItemBtn = 0;
 
-            m_containerTrans.anchoredPosition = Vector2.zero;
+            m_ContainerTrans.anchoredPosition = Vector2.zero;
             m_lastPos = Vector2.zero;
         }
 
-        float nextLinePos = (m_itemTotalCount > 0) ? (m_itemList[m_itemTotalCount - 1].LocalPos + m_itemList[m_itemTotalCount - 1].GetItemSize()) : (0);
+        float nextLinePos = (m_ItemTotalCount > 0) ? (m_ItemList[m_ItemTotalCount - 1].LocalPos + m_ItemList[m_ItemTotalCount - 1].GetItemSize()) : (0);
         int nLine = (itemCount - 1) / itemPerLineCount;
-        for (int i = (m_itemTotalCount - 1) / itemPerLineCount; i <= nLine; ++i)
+
+        for (int i = (m_ItemTotalCount - 1) / itemPerLineCount; i <= nLine; ++i)
         {
-            float lineOffset = -(itemPerLineCount / 2.0f -  0.5f) * m_tmpItemLineOffset;
-            int sj = m_itemTotalCount % itemPerLineCount;
-            for (int j = sj; j < itemPerLineCount && m_itemTotalCount < itemCount; ++j)
+            float lineOffset = -(itemPerLineCount / 2.0f -  0.5f) * m_TmpItemLineOffset;
+            int sj = m_ItemTotalCount % itemPerLineCount;
+
+            for (int j = sj; j < itemPerLineCount && m_ItemTotalCount < itemCount; ++j)
             {
                 ListItem item = new ListItem();
-                item.Init(m_itemTotalCount, null, m_tmpItemSize, m_isVertical);
+                item.Init(m_ItemTotalCount, null, m_TmpItemSize, m_IsVertical);
                 item.LocalPos = nextLinePos;
                 item.LineOffset = lineOffset;
-                m_itemList.Add(item);
+                m_ItemList.Add(item);
 
-                lineOffset += m_tmpItemLineOffset;
-                ++m_itemTotalCount;
+                lineOffset += m_TmpItemLineOffset;
+                ++m_ItemTotalCount;
             }
 
-            nextLinePos += m_tmpItemSize;
+            nextLinePos += m_TmpItemSize;
         }
 
-        while (m_itemTotalCount > itemCount)
+        while (m_ItemTotalCount > itemCount)
         {
-            --m_itemTotalCount;
-            RectTransform itemRtf = m_itemList[m_itemTotalCount].ItemObjectRtf;
+            --m_ItemTotalCount;
+            RectTransform itemRtf = m_ItemList[m_ItemTotalCount].ItemObjectRtf;
+
             if (itemRtf != null) 
             {
                 PushItemObjRtf(itemRtf);
-                m_itemList[m_itemTotalCount].RemoveItemObject();
+                m_ItemList[m_ItemTotalCount].RemoveItemObject();
             }
-            m_itemList.RemoveAt(m_itemTotalCount);
+
+            m_ItemList.RemoveAt(m_ItemTotalCount);
         }
 
         float itemTotalSize = GetItemListTotalSize();
-        Vector2 sizeDelta = m_containerTrans.sizeDelta;
-        if (m_isVertical)
+        Vector2 sizeDelta = m_ContainerTrans.sizeDelta;
+
+        if (m_IsVertical)
         {
             sizeDelta.y = itemTotalSize;
         }
@@ -285,39 +291,43 @@ public class ScrollListEX : MonoBehaviour
         {
             sizeDelta.x = itemTotalSize;
         }
-        m_containerTrans.sizeDelta = sizeDelta;
+        m_ContainerTrans.sizeDelta = sizeDelta;
 
-        if (itemTotalSize < m_viewPortSize) 
+        if (itemTotalSize < m_ViewPortSize) 
         {
-            m_containerTrans.anchoredPosition = Vector2.zero;
+            m_ContainerTrans.anchoredPosition = Vector2.zero;
             m_lastPos = Vector2.zero;
         }
-        else if (m_isVertical)
+        else if (m_IsVertical)
         {
-            float curListPos = Mathf.Abs(m_containerTrans.anchoredPosition.y);
-            if (curListPos + m_viewPortSize > itemTotalSize) 
+            float curListPos = Mathf.Abs(m_ContainerTrans.anchoredPosition.y);
+            if (curListPos + m_ViewPortSize > itemTotalSize) 
             {
-                m_containerTrans.anchoredPosition = new Vector2(0, -m_numSign * (itemTotalSize - m_viewPortSize));
+                m_ContainerTrans.anchoredPosition = new Vector2(0, -m_NumSign * (itemTotalSize - m_ViewPortSize));
             }
         }
         else
         {
-            float curListPos = Mathf.Abs(m_containerTrans.anchoredPosition.x);
-            if (curListPos + m_viewPortSize > itemTotalSize)
+            float curListPos = Mathf.Abs(m_ContainerTrans.anchoredPosition.x);
+            if (curListPos + m_ViewPortSize > itemTotalSize)
             {
-                m_containerTrans.anchoredPosition = new Vector2(-m_numSign * (itemTotalSize - m_viewPortSize), 0);
+                m_ContainerTrans.anchoredPosition = new Vector2(-m_NumSign * (itemTotalSize - m_ViewPortSize), 0);
             }
         }
 
-        if (m_itemTotalCount == 0) { return; }
+        if (m_ItemTotalCount == 0) 
+        { 
+            return;
+        }
 
         if (itemType == ListItemType.ToggleGroup)
         {
-            if (m_curSelItemBtn >= m_itemTotalCount)
+            if (m_CurSelItemBtn >= m_ItemTotalCount)
             {
-                m_curSelItemBtn = 0;
+                m_CurSelItemBtn = 0;
             }
-            m_itemList[m_curSelItemBtn].IsSelected = true;
+
+            m_ItemList[m_CurSelItemBtn].IsSelected = true;
         }
 
         UpdateAllShownItemsPos();
@@ -326,26 +336,31 @@ public class ScrollListEX : MonoBehaviour
     public void ResetShowItem()
     {
         int showItemCount = m_showItemList.Count;
+
         for (int i = 0; i < showItemCount; ++i)
         {
             RectTransform itemRtf = m_showItemList[i].ItemObjectRtf;
+
             if (itemRtf != null)
             {
                 PushItemObjRtf(itemRtf);
                 m_showItemList[i].RemoveItemObject();
             }
         }
+
         m_showItemList.Clear();
         m_forceRefresh = true;
     }
 
     public void SetItemDirty(int index)
     {
-        if (index < 0 || m_itemTotalCount == 0 || index >= m_itemTotalCount)
+        if (index < 0 || m_ItemTotalCount == 0 || index >= m_ItemTotalCount)
         {
             return;
         }
-        ListItem item = m_itemList[index];
+
+        ListItem item = m_ItemList[index];
+
         if (item.ItemObjectRtf != null && item.IsActive)
         {
             RunUpdateItemCallback(item, index);
@@ -354,18 +369,19 @@ public class ScrollListEX : MonoBehaviour
 
     public void InsertItem(int itemIndex)
     {
-        int nPos = m_itemTotalCount % itemPerLineCount;
+        int nPos = m_ItemTotalCount % itemPerLineCount;
 
-        float lineOffset = -(itemPerLineCount / 2.0f - 0.5f) * m_tmpItemLineOffset + m_tmpItemLineOffset * nPos;
+        float lineOffset = -(itemPerLineCount / 2.0f - 0.5f) * m_TmpItemLineOffset + m_TmpItemLineOffset * nPos;
         ListItem item = new ListItem();
-        item.Init(m_itemTotalCount, null, m_tmpItemSize, m_isVertical);
-        item.LocalPos = (m_itemTotalCount > 0) ? (m_itemList[m_itemTotalCount - 1].LocalPos + m_itemList[m_itemTotalCount - 1].GetItemSize()) : (0);
+        item.Init(m_ItemTotalCount, null, m_TmpItemSize, m_IsVertical);
+        item.LocalPos = (m_ItemTotalCount > 0) ? (m_ItemList[m_ItemTotalCount - 1].LocalPos + m_ItemList[m_ItemTotalCount - 1].GetItemSize()) : (0);
         item.LineOffset = lineOffset;
-        m_itemList.Add(item);
+        m_ItemList.Add(item);
 
-        ++m_itemTotalCount;
+        ++m_ItemTotalCount;
 
         int showItemCount = m_showItemList.Count;
+
         for (int i = showItemCount-1; i >= 0; --i)
         {
             ListItem lisItem = m_showItemList[i];
@@ -386,14 +402,16 @@ public class ScrollListEX : MonoBehaviour
 
     public void RemoveItem(int itemIndex)
     {
-        --m_itemTotalCount;
+        --m_ItemTotalCount;
         int showItemCount = m_showItemList.Count;
+
         for (int i = showItemCount - 1; i >= 0; --i)
         {
             ListItem lisItem = m_showItemList[i];
             if (lisItem.GetIndex() >= itemIndex)
             {
                 RectTransform itemRtf = lisItem.ItemObjectRtf;
+
                 if (itemRtf != null)
                 {
                     PushItemObjRtf(itemRtf);
@@ -402,43 +420,46 @@ public class ScrollListEX : MonoBehaviour
                 }
             }
         }
+
         m_forceRefresh = true;
     }
 
     public void MovePanelToItemIndex(int itemIndex, float offset)
     {
-        m_scrollRect.StopMovement();
-        if (itemIndex < 0 || m_itemTotalCount == 0)
+        m_ScrollRect.StopMovement();
+        if (itemIndex < 0 || m_ItemTotalCount == 0)
         {
-            m_containerTrans.anchoredPosition = Vector2.zero;
+            m_ContainerTrans.anchoredPosition = Vector2.zero;
             return;
         }
-        if (itemIndex >= m_itemTotalCount)
+        if (itemIndex >= m_ItemTotalCount)
         {
-            itemIndex = m_itemTotalCount - 1;
+            itemIndex = m_ItemTotalCount - 1;
         }
         if (offset < 0)
         {
             offset = 0;
         }
-        else if (offset > m_viewPortSize)
+        else if (offset > m_ViewPortSize)
         {
-            offset = m_viewPortSize;
+            offset = m_ViewPortSize;
         }
 
-        ListItem endItem = m_itemList[m_itemTotalCount - 1];
+        ListItem endItem = m_ItemList[m_ItemTotalCount - 1];
         float itemTotalSize = endItem.LocalPos + endItem.GetItemSize();
-        float moveToPos = m_itemList[itemIndex].LocalPos + offset;
-        if (moveToPos + m_viewPortSize > itemTotalSize)
+        float moveToPos = m_ItemList[itemIndex].LocalPos + offset;
+
+        if (moveToPos + m_ViewPortSize > itemTotalSize)
         {
-            moveToPos = itemTotalSize - m_viewPortSize;
+            moveToPos = itemTotalSize - m_ViewPortSize;
         }
-        m_containerTrans.anchoredPosition = (m_isVertical) ? (new Vector2(0, -m_numSign * moveToPos)) : (new Vector2(-m_numSign * moveToPos, 0));
+
+        m_ContainerTrans.anchoredPosition = (m_IsVertical) ? (new Vector2(0, -m_NumSign * moveToPos)) : (new Vector2(-m_NumSign * moveToPos, 0));
     }
 
     public void SelectItem(int itemIndex, bool isOn, bool isForce)
     {
-        if (itemIndex < 0 || m_itemTotalCount == 0 || itemIndex >= m_itemTotalCount)
+        if (itemIndex < 0 || m_ItemTotalCount == 0 || itemIndex >= m_ItemTotalCount)
         {
             return;
         }
@@ -447,38 +468,38 @@ public class ScrollListEX : MonoBehaviour
             return;
         }
 
-        OnClick(m_itemList[itemIndex], itemIndex, isForce);
+        OnClick(m_ItemList[itemIndex], itemIndex, isForce);
     }
 
-    void OnClick(ListItem item, int index, bool isForce)
+    private void OnClick(ListItem item, int index, bool isForce)
     {
         if (itemType == ListItemType.ToggleGroup)
         {
-            if (m_curSelItemBtn == index)
+            if (m_CurSelItemBtn == index)
             {
                 if (isForce)
                 {
-                    RunClickCallback(m_itemList[index], index, true);
+                    RunClickCallback(m_ItemList[index], index, true);
                 }
                 return;
             }
 
-            int lastIndex = m_curSelItemBtn;
+            int lastIndex = m_CurSelItemBtn;
             m_isSwitch = true;
 
             item.IsSelected = true;
-            m_curSelItemBtn = index;
+            m_CurSelItemBtn = index;
             RunClickCallback(item, index, true);
             if (!m_isSwitch)
             {
-                m_curSelItemBtn = lastIndex;
+                m_CurSelItemBtn = lastIndex;
                 item.IsSelected = false;
-                m_itemList[lastIndex].IsSelected = true;
+                m_ItemList[lastIndex].IsSelected = true;
                 return;
             }
 
-            m_itemList[lastIndex].IsSelected = false;
-            RunClickCallback(m_itemList[lastIndex], lastIndex, false);
+            m_ItemList[lastIndex].IsSelected = false;
+            RunClickCallback(m_ItemList[lastIndex], lastIndex, false);
         }
         else if (itemType == ListItemType.Toggle)
         {
@@ -499,24 +520,38 @@ public class ScrollListEX : MonoBehaviour
 
     public void SetItemActive(int itemIndex, bool isActive)
     {
-        int count = m_itemList.Count;
-        if (itemIndex >= count) { return; }
+        int count = m_ItemList.Count;
 
-        ListItem item = m_itemList[itemIndex];
-        if (item.IsActive == isActive) { return; }
+        if (itemIndex >= count) 
+        { 
+            return; 
+        }
+
+        ListItem item = m_ItemList[itemIndex];
+
+        if (item.IsActive == isActive) 
+        { 
+            return; 
+        }
 
         item.IsActive = isActive;
 
         float nextItemPos = 0;
+
         if (isActive)
         {
             int lastShowIndex = itemIndex - 1;
             ListItem lastShowItem = null;
+
             while (lastShowIndex >= 0)
             {
-                lastShowItem = m_itemList[lastShowIndex];
+                lastShowItem = m_ItemList[lastShowIndex];
                 --lastShowIndex;
-                if (!lastShowItem.IsActive) { continue; }
+
+                if (!lastShowItem.IsActive) 
+                { 
+                    continue; 
+                }
                 nextItemPos = lastShowItem.LocalPos + lastShowItem.GetItemSize();
                 break;
             }
@@ -525,20 +560,27 @@ public class ScrollListEX : MonoBehaviour
         {
             nextItemPos = item.LocalPos;
         }
+
         int index = (isActive) ? (itemIndex) : (itemIndex + 1);
         ListItem nextitem = null;
+
         while (index < count)
         {
-            nextitem = m_itemList[index];
-            if (!nextitem.IsActive) { continue; }
+            nextitem = m_ItemList[index];
+
+            if (!nextitem.IsActive) 
+            { 
+                continue; 
+            }
             nextitem.LocalPos = nextItemPos;
             nextItemPos += nextitem.GetItemSize();
             ++index;
         }
 
         float itemTotalSize = GetItemListTotalSize();
-        Vector2 sizeDelta = m_containerTrans.sizeDelta;
-        if (m_isVertical)
+        Vector2 sizeDelta = m_ContainerTrans.sizeDelta;
+
+        if (m_IsVertical)
         {
             sizeDelta.y = itemTotalSize;
         }
@@ -546,30 +588,39 @@ public class ScrollListEX : MonoBehaviour
         {
             sizeDelta.x = itemTotalSize;
         }
-        m_containerTrans.sizeDelta = sizeDelta;
+        m_ContainerTrans.sizeDelta = sizeDelta;
         m_forceRefresh = true;
     }
 
-    void Update()
+    private void Update()
     {
-        if (!m_isInit) { return; }
-        if (IsFixedList) { return; }
-        if (m_forceRefresh || m_containerTrans.anchoredPosition != m_lastPos)
+        if (!m_isInit) 
+        { 
+            return; 
+        }
+        
+        if (isFixedList) 
+        { 
+            return; 
+        }
+
+        if (m_forceRefresh || m_ContainerTrans.anchoredPosition != m_lastPos)
         {
             m_forceRefresh = false;
-            m_lastPos = m_containerTrans.anchoredPosition;
+            m_lastPos = m_ContainerTrans.anchoredPosition;
             UpdateAllShownItemsPos();
         }
     }
 
-    void UpdateAllShownItemsPos()
+    private void UpdateAllShownItemsPos()
     {
-        float curListPos = -m_numSign * ((m_isVertical) ? (m_containerTrans.anchoredPosition.y) : (m_containerTrans.anchoredPosition.x));
+        float curListPos = -m_NumSign * ((m_IsVertical) ? (m_ContainerTrans.anchoredPosition.y) : (m_ContainerTrans.anchoredPosition.x));
         int showItemCount = m_showItemList.Count;
         for (int i = showItemCount-1; i >= 0; --i) 
         {
             float itemlocalPos = m_showItemList[i].LocalPos;
             float itemSize = m_showItemList[i].GetItemSize();
+
             if (!m_showItemList[i].IsActive)
             {
                 PushItemObjRtf(m_showItemList[i].ItemObjectRtf);
@@ -582,7 +633,7 @@ public class ScrollListEX : MonoBehaviour
                 m_showItemList[i].RemoveItemObject();
                 m_showItemList.RemoveAt(i);
             }
-            else if (itemlocalPos > curListPos + m_viewPortSize + downSizeEX) 
+            else if (itemlocalPos > curListPos + m_ViewPortSize + downSizeEX) 
             {
                 PushItemObjRtf(m_showItemList[i].ItemObjectRtf);
                 m_showItemList[i].RemoveItemObject();
@@ -590,36 +641,43 @@ public class ScrollListEX : MonoBehaviour
             }
         }
 
-        if (m_itemTotalCount == 0) { return; }
+        if (m_ItemTotalCount == 0) 
+        { 
+            return; 
+        }
 
         int target = 0;
         int start = 0;
-        int end = (m_itemTotalCount - 1) / itemPerLineCount;
+        int end = (m_ItemTotalCount - 1) / itemPerLineCount;
         int center = (end - start) / 2 + start;
+
         while (end >= start)
         {
             int startIndex = start * itemPerLineCount;
-            float startlocalPos = m_itemList[startIndex].LocalPos;
-            float startItemSize = m_itemList[startIndex].GetItemSize();
-            if (startlocalPos >= curListPos - startItemSize && startlocalPos <= curListPos + m_viewPortSize)
+            float startlocalPos = m_ItemList[startIndex].LocalPos;
+            float startItemSize = m_ItemList[startIndex].GetItemSize();
+
+            if (startlocalPos >= curListPos - startItemSize && startlocalPos <= curListPos + m_ViewPortSize)
             {
                 target = start;
                 break;
             }
 
             int endIndex = end * itemPerLineCount;
-            float endlocalPos = m_itemList[endIndex].LocalPos;
-            float endItemSize = m_itemList[endIndex].GetItemSize();
-            if (endlocalPos + endItemSize >= curListPos && endlocalPos <= curListPos + m_viewPortSize)
+            float endlocalPos = m_ItemList[endIndex].LocalPos;
+            float endItemSize = m_ItemList[endIndex].GetItemSize();
+
+            if (endlocalPos + endItemSize >= curListPos && endlocalPos <= curListPos + m_ViewPortSize)
             {
                 target = end;
                 break;
             }
 
             int centerIndex = center * itemPerLineCount;
-            float centerlocalPos = m_itemList[centerIndex].LocalPos;
-            float centerItemSize = m_itemList[centerIndex].GetItemSize();
-            if (centerlocalPos + centerItemSize >= curListPos && centerlocalPos <= curListPos + m_viewPortSize)
+            float centerlocalPos = m_ItemList[centerIndex].LocalPos;
+            float centerItemSize = m_ItemList[centerIndex].GetItemSize();
+
+            if (centerlocalPos + centerItemSize >= curListPos && centerlocalPos <= curListPos + m_ViewPortSize)
             {
                 target = center;
                 break;
@@ -640,17 +698,26 @@ public class ScrollListEX : MonoBehaviour
 
         RectTransform itemRtf = null;
         ListItem item = null;
-        for (int i = target-1; i >= 0; --i)
+
+        for (int i = target - 1; i >= 0; --i)
         {
             int j = i * itemPerLineCount;
             int jEnd = j + itemPerLineCount;
-            while(j < jEnd) 
+
+            while (j < jEnd)
             {
-                item = m_itemList[j];
-                if (!item.IsActive) { ++j; continue; }
+                item = m_ItemList[j];
+
+                if (!item.IsActive)
+                {
+                    ++j;
+                    continue;
+                }
+
                 float localPos = item.LocalPos;
                 float itemSize = item.GetItemSize();
-                if (localPos + itemSize < curListPos - upSizeEX || localPos > curListPos + m_viewPortSize + downSizeEX)
+
+                if (localPos + itemSize < curListPos - upSizeEX || localPos > curListPos + m_ViewPortSize + downSizeEX)
                 {
                     break;
                 }
@@ -659,8 +726,8 @@ public class ScrollListEX : MonoBehaviour
                 {
                     itemRtf = PopItemObjRtf();
                     itemRtf.name = j.ToString();
-                    itemRtf.anchoredPosition = (m_isVertical) ? (new Vector2(item.LineOffset, m_numSign * item.LocalPos)) : (new Vector2(m_numSign * item.LocalPos, item.LineOffset));
-                    item.SetItemObject(itemRtf, m_isTmpItemBtn, OnClick);
+                    itemRtf.anchoredPosition = (m_IsVertical) ? (new Vector2(item.LineOffset, m_NumSign * item.LocalPos)) : (new Vector2(m_NumSign * item.LocalPos, item.LineOffset));
+                    item.SetItemObject(itemRtf, m_IsTmpItemBtn, OnClick);
                     m_showItemList.Add(item);
                     RunUpdateItemCallback(item, j);
                 }
@@ -668,18 +735,27 @@ public class ScrollListEX : MonoBehaviour
             }
         }
 
-        int nLine = (m_itemTotalCount - 1) / itemPerLineCount;
+        int nLine = (m_ItemTotalCount - 1) / itemPerLineCount;
+
         for (int i = target; i <= nLine; ++i)
         {
             int j = i * itemPerLineCount;
-            int jEnd = Mathf.Min(j + itemPerLineCount, m_itemTotalCount);
+            int jEnd = Mathf.Min(j + itemPerLineCount, m_ItemTotalCount);
+
             while (j < jEnd) 
             {
-                item = m_itemList[j];
-                if (!item.IsActive) { ++j; continue; }
+                item = m_ItemList[j];
+
+                if (!item.IsActive) 
+                { 
+                    ++j; 
+                    continue; 
+                }
+
                 float localPos = item.LocalPos;
                 float itemSize = item.GetItemSize();
-                if (localPos + itemSize < curListPos - upSizeEX || localPos > curListPos + m_viewPortSize + downSizeEX)
+
+                if (localPos + itemSize < curListPos - upSizeEX || localPos > curListPos + m_ViewPortSize + downSizeEX)
                 {
                     break;
                 }
@@ -688,42 +764,43 @@ public class ScrollListEX : MonoBehaviour
                 {
                     itemRtf = PopItemObjRtf();
                     itemRtf.name = j.ToString();
-                    itemRtf.anchoredPosition = (m_isVertical) ? (new Vector2(item.LineOffset, m_numSign * item.LocalPos)) : (new Vector2(m_numSign * item.LocalPos, item.LineOffset));
-                    item.SetItemObject(itemRtf, m_isTmpItemBtn, OnClick);
+                    itemRtf.anchoredPosition = (m_IsVertical) ? (new Vector2(item.LineOffset, m_NumSign * item.LocalPos)) : (new Vector2(m_NumSign * item.LocalPos, item.LineOffset));
+                    item.SetItemObject(itemRtf, m_IsTmpItemBtn, OnClick);
                     m_showItemList.Add(item);
                     RunUpdateItemCallback(item, j);
                 }
+
                 ++j;
             }
         }
     }
 
-    void RunUpdateItemCallback(ListItem item, int index) 
+    private void RunUpdateItemCallback(ListItem item, int index) 
     { 
-        if (m_onUpdateItemByIndex != null) 
+        if (m_OnUpdateItemByIndex != null) 
         {
-            m_onUpdateItemByIndex(item, index, item.IsSelected);
+            m_OnUpdateItemByIndex(item, index, item.IsSelected);
         }
     }
 
-    void RunClickCallback(ListItem item, int index, bool isSel)
+    private void RunClickCallback(ListItem item, int index, bool isSel)
     {
-        if (m_onClickItem != null) 
+        if (m_OnClickItem != null) 
         {
-            m_onClickItem(item, index, isSel);
+            m_OnClickItem(item, index, isSel);
         }
     }
 
-    float GetLineSizeWithIndex(int index)
+    private float GetLineSizeWithIndex(int index)
     {
         int lineStart = index / itemPerLineCount * itemPerLineCount;
-        int lineNum = (lineStart + itemPerLineCount <= m_itemTotalCount) ? (itemPerLineCount) : (m_itemTotalCount - lineStart);
+        int lineNum = (lineStart + itemPerLineCount <= m_ItemTotalCount) ? (itemPerLineCount) : (m_ItemTotalCount - lineStart);
 
-        float itemSize = m_itemList[lineStart].GetItemSize();
+        float itemSize = m_ItemList[lineStart].GetItemSize();
         ++lineStart;
         while (lineStart < lineNum)
         {
-            float nextItemSize = m_itemList[lineStart].GetItemSize();
+            float nextItemSize = m_ItemList[lineStart].GetItemSize();
             if (nextItemSize > itemSize)
             {
                 itemSize = nextItemSize;
@@ -732,32 +809,39 @@ public class ScrollListEX : MonoBehaviour
         return itemSize;
     }
 
-    float GetItemListTotalSize()
+    private float GetItemListTotalSize()
     {
-        if (m_itemTotalCount == 0) { return 0; }
+        if (m_ItemTotalCount == 0) 
+        { 
+            return 0; 
+        }
 
-        int lineStart = (m_itemTotalCount - 1) / itemPerLineCount * itemPerLineCount;
-        int lineEnd = (lineStart + itemPerLineCount <= m_itemTotalCount) ? (lineStart + itemPerLineCount) : (m_itemTotalCount);
+        int lineStart = (m_ItemTotalCount - 1) / itemPerLineCount * itemPerLineCount;
+        int lineEnd = (lineStart + itemPerLineCount <= m_ItemTotalCount) ? (lineStart + itemPerLineCount) : (m_ItemTotalCount);
 
-        ListItem item = m_itemList[lineStart];
+        ListItem item = m_ItemList[lineStart];
         float itemSize = item.GetItemSize();
         float itemLocalPos = item.LocalPos;
         ++lineStart;
+
         while (lineStart < lineEnd)
         {
-            float nextItemSize = m_itemList[lineStart].GetItemSize();
+            float nextItemSize = m_ItemList[lineStart].GetItemSize();
+
             if (nextItemSize > itemSize)
             {
                 itemSize = nextItemSize;
             }
             ++lineStart;
         }
+
         return itemSize + itemLocalPos;
     }
 
-    void AdjustPivot(RectTransform rtf)
+    private void AdjustPivot(RectTransform rtf)
     {
         Vector2 pivot = rtf.pivot;
+
         if (scrollType == ListScrollType.BottomToTop)
         {
             pivot.y = 0;
@@ -774,13 +858,15 @@ public class ScrollListEX : MonoBehaviour
         {
             pivot.x = 1;
         }
+
         rtf.pivot = pivot;
     }
 
-    void AdjustAnchor(RectTransform rtf)
+    private void AdjustAnchor(RectTransform rtf)
     {
         Vector2 anchorMin = rtf.anchorMin;
         Vector2 anchorMax = rtf.anchorMax;
+
         if (scrollType == ListScrollType.BottomToTop)
         {
             anchorMin.y = 0;
@@ -801,19 +887,20 @@ public class ScrollListEX : MonoBehaviour
             anchorMin.x = 1;
             anchorMax.x = 1;
         }
+
         rtf.anchorMin = anchorMin;
         rtf.anchorMax = anchorMax;
     }
 
-    void InitPool()
+    private void InitPool()
     {
         if (m_itemObjRtfPool.Count == 0)
         {
-            tmpItemObjectRtf.anchoredPosition = new Vector2(-2000, -2000);
+            itemTemplete.anchoredPosition = new Vector2(-2000, -2000);
         }
     }
 
-    RectTransform PopItemObjRtf()
+    private RectTransform PopItemObjRtf()
     {
         int index = m_itemObjRtfPool.Count - 1;
         if (index > -1)
@@ -824,52 +911,45 @@ public class ScrollListEX : MonoBehaviour
         }
         else
         {
-            RectTransform rtf = GameObject.Instantiate<GameObject>(tmpItemObjectRtf.gameObject, tmpItemObjectRtf.parent).GetComponent<RectTransform>();
+            RectTransform rtf = GameObject.Instantiate<GameObject>(itemTemplete.gameObject, itemTemplete.parent).GetComponent<RectTransform>();
             rtf.SetAsFirstSibling();
             return rtf;
         }
     }
 
-    void PushItemObjRtf(RectTransform item)
+    private void PushItemObjRtf(RectTransform item)
     {
-        if (item == null) { return; }
+        if (item == null) 
+        { 
+            return; 
+        }
 
         item.anchoredPosition = new Vector2(-2000, -2000);
         m_itemObjRtfPool.Add(item);
     }
 
-    Vector2 m_lastPos;
-    bool m_isInit = false;      // 是否初始化
-    bool m_forceRefresh = false; // 强制刷新
-    
-    ScrollRect m_scrollRect;
+    private int m_ItemTotalCount = 0;   //Item数量
+    private int m_NumSign;              // 位置正负号
+    private int m_CurSelItemBtn = 0;
 
-    RectTransform m_containerTrans;
-    RectTransform m_viewPortRectTransform = null;
+    private float m_ViewPortSize;       // 显示区大小
+    private float m_TmpItemSize;        // 模板Item大小（垂直取高；水平取宽）
+    private float m_TmpItemLineOffset;  // 模板Item行偏移
 
-    System.Action<ListItem, int, bool> m_onUpdateItemByIndex = null;
-    System.Action<ListItem, int, bool> m_onClickItem = null;
-    
-    List<RectTransform> m_itemObjRtfPool = new List<RectTransform>();
-    List<ListItem> m_itemList = new List<ListItem>();
-    List<ListItem> m_showItemList = new List<ListItem>();
+    private bool m_isInit = false;      // 是否初始化
+    private bool m_forceRefresh = false; // 强制刷新
+    private bool m_IsVertical;          // 是否垂直
+    private bool m_IsTmpItemBtn = false;// 模板Item是否可选
+    private bool m_isSwitch = false;
 
-    int m_itemTotalCount = 0;   //Item数量
-    float m_viewPortSize;       // 显示区大小
-    bool m_isVertical;          // 是否垂直
-    int m_numSign;              // 位置正负号
-    float m_tmpItemSize;        // 模板Item大小（垂直取高；水平取宽）
-    float m_tmpItemLineOffset;  // 模板Item行偏移
-    bool m_isTmpItemBtn = false;// 模板Item是否可选
-    int m_curSelItemBtn = 0;
-    bool m_isSwitch = false;
+    private Vector2 m_lastPos;
 
-    public RectTransform tmpItemObjectRtf = null;                   //Item模板
-
-    public bool IsFixedList = false;
-    public float upSizeEX = 0.0f;
-    public float downSizeEX = 0.0f;
-    public int itemPerLineCount = 1;                                //每行Item数量
-    public ListScrollType scrollType = ListScrollType.TopToBottom;  //滑动类型
-    public ListItemType itemType = ListItemType.Normal;
+    private ScrollRect m_ScrollRect;
+    private RectTransform m_ContainerTrans;
+    private RectTransform m_ViewPortRectTransform = null;
+    private Action<ListItem, int, bool> m_OnUpdateItemByIndex = null;
+    private Action<ListItem, int, bool> m_OnClickItem = null;
+    private List<RectTransform> m_itemObjRtfPool = new List<RectTransform>();
+    private List<ListItem> m_ItemList = new List<ListItem>();
+    private List<ListItem> m_showItemList = new List<ListItem>();
 }

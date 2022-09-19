@@ -108,7 +108,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         for (int i = m_ListCurrEnemy.Count - 1; i >= 0; i--)
         {
-            if (m_ListCurrEnemy[i].entityID == id)
+            if (m_ListCurrEnemy[i].entityId == id)
             {
                 m_ListCurrEnemy[i].onDeadEvent -= OnEnemyDead;
                 m_ListCurrEnemy.RemoveAt(i);
