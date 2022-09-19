@@ -9,7 +9,7 @@ namespace GameFrameWork.Sound
 {
     public class SoundMgr : BaseMgr<SoundMgr>
     {
-        public event GameFrameWorkAction OnBGMFadeCompleteEvent
+        public event GameFrameWorkAction onBGMFadeCompleteEvent
         {
             add
             {
@@ -36,9 +36,9 @@ namespace GameFrameWork.Sound
         {
             for (int i = 0; i < m_PlayingList.Count; i++)
             {
-                string soundPath = m_PlayingList[i].Path;
-                string soundName = m_PlayingList[i].Name;
-                float process = Time.time - m_PlayingList[i].PlayTime;
+                string soundPath = m_PlayingList[i].path;
+                string soundName = m_PlayingList[i].name;
+                float process = Time.time - m_PlayingList[i].playTime;
                 if (soundPath.Equals(path) && soundName.Equals(name) && process <= 0.05f)
                 {
                     return;
@@ -80,7 +80,7 @@ namespace GameFrameWork.Sound
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
-                    AudioClipPool.Ins.Get(audioGroups[i].GetPath(), null);
+                    AudioClipPool.instance.Get(audioGroups[i].GetPath(), null);
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace GameFrameWork.Sound
 
         private void InnerPlaySound(string path, string name, float volume)
         {
-            AudioClipPool.Ins.Get(PathUtil.FormatPath(path, name), OnSoundLoaded, path, name, volume);
+            AudioClipPool.instance.Get(PathUtil.FormatPath(path, name), OnSoundLoaded, path, name, volume);
         }
 
         private void OnSoundLoaded(AudioClip clip, object[] param)
@@ -189,15 +189,15 @@ namespace GameFrameWork.Sound
             float volume = (float)param[2];
 
             AudioSoundPlay audioSoundPlay = GetSoundSource(path, name, volume);
-            audioSoundPlay.Source.clip = clip;
-            audioSoundPlay.Source.Play();
+            audioSoundPlay.audioSource.clip = clip;
+            audioSoundPlay.audioSource.Play();
 
             m_PlayingList.Add(audioSoundPlay);
         }
 
         private void InnerPlayBGM(string path, float volum, float fadeTime, bool isLoop)
         {
-            AudioClipPool.Ins.Get(path, OnBGMLoaded, volum, fadeTime, isLoop);
+            AudioClipPool.instance.Get(path, OnBGMLoaded, volum, fadeTime, isLoop);
         }
 
         private void OnBGMLoaded(AudioClip clip, object[] param)
@@ -232,29 +232,29 @@ namespace GameFrameWork.Sound
             else
             {
                 audioSoundPlay = AudioSoundPlay.Create();
-                audioSoundPlay.Source.transform.SetParent(m_Root.transform, false);
+                audioSoundPlay.audioSource.transform.SetParent(m_Root.transform, false);
             }
 
-            audioSoundPlay.Path = path;
-            audioSoundPlay.Name = name;
-            audioSoundPlay.PlayTime = Time.time;
-            audioSoundPlay.Source.SetActive(true);
-            audioSoundPlay.Source.name = name;
-            audioSoundPlay.Source.volume = volume;
-            audioSoundPlay.Source.playOnAwake = false;
-            audioSoundPlay.Source.loop = false;
-            audioSoundPlay.Source.Stop();
+            audioSoundPlay.path = path;
+            audioSoundPlay.name = name;
+            audioSoundPlay.playTime = Time.time;
+            audioSoundPlay.audioSource.SetActive(true);
+            audioSoundPlay.audioSource.name = name;
+            audioSoundPlay.audioSource.volume = volume;
+            audioSoundPlay.audioSource.playOnAwake = false;
+            audioSoundPlay.audioSource.loop = false;
+            audioSoundPlay.audioSource.Stop();
 
             return audioSoundPlay;
         }
 
         private void PutSoundSource(AudioSoundPlay audioSoundPlay)
         {
-            AudioClipPool.Ins.Put(audioSoundPlay.GetResPath(), audioSoundPlay.Source.clip);
+            AudioClipPool.instance.Put(audioSoundPlay.GetResPath(), audioSoundPlay.audioSource.clip);
             audioSoundPlay.Clear();
-            audioSoundPlay.Source.clip = null;
-            audioSoundPlay.Source.Stop();
-            audioSoundPlay.Source.SetActive(false);
+            audioSoundPlay.audioSource.clip = null;
+            audioSoundPlay.audioSource.Stop();
+            audioSoundPlay.audioSource.SetActive(false);
             m_SoundStack.Push(audioSoundPlay);
         }
 
@@ -276,10 +276,10 @@ namespace GameFrameWork.Sound
             {
                 m_CurrPlayAudio = m_QueueAudioGroup.Dequeue();
                 m_PlayStamp = Time.time;
-                InnerPlayBGM(m_CurrPlayAudio.GetPath(), m_CurrPlayAudio.Volum, m_CurrPlayAudio.LerpTime, m_CurrPlayAudio.IsLoop);
+                InnerPlayBGM(m_CurrPlayAudio.GetPath(), m_CurrPlayAudio.volume, m_CurrPlayAudio.lerpTime, m_CurrPlayAudio.isLoop);
             }
 
-            if (m_CurrPlayAudio != null && m_BGMSource.clip != null && !m_CurrPlayAudio.IsLoop)
+            if (m_CurrPlayAudio != null && m_BGMSource.clip != null && !m_CurrPlayAudio.isLoop)
             {
                 if (Time.time - m_PlayStamp >= m_BGMSource.clip.length)
                 {
@@ -294,7 +294,7 @@ namespace GameFrameWork.Sound
 
             for (int i = m_PlayingList.Count - 1; i >= 0; i--)
             {
-                if (!m_PlayingList[i].Source.isPlaying && m_PlayingList[i].Source.clip != null)
+                if (!m_PlayingList[i].audioSource.isPlaying && m_PlayingList[i].audioSource.clip != null)
                 {
                     PutSoundSource(m_PlayingList[i]);
                     m_PlayingList.RemoveAt(i);
@@ -306,7 +306,7 @@ namespace GameFrameWork.Sound
         {
             if (m_CurrPlayAudio != null)
             {
-                AudioClipPool.Ins.Put(m_CurrPlayAudio.GetPath(), m_BGMSource.clip);
+                AudioClipPool.instance.Put(m_CurrPlayAudio.GetPath(), m_BGMSource.clip);
                 ReferencePool.Release(m_CurrPlayAudio);
                 m_BGMSource.Stop();
                 m_CurrPlayAudio = null;

@@ -7,40 +7,23 @@ namespace GameFrameWork.Utilities
 {
     public class PathUtil
     {
-        public static string StreamingAssetsPath = Application.streamingAssetsPath + "/";
-        public static string PersistentDataPath = Application.persistentDataPath + "/";
-        public static string AppDataPath = Application.dataPath + "/";
-        public const string AssetBundleVersion = "Version.txt";
-        public static string LuaTempDir = AppDataPath + "LuaTemp";
-        public const string ManiFest = "StreamingAssets";
+        public static string streamingAssetsPath = Application.streamingAssetsPath + "/";
+        public static string persistentDataPath = Application.persistentDataPath + "/";
+        public static string luaPath = "Lua";
+        public static string configDataPath = "ConfigData/";
+        public static string behaviourTreeConfigDataPath = configDataPath + "BehaviourTreeData.json";
+        public const string assetBundleVersionName = "Version.txt";
+        public const string maniFestName = "StreamingAssets";
 
-        public const string EditorUIRootPath = "Assets/GameFrameWork/UI/UIRoot.prefab";
-        public const string EdiorConfiglPath = "Assets/GameFrameWork/Editor/Config/";
-        public const string ConfigDataDefaultPath = "Assets/ConfigData/";
-        public static string ConfigDataDefaultFullPath = AppDataPath + ConfigDataDefaultPath.Substring(7);
-
-        public static string BehaviourTreeWindowConfigFullPath = AppDataPath + EdiorConfiglPath.Substring(7);
-        public const string BehaviourTreeWindowDataName = "BehaviourTreeWindowData";
-        public const string BehaviourTreeWindowDataExtend = ".asset";
-        public const string BehaviourTreeWindowDataPath = EdiorConfiglPath + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
-
-        public static string AssetBundleConfigFullPath = AppDataPath + EdiorConfiglPath.Substring(7);
-        public const string AssetBundleDataName = "AssetBundleData";
-        public const string AssetBundleDataExtend = ".asset";
-        public const string AssetBundleDataPath = EdiorConfiglPath + AssetBundleDataName + AssetBundleDataExtend;
-        public static string AssetBundleDataFullPath = AppDataPath + EdiorConfiglPath.Substring(7) + AssetBundleDataName + AssetBundleDataExtend;
-
-       
-
-        public static string RunTimeAssetPath
+        public static string runTimeAssetPath
         {
             get
             {
 
 #if UNITY_EDITOR
-                string resPath = StreamingAssetsPath;
+                string resPath = streamingAssetsPath;
 #else
-                string resPath = StreamingAssetsPath;
+                string resPath = streamingAssetsPath;
 #endif
                 return resPath;
             }

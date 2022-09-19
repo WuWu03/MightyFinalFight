@@ -7,7 +7,7 @@ namespace GameFrameWork.Scene
 {
     public class LoadSceneRequest : BaseEventArgs
     {
-        public string SceneName
+        public string sceneName
         {
             get
             {
@@ -15,7 +15,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public object[] Args
+        public object[] args
         {
             get
             {
@@ -23,7 +23,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public LoadSceneMode Mode
+        public LoadSceneMode mode
         {
             get
             {
@@ -31,7 +31,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public bool IsAutoAllowScene
+        public bool isAutoAllowScene
         {
             get
             {
@@ -39,7 +39,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public bool IsUnLoad
+        public bool isUnLoad
         {
             get
             {

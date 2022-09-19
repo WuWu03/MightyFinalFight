@@ -14,7 +14,7 @@ namespace GameFrameWork.Editor
         static AssetBundleUtility()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemGUI;
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
             m_DicAssetContainer = new Dictionary<string, bool>();
         }
 

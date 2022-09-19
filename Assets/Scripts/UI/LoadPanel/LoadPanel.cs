@@ -11,15 +11,15 @@ using System;
 
 public class LoadPanel : BasePanel
 {
-	public override string PanelName { get { return "LoadPanel"; } }
-	public override float PanelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type PanelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.ThirdLevel; } }
-	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Always; } }
+	public override string panelName { get { return "LoadPanel"; } }
+	public override float panelUnLoadTime { get { return 0f; } }
+	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.ThirdLevel; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Always; } }
 
 	protected override void OnInit(object[] param)
 	{
-		m_Component = new LoadPanelComponent(UIRefRoot);
+		m_Component = new LoadPanelComponent(uiRefRoot);
 	}
 
 	protected override void OnOpen()
@@ -27,16 +27,16 @@ public class LoadPanel : BasePanel
 		if (m_IsDoFade)
 		{
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOKill();
-			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
+			m_Component.imgShade.DOKill();
+			m_Component.imgShade.color = new Color(0, 0, 0, m_From);
 
 			if (!m_IsAuto)
 			{
-				m_Component.ImgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
+				m_Component.imgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnComplete);
 			}
 			else
 			{
-				m_Component.ImgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnAutoFadeComplete);
+				m_Component.imgShade.DOFade(m_To, m_Duration).SetDelay(m_Delay).OnComplete(OnAutoFadeComplete);
 			}
 		}
 	}
@@ -54,9 +54,9 @@ public class LoadPanel : BasePanel
 		if (m_Component != null)
 		{
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOKill();
-			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
-			m_Component.ImgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnComplete);
+			m_Component.imgShade.DOKill();
+			m_Component.imgShade.color = new Color(0, 0, 0, m_From);
+			m_Component.imgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnComplete);
 		}
 	}
 
@@ -73,16 +73,16 @@ public class LoadPanel : BasePanel
 		if (m_Component != null)
 		{
 			m_IsDoFade = false;
-			m_Component.ImgShade.DOKill();
-			m_Component.ImgShade.color = new Color(0, 0, 0, m_From);
-			m_Component.ImgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnAutoFadeComplete);
+			m_Component.imgShade.DOKill();
+			m_Component.imgShade.color = new Color(0, 0, 0, m_From);
+			m_Component.imgShade.DOFade(m_To, duration).SetDelay(delay).OnComplete(OnAutoFadeComplete);
 		}
 	}
 
 	private void OnAutoFadeComplete()
     {
 		m_To = 0;
-		m_Component.ImgShade.DOFade(m_To, m_Duration).OnComplete(OnComplete);
+		m_Component.imgShade.DOFade(m_To, m_Duration).OnComplete(OnComplete);
 	}
 
 	private void OnComplete()

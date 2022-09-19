@@ -18,7 +18,7 @@ public class TaskTriggerEnemy : BaseTaskTrigger
             int defense = m_TaskData.Targets[i].DefenseValue;
             int hpBarWidth = m_TaskData.Targets[i].HpBarWidth;
             Vector2Int pos = m_TaskData.Targets[i].Pos;
-            SceneEntityMgr.Ins.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
+            SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
         }
 
         //SceneEntityMgr.Ins.CreateBarrels();

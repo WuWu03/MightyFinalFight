@@ -10,7 +10,7 @@ public class TaskKillEnemy : BaseTask
     {
         if (m_TaskData.KillAll)
         {
-            return SceneEntityMgr.Ins.IsAllEnemyDead();
+            return SceneEntityMgr.instance.IsAllEnemyDead();
         }
 
         if (m_TaskData.KillIDs.Length < 1)
@@ -20,7 +20,7 @@ public class TaskKillEnemy : BaseTask
 
         for (int i = 0; i < m_TaskData.KillIDs.Length; i++)
         {
-            if (!SceneEntityMgr.Ins.IsEnemyDead(m_TaskData.KillIDs[i]))
+            if (!SceneEntityMgr.instance.IsEnemyDead(m_TaskData.KillIDs[i]))
             {
                 return false;
             }

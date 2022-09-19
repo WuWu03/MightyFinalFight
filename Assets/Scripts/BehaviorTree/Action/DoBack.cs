@@ -21,10 +21,10 @@ public class DoBack : Action
     protected override void OnEnter()
     {
         m_TargetPos = Vector2.zero;
-        m_TargetPos = m_Owner.Owner.Pos;
-        m_TargetPos.x += m_BackDistance * -m_Owner.Owner.Dir;
-        Rect visionRect = CameraMgr.Ins.GetVision();
-        m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.Owner.Bound.width, visionRect.xMax - m_Owner.Owner.Bound.width);
+        m_TargetPos = m_Owner.owner.pos;
+        m_TargetPos.x += m_BackDistance * -m_Owner.owner.dir;
+        Rect visionRect = CameraMgr.instance.GetVision();
+        m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.owner.bound.width, visionRect.xMax - m_Owner.owner.bound.width);
         m_IsArravied = false;
     }
 
@@ -37,7 +37,7 @@ public class DoBack : Action
             return BehaviorTreeState.Success;
         }
 
-        Vector2 enemyPos = m_Owner.Owner.Pos;
+        Vector2 enemyPos = m_Owner.owner.pos;
 
         m_IsArravied = Mathf.Abs(m_TargetPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(m_TargetPos.y - enemyPos.y) <= 0.01f;
 

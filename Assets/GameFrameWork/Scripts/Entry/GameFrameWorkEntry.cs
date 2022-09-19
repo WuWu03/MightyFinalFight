@@ -9,6 +9,8 @@ using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Scene;
+using GameFrameWork.BehaviourTree;
+using GameFrameWork.Utilities;
 
 namespace GameFrameWork
 {
@@ -26,9 +28,7 @@ namespace GameFrameWork
             RedPointMgr.Init(m_Manager);
             InputMgr.Init(m_Manager);
             ResMgr.Init(m_Manager);
-            GameObjectPool.Init(m_Manager);
-            AudioClipPool.Init(m_Manager);
-            SpritePool.Init(m_Manager);
+            BehaviourTreeMgr.Init(PathUtil.behaviourTreeConfigDataPath);
             PoolMgr.Init(m_Manager);
             EntityMgr.Init(m_Manager);
             FsmMgr.Init(m_Manager);
@@ -36,6 +36,9 @@ namespace GameFrameWork
             SoundMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
+            GameObjectPool.Init(m_Manager);
+            AudioClipPool.Init(m_Manager);
+            SpritePool.Init(m_Manager);
             UITools.InitUIResPath(InitUIResPath());
             OnInit(m_Manager);
         }
@@ -47,19 +50,19 @@ namespace GameFrameWork
 
         private void OnApplicationQuit()
         {
-            UIMgr.Ins.ShutDown();
-            RedPointMgr.Ins.ShutDown();
-            InputMgr.Ins.ShutDown();
-            ResMgr.Ins.ShutDown();
-            GameObjectPool.Ins.ShutDown();
-            AudioClipPool.Ins.ShutDown();
-            SpritePool.Ins.ShutDown();
-            EntityMgr.Ins.ShutDown();
-            FsmMgr.Ins.ShutDown();
-            CameraMgr.Ins.ShutDown();
-            SoundMgr.Ins.ShutDown();
-            EventMgr.Ins.ShutDown();
-            SceneMgr.Ins.ShutDown();
+            UIMgr.instance.ShutDown();
+            RedPointMgr.instance.ShutDown();
+            InputMgr.instance.ShutDown();
+            ResMgr.instance.ShutDown();
+            GameObjectPool.instance.ShutDown();
+            AudioClipPool.instance.ShutDown();
+            SpritePool.instance.ShutDown();
+            EntityMgr.instance.ShutDown();
+            FsmMgr.instance.ShutDown();
+            CameraMgr.instance.ShutDown();
+            SoundMgr.instance.ShutDown();
+            EventMgr.instance.ShutDown();
+            SceneMgr.instance.ShutDown();
             ReferencePool.ClearAll();
             Destroy(m_Manager);
             OnExit();

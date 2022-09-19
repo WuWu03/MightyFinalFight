@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-9-2 16:55**************************************/
+/**2022-9-4 16:7**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -10,56 +10,56 @@ using UnityEngine.UI;
 using GameFrameWork.UI;
 public class MainPanelComponent : BasePanelComponent
 {
-	//Player/PlayerHpBar,Slider
-	public Slider PlayerHpBar { get; private set; }
-	//Enemy/EnemyHpBar,Slider
-	public Slider EnemyHpBar { get; private set; }
-	//State/TxtStage,Text
-	public Text TxtStage { get; private set; }
-	//PlayerLife/TxtPlayerLife,Text
-	public Text TxtPlayerLife { get; private set; }
-	//Level/LevelList,GameObject
-	public GameObject LevelList { get; private set; }
-	//Level/LevelList/Item,GameObject
-	public GameObject ItemGO { get; private set; }
-	//Exp/TxtExp,Text
-	public Text TxtExp { get; private set; }
-	//TxtEnemyDamage,Text
-	public Text TxtEnemyDamage { get; private set; }
-	//TxtPlayerDamage,Text
-	public Text TxtPlayerDamage { get; private set; }
-	public LayoutGroupView<LevelListItem> LevelListGroupView { get; private set; }
+	//player/playerHpBar,Slider
+	public Slider playerHpBar { get; private set; }
+	//enemy/enemyHpBar,Slider
+	public Slider enemyHpBar { get; private set; }
+	//state/txtStage,Text
+	public Text txtStage { get; private set; }
+	//playerLife/txtPlayerLife,Text
+	public Text txtPlayerLife { get; private set; }
+	//level/levelList,GameObject
+	public GameObject levelList { get; private set; }
+	//level/levelList/item,GameObject
+	public GameObject itemGO { get; private set; }
+	//exp/txtExp,Text
+	public Text txtExp { get; private set; }
+	//txtEnemyDamage,Text
+	public Text txtEnemyDamage { get; private set; }
+	//txtPlayerDamage,Text
+	public Text txtPlayerDamage { get; private set; }
+	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 
 	public MainPanelComponent(UIRefRoot root) : base(root) { }
 
 	protected override void InitComponent(UIRefRoot root)
 	{
-		PlayerHpBar = root.Objects[0] as Slider;
-		EnemyHpBar = root.Objects[1] as Slider;
-		TxtStage = root.Objects[2] as Text;
-		TxtPlayerLife = root.Objects[3] as Text;
-		LevelList = root.Objects[4] as GameObject;
-		ItemGO = root.Objects[5] as GameObject;
-		TxtExp = root.Objects[6] as Text;
-		TxtEnemyDamage = root.Objects[7] as Text;
-		TxtPlayerDamage = root.Objects[8] as Text;
-		LevelListGroupView = new LayoutGroupView<LevelListItem>();
+		playerHpBar = root.objects[0] as Slider;
+		enemyHpBar = root.objects[1] as Slider;
+		txtStage = root.objects[2] as Text;
+		txtPlayerLife = root.objects[3] as Text;
+		levelList = root.objects[4] as GameObject;
+		itemGO = root.objects[5] as GameObject;
+		txtExp = root.objects[6] as Text;
+		txtEnemyDamage = root.objects[7] as Text;
+		txtPlayerDamage = root.objects[8] as Text;
+		levelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 
 	public class LevelListItem : LayoutGroupViewItem
 	{
-		public Image ImgLevel1 = null;
-		public Image ImgLevel2 = null;
-		public Image ImgLevel3 = null;
-		public Image ImgLevel4 = null;
-		public Image ImgLevel5 = null;
+		public Image imgLevel1 = null;
+		public Image imgLevel2 = null;
+		public Image imgLevel3 = null;
+		public Image imgLevel4 = null;
+		public Image imgLevel5 = null;
 		protected override void OnCreate(GameObject go)
 		{
-			ImgLevel1 = transform.Find("ImgLevel1").GetComponent<Image>();
-			ImgLevel2 = transform.Find("ImgLevel2").GetComponent<Image>();
-			ImgLevel3 = transform.Find("ImgLevel3").GetComponent<Image>();
-			ImgLevel4 = transform.Find("ImgLevel4").GetComponent<Image>();
-			ImgLevel5 = transform.Find("ImgLevel5").GetComponent<Image>();
+			imgLevel1 = transform.Find("imgLevel1").GetComponent<Image>();
+			imgLevel2 = transform.Find("imgLevel2").GetComponent<Image>();
+			imgLevel3 = transform.Find("imgLevel3").GetComponent<Image>();
+			imgLevel4 = transform.Find("imgLevel4").GetComponent<Image>();
+			imgLevel5 = transform.Find("imgLevel5").GetComponent<Image>();
 		}
 	}
 }

@@ -17,16 +17,16 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         AttackData attackData = AttackData.Create();
-        attackData.Dir = m_Owner.Dir;
-        attackData.SkillID = m_SkillData.Id;
-        attackData.AnimName = m_SkillData.AnimationName;
-        attackData.AnimSpeed = m_SkillData.AnimSpeed;
-        attackData.AnimTime = m_SkillData.AnimTime;
-        attackData.CanChangeDir = m_SkillData.CanChangeDir;
+        attackData.dir = m_Owner.dir;
+        attackData.skillID = m_SkillData.Id;
+        attackData.animName = m_SkillData.AnimationName;
+        attackData.animSpeed = m_SkillData.AnimSpeed;
+        attackData.animTime = m_SkillData.AnimTime;
+        attackData.canChangeDir = m_SkillData.CanChangeDir;
 
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
         {
-            attackData.AddSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
+            attackData.addSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
         }
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
@@ -58,13 +58,13 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         if (m_QueueSound.Count < 1) return;
         string soundName = m_QueueSound.Dequeue();
 
-        if (m_Owner.HitSuccess)
+        if (m_Owner.isHitSuccess)
         {
-            if (m_SkillData.IsInEffectPlaySound) SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
+            if (m_SkillData.IsInEffectPlaySound) SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
         }
         else
         {
-            SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
+            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
         }
     }
 

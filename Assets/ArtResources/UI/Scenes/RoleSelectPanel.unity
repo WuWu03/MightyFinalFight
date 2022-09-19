@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -150,6 +150,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1390185952}
   - {fileID: 1483532949}
@@ -176,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects:
+  objects:
   - {fileID: 767242336}
   - {fileID: 712527415}
   - {fileID: 472813151}
@@ -195,7 +196,7 @@ GameObject:
   - component: {fileID: 472813152}
   - component: {fileID: 472813156}
   m_Layer: 5
-  m_Name: ImgSelect
+  m_Name: imgSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,6 +212,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 209631946}
   m_RootOrder: 4
@@ -232,15 +234,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4dbb00021f7cd7c46b38ce212b60dd1b, type: 3}
-  - {fileID: 21300000, guid: 0aea1f6bb1d47004abdd904da288424d, type: 3}
   - {fileID: 21300000, guid: 71c49b7cbc6798b4faf0cc5a92a321c1, type: 3}
-  - {fileID: 21300000, guid: e86919d2a5e3d7340bafdb2c565813b7, type: 3}
   - {fileID: 21300000, guid: be29cd68cac09584a8359eb7bfb06aa0, type: 3}
-  - {fileID: 21300000, guid: a65be806e16edd340a3aab36bca169b7, type: 3}
-  IsLoop: 1
-  FrameRate: 12
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &472813153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +316,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &482470323
 GameObject:
@@ -345,6 +345,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1251427177}
   - {fileID: 638919150}
@@ -380,6 +381,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 209631946}
   m_RootOrder: 2
@@ -457,6 +459,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 209631946}
   m_Father: {fileID: 482470324}
@@ -554,7 +557,7 @@ GameObject:
   - component: {fileID: 710926878}
   - component: {fileID: 710926881}
   m_Layer: 5
-  m_Name: TxtDesc
+  m_Name: txtDesc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -570,6 +573,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 712527416}
   m_RootOrder: 2
@@ -648,12 +652,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: TxtDesc
+  m_RefName: txtDesc
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &712527415
 GameObject:
@@ -667,7 +672,7 @@ GameObject:
   - component: {fileID: 712527417}
   - component: {fileID: 712527418}
   m_Layer: 5
-  m_Name: Item
+  m_Name: item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -683,6 +688,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1669707880}
   - {fileID: 2043417336}
@@ -728,12 +734,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: Item
+  m_RefName: item
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 1
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &723186175
 GameObject:
@@ -763,6 +770,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1286206953}
   m_RootOrder: 0
@@ -824,7 +832,7 @@ GameObject:
   - component: {fileID: 767242339}
   - component: {fileID: 767242338}
   m_Layer: 5
-  m_Name: RoleContent
+  m_Name: roleContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -840,6 +848,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 712527416}
   m_Father: {fileID: 209631946}
@@ -863,12 +872,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: RoleContent
+  m_RefName: roleContent
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 1
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &767242339
 MonoBehaviour:
@@ -992,6 +1002,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 482470324}
   m_RootOrder: 0
@@ -1024,6 +1035,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 723186176}
   m_Father: {fileID: 1483532949}
@@ -1084,7 +1096,7 @@ GameObject:
   - component: {fileID: 1390185954}
   - component: {fileID: 1390185953}
   m_Layer: 5
-  m_Name: BG
+  m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1100,6 +1112,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 209631946}
   m_RootOrder: 0
@@ -1175,6 +1188,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1286206953}
   m_Father: {fileID: 209631946}
@@ -1256,15 +1270,15 @@ MonoBehaviour:
   m_PanelName: RoleSelectPanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 2
-  PanelPreLoadType: 0
-  PanelCloseMode: 2
-  PanelLayer: 2
-  IsCustomLayer: 0
-  UnLoadTime: 0
-  PanelPath: Assets/Scripts/UI/RoleSelectPanel/RoleSelectPanel.cs
-  PanelComponentPath: Assets/Scripts/UI/RoleSelectPanel/RoleSelectPanelComponent.cs
-  PanelPrefabPath: Assets/ArtResources/UI/Prefabs/RoleSelectPanel.prefab
+  panelType: 2
+  panelPreLoadType: 0
+  panelCloseMode: 1
+  panelLayer: 2
+  isCustomLayer: 0
+  unLoadTime: 0
+  panelPath: Assets/Scripts/UI/RoleSelectPanel/RoleSelectPanel.cs
+  panelComponentPath: Assets/Scripts/UI/RoleSelectPanel/RoleSelectPanelComponent.cs
+  panelPrefabPath: Assets/ArtResources/UI/Prefabs/RoleSelectPanel.prefab
 --- !u!4 &1613183462
 Transform:
   m_ObjectHideFlags: 0
@@ -1275,6 +1289,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1293,7 +1308,7 @@ GameObject:
   - component: {fileID: 1669707881}
   - component: {fileID: 1669707884}
   m_Layer: 5
-  m_Name: BtnRoleIcon
+  m_Name: btnRoleIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1309,6 +1324,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 712527416}
   m_RootOrder: 0
@@ -1425,12 +1441,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: BtnRoleIcon
-  m_ComponentName: MyButton
+  m_RefName: btnRoleIcon
+  m_ComponentName: ButtonEx
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1882403930
 GameObject:
@@ -1460,6 +1477,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 482470324}
   m_RootOrder: 2
@@ -1476,6 +1494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: A
@@ -1512,7 +1531,7 @@ GameObject:
   - component: {fileID: 2043417337}
   - component: {fileID: 2043417340}
   m_Layer: 5
-  m_Name: TxtName
+  m_Name: txtName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1528,6 +1547,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 712527416}
   m_RootOrder: 1
@@ -1606,10 +1626,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: TxtName
+  m_RefName: txtName
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 1
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0

@@ -17,10 +17,10 @@ public class Weapon : BaseSceneItem
 
     public void Drop(float attackerDir)
     {
-        if (!m_WeaponData.CanDrop) return;
+        if (!m_WeaponData.canDrop) return;
     
         SetActive(true);
-        SetPosXY(m_Owner.Pos.x, m_Owner.Pos.y);
+        SetPosXY(m_Owner.pos.x, m_Owner.pos.y);
         AddForce(40f * attackerDir, 150f);
         SetTrigger(AnimName.Drop);
 
@@ -32,7 +32,7 @@ public class Weapon : BaseSceneItem
     {
         base.SetOwner(owner);
         gameObject.SetActive(false);
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
     }
 
     protected override void OnResComplete(GameObject go,object[] param)

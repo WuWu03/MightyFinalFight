@@ -263,15 +263,15 @@ MonoBehaviour:
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/UI/Sprite/Icon/Character/
-    AssetBundlePath: ArtResources/UI/Sprite/Icon/Character/
+    AssetPath: Assets/ArtResources/UI/Prefabs/
+    AssetBundlePath: ArtResources/UI/Prefabs/
   - Id: 37
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/UI/Prefabs/
-    AssetBundlePath: ArtResources/UI/Prefabs/
+    AssetPath: Assets/ArtResources/UI/Sprite/Icon/Character/
+    AssetBundlePath: ArtResources/UI/Sprite/Icon/Character/
   - Id: 38
     BundleType: 1
     BundleName: UIAtlas/CommonAtlas
@@ -283,28 +283,35 @@ MonoBehaviour:
     BundleType: 1
     BundleName: UIAtlas/MainPanel
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/MainPanel/
     AssetBundlePath: 
   - Id: 40
     BundleType: 1
     BundleName: UIAtlas/SelectPlayerPanel
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/SelectPlayerPanel/
     AssetBundlePath: 
   - Id: 41
     BundleType: 1
+    BundleName: 
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/UI/UIAtlas/StagePanel/
+    AssetBundlePath: UIAtlas/StagePanel/
+  - Id: 42
+    BundleType: 1
     BundleName: UIAtlas/TitlePanel
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/TitlePanel/
     AssetBundlePath: 
-  - Id: 42
+  - Id: 43
     BundleType: 0
     BundleName: ConfigData
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ConfigData/
     AssetBundlePath: ConfigData/
   LockConfig: 0

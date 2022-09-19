@@ -13,9 +13,9 @@ public class DoRunToRandomPos : Action
 
     protected override void OnEnter()
     {
-        float size = m_Owner.Owner.GetCurrTriggerSize().x / 2;
-        Rect visionRect = CameraMgr.Ins.GetVision();
-        m_RandomPos = StageMgr.Ins.GetRandomPos();
+        float size = m_Owner.owner.GetCurrTriggerSize().x / 2;
+        Rect visionRect = CameraMgr.instance.GetVision();
+        m_RandomPos = StageMgr.instance.GetRandomPos();
         m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + size, visionRect.xMax - size);
     }
 
@@ -28,12 +28,12 @@ public class DoRunToRandomPos : Action
             return BehaviorTreeState.Success;
         }
 
-        m_IsArravied = Mathf.Abs(m_RandomPos.x - m_Owner.Owner.Pos.x) <= 0.03f &&
-                       Mathf.Abs(m_RandomPos.y - m_Owner.Owner.Pos.y) <= 0.03f;
+        m_IsArravied = Mathf.Abs(m_RandomPos.x - m_Owner.owner.pos.x) <= 0.03f &&
+                       Mathf.Abs(m_RandomPos.y - m_Owner.owner.pos.y) <= 0.03f;
 
         if (!m_IsArravied)
         {
-            m_Owner.Move((m_RandomPos - m_Owner.Owner.Pos).normalized, false);
+            m_Owner.Move((m_RandomPos - m_Owner.owner.pos).normalized, false);
             m_Owner.OppositePlayer();
         }
 

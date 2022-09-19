@@ -14,21 +14,21 @@ public class HeroRebirth : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseHero;
+        m_Owner = fsm.owner as BaseHero;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.OnGroundEvent.AddListener(OnGround);
+        m_Owner.onGroundEvent.AddListener(OnGround);
         m_Owner.SetDir(1);
-        CameraMgr.Ins.EndFollow();
+        CameraMgr.instance.EndFollow();
 
         if (m_ReBirthPos == Vector2.zero)
         {
-            Rect visionRect = CameraMgr.Ins.GetVision();
-            float rebirthPosX = visionRect.xMin + m_Owner.Collider.size.x;
-            float rebirthPosY = visionRect.yMax + m_Owner.Collider.size.y;
+            Rect visionRect = CameraMgr.instance.GetVision();
+            float rebirthPosX = visionRect.xMin + m_Owner.boxCollider2D.size.x;
+            float rebirthPosY = visionRect.yMax + m_Owner.boxCollider2D.size.y;
             m_Owner.transform.localPosition = new Vector3(rebirthPosX, rebirthPosY, rebirthPosY);
         }
         else
@@ -58,7 +58,7 @@ public class HeroRebirth : BaseFsmState
 
     private void OnGround()
     {
-        CameraMgr.Ins.StartFollow();
+        CameraMgr.instance.StartFollow();
     }
 
     private Vector2 m_ReBirthPos = Vector2.zero;

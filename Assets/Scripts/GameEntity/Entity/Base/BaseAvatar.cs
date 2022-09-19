@@ -6,7 +6,7 @@ using GameFrameWork.Log;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    public UnityArmatureComponent Animator
+    public UnityArmatureComponent armatureAnimator
     {
         get
         {
@@ -14,11 +14,11 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public DBTrigger DBTrigger
+    public DBTrigger dragonBonesTrigger
     {
         get
         {
-            return m_DBTrigger;
+            return m_DragonBonesTrigger;
         }
     }
 
@@ -37,17 +37,17 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public Vector2 GetCurrTriggerSize()
     {
-        return m_Collider.size;
+        return m_BoxCollider2D.size;
     }
 
     public Vector2 GetAnimTriggerSize(string animName)
     {
-        if (m_DBTrigger == null)
+        if (m_DragonBonesTrigger == null)
         {
             return Vector2.zero;
         }
 
-        TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
+        TriggerData triggerData = m_DragonBonesTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
         {
@@ -59,12 +59,12 @@ public abstract class BaseAvatar : BaseGravityObject
 
     protected void SetTrigger(string animName)
     {
-        if (m_DBTrigger == null)
+        if (m_DragonBonesTrigger == null)
         {
             return;
         }
 
-        TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
+        TriggerData triggerData = m_DragonBonesTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
         {
@@ -82,7 +82,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
-        m_DBTrigger = m_ResGO.GetComponent<DBTrigger>();
+        m_DragonBonesTrigger = m_ResGO.GetComponent<DBTrigger>();
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
@@ -143,14 +143,14 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsAnyState(params Type[] stateTypes)
     {
-        if (m_FsmMachine == null || !m_FsmMachine.IsRunning || stateTypes == null || stateTypes.Length < 1)
+        if (m_FsmMachine == null || !m_FsmMachine.isRunning || stateTypes == null || stateTypes.Length < 1)
         {
             return false;
         }
 
         for (int i = 0; i < stateTypes.Length; i++)
         {
-            if (m_FsmMachine.CurrStateType.Equals(stateTypes[i]))
+            if (m_FsmMachine.currStateType.Equals(stateTypes[i]))
             {
                 return true;
             }
@@ -161,7 +161,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsCurrState<T>() where T : BaseFsmState, new()
     {
-        return m_FsmMachine.CurrStateType == typeof(T);
+        return m_FsmMachine.currStateType == typeof(T);
     }
 
     public void AddState<T>() where T : BaseFsmState, new()
@@ -195,7 +195,7 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
     protected string m_CurrAnimName = string.Empty;
-    protected DBTrigger m_DBTrigger = null;
+    protected DBTrigger m_DragonBonesTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
 }

@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class BaseHeroSkillData : BaseRoleSkillData
 {
-    public int CatchAttackID { get; set; }
-    public int ThrowAttackID { get; set; }
-    public int WeaponAttackID { get; set; }
-    public int ThrowWeaponID { get; set; }
+    public int catchAttackID { get; set; }
+    public int throwAttackID { get; set; }
+    public int weaponAttackID { get; set; }
+    public int throwWeaponID { get; set; }
 
     public override void Clear()
     {
         base.Clear();
-        CatchAttackID = 0;
-        ThrowAttackID = 0;
-        WeaponAttackID = 0;
-        ThrowWeaponID = 0;
+        catchAttackID = 0;
+        throwAttackID = 0;
+        weaponAttackID = 0;
+        throwWeaponID = 0;
     }
 }

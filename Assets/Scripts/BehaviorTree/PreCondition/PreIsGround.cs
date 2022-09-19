@@ -14,7 +14,7 @@ public class PreIsGround : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return m_PreOwner.Owner.IsInGround;
+        return m_PreOwner.owner.isInGround;
     }
 
     private BaseRoleCtrl m_PreOwner = null;

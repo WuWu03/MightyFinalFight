@@ -7,19 +7,27 @@ namespace GameFrameWork.Log
     {
         public static void Log(params object[] args)
         {
-            if (!AppConfig.Ins.OpenLog) return;
+            if (!AppConfig.instance.openLog)
+            {
+                return;
+            }
+
             Debug.Log(GetLogInfo(args));
         }
 
         public static void LogError(params object[] args)
         {
-            if (!AppConfig.Ins.OpenLog) return;
+            if (!AppConfig.instance.openLog)
+            {
+                return;
+            }
+
             Debug.LogError(GetLogInfo(args));
         }
 
         private static string GetLogInfo(object[] args)
         {
-            m_LogColor = AppConfig.Ins.LogColor;
+            m_LogColor = AppConfig.instance.logColor;
 
             string logInfo = StringUtil.FormatDefault(args);
             string color = CommonUtil.ToRGBHex(m_LogColor);

@@ -12,6 +12,6 @@ public class PreIsPlayerSpecialState : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return PlayerMgr.Ins.Player.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken), typeof(RoleDead), typeof(HeroRebirth));
+        return PlayerMgr.instance.player.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken), typeof(RoleDead), typeof(HeroRebirth));
     }
 }

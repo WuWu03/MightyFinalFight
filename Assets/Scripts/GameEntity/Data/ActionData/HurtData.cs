@@ -4,19 +4,19 @@ using System;
 
 public class HurtData : BaseEventArgs
 {
-    public Vector2 AttackForce { get; set; }
-    public Vector2 AttackerPos { get; set; }
-    public int AttackValue { get; set; }
-    public int AttackerId { get; set; }
-    public int SkillExp { get; set; }
-    public bool IsSwoon { get; set; }//是否击飞
-    public bool IsGroundHurt { get; set; }//是否落地触发
-    public bool IsCritical { get; set; }
-    public float AttackerDir { get; set; }
-    public string HurtSound { get; set; }
-    public string HurtAnim { get; set; }
-    public bool CanBeDefense { get; set; }
-    public bool IsBoss { get; set; }
+    public Vector2 attackForce { get; set; }
+    public Vector2 attackerPos { get; set; }
+    public int attackValue { get; set; }
+    public int attackerId { get; set; }
+    public int skillExp { get; set; }
+    public bool isSwoon { get; set; }//是否击飞
+    public bool isGroundHurt { get; set; }//是否落地触发
+    public bool isCritical { get; set; }
+    public float attackerDir { get; set; }
+    public string hurtSound { get; set; }
+    public string hurtAnim { get; set; }
+    public bool canBeDefense { get; set; }
+    public bool isBoss { get; set; }
 
     public static HurtData Create()
     {
@@ -25,23 +25,18 @@ public class HurtData : BaseEventArgs
 
     public override void Clear()
     {
-        AttackForce = Vector2.zero;
-        AttackerPos = Vector2.zero;
-        AttackValue = 0;
-        AttackerId = 0;
-        SkillExp = 0;
-        IsSwoon = false;
-        IsGroundHurt = false;
-        IsCritical = false;
-        CanBeDefense = false;
-        AttackerDir = 0;
-        HurtSound = string.Empty;
-        HurtAnim = string.Empty;
-        IsBoss = false;
-    }
-
-    public override GameFrameWorkEventArgs Clone()
-    {
-        return Activator.CreateInstance<HurtData>();
+        attackForce = Vector2.zero;
+        attackerPos = Vector2.zero;
+        attackValue = 0;
+        attackerId = 0;
+        skillExp = 0;
+        isSwoon = false;
+        isGroundHurt = false;
+        isCritical = false;
+        canBeDefense = false;
+        attackerDir = 0;
+        hurtSound = string.Empty;
+        hurtAnim = string.Empty;
+        isBoss = false;
     }
 }

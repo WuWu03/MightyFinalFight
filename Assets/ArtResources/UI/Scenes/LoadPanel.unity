@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -151,6 +151,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 319121273}
   m_RootOrder: 2
@@ -167,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: A
@@ -215,6 +217,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 813114731}
   - {fileID: 1009776099}
@@ -249,6 +252,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2056449679}
   m_Father: {fileID: 1009776099}
@@ -271,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects:
+  objects:
   - {fileID: 2056449681}
 --- !u!1 &772694341
 GameObject:
@@ -306,15 +310,15 @@ MonoBehaviour:
   m_PanelName: LoadPanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 3
-  PanelPreLoadType: 0
-  PanelCloseMode: 2
-  PanelLayer: 3
-  IsCustomLayer: 0
-  UnLoadTime: 0
-  PanelPath: Assets/Scripts/UI/LoadPanel/LoadPanel.cs
-  PanelComponentPath: Assets/Scripts/UI/LoadPanel/LoadPanelComponent.cs
-  PanelPrefabPath: Assets/ArtResources/UI/Prefabs/LoadPanel.prefab
+  panelType: 2
+  panelPreLoadType: 0
+  panelCloseMode: 1
+  panelLayer: 2
+  isCustomLayer: 0
+  unLoadTime: 0
+  panelPath: Assets/Scripts/UI/LoadPanel/LoadPanel.cs
+  panelComponentPath: Assets/Scripts/UI/LoadPanel/LoadPanelComponent.cs
+  panelPrefabPath: Assets/ArtResources/UI/Prefabs/LoadPanel.prefab
 --- !u!4 &772694343
 Transform:
   m_ObjectHideFlags: 0
@@ -325,6 +329,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -399,6 +404,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 319121273}
   m_RootOrder: 0
@@ -433,6 +439,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 619928229}
   m_Father: {fileID: 319121273}
@@ -494,6 +501,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1009776103
 Canvas:
   m_ObjectHideFlags: 0
@@ -544,6 +552,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 619928229}
   m_RootOrder: 0
@@ -571,7 +580,8 @@ MonoBehaviour:
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLoopLayout: 0
+  m_IsLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2056449681
 MonoBehaviour:

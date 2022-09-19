@@ -3,7 +3,7 @@ using GameFrameWork.Fsm;
 using UnityEngine;
 public class RoleDead : BaseFsmState
 {
-    public Vector2 ReBirthPos
+    public Vector2 rebirthPos
     {
         set
         {
@@ -13,23 +13,23 @@ public class RoleDead : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4, 1);
-        m_Owner.SetPos2(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.pos);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.IsPlayComplete())
         {
-            if (m_Owner.ObjectType == ObjectType.Player)
+            if (m_Owner.objectType == ObjectType.Player)
             {
-                PlayerMgr.Ins.Rebirth(m_ReBirthPos);              
+                PlayerMgr.instance.Rebirth(m_ReBirthPos);              
                 return;
             }
 

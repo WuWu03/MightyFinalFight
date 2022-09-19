@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-9-17 10:19**************************************/
+/**2022-9-4 16:8**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -10,31 +10,31 @@ using UnityEngine.UI;
 using GameFrameWork.UI;
 public class TitlePanelComponent : BasePanelComponent
 {
-	//ImgLogoBG,Image
-	public Image ImgLogoBG { get; private set; }
-	//ImgRetro,Image
-	public Image ImgRetro { get; private set; }
-	//ImgStar,Image
-	public Image ImgStar { get; private set; }
-	//ImgLogo,Image
-	public Image ImgLogo { get; private set; }
-	//TxtStart,Text
-	public Text TxtStart { get; private set; }
-	//TxtDeveloper,Text
-	public Text TxtDeveloper { get; private set; }
-	//ImgCapcom,Image
-	public Image ImgCapcom { get; private set; }
+	//imgLogoBG,Image
+	public Image imgLogoBG { get; private set; }
+	//imgRetro,Image
+	public Image imgRetro { get; private set; }
+	//imgStar,Image
+	public Image imgStar { get; private set; }
+	//imgLogo,Image
+	public Image imgLogo { get; private set; }
+	//txtStart,Text
+	public Text txtStart { get; private set; }
+	//txtDeveloper,Text
+	public Text txtDeveloper { get; private set; }
+	//imgCapcom,Image
+	public Image imgCapcom { get; private set; }
 
 	public TitlePanelComponent(UIRefRoot root) : base(root) { }
 
 	protected override void InitComponent(UIRefRoot root)
 	{
-		ImgLogoBG = root.Objects[0] as Image;
-		ImgRetro = root.Objects[1] as Image;
-		ImgStar = root.Objects[2] as Image;
-		ImgLogo = root.Objects[3] as Image;
-		TxtStart = root.Objects[4] as Text;
-		TxtDeveloper = root.Objects[5] as Text;
-		ImgCapcom = root.Objects[6] as Image;
+		imgLogoBG = root.objects[0] as Image;
+		imgRetro = root.objects[1] as Image;
+		imgStar = root.objects[2] as Image;
+		imgLogo = root.objects[3] as Image;
+		txtStart = root.objects[4] as Text;
+		txtDeveloper = root.objects[5] as Text;
+		imgCapcom = root.objects[6] as Image;
 	}
 }

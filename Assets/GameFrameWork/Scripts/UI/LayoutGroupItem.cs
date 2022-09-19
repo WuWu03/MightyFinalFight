@@ -6,7 +6,7 @@ namespace GameFrameWork.UI
 {
     public abstract class LayoutGroupViewItem
     {
-        public int Id
+        public int id
         {
             get
             {
@@ -14,7 +14,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public int Index 
+        public int index 
         {
             get
             {
@@ -22,7 +22,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public virtual MyButton SelectButton
+        public virtual ButtonEx selectButton
         {
             get
             {
@@ -45,6 +45,7 @@ namespace GameFrameWork.UI
                 return m_Transform;
             }
         }
+
         public RectTransform rectTransform
         {
             get
@@ -52,6 +53,7 @@ namespace GameFrameWork.UI
                 return m_RectTransform;
             }
         }
+
         public void Create(GameObject go,int index)
         {
             m_GameObject = go;
@@ -72,7 +74,6 @@ namespace GameFrameWork.UI
         private GameObject m_GameObject;
         private Transform m_Transform;
         private RectTransform m_RectTransform;
-
-        protected MyButton m_MyButton = null;
+        protected ButtonEx m_MyButton = null;
     }
 }

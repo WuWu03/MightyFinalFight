@@ -6,7 +6,7 @@ public abstract class SkillBaseEffect : SkillBase, ISkillEffect
 {
     public SkillBaseEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
 
-    public bool IsCompleted
+    public bool isCompleted
     {
         get
         {

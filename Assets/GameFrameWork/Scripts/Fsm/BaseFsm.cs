@@ -10,10 +10,10 @@ namespace GameFrameWork.Fsm
         public BaseFsm(System.Object owner,string name) 
         {
             this.m_Owner = owner;
-            this.Name = name;
+            this.m_Name = name;
         }
 
-        public string Name
+        public string name
         {
             get 
             { 
@@ -25,7 +25,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public System.Object Owner
+        public System.Object owner
         {
             get 
             { 
@@ -37,7 +37,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public Type OwnerType
+        public Type ownerType
         {
             get
             {
@@ -45,12 +45,13 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public abstract int FsmStateCount { get; }
-        public abstract bool IsRunning { get; }
-        public abstract bool IsDestroy { get; }
-        public abstract Type CurrStateType { get; }
-        public abstract BaseFsmState CurrState { get; }
-        public abstract float CurrStateTime { get; }
+        public abstract int fsmStateCount { get; }
+        public abstract bool isRunning { get; }
+        public abstract bool isDestroy { get; }
+        public abstract Type currStateType { get; }
+        public abstract BaseFsmState currState { get; }
+        public abstract float currStateTime { get; }
+
         public abstract void Start<T>() where T:BaseFsmState;
         public abstract void AddState<T>() where T : BaseFsmState, new();
         public abstract void RemoveState<T>() where T : BaseFsmState;

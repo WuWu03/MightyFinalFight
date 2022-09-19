@@ -9,11 +9,11 @@ public class SkillSubHPEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector selector)
     {
-        if (!m_Owner.HitSuccess) return;
+        if (!m_Owner.isHitSuccess) return;
 
         foreach (Match m in m_Regex.Matches(m_SkillEffect.Args))
         {
-            m_Owner.Attribute.SubHealth(int.Parse(m.Groups[2].Value));
+            m_Owner.entityAttribute.SubHealth(int.Parse(m.Groups[2].Value));
         }
 
         Complete();

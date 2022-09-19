@@ -1,21 +1,21 @@
 ﻿public interface ICanBeHit
 {
-    bool CanBeHit
+    bool canBeHit
     {
         get;
     }
 
-    bool IsBeCatch
+    bool isBeCatch
     {
         get;
     }
 
-    bool IsBeThrow
+    bool isBeThrow
     {
         get;
     }
 
-    bool IsDead
+    bool isDead
     {
         get;
     }

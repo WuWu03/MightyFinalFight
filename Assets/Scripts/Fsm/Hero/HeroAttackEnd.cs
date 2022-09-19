@@ -5,7 +5,7 @@ public class HeroAttackEnd : BaseFsmState
 {
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseHero;
+        m_Owner = fsm.owner as BaseHero;
     }
 
     public override void OnEnter(BaseFsm fsm)

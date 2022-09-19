@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BaseEffect : BaseSceneObject
 {
-    public float PlayTime
+    public float playTime
     {
         get
         {
@@ -18,7 +18,7 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public float Speed
+    public float speed
     {
         get
         {
@@ -30,7 +30,7 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public GameFrameWorkAction PlayEndCallback
+    public GameFrameWorkAction onPlayEndEvent
     {
         get
         {
@@ -42,7 +42,7 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public bool IsAutoRelease
+    public bool isAutoRelease
     {
         get
         {
@@ -54,7 +54,7 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public bool IsPlaying
+    public bool isPlaying
     {
         get
         {
@@ -109,11 +109,11 @@ public class BaseEffect : BaseSceneObject
 
         m_IsPlaying = false;
         m_Timer = -1;
-        PlayEndCallback?.Invoke();
+        onPlayEndEvent?.Invoke();
 
-        if (IsAutoRelease)
+        if (isAutoRelease)
         {
-            EffectMgr.Ins.PutEffect(this);
+            EffectMgr.instance.PutEffect(this);
         }
     }
 

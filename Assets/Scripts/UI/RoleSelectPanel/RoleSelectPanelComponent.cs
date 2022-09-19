@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-7-14 15:31**************************************/
+/**2022-9-4 16:4**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -10,34 +10,34 @@ using UnityEngine.UI;
 using GameFrameWork.UI;
 public class RoleSelectPanelComponent : BasePanelComponent
 {
-	//RoleContent,GameObject
-	public GameObject RoleContent { get; private set; }
-	//RoleContent/Item,GameObject
-	public GameObject ItemGO { get; private set; }
-	//ImgSelect,RectTransform
-	public RectTransform ImgSelectRect { get; private set; }
-	public LayoutGroupView<RoleContentItem> RoleContentGroupView { get; private set; }
+	//roleContent,GameObject
+	public GameObject roleContent { get; private set; }
+	//roleContent/item,GameObject
+	public GameObject itemGO { get; private set; }
+	//imgSelect,RectTransform
+	public RectTransform imgSelectRect { get; private set; }
+	public LayoutGroupView<RoleContentItem> roleContentGroupView { get; private set; }
 
 	public RoleSelectPanelComponent(UIRefRoot root) : base(root) { }
 
 	protected override void InitComponent(UIRefRoot root)
 	{
-		RoleContent = root.Objects[0] as GameObject;
-		ItemGO = root.Objects[1] as GameObject;
-		ImgSelectRect = root.Objects[2] as RectTransform;
-		RoleContentGroupView = new LayoutGroupView<RoleContentItem>();
+		roleContent = root.objects[0] as GameObject;
+		itemGO = root.objects[1] as GameObject;
+		imgSelectRect = root.objects[2] as RectTransform;
+		roleContentGroupView = new LayoutGroupView<RoleContentItem>();
 	}
 
 	public class RoleContentItem : LayoutGroupViewItem
 	{
-		public MyButton BtnRoleIcon = null;
-		public Text TxtName = null;
-		public Text TxtDesc = null;
+		public ButtonEx btnRoleIcon = null;
+		public Text txtName = null;
+		public Text txtDesc = null;
 		protected override void OnCreate(GameObject go)
 		{
-			BtnRoleIcon = transform.Find("BtnRoleIcon").GetComponent<MyButton>();
-			TxtName = transform.Find("TxtName").GetComponent<Text>();
-			TxtDesc = transform.Find("TxtDesc").GetComponent<Text>();
+			btnRoleIcon = transform.Find("btnRoleIcon").GetComponent<ButtonEx>();
+			txtName = transform.Find("txtName").GetComponent<Text>();
+			txtDesc = transform.Find("txtDesc").GetComponent<Text>();
 		}
 	}
 }

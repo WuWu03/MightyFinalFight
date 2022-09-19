@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoleMove : BaseFsmState
 {
-    public bool CanChangeDir
+    public bool canChangeDir
     {
         set
         {
@@ -12,7 +12,7 @@ public class RoleMove : BaseFsmState
         }
     }
 
-    public bool IsCatch
+    public bool isCatch
     {
         set
         {
@@ -22,18 +22,18 @@ public class RoleMove : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
-        if (m_Owner.ObjectType == ObjectType.Player && (m_Owner as BaseHero).Weapon != null)
+        if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
-            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.Attribute.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.entityAttribute.moveSpeed * 0.2f);
         }
         else
         {
-            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.Attribute.MoveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_IsCatch ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.entityAttribute.moveSpeed * 0.2f);
         }
     }
 
@@ -41,10 +41,10 @@ public class RoleMove : BaseFsmState
     {
         if (m_CanChangeDir && !m_IsCatch)
         {
-            m_Owner.SetDir(m_Owner.MoveDir.x);
+            m_Owner.SetDir(m_Owner.moveDir.x);
         }
 
-        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.MoveDir.x, m_Owner.MoveDir.y) * m_Owner.Attribute.MoveSpeed * Time.deltaTime;
+        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.moveDir.x, m_Owner.moveDir.y) * m_Owner.entityAttribute.moveSpeed * Time.deltaTime;
         m_Owner.SetPos2(ownerPos);
     }
 

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BaseRoleData : BaseSceneObjectData
 {
-    public bool CatchControl { get; set; }
+    public bool isCatchControl { get; set; }
 
     public override void Clear()
     {
         base.Clear();
-        CatchControl = false;
+        isCatchControl = false;
     }
 }

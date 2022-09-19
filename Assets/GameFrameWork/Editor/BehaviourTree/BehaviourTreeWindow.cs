@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using System.IO;
+﻿using GameFrameWork.BehaviourTree;
 using GameFrameWork.Utilities;
-using GameFrameWork.Serialize;
-using UnityEditorInternal;
 using System;
-using System.Reflection;
-using GameFrameWork.BehaviourTree;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal;
+using UnityEngine;
+using GameFrameWork.Editor.Config;
 
 namespace GameFrameWork.Editor
 {
@@ -27,8 +25,8 @@ namespace GameFrameWork.Editor
 
         private void OnDisable()
         {
-            UnityEditor.EditorUtility.SetDirty(m_BehaviourTreeWindowConfig);
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+            string jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
+            File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
         }
 
         private void OnGUI()
@@ -37,7 +35,6 @@ namespace GameFrameWork.Editor
 
             if (m_BehaviourTreeWindowConfig != null)
             {
-                CreateBehaviourTreeGUI();
                 MainGUI();
             }
 
@@ -46,40 +43,46 @@ namespace GameFrameWork.Editor
 
         private void InitConfig()
         {
-            if (m_BehaviourTreeWindowConfig != null) return;
-
-            if (!Directory.Exists(PathUtil.BehaviourTreeWindowConfigFullPath))
+            if (m_BehaviourTreeWindowConfig != null)
             {
-                Directory.CreateDirectory(PathUtil.BehaviourTreeWindowConfigFullPath);
+                return;
             }
 
-            if (!File.Exists(PathUtil.BehaviourTreeWindowDataPath))
+            if (!Directory.Exists(EditorPathUtil.behaviourTreeWindowConfigFullPath))
             {
-                EditorUtility.CreateScriptableObject<BehaviourTreeWindowConfig>(PathUtil.BehaviourTreeWindowDataName, PathUtil.BehaviourTreeWindowDataExtend, PathUtil.EdiorConfiglPath);
+                Directory.CreateDirectory(EditorPathUtil.behaviourTreeWindowConfigFullPath);
             }
 
-            m_BehaviourTreeWindowConfig = AssetDatabase.LoadAssetAtPath<BehaviourTreeWindowConfig>(PathUtil.BehaviourTreeWindowDataPath);
-            m_WindowConfigSo = new SerializedObject(m_BehaviourTreeWindowConfig);
+            if (!File.Exists(EditorPathUtil.behaviourTreeWindowDataFullPath))
+            {
+                m_BehaviourTreeWindowConfig = new BehaviourTreeWindowConfig();
+            }
+            else
+            {
+                string jsonStr = File.ReadAllText(EditorPathUtil.behaviourTreeWindowDataFullPath);
+                m_BehaviourTreeWindowConfig = LitJson.JsonMapper.ToObject<BehaviourTreeWindowConfig>(jsonStr);
+            }
+
             m_DicFreeWindowNode = new Dictionary<int, List<BehaviourTreeWindowNode>>();
-            m_LeftList = new ReorderableList(m_WindowConfigSo, m_WindowConfigSo.FindProperty("Datas"), true, false, false, false);
+            m_LeftList = new ReorderableList(m_BehaviourTreeWindowConfig.dataList, typeof(BehaviourTreeWindowData), true, false, false, false);
             m_LeftList.headerHeight = 0;
             m_LeftList.footerHeight = 0;
             m_LeftList.elementHeight = 40;
             m_LeftList.showDefaultBackground = false;
             m_LeftList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
-                BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.Datas[index];
-                m_BehaviourTreeWindowConfig.Datas[index].ListRect = rect;
+                BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.dataList[index];
+                m_BehaviourTreeWindowConfig.dataList[index].listRect = new WindowRect(rect.x, rect.y, rect.width, rect.height);
 
-                if(m_LeftOperation == 1 && m_CurrSelect == index)
-                    windowData.Name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width,15), windowData.Name);
+                if (m_LeftOperation == 1 && m_CurrSelect == index)
+                    windowData.name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width, 15), windowData.name);
                 else
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y - 10, rect.width, rect.height), windowData.Name);
+                    EditorGUI.LabelField(new Rect(rect.x, rect.y - 10, rect.width, rect.height), windowData.name);
 
                 if (m_LeftOperation == 2 && m_CurrSelect == index)
-                    windowData.Id = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.Id.ToString()));
+                    windowData.id = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.id.ToString()));
                 else
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.Id.ToString());
+                    EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.id.ToString());
 
                 EditorGUI.DrawRect(new Rect(rect.x, rect.y + 22, rect.width, 1), Color.gray);
                 EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y, rect.width + 25, 1), Color.black);
@@ -95,39 +98,15 @@ namespace GameFrameWork.Editor
 
                 if (oldIndex != m_CurrSelect)
                 {
-                    SetRightWindowNode(m_BehaviourTreeWindowConfig.Datas[m_CurrSelect]);
+                    SetRightWindowNode(m_BehaviourTreeWindowConfig.dataList[m_CurrSelect]);
                 }
 
                 m_LeftOperation = -1;
             };
         }
 
-        private void CreateBehaviourTreeGUI()
-        {
-            if (string.IsNullOrEmpty(m_BehaviourTreeWindowConfig.BehaviourConfigPath) || !File.Exists(m_BehaviourTreeWindowConfig.BehaviourConfigPath))
-            {
-                if (GUILayout.Button("创建行为树"))
-                {
-                    string selectPath = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的行为树", "BehaviourTreeData", "asset", "Save BehaviourTreeData as...");
-                    if (string.IsNullOrEmpty(selectPath)) return;
-
-                    string path = Path.GetDirectoryName(selectPath) + "/";
-                    string name = Path.GetFileNameWithoutExtension(selectPath);
-                    string extend = Path.GetExtension(selectPath);
-                    m_BehaviourTreeWindowConfig.BehaviourConfigPath = selectPath;
-                    EditorUtility.CreateBehaviorConfig(name, extend, path);
-                    UnityEditor.EditorUtility.SetDirty(m_BehaviourTreeWindowConfig);
-                }
-            }
-        }
-
         private void MainGUI()
         {
-            if (string.IsNullOrEmpty(m_BehaviourTreeWindowConfig.BehaviourConfigPath) || !File.Exists(m_BehaviourTreeWindowConfig.BehaviourConfigPath))
-            {
-                return;
-            }
-
             UnityEngine.Event e = UnityEngine.Event.current;
 
             m_HorizontalSplitView.BeginSplitView();
@@ -142,21 +121,23 @@ namespace GameFrameWork.Editor
 
         private void LeftViewGUI(UnityEngine.Event e)
         {
-            m_WindowConfigSo.Update();
             GUILayout.BeginVertical();
             GUILayout.BeginArea(new Rect(0, 0, position.width, 20), GUI.skin.GetStyle("FrameBox"));
             GUILayout.EndArea();
             GUILayout.Space(20);
             m_LeftList.DoLayoutList();
             GUILayout.EndVertical();
-            m_WindowConfigSo.ApplyModifiedProperties();
+
 
             if (e.button == 1 && e.type == EventType.MouseUp)
             {
                 bool isClickItem = false;
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.Datas.Count; i++)
+                for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
                 {
-                    if (m_BehaviourTreeWindowConfig.Datas[i].ListRect.Contains(e.mousePosition) && i == m_CurrSelect)
+                    WindowRect rect = m_BehaviourTreeWindowConfig.dataList[i].listRect;
+                    Rect listRect = new Rect(rect.x, rect.y, rect.width, rect.height);
+
+                    if (listRect.Contains(e.mousePosition) && i == m_CurrSelect)
                     {
                         isClickItem = true;
                         ShowLeftMenu(0);
@@ -200,8 +181,8 @@ namespace GameFrameWork.Editor
                     DeleteRootWindowNode();
                     break;
                 case 3:
-                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.Datas.Count + 1);
-                    m_BehaviourTreeWindowConfig.Datas.Add(data);
+                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.dataList.Count + 1);
+                    m_BehaviourTreeWindowConfig.dataList.Add(data);
                     break;
                 default:
                     m_LeftOperation = operation;
@@ -211,8 +192,8 @@ namespace GameFrameWork.Editor
 
         private void RightViewGUI(UnityEngine.Event e)
         {
-            if (m_BehaviourTreeWindowConfig.Datas == null) return;
-            if (m_BehaviourTreeWindowConfig.Datas.Count < 1) return;
+            if (m_BehaviourTreeWindowConfig.dataList == null) return;
+            if (m_BehaviourTreeWindowConfig.dataList.Count < 1) return;
 
             PopMenu(e);
             MouseMove(e);
@@ -237,7 +218,7 @@ namespace GameFrameWork.Editor
 
             if(m_IsDrawTransition)
             {
-                EditorUtility.DrawCurve(m_CurrWindowNode.Rect, new Rect(e.mousePosition, Vector2.zero), Color.red);
+                EditorUtil.DrawCurve(m_CurrWindowNode.rect, new Rect(e.mousePosition, Vector2.zero), Color.red);
             }
         }
 
@@ -314,7 +295,11 @@ namespace GameFrameWork.Editor
                 }
                 else
                 {
-                    if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.Datas.Count - 1) return;
+                    if (m_CurrSelect < 0 || m_CurrSelect > m_BehaviourTreeWindowConfig.dataList.Count - 1)
+                    {
+                        return;
+                    }
+
                     m_CurrWindowNode = GetFreeWindowNode(e.mousePosition);
                     m_CurrMousePosition = e.mousePosition;
                     if (m_CurrWindowNode != null)
@@ -350,9 +335,9 @@ namespace GameFrameWork.Editor
                 }
                 else
                 {
-                    if (m_CurrWindowNode.Parent == null && !m_CurrWindowNode.IsParent)
+                    if (m_CurrWindowNode.parent == null && !m_CurrWindowNode.isParent)
                         menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
-                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.Parent == null ? 4 : 5);
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.parent == null ? 4 : 5);
                 }
             }
             menu.AddSeparator("");
@@ -416,9 +401,11 @@ namespace GameFrameWork.Editor
 
         private void DeleteRootWindowNode()
         {
-            m_BehaviourTreeWindowConfig.Datas.RemoveAt(m_CurrSelect);
-            if (m_CurrSelect < m_BehaviourTreeWindowConfig.Datas.Count)
-                SetRightWindowNode(m_BehaviourTreeWindowConfig.Datas[m_CurrSelect]);
+            m_BehaviourTreeWindowConfig.dataList.RemoveAt(m_CurrSelect);
+            if (m_CurrSelect < m_BehaviourTreeWindowConfig.dataList.Count)
+            {
+                SetRightWindowNode(m_BehaviourTreeWindowConfig.dataList[m_CurrSelect]);
+            }
             else
             {
                 m_CurrSelect = -1;
@@ -429,28 +416,32 @@ namespace GameFrameWork.Editor
 
         private void DeleteChildWindowNode()
         {
-            m_CurrWindowNode.Parent.RemoveChild(m_CurrWindowNode);
+            m_CurrWindowNode.parent.RemoveChild(m_CurrWindowNode);
 
             m_CurrWindowNode = null;
         }
 
         private void SetFreeNodeParent(BehaviourTreeWindowNode parent)
         {
-            if (m_CurrWindowNode == null) return;
+            if (m_CurrWindowNode == null)
+            {
+                return;
+            }
+
             m_CurrWindowNode.SetParent(parent);
             DeleteFreeWindowNode();
         }
 
         private BehaviourTreeWindowNode GetWindowNode(BehaviourTreeWindowNode node, Vector2 mousePosition)
         {
-            if (node.Rect.Contains(mousePosition))
+            if (node.rect.Contains(mousePosition))
             {
                 return node;
             }
 
-            for (int i = 0; i < node.Children.Count; i++)
+            for (int i = 0; i < node.children.Count; i++)
             {
-                BehaviourTreeWindowNode ret = GetWindowNode(node.Children[i], mousePosition);
+                BehaviourTreeWindowNode ret = GetWindowNode(node.children[i], mousePosition);
                 if (ret != null)
                 {
                     return ret;
@@ -468,7 +459,7 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].Rect.Contains(mousePosition))
+                    if (list[i].rect.Contains(mousePosition))
                     {
                         return list[i];
                     }
@@ -493,52 +484,55 @@ namespace GameFrameWork.Editor
         {
             if (GUILayout.Button("保存配置"))
             {
-                BehaviourTreeConfig config = AssetDatabase.LoadAssetAtPath<BehaviourTreeConfig>(m_BehaviourTreeWindowConfig.BehaviourConfigPath);
-                config.Datas = new List<BehaviourTreeData>();
+                BehaviourTreeConfig config = new BehaviourTreeConfig();
+                config.datas = new BehaviourTreeData[m_BehaviourTreeWindowConfig.dataList.Count];
 
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.Datas.Count; i++)
+                for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
                 {
-                    config.Datas.Add(new BehaviourTreeData());
+                    config.datas[i] = new BehaviourTreeData();
                 }
 
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.Datas.Count; i++)
+                for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
                 {
-                    config.Datas[i].Id = m_BehaviourTreeWindowConfig.Datas[i].Id;
-                    ExportConfig(config.Datas[i], m_BehaviourTreeWindowConfig.Datas[i]);
+                    config.datas[i].id = m_BehaviourTreeWindowConfig.dataList[i].id;
+                    ExportConfig(config.datas[i], m_BehaviourTreeWindowConfig.dataList[i]);
+
                 }
 
-                UnityEditor.EditorUtility.SetDirty(config);
+                string jsonStr = LitJson.JsonMapper.ToJson(config);
+                File.WriteAllText(EditorPathUtil.behaviourTreeConfigDataFullPath, jsonStr);
                 ShowNotification(new GUIContent("保存成功"));
             }
         }
 
         private void ExportConfig(BehaviourTreeData outData, BehaviourTreeWindowData windowData)
         {
-            outData.ClassType = windowData.ClassType;
-            outData.Name = windowData.Name;
-            outData.Args = windowData.Args;
-            outData.Childs = new BehaviourTreeData[windowData.Children.Count];
-            outData.PreConditions = new BehaviorTreeBaseData[windowData.PreConditions.Count];
+            outData.id = windowData.id;
+            outData.classType = windowData.classType;
+            outData.name = windowData.name;
+            outData.args = windowData.args;
+            outData.children = new BehaviourTreeData[windowData.children.Count];
+            outData.preConditions = new BehaviorTreeBaseData[windowData.preConditions.Count];
 
-            for (int i = 0; i < windowData.PreConditions.Count; i++)
+            for (int i = 0; i < windowData.preConditions.Count; i++)
             {
-                outData.PreConditions[i] = new BehaviorTreeBaseData();
+                outData.preConditions[i] = new BehaviorTreeBaseData();
             }
 
-            for (int i = 0; i < windowData.PreConditions.Count; i++)
+            for (int i = 0; i < windowData.preConditions.Count; i++)
             {
-                outData.PreConditions[i].ClassType = windowData.PreConditions[i].ClassType;
-                outData.PreConditions[i].Args = windowData.PreConditions[i].Args;
+                outData.preConditions[i].classType = windowData.preConditions[i].classType;
+                outData.preConditions[i].args = windowData.preConditions[i].args;
             }
 
-            for (int i = 0; i < windowData.Children.Count; i++)
+            for (int i = 0; i < windowData.children.Count; i++)
             {
-                outData.Childs[i] = new BehaviourTreeData();
+                outData.children[i] = new BehaviourTreeData();
             }
 
-            for (int i = 0; i < windowData.Children.Count; i++)
+            for (int i = 0; i < windowData.children.Count; i++)
             {
-                ExportConfig(outData.Childs[i], windowData.Children[i]);
+                ExportConfig(outData.children[i], windowData.children[i]);
             }
         }
 
@@ -560,7 +554,6 @@ namespace GameFrameWork.Editor
         private BehaviourTreeWindowNode m_CurrWindowNode = null;
         private Dictionary<int,List<BehaviourTreeWindowNode>> m_DicFreeWindowNode = null;
         private EditorGUISplitView m_HorizontalSplitView = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
-        private SerializedObject m_WindowConfigSo;
         private ReorderableList m_LeftList = null;
         private int m_CurrSelect = -1;
         private int m_LeftOperation = -1;

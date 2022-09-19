@@ -25,7 +25,7 @@ public class SkillPrevConditionGUI : SkillGUI
 
         for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillPrevConditions.Length; i++)
         {
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
 

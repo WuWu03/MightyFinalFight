@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class BaseSceneObject : BaseEntity
 {
-    public ObjectType ObjectType
+    public ObjectType objectType
     {
         get
         {
@@ -15,7 +15,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public GameObject ResGO
+    public GameObject resGO
     {
         get
         {
@@ -23,15 +23,15 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public BoxCollider2D Collider
+    public BoxCollider2D boxCollider2D
     {
         get
         {
-            return m_Collider;
+            return m_BoxCollider2D;
         }
     }
 
-    public Vector2 Pos
+    public Vector2 pos
     {
         get
         {
@@ -39,7 +39,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public float PosZ
+    public float posZ
     {
         get
         {
@@ -47,7 +47,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public float CurrPosZ
+    public float currPosZ
     {
         get
         {
@@ -55,7 +55,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public Vector2Int MapPos
+    public Vector2Int mapPos
     {
         get
         {
@@ -63,7 +63,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public Rect Bound
+    public Rect bound
     {
         get
         {
@@ -71,7 +71,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public float Dir//物体朝向 1右 -1左 不能为0
+    public float dir//物体朝向 1右 -1左 不能为0
     {
         get
         {
@@ -79,7 +79,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public float Depth
+    public float depth
     {
         get
         {
@@ -87,7 +87,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public EntityAttribute Attribute
+    public EntityAttribute entityAttribute
     {
         get
         {
@@ -95,7 +95,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public bool IsResComplete
+    public bool isResComplete
     {
         get
         {
@@ -103,7 +103,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public int EntityID
+    public int entityID
     {
         get
         {
@@ -111,7 +111,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public List<GameObject> Targets
+    public List<GameObject> targets
     {
         get
         {
@@ -123,9 +123,9 @@ public class BaseSceneObject : BaseEntity
     {
         base.Init(id, name);
         m_Pos = transform.localPosition;
-        m_Collider = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_Collider.isTrigger = true;
-        m_Collider.enabled = false;
+        m_BoxCollider2D = gameObject.GetOrAddComponent<BoxCollider2D>();
+        m_BoxCollider2D.isTrigger = true;
+        m_BoxCollider2D.enabled = false;
         m_ListTargets = new List<GameObject>();
     }
 
@@ -138,8 +138,8 @@ public class BaseSceneObject : BaseEntity
 
         if (m_ResGO != null)
         {
-            GameObjectPool.Ins.Put(m_ResPath, m_ResGO);
-            EntityMgr.Ins.PutEntity(this);
+            GameObjectPool.instance.Put(m_ResPath, m_ResGO);
+            EntityMgr.instance.PutEntity(this);
             m_ResPath = null;
         }
 
@@ -151,7 +151,7 @@ public class BaseSceneObject : BaseEntity
 
     public virtual void SetData(BaseSceneObjectData data)
     {
-        m_EntityID = data.EntityId;
+        m_EntityID = data.entityId;
     }
 
     public void SetAttribute(EntityAttribute attribute)
@@ -290,7 +290,7 @@ public class BaseSceneObject : BaseEntity
     {
         if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath)) return;
         m_ResPath = resPath;
-        GameObjectPool.Ins.Get(resPath, ResComplete);
+        GameObjectPool.instance.Get(resPath, ResComplete);
     }
 
     private void ResComplete(GameObject go, object[] param)
@@ -299,7 +299,7 @@ public class BaseSceneObject : BaseEntity
         m_ResGO.transform.SetParent(transform, false);
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
-        m_Collider.enabled = true;
+        m_BoxCollider2D.enabled = true;
         SetLayer();
         OnResComplete(go, param);
         m_IsResComplete = true;
@@ -329,43 +329,43 @@ public class BaseSceneObject : BaseEntity
 
     protected Rect GetBound(Vector2 pos)
     {
-        m_Bound.width = m_Collider.size.x;
-        m_Bound.height = m_Collider.size.y;
-        m_Bound.center = pos + Vector2.up * (m_Collider.offset.y + m_Collider.size.y / 2);
-        m_Bound.xMin = pos.x + m_Collider.offset.x - m_Collider.size.x / 2;
-        m_Bound.xMax = pos.x + m_Collider.offset.x + m_Collider.size.x / 2;
-        m_Bound.yMin = pos.y + m_Collider.offset.y - m_Collider.size.y / 2;
-        m_Bound.yMax = pos.y + m_Collider.offset.y + m_Collider.size.y / 2;
+        m_Bound.width = m_BoxCollider2D.size.x;
+        m_Bound.height = m_BoxCollider2D.size.y;
+        m_Bound.center = pos + Vector2.up * (m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2);
+        m_Bound.xMin = pos.x + m_BoxCollider2D.offset.x - m_BoxCollider2D.size.x / 2;
+        m_Bound.xMax = pos.x + m_BoxCollider2D.offset.x + m_BoxCollider2D.size.x / 2;
+        m_Bound.yMin = pos.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
+        m_Bound.yMax = pos.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
         return m_Bound;
     }
 
     protected void SetCollider(Vector2 offest, Vector2 size)
     {
-        m_Collider.offset = offest;
-        m_Collider.size = size;
+        m_BoxCollider2D.offset = offest;
+        m_BoxCollider2D.size = size;
     }
 
     protected bool IsOutVersionX(float posX)
     {
-        Rect visionRect = CameraMgr.Ins.GetVision();
+        Rect visionRect = CameraMgr.instance.GetVision();
         return posX <= visionRect.xMin || posX >= visionRect.xMax;
     }
 
     protected bool IsOutVersionXRight(float posX)
     {
-        Rect visionRect = CameraMgr.Ins.GetVision();
+        Rect visionRect = CameraMgr.instance.GetVision();
         return posX >= visionRect.xMax;
     }
 
     protected bool IsOutVersionXLeft(float posX)
     {
-        Rect visionRect = CameraMgr.Ins.GetVision();
+        Rect visionRect = CameraMgr.instance.GetVision();
         return posX <= visionRect.xMin;
     }
 
     protected bool IsOutVersionY(float posY)
     {
-        Rect visionRect = CameraMgr.Ins.GetVision();
+        Rect visionRect = CameraMgr.instance.GetVision();
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
@@ -378,7 +378,7 @@ public class BaseSceneObject : BaseEntity
 
         BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
 
-        if (bso == null || bso.ObjectType == ObjectType.CantBreakItem || bso.ObjectType == m_ObjectType)
+        if (bso == null || bso.objectType == ObjectType.CantBreakItem || bso.objectType == m_ObjectType)
         {
             return;
         }
@@ -410,7 +410,7 @@ public class BaseSceneObject : BaseEntity
     protected int m_MapPosZ = 0;
     protected int m_EntityID = 0;
     protected string m_ResPath = string.Empty;
-    protected BoxCollider2D m_Collider = null;
+    protected BoxCollider2D m_BoxCollider2D = null;
     protected GameObject m_ResGO;
     protected Rect m_Bound = Rect.zero;
     protected Vector2 m_Pos = Vector2.zero;

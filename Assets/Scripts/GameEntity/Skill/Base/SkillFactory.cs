@@ -105,33 +105,33 @@ public class SkillFactory
                     isCondition = true;
                     break;
                 case SkillPrevConditionType.Ground:
-                    isCondition = owner.IsInGround;
+                    isCondition = owner.isInGround;
                     break;
                 case SkillPrevConditionType.DropGround:
-                    isCondition = owner.IsDropGround;
+                    isCondition = owner.isDropGround;
                     break;
                 case SkillPrevConditionType.Float:
-                    isCondition = owner.IsFloat;
+                    isCondition = owner.isFloat;
                     break;
                 case SkillPrevConditionType.Catch:
-                    isCondition = (owner as BaseHero).IsCatch;
+                    isCondition = (owner as BaseHero).isCatch;
                     break;
                 case SkillPrevConditionType.GroundNotCatch:
-                    isCondition = owner.IsInGround;
+                    isCondition = owner.isInGround;
              
                     if (owner is BaseHero)
-                        isCondition = isCondition && !(owner as BaseHero).IsCatch;
+                        isCondition = isCondition && !(owner as BaseHero).isCatch;
                     else
-                        isCondition = isCondition && !owner.IsBeCatch;
+                        isCondition = isCondition && !owner.isBeCatch;
 
                     break;
                 case SkillPrevConditionType.HPMoreThan:
                     Match m1 = m_RegexHPMoreThan.Match(conditions[i].Args);
-                    if (m1.Success) isCondition = owner.Attribute.Health > int.Parse(m1.Groups[2].Value);
+                    if (m1.Success) isCondition = owner.entityAttribute.health > int.Parse(m1.Groups[2].Value);
                     break;
                 case SkillPrevConditionType.HPLessThan:
                     Match m2 = m_RegexHPLessThan.Match(conditions[i].Args);
-                    if (m2.Success) isCondition = owner.Attribute.Health < int.Parse(m2.Groups[2].Value);
+                    if (m2.Success) isCondition = owner.entityAttribute.health < int.Parse(m2.Groups[2].Value);
                     break;
                 default:
                     break;
@@ -154,49 +154,49 @@ public class SkillFactory
 
     public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
     {
-        if (hit == null || !hit.CanBeHit)
+        if (hit == null || !hit.canBeHit)
         {
             return false;
         }
 
-        float dir = (hit as BaseSceneObject).Pos.x - owner.Pos.x >= 0 ? 1 : -1;
+        float dir = (hit as BaseSceneObject).pos.x - owner.pos.x >= 0 ? 1 : -1;
         int defenseValue = 0;
         bool isBoss = false;
         bool isCritical = false;
 
         if (effect.ForceType == SkillAddForceType.SelfDir)
         {
-            dir = owner.Dir;
+            dir = owner.dir;
         }
 
         if (hit is BaseRole)
         {
-            defenseValue = (hit as BaseRole).Attribute.DefenseValue;
+            defenseValue = (hit as BaseRole).entityAttribute.defenseValue;
         }
 
         if (owner is BaseEnemy)
         {
-            isBoss = (owner as BaseEnemy).IsBoss;
+            isBoss = (owner as BaseEnemy).isBoss;
         }
 
         HurtData hurtData = HurtData.Create();
-        hurtData.Id = data.Id;
-        hurtData.SkillExp = data.EXP;
-        hurtData.AttackerDir = owner.Dir;
-        hurtData.AttackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
-        hurtData.AttackerPos = owner.Pos;
-        hurtData.CanBeDefense = effect.CanBeDefense;
-        hurtData.IsSwoon = effect.IsSmoon;
-        hurtData.AttackerId = owner.Id;
-        hurtData.AttackValue = CacDamage(owner.Attribute.AttackValue, defenseValue, owner.Attribute.CriticalValue, effect.DamageMulity, out isCritical);
-        hurtData.IsCritical = isCritical;
-        hurtData.HurtSound = data.HurtSound;
-        hurtData.HurtAnim = string.Empty;
-        hurtData.IsGroundHurt = effect.IsOnGroundHurt;
-        hurtData.IsBoss = isBoss;
+        hurtData.id = data.Id;
+        hurtData.skillExp = data.EXP;
+        hurtData.attackerDir = owner.dir;
+        hurtData.attackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
+        hurtData.attackerPos = owner.pos;
+        hurtData.canBeDefense = effect.CanBeDefense;
+        hurtData.isSwoon = effect.IsSmoon;
+        hurtData.attackerId = owner.id;
+        hurtData.attackValue = CacDamage(owner.entityAttribute.attackValue, defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
+        hurtData.isCritical = isCritical;
+        hurtData.hurtSound = data.HurtSound;
+        hurtData.hurtAnim = string.Empty;
+        hurtData.isGroundHurt = effect.IsOnGroundHurt;
+        hurtData.isBoss = isBoss;
         hit.OnHurtMsg(hurtData);
 
-        return !hit.IsDead;
+        return !hit.isDead;
     }
 
     public static int CacDamage(int attack, int defense, int critical, float mulity, out bool isCritical)

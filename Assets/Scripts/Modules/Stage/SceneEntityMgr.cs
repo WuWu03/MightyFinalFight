@@ -15,8 +15,8 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseEnemy CreateEnemy(int sourceID, int engityID, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(StaticConfig.CharacterConfig.GetData(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
-        enemy.OnDeadEvent += OnEnemyDead;
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(DataHelper.roleDatas.GetDataById(sourceID), engityID, hp, attack, defense, hpBarWidth, pos);
+        enemy.onDeadEvent += OnEnemyDead;
         m_ListCurrEnemy.Add(enemy);
         return enemy;
     }
@@ -55,7 +55,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         for (int i = 0; i < m_ListSceneBuilding.Count; i++)
         {
-            if (m_ListSceneBuilding[i].Name == name)
+            if (m_ListSceneBuilding[i].entityName == name)
             {
                 return m_ListSceneBuilding[i];
             }
@@ -78,21 +78,21 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         for (int i = 0; i < 5; i++)
         {
-            BaseSceneItem sceneItem = EntityMgr.Ins.GetEntity<Barrel>("Barrel");
+            BaseSceneItem sceneItem = EntityMgr.instance.GetEntity<Barrel>("Barrel");
             BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
             EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
 
-            barrelData.Id = 1;
-            barrelData.Value = 0;
-            barrelData.CanDrop = false;
-            barrelData.Dir = 1;
-            barrelData.GroundY = 0;
-            barrelData.IsFloat = false;
-            barrelData.MoveSpeed = 0f;
-            barrelData.ItemId = 1001 + i;
+            barrelData.id = 1;
+            barrelData.value = 0;
+            barrelData.canDrop = false;
+            barrelData.dir = 1;
+            barrelData.groundY = 0;
+            barrelData.isFloat = false;
+            barrelData.moveSpeed = 0f;
+            barrelData.itemId = 1001 + i;
 
-            barrelAttribute.Health = 1;
-            barrelAttribute.MaxHealth = 1;
+            barrelAttribute.health = 1;
+            barrelAttribute.maxHealth = 1;
 
             sceneItem.SetAttribute(barrelAttribute);
             sceneItem.SetData(barrelData);
@@ -108,9 +108,9 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         for (int i = m_ListCurrEnemy.Count - 1; i >= 0; i--)
         {
-            if (m_ListCurrEnemy[i].EntityID == id)
+            if (m_ListCurrEnemy[i].entityID == id)
             {
-                m_ListCurrEnemy[i].OnDeadEvent -= OnEnemyDead;
+                m_ListCurrEnemy[i].onDeadEvent -= OnEnemyDead;
                 m_ListCurrEnemy.RemoveAt(i);
             }
         }

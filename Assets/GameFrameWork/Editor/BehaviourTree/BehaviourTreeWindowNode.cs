@@ -5,12 +5,13 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using GameFrameWork.Editor.Config;
 
 namespace GameFrameWork.Editor
 {
     public class BehaviourTreeWindowNode
     {
-        public bool IsParent
+        public bool isParent
         {
             get
             {
@@ -18,18 +19,20 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public Rect Rect
+        public Rect rect
         {
             get
             {
                 if (m_Data == null)
+                {
                     return Rect.zero;
+                }
 
-                return m_Data.WindowRect;
+                return m_WindowRect;
             }
         }
 
-        public BehaviourTreeWindowNode Parent
+        public BehaviourTreeWindowNode parent
         {
             get
             {
@@ -37,7 +40,7 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public List<BehaviourTreeWindowNode> Children
+        public List<BehaviourTreeWindowNode> children
         {
             get
             {
@@ -48,16 +51,18 @@ namespace GameFrameWork.Editor
         
         public BehaviourTreeWindowNode(BehaviourTreeWindowData data,bool isParent,BehaviourTreeWindowNode parent = null)
         {
+            m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
+
             InitCompositesName();
             InitPreConditionName();
             UpdateData(data, isParent, parent);
 
-            if (!string.IsNullOrEmpty(m_Data.ClassType))
+            if (!string.IsNullOrEmpty(m_Data.classType))
             {
                 string[] names = m_IsParent ? m_ParentCompositesNames : m_CompositesNames;
                 for (int i = 0; i < names.Length; i++)
                 {
-                    if(m_Data.ClassType == names[i])
+                    if(m_Data.classType == names[i])
                     {
                         m_CurrSelectComposite = i;
                         break;
@@ -65,20 +70,20 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            if(m_Data.PreConditions != null && m_Data.PreConditions.Count > 0)
+            if(m_Data.preConditions != null && m_Data.preConditions.Count > 0)
             {
-                for (int i = 0; i < m_Data.PreConditions.Count; i++)
+                for (int i = 0; i < m_Data.preConditions.Count; i++)
                 {
-                    if(string.IsNullOrEmpty(m_Data.PreConditions[i].ClassType))
+                    if(string.IsNullOrEmpty(m_Data.preConditions[i].classType))
                     {
                         continue;
                     }
 
                     for (int j = 0; j < m_PreConditionNames.Length; j++)
                     {
-                        if(m_Data.PreConditions[i].ClassType == m_PreConditionNames[j])
+                        if(m_Data.preConditions[i].classType == m_PreConditionNames[j])
                         {
-                            m_Data.PreConditions[i].SelectIndex = j;
+                            m_Data.preConditions[i].selectIndex = j;
                             break;
                         }
                     }
@@ -93,30 +98,34 @@ namespace GameFrameWork.Editor
 
             m_PreConditionList.onAddCallback = (ReorderableList list) =>
             {
-                m_Data.PreConditions.Add(new BehaviourTreeWindowPreConditon());
-                m_Data.WindowRect.height += m_Data.PreConditions.Count > 1 ? 52 : 0;
-                list.list = m_Data.PreConditions;
+                m_Data.preConditions.Add(new BehaviourTreeWindowPreConditon());
+                m_WindowRect.height += m_Data.preConditions.Count > 1 ? 52 : 0;
+                list.list = m_Data.preConditions;
             };
 
             m_PreConditionList.onRemoveCallback = (ReorderableList list) =>
             {
-                m_Data.PreConditions.RemoveAt(list.index);
-                m_Data.WindowRect.height -= m_Data.PreConditions.Count > 0 ? 52 : 0;
-                list.list = m_Data.PreConditions;
+                m_Data.preConditions.RemoveAt(list.index);
+                m_WindowRect.height -= m_Data.preConditions.Count > 0 ? 52 : 0;
+                list.list = m_Data.preConditions;
             };
 
             m_PreConditionList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
-                if (m_Data.PreConditions.Count < 1) return;
-                BehaviourTreeWindowPreConditon preConditon = m_Data.PreConditions[index];
-                preConditon.SelectIndex = EditorGUI.Popup(new Rect(rect.x, rect.y + 5, rect.width, 20), preConditon.SelectIndex, m_PreConditionNames);
-                preConditon.ClassType = m_PreConditionNames[preConditon.SelectIndex];
-                preConditon.Args = EditorGUI.TextField(new Rect(rect.x, rect.y + 25, rect.width, 20), preConditon.Args);
+                if (m_Data.preConditions.Count < 1)
+                {
+                    return;
+                }
+
+                BehaviourTreeWindowPreConditon preConditon = m_Data.preConditions[index];
+                preConditon.selectIndex = EditorGUI.Popup(new Rect(rect.x, rect.y + 5, rect.width, 20), preConditon.selectIndex, m_PreConditionNames);
+                preConditon.classType = m_PreConditionNames[preConditon.selectIndex];
+                preConditon.args = EditorGUI.TextField(new Rect(rect.x, rect.y + 25, rect.width, 20), preConditon.args);
             };
 
             m_PreConditionList.onReorderCallback = (ReorderableList list) =>
             {
-                m_Data.PreConditions = list.list as List<BehaviourTreeWindowPreConditon>;
+                m_Data.preConditions = list.list as List<BehaviourTreeWindowPreConditon>;
             };
         }
 
@@ -130,11 +139,11 @@ namespace GameFrameWork.Editor
             {
                 if (m_PreConditionList == null)
                 {
-                    m_PreConditionList = new ReorderableList(m_Data.PreConditions, typeof(BehaviourTreeWindowData), true, true, true, true);
+                    m_PreConditionList = new ReorderableList(m_Data.preConditions, typeof(BehaviourTreeWindowData), true, true, true, true);
                 }
                 else
                 {
-                    m_PreConditionList.list = m_Data.PreConditions;
+                    m_PreConditionList.list = m_Data.preConditions;
                 }
 
                 if (m_Children == null)
@@ -150,16 +159,16 @@ namespace GameFrameWork.Editor
 
                 for (int i = 0; i < assembly.Length; i++)
                 {
-                    if (assembly[i].Equals(m_Data.ClassType))
+                    if (assembly[i].Equals(m_Data.classType))
                     {
                         m_CurrSelectComposite = i;
                         break;
                     }
                 }
 
-                for (int i = 0; i < m_Data.Children.Count; i++)
+                for (int i = 0; i < m_Data.children.Count; i++)
                 {
-                    m_Children.Add(new BehaviourTreeWindowNode(m_Data.Children[i],false, this));
+                    m_Children.Add(new BehaviourTreeWindowNode(m_Data.children[i],false, this));
                 }
             }
             else
@@ -182,14 +191,14 @@ namespace GameFrameWork.Editor
 
         public void AddChild(BehaviourTreeWindowNode node)
         {
-            node.m_Data.Id = m_Data.Id * 100 + m_Children.Count + 1;
+            node.m_Data.id = m_Data.id * 100 + m_Children.Count + 1;
             m_Children.Add(node);
-            m_Data.Children.Add(node.m_Data);
+            m_Data.children.Add(node.m_Data);
         }
 
         public void RemoveChild(BehaviourTreeWindowNode node)
         {
-            m_Data.Children.Remove(node.m_Data);
+            m_Data.children.Remove(node.m_Data);
             m_Children.Remove(node);
         }
 
@@ -197,7 +206,7 @@ namespace GameFrameWork.Editor
         {
             if (m_Data != null)
             {
-                m_Data.WindowRect = GUI.Window(m_Data.Id, m_Data.WindowRect, DrawNodeWindow, string.Empty);
+                m_WindowRect = GUI.Window(m_Data.id, m_WindowRect, DrawNodeWindow, string.Empty);
 
                 for (int i = 0; i < m_Children.Count; i++)
                 {
@@ -215,7 +224,7 @@ namespace GameFrameWork.Editor
 
         public void MouseMove(Vector2 delta)
         {
-            m_Data.WindowRect.position += delta;
+            m_WindowRect.position += delta;
 
             for (int i = 0; i < m_Children.Count; i++)
             {
@@ -225,9 +234,9 @@ namespace GameFrameWork.Editor
 
         public void MouseScroll(Vector2 delta)
         {
-            //m_Data.WindowRect.width += delta.y;
-            //m_Data.WindowRect.height += delta.y;
-            //m_Data.WindowRect.position += Vector2.one * delta.y * 2;
+            //m_WindowRect.width += delta.y;
+            //m_WindowRect.height += delta.y;
+            //m_WindowRect.position += Vector2.one * delta.y * 2;
 
             //for (int i = 0; i < m_Children.Count; i++)
             //{
@@ -242,30 +251,30 @@ namespace GameFrameWork.Editor
 
         private void DrawNodeWindow(int id)
         {
-            float width = m_Data.WindowRect.width - 20;
+            float width = m_WindowRect.width - 20;
             float height = 20;
             float x = 20 / 2;
             float y = 5;
 
             if (m_IsChangeName)
             {
-                m_Data.Name = EditorGUI.TextField(new Rect(x, y, width, height), m_Data.Name);
+                m_Data.name = EditorGUI.TextField(new Rect(x, y, width, height), m_Data.name);
             }
             else
             {
-                string name = m_IsChangeName ? string.Empty : m_Data.Name + (m_IsParent ? "(父节点)" : string.Empty);
+                string name = m_IsChangeName ? string.Empty : m_Data.name + (m_IsParent ? "(父节点)" : string.Empty);
                 EditorGUI.LabelField(new Rect(x, y, width, height), name);
             }
 
             EditorGUILayout.Space(25);
 
-            EditorUtility.GUIBoxScope(() =>
+            EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.LabelField("节点类型");
                 m_CurrSelectComposite = EditorGUILayout.Popup(m_CurrSelectComposite, m_IsParent ? m_ParentCompositesNames : m_CompositesNames);
-                m_Data.ClassType = m_IsParent ? m_ParentCompositesNames[m_CurrSelectComposite] : m_CompositesNames[m_CurrSelectComposite];
-                m_Data.Args = EditorGUILayout.TextField(m_Data.Args);
+                m_Data.classType = m_IsParent ? m_ParentCompositesNames[m_CurrSelectComposite] : m_CompositesNames[m_CurrSelectComposite];
+                m_Data.args = EditorGUILayout.TextField(m_Data.args);
                 EditorGUILayout.EndVertical();
             });
 
@@ -280,7 +289,7 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_Children.Count; i++)
                 {
-                    EditorUtility.DrawCurve(Rect, m_Children[i].Rect, Color.yellow);
+                    EditorUtil.DrawCurve(rect, m_Children[i].rect, Color.yellow);
                 }
             }
         }
@@ -293,7 +302,11 @@ namespace GameFrameWork.Editor
 
         private static void InitPreConditionName()
         {
-            if (m_PreConditionNames != null) return;
+            if (m_PreConditionNames != null)
+            {
+                return;
+            }
+
             List<string> assemblyList = new List<string>();
             assemblyList.AddRange(GetAssembly("GameFrameWork.BehaviourTree.PreCondition", "PreCondition"));
             assemblyList.Insert(0, "None");
@@ -350,5 +363,6 @@ namespace GameFrameWork.Editor
         private BehaviourTreeWindowNode m_Parent = null;
         private List<BehaviourTreeWindowNode> m_Children = null;
         private BehaviourTreeWindowData m_Data = null;
+        private Rect m_WindowRect;
     }
 }

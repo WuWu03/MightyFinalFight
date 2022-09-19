@@ -12,8 +12,8 @@ public class DoRunToBorder : Action
 
     protected override void OnEnter()
     {
-        Rect vision = CameraMgr.Ins.GetVision();
-        Vector2 pos = m_Owner.Owner.Pos;
+        Rect vision = CameraMgr.instance.GetVision();
+        Vector2 pos = m_Owner.owner.pos;
 
         float leftDistance = Mathf.Abs(pos.x - vision.xMin);
         float rightDistance = Mathf.Abs(pos.x - vision.xMax);
@@ -21,15 +21,15 @@ public class DoRunToBorder : Action
         m_BorderPosX = leftDistance < rightDistance ? vision.xMin : vision.xMax;
         m_MoveDir = leftDistance < rightDistance ? -1 : 1;
         m_IsArrived = false;
-        m_Owner.Owner.ChangeDefaultState();
+        m_Owner.owner.ChangeDefaultState();
     }
 
     public override BehaviorTreeState Excute()
     {
         if(!m_IsArrived)
         {
-            Rect ownerBound = m_Owner.Owner.Bound;
-            Vector2 size = m_Owner.Owner.GetCurrTriggerSize();
+            Rect ownerBound = m_Owner.owner.bound;
+            Vector2 size = m_Owner.owner.GetCurrTriggerSize();
             float distance = m_MoveDir > 0 ? Mathf.Abs(ownerBound.xMax - m_BorderPosX) : Mathf.Abs(ownerBound.xMin - m_BorderPosX);
             m_IsArrived = distance <= size.x;
             m_Owner.Move(Vector2.right * m_MoveDir);

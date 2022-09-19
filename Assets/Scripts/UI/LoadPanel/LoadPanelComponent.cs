@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2021-7-23 11:29**************************************/
+/**2022-9-4 16:1**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -11,12 +11,12 @@ using GameFrameWork.UI;
 public class LoadPanelComponent : BasePanelComponent
 {
 	//imgShade,Image
-	public Image ImgShade { get; private set; }
+	public Image imgShade { get; private set; }
 
 	public LoadPanelComponent(UIRefRoot root) : base(root) { }
 
 	protected override void InitComponent(UIRefRoot root)
 	{
-		ImgShade = root.Objects[0] as Image;
+		imgShade = root.objects[0] as Image;
 	}
 }

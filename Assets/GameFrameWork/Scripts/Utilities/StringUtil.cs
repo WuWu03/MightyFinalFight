@@ -16,8 +16,15 @@ namespace GameFrameWork.Utilities
                 throw new Exception("Args is invalid.");
             }
 
-            if (args.Length < 1) return string.Empty;
-            if (args.Length < 2) return args[0].ToString();
+            if (args.Length < 1)
+            {
+                return string.Empty;
+            }
+
+            if (args.Length < 2)
+            {
+                return args[0].ToString();
+            }
 
             m_StringBuilder.Clear();
 

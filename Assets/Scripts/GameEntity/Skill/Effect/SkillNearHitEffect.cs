@@ -33,7 +33,7 @@ public class SkillNearHitEffect : SkillBaseEffect
         {
             if (m_SkillEffect.IsShakeCamera)
             {
-                CameraMgr.Ins.Shake();
+                CameraMgr.instance.Shake();
             }
         }
 

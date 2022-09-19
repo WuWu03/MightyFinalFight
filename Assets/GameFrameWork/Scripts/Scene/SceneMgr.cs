@@ -10,7 +10,7 @@ namespace GameFrameWork.Scene
 {
     public class SceneMgr : BaseMgr<SceneMgr>
     {
-        public event GameFrameWorkAction<LoadSceneSuccessEventArgs> LoadSceneSuccessEvent
+        public event GameFrameWorkAction<LoadSceneSuccessEventArgs> loadSceneSuccessEvent
         {
             add
             {
@@ -22,7 +22,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public event GameFrameWorkAction<LoadSceneFailureEventArgs> LoadSceneFailuerEvent
+        public event GameFrameWorkAction<LoadSceneFailureEventArgs> loadSceneFailuerEvent
         {
             add
             {
@@ -34,7 +34,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public event GameFrameWorkAction<LoadSceneUpdateEventArgs> LoadSceneUpdateEvent
+        public event GameFrameWorkAction<LoadSceneUpdateEventArgs> loadSceneUpdateEvent
         {
             add
             {
@@ -46,7 +46,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public event GameFrameWorkAction<UnLoadSceneSuccessEventArgs> UnLoadSceneSuccessEvent
+        public event GameFrameWorkAction<UnLoadSceneSuccessEventArgs> unLoadSceneSuccessEvent
         {
             add
             {
@@ -58,7 +58,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public event GameFrameWorkAction<UnLoadSceneFailureEventArgs> UnLoadSceneFailuerEvent
+        public event GameFrameWorkAction<UnLoadSceneFailureEventArgs> unLoadSceneFailuerEvent
         {
             add
             {
@@ -70,7 +70,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public bool IsLoading
+        public bool isLoading
         {
             get
             {
@@ -78,7 +78,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public bool IsUnLoading
+        public bool isUnLoading
         {
             get
             {
@@ -86,7 +86,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public string CurrSceneName
+        public string currSceneName
         {
             get
             {
@@ -94,7 +94,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public int LoadedSceneCount
+        public int loadedSceneCount
         {
             get
             {
@@ -102,7 +102,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public int UnLoadedSceneCount
+        public int unLoadedSceneCount
         {
             get
             {
@@ -124,12 +124,12 @@ namespace GameFrameWork.Scene
         {
             base.OnUpdate();
 
-            if (IsLoading)
+            if (isLoading)
             {
                 return;
             }
 
-            if(IsUnLoading)
+            if(isUnLoading)
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace GameFrameWork.Scene
                 {
                     LoadSceneRequest request = m_LoadQueue.Dequeue();
 
-                    if (request.IsUnLoad)
+                    if (request.isUnLoad)
                         StartCoroutine(InnerUnLoadSceneAsync(request));
                     else
                         StartCoroutine(InnerLoadSceneAsync(request));
@@ -178,13 +178,13 @@ namespace GameFrameWork.Scene
 
         public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object[] args)
         {
-            if (IsLoading)
+            if (isLoading)
             {
                 LoadSceneFailure(sceneName, "SceneMgr is in loading.", null);
                 return;
             }
 
-            if(IsUnLoading)
+            if(isUnLoading)
             {
                 LoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
                 return;
@@ -211,13 +211,13 @@ namespace GameFrameWork.Scene
 
         public void LoadScene(string sceneName, LoadSceneMode mode, object[] args)
         {
-            if (IsLoading)
+            if (isLoading)
             {
                 LoadSceneFailure(sceneName, "SceneMgr is in loading.", args);
                 return;
             }
 
-            if (IsUnLoading)
+            if (isUnLoading)
             {
                 LoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
                 return;
@@ -242,13 +242,13 @@ namespace GameFrameWork.Scene
 
         public void UnLoadScene(string sceneName, object[] args)
         {
-            if (IsLoading)
+            if (isLoading)
             {
                 UnLoadSceneFailure(sceneName, "SceneMgr is in loading.", args);
                 return;
             }
 
-            if (IsUnLoading)
+            if (isUnLoading)
             {
                 UnLoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
                 return;
@@ -300,37 +300,37 @@ namespace GameFrameWork.Scene
         {
             try
             {
-                m_ListLoadingScene.Add(request.SceneName);
-                m_AsyncOperation = SceneManager.LoadSceneAsync(request.SceneName, request.Mode);
+                m_ListLoadingScene.Add(request.sceneName);
+                m_AsyncOperation = SceneManager.LoadSceneAsync(request.sceneName, request.mode);
                 m_AsyncOperation.allowSceneActivation = false;          
             }
             catch(Exception e)
             {
-                LoadSceneFailure(request.SceneName, e.Message, request.Args);
+                LoadSceneFailure(request.sceneName, e.Message, request.args);
                 ReferencePool.Release(request);
                 yield break;
             }
 
-            LoadSceneUpdateEventArgs updateEventArgs = LoadSceneUpdateEventArgs.Create(request.SceneName, 0);
+            LoadSceneUpdateEventArgs updateEventArgs = LoadSceneUpdateEventArgs.Create(request.sceneName, 0);
 
             while (!m_AsyncOperation.isDone)
             {
                 if (m_AsyncOperation.progress < 0.9f)
-                    updateEventArgs.Progress = m_AsyncOperation.progress;
+                    updateEventArgs.progress = m_AsyncOperation.progress;
                 else
-                    updateEventArgs.Progress = 1.0f;
+                    updateEventArgs.progress = 1.0f;
 
                 m_LoadSceneUpdateEvent?.Invoke(updateEventArgs);
 
-                if (updateEventArgs.Progress >= 0.9)
+                if (updateEventArgs.progress >= 0.9)
                 {
-                    if (request.IsAutoAllowScene)
+                    if (request.isAutoAllowScene)
                     {
                         m_AsyncOperation.allowSceneActivation = true;
                         yield return null;
                     }
 
-                    LoadSceneSuccess(request.SceneName, request.Args);
+                    LoadSceneSuccess(request.sceneName, request.args);
                 }
 
                 yield return null;
@@ -345,12 +345,12 @@ namespace GameFrameWork.Scene
             AsyncOperation ao = null;
             try
             {
-                m_ListUnLoadingScene.Add(request.SceneName);
-                ao = SceneManager.UnloadSceneAsync(request.SceneName);
+                m_ListUnLoadingScene.Add(request.sceneName);
+                ao = SceneManager.UnloadSceneAsync(request.sceneName);
             }
             catch (Exception e)
             {
-                UnLoadSceneFailure(request.SceneName, e.Message, request.Args);
+                UnLoadSceneFailure(request.sceneName, e.Message, request.args);
                 ReferencePool.Release(request);
                 yield break;
             }
@@ -360,7 +360,7 @@ namespace GameFrameWork.Scene
                 yield return null;
             }
 
-            UnLoadSceneSuccess(request.SceneName, request.Args);
+            UnLoadSceneSuccess(request.sceneName, request.args);
             ReferencePool.Release(request);
         }
 

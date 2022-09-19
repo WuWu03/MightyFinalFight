@@ -13,37 +13,37 @@ namespace GameFrameWork.Resources
     {
         class AssetBundleInfo
         {
-            public AssetBundle AssetBundle;
-            public int ReferencedCount;
+            public AssetBundle assetBundle;
+            public int referencedCount;
 
             public AssetBundleInfo(AssetBundle assetBundle)
             {
-                AssetBundle = assetBundle;
-                ReferencedCount = 0;
+                this.assetBundle = assetBundle;
+                referencedCount = 0;
             }
         }
 
         class LoadAssetRequest
         {
-            public GameFrameWorkAction<string, Object, object[]> SharpFunc;
-            public bool LoadMainAsset;
-            public Type AssetType;
-            public string AssetName;
-            public string AssetPath;
-            public object[] Args;
+            public GameFrameWorkAction<string, Object, object[]> onLoadEvent;
+            public bool loadMainAsset;
+            public Type assetType;
+            public string assetName;
+            public string assetPath;
+            public object[] args;
         }
 
         class AssetVersion
         {
-            public string FilePath;
-            public string ExtendName;
-            public string MD5;
+            public string filePath;
+            public string extendName;
+            public string md5Value;
 
-            public AssetVersion(string filePath, string extendName, string md5)
+            public AssetVersion(string filePath, string extendName, string md5Value)
             {
-                FilePath = filePath;
-                ExtendName = extendName;
-                MD5 = md5;
+                this.filePath = filePath;
+                this.extendName = extendName;
+                this.md5Value = md5Value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace GameFrameWork.Resources
             m_DicAssetVerson = new Dictionary<string, AssetVersion>();
 
 #if UNITY_EDITOR
-            if (AppConfig.Ins.LoadAB)
+            if (AppConfig.instance.loadAB)
 #endif
             {
-                string maniFesturl = PathUtil.RunTimeAssetPath + PathUtil.ManiFest;
-                string versionUrl = PathUtil.RunTimeAssetPath + PathUtil.AssetBundleVersion;
+                string maniFesturl = PathUtil.runTimeAssetPath + PathUtil.maniFestName;
+                string versionUrl = PathUtil.runTimeAssetPath + PathUtil.assetBundleVersionName;
 
                 byte[] stream = File.ReadAllBytes(maniFesturl);
                 AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
@@ -82,31 +82,31 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载资源
         /// </summary>
-        public T LoadAsset<T>(string abName,bool loadMainAsset = true) where T: Object
+        public T LoadAsset<T>(string abName, bool loadMainAsset = true) where T : Object
         {
-            Object o = LoadAsset(abName, loadMainAsset, typeof(T));
+            Object obj = LoadAsset(abName, loadMainAsset, typeof(T));
 
-            if(o == null)
+            if (obj == null)
             {
                 return null;
             }
 
-            return o as T;
+            return obj as T;
         }
 
         /// <summary>
         /// 同步加载资源
         /// </summary>
-        public Object LoadAsset(string abName,bool loadMainAsset = true,Type t = null)
+        public Object LoadAsset(string abName, bool loadMainAsset = true, Type t = null)
         {
             if (t == null)
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = AppConfig.Ins.LoadAB;
+            bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
-                return ResMgrEditor.Ins.LoadForEditor(abName, t);
+                return ResMgrEditor.Instance.LoadForEditor(abName, t);
             else
 #endif
                 return Load(abName, loadMainAsset, t);
@@ -129,10 +129,10 @@ namespace GameFrameWork.Resources
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = AppConfig.Ins.LoadAB;
+            bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
             if (!isLoadAb)
-                ResMgrEditor.Ins.LoadForEditorAsync(abName, action, t, param);
+                ResMgrEditor.Instance.LoadForEditorAsync(abName, action, t, param);
             else
 #endif
                 LoadAsync(abName, action, loadMainAsset, t, param);
@@ -181,12 +181,12 @@ namespace GameFrameWork.Resources
             {
                 while (DependenciesLoaded(dependencies))
                 {
-                    ab = bundleInfo.AssetBundle;
+                    ab = bundleInfo.assetBundle;
                     return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
                 }
             }
 
-            ab = bundleInfo.AssetBundle;
+            ab = bundleInfo.assetBundle;
             return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
         }
 
@@ -199,12 +199,12 @@ namespace GameFrameWork.Resources
 
             string realAssetPath = GetRealAssetPath(abName);
             LoadAssetRequest request = new LoadAssetRequest();
-            request.SharpFunc = action;
-            request.LoadMainAsset = loadMainAsset;
-            request.AssetType = t;
-            request.Args = param;
-            request.AssetName = Path.GetFileNameWithoutExtension(realAssetPath);
-            request.AssetPath = abName;
+            request.onLoadEvent = action;
+            request.loadMainAsset = loadMainAsset;
+            request.assetType = t;
+            request.args = param;
+            request.assetName = Path.GetFileNameWithoutExtension(realAssetPath);
+            request.assetPath = abName;
 
             if (!m_LoadRequests.TryGetValue(realAssetPath, out List<LoadAssetRequest> requests))
             {
@@ -251,18 +251,18 @@ namespace GameFrameWork.Resources
                 }
             }
 
-            AssetBundle ab = bundleInfo.AssetBundle;
+            AssetBundle ab = bundleInfo.assetBundle;
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].SharpFunc != null)
+                if (list[i].onLoadEvent != null)
                 {
-                    if (list[i].LoadMainAsset)
+                    if (list[i].loadMainAsset)
                     {
-                        list[i].SharpFunc(list[i].AssetPath, ab.GetAsset(list[i].AssetName, list[i].AssetType), list[i].Args);
-                        list[i].SharpFunc = null;
+                        list[i].onLoadEvent(list[i].assetPath, ab.GetAsset(list[i].assetName, list[i].assetType), list[i].args);
+                        list[i].onLoadEvent = null;
                     }
                 }
-                bundleInfo.ReferencedCount++;
+                bundleInfo.referencedCount++;
             }
             m_LoadRequests.Remove(realAssetPath);
         }
@@ -329,9 +329,9 @@ namespace GameFrameWork.Resources
 
             if (m_DicAssetVerson.TryGetValue(abName, out AssetVersion version))
             {
-                if (!abName.EndsWith(version.ExtendName))
+                if (!abName.EndsWith(version.extendName))
                 {
-                    abName += version.ExtendName;
+                    abName += version.extendName;
                 }
 
                 return abName;
@@ -395,13 +395,13 @@ namespace GameFrameWork.Resources
             AssetBundleInfo bundle = GetLoadedAssetBundle(abName);
             if (bundle == null) return;
 
-            if (--bundle.ReferencedCount <= 0)
+            if (--bundle.referencedCount <= 0)
             {
                 if (m_LoadRequests.ContainsKey(abName))
                 {
                     return;     //如果当前AB处于Async Loading过程中，卸载会崩溃，只减去引用计数即可
                 }
-                bundle.AssetBundle.Unload(isThorough);
+                bundle.assetBundle.Unload(isThorough);
                 m_LoadedAssetBundles.Remove(abName);
                 Log.GameFrameworkLog.Log(StringUtil.FormatDefault(abName, " has been unloaded successfully"));
             }
@@ -409,7 +409,7 @@ namespace GameFrameWork.Resources
 
         private string GetAssetBundlePath(string abName)
         {
-            return PathUtil.FormatPath(PathUtil.RunTimeAssetPath, abName);
+            return PathUtil.FormatPath(PathUtil.runTimeAssetPath, abName);
         }
 
         protected override void OnShutDown()

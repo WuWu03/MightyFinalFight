@@ -4,13 +4,13 @@ public class HeroCatch : BaseFsmState
 {
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseHero;
+        m_Owner = fsm.owner as BaseHero;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.SetPos(m_Owner.Pos, m_Owner.PosZ);
+        m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
         m_Owner.PlayAnimation(AnimName.Catch, 1);
     }
 

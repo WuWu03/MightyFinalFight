@@ -2,8 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(CharacterConfig), true)]
-public class HeroConfigEditor : ConfigDataEditor<CharacterConfig, CharacterConfigData>{}
 
 [CustomEditor(typeof(TaskConfig), true)]
 public class TaskConfigEditor : ConfigDataEditor<TaskConfig, TaskConfigData> { }

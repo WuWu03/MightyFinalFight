@@ -34,23 +34,23 @@ namespace GameFrameWork.Input
 
     public class ComboKeyEventArgs : BaseEventArgs
     {
-        public KeyType[] Keys { get; set; }
-        public int EventId { get; set; }
-        public GameFrameWorkAction<int, bool> KeyEvent { get; set; }
+        public KeyType[] keys { get; set; }
+        public int eventId { get; set; }
+        public GameFrameWorkAction<int, bool> keyEvent { get; set; }
 
         public static ComboKeyEventArgs Create(KeyType[] keys, int eventId, GameFrameWorkAction<int, bool> keyEvent)
         {
             ComboKeyEventArgs args = ReferencePool.Acquire<ComboKeyEventArgs>();
-            args.Keys = keys;
-            args.EventId = eventId;
-            args.KeyEvent = keyEvent;
+            args.keys = keys;
+            args.eventId = eventId;
+            args.keyEvent = keyEvent;
             return args;
         }
 
         public override void Clear()
         {
-            Keys = null;
-            KeyEvent = null;
+            keys = null;
+            keyEvent = null;
         }
     }
 }

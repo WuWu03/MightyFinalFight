@@ -5,44 +5,44 @@ using UnityEngine.Events;
 
 public class BaseGravityObject : BaseSceneObject
 {
-    public bool IsFloat
+    public bool isFloat
     {
         get
         {
-            return m_Rigidbody.velocity.y >= 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
+            return m_Rigidbody2D.velocity.y >= 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
         }
     }
 
-    public bool IsDrop
+    public bool isDrop
     {
         get
         {
-            return m_Rigidbody.velocity.y < 0 && m_Rigidbody.bodyType == RigidbodyType2D.Dynamic;
+            return m_Rigidbody2D.velocity.y < 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
         }
     }
 
-    public virtual bool IsInGround
+    public virtual bool isInGround
     {
         get
         {
             if(m_MapPosZ <= 0)
             {
-                return CurrPosZ <= 0f;
+                return currPosZ <= 0f;
             }
 
-            return CurrPosZ * 100f <= m_MapPosZ;
+            return currPosZ * 100f <= m_MapPosZ;
         }
     }
 
-    public Rigidbody2D Rigidbody
+    public Rigidbody2D rigidbody2D
     {
         get
         {
-            return m_Rigidbody;
+            return m_Rigidbody2D;
         }
     }
 
-    public UnityEvent OnDropEvent
+    public UnityEvent onDropEvent
     {
         get
         {
@@ -50,7 +50,7 @@ public class BaseGravityObject : BaseSceneObject
         }
     }
 
-    public UnityEvent OnGroundEvent
+    public UnityEvent onGroundEvent
     {
         get
         {
@@ -58,7 +58,7 @@ public class BaseGravityObject : BaseSceneObject
         }
     }
 
-    public bool IsAddGroundForce
+    public bool isAddGroundForce
     {
         get
         {
@@ -70,12 +70,12 @@ public class BaseGravityObject : BaseSceneObject
     {
         base.Init(id, name);
 
-        m_Rigidbody = gameObject.GetOrAddComponent<Rigidbody2D>();
-        m_Rigidbody.gravityScale = 1.0f;
-        m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-        m_Rigidbody.velocity = Vector2.zero;
-        m_Rigidbody.sleepMode = RigidbodySleepMode2D.NeverSleep;
-        m_Rigidbody.freezeRotation = true;
+        m_Rigidbody2D = gameObject.GetOrAddComponent<Rigidbody2D>();
+        m_Rigidbody2D.gravityScale = 1.0f;
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+        m_Rigidbody2D.velocity = Vector2.zero;
+        m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
+        m_Rigidbody2D.freezeRotation = true;
     }
 
     protected override void OnUpdate()
@@ -87,14 +87,14 @@ public class BaseGravityObject : BaseSceneObject
 
     protected virtual void CheckGround()
     {
-        if (m_Rigidbody.bodyType != RigidbodyType2D.Dynamic)
+        if (m_Rigidbody2D.bodyType != RigidbodyType2D.Dynamic)
         {
             return;
         }
 
         UpdatePosX(transform.localPosition.x);
 
-        if (IsFloat)
+        if (isFloat)
         {
             return;
         }
@@ -103,7 +103,7 @@ public class BaseGravityObject : BaseSceneObject
         m_OnDropEvent.RemoveAllListeners();
         OnDrop();
 
-        if (!IsInGround)
+        if (!isInGround)
         {
             return;
         }
@@ -122,24 +122,24 @@ public class BaseGravityObject : BaseSceneObject
 
     public void AddForce(Vector2 force, bool isGroundForce = false)
     {
-        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody.AddForce(force);
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        m_Rigidbody2D.AddForce(force);
         m_IsAddGroundForce = isGroundForce;
     }
 
     public void SetBodyType(RigidbodyType2D bodyType)
     {
-        m_Rigidbody.bodyType = bodyType;
+        m_Rigidbody2D.bodyType = bodyType;
     }
 
     public void SetVelocityX(float x, bool isGroundForce = false)
     {
-        SetVelocity(x, m_Rigidbody.velocity.y, isGroundForce);
+        SetVelocity(x, m_Rigidbody2D.velocity.y, isGroundForce);
     }
 
     public void SetVelocityY(float y, bool isGroundForce = false)
     {
-        SetVelocity(m_Rigidbody.velocity.x, y, isGroundForce);
+        SetVelocity(m_Rigidbody2D.velocity.x, y, isGroundForce);
     }
 
     public void SetVelocity(float x, float y, bool isGroundForce = false)
@@ -149,37 +149,37 @@ public class BaseGravityObject : BaseSceneObject
 
     public void SetVelocity(Vector2 velocity, bool isGroundForce = false)
     {
-        m_Rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody.velocity = velocity;
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        m_Rigidbody2D.velocity = velocity;
         m_IsAddGroundForce = isGroundForce;
     }
 
     public void SetGravityScale(float gravity)
     {
-        m_Rigidbody.gravityScale = Mathf.Clamp(gravity, 0, 1);
+        m_Rigidbody2D.gravityScale = Mathf.Clamp(gravity, 0, 1);
     }
 
     public void SetDrag(float drag)
     {
-        m_Rigidbody.drag = drag;
+        m_Rigidbody2D.drag = drag;
     }
 
     public void SetAngularDrag(float angularDrag)
     {
-        m_Rigidbody.angularDrag = angularDrag;
+        m_Rigidbody2D.angularDrag = angularDrag;
     }
 
     public void ResetRigidbody(bool changBodyType = true)
     {
-        m_Rigidbody.gravityScale = 1;
-        m_Rigidbody.velocity = Vector2.zero;
-        m_Rigidbody.drag = 0;
-        m_Rigidbody.angularDrag = 0;
-        m_Rigidbody.angularVelocity = 0;
+        m_Rigidbody2D.gravityScale = 1;
+        m_Rigidbody2D.velocity = Vector2.zero;
+        m_Rigidbody2D.drag = 0;
+        m_Rigidbody2D.angularDrag = 0;
+        m_Rigidbody2D.angularVelocity = 0;
 
         if (changBodyType)
         {
-            m_Rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
     }
 
@@ -196,5 +196,5 @@ public class BaseGravityObject : BaseSceneObject
     private UnityEvent m_OnGroundEvent = new UnityEvent();
 
     protected bool m_IsAddGroundForce = false;
-    protected Rigidbody2D m_Rigidbody = null;
+    protected Rigidbody2D m_Rigidbody2D = null;
 }

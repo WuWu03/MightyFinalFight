@@ -33,7 +33,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         for (int i = 0; i < m_CurrTaskList.Count; i++)
         {
-            if (m_CurrTaskList[i].TaskData.Id.Equals(id))
+            if (m_CurrTaskList[i].taskData.Id.Equals(id))
             {
                 return true;
             }
@@ -46,7 +46,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         for (int i = 0; i < m_CompleteTask.Count; i++)
         {
-            if (m_CompleteTask[i].TaskData.Id.Equals(id))
+            if (m_CompleteTask[i].taskData.Id.Equals(id))
             {
                 return true;
             }
@@ -64,7 +64,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
             return;
         }
 
-        if (!m_CurrTaskList[m_CurrTaskIndex].IsComplete)
+        if (!m_CurrTaskList[m_CurrTaskIndex].isComplete)
         {
             m_CurrTaskList[m_CurrTaskIndex].Update();
 
@@ -104,8 +104,8 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
     private void CompleteTask()
     {
-        int nextId = m_CurrTaskList[m_CurrTaskIndex].TaskData.NextID;
-        int failureId = m_CurrTaskList[m_CurrTaskIndex].TaskData.FailureID;
+        int nextId = m_CurrTaskList[m_CurrTaskIndex].taskData.NextID;
+        int failureId = m_CurrTaskList[m_CurrTaskIndex].taskData.FailureID;
 
         m_CompleteTask.Add(m_CurrTaskList[m_CurrTaskIndex]);
         m_CurrTaskList.RemoveAt(m_CurrTaskIndex);
@@ -131,7 +131,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
             for (int i = 0; i < m_CurrTaskList.Count; i++)
             {
-                if(m_CurrTaskList[i].TaskData.Id.Equals(failureId))
+                if(m_CurrTaskList[i].taskData.Id.Equals(failureId))
                 {
                     hasFailure = true;
                     m_CompleteTask.Add(m_CurrTaskList[i]);

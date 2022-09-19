@@ -7,7 +7,7 @@ namespace GameFrameWork
     public class ReferenceCollection
     {
 
-        public Type ReferenceType
+        public Type referenceType
         {
             get
             {
@@ -15,7 +15,7 @@ namespace GameFrameWork
             }
         }
 
-        public int UsingReferenceCount
+        public int usingReferenceCount
         {
             get
             {
@@ -23,7 +23,7 @@ namespace GameFrameWork
             }
         }
         
-        public int AcquireReferenceCount
+        public int acquireReferenceCount
         {
             get
             {
@@ -31,7 +31,7 @@ namespace GameFrameWork
             }
         }
 
-        public int AddReferenceCount
+        public int addReferenceCount
         {
             get
             {
@@ -39,7 +39,7 @@ namespace GameFrameWork
             }
         }
 
-        public int RemoveReferenceCount
+        public int removeReferenceCount
         {
             get
             {
@@ -47,7 +47,7 @@ namespace GameFrameWork
             }
         }
 
-        public int ReleaseReferenceCount
+        public int releaseReferenceCount
         {
             get
             {

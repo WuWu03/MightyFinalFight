@@ -19,7 +19,7 @@ public class TaskMoveToPos : BaseTask
     public override void Update()
     {
         base.Update();
-        Vector2 pos = PlayerMgr.Ins.Player.Pos;
+        Vector2 pos = PlayerMgr.instance.player.pos;
 
         if (!m_XArrived)
         {

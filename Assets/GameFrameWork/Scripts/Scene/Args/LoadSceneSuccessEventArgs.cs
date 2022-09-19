@@ -6,7 +6,7 @@ namespace GameFrameWork.Scene
 {
     public class LoadSceneSuccessEventArgs : BaseEventArgs
     {
-        public string SceneName
+        public string sceneName
         {
             get
             {
@@ -14,29 +14,29 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public object Args
+        public object arg
         {
             get
             {
-                return m_Args;
+                return m_Arg;
             }
         }
 
-        public static LoadSceneSuccessEventArgs Create(string sceneName,object args)
+        public static LoadSceneSuccessEventArgs Create(string sceneName,object arg)
         {
             LoadSceneSuccessEventArgs successEventArgs = ReferencePool.Acquire<LoadSceneSuccessEventArgs>();
             successEventArgs.m_SceneName = sceneName;
-            successEventArgs.m_Args = args;
+            successEventArgs.m_Arg = arg;
             return successEventArgs;
         }
 
         public override void Clear()
         {
             m_SceneName = string.Empty;
-            m_Args = null;
+            m_Arg = null;
         }
 
-        private object m_Args = null;
+        private object m_Arg = null;
         private string m_SceneName = string.Empty;
     }
 }

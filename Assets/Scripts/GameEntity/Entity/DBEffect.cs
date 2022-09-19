@@ -12,37 +12,37 @@ public class DBEffect : BaseEffect
 
         if (m_IsResComplete)
         {
-            m_UAC.animation.timeScale = m_Speed;
-            m_UAC.animation.Play();
+            m_ArmatureAnimator.animation.timeScale = m_Speed;
+            m_ArmatureAnimator.animation.Play();
         }
     }
 
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        m_UAC = go.GetComponent<UnityArmatureComponent>();
-        m_UAC.animation.Stop();
-        m_UAC.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_ArmatureAnimator = go.GetComponent<UnityArmatureComponent>();
+        m_ArmatureAnimator.animation.Stop();
+        m_ArmatureAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
         if (m_IsPlaying)
         {
-            m_UAC.animation.timeScale = m_Speed;
-            m_UAC.animation.Play();
+            m_ArmatureAnimator.animation.timeScale = m_Speed;
+            m_ArmatureAnimator.animation.Play();
         }
     }
 
     public override void Release()
     {
         base.Release();
-        m_UAC.animation.Stop();
-        m_UAC.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
-        m_UAC = null;
+        m_ArmatureAnimator.animation.Stop();
+        m_ArmatureAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
+        m_ArmatureAnimator = null;
     }
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
     }
 
-    private DragonBones.UnityArmatureComponent m_UAC = null;
+    private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;
 }

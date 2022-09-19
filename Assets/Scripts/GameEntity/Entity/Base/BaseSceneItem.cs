@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BaseSceneItem : BaseGravityObject
 {
-    public virtual bool CanPickUp
+    public virtual bool canPickUp
     {
         get
         {

@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class PlayerMgr : BaseMgr<PlayerMgr>
 {
-    public BaseHero Player
+    public BaseHero player
     {
         get
         {
@@ -18,15 +18,15 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public CharacterConfigData CharacterData
+    public RoleData roleData
     {
         get
         {
-            return m_CharacterData;
+            return m_RoleData;
         }
     }
 
-    public LevelConfigData.LevelInfo LevelData
+    public LevelConfigData.LevelInfo levelData
     {
         get
         {
@@ -34,7 +34,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public int Life
+    public int life
     {
         get
         {
@@ -42,7 +42,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public int EXP
+    public int exp
     {
         get
         {
@@ -50,7 +50,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public int Level
+    public int level
     {
         get
         {
@@ -58,15 +58,15 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public int Continue
+    public int continueCount
     {
         get
         {
-            return m_Continue;
+            return m_ContinueCount;
         }
     }
 
-    public bool CanContrl
+    public bool canContrl
     {
         get
         {
@@ -75,36 +75,36 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         set
         {
             m_CanCtrl = value;
-            InputMgr.Ins.IsRunning = value;
+            InputMgr.instance.isRunning = value;
         }
     }
 
-    public int SelectCharacterId
+    public int selectRoleId
     {
         get
         {
-            return m_SelectCharacterId;
+            return m_SelectRoleId;
         }
         set
         {
-            m_SelectCharacterId = value;
+            m_SelectRoleId = value;
         }
     }
 
     protected override void OnAwake()
     {
         base.OnAwake();
-        InputMgr.Ins.AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical");
-        InputMgr.Ins.AddKey(KeyType.A, "A");
-        InputMgr.Ins.AddKey(KeyType.B, "B");
-        InputMgr.Ins.AddKey(KeyType.X, "X", KeyType.A, true);
-        InputMgr.Ins.AddKey(KeyType.Y, "Y", KeyType.B, true);
-        InputMgr.Ins.AddKey(KeyType.Start, "Start");
-        InputMgr.Ins.AddKey(KeyType.Select, "Select");
-        InputMgr.Ins.AddKey(KeyType.LB, "LB");
-        InputMgr.Ins.AddKey(KeyType.RB, "RB");
-        InputMgr.Ins.AddKey(KeyType.LT, "LT");
-        InputMgr.Ins.AddKey(KeyType.RT, "RT");
+        InputMgr.instance.AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical");
+        InputMgr.instance.AddKey(KeyType.A, "A");
+        InputMgr.instance.AddKey(KeyType.B, "B");
+        InputMgr.instance.AddKey(KeyType.X, "X", KeyType.A, true);
+        InputMgr.instance.AddKey(KeyType.Y, "Y", KeyType.B, true);
+        InputMgr.instance.AddKey(KeyType.Start, "Start");
+        InputMgr.instance.AddKey(KeyType.Select, "Select");
+        InputMgr.instance.AddKey(KeyType.LB, "LB");
+        InputMgr.instance.AddKey(KeyType.RB, "RB");
+        InputMgr.instance.AddKey(KeyType.LT, "LT");
+        InputMgr.instance.AddKey(KeyType.RT, "RT");
     }
 
     public void InitPlayer()
@@ -115,77 +115,77 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
 
         m_Life = 99;
-        m_Continue = 3;
+        m_ContinueCount = 3;
         m_Level = 1;
         m_EXP = 0;
 
-        m_CharacterData = StaticConfig.CharacterConfig.GetData(m_SelectCharacterId);
-        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectCharacterId).Levels[m_Level - 1];
-        m_Player = EntityMgr.Ins.GetEntity<BaseHero>("Player");
+        m_RoleData = DataHelper.roleDatas.GetDataById(m_SelectRoleId);
+        m_LevelData = StaticConfig.LevelConfig.GetData(m_SelectRoleId).Levels[m_Level - 1];
+        m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_CharacterData.AssetName));
+        m_Player.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_RoleData.assetName));
         m_Player.SetLayer(LayerName.Unit);
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
         EntityAttribute roleAttribute = ReferencePool.Acquire<EntityAttribute>();
 
-        roleAttribute.Health = m_LevelData.Health;
-        roleAttribute.MaxHealth = m_LevelData.Health;
-        roleAttribute.AttackSpeed = m_CharacterData.AttackSpeed;
-        roleAttribute.AttackValue = m_LevelData.AttackValue;
-        roleAttribute.DefenseValue = m_LevelData.DefenseValue;
-        roleAttribute.CriticalValue = m_LevelData.CriticalValue;
-        roleAttribute.JumpForce = m_LevelData.JumpForce;
-        roleAttribute.MoveSpeed = m_LevelData.MoveSpeed;
+        roleAttribute.health = m_LevelData.Health;
+        roleAttribute.maxHealth = m_LevelData.Health;
+        roleAttribute.attackSpeed = m_RoleData.attackSpeed;
+        roleAttribute.attackValue = m_LevelData.AttackValue;
+        roleAttribute.defenseValue = m_LevelData.DefenseValue;
+        roleAttribute.criticalValue = m_LevelData.CriticalValue;
+        roleAttribute.jumpForce = m_LevelData.JumpForce;
+        roleAttribute.moveSpeed = m_LevelData.MoveSpeed;
 
-        roleData.CatchControl = m_CharacterData.CatchControl;
+        roleData.isCatchControl = m_RoleData.isCatchControl;
 
-        heroSkillData.Id = m_CharacterData.Id;
-        heroSkillData.AttackIds = m_CharacterData.AttackIDs;
-        heroSkillData.JumpAttackIds = m_CharacterData.JumpAttackIDs;
-        heroSkillData.SkillIds = m_CharacterData.Skills;
-        heroSkillData.AttackWait = m_CharacterData.AttackWait;
-        heroSkillData.AttackNextTime = m_CharacterData.AttackNextTime;
-        heroSkillData.CatchAttackID = m_CharacterData.CatchAttackID;
-        heroSkillData.ThrowAttackID = m_CharacterData.ThrowAttackID;
-        heroSkillData.WeaponAttackID = m_CharacterData.WeaponAttackID;
-        heroSkillData.ThrowWeaponID = m_CharacterData.ThrowWeaponID;
+        heroSkillData.id = m_RoleData.id;
+        heroSkillData.attackIds = m_RoleData.attactIds;
+        heroSkillData.jumpAttackIds = m_RoleData.jumpAttackIds;
+        heroSkillData.skillIds = m_RoleData.skillIds;
+        heroSkillData.attackWait = m_RoleData.attackWait;
+        heroSkillData.attackNextTime = m_RoleData.attackNextTime;
+        heroSkillData.catchAttackID = m_RoleData.catchAttackId;
+        heroSkillData.throwAttackID = m_RoleData.throwAttackId;
+        heroSkillData.weaponAttackID = m_RoleData.weaponAttackId;
+        heroSkillData.throwWeaponID = m_RoleData.throwWeaponId;
 
         m_Player.SetAttribute(roleAttribute);
         m_Player.SetData(roleData);
         m_CurrCtrl.SetData(heroSkillData);
 
-        for (int i = 6; i < m_CharacterData.Skills.Length; i++)
+        for (int i = 6; i < m_RoleData.skillIds.Length; i++)
         {
-            SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_CharacterData.Skills[i]);
+            SkillConfigData skillData = StaticConfig.SkillConfig.GetData(m_RoleData.skillIds[i]);
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.Ins.AddComboKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
+                InputMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
             }
         }
 
         m_CanCtrl = true;
 
-        CameraMgr.Ins.SetTarget(m_Player.transform);
+        CameraMgr.instance.SetTarget(m_Player.transform);
 
-        InputMgr.Ins.GetDirection = GetDirction;
-        InputMgr.Ins.AfterTrigger = AfterTrigger;
-        InputMgr.Ins.GetPreconditon = GetPreCondition;
-        InputMgr.Ins.IsRunning = true;
+        InputMgr.instance.getDirectionEvent = GetDirction;
+        InputMgr.instance.afterTriggerEvent = AfterTrigger;
+        InputMgr.instance.getPreconditonEvent = GetPreCondition;
+        InputMgr.instance.isRunning = true;
     }
 
  
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerLife(Life);
+        UIMgr.instance.GetPanel<MainPanel>().SetPlayerLife(life);
 
-        if (Life < 1)
+        if (life < 1)
         {
-            CameraMgr.Ins.EndFollow();
-            InputMgr.Ins.RemoveAllComboKeyEvent();
+            CameraMgr.instance.EndFollow();
+            InputMgr.instance.RemoveAllComboKeyEvent();
 
             m_Player.Release();
             m_Player = null;
@@ -193,7 +193,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        m_Player.Attribute.ResetHealth();
+        m_Player.entityAttribute.ResetHealth();
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
@@ -205,17 +205,17 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainPanel mainPanel = UIMgr.Ins.GetPanel<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
         if (m_EXP >= m_LevelData.EXP)
         {
             m_Level++;
             m_EXP -= m_LevelData.EXP;
-            m_LevelData = StaticConfig.LevelConfig.GetData(m_CharacterData.Id).Levels[m_Level - 1];
-            m_Player.Attribute.Health = m_LevelData.Health;
-            m_Player.Attribute.MaxHealth = m_LevelData.Health;
+            m_LevelData = StaticConfig.LevelConfig.GetData(m_RoleData.id).Levels[m_Level - 1];
+            m_Player.entityAttribute.health = m_LevelData.Health;
+            m_Player.entityAttribute.maxHealth = m_LevelData.Health;
             mainPanel.SetPlayerHP(m_LevelData.Health, m_LevelData.Health, m_LevelData.HPBarWidth);
             mainPanel.SetPlayerLevel();
-            SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
+            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
         }
         mainPanel.SetPlayerExp(m_EXP, m_LevelData.EXP);
     }
@@ -223,27 +223,27 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddLife(int value)
     {
         m_Life += value;
-        UIMgr.Ins.GetPanel<MainPanel>().SetPlayerLife(m_Life);
+        UIMgr.instance.GetPanel<MainPanel>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)
     {
-        m_Continue += value;
+        m_ContinueCount += value;
     }
 
     public void SetSpeedZero(bool isZero)
     {
         if (m_CurrSpeed == 0)
         {
-            m_CurrSpeed = m_Player.Attribute.MoveSpeed;
+            m_CurrSpeed = m_Player.entityAttribute.moveSpeed;
         }
 
-        m_Player.Attribute.MoveSpeed = 0f;
+        m_Player.entityAttribute.moveSpeed = 0f;
     }
 
     public void RevertSpeed()
     {
-        m_Player.Attribute.MoveSpeed = m_CurrSpeed;
+        m_Player.entityAttribute.moveSpeed = m_CurrSpeed;
         m_CurrSpeed = 0f;
     }
 
@@ -254,30 +254,30 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return 1;
         }
 
-        return m_Player.Dir;
+        return m_Player.dir;
     }
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.IsResComplete || m_Player.Attribute.Health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return false;
         }
 
-        Vector2 asix = InputMgr.Ins.GetAxis(AxisType.LeftAxis);
+        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
         bool result = asix.x != 0 || asix.y != 0;
 
         m_CurrCtrl.Move(asix);
 
-        if (InputMgr.Ins.GetKeyDown(KeyType.A, true) || InputMgr.Ins.GetKeyDown(KeyType.X))
+        if (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X))
         {
             m_CurrCtrl.Attack(asix);
             result = true;
         }
 
-        if (InputMgr.Ins.GetKeyDown(KeyType.B, true) || InputMgr.Ins.GetKeyDown(KeyType.Y))
+        if (InputMgr.instance.GetKeyDown(KeyType.B, true) || InputMgr.instance.GetKeyDown(KeyType.Y))
         {
-            m_CurrCtrl.Jump(asix, m_CharacterData.Id != 2001);
+            m_CurrCtrl.Jump(asix, m_RoleData.id != 2001);
             result = true;
         }
 
@@ -297,15 +297,15 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     }
 
     private BaseHeroCtrl m_CurrCtrl = null;
-    private CharacterConfigData m_CharacterData = null;
+    private RoleData m_RoleData = null;
     private BaseHero m_Player = null;
     private LevelConfigData.LevelInfo m_LevelData = null;
 
     private int m_Life = 0;
     private int m_EXP = 0;
     private int m_Level = 0;
-    private int m_Continue = 0;
-    private int m_SelectCharacterId = 0;
+    private int m_ContinueCount = 0;
+    private int m_SelectRoleId = 0;
     private float m_CurrSpeed = 0f;
     private bool m_CanCtrl = false;
 }

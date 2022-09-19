@@ -8,13 +8,13 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     protected override void OnInit()
     {
         base.OnInit();
-        m_BehaviourTreeMgr = new BehaviourTreeMgr(this, StaticConfig.BehaviourTreeConfig);
+        m_BehaviourTreeMgr = new BehaviourTreeMgr(this);
     }
 
     public override void SetData(BaseRoleSkillData data)
     {
         BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
-        m_BehaviourTreeMgr.Init(baseEnemySkillInfo.BehaviourTreeIds);
+        m_BehaviourTreeMgr.InitTree(baseEnemySkillInfo.behaviourTreeIds);
         base.SetData(data);
     }
 
@@ -39,7 +39,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     public void OppositePlayer()
     {
-        m_Owner.SetDir(PlayerMgr.Ins.Player.Pos.x - m_Owner.Pos.x > 0 ? 1f : -1f);
+        m_Owner.SetDir(PlayerMgr.instance.player.pos.x - m_Owner.pos.x > 0 ? 1f : -1f);
     }
 
     public bool HasBehaviour()

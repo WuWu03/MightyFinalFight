@@ -12,6 +12,6 @@ public class PreIsPlayerCanBeHit : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return PlayerMgr.Ins.Player.CanBeHit || PlayerMgr.Ins.Player.IsRebirthState;
+        return PlayerMgr.instance.player.canBeHit || PlayerMgr.instance.player.isRebirthState;
     }
 }

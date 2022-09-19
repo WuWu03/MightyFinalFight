@@ -5,41 +5,41 @@ using UnityEngine.UI;
 public class UIFrameEffect : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Sprite[] Sprites;
-    public bool IsLoop = true;
-    public int FrameRate = 24;
+    public Sprite[] sprites;
+    public bool isLoop = true;
+    public int frameRate = 24;
   
 
     private void Awake()
     {
-        if(Sprites == null || Sprites.Length < 1)
+        if(sprites == null || sprites.Length < 1)
         {
             return;
         }
 
         m_ImgSprite = GetComponent<Image>();
-        m_PreFrameTime = (float)1 / FrameRate;
-        m_ImgSprite.sprite = Sprites[0];
+        m_PreFrameTime = (float)1 / frameRate;
+        m_ImgSprite.sprite = sprites[0];
     }
 
     private void OnEnable()
     {
         m_FrameIndex = 0;
         m_FramteTimer = 0;
-        m_ImgSprite.sprite = Sprites[0];
+        m_ImgSprite.sprite = sprites[0];
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (m_IsStop || Sprites == null || Sprites.Length < 1)
+        if (m_IsStop || sprites == null || sprites.Length < 1)
         {
             return;
         }
 
-        if (m_FrameIndex >= Sprites.Length - 1)
+        if (m_FrameIndex >= sprites.Length - 1)
         {
-            if (!IsLoop)
+            if (!isLoop)
             {
                 return;
             }
@@ -53,7 +53,7 @@ public class UIFrameEffect : MonoBehaviour
         {
             m_FramteTimer = 0;
             m_FrameIndex++;
-            m_ImgSprite.sprite = Sprites[m_FrameIndex];
+            m_ImgSprite.sprite = sprites[m_FrameIndex];
         }
     }
 

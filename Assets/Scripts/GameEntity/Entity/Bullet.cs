@@ -14,8 +14,8 @@ public class Bullet : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        SetDir(owner.Dir);
-        SetPos2(owner.Pos + new Vector2(m_BulletData.Pos.x * owner.Dir, m_BulletData.Pos.y));
+        SetDir(owner.dir);
+        SetPos2(owner.pos + new Vector2(m_BulletData.pos.x * owner.dir, m_BulletData.pos.y));
     }
 
     public void SetSkillEffect(SkillBulletEffect skillBulletEffect)
@@ -27,10 +27,10 @@ public class Bullet : BaseSceneItem
     {
         base.OnUpdate();
 
-        if (m_BulletData.IsPenatrate)
+        if (m_BulletData.isPenatrate)
         {
             bool isOutVersion = IsOutVersionX(transform.localPosition.x) || IsOutVersionY(transform.localPosition.y);
-            if (isOutVersion || m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+            if (isOutVersion || m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
             {
                 Release();
             }
@@ -43,7 +43,7 @@ public class Bullet : BaseSceneItem
             }
             else
             {
-                if(m_Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
+                if(m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
             }
         }
 
@@ -62,7 +62,7 @@ public class Bullet : BaseSceneItem
 
     private void CheckHit(Collider2D collision)
     {
-        if (!m_IsResComplete || (!m_BulletData.IsPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject))
+        if (!m_IsResComplete || (!m_BulletData.isPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject))
         {
             return;
         }
@@ -74,7 +74,7 @@ public class Bullet : BaseSceneItem
             return;
         }
 
-        bool isInRange = Mathf.Abs(targetObj.Pos.y - m_Pos.y) < m_BulletData.HitRange;
+        bool isInRange = Mathf.Abs(targetObj.pos.y - m_Pos.y) < m_BulletData.hitRange;
 
         if (isInRange)
         {
@@ -85,16 +85,16 @@ public class Bullet : BaseSceneItem
                 m_SkillBulletEffect.BulletEffect(hit);
             }
 
-            if (!m_BulletData.IsPenatrate)
+            if (!m_BulletData.isPenatrate)
             {
                 SetVelocity(Vector2.zero);
             }
 
-            if (!string.IsNullOrEmpty(m_BulletData.HitAnim))
+            if (!string.IsNullOrEmpty(m_BulletData.hitAnim))
             {
-                m_Animator.animation.timeScale = m_BulletData.HitAnimSpeed;
-                m_Animator.animation.Play(m_BulletData.HitAnim, 1);
-                SetTrigger(m_BulletData.HitAnim);
+                m_Animator.animation.timeScale = m_BulletData.hitAnimSpeed;
+                m_Animator.animation.Play(m_BulletData.hitAnim, 1);
+                SetTrigger(m_BulletData.hitAnim);
             }
 
             m_IsHit = true;
@@ -106,15 +106,15 @@ public class Bullet : BaseSceneItem
         base.OnResComplete(go, param);
         go.SetActive(true);
         
-        m_Collider.enabled = true;
-        m_Collider.isTrigger = true;
+        m_BoxCollider2D.enabled = true;
+        m_BoxCollider2D.isTrigger = true;
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_Animator.animation.timeScale = m_BulletData.NormalAnimSpeed;
-        m_Animator.animation.Play(m_BulletData.NormalAnim, 0);
-        SetTrigger(m_BulletData.NormalAnim);
-        SetDrag(m_BulletData.Drag);
+        m_Animator.animation.timeScale = m_BulletData.normalAnimSpeed;
+        m_Animator.animation.Play(m_BulletData.normalAnim, 0);
+        SetTrigger(m_BulletData.normalAnim);
+        SetDrag(m_BulletData.drag);
         SetGravityScale(0f);
-        SetVelocity(m_BulletData.Velocity.x * m_Owner.Dir, m_BulletData.Velocity.y);
+        SetVelocity(m_BulletData.velocity.x * m_Owner.dir, m_BulletData.velocity.y);
     }
 
     public override void Release()

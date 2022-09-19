@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -151,6 +151,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1219772620}
   m_RootOrder: 0
@@ -268,6 +269,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1295598169}
   m_RootOrder: 0
@@ -285,7 +287,7 @@ GameObject:
   - component: {fileID: 285322451}
   - component: {fileID: 285322450}
   m_Layer: 5
-  m_Name: Pos3
+  m_Name: pos3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,6 +303,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 571104311}
   m_RootOrder: 2
@@ -322,13 +325,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
   - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
   - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
   - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  IsLoop: 1
-  FrameRate: 24
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &285322451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +399,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1936383597}
   m_RootOrder: 1
@@ -496,6 +500,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1219772620}
   m_RootOrder: 1
@@ -580,7 +585,7 @@ GameObject:
   - component: {fileID: 418528371}
   - component: {fileID: 418528370}
   m_Layer: 5
-  m_Name: Pos4
+  m_Name: pos4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -596,6 +601,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 571104311}
   m_RootOrder: 3
@@ -617,13 +623,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
   - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
   - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
   - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  IsLoop: 1
-  FrameRate: 24
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &418528371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,7 +681,7 @@ GameObject:
   - component: {fileID: 571104312}
   - component: {fileID: 571104314}
   m_Layer: 5
-  m_Name: ImgMap
+  m_Name: imgMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -691,6 +697,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2111051429}
   - {fileID: 1404566772}
@@ -756,13 +763,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgMap
+  m_RefName: imgMap
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &632135520
 GameObject:
@@ -791,6 +798,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2073645758}
   - {fileID: 1219772620}
@@ -818,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects:
+  objects:
   - {fileID: 1219772619}
   - {fileID: 1405504434}
   - {fileID: 1936383596}
@@ -837,7 +845,7 @@ GameObject:
   - component: {fileID: 1219772621}
   - component: {fileID: 1219772623}
   m_Layer: 5
-  m_Name: Blue
+  m_Name: blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,6 +861,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 108978043}
   - {fileID: 399380583}
@@ -917,13 +926,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: Blue
+  m_RefName: blue
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1285304433
 GameObject:
@@ -953,6 +962,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1936383597}
   m_RootOrder: 0
@@ -1026,6 +1036,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 165285554}
   - {fileID: 1803040305}
@@ -1046,7 +1057,7 @@ GameObject:
   - component: {fileID: 1404566774}
   - component: {fileID: 1404566773}
   m_Layer: 5
-  m_Name: Pos2
+  m_Name: pos2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1062,6 +1073,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 571104311}
   m_RootOrder: 1
@@ -1083,13 +1095,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
   - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
   - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
   - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  IsLoop: 1
-  FrameRate: 24
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &1404566774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1141,7 +1153,7 @@ GameObject:
   - component: {fileID: 1405504436}
   - component: {fileID: 1405504438}
   m_Layer: 5
-  m_Name: Red
+  m_Name: red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,6 +1169,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1803829212}
   - {fileID: 1532729303}
@@ -1221,13 +1234,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: Red
+  m_RefName: red
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1438736093
 GameObject:
@@ -1262,15 +1275,15 @@ MonoBehaviour:
   m_PanelName: StagePanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 3
-  PanelPreLoadType: 0
-  PanelCloseMode: 2
-  PanelLayer: 3
-  IsCustomLayer: 0
-  UnLoadTime: 0
-  PanelPath: Assets/Scripts/UI/StagePanel/StagePanel.cs
-  PanelComponentPath: Assets/Scripts/UI/StagePanel/StagePanelComponent.cs
-  PanelPrefabPath: Assets/ArtResources/UI/Prefabs/StagePanel.prefab
+  panelType: 2
+  panelPreLoadType: 0
+  panelCloseMode: 1
+  panelLayer: 2
+  isCustomLayer: 0
+  unLoadTime: 0
+  panelPath: Assets/Scripts/UI/StagePanel/StagePanel.cs
+  panelComponentPath: Assets/Scripts/UI/StagePanel/StagePanelComponent.cs
+  panelPrefabPath: Assets/ArtResources/UI/Prefabs/StagePanel.prefab
 --- !u!4 &1438736095
 Transform:
   m_ObjectHideFlags: 0
@@ -1281,6 +1294,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1314,6 +1328,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1405504435}
   m_RootOrder: 1
@@ -1396,7 +1411,7 @@ GameObject:
   - component: {fileID: 1536974666}
   - component: {fileID: 1536974667}
   m_Layer: 5
-  m_Name: HeroPos
+  m_Name: heroPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1412,6 +1427,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 632135521}
   m_RootOrder: 5
@@ -1434,13 +1450,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: HeroPos
+  m_RefName: heroPos
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1646893348
 GameObject:
@@ -1470,6 +1486,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1295598169}
   m_RootOrder: 2
@@ -1486,6 +1503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: A
@@ -1521,7 +1539,7 @@ GameObject:
   - component: {fileID: 1767652842}
   - component: {fileID: 1767652841}
   m_Layer: 5
-  m_Name: Pos5
+  m_Name: pos5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1537,6 +1555,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 571104311}
   m_RootOrder: 4
@@ -1558,13 +1577,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
   - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
   - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
   - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  IsLoop: 1
-  FrameRate: 24
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &1767652842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,6 +1652,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 632135521}
   m_Father: {fileID: 1295598169}
@@ -1744,6 +1764,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1405504435}
   m_RootOrder: 0
@@ -1804,7 +1825,7 @@ GameObject:
   - component: {fileID: 1936383598}
   - component: {fileID: 1936383600}
   m_Layer: 5
-  m_Name: Green
+  m_Name: green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1820,6 +1841,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1285304434}
   - {fileID: 340059904}
@@ -1884,13 +1906,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: Green
+  m_RefName: green
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopLayout: 0
+  m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2073645757
 GameObject:
@@ -1904,7 +1926,7 @@ GameObject:
   - component: {fileID: 2073645760}
   - component: {fileID: 2073645759}
   m_Layer: 5
-  m_Name: BG
+  m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1920,6 +1942,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 632135521}
   m_RootOrder: 0
@@ -1980,7 +2003,7 @@ GameObject:
   - component: {fileID: 2111051431}
   - component: {fileID: 2111051430}
   m_Layer: 5
-  m_Name: Pos1
+  m_Name: pos1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1996,6 +2019,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 571104311}
   m_RootOrder: 0
@@ -2017,13 +2041,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d5a56a962108cb45bb28b48c6c7c84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sprites:
+  sprites:
   - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
   - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
   - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
   - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  IsLoop: 1
-  FrameRate: 24
+  isLoop: 1
+  frameRate: 24
 --- !u!114 &2111051431
 MonoBehaviour:
   m_ObjectHideFlags: 0

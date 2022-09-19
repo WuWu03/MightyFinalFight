@@ -17,7 +17,7 @@ namespace GameFrameWork.Camera
             public float right;
         }
 
-        public float Speed
+        public float speed
         {
             get
             {
@@ -29,7 +29,7 @@ namespace GameFrameWork.Camera
             }
         }
 
-        public float Delta 
+        public float delta 
         {
             get
             {
@@ -41,7 +41,7 @@ namespace GameFrameWork.Camera
             }
         }
 
-        public FollowMode FollowMode
+        public FollowMode followMode
         {
             get
             {
@@ -53,7 +53,7 @@ namespace GameFrameWork.Camera
             }
         }
 
-        public UnityEngine.Camera Camera
+        public new UnityEngine.Camera camera
         {
             get
             {

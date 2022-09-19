@@ -7,7 +7,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 使用GameObject的名字
     /// </summary>
-    public bool UseDefaultName
+    public bool useDefaultName
     {
         get 
         {
@@ -23,7 +23,7 @@ public class UIRef : MonoBehaviour
     /// 字段名称
     /// </summary>
 
-    public string Name
+    public string refName
     {
         get 
         { 
@@ -38,7 +38,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 引用组件的名称
     /// </summary>
-    public string ComponentName 
+    public string componentName 
     { 
         get 
         {
@@ -53,7 +53,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 描述
     /// </summary>
-    public string Desc 
+    public string desc 
     {
         get 
         { 
@@ -68,7 +68,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 列表格子
     /// </summary>
-    public bool IsLayoutItem
+    public bool isLayoutItem
     {
         get 
         {
@@ -83,7 +83,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 列表格子成员
     /// </summary>
-    public bool IsLayoutItemVariable
+    public bool isLayoutItemVariable
     {
         get
         {
@@ -95,7 +95,7 @@ public class UIRef : MonoBehaviour
         }
     }
 
-    public bool IsLayout
+    public bool isLayout
     {
         get
         {
@@ -110,7 +110,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 循环列表
     /// </summary>
-    public bool IsLoopScroll
+    public bool isLoopScroll
     {
         get
         {
@@ -125,7 +125,7 @@ public class UIRef : MonoBehaviour
     /// <summary>
     /// 输出到剪切板
     /// </summary>
-    public bool IsCopyRefStr
+    public bool isCopyRefStr
     {
         get 
         {

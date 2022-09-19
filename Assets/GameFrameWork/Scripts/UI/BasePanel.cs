@@ -8,23 +8,23 @@ namespace GameFrameWork.UI
 {
     public abstract class BasePanel
     {
-        public abstract string PanelName { get; }
+        public abstract string panelName { get; }
 
-        public abstract float PanelUnLoadTime { get; }
+        public abstract float panelUnLoadTime { get; }
 
-        public abstract UIMgr.Type PanelType { get; }
+        public abstract UIMgr.Type panelType { get; }
 
-        public abstract UIMgr.Layer PanelLayer { get; }
+        public abstract UIMgr.Layer panelLayer { get; }
 
-        public abstract UIMgr.CloseMode PanelCloseMode { get; }
+        public abstract UIMgr.CloseMode panelCloseMode { get; }
 
         public GameObject gameObject { get; private set; }
 
         public Transform transform { get; private set; }
 
-        public string ResPath { get; private set; }
+        public string resPath { get; private set; }
 
-        public bool IsOpen
+        public bool isOpen
         {
             get
             {
@@ -32,7 +32,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public bool IsInit
+        public bool isInit
         {
             get
             {
@@ -40,30 +40,30 @@ namespace GameFrameWork.UI
             }
         }
 
-        public bool IsDelayTimeOut
+        public bool isDelayTimeOut
         {
             get
             {
-                return PanelCloseMode == UIMgr.CloseMode.DelayDestroy && m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
+                return panelCloseMode == UIMgr.CloseMode.DelayDestroy && m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
             }
         }
 
-        protected UIRefRoot UIRefRoot { get; private set; }
+        protected UIRefRoot uiRefRoot { get; private set; }
 
         public void Init(GameObject go, string resPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
-            UIRefRoot = go.GetComponent<UIRefRoot>();
-            ResPath = resPath;
+            uiRefRoot = go.GetComponent<UIRefRoot>();
+            this.resPath = resPath;
 
-            if (UIRefRoot == null)
+            if (uiRefRoot == null)
             {
                 Log.GameFrameworkLog.LogError("UIRefRoot is null!");
                 return;
             }
 
-            transform.SetParent(UIMgr.Ins.GetUILayer(PanelLayer), false);
+            transform.SetParent(UIMgr.instance.GetUILayer(panelLayer), false);
             OnInit(param);
             m_IsInit = true;
             Open();
@@ -149,7 +149,7 @@ namespace GameFrameWork.UI
 
         protected void InnerClose()
         {
-            UIMgr.Ins.Close(PanelName);
+            UIMgr.instance.Close(panelName);
         }
 
         private bool m_IsOpen = false;

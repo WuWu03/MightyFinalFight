@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameFrameWork.Serialize;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -8,13 +9,12 @@ namespace GameFrameWork.Net
 {
     public class SocketMgr : BaseMgr<SocketMgr>
     {
-        public static SocketMgr Instance = null;
-        public Action<ushort, byte[]> onReceive = null;
-        public Action OnConnectSuccess = null;
-        public Action OnConnectFail = null;
-        public Action OnDisConnect = null;
+        public Action<ushort, byte[]> onReceiveEvent = null;
+        public Action onConnectSuccessEvent = null;
+        public Action onConnectFailEvent = null;
+        public Action onDisConnectEvent = null;
 
-        public bool IsConnected
+        public bool isConnected
         {
             get
             {
@@ -24,7 +24,6 @@ namespace GameFrameWork.Net
 
         protected override void OnAwake()
         {
-            Instance = this;
             m_ReceiveBuffer = new byte[1024 * 512];
             m_SendQueue = new Queue<byte[]>();
             m_ReceiveQueue = new Queue<byte[]>();
@@ -43,24 +42,33 @@ namespace GameFrameWork.Net
                 m_ReceiveStream = new MemoryStreamEx();
                 m_IsConnected = true;
                 StartReceive();
-                OnConnectSuccess?.Invoke();
+                onConnectSuccessEvent?.Invoke();
                 Log.GameFrameworkLog.Log("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
-                OnConnectFail?.Invoke();
+                onConnectFailEvent?.Invoke();
                 Log.GameFrameworkLog.Log(e.ToString());
             }
         }
 
         public void Close()
         {
-            if (!m_IsConnected) return;
+            if (!m_IsConnected)
+            {
+                return;
+            }
 
             m_IsConnected = false;
 
-            try { m_Socket.Shutdown(SocketShutdown.Both); }
-            catch { }
+            try 
+            {
+                m_Socket.Shutdown(SocketShutdown.Both);
+            }
+            catch 
+            {
+
+            }
 
             m_Socket.Close();
             m_SendQueue.Clear();
@@ -70,12 +78,16 @@ namespace GameFrameWork.Net
 
             m_Socket = null;
             m_ReceiveStream = null;
-            m_OnEventCallQueue.Enqueue(OnDisConnect);
+            m_OnEventCallQueue.Enqueue(onDisConnectEvent);
         }
 
         public void Send(ushort msgCode, byte[] buffer)
         {
-            if (!m_IsConnected) return;
+            if (!m_IsConnected)
+            {
+                return;
+            }
+
             byte[] sendMsgBuffer = null;
 
             using (MemoryStreamEx mse = new MemoryStreamEx())
@@ -97,7 +109,9 @@ namespace GameFrameWork.Net
         protected override void OnUpdate()
         {
             if (m_IsConnected)
+            {
                 CheckReceiveBuffer();
+            }
 
             if (m_OnEventCallQueue.Count > 0)
             {
@@ -108,13 +122,21 @@ namespace GameFrameWork.Net
 
         private void StartReceive()
         {
-            if (!m_IsConnected) return;
+            if (!m_IsConnected)
+            {
+                return;
+            }
+
             m_Socket.BeginReceive(m_ReceiveBuffer, 0, m_ReceiveBuffer.Length, SocketFlags.None, OnReceive, m_Socket);
         }
 
         private void OnReceive(IAsyncResult ir)
         {
-            if (!m_IsConnected) return;
+            if (!m_IsConnected)
+            {
+                return;
+            }
+
             try
             {
                 int length = m_Socket.EndReceive(ir);
@@ -224,7 +246,7 @@ namespace GameFrameWork.Net
                         mse.Read(msgContent, 0, msgContent.Length);
                     }
 
-                    onReceive?.Invoke(msgCode, msgContent);
+                    onReceiveEvent?.Invoke(msgCode, msgContent);
                 }
             }
         }

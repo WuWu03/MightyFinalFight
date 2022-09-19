@@ -19,13 +19,13 @@ public class SkillTargetTransformEffect : SkillBaseEffect
 
         if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetPositionEffect)
         {
-            float targetY = target.Pos.y;
-            target.SetPosXY(m_Owner.Pos.x + m_SkillEffect.MoveTarget.x * m_Owner.Dir,m_Owner.Pos.y + m_SkillEffect.MoveTarget.y);
-            target.UpdatePosXY(target.Pos.x, targetY);
+            float targetY = target.pos.y;
+            target.SetPosXY(m_Owner.pos.x + m_SkillEffect.MoveTarget.x * m_Owner.dir,m_Owner.pos.y + m_SkillEffect.MoveTarget.y);
+            target.UpdatePosXY(target.pos.x, targetY);
         }
         else if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetScaleEffect)
         {
-            target.SetScale2(m_Owner.Dir * m_SkillEffect.ScaleTarget.x, m_SkillEffect.ScaleTarget.y);
+            target.SetScale2(m_Owner.dir * m_SkillEffect.ScaleTarget.x, m_SkillEffect.ScaleTarget.y);
         }
 
         if (m_SkillEffect.IsSmoon)
@@ -42,7 +42,7 @@ public class SkillTargetTransformEffect : SkillBaseEffect
         {
             BaseHero owner = m_Owner as BaseHero;
 
-            if (owner.IsCatch)
+            if (owner.isCatch)
             {
                 List<ICanBeHit> targets = m_Owner.OnHitStart();
                 BaseRole target = targets[0] as BaseRole;

@@ -7,19 +7,19 @@ namespace GameFrameWork.Sound
 {
     public class AudioSoundPlay
     {
-        public AudioSource Source { get; set; }
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public float PlayTime { get; set; }
+        public AudioSource audioSource { get; set; }
+        public string path { get; set; }
+        public string name { get; set; }
+        public float playTime { get; set; }
 
         public AudioSoundPlay()
         {
-            Source = new GameObject().GetOrAddComponent<AudioSource>();
+            audioSource = new GameObject().GetOrAddComponent<AudioSource>();
         }
 
         public string GetResPath()
         {
-            return PathUtil.FormatPath(Path, Name);
+            return PathUtil.FormatPath(path, name);
         }
 
         public static AudioSoundPlay Create()
@@ -29,9 +29,9 @@ namespace GameFrameWork.Sound
 
         public void Clear()
         {
-            Path = string.Empty;
-            Name = string.Empty;
-            PlayTime = 0;
+            path = string.Empty;
+            name = string.Empty;
+            playTime = 0;
         }
     }
 }

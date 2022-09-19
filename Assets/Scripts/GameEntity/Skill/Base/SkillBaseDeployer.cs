@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class SkillBaseDeployer
 {
-    public int SkillId
+    public int skillId
     {
         get
         {
@@ -11,7 +11,7 @@ public abstract class SkillBaseDeployer
         }
     }
 
-    public SkillConfigData SkillData
+    public SkillConfigData skillData
     {
         get
         {
@@ -43,7 +43,7 @@ public abstract class SkillBaseDeployer
 
             if (m_SkillData.SkillEffects[i].IsOnGroundEffect)
             {
-                m_Owner.OnGroundEvent.AddListener(OnGround);
+                m_Owner.onGroundEvent.AddListener(OnGround);
                 break;
             }
         }
@@ -51,7 +51,7 @@ public abstract class SkillBaseDeployer
 
     public void RemoveEvent()
     {
-        m_Owner.OnGroundEvent.RemoveListener(OnGround);
+        m_Owner.onGroundEvent.RemoveListener(OnGround);
         OnRemoveEvent();
     }
 
@@ -85,7 +85,7 @@ public abstract class SkillBaseDeployer
         {
             for (int i = 0; i < m_SkillEffects.Length; i++)
             {
-                if (!m_SkillEffects[i].IsCompleted)
+                if (!m_SkillEffects[i].isCompleted)
                 {
                     ret = false;
                     break;
@@ -141,7 +141,7 @@ public abstract class SkillBaseDeployer
 
         for (int i = 0; i < m_SkillEffects.Length; i++)
         {
-            if (!m_SkillEffects[i].IsCompleted)
+            if (!m_SkillEffects[i].isCompleted)
                 m_SkillEffects[i].Update(m_SkillSelectors[i]);
         }
     }
@@ -155,7 +155,7 @@ public abstract class SkillBaseDeployer
         }
         else
         {
-            if (m_Owner.IsFloat && !m_ListGroundEffect.Contains(m_CurrEffectIndex))
+            if (m_Owner.isFloat && !m_ListGroundEffect.Contains(m_CurrEffectIndex))
                 m_ListGroundEffect.Add(m_CurrEffectIndex);
         }
 
@@ -185,7 +185,7 @@ public abstract class SkillBaseDeployer
             }
             else
             {
-                if (!m_Owner.IsInGround && !m_ListGroundEffect.Contains(i))
+                if (!m_Owner.isInGround && !m_ListGroundEffect.Contains(i))
                     m_ListGroundEffect.Add(i);
             }
         }
@@ -202,7 +202,7 @@ public abstract class SkillBaseDeployer
                 m_Owner.SetVelocity(Vector2.zero);
             }
 
-            m_Owner.AddForce(addSelfForce.x * m_Owner.Dir, addSelfForce.y, isGround);
+            m_Owner.AddForce(addSelfForce.x * m_Owner.dir, addSelfForce.y, isGround);
         }
     }
 

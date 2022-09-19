@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 313977149}
   - component: {fileID: 313977148}
   m_Layer: 0
-  m_Name: ImgRetro
+  m_Name: imgRetro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgRetro
+  m_RefName: imgRetro
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects:
+  objects:
   - {fileID: 701202345}
   - {fileID: 313977149}
   - {fileID: 1472321395}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 671055484}
   - component: {fileID: 671055486}
   m_Layer: 0
-  m_Name: TxtStart
+  m_Name: txtStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -380,7 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: TxtStart
+  m_RefName: txtStart
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
@@ -401,7 +401,7 @@ GameObject:
   - component: {fileID: 701202345}
   - component: {fileID: 701202344}
   m_Layer: 0
-  m_Name: ImgLogoBG
+  m_Name: imgLogoBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLogoBG
+  m_RefName: imgLogoBG
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 1151043729}
   - component: {fileID: 1151043731}
   m_Layer: 0
-  m_Name: ImgLogo
+  m_Name: imgLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -576,7 +576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLogo
+  m_RefName: imgLogo
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -596,7 +596,7 @@ GameObject:
   - component: {fileID: 1302789502}
   - component: {fileID: 1302789501}
   m_Layer: 0
-  m_Name: BG
+  m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -771,7 +771,6 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -820,6 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: A
@@ -855,7 +855,7 @@ GameObject:
   - component: {fileID: 1472321395}
   - component: {fileID: 1472321397}
   m_Layer: 0
-  m_Name: ImgStar
+  m_Name: imgStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgStar
+  m_RefName: imgStar
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -988,7 +988,7 @@ GameObject:
   - component: {fileID: 1794442528}
   - component: {fileID: 1794442527}
   m_Layer: 0
-  m_Name: TxtDeveloper
+  m_Name: txtDeveloper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1069,7 +1069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: TxtDeveloper
+  m_RefName: txtDeveloper
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1179,7 +1179,7 @@ GameObject:
   - component: {fileID: 2017069367}
   - component: {fileID: 2017069366}
   m_Layer: 0
-  m_Name: ImgCapcom
+  m_Name: imgCapcom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgCapcom
+  m_RefName: imgCapcom
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1297,15 +1297,15 @@ MonoBehaviour:
   m_PanelName: TitlePanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 3
-  PanelPreLoadType: 0
-  PanelCloseMode: 2
-  PanelLayer: 3
-  IsCustomLayer: 0
-  UnLoadTime: 0
-  PanelPath: Assets/Scripts/UI/TitlePanel/TitlePanel.cs
-  PanelComponentPath: Assets/Scripts/UI/TitlePanel/TitlePanelComponent.cs
-  PanelPrefabPath: Assets/ArtResources/UI/Prefabs/TitlePanel.prefab
+  panelType: 2
+  panelPreLoadType: 0
+  panelCloseMode: 1
+  panelLayer: 2
+  isCustomLayer: 0
+  unLoadTime: 0
+  panelPath: Assets/Scripts/UI/TitlePanel/TitlePanel.cs
+  panelComponentPath: Assets/Scripts/UI/TitlePanel/TitlePanelComponent.cs
+  panelPrefabPath: Assets/ArtResources/UI/Prefabs/TitlePanel.prefab
 --- !u!4 &2072606605
 Transform:
   m_ObjectHideFlags: 0

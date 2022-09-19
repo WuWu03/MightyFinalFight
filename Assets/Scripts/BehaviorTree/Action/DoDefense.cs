@@ -16,7 +16,7 @@ public class DoDefense : Action
 
     public override BehaviorTreeState Excute()
     {
-        m_Owner.Owner.OnDefenseMsg(PlayerMgr.Ins.Player.Dir);
+        m_Owner.owner.OnDefenseMsg(PlayerMgr.instance.player.dir);
         m_Owner.OppositePlayer();
         return BehaviorTreeState.Success;
     }

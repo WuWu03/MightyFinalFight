@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BaseEnemySkillData : BaseRoleSkillData
 {
-    public int[] BehaviourTreeIds { get; set; }
+    public int[] behaviourTreeIds { get; set; }
 
     public override void Clear()
     {
         base.Clear();
-        BehaviourTreeIds = null;
+        behaviourTreeIds = null;
     }
 }

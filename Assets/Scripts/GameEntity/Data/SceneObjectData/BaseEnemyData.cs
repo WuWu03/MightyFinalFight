@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class BaseEnemyData : BaseRoleData
 {
-    public string[] HurtAnim { get; set; }
-    public int HpBarWdith { get; set; }
-    public bool IsBoss { get; set; }
+    public string[] hurtAnims { get; set; }
+    public int hpBarWdith { get; set; }
+    public bool isBoss { get; set; }
 
     public override void Clear()
     {
         base.Clear();
-        HurtAnim = null;
-        HpBarWdith = 0;
-        IsBoss = false;
+        hurtAnims = null;
+        hpBarWdith = 0;
+        isBoss = false;
     }
 }

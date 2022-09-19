@@ -8,10 +8,10 @@ namespace GameFrameWork.Input
 {
     public class InputMgr : BaseMgr<InputMgr>
     {
-        public GameFrameWorkFloatAction GetDirection;
-        public GameFrameWorkBooleanAction AfterTrigger;
-        public GameFrameWorkBooleanAction<int> GetPreconditon;
-        public bool IsRunning
+        public GameFrameWorkFloatAction getDirectionEvent;
+        public GameFrameWorkBooleanAction afterTriggerEvent;
+        public GameFrameWorkBooleanAction<int> getPreconditonEvent;
+        public bool isRunning
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GameFrameWork.Input
         {
             for (int i = m_ListComboKeyEvent.Count - 1; i >= 0; i--)
             {
-                if (m_ListComboKeyEvent[i].EventId.Equals(eventID))
+                if (m_ListComboKeyEvent[i].eventId.Equals(eventID))
                 {
                     ReferencePool.Release(m_ListComboKeyEvent[i]);
                     m_ListComboKeyEvent.RemoveAt(i);
@@ -67,9 +67,9 @@ namespace GameFrameWork.Input
 
         public void RemoveAllComboKeyEvent()
         {
-            GetDirection = null;
-            AfterTrigger = null;
-            GetPreconditon = null;
+            getDirectionEvent = null;
+            afterTriggerEvent = null;
+            getPreconditonEvent = null;
             m_ListComboKeyEvent.Clear();
         }
 
@@ -114,7 +114,7 @@ namespace GameFrameWork.Input
 
             if (!TriggerKeyEvent())
             {
-                AfterTrigger?.Invoke();
+                afterTriggerEvent?.Invoke();
             }
         }
 
@@ -128,8 +128,8 @@ namespace GameFrameWork.Input
                 return axis;
             }
 
-            float x = UnityEngine.Input.GetAxis(axisArgs.Horizontal);
-            float y = UnityEngine.Input.GetAxis(axisArgs.Vertical);
+            float x = UnityEngine.Input.GetAxis(axisArgs.horizontal);
+            float y = UnityEngine.Input.GetAxis(axisArgs.vertical);
             float speed = 1f;
 
             axis.x = 0f;
@@ -187,7 +187,7 @@ namespace GameFrameWork.Input
                 return false;
             }
 
-            return GetKeyDown(key.KeyName, isOneKey);
+            return GetKeyDown(key.keyName, isOneKey);
         }
  
         private bool CheckComboAxis(AxisType axisType)
@@ -195,7 +195,7 @@ namespace GameFrameWork.Input
             bool keyDown = false;
 
             Vector2 axis = GetAxis(axisType, true);
-            if (m_CurrDir == 0) m_CurrDir = GetDirection != null ? GetDirection() : 1;
+            if (m_CurrDir == 0) m_CurrDir = getDirectionEvent != null ? getDirectionEvent() : 1;
 
             if (axis.y > 0) m_ListComboKey.Add(KeyType.Up);
             if (axis.y < 0) m_ListComboKey.Add(KeyType.Down);
@@ -231,11 +231,11 @@ namespace GameFrameWork.Input
                 return keyDown;
             }
 
-            if (key.IsShift)
+            if (key.isShift)
             {
-                if (GetKeyDown(key.KeyName))
+                if (GetKeyDown(key.keyName))
                 {
-                    KeyType replaceKeyType = key.ReplaceKeyType != KeyType.None ? key.ReplaceKeyType : keyType;
+                    KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : keyType;
                     if (m_ListComboKey.Count < 1 || m_ListComboKey[m_ListComboKey.Count - 1] != replaceKeyType)
                     {
                         m_ListComboKey.Add(replaceKeyType);
@@ -245,7 +245,7 @@ namespace GameFrameWork.Input
             }
             else
             {
-                keyDown = GetKeyDown(key.KeyName, true);
+                keyDown = GetKeyDown(key.keyName, true);
                 if (keyDown) m_ListComboKey.Add(keyType);
             }
 
@@ -261,26 +261,26 @@ namespace GameFrameWork.Input
 
             for (int i = 0; i < m_ListComboKeyEvent.Count; i++)
             {
-                if (m_ListComboKeyEvent[i].Keys.Length < 1 || m_ListComboKey.Count < m_ListComboKeyEvent[i].Keys.Length) continue;
+                if (m_ListComboKeyEvent[i].keys.Length < 1 || m_ListComboKey.Count < m_ListComboKeyEvent[i].keys.Length) continue;
 
                 bool isMatch = false;
 
-                for (int j = 0; j < m_ListComboKeyEvent[i].Keys.Length; j++)
+                for (int j = 0; j < m_ListComboKeyEvent[i].keys.Length; j++)
                 {
-                    if (IsMatch(m_ListComboKeyEvent[i].Keys, m_ListComboKey))
+                    if (IsMatch(m_ListComboKeyEvent[i].keys, m_ListComboKey))
                     {
                         isMatch = true;
                         break;
                     }
                 }
                 
-                if (!isMatch || GetPreconditon == null || !GetPreconditon(m_ListComboKeyEvent[i].EventId))
+                if (!isMatch || getPreconditonEvent == null || !getPreconditonEvent(m_ListComboKeyEvent[i].eventId))
                 {
                     continue;
                 }
 
                 ResetComboKeys();
-                m_ListComboKeyEvent[i].KeyEvent?.Invoke(m_ListComboKeyEvent[i].EventId, true);
+                m_ListComboKeyEvent[i].keyEvent?.Invoke(m_ListComboKeyEvent[i].eventId, true);
                 return true;
             }
 

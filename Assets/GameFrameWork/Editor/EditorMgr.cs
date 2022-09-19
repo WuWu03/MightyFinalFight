@@ -1,5 +1,6 @@
 ﻿using GameFrameWork.BehaviourTree;
 using GameFrameWork.UI;
+using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -7,12 +8,21 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-	public static class EditorMgr
+    [InitializeOnLoad]
+    public static class EditorMgr
 	{
-		[MenuItem("GameFrameWork/UI/创建UI场景")]
+		static EditorMgr()
+		{
+			if (!Directory.Exists(EditorPathUtil.configDataFullPath))
+			{
+				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
+			}
+		}
+
+        [MenuItem("GameFrameWork/UI/创建UI场景")]
 		public static void NewUIScene()
 		{
-			UIUtility.NewUIScene();
+			UIEditorInit.NewUIScene();
 		}
 
 		[MenuItem("GameFrameWork/UI/EmojiText/CreateEmojiText")]
@@ -106,6 +116,28 @@ namespace GameFrameWork.Editor
 				EditorBuildSettings.scenes = sceneList.ToArray();
 				AssetDatabase.Refresh();
 			}
-        }
+		}
 	}
+}
+
+namespace TestJson
+{
+    public class BehaviourTreeConfig
+    {
+        public BehaviourTreeData[] datas;
+    }
+
+    public class BehaviorTreeBaseData
+    {
+        public int id;
+        public string name;
+        public string classType;
+        public string args;
+    }
+
+    public class BehaviourTreeData : BehaviorTreeBaseData
+    {
+        public BehaviourTreeData[] children;
+        public BehaviorTreeBaseData[] preConditions;
+    }
 }

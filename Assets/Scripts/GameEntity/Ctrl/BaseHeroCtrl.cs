@@ -6,18 +6,18 @@ public class BaseHeroCtrl : BaseRoleCtrl
     public override void SetData(BaseRoleSkillData data)
     {
         BaseHeroSkillData heroSkillData = data as BaseHeroSkillData;
-        m_CatchAttackID = heroSkillData.CatchAttackID;
-        m_ThrowAttackID = heroSkillData.ThrowAttackID;
-        m_WeaponAttackID = heroSkillData.WeaponAttackID;
-        m_ThrowWeaponID = heroSkillData.ThrowWeaponID;
-        m_JumpAttackID = heroSkillData.JumpAttackIds[1];
+        m_CatchAttackID = heroSkillData.catchAttackID;
+        m_ThrowAttackID = heroSkillData.throwAttackID;
+        m_WeaponAttackID = heroSkillData.weaponAttackID;
+        m_ThrowWeaponID = heroSkillData.throwWeaponID;
+        m_JumpAttackID = heroSkillData.jumpAttackIds[1];
         base.SetData(data);
     }
 
     protected override void NormalAttack(Vector2 dir)
     {
         BaseHero hero = m_Owner as BaseHero;
-        if (hero.IsCatch)
+        if (hero.isCatch)
         {
             bool isThrowing = m_SkillManager.IsCurrSkill(m_ThrowAttackID);
             bool isThrowingComplete = m_SkillManager.IsSkillComplete(m_ThrowAttackID);
@@ -35,7 +35,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if(m_Owner.IsFloat && dir.y < 0)
+            if(m_Owner.isFloat && dir.y < 0)
             {
                 m_CatchAttackTimer = 0;
                 m_SkillManager.DeploySkill(m_JumpAttackID);
@@ -64,15 +64,15 @@ public class BaseHeroCtrl : BaseRoleCtrl
         m_CatchAttackTimer = 0f;
         BaseSceneItem item = IsNearSceneItem();
 
-        if (item != null && item.CanPickUp)
+        if (item != null && item.canPickUp)
         {
             hero.PickUpSceneItemMsg(item);
             return;
         }
-        else if (hero.Weapon != null)
+        else if (hero.weapon != null)
         {
             bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
-            if (hero.Weapon.Attribute.Health <= 1)
+            if (hero.weapon.entityAttribute.health <= 1)
             {
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {
@@ -100,7 +100,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
     private BaseSceneItem IsNearSceneItem()
     {
-        List<GameObject> list = m_Owner.Targets;
+        List<GameObject> list = m_Owner.targets;
 
         for (int i = 0; i < list.Count; i++)
         {
@@ -111,8 +111,8 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 continue;
             }
 
-            bool isInRange = Mathf.Abs(item.Bound.yMin - m_Owner.Bound.yMin) <= 0.2f &&
-                             Mathf.Abs(item.Pos.x - m_Owner.Pos.x) <= item.Bound.width / 2;
+            bool isInRange = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.2f &&
+                             Mathf.Abs(item.pos.x - m_Owner.pos.x) <= item.bound.width / 2;
             if (isInRange)
             {
                 return item;

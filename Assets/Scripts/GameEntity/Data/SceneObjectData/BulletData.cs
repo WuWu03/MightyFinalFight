@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class BulletData : BaseSceneObjectData
 {
-    public int BulletIndex { get; set; }
-    public string NormalAnim { get; set; }
-    public string HitAnim { get; set; }
-    public float NormalAnimSpeed { get; set; }
-    public float HitAnimSpeed { get; set; }
-    public Vector2 Dir { get; set; }
-    public Vector2 Pos { get; set; }
-    public Vector2 Velocity { get; set; }
-    public float HitRange { get; set; }
-    public float Drag { get; set; }
-    public bool IsPenatrate { get; set; }//是否穿透
+    public int bulletIndex { get; set; }
+    public string normalAnim { get; set; }
+    public string hitAnim { get; set; }
+    public float normalAnimSpeed { get; set; }
+    public float hitAnimSpeed { get; set; }
+    public Vector2 dir { get; set; }
+    public Vector2 pos { get; set; }
+    public Vector2 velocity { get; set; }
+    public float hitRange { get; set; }
+    public float drag { get; set; }
+    public bool isPenatrate { get; set; }//是否穿透
 
     public override void Clear()
     {
         base.Clear();
-        BulletIndex = 0;
-        NormalAnim = string.Empty;
-        HitAnim = string.Empty;
-        NormalAnimSpeed = 0;
-        HitAnimSpeed = 0;
-        Dir = Vector2.zero;
-        Pos = Vector2.zero;
-        Velocity = Vector2.zero;
-        HitRange = 0;
-        Drag = 0;
-        IsPenatrate = false;
+        bulletIndex = 0;
+        normalAnim = string.Empty;
+        hitAnim = string.Empty;
+        normalAnimSpeed = 0;
+        hitAnimSpeed = 0;
+        dir = Vector2.zero;
+        pos = Vector2.zero;
+        velocity = Vector2.zero;
+        hitRange = 0;
+        drag = 0;
+        isPenatrate = false;
     }
 }

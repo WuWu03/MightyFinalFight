@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Utilities;
+﻿using GameFrameWork.Editor;
+using GameFrameWork.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -187,7 +188,7 @@ public static class MapEditorHelper
 
         if (!File.Exists(path + fileName + ext))
         {
-            GameFrameWork.Editor.EditorUtility.CreateConfigData<MapEditorConfig, MapEditorConfigData>(fileName, ext, path);
+            GameFrameWork.Editor.EditorUtil.CreateConfigData<MapEditorConfig, MapEditorConfigData>(fileName, ext, path);
         }
 
         if (m_MapEditorConfig == null)
@@ -379,12 +380,12 @@ public static class MapEditorHelper
 
     public static void Export()
     {
-        if (!File.Exists(PathUtil.ConfigDataDefaultFullPath + "StageData.asset"))
+        if (!File.Exists(EditorPathUtil.configDataFullPath + "StageData.asset"))
         {
-            GameFrameWork.Editor.EditorUtility.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset", PathUtil.ConfigDataDefaultPath);
+            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset", EditorPathUtil.configDataPath);
         }
 
-        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(PathUtil.ConfigDataDefaultPath + "StageData.asset");
+        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageData.asset");
         stageConfig.Datas.Clear();
 
         for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)

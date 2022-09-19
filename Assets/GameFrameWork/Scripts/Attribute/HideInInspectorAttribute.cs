@@ -4,7 +4,7 @@ namespace GameFrameWork
 {
     public class HideInInspectorExAttribute : PropertyAttribute
     {
-        public bool Condition
+        public bool condition
         {
             get
             {

@@ -6,11 +6,11 @@ namespace GameFrameWork
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
-        public static T Ins
+        public static T instance
         {
             get
             {
-                if (m_Ins == null)
+                if (m_Instance == null)
                 {
 
                     T[] instances = GameObject.FindObjectsOfType<T>();
@@ -24,19 +24,19 @@ namespace GameFrameWork
                         }
                         else
                         {
-                            m_Ins = instances[0];
+                            m_Instance = instances[0];
                         }
                     }
                     else
                     {
-                        m_Ins = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
-                        DontDestroyOnLoad(m_Ins.gameObject);
+                        m_Instance = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
+                        DontDestroyOnLoad(m_Instance.gameObject);
                     }
                 }
-                return m_Ins;
+                return m_Instance;
             }
         }
 
-        protected static T m_Ins;
+        protected static T m_Instance;
     }
 }

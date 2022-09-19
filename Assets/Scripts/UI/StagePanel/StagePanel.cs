@@ -16,54 +16,54 @@ using GameFrameWork.Scene;
 
 public class StagePanel : BasePanel
 {
-	public override string PanelName { get { return "StagePanel"; } }
-	public override float PanelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type PanelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.FirstLevel; } }
-	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Always; } }
+	public override string panelName { get { return "StagePanel"; } }
+	public override float panelUnLoadTime { get { return 0f; } }
+	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.FirstLevel; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Always; } }
 
 	protected override void OnInit(object[] param)
 	{
-		m_Component = new StagePanelComponent(UIRefRoot);
+		m_Component = new StagePanelComponent(uiRefRoot);
 	}
 
 	protected override void OnOpen()
 	{
-		int stageId = StageMgr.Ins.NextStageId;
-		int characterId = PlayerMgr.Ins.SelectCharacterId;
+		int stageId = StageMgr.instance.nextStageId;
+		int characterId = PlayerMgr.instance.selectRoleId;
 
 		StageConfigData stageConfigData = StaticConfig.StageConfig.GetData(stageId);
-		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
+        RoleSelectData roleSelectData = DataHelper.roleSelectDatas.GetDataById(characterId);
 
 		GetRoundTxt(0).text = stageConfigData.StageIndex.ToString();
-		GameObjectPool.Ins.Get(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.Asset), OnLoaded);
+		GameObjectPool.instance.Get(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
 		{
-			m_Component.ImgMapGO.transform.Find("Pos" + i).gameObject.SetActive(false);
+			m_Component.imgMapGO.transform.Find("pos" + i).gameObject.SetActive(false);
 		}
 
-		m_Component.ImgMapGO.transform.Find("Pos" + stageConfigData.StageIndex).gameObject.SetActive(true);
+		m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActive(true);
 	}
 
     private void OnLoaded(GameObject go, object[] args)
     {
-		int characterId = PlayerMgr.Ins.SelectCharacterId;
-		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
+		int characterId = PlayerMgr.instance.selectRoleId;
+        RoleSelectData roleSelectConfigData = DataHelper.roleSelectDatas.GetDataById(characterId);
 
 		m_Role = go;
-		m_Role.transform.SetParent(m_Component.HeroPosGO.transform, false);
-		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfigData.AnimSpeed;
-		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfigData.Anim, 1);
-	
-		SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, roleSelectConfigData.Sound);
-		Timer.Register(roleSelectConfigData.ShowTime, OnTimer);
+		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
+		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfigData.animSpeed;
+		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfigData.animName, 1);
+
+		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfigData.soundName);
+		Timer.Register(roleSelectConfigData.showTime, OnTimer);
     }
 
 	private void OnTimer()
 	{
-		StageMgr.Ins.OnStageStartEnterEvent += InnerClose;
-		StageMgr.Ins.StageEnterNext();
+		StageMgr.instance.onStageStartEnterEvent += InnerClose;
+		StageMgr.instance.StageEnterNext();
 	}
 
     protected override void OnUpdate()
@@ -73,10 +73,10 @@ public class StagePanel : BasePanel
 
 	protected override void OnClose()
 	{
-		int characterId = PlayerMgr.Ins.SelectCharacterId;
-		RoleSelectConfigData roleSelectConfigData = StaticConfig.RoleSelectConfig.GetData(characterId);
+		int characterId = PlayerMgr.instance.selectRoleId;
+		RoleSelectData roleSelectData = DataHelper.roleSelectDatas.GetDataById(characterId);
 
-		GameObjectPool.Ins.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.Asset), m_Role);
+		GameObjectPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectData.assetName), m_Role);
 		m_Role = null;
 	}
 
@@ -87,16 +87,16 @@ public class StagePanel : BasePanel
 	private Text GetRoundTxt(int type)
     {
 		GameObject go = null;
-		m_Component.Blue.SetActive(false);
-		m_Component.Green.SetActive(false);
-		m_Component.Red.SetActive(false);
+		m_Component.blue.SetActive(false);
+		m_Component.green.SetActive(false);
+		m_Component.red.SetActive(false);
 
 		if (type == 1)
-			go = m_Component.Blue;
+			go = m_Component.blue;
 		else if (type == 2)
-			go = m_Component.Green;
+			go = m_Component.green;
 		else
-			go = m_Component.Red;
+			go = m_Component.red;
 
 		go.SetActive(true);
 		return go.transform.Find("txtIndex").GetComponent<Text>();

@@ -14,7 +14,7 @@ namespace GameFrameWork.BehaviourTree
 
     public abstract class Node
     {
-        public string Name
+        public string name
         {
             get
             {

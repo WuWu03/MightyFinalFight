@@ -16,7 +16,7 @@ namespace GameFrameWork
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            GUI.enabled = !(attribute as HideInInspectorExAttribute).Condition;
+            GUI.enabled = !(attribute as HideInInspectorExAttribute).condition;
             EditorGUI.PropertyField(position, property, label, true);
             GUI.enabled = true;
         }

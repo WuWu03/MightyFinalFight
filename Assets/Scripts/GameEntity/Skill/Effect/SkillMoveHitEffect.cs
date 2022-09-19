@@ -11,13 +11,13 @@ public class SkillMoveHitEffect : SkillBaseEffect
     {
         m_HasEffect = true;
         m_StartPos = m_Owner.transform.localPosition;
-        m_Owner.SetVelocity(m_SkillEffect.AddSelfVelocity.x * m_Owner.Dir, m_SkillEffect.AddSelfVelocity.y);
+        m_Owner.SetVelocity(m_SkillEffect.AddSelfVelocity.x * m_Owner.dir, m_SkillEffect.AddSelfVelocity.y);
         m_Owner.SetDrag(m_SkillEffect.AddSelfDrag);
         m_Owner.SetGravityScale(m_SkillEffect.Gravity);
 
         if (m_SkillEffect.Args == "OnGroundPickUp")
         {
-            m_Owner.OnGroundEvent.AddListener(OnGround);
+            m_Owner.onGroundEvent.AddListener(OnGround);
         }
     }
 
@@ -39,7 +39,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
             return;
         }
 
-        if (m_Owner.Rigidbody.velocity.sqrMagnitude <= 0.1 * 0.1)
+        if (m_Owner.rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
         {
             Complete();
             return;
@@ -60,7 +60,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     private void CheckAttack(ISkillSelector selector)
     {
-        m_Owner.UpdatePosXY(m_Owner.transform.localPosition.x, m_Owner.Pos.y);
+        m_Owner.UpdatePosXY(m_Owner.transform.localPosition.x, m_Owner.pos.y);
         List<ICanBeHit> targets = selector.GetTargets();
 
         for (int i = 0; i < targets.Count; i++)

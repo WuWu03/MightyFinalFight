@@ -6,7 +6,7 @@ namespace GameFrameWork.GameEntity
 {
     public class EntityMgr : BaseMgr<EntityMgr>
     {
-        public int AcquireCount
+        public int acquireCount
         {
             get
             {
@@ -15,7 +15,7 @@ namespace GameFrameWork.GameEntity
         }
 
 
-        public int CreateCount
+        public int createCount
         {
             get
             {
@@ -23,7 +23,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public int ReleaseCount
+        public int releaseCount
         {
             get
             {
@@ -31,7 +31,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public int DestroyCount
+        public int destroyCount
         {
             get
             {
@@ -39,7 +39,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public int UsingEntityCount
+        public int usingEntityCount
         {
             get
             {
@@ -47,7 +47,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public int UnUsedEntityCount
+        public int unUsedEntityCount
         {
             get
             {
@@ -137,7 +137,7 @@ namespace GameFrameWork.GameEntity
 
             for (int i = 0; i < usingList.Count; i++)
             {
-                if (string.IsNullOrEmpty(name) || usingList[i].name.Equals(name))
+                if (string.IsNullOrEmpty(name) || usingList[i].entityName.Equals(name))
                 {
                     entityList.Add(usingList[i] as T);
                 }
@@ -152,7 +152,7 @@ namespace GameFrameWork.GameEntity
 
             for (int i = 0; i < usingList.Count; i++)
             {
-                if (string.IsNullOrEmpty(name) || usingList[i].name.Equals(name))
+                if (string.IsNullOrEmpty(name) || usingList[i].entityName.Equals(name))
                 {
                     return usingList[i] as T;
                 }

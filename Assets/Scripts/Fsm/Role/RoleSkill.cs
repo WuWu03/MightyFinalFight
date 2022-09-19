@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RoleSkill : BaseFsmState
 {
-    public Vector2 Dir
+    public Vector2 dir
     {
         set
         {
@@ -11,7 +11,7 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    public bool CanChangeDir
+    public bool canChangeDir
     {
         set
         {
@@ -19,7 +19,7 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    public bool CanMove
+    public bool canMove
     {
         set
         {
@@ -29,7 +29,7 @@ public class RoleSkill : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
@@ -41,7 +41,7 @@ public class RoleSkill : BaseFsmState
     {
         if(m_CanMove)
         {
-            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.Attribute.MoveSpeed * Time.deltaTime;
+            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.entityAttribute.moveSpeed * Time.deltaTime;
             m_Owner.SetPos2(ownerPos);
         }
 

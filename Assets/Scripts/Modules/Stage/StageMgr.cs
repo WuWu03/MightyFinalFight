@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
-    public int NextStageId
+    public int nextStageId
     {
         get
         {
@@ -23,7 +23,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public int StageIndex
+    public int stageIndex
     {
         get
         {
@@ -31,7 +31,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public int StageLevel
+    public int stageLevel
     {
         get
         {
@@ -39,7 +39,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public int Width
+    public int width
     {
         get
         {
@@ -47,7 +47,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public int Heigth
+    public int heigth
     {
         get
         {
@@ -55,7 +55,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public event GameFrameWorkAction OnStageStartEnterEvent
+    public event GameFrameWorkAction onStageStartEnterEvent
     {
         add
         {
@@ -67,7 +67,7 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public event GameFrameWorkAction OnStageEndEnterEvent
+    public event GameFrameWorkAction onStageEndEnterEvent
     {
         add
         {
@@ -98,16 +98,16 @@ public class StageMgr : BaseMgr<StageMgr>
 
         m_CurrStageData = StaticConfig.StageConfig.GetData(id);
 
-        PlayerMgr.Ins.CanContrl = false; 
-        CameraMgr.Ins.EndFollow();
-        SceneMgr.Ins.LoadSceneSuccessEvent += LoadSceneSuccess;
+        PlayerMgr.instance.canContrl = false; 
+        CameraMgr.instance.EndFollow();
+        SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
 
-        UIMgr.Ins.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
+        UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
         {
             m_OnStageStartEnterEvent?.Invoke();
             m_OnStageStartEnterEvent = null;
-            SceneEntityMgr.Ins.ReleaseSceneBuildings();
-            SceneMgr.Ins.LoadSceneAsync(m_CurrStageData.SceneName);
+            SceneEntityMgr.instance.ReleaseSceneBuildings();
+            SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
         });  
     }
 
@@ -184,30 +184,30 @@ public class StageMgr : BaseMgr<StageMgr>
                 group[i] = AudioGroup.Create(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
             }
 
-            SoundMgr.Ins.PlayBGMGroup(group, true);
+            SoundMgr.instance.PlayBGMGroup(group, true);
         }
 
-        if (!UIMgr.Ins.IsPanelOpen<MainPanel>())
+        if (!UIMgr.instance.IsPanelOpen<MainPanel>())
         {
-            UIMgr.Ins.Open<MainPanel>();
+            UIMgr.instance.Open<MainPanel>();
         }
 
-        SceneEntityMgr.Ins.CreateSceneBuildings(m_CurrStageData);
-        PlayerMgr.Ins.InitPlayer();
-        PlayerMgr.Ins.Player.SetMapPos(m_CurrStageData.InitPos);
-        CameraMgr.Ins.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
+        SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
+        PlayerMgr.instance.InitPlayer();
+        PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
+        CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
 
-        UIMgr.Ins.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
+        UIMgr.instance.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
         {
-            UIMgr.Ins.Close<LoadPanel>();
-            CameraMgr.Ins.StartFollow();
-            PlayerMgr.Ins.CanContrl = true;
+            UIMgr.instance.Close<LoadPanel>();
+            CameraMgr.instance.StartFollow();
+            PlayerMgr.instance.canContrl = true;
             m_OnStageEndEnterEvent?.Invoke();
             m_OnStageEndEnterEvent = null;
 
             for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
             {
-                TaskMgr.Ins.AcceptTask(m_CurrStageData.TaskIDs[i]);
+                TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
             }
         });
     }

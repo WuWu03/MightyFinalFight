@@ -228,7 +228,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.ListTaskId.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
@@ -270,7 +270,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.ListBGM.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
@@ -314,7 +314,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.ListSceneBuilding.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BaseTaskTrigger : ITaskTrigger
 {
-    public bool IsComplete
+    public bool isComplete
     {
         get
         {
@@ -27,12 +27,12 @@ public abstract class BaseTaskTrigger : ITaskTrigger
     {
         if(m_TaskData.TriggerPlayerCantCtrl)
         {
-            PlayerMgr.Ins.CanContrl = false;
+            PlayerMgr.instance.canContrl = false;
         }
 
         if (m_TaskData.TriggerStopCamera)
         {
-            CameraMgr.Ins.EndFollow(true);
+            CameraMgr.instance.EndFollow(true);
         }
     }
 

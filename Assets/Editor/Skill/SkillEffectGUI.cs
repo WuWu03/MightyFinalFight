@@ -27,7 +27,7 @@ public class SkillEffectGUI : SkillGUI
             SkillConfigData.SkillEffect skillEffect = SkillEditorHelper.CurrConfigData.SkillEffects[i];
             SkillConfigData.SkillEffect tempEffect = m_ListSkillEffect[i];
 
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.BeginHorizontal();
@@ -82,7 +82,7 @@ public class SkillEffectGUI : SkillGUI
             SkillConfigData.Bullet skillBullet = skillEffect.Bullets[i];
             SkillConfigData.Bullet tempBullet = tempEffect.Bullets[i];
 
-            GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
 

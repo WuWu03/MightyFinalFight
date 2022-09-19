@@ -4,41 +4,40 @@ using UnityEngine;
 
 public class ScreenshotToRenderTexture : MonoBehaviour
 {
-    public int TextureWidth = 128;
-    public int TextureHeight = 256;
-    public Material BlurMaterial;
-    public int BlurSize = 1;
-    public int BlurCount = 1;
-    public RenderTexture OutPutRenderTexture = null;
-    public int ShowCount = 0;
+    public int textureWidth = 128;
+    public int textureHeight = 256;
+    public int blurSize = 1;
+    public int blurCount = 1;
+    public int showCount = 0;
 
-
+    public Material blurMaterial;
+    public RenderTexture outPutRenderTexture = null;
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        RenderTexture buffer0 = RenderTexture.GetTemporary(TextureWidth, TextureHeight, 0);
+        RenderTexture buffer0 = RenderTexture.GetTemporary(textureWidth, textureHeight, 0);
         buffer0.filterMode = FilterMode.Bilinear;
 
         Graphics.Blit(source, buffer0);
 
-        for (int i = 0; i < BlurCount; i++)
+        for (int i = 0; i < blurCount; i++)
         {
-            BlurMaterial.SetFloat("_BlurSize", (float)BlurSize + (float)i * BlurSize);
-            RenderTexture buffer1 = RenderTexture.GetTemporary(TextureWidth, TextureHeight, 0);
-            Graphics.Blit(buffer0, buffer1, BlurMaterial, 0);
+            blurMaterial.SetFloat("_BlurSize", (float)blurSize + (float)i * blurSize);
+            RenderTexture buffer1 = RenderTexture.GetTemporary(textureWidth, textureHeight, 0);
+            Graphics.Blit(buffer0, buffer1, blurMaterial, 0);
             RenderTexture.ReleaseTemporary(buffer0);
             buffer0 = buffer1;
 
-            if(BlurMaterial.passCount > 1)
+            if(blurMaterial.passCount > 1)
             {
-                buffer1 = RenderTexture.GetTemporary(TextureWidth, TextureHeight, 0);
-                Graphics.Blit(buffer0, buffer1, BlurMaterial, 1);
+                buffer1 = RenderTexture.GetTemporary(textureWidth, textureHeight, 0);
+                Graphics.Blit(buffer0, buffer1, blurMaterial, 1);
                 RenderTexture.ReleaseTemporary(buffer0);
                 buffer0 = buffer1;
             }
         }
 
-        Graphics.Blit(buffer0, OutPutRenderTexture);
+        Graphics.Blit(buffer0, outPutRenderTexture);
         RenderTexture.ReleaseTemporary(buffer0);
         Graphics.Blit(source, destination);
     }

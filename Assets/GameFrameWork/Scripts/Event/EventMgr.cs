@@ -5,19 +5,19 @@ namespace GameFrameWork.Event
 {
     public class EventMgr : BaseMgr<EventMgr>
     {
-        public int EventHandlerCount
+        public int eventHandlerCount
         {
             get
             {
-                return m_EventPool.EventHandlerCount;
+                return m_EventPool.eventHandlerCount;
             }
         }
 
-        public int EventCount
+        public int eventCount
         {
             get
             {
-                return m_EventPool.EventCount;
+                return m_EventPool.eventCount;
             }
         }
 

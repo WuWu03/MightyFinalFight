@@ -2,7 +2,7 @@
 
 public class RoleHurt : BaseFsmState
 {
-    public string HurtAnim
+    public string hurtAnim
     {
         set
         {
@@ -12,22 +12,22 @@ public class RoleHurt : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.IsBeCatch ? 1f : m_Owner.ObjectType == ObjectType.Player ? 0.5f : 1.5f);
-        m_Owner.SetPos(m_Owner.Pos, m_Owner.PosZ);
+        m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.isBeCatch ? 1f : m_Owner.objectType == ObjectType.Player ? 0.5f : 1.5f);
+        m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.IsPlayComplete())
         {
-            if (m_Owner.Attribute.Health <= 0)
+            if (m_Owner.entityAttribute.health <= 0)
             {
-                if (m_Owner.IsInGround)
+                if (m_Owner.isInGround)
                     ChangeState<RoleDead>(fsm);
             }
             else ChangeState<RoleIdle>(fsm);

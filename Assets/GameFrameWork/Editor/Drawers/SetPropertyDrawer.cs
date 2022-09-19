@@ -23,18 +23,18 @@ namespace GameFrameWork.Editor
 				// FieldInfo.GetValue() will return the prior value that was set) until after this OnGUI call has completed. 
 				// Therefore, we need to mark this property as dirty, so that it can be updated with a subsequent OnGUI event 
 				// (e.g. Repaint)
-				setProperty.IsDirty = true;
+				setProperty.isDirty = true;
 			}
-			else if (setProperty.IsDirty)
+			else if (setProperty.isDirty)
 			{
 				// The propertyPath may reference something that is a child field of a field on this Object, so it is necessary
 				// to find which object is the actual parent before attempting to set the property with the current value.
 				object parent = GetParentObjectOfProperty(property.propertyPath, property.serializedObject.targetObject);
 				Type type = parent.GetType();
-				PropertyInfo pi = type.GetProperty(setProperty.Name);
+				PropertyInfo pi = type.GetProperty(setProperty.name);
 				if (pi == null)
 				{
-					Debug.LogError("Invalid property name: " + setProperty.Name + "\nCheck your [SetProperty] attribute");
+					Debug.LogError("Invalid property name: " + setProperty.name + "\nCheck your [SetProperty] attribute");
 				}
 				else
 				{
@@ -42,7 +42,7 @@ namespace GameFrameWork.Editor
 					// SerializedPropertyType and use the correct accessor
 					pi.SetValue(parent, fieldInfo.GetValue(parent), null);
 				}
-				setProperty.IsDirty = false;
+				setProperty.isDirty = false;
 			}
 		}
 

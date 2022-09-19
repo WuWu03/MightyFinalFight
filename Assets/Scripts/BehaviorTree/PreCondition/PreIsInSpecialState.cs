@@ -21,12 +21,12 @@ public class PreIsInSpecialState : PreCondition
             m_Timer = -1;
         }
 
-        if (m_Owner.Owner.IsAutoMove)
+        if (m_Owner.owner.isAutoMove)
         {
             return true;
         }
 
-        if (m_Owner.Owner.IsBeCatch || m_Owner.Owner.IsAnyState(typeof(RoleHurt), typeof(RoleDead), typeof(RoleSwoon), typeof(RoleSkill), typeof(RoleAwaken)))
+        if (m_Owner.owner.isBeCatch || m_Owner.owner.IsAnyState(typeof(RoleHurt), typeof(RoleDead), typeof(RoleSwoon), typeof(RoleSkill), typeof(RoleAwaken)))
         {
             m_Timer = Time.time;
             return true;

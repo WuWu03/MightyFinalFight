@@ -2,18 +2,18 @@
 
 public class BaseRoleSkillData : BaseEventArgs
 {
-    public int[] AttackIds;
-    public int[] JumpAttackIds;
-    public int[] SkillIds;
-    public float[] AttackWait;
-    public float[] AttackNextTime;
+    public int[] attackIds { get; set; }
+    public int[] jumpAttackIds { get; set; }
+    public int[] skillIds { get; set; }
+    public float[] attackWait { get; set; }
+    public float[] attackNextTime { get; set; }
 
     public override void Clear()
     {
-        AttackIds = null;
-        JumpAttackIds = null;
-        SkillIds = null;
-        AttackWait = null;
-        AttackNextTime = null;
+        attackIds = null;
+        jumpAttackIds = null;
+        skillIds = null;
+        attackWait = null;
+        attackNextTime = null;
     }
 }

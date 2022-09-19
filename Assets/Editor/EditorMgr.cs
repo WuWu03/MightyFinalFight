@@ -52,8 +52,8 @@ public class EditorMgr : MonoBehaviour
     {
         EditorSceneManager.OpenScene("Assets/Scenes/Main.unity");
         AppConfig appConfig = GameObject.FindObjectOfType<AppConfig>();
-        appConfig.LoadAB = true;
-        appConfig.OpenLog = openLog;
+        appConfig.loadAB = true;
+        appConfig.openLog = openLog;
         AssetBundleBuilder.Build(BuildTarget.StandaloneWindows, false);
         AssetDatabase.Refresh();
 
@@ -64,7 +64,7 @@ public class EditorMgr : MonoBehaviour
         }
 
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.locationPathName = appConfig.PCBuildPath;
+        buildPlayerOptions.locationPathName = appConfig.pcBuildPath;
         buildPlayerOptions.scenes = scenes;
         buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
@@ -74,8 +74,8 @@ public class EditorMgr : MonoBehaviour
 
         if (buildSummary.result == BuildResult.Succeeded)
         {
-            appConfig.LoadAB = false;
-            appConfig.OpenLog = true;
+            appConfig.loadAB = false;
+            appConfig.openLog = true;
             Debug.Log("Build success");
         }
         else if (buildSummary.result == BuildResult.Failed)
@@ -87,48 +87,38 @@ public class EditorMgr : MonoBehaviour
     [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<SkillConfig, SkillConfigData>("SkillData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<SkillConfig, SkillConfigData>("SkillData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateStageData")]
     public static void CreateStageData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
     }
 
-    [MenuItem("Assets/Config/CreateCharacterData")]
-    public static void CreatePlayerData()
-    {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<CharacterConfig, CharacterConfigData>("CharacterData", ".asset");
-    }
 
     [MenuItem("Assets/Config/CreateSceneItemData")]
     public static void CreateSceneItemData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<SceneItemConfig, SceneItemConfigData>("SceneItemData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<SceneItemConfig, SceneItemConfigData>("SceneItemData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateTaskData")]
     public static void CreateTaskData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<TaskConfig, TaskConfigData>("TaskData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<TaskConfig, TaskConfigData>("TaskData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateLevelData")]
     public static void CreateLevelData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<LevelConfig, LevelConfigData>("LevelData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<LevelConfig, LevelConfigData>("LevelData", ".asset");
     }
 
-    [MenuItem("Assets/Config/CreateRoleSelectData")]
-    public static void CreateRoleSelectData()
-    {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<RoleSelectConfig, RoleSelectConfigData>("RoleSelectData", ".asset");
-    }
 
     [MenuItem("Assets/Config/CreateTalkData")]
     public static void CreateTalkData()
     {
-        GameFrameWork.Editor.EditorUtility.CreateConfigData<TalkConfig, TalkConfigData>("TalkData", ".asset");
+        GameFrameWork.Editor.EditorUtil.CreateConfigData<TalkConfig, TalkConfigData>("TalkData", ".asset");
     }
 }

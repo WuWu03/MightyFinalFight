@@ -14,43 +14,43 @@ using GameFrameWork.Camera;
 
 public class MainPanel : BasePanel
 {
-	public override string PanelName { get { return "MainPanel"; } }
-	public override float PanelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type PanelType { get { return UIMgr.Type.Root; } }
-	public override UIMgr.Layer PanelLayer { get { return UIMgr.Layer.MainPanel; } }
-	public override UIMgr.CloseMode PanelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
+	public override string panelName { get { return "MainPanel"; } }
+	public override float panelUnLoadTime { get { return 0f; } }
+	public override UIMgr.Type panelType { get { return UIMgr.Type.Root; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.MainPanel; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
 
     protected override void OnInit(object[] param)
 	{
-		m_Component = new MainPanelComponent(UIRefRoot);
-		m_Component.LevelListGroupView.Init(m_Component.LevelList, m_Component.ItemGO, 5);
+		m_Component = new MainPanelComponent(uiRefRoot);
+		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
     protected override void OnOpen()
 	{
-		m_Component.LevelListGroupView.OnItemUpdate = OnItemUpdate;
-		m_Component.LevelListGroupView.Update(5);
-		SetPlayerExp(PlayerMgr.Ins.EXP, PlayerMgr.Ins.LevelData.EXP);
-		SetRound(StageMgr.Ins.StageIndex);
-		SetPlayerLife(PlayerMgr.Ins.Life);
-		SetPlayerHP(PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.Health, PlayerMgr.Ins.LevelData.HPBarWidth);
+		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
+		m_Component.levelListGroupView.Update(5);
+		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelData.EXP);
+		SetRound(StageMgr.instance.stageIndex);
+		SetPlayerLife(PlayerMgr.instance.life);
+		SetPlayerHP(PlayerMgr.instance.levelData.Health, PlayerMgr.instance.levelData.Health, PlayerMgr.instance.levelData.HPBarWidth);
 
-		PoolMgr.Ins.AddPool("PlayerDamageText", m_Component.TxtPlayerDamage.gameObject);
-		PoolMgr.Ins.AddPool("EmenyDamageText", m_Component.TxtEnemyDamage.gameObject);
+		PoolMgr.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
+		PoolMgr.instance.AddPool("EmenyDamageText", m_Component.txtEnemyDamage.gameObject);
 	}
 
     protected override void OnUpdate()
     {
 		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= EnemyHPBarHideTime)
 		{
-			m_Component.EnemyHpBar.gameObject.SetActive(false);
+			m_Component.enemyHpBar.gameObject.SetActive(false);
 			m_EnemyHpBarHideTimer = -1;
 		}
 	}
 
 	protected override void OnClose()
 	{
-		m_Component.LevelListGroupView.OnItemUpdate = null;
+		m_Component.levelListGroupView.onItemUpdateEvent = null;
 	}
 
 	protected override void OnDestroy()
@@ -60,24 +60,24 @@ public class MainPanel : BasePanel
 
 	private void OnItemUpdate(MainPanelComponent.LevelListItem item)
 	{
-		int stageIndex = StageMgr.Ins.StageIndex;
-		int playerLevel = PlayerMgr.Ins.Level;
-		item.ImgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= item.Id);
-		item.ImgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= item.Id);
-		item.ImgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= item.Id);
-		item.ImgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= item.Id);
-		item.ImgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= item.Id);
+		int stageIndex = StageMgr.instance.stageIndex;
+		int playerLevel = PlayerMgr.instance.level;
+		item.imgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= item.id);
+		item.imgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= item.id);
+		item.imgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= item.id);
+		item.imgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= item.id);
+		item.imgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= item.id);
 	}
 
 	public void SetPlayerHP(int value, int max, float width = 0f)
 	{
 		if (width != 0)
 		{
-			m_Component.PlayerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
 		}
 
-		m_Component.PlayerHpBar.maxValue = max;
-		m_Component.PlayerHpBar.value = value;
+		m_Component.playerHpBar.maxValue = max;
+		m_Component.playerHpBar.value = value;
 	}
 
 	public void SetEnemyHP(int value, int max, float width)
@@ -87,12 +87,12 @@ public class MainPanel : BasePanel
 			return;
 		}
 
-		m_Component.EnemyHpBar.gameObject.SetActive(true);
-		m_Component.EnemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		m_Component.EnemyHpBar.maxValue = max;
-		m_Component.EnemyHpBar.value = value;
+		m_Component.enemyHpBar.gameObject.SetActive(true);
+		m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		m_Component.enemyHpBar.maxValue = max;
+		m_Component.enemyHpBar.value = value;
 
-		Image image = m_Component.EnemyHpBar.GetComponent<Image>();
+		Image image = m_Component.enemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
 
 		if (value == 0)
@@ -107,7 +107,7 @@ public class MainPanel : BasePanel
 			}
 			sequence.AppendCallback(() =>
 			{
-				m_Component.EnemyHpBar.gameObject.SetActive(false);
+				m_Component.enemyHpBar.gameObject.SetActive(false);
 				m_IsEnemyHpBarAnim = false;
 			});
 			return;
@@ -128,7 +128,7 @@ public class MainPanel : BasePanel
 
 	private void ShowDamageText(string textName, int value, Vector3 pos)
 	{
-		GameObject go = PoolMgr.Ins.Spawn(textName, transform, "UI", true);
+		GameObject go = PoolMgr.instance.Spawn(textName, transform, "UI", true);
 		Text text = go.GetComponent<Text>();
 		RectTransform textRect = text.GetComponent<RectTransform>();
 
@@ -136,36 +136,36 @@ public class MainPanel : BasePanel
 		text.DOFade(1, 0);
 		text.transform.localScale = Vector3.one * 2f;
 		text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
-		Vector3 screenPos = CameraMgr.Ins.WorldPosToScreenPos(pos);
-		Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.Ins.UICamera);
+		Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
+		Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.instance.uiCamera);
 		textRect.localPosition = uguiPos;
 		textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
 		text.DOFade(0, 2f).OnComplete(() =>
 		{
-			PoolMgr.Ins.UnSpawn("EmenyDamageText", go);
+			PoolMgr.instance.UnSpawn("EmenyDamageText", go);
 		});
 	}
 
 	public void SetRound(int round)
 	{
-		m_Component.TxtStage.text = round.ToString();
+		m_Component.txtStage.text = round.ToString();
 	}
 
 	public void SetPlayerLife(int life)
 	{
-		m_Component.TxtPlayerLife.text = life.ToString();
+		m_Component.txtPlayerLife.text = life.ToString();
 	}
 
 	public void SetPlayerExp(int currExp, int maxExp)
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.TxtExp.text = StringUtil.Format("{0}/{1}", currExpStr, maxExpStr);
+		m_Component.txtExp.text = StringUtil.Format("{0}/{1}", currExpStr, maxExpStr);
 	}
 
 	public void SetPlayerLevel()
 	{
-		m_Component.LevelListGroupView.Update(5);
+		m_Component.levelListGroupView.Update(5);
 	}
 
 	private string GetExpStr(int exp)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class BaseCtrl
 {
-    public BaseRole Owner
+    public BaseRole owner
     {
         get
         {

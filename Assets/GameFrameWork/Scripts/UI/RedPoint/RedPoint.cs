@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace GameFrameWork.UI
@@ -22,7 +19,10 @@ namespace GameFrameWork.UI
 
     public class RedPoint
     {
-        public string Key
+        /// <summary>
+        /// 主关键字(属于哪一个根节点)
+        /// </summary>
+        public string key
         {
             get
             {
@@ -30,7 +30,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public string SubKey
+        /// <summary>
+        /// 自己的关键字
+        /// </summary>
+        public string subKey
         {
             get
             {
@@ -38,7 +41,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public bool IsRoot
+        /// <summary>
+        /// 是否是根节点
+        /// </summary>
+        public bool isRoot
         {
             get
             {
@@ -46,7 +52,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public RedPointType Type
+        /// <summary>
+        /// 红点类型
+        /// </summary>
+        public RedPointType type
         {
             get
             {
@@ -54,7 +63,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public RedPointState State
+        /// <summary>
+        /// 当前状态
+        /// </summary>
+        public RedPointState state
         {
             get
             {
@@ -62,7 +74,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public int Data
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public int data
         {
             get
             {
@@ -70,7 +85,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public RedPoint Parent
+        /// <summary>
+        /// 父节点
+        /// </summary>
+        public RedPoint parent
         {
             get
             {
@@ -78,7 +96,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        public List<RedPoint> Children
+        /// <summary>
+        /// 子节点
+        /// </summary>
+        public List<RedPoint> children
         {
             get
             {
@@ -98,9 +119,9 @@ namespace GameFrameWork.UI
             m_Children = new List<RedPoint>();
         }
 
-        public void Init(GameFrameWorkAction<RedPointState, int> onShow, Button btn)
+        public void Init(GameFrameWorkAction<RedPointState, int> showEvent, Button btn)
         {
-            m_OnShow = onShow;
+            m_ShowEvent = showEvent;
 
             if (btn != null)
             {
@@ -108,7 +129,7 @@ namespace GameFrameWork.UI
                 m_Btn.onClick.AddListener(OnClick);
             }
 
-            m_OnShow?.Invoke(m_State, m_Data);
+            m_ShowEvent?.Invoke(m_State, m_Data);
         }
 
         public void AddChild(RedPoint node, string parentKey)
@@ -133,7 +154,7 @@ namespace GameFrameWork.UI
                 return this;
             }
 
-            if (m_Children.Count < 1)
+            if (m_Children == null)
             {
                 return null;
             }
@@ -141,10 +162,34 @@ namespace GameFrameWork.UI
             for (int i = 0; i < m_Children.Count; i++)
             {
                 RedPoint node = m_Children[i].GetChild(subKey);
-                if (node != null) return node;
+
+                if (node != null)
+                {
+                    return node;
+                }
             }
 
             return null;
+        }
+
+        public void RemoveChild(string subKey)
+        {
+            if(m_SubKey.Equals(subKey))
+            {
+                m_Parent.children.Remove(this);
+                Dispose();
+                return;
+            }
+
+            if (m_Children == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < m_Children.Count; i++)
+            {
+                m_Children[i].RemoveChild(subKey);
+            }
         }
 
         public void SetParent(RedPoint parent)
@@ -152,26 +197,28 @@ namespace GameFrameWork.UI
             m_Parent = parent;
         }
 
-        public void SetTreeState(string subKey, RedPointState state, int data)
+        public void SetState(string subKey, RedPointState state, int data)
         {
             RedPoint node = GetChild(subKey);
+
             if (node == null)
             {
                 return;
             }
 
+            node.SetTreeState(subKey, state, data);
+
             m_Data = 0;
-            node.SetState(subKey, state, data);
 
             for (int i = 0; i < m_Children.Count; i++)
             {
-                m_Data += m_Children[i].Data;
+                m_Data += m_Children[i].m_Data;
             }
 
-            m_OnShow?.Invoke(m_State, m_Data);
+            m_ShowEvent?.Invoke(m_State, m_Data);
         }
 
-        private void SetState(string subKey, RedPointState state, int data)
+        private void SetTreeState(string subKey, RedPointState state, int data)
         {
             m_State = state;
 
@@ -181,22 +228,24 @@ namespace GameFrameWork.UI
             }
             else
             {
+                m_Data = 0;
+
                 for (int i = 0; i < m_Children.Count; i++)
                 {
-                    if (m_Children[i].State == RedPointState.Show)
+                    if (m_Children[i].state == RedPointState.Show)
                     {
                         m_State = RedPointState.Show;
-                        break;
+                        m_Data += m_Children[i].data;
                     }
                 }
             }
 
-            m_OnShow?.Invoke(m_State, m_Data);
-
             if (m_Parent != null)
             {
-                m_Parent.SetState(subKey, state, data);
+                m_Parent.SetTreeState(subKey, state, data);
             }
+
+            m_ShowEvent?.Invoke(m_State, m_Data);
         }
 
         private void OnClick()
@@ -211,22 +260,35 @@ namespace GameFrameWork.UI
         private void HideChildren()
         {
             m_State = RedPointState.Hide;
-            m_OnShow?.Invoke(m_State, m_Data);
+ 
             for (int i = 0; i < m_Children.Count; i++)
             {
                 m_Children[i].HideChildren();
             }
+
+            m_ShowEvent?.Invoke(m_State, m_Data);
         }
 
         public void Dispose()
         {
+            for(int i = 0; i < m_Children.Count; i++)
+            {
+                m_Children[i].Dispose();
+            }
+
             m_Children.Clear();
             m_Children = null;
+
+            if (m_Btn != null)
+            {
+                m_Btn.onClick.RemoveListener(OnClick);
+            }
+
+            m_Btn = null;
             m_Parent = null;
             m_Key = null;
             m_SubKey = null;
-            m_OnShow = null;
-            m_Btn = null;
+            m_ShowEvent = null;
             m_Type = RedPointType.None;
             m_State = RedPointState.None;
         }
@@ -234,11 +296,11 @@ namespace GameFrameWork.UI
         private string m_Key = string.Empty;
         private string m_SubKey = string.Empty;
         private bool m_IsRoot = false;
+        private int m_Data = 0;
         private RedPointType m_Type = RedPointType.None;
         private RedPointState m_State = RedPointState.None;
-        private GameFrameWorkAction<RedPointState, int> m_OnShow = null;
+        private GameFrameWorkAction<RedPointState, int> m_ShowEvent = null;
         private Button m_Btn;
-        private int m_Data = 0;
         private RedPoint m_Parent = null;
         private List<RedPoint> m_Children = null;
     }

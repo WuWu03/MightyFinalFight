@@ -14,7 +14,7 @@ public class PreIsCanSkill : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        return m_PreOwner.Owner.CanSkill || m_PreOwner.Owner.IsCurrState<RoleSkill>();
+        return m_PreOwner.owner.canSkill || m_PreOwner.owner.IsCurrState<RoleSkill>();
     }
 
     private BaseRoleCtrl m_PreOwner = null;

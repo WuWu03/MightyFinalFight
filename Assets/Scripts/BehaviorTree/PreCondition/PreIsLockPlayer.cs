@@ -24,11 +24,11 @@ public class PreIsLockPlayer : PreCondition
             return true;
         }
 
-        float distance = Vector2.Distance(PlayerMgr.Ins.Player.Pos, m_Owner.Owner.Pos);
+        float distance = Vector2.Distance(PlayerMgr.instance.player.pos, m_Owner.owner.pos);
         if (distance <= m_Distance)
         {
             m_IsLockPlayer = true;
-            m_Owner.Owner.ChangeState<RoleIdle>();
+            m_Owner.owner.ChangeState<RoleIdle>();
             m_Owner.OppositePlayer();
             return true;
         }

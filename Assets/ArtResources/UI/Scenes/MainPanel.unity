@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,6 +153,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 743783145}
   m_Father: {fileID: 2038030245}
@@ -264,6 +265,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 674840360}
   m_RootOrder: 0
@@ -328,7 +330,7 @@ GameObject:
   - component: {fileID: 199984714}
   - component: {fileID: 199984713}
   m_Layer: 0
-  m_Name: State
+  m_Name: state
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -344,6 +346,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1826900175}
   m_Father: {fileID: 743783145}
@@ -425,7 +428,7 @@ GameObject:
   - component: {fileID: 252952245}
   - component: {fileID: 252952249}
   m_Layer: 0
-  m_Name: PlayerHpBar
+  m_Name: playerHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -441,6 +444,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2032371814}
   m_Father: {fileID: 674840360}
@@ -594,7 +598,7 @@ GameObject:
   - component: {fileID: 305565307}
   - component: {fileID: 305565306}
   m_Layer: 0
-  m_Name: TxtExp
+  m_Name: txtExp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -610,6 +614,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 873496742}
   m_RootOrder: 1
@@ -696,7 +701,7 @@ GameObject:
   - component: {fileID: 322625189}
   - component: {fileID: 322625192}
   m_Layer: 0
-  m_Name: TxtPlayerLife
+  m_Name: txtPlayerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -712,6 +717,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1416097190}
   m_RootOrder: 0
@@ -826,6 +832,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2072616666}
   m_RootOrder: 0
@@ -886,7 +893,7 @@ GameObject:
   - component: {fileID: 562871414}
   - component: {fileID: 562871416}
   m_Layer: 0
-  m_Name: ImgLevel3
+  m_Name: imgLevel3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -902,6 +909,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2006755758}
   m_RootOrder: 2
@@ -962,7 +970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLevel3
+  m_RefName: imgLevel3
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1003,15 +1011,15 @@ MonoBehaviour:
   m_PanelName: MainPanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  PanelType: 1
-  PanelPreLoadType: 0
-  PanelCloseMode: 4
-  PanelLayer: 1
-  IsCustomLayer: 0
-  UnLoadTime: 0
-  PanelPath: Assets/Scripts/UI/MainPanel/MainPanel.cs
-  PanelComponentPath: Assets/Scripts/UI/MainPanel/MainPanelComponent.cs
-  PanelPrefabPath: Assets/ArtResources/UI/Prefabs/MainPanel.prefab
+  panelType: 2
+  panelPreLoadType: 0
+  panelCloseMode: 1
+  panelLayer: 2
+  isCustomLayer: 0
+  unLoadTime: 0
+  panelPath: Assets/Scripts/UI/MainPanel/MainPanel.cs
+  panelComponentPath: Assets/Scripts/UI/MainPanel/MainPanelComponent.cs
+  panelPrefabPath: Assets/ArtResources/UI/Prefabs/MainPanel.prefab
 --- !u!4 &575058724
 Transform:
   m_ObjectHideFlags: 0
@@ -1022,6 +1030,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1038,7 +1047,7 @@ GameObject:
   - component: {fileID: 674840362}
   - component: {fileID: 674840361}
   m_Layer: 0
-  m_Name: Player
+  m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1054,6 +1063,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 143870781}
   - {fileID: 252952244}
@@ -1115,7 +1125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 693409553}
   m_Layer: 0
-  m_Name: BG
+  m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1131,6 +1141,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1186272848}
   - {fileID: 1182122093}
@@ -1170,6 +1181,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2038030245}
   m_RootOrder: 2
@@ -1186,6 +1198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: A
@@ -1236,6 +1249,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 693409553}
   - {fileID: 674840360}
@@ -1266,7 +1280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Objects:
+  objects:
   - {fileID: 252952246}
   - {fileID: 2072616668}
   - {fileID: 1826900177}
@@ -1358,6 +1372,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2038030245}
   m_RootOrder: 0
@@ -1374,7 +1389,7 @@ GameObject:
   - component: {fileID: 873496744}
   - component: {fileID: 873496743}
   m_Layer: 0
-  m_Name: Exp
+  m_Name: exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1390,6 +1405,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1861697064}
   - {fileID: 305565305}
@@ -1454,7 +1470,7 @@ GameObject:
   - component: {fileID: 1007864715}
   - component: {fileID: 1007864717}
   m_Layer: 0
-  m_Name: ImgLevel2
+  m_Name: imgLevel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1470,6 +1486,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2006755758}
   m_RootOrder: 1
@@ -1530,7 +1547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLevel2
+  m_RefName: imgLevel2
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1551,7 +1568,7 @@ GameObject:
   - component: {fileID: 1073889341}
   - component: {fileID: 1073889343}
   m_Layer: 0
-  m_Name: ImgLevel5
+  m_Name: imgLevel5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1567,6 +1584,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2006755758}
   m_RootOrder: 4
@@ -1627,7 +1645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLevel5
+  m_RefName: imgLevel5
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -1650,7 +1668,7 @@ GameObject:
   - component: {fileID: 1149134744}
   - component: {fileID: 1149134746}
   m_Layer: 0
-  m_Name: TxtEnemyDamage
+  m_Name: txtEnemyDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1666,6 +1684,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 743783145}
   m_RootOrder: 7
@@ -1779,7 +1798,7 @@ GameObject:
   - component: {fileID: 1182122095}
   - component: {fileID: 1182122094}
   m_Layer: 0
-  m_Name: Bottom
+  m_Name: bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1795,6 +1814,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 693409553}
   m_RootOrder: 1
@@ -1854,7 +1874,7 @@ GameObject:
   - component: {fileID: 1186272850}
   - component: {fileID: 1186272849}
   m_Layer: 0
-  m_Name: Top
+  m_Name: top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1870,6 +1890,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 693409553}
   m_RootOrder: 0
@@ -1946,6 +1967,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1970342132}
   m_RootOrder: 0
@@ -2024,7 +2046,7 @@ GameObject:
   - component: {fileID: 1416097192}
   - component: {fileID: 1416097191}
   m_Layer: 0
-  m_Name: PlayerLife
+  m_Name: playerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2040,6 +2062,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 322625188}
   m_Father: {fileID: 743783145}
@@ -2116,7 +2139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1514623960}
   m_Layer: 0
-  m_Name: Level
+  m_Name: level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2132,6 +2155,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1682481260}
   - {fileID: 1746242804}
@@ -2156,7 +2180,7 @@ GameObject:
   - component: {fileID: 1655960279}
   - component: {fileID: 1655960281}
   m_Layer: 0
-  m_Name: ImgLevel1
+  m_Name: imgLevel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2172,6 +2196,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2006755758}
   m_RootOrder: 0
@@ -2232,7 +2257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLevel1
+  m_RefName: imgLevel1
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0
@@ -2269,6 +2294,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1514623960}
   m_RootOrder: 0
@@ -2348,7 +2374,7 @@ GameObject:
   - component: {fileID: 1725198711}
   - component: {fileID: 1725198710}
   m_Layer: 0
-  m_Name: TxtPlayerDamage
+  m_Name: txtPlayerDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2364,6 +2390,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 743783145}
   m_RootOrder: 8
@@ -2386,7 +2413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: TxtPlayerDamage
+  m_RefName: txtPlayerDamage
   m_ComponentName: Text
   m_Desc: 
   m_IsLayoutItem: 0
@@ -2463,7 +2490,7 @@ GameObject:
   - component: {fileID: 1746242806}
   - component: {fileID: 1746242805}
   m_Layer: 0
-  m_Name: LevelList
+  m_Name: levelList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2479,6 +2506,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2006755758}
   m_Father: {fileID: 1514623960}
@@ -2502,12 +2530,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: LevelList
+  m_RefName: levelList
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
+  m_IsLayout: 1
   m_IsLoopScroll: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1746242806
@@ -2564,7 +2592,7 @@ GameObject:
   - component: {fileID: 1826900176}
   - component: {fileID: 1826900179}
   m_Layer: 0
-  m_Name: TxtStage
+  m_Name: txtStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2580,6 +2608,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 199984712}
   m_RootOrder: 0
@@ -2694,6 +2723,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 873496742}
   m_RootOrder: 0
@@ -2758,7 +2788,7 @@ GameObject:
   - component: {fileID: 1970342133}
   - component: {fileID: 1970342135}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2774,6 +2804,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1363721679}
   - {fileID: 2072616666}
@@ -2850,7 +2881,7 @@ GameObject:
   - component: {fileID: 2006755760}
   - component: {fileID: 2006755759}
   m_Layer: 0
-  m_Name: Item
+  m_Name: item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2866,6 +2897,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1655960278}
   - {fileID: 1007864714}
@@ -2893,7 +2925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: Item
+  m_RefName: item
   m_ComponentName: GameObject
   m_Desc: 
   m_IsLayoutItem: 1
@@ -2967,6 +2999,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 252952244}
   m_RootOrder: 0
@@ -3040,6 +3073,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 752769402}
   - {fileID: 28197}
@@ -3062,7 +3096,7 @@ GameObject:
   - component: {fileID: 2072616667}
   - component: {fileID: 2072616671}
   m_Layer: 0
-  m_Name: EnemyHpBar
+  m_Name: enemyHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3078,6 +3112,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 504768930}
   m_Father: {fileID: 1970342132}
@@ -3231,7 +3266,7 @@ GameObject:
   - component: {fileID: 2115285214}
   - component: {fileID: 2115285216}
   m_Layer: 0
-  m_Name: ImgLevel4
+  m_Name: imgLevel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3247,6 +3282,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2006755758}
   m_RootOrder: 3
@@ -3307,7 +3343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: ImgLevel4
+  m_RefName: imgLevel4
   m_ComponentName: Image
   m_Desc: 
   m_IsLayoutItem: 0

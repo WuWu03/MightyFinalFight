@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class DropTrapData : BaseEventArgs
 {
-    public int AttackValue { get; set; }
-    public Vector2 RebirthPos { get; set; }
+    public int attackValue { get; set; }
+    public Vector2 rebirthPos { get; set; }
 
     public override void Clear()
     {
-        RebirthPos = Vector2.zero;
-        AttackValue = 0;
+        rebirthPos = Vector2.zero;
+        attackValue = 0;
     }
 }

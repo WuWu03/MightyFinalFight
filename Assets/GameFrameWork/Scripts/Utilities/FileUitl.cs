@@ -7,10 +7,6 @@ namespace GameFrameWork.Utilities
 {
     public class FileUitl
     {
-        public static bool FileExists(string path)
-        {
-            return File.Exists(path);
-        }
         /// <summary>
         /// 读取文本文件
         /// </summary>
@@ -29,6 +25,7 @@ namespace GameFrameWork.Utilities
             {
                 content = sr.ReadToEnd();
             }
+
             return content;
         }
 
@@ -39,7 +36,7 @@ namespace GameFrameWork.Utilities
         {
             DeleteFile(filePath);
 
-            using (FileStream fs = File.Create(filePath))
+            using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
@@ -73,17 +70,25 @@ namespace GameFrameWork.Utilities
                 }
 
                 if (destDirName[destDirName.Length - 1] != Path.DirectorySeparatorChar)
+                {
                     destDirName = destDirName + Path.DirectorySeparatorChar;
+                }
 
                 string[] files = Directory.GetFiles(sourceDirName, "*", SearchOption.TopDirectoryOnly);
 
                 foreach (string file in files)
                 {
                     if (File.Exists(destDirName + Path.GetFileName(file)))
+                    {
                         continue;
+                    }
+
                     FileInfo fileInfo = new FileInfo(file);
+
                     if (fileInfo.Extension.Equals(".meta", StringComparison.CurrentCultureIgnoreCase))
+                    {
                         continue;
+                    }
 
                     File.Copy(file, destDirName + Path.GetFileName(file), true);
                     File.SetAttributes(destDirName + Path.GetFileName(file), FileAttributes.Normal);
@@ -112,7 +117,11 @@ namespace GameFrameWork.Utilities
             foreach (string filename in files)
             {
                 string ext = Path.GetExtension(filename);
-                if (ext.Equals(".meta")) continue;
+                if (ext.Equals(".meta"))
+                {
+                    continue;
+                }
+
                 listFiles.Add(filename.Replace('\\', '/'));
             }
 

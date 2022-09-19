@@ -24,15 +24,15 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         AttackData attackData = AttackData.Create();
-        attackData.SkillID = m_SkillData.Id;
-        attackData.AnimName = m_SkillData.AnimationName;
-        attackData.AnimSpeed = m_SkillData.AnimSpeed;
-        attackData.AnimTime = m_SkillData.AnimTime;
-        attackData.Dir = m_Owner.Dir;
-        attackData.CanChangeDir = false;
+        attackData.skillID = m_SkillData.Id;
+        attackData.animName = m_SkillData.AnimationName;
+        attackData.animSpeed = m_SkillData.AnimSpeed;
+        attackData.animTime = m_SkillData.AnimTime;
+        attackData.dir = m_Owner.dir;
+        attackData.canChangeDir = false;
        
-        m_Owner.OnGroundEvent.AddListener(OnGroundEvent);
-        m_Owner.OnDropEvent.AddListener(OnDropEvent);
+        m_Owner.onGroundEvent.AddListener(OnGroundEvent);
+        m_Owner.onDropEvent.AddListener(OnDropEvent);
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetCatch(false);
@@ -59,7 +59,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         {
             if (m_CanEffect)
             {
-                if (m_Owner.HitSuccess)
+                if (m_Owner.isHitSuccess)
                 {
                     m_CanEffect = false;
                     return;
@@ -82,7 +82,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
     }
 
     private void OnDropEvent()

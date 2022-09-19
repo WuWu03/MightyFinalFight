@@ -8,7 +8,7 @@ namespace GameFrameWork
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
     public class EnumLabelAttribute : PropertyAttribute
     {
-        public string Label
+        public string label
         {
             get
             {
@@ -20,7 +20,7 @@ namespace GameFrameWork
             }
         }
 
-        public int[] Orders
+        public int[] orders
         {
             get
             {

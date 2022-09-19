@@ -1,12 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
-public struct ResDefine
+﻿public struct ResDefine
 {
     public const string PrefabPath = "ArtResources/Prefabs";
     public const string EffectPath = "ArtResources/Prefabs/FX";
@@ -15,4 +7,3 @@ public struct ResDefine
     public const string TexturePath = "ArtResources/Texture/";
     public const string AudioClipPath = "ArtResources/AudioClip";
 }
-

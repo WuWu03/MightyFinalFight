@@ -5,7 +5,7 @@ using System.Collections;
 
 public class SetPropertyAttribute : PropertyAttribute
 {
-	public string Name 
+	public string name 
 	{
         get 
 		{
@@ -13,7 +13,7 @@ public class SetPropertyAttribute : PropertyAttribute
 		}
 	}
 
-	public bool IsDirty { get; set; }
+	public bool isDirty { get; set; }
 
 	public SetPropertyAttribute(string name)
 	{

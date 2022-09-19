@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BaseTask
 {
-    public TaskConfigData TaskData
+    public TaskConfigData taskData
     {
         get
         {
@@ -13,7 +13,7 @@ public abstract class BaseTask
         }
     }
 
-    public bool IsComplete
+    public bool isComplete
     {
         get
         {
@@ -38,7 +38,7 @@ public abstract class BaseTask
 
     public virtual void Update()
     {
-        if (m_Trigger != null && m_Trigger.IsComplete)
+        if (m_Trigger != null && m_Trigger.isComplete)
         {
             m_IsComplete = true;
         }
@@ -59,26 +59,26 @@ public abstract class BaseTask
     {
         if (m_TaskData.ExitStartCamera)
         {
-            PlayerMgr.Ins.CanContrl = false;
-            PlayerMgr.Ins.SetSpeedZero(true);
-            CameraMgr.Ins.SetFollowMode(FollowMode.Linear);
-            CameraMgr.Ins.StartFollow(true);
-            float cameraX = CameraMgr.Ins.CameraRoot.transform.position.x;
-            float playerX = PlayerMgr.Ins.Player.Pos.x;
+            PlayerMgr.instance.canContrl = false;
+            PlayerMgr.instance.SetSpeedZero(true);
+            CameraMgr.instance.SetFollowMode(FollowMode.Linear);
+            CameraMgr.instance.StartFollow(true);
+            float cameraX = CameraMgr.instance.cameraRoot.transform.position.x;
+            float playerX = PlayerMgr.instance.player.pos.x;
             bool isDistance = cameraX >= playerX || Mathf.Abs(cameraX - playerX) <= 0f;
 
             if (isDistance)
             {
-                PlayerMgr.Ins.CanContrl = true;
-                PlayerMgr.Ins.RevertSpeed();
-                CameraMgr.Ins.SetFollowMode(FollowMode.Just);
+                PlayerMgr.instance.canContrl = true;
+                PlayerMgr.instance.RevertSpeed();
+                CameraMgr.instance.SetFollowMode(FollowMode.Just);
             }
             return isDistance;
         }
 
         if (m_TaskData.ExitPlayerCanCtrl)
         {
-            PlayerMgr.Ins.CanContrl = true;
+            PlayerMgr.instance.canContrl = true;
         }
 
         return true;

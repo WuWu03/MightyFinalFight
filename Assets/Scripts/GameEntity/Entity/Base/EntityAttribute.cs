@@ -8,83 +8,82 @@ public class EntityAttribute : IReference
     /// <summary>
     /// 当前血量
     /// </summary>
-    public int Health { get; set; }
+    public int health { get; set; }
     /// <summary>
     /// 血量上限
     /// </summary>
-    public int MaxHealth { get; set; }
+    public int maxHealth { get; set; }
     /// <summary>
     /// 攻击速度
     /// </summary>
-    public float AttackSpeed { get; set; }
+    public float attackSpeed { get; set; }
     /// <summary>
     /// 攻击
     /// </summary>
-    public int AttackValue { get; set; }
+    public int attackValue { get; set; }
     /// <summary>
     /// 防御
     /// </summary>
-    public int DefenseValue { get; set; }
+    public int defenseValue { get; set; }
     /// <summary>
     /// 暴击
     /// </summary>
-    public int CriticalValue { get; set; }
+    public int criticalValue { get; set; }
     /// <summary>
     /// 移动速度
     /// </summary>
-    public float MoveSpeed { get; set; }
+    public float moveSpeed { get; set; }
     /// <summary>
     /// 跳跃
     /// </summary>
-    public Vector2 JumpForce { get; set; }
+    public Vector2 jumpForce { get; set; }
 
 
 
     public void AddHealth(int value)
     {
-        Health += value;
+        health += value;
     }
 
     public void SubHealth(int value)
     {
-        Health = Mathf.Max(Health - value, 0);
+        health = Mathf.Max(health - value, 0);
     }
 
     public void ResetHealth()
     {
-        Health = MaxHealth;
+        health = maxHealth;
     }
 
     public void AddMaxHealth(int value)
     {
-        MaxHealth += value;
+        maxHealth += value;
     }
 
     public void SubMaxHealth(int value)
     {
-        MaxHealth = Mathf.Max(MaxHealth - value, 0);
+        maxHealth = Mathf.Max(maxHealth - value, 0);
     }
-
 
     public bool IsFullHealth()
     {
-        return Health >= MaxHealth;
+        return health >= maxHealth;
     }
 
     public bool IsDie()
     {
-        return Health <= 0;
+        return health <= 0;
     }
 
     public void Clear()
     {
-        Health = 0;
-        MaxHealth = 0;
-        AttackSpeed = 0;
-        AttackValue = 0;
-        DefenseValue = 0;
-        CriticalValue = 0;
-        MoveSpeed = 0;
-        JumpForce = Vector2.zero;
+        health = 0;
+        maxHealth = 0;
+        attackSpeed = 0;
+        attackValue = 0;
+        defenseValue = 0;
+        criticalValue = 0;
+        moveSpeed = 0;
+        jumpForce = Vector2.zero;
     }
 }

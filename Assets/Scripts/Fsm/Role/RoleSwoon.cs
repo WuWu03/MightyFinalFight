@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoleSwoon : BaseFsmState
 {
-    public Vector2 Force
+    public Vector2 force
     {
         set
         {
@@ -14,13 +14,13 @@ public class RoleSwoon : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.OnGroundEvent.AddListener(OnBounce);
+        m_Owner.onGroundEvent.AddListener(OnBounce);
         m_Owner.AddForce(m_Force);
         m_Owner.PlayAnimation(AnimName.SwoonUp, 0);
     }
@@ -32,7 +32,7 @@ public class RoleSwoon : BaseFsmState
         if(m_IsBounce && !m_IsAddGroundEvent)
         {
             m_IsAddGroundEvent = true;
-            m_Owner.OnGroundEvent.AddListener(OnGround);
+            m_Owner.onGroundEvent.AddListener(OnGround);
         }
     }
 
@@ -43,14 +43,14 @@ public class RoleSwoon : BaseFsmState
         m_Owner.SetVelocityY(1.5f);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown,0);
-        GameFrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnFallDown");
+        GameFrameWork.Sound.SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnFallDown");
     }
 
     private void OnGround()
     {
-        m_Owner.SetPos2(m_Owner.Pos);
+        m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetThrow(false);
-        GameFrameWork.Sound.SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnFallDown");
+        GameFrameWork.Sound.SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnFallDown");
     }
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)

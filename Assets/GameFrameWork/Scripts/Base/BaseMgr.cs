@@ -4,38 +4,38 @@ using GameFrameWork.Utilities;
 
 namespace GameFrameWork
 {
-    public abstract class BaseMgr<T>: MonoBehaviour where T:BaseMgr<T>,new()
+    public abstract class BaseMgr<T> : MonoBehaviour where T : BaseMgr<T>, new()
     {
-        public static T Ins
+        public static T instance
         {
             get
             {
-                if (m_Ins == null)
+                if (m_Instance == null)
                 {
                     GameFrameworkLog.LogError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name, " must be init"));
                     return null;
                 }
 
-                return m_Ins;
+                return m_Instance;
             }
         }
 
         public static void Init(GameObject manager)
         {
-            if (m_Ins != null)
+            if (m_Instance != null)
             {
                 GameFrameworkLog.LogError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name), " has already init");
                 return;
             }
 
-            if(manager == null)
+            if (manager == null)
             {
                 GameFrameworkLog.LogError("The manager is missing");
                 return;
             }
 
-            m_Ins = manager.GetOrAddComponent<T>();
-            m_Ins.m_Running = true;
+            m_Instance = manager.GetOrAddComponent<T>();
+            m_Instance.m_Running = true;
         }
 
         public virtual void Run()
@@ -95,6 +95,6 @@ namespace GameFrameWork
         }
 
         private bool m_Running = false;
-        private static T m_Ins = null;
+        private static T m_Instance = null;
     }
 }

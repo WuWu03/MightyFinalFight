@@ -10,19 +10,19 @@ public class SkillBulletEffect : SkillBaseEffect
     {
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
-            Bullet bullet = EntityMgr.Ins.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
+            Bullet bullet = EntityMgr.instance.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
             BulletData bulletData = ReferencePool.Acquire<BulletData>();
-            bulletData.BulletIndex = i;
-            bulletData.NormalAnim = m_SkillEffect.Bullets[i].NormalAnim;
-            bulletData.HitAnim = m_SkillEffect.Bullets[i].HitAnim;
-            bulletData.NormalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed;
-            bulletData.HitAnimSpeed = m_SkillEffect.Bullets[i].HitAnimSpeed;
-            bulletData.Dir = m_SkillEffect.Bullets[i].Dir;
-            bulletData.Pos = m_SkillEffect.Bullets[i].Pos;
-            bulletData.Velocity = m_SkillEffect.Bullets[i].Velocity;
-            bulletData.HitRange = m_SkillEffect.Bullets[i].HitRange;
-            bulletData.Drag = m_SkillEffect.Bullets[i].Drag;
-            bulletData.IsPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
+            bulletData.bulletIndex = i;
+            bulletData.normalAnim = m_SkillEffect.Bullets[i].NormalAnim;
+            bulletData.hitAnim = m_SkillEffect.Bullets[i].HitAnim;
+            bulletData.normalAnimSpeed = m_SkillEffect.Bullets[i].NormalAnimSpeed;
+            bulletData.hitAnimSpeed = m_SkillEffect.Bullets[i].HitAnimSpeed;
+            bulletData.dir = m_SkillEffect.Bullets[i].Dir;
+            bulletData.pos = m_SkillEffect.Bullets[i].Pos;
+            bulletData.velocity = m_SkillEffect.Bullets[i].Velocity;
+            bulletData.hitRange = m_SkillEffect.Bullets[i].HitRange;
+            bulletData.drag = m_SkillEffect.Bullets[i].Drag;
+            bulletData.isPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
 
             bullet.SetSkillEffect(this);
             bullet.SetData(bulletData);

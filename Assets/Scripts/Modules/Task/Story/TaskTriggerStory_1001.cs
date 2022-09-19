@@ -17,13 +17,13 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
  
         Timer.Register(1, () =>
         {
-            SceneEntityMgr.Ins.GetSceneBuildingByName("WoodDoorClose").SetActive(false);
-            SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/Break");
+            SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").SetActive(false);
+            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Break");
         });
 
         Timer.Register(2, () => 
         {
-            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(-3.5f, -0.28f));
+            PlayerMgr.instance.player.AutoMoveToPos(new Vector2(-3.5f, -0.28f));
             m_IsAutoMove = true;
         });
     }
@@ -32,7 +32,7 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
     {
         base.Trigger();
 
-        if(m_IsAutoMove && !PlayerMgr.Ins.Player.IsAutoMove)
+        if(m_IsAutoMove && !PlayerMgr.instance.player.isAutoMove)
         {
             m_IsAutoMove = false;
             Complete();

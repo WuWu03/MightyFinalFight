@@ -22,7 +22,7 @@ namespace GameFrameWork
                         .Select<string, string>(enumName => m_CustomEnumNames[enumName])
                         .ToArray();
 
-                int[] indexArray = GetIndexArray(((EnumLabelAttribute)attribute).Orders);
+                int[] indexArray = GetIndexArray(((EnumLabelAttribute)attribute).orders);
 
                 if (indexArray.Length != displayedOptions.Length)
                 {
@@ -58,7 +58,7 @@ namespace GameFrameWork
                     return; 
                 }
 
-                index = EditorGUI.Popup(position, ((EnumLabelAttribute)attribute).Label, index, items);
+                index = EditorGUI.Popup(position, ((EnumLabelAttribute)attribute).label, index, items);
 
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -93,7 +93,7 @@ namespace GameFrameWork
                     {
                         foreach (EnumLabelAttribute labelAttribute in attrs)
                         {
-                            m_CustomEnumNames.Add(enumName, labelAttribute.Label);
+                            m_CustomEnumNames.Add(enumName, labelAttribute.label);
                         }
                     }
                 }

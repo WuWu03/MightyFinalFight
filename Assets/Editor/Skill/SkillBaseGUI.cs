@@ -36,7 +36,7 @@ public class SkillBaseGUI : SkillGUI
         m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
         GUILayout.Label(SkillEditorHelper.CurrShowName, SkillEditorHelper.IndexLabelStyle);
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_CurrName = EditorGUILayout.TextField("名称", m_CurrName);
@@ -50,7 +50,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_CurrId = EditorGUILayout.IntField("Id", m_CurrId);
@@ -63,7 +63,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_CurrLevel = EditorGUILayout.IntField("Level", m_CurrLevel);
@@ -76,7 +76,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_CurrAnimName = EditorGUILayout.TextField("AnimName", m_CurrAnimName);
@@ -89,7 +89,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_CurrHurtSound = EditorGUILayout.TextField("HurtSound", m_CurrHurtSound);
@@ -102,7 +102,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_EnternalTriggerTime = EditorGUILayout.FloatField("EnternalTriggerTime", m_EnternalTriggerTime);
@@ -115,7 +115,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_AnimSpeed = EditorGUILayout.FloatField("AnimSpeed", m_AnimSpeed);
@@ -128,7 +128,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_AnimTime = EditorGUILayout.IntField("AnimTime", m_AnimTime);
@@ -141,7 +141,7 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginHorizontal();
             m_Exp = EditorGUILayout.IntField("EXP", m_Exp);
@@ -154,37 +154,37 @@ public class SkillBaseGUI : SkillGUI
             EditorGUILayout.EndHorizontal();
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.Type = (SkillConfigData.SkillType)EditorGUILayout.EnumPopup("SkillType", SkillEditorHelper.CurrConfigData.Type);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.DeployerType = (SkillConfigData.SkillDeployerType)EditorGUILayout.EnumPopup("SkillDeployerType", SkillEditorHelper.CurrConfigData.DeployerType);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.TriggerType = (SkillConfigData.SkillTriggerType)EditorGUILayout.EnumPopup("SkillTriggerType", SkillEditorHelper.CurrConfigData.TriggerType);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.IsInEffectPlaySound = EditorGUILayout.Toggle("EffectPlaySound", SkillEditorHelper.CurrConfigData.IsInEffectPlaySound);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.CanChangeDir = EditorGUILayout.Toggle("CanChangeDir", SkillEditorHelper.CurrConfigData.CanChangeDir);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             SkillEditorHelper.CurrConfigData.CanMove = EditorGUILayout.Toggle("CanMove", SkillEditorHelper.CurrConfigData.CanMove);
         });
 
-        GameFrameWork.Editor.EditorUtility.GUIBoxScope(() =>
+        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("SkillKey");

@@ -19,7 +19,7 @@ namespace GameFrameWork.UI
         public static void SetSprite(this Image renderer, string name)
         {
             string realPath = m_uiResPath.GetUISpritePath(name);
-            SpritePool.Ins.Get(realPath, (Sprite sprite, object[] param) =>
+            SpritePool.instance.Get(realPath, (Sprite sprite, object[] param) =>
             {
                 renderer.sprite = sprite;
             });
@@ -27,7 +27,7 @@ namespace GameFrameWork.UI
 
         public static void LoadUI(string uiName, GameFrameWorkAction<GameObject, object[]> loadCallback, params object[] param)
         {
-            GameObjectPool.Ins.Get(GetUIResPath(uiName), loadCallback, param);
+            GameObjectPool.instance.Get(GetUIResPath(uiName), loadCallback, param);
         }
 
         private static UIResPath m_uiResPath = null;

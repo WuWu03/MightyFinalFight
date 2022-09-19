@@ -15,13 +15,13 @@ public class Consume : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        if (m_ConsumeInfo.Type == SceneItemData.ItemType.HP)
+        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.HP)
             AddHP();
-        if (m_ConsumeInfo.Type == SceneItemData.ItemType.EXP)
+        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.EXP)
             AddExp();
-        if (m_ConsumeInfo.Type == SceneItemData.ItemType.Life)
+        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.Life)
             AddExp();
-        if (m_ConsumeInfo.Type == SceneItemData.ItemType.Money)
+        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.Money)
             AddMoney();
         Release();
     }
@@ -42,31 +42,31 @@ public class Consume : BaseSceneItem
 
     private void AddHP()
     {
-        if (m_Owner.Attribute.IsFullHealth())
+        if (m_Owner.entityAttribute.IsFullHealth())
             AddExp();
         else
         {
-            m_Owner.Attribute.AddHealth(m_ConsumeInfo.Value);
+            m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
             //UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
         }
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }
 
     private void AddExp()
     {
-        PlayerMgr.Ins.AddExp(m_ConsumeInfo.Value);
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
+        PlayerMgr.instance.AddExp(m_ConsumeInfo.value);
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }
 
     private void AddLife()
     {
-        PlayerMgr.Ins.AddLife(m_ConsumeInfo.Value);
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/GetRobot");
+        PlayerMgr.instance.AddLife(m_ConsumeInfo.value);
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/GetRobot");
     }
 
     private void AddMoney()
     {
-        PlayerMgr.Ins.AddContinue(m_ConsumeInfo.Value);
+        PlayerMgr.instance.AddContinue(m_ConsumeInfo.value);
     }
 
     public override void Release()

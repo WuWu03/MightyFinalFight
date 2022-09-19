@@ -16,12 +16,12 @@ public class DoJumpAttack : DoAttack
     {
         base.OnEnter();
         m_IsGround = false;
-        m_Owner.Owner.OnGroundEvent.AddListener(OnGround);
+        m_Owner.owner.onGroundEvent.AddListener(OnGround);
 
-        if (m_Owner.Owner.IsInGround)
+        if (m_Owner.owner.isInGround)
         {
             m_StartJump = false;
-            m_Owner.Owner.OnDropEvent.AddListener(OnDrop);
+            m_Owner.owner.onDropEvent.AddListener(OnDrop);
             m_Owner.OppositePlayer();
             m_Owner.Jump(GetJumpDir(), false, true);
         }
@@ -65,15 +65,15 @@ public class DoJumpAttack : DoAttack
         if (m_StartJump)
         {
             m_StartJump = false;
-            m_Owner.Owner.OnDropEvent.AddListener(OnDrop);
-            m_Owner.Owner.OnGroundEvent.AddListener(OnGround);
+            m_Owner.owner.onDropEvent.AddListener(OnDrop);
+            m_Owner.owner.onGroundEvent.AddListener(OnGround);
             m_Owner.OppositePlayer();
             m_Owner.Jump(GetJumpDir(), false, true);
         }
         else
         {
-            m_Owner.Owner.OnDropEvent.AddListener(OnDrop);
-            m_Owner.Owner.OnGroundEvent.AddListener(OnGround);
+            m_Owner.owner.onDropEvent.AddListener(OnDrop);
+            m_Owner.owner.onGroundEvent.AddListener(OnGround);
 
             if (!m_IsMoveJump)
             {
@@ -85,7 +85,7 @@ public class DoJumpAttack : DoAttack
 
     public override BehaviorTreeState Excute()
     {
-        if (m_CurrAttackCount >= m_AttackCount && m_Owner.Owner.IsInGround)
+        if (m_CurrAttackCount >= m_AttackCount && m_Owner.owner.isInGround)
         {
             return BehaviorTreeState.Success;
         }
@@ -105,7 +105,7 @@ public class DoJumpAttack : DoAttack
             return Vector2.zero;
         }
 
-        return Vector2.right * m_Owner.Owner.Dir;
+        return Vector2.right * m_Owner.owner.dir;
     }
 
     private bool m_StartJump = false;

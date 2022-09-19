@@ -76,7 +76,7 @@ namespace GameFrameWork.Pool
                 listLoadRequest = new List<LoadRequest>();
                 listLoadRequest.Add(request);
                 m_DicLoadCallback.Add(resPath, listLoadRequest);
-                ResMgr.Ins.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
+                ResMgr.instance.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
             }
             else
             {

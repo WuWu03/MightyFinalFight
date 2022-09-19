@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class AttackData : BaseEventArgs
 {
-    public int SkillID { get; set; }
-    public string AnimName { get; set; }
-    public int AnimTime { get; set; }
-    public float AnimSpeed { get; set; }
-    public float Dir { get; set; }
-    public bool CanChangeDir { get; set; }
-    public Vector2 AddSelfForce { get; set; }
+    public int skillID { get; set; }
+    public string animName { get; set; }
+    public int animTime { get; set; }
+    public float animSpeed { get; set; }
+    public float dir { get; set; }
+    public bool canChangeDir { get; set; }
+    public Vector2 addSelfForce { get; set; }
 
     public static AttackData Create()
     {
@@ -19,13 +19,13 @@ public class AttackData : BaseEventArgs
 
     public override void Clear()
     {
-        SkillID = 0;
-        AnimName = string.Empty;
-        AnimTime = 0;
-        AnimSpeed = 0;
-        Dir = 0;
-        CanChangeDir = false;
-        AddSelfForce = Vector2.zero;
+        skillID = 0;
+        animName = string.Empty;
+        animTime = 0;
+        animSpeed = 0;
+        dir = 0;
+        canChangeDir = false;
+        addSelfForce = Vector2.zero;
     }
 
     public override GameFrameWorkEventArgs Clone()

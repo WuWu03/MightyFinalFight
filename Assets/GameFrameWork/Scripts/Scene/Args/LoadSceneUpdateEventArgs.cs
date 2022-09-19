@@ -6,7 +6,7 @@ namespace GameFrameWork.Scene
 {
     public class LoadSceneUpdateEventArgs : BaseEventArgs
     {
-        public string SceneName
+        public string sceneName
         {
             get
             {
@@ -14,7 +14,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public float Progress
+        public float progress
         {
             get
             {

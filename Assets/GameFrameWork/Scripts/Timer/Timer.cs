@@ -9,15 +9,15 @@ namespace GameFrameWork.Timer
 {
     public class Timer
     {
-        public float Duration { get; private set; }
+        public float duration { get; private set; }
 
-        public bool IsLooped { get; set; }
+        public bool isLooped { get; set; }
 
-        public bool IsCompleted { get; private set; }
+        public bool isCompleted { get; private set; }
 
-        public bool UsesRealTime { get; private set; }
+        public bool usesRealTime { get; private set; }
 
-        public bool IsPaused
+        public bool isPaused
         {
             get
             {
@@ -25,7 +25,7 @@ namespace GameFrameWork.Timer
             }
         }
 
-        public bool IsCancelled
+        public bool isCancelled
         {
             get
             {
@@ -33,15 +33,15 @@ namespace GameFrameWork.Timer
             }
         }
 
-        public bool IsDone
+        public bool isDone
         {
             get
             {
-                return this.IsCompleted || this.IsCancelled || this.IsOwnerDestroyed;
+                return this.isCompleted || this.isCancelled || this.isOwnerDestroyed;
             }
         }
 
-        private bool IsOwnerDestroyed
+        private bool isOwnerDestroyed
         {
             get
             {
@@ -50,8 +50,7 @@ namespace GameFrameWork.Timer
         }
 
 
-        public static Timer Register(float duration, Action onComplete, Action<float> onUpdate = null,
-            bool isLooped = false, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
+        public static Timer Register(float duration, Action onComplete, Action<float> onUpdate = null, bool isLooped = false, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
         {
             if (Timer.m_TimerManager == null)
             {
@@ -122,7 +121,7 @@ namespace GameFrameWork.Timer
 
         public void Cancel()
         {
-            if (this.IsDone)
+            if (this.isDone)
             {
                 return;
             }
@@ -133,7 +132,7 @@ namespace GameFrameWork.Timer
 
         public void Pause()
         {
-            if (this.IsPaused || this.IsDone)
+            if (this.isPaused || this.isDone)
             {
                 return;
             }
@@ -143,7 +142,7 @@ namespace GameFrameWork.Timer
 
         public void Resume()
         {
-            if (!this.IsPaused || this.IsDone)
+            if (!this.isPaused || this.isDone)
             {
                 return;
             }
@@ -153,9 +152,9 @@ namespace GameFrameWork.Timer
 
         public float GetTimeElapsed()
         {
-            if (this.IsCompleted || this.GetWorldTime() >= this.GetFireTime())
+            if (this.isCompleted || this.GetWorldTime() >= this.GetFireTime())
             {
-                return this.Duration;
+                return this.duration;
             }
 
             return this.m_TimeElapsedBeforeCancel ??
@@ -165,17 +164,17 @@ namespace GameFrameWork.Timer
 
         public float GetTimeRemaining()
         {
-            return this.Duration - this.GetTimeElapsed();
+            return this.duration - this.GetTimeElapsed();
         }
 
         public float GetRatioComplete()
         {
-            return this.GetTimeElapsed() / this.Duration;
+            return this.GetTimeElapsed() / this.duration;
         }
 
         public float GetRatioRemaining()
         {
-            return this.GetTimeRemaining() / this.Duration;
+            return this.GetTimeRemaining() / this.duration;
         }
 
         private static TimerManager m_TimerManager;
@@ -193,12 +192,12 @@ namespace GameFrameWork.Timer
         private Timer(float duration, Action onComplete, Action<float> onUpdate,
             bool isLooped, bool usesRealTime, MonoBehaviour autoDestroyOwner)
         {
-            this.Duration = duration;
+            this.duration = duration;
             this.m_OnComplete = onComplete;
             this.m_OnUpdate = onUpdate;
 
-            this.IsLooped = isLooped;
-            this.UsesRealTime = usesRealTime;
+            this.isLooped = isLooped;
+            this.usesRealTime = usesRealTime;
 
             this.m_AutoDestroyOwner = autoDestroyOwner;
             this.m_HasAutoDestroyOwner = autoDestroyOwner != null;
@@ -209,12 +208,12 @@ namespace GameFrameWork.Timer
 
         private float GetWorldTime()
         {
-            return this.UsesRealTime ? Time.realtimeSinceStartup : Time.time;
+            return this.usesRealTime ? Time.realtimeSinceStartup : Time.time;
         }
 
         private float GetFireTime()
         {
-            return this.m_StartTime + this.Duration;
+            return this.m_StartTime + this.duration;
         }
 
         private float GetTimeDelta()
@@ -224,12 +223,12 @@ namespace GameFrameWork.Timer
 
         private void Update()
         {
-            if (this.IsDone)
+            if (this.isDone)
             {
                 return;
             }
 
-            if (this.IsPaused)
+            if (this.isPaused)
             {
                 this.m_StartTime += this.GetTimeDelta();
                 this.m_LastUpdateTime = this.GetWorldTime();
@@ -251,13 +250,13 @@ namespace GameFrameWork.Timer
                     this.m_OnComplete();
                 }
 
-                if (this.IsLooped)
+                if (this.isLooped)
                 {
                     this.m_StartTime = this.GetWorldTime();
                 }
                 else
                 {
-                    this.IsCompleted = true;
+                    this.isCompleted = true;
                 }
             }
         }
@@ -315,7 +314,7 @@ namespace GameFrameWork.Timer
                     timer.Update();
                 }
 
-                this.m_ListTimers.RemoveAll(t => t.IsDone);
+                this.m_ListTimers.RemoveAll(t => t.isDone);
             }
 
             private List<Timer> m_ListTimers = new List<Timer>();

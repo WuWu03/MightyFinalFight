@@ -20,7 +20,11 @@ namespace GameFrameWork.BehaviourTree
 
         public void Update(float deltaTime)
         {
-            if (!m_IsRunning || m_IsPause) return;
+            if (!m_IsRunning || m_IsPause)
+            {
+                return;
+            }
+
             m_Root.Update(deltaTime);
         }
 
@@ -31,7 +35,11 @@ namespace GameFrameWork.BehaviourTree
 
         public void Stop()
         {
-            if (!m_IsRunning) return;
+            if (!m_IsRunning)
+            {
+                return;
+            }
+
             m_IsRunning = false;
             m_IsPause = false;
         }
@@ -41,23 +49,23 @@ namespace GameFrameWork.BehaviourTree
             m_Root.Destroy();
         }
 
-        private Node Load(BehaviourTreeData data,object owner)
+        private Node Load(BehaviourTreeData data, object owner)
         {
-            Node root = BehaviourFactory.GetNodeByClassType(data.Name,data.ClassType,data.Args, owner);
+            Node root = BehaviourFactory.GetNodeByClassType(data.name, data.classType, data.args, owner);
 
-            if (data.PreConditions != null && data.PreConditions.Length > 0)
+            if (data.preConditions != null && data.preConditions.Length > 0)
             {
-                for (int i = 0; i < data.PreConditions.Length; i++)
+                for (int i = 0; i < data.preConditions.Length; i++)
                 {
-                    root.AddPreCondition(BehaviourFactory.GetNodeByClassType(data.PreConditions[i].Name,data.PreConditions[i].ClassType, data.PreConditions[i].Args, owner));
+                    root.AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner));
                 }
             }
 
-            if (data.Childs != null && data.Childs.Length > 0)
+            if (data.children != null && data.children.Length > 0)
             {
-                for(int i = 0; i < data.Childs.Length; i++)
+                for (int i = 0; i < data.children.Length; i++)
                 {
-                    root.AddChild(Load(data.Childs[i], owner));
+                    root.AddChild(Load(data.children[i], owner));
                 }
             }
 

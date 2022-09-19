@@ -6,24 +6,22 @@ namespace GameFrameWork.Editor
     [CustomEditor(typeof(AppConfig))]
     public class AppConfigEditor : UnityEditor.Editor
     {
-        private AppConfig appConfig;
-
         void OnEnable()
         {
-            appConfig = (target as AppConfig);
+            m_AppConfig = (target as AppConfig);
         }
 
         public override void OnInspectorGUI()
         {
-            SerializedProperty checkVersion = serializedObject.FindProperty("CheckVersion");
-            SerializedProperty openUpdate = serializedObject.FindProperty("OpenUpdate");
-            SerializedProperty loadAB = serializedObject.FindProperty("LoadAB");
-            SerializedProperty openLog = serializedObject.FindProperty("OpenLog");
-            SerializedProperty useLua = serializedObject.FindProperty("UseLua");
-            SerializedProperty loadLuaAB = serializedObject.FindProperty("LoadLuaAB");
-            SerializedProperty luaByteMode = serializedObject.FindProperty("LuaByteMode");
-            SerializedProperty luaDirectory = serializedObject.FindProperty("LuaDirectory");
-            SerializedProperty logColor = serializedObject.FindProperty("LogColor");
+            SerializedProperty checkVersion = serializedObject.FindProperty("checkVersion");
+            SerializedProperty openUpdate = serializedObject.FindProperty("openUpdate");
+            SerializedProperty loadAB = serializedObject.FindProperty("loadAB");
+            SerializedProperty openLog = serializedObject.FindProperty("openLog");
+            SerializedProperty useLua = serializedObject.FindProperty("useLua");
+            SerializedProperty loadLuaAB = serializedObject.FindProperty("loadLuaAB");
+            SerializedProperty luaByteMode = serializedObject.FindProperty("luaByteMode");
+            SerializedProperty luaDirectory = serializedObject.FindProperty("luaDirectory");
+            SerializedProperty logColor = serializedObject.FindProperty("logColor");
 
             EditorGUILayout.PropertyField(checkVersion);
             EditorGUILayout.PropertyField(openUpdate);
@@ -33,83 +31,85 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(logColor);
 
 #if UNITY_IOS
-            SerializedProperty iOSBuildPath = serializedObject.FindProperty("iOSBuildPath");
+            SerializedProperty iOSBuildPath = serializedObject.FindProperty("iosBuildPath");
             EditorGUILayout.PropertyField(iOSBuildPath);
 #endif
 
 #if UNITY_STANDALONE_WIN
-            SerializedProperty pcBuildPath = serializedObject.FindProperty("PCBuildPath");
+            SerializedProperty pcBuildPath = serializedObject.FindProperty("pcBuildPath");
             EditorGUILayout.PropertyField(pcBuildPath);
 #endif
 
 #if UNITY_ANDROID
-            SerializedProperty androidBuildPath = serializedObject.FindProperty("AndroidBuildPath");
+            SerializedProperty androidBuildPath = serializedObject.FindProperty("androidBuildPath");
             EditorGUILayout.PropertyField(androidBuildPath);
 #endif
 
-            if (appConfig.UseLua)
+            if (m_AppConfig.useLua)
             {
                 EditorGUILayout.PropertyField(loadLuaAB);
                 EditorGUILayout.PropertyField(luaByteMode);
                 EditorGUILayout.PropertyField(luaDirectory);
             }
 
-            if (checkVersion.boolValue != appConfig.CheckVersion
-             || openUpdate.boolValue != appConfig.OpenUpdate
-             || loadAB.boolValue != appConfig.LoadAB
-             || openLog.boolValue != appConfig.OpenLog
-             || useLua.boolValue != appConfig.UseLua
-             || loadLuaAB.boolValue != appConfig.LoadLuaAB
-             || luaByteMode.boolValue != appConfig.LuaByteMode
-             || luaDirectory.stringValue != appConfig.LuaDirectory
-             || logColor.colorValue != appConfig.LogColor)
+            if (checkVersion.boolValue != m_AppConfig.checkVersion
+             || openUpdate.boolValue != m_AppConfig.openUpdate
+             || loadAB.boolValue != m_AppConfig.loadAB
+             || openLog.boolValue != m_AppConfig.openLog
+             || useLua.boolValue != m_AppConfig.useLua
+             || loadLuaAB.boolValue != m_AppConfig.loadLuaAB
+             || luaByteMode.boolValue != m_AppConfig.luaByteMode
+             || luaDirectory.stringValue != m_AppConfig.luaDirectory
+             || logColor.colorValue != m_AppConfig.logColor)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
 
-            appConfig.CheckVersion = checkVersion.boolValue;
-            appConfig.LoadAB = loadAB.boolValue;
-            appConfig.OpenUpdate = openUpdate.boolValue;
-            appConfig.OpenLog = openLog.boolValue;
-            appConfig.UseLua = useLua.boolValue;
-            appConfig.LogColor = logColor.colorValue;
+            m_AppConfig.checkVersion = checkVersion.boolValue;
+            m_AppConfig.loadAB = loadAB.boolValue;
+            m_AppConfig.openUpdate = openUpdate.boolValue;
+            m_AppConfig.openLog = openLog.boolValue;
+            m_AppConfig.useLua = useLua.boolValue;
+            m_AppConfig.logColor = logColor.colorValue;
 
 #if UNITY_IOS
-            if(appConfig.iOSBuildPath != iOSBuildPath.stringValue)
+            if(appConfig.iosBuildPath != iosBuildPath.stringValue)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
-            appConfig.iOSBuildPath = iOSBuildPath.stringValue;
+            appConfig.iosBuildPath = iOSBuildPath.stringValue;
 #endif
 
 #if UNITY_STANDALONE_WIN
-            if (appConfig.PCBuildPath != pcBuildPath.stringValue)
+            if (m_AppConfig.pcBuildPath != pcBuildPath.stringValue)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
-            appConfig.PCBuildPath = pcBuildPath.stringValue;
+            m_AppConfig.pcBuildPath = pcBuildPath.stringValue;
 #endif
 
 #if UNITY_ANDROID
-            if (appConfig.AndroidBuildPath != androidBuildPath.stringValue)
+            if (appConfig.androidBuildPath != androidBuildPath.stringValue)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
-            appConfig.AndroidBuildPath = androidBuildPath.stringValue;
+            appConfig.androidBuildPath = androidBuildPath.stringValue;
 #endif
 
-            if (appConfig.UseLua)
+            if (m_AppConfig.useLua)
             {
-                appConfig.LoadLuaAB = loadLuaAB.boolValue;
-                appConfig.LuaByteMode = luaByteMode.boolValue;
-                appConfig.LuaDirectory = luaDirectory.stringValue;
+                m_AppConfig.loadLuaAB = loadLuaAB.boolValue;
+                m_AppConfig.luaByteMode = luaByteMode.boolValue;
+                m_AppConfig.luaDirectory = luaDirectory.stringValue;
             }
             else
             {
-                appConfig.LoadLuaAB = false;
-                appConfig.LuaByteMode = false;
-                appConfig.LuaDirectory = "Assets/Scripts/Lua";
+                m_AppConfig.loadLuaAB = false;
+                m_AppConfig.luaByteMode = false;
+                m_AppConfig.luaDirectory = "Assets/Scripts/Lua";
             }
         }
+
+        private AppConfig m_AppConfig;
     }
 }

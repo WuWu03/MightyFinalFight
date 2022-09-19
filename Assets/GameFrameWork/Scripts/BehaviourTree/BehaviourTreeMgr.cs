@@ -1,23 +1,27 @@
 ﻿using DG.Tweening.Core;
-using System.Collections;
+using GameFrameWork.Resources;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
     public class BehaviourTreeMgr
     {
-        public BehaviourTreeMgr(object owner, BehaviourTreeConfig config)
+        public static void Init(string configPath)
         {
-            m_Owner = owner;
-            if(m_Config == null)
+            if (m_Config == null)
             {
-                m_Config = config;
+                string jsonStr = ResMgr.instance.LoadAsset<TextAsset>(configPath).text;
+                m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
             }
         }
 
-        public void Init(params int[] treesID)
+        public BehaviourTreeMgr(object owner)
+        {
+            m_Owner = owner;
+        }
+
+        public void InitTree(params int[] treesID)
         {
             if(m_Config == null)
             {
@@ -33,9 +37,13 @@ namespace GameFrameWork.BehaviourTree
 
         public void AddBehaviourTree(int id)
         {
-            if (m_ListTreeID == null) return;
+            if (m_ListTreeID == null)
+            {
+                return;
+            }
+
             m_ListTreeID.Add(id);
-            BehaviourTreeData data = m_Config.GetData(id);
+            BehaviourTreeData data = m_Config.GetDataById(id);
             m_ListTrees.Add(new BehaviourTree(data, m_Owner));
         }
 
@@ -67,7 +75,11 @@ namespace GameFrameWork.BehaviourTree
 
         public void Stop(int index)
         {
-            if (index < 0 || index >= m_ListTrees.Count) return;
+            if (index < 0 || index >= m_ListTrees.Count)
+            {
+                return;
+            }
+
             m_ListTrees[index].Stop();
         }
 
@@ -91,7 +103,7 @@ namespace GameFrameWork.BehaviourTree
         {
             for (int i = 0; i < m_ListTreeID.Count; i++)
             {
-                BehaviourTreeData data = m_Config.GetData(m_ListTreeID[i]);
+                BehaviourTreeData data = m_Config.GetDataById(m_ListTreeID[i]);
                 m_ListTrees.Add(new BehaviourTree(data, m_Owner));
             }
         }

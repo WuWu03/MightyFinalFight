@@ -7,7 +7,7 @@ namespace GameFrameWork.Fsm
 {
     public class FsmMgr : BaseMgr<FsmMgr>
     {
-        public int FsmCount
+        public int fsmCount
         {
             get
             {
@@ -24,7 +24,7 @@ namespace GameFrameWork.Fsm
         {
             foreach (KeyValuePair<System.Object, BaseFsm> kvp in m_DicFsms)
             {
-                if (kvp.Value.IsRunning)
+                if (kvp.Value.isRunning)
                 {
                     kvp.Value.Update(Time.deltaTime, Time.unscaledDeltaTime);
                 }
@@ -33,7 +33,7 @@ namespace GameFrameWork.Fsm
 
         public FsmMachine CreateFsm(System.Object owner, string name, params BaseFsmState[] fsmStates)
         {
-            if (this.HasFsm(owner))
+            if (HasFsm(owner))
             {
                 throw new Exception("The FSM mathine has exist.");
             }
@@ -71,10 +71,10 @@ namespace GameFrameWork.Fsm
         {
             BaseFsm fsmBase = null;
 
-            if (this.m_DicFsms.TryGetValue(owner, out fsmBase))
+            if (m_DicFsms.TryGetValue(owner, out fsmBase))
             {
                 fsmBase.ShutDown();
-                return this.m_DicFsms.Remove(owner);
+                return m_DicFsms.Remove(owner);
             }
 
             return false;

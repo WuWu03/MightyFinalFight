@@ -41,7 +41,7 @@ public class DoAttack : Action
         m_Owner.OppositePlayer();
         m_AttackTimer = -1;
 
-        if (m_Owner.Owner.IsPlayComplete())
+        if (m_Owner.owner.IsPlayComplete())
         {
             m_AttackTimer = Time.time;
             m_CurrAttackCount++;

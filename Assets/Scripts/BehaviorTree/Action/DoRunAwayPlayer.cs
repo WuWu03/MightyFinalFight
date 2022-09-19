@@ -15,9 +15,9 @@ public class DoRunAwayPlayer : Action
 
     public override BehaviorTreeState Excute()
     {
-        if (PlayerMgr.Ins.Player.Dir != m_Owner.Owner.Dir)
+        if (PlayerMgr.instance.player.dir != m_Owner.owner.dir)
         {
-            m_Owner.Move((PlayerMgr.Ins.Player.Pos - m_Owner.Owner.Pos).normalized, false);
+            m_Owner.Move((PlayerMgr.instance.player.pos - m_Owner.owner.pos).normalized, false);
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Running;
         }

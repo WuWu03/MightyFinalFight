@@ -5,6 +5,7 @@ using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.UI;
 using System;
+using GameFrameWork.Utilities;
 
 public class GameEntry : GameFrameWorkEntry
 {
@@ -16,6 +17,7 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.Init(manager);
         PlayerMgr.Init(manager);
         StaticConfig.InitConfig();
+        DataHelper.Init(PathUtil.configDataPath);
     }
 
     protected override GameFrameWork.UI.UIResPath InitUIResPath()
@@ -25,16 +27,16 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnStartGame()
     {
-        CameraMgr.Ins.SetFollowMode(FollowMode.Just);
-        UIMgr.Ins.Open<TitlePanel>();
-
+        DataHelper.levelDatas.GetDatasByAttr("{roleId = 1001}");
+        CameraMgr.instance.SetFollowMode(FollowMode.Just);
+        UIMgr.instance.Open<TitlePanel>();
     }
 
     protected override void OnExit()
     {
-        EffectMgr.Ins.ShutDown();
-        TaskMgr.Ins.ShutDown();
-        StageMgr.Ins.ShutDown();
-        SceneEntityMgr.Ins.ShutDown();
+        EffectMgr.instance.ShutDown();
+        TaskMgr.instance.ShutDown();
+        StageMgr.instance.ShutDown();
+        SceneEntityMgr.instance.ShutDown();
     }
 }

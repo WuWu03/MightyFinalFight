@@ -4,12 +4,12 @@ public class BarrelIdle : BaseFsmState
 {
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as Barrel;
+        m_Owner = fsm.owner as Barrel;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.BarrelAnimator.animation.Play(AnimName.Idle, 0);
+        m_Owner.armatureAnimator.animation.Play(AnimName.Idle, 0);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -18,7 +18,7 @@ public class BarrelIdle : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-        m_Owner.BarrelAnimator.animation.Stop(AnimName.Idle);
+        m_Owner.armatureAnimator.animation.Stop(AnimName.Idle);
     }
 
     public override void OnDestroy(BaseFsm fsm)

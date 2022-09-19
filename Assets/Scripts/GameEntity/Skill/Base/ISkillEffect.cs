@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ISkillEffect
 {
-    bool IsCompleted { get; }
+    bool isCompleted { get; }
     void Effect(ISkillSelector selector);
     void Update(ISkillSelector selector);
     void Reset();

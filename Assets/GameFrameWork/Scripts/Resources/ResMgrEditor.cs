@@ -13,8 +13,8 @@ namespace GameFrameWork.Resources
 #if UNITY_EDITOR
         class LoadRequest 
         {
-            public GameFrameWorkAction<string, UnityEngine.Object, object[]> action;
-            public object[] param;
+            public GameFrameWorkAction<string, UnityEngine.Object, object[]> onLoadEvent;
+            public object[] args;
         }
 
         public ResMgrEditor()
@@ -31,11 +31,13 @@ namespace GameFrameWork.Resources
         private UnityEngine.Object Load(string resourcePath, Type t)
         {
             UnityEngine.Object obj;
+
             if (m_LoadedAssets.TryGetValue(resourcePath, out obj))
+            {
                 return obj;
+            }
 
             string fileName = Path.GetFileName(resourcePath);
-
             string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(resourcePath));
             string paName = StringUtil.FormatDefault(fileName, "*");
             string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
@@ -43,7 +45,10 @@ namespace GameFrameWork.Resources
             // 加载本地资源
             for (int i = 0, UPPER = files.Length; i < UPPER; i++)
             {
-                if (Path.GetExtension(files[i]) == ".meta") continue;
+                if (Path.GetExtension(files[i]) == ".meta")
+                {
+                    continue;
+                }
 
                 GameFrameworkLog.Log(StringUtil.FormatDefault("开始编辑器加载资源：", files[i]));
                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
@@ -70,8 +75,8 @@ namespace GameFrameWork.Resources
                 m_DicLoadRequest.Add(resourcePath, list);
             }
 
-            list.Add(new LoadRequest() { action = action, param = param });
-            ResMgr.Ins.StartCoroutine(InnerLoad(resourcePath, t));
+            list.Add(new LoadRequest() { onLoadEvent = action, args = param });
+            ResMgr.instance.StartCoroutine(InnerLoad(resourcePath, t));
         }
 
         public UnityEngine.Object LoadForEditor(string resourcePath, Type t = null)
@@ -95,7 +100,7 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i].action?.Invoke(resourcePath, obj, list[i].param);
+                    list[i].onLoadEvent?.Invoke(resourcePath, obj, list[i].args);
                 }
 
                 m_DicLoadRequest.Remove(resourcePath);

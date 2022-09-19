@@ -7,21 +7,21 @@ namespace GameFrameWork.Input
 {
     public class AxisArgs : BaseEventArgs
     {
-        public string Horizontal { get; set; }
-        public string Vertical { get; set; }
+        public string horizontal { get; set; }
+        public string vertical { get; set; }
 
         public static AxisArgs Create(string horizontal, string vertical)
         {
             AxisArgs args = ReferencePool.Acquire<AxisArgs>();
-            args.Horizontal = horizontal;
-            args.Vertical = vertical;
+            args.horizontal = horizontal;
+            args.vertical = vertical;
             return args;
         }
 
         public override void Clear()
         {
-            Horizontal = null;
-            Vertical = null;
+            horizontal = null;
+            vertical = null;
         }
     }
 }

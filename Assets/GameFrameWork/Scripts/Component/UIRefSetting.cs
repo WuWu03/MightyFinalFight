@@ -44,7 +44,7 @@ public class UIRefSetting : MonoBehaviour
 
     [HideInInspector] [SerializeField] 
     private string m_ScriptFolder = string.Empty;
-    public string ScriptFolder
+    public string scriptFolder
     {
         get 
         {
@@ -62,7 +62,7 @@ public class UIRefSetting : MonoBehaviour
 
     [HideInInspector] [SerializeField] 
     private string m_PanelName = string.Empty;
-    public string PanelName
+    public string panelName
     {
         get { return m_PanelName; }
         set
@@ -78,7 +78,7 @@ public class UIRefSetting : MonoBehaviour
 
     [HideInInspector] [SerializeField] 
     private string m_PrefabFolder = string.Empty;
-    public string PrefabFolder
+    public string prefabFolder
     {
         get { return m_PrefabFolder; }
         set
@@ -93,7 +93,7 @@ public class UIRefSetting : MonoBehaviour
 
     [HideInInspector][SerializeField]
     private ExoprtScriptType m_ScriptType;
-    public ExoprtScriptType ScriptType
+    public ExoprtScriptType scriptType
     {
         get { return m_ScriptType; }
         set
@@ -106,16 +106,16 @@ public class UIRefSetting : MonoBehaviour
         }
     }
 
-    public Type PanelType = Type.Normal;
-    public PreLoadType PanelPreLoadType = PreLoadType.None;
-    public CloseMode PanelCloseMode = CloseMode.Always;
-    public Layer PanelLayer = Layer.FirstLevel;
-    public bool IsCustomLayer = false;
-    public float UnLoadTime = 10;
+    public Type panelType = Type.Normal;
+    public PreLoadType panelPreLoadType = PreLoadType.None;
+    public CloseMode panelCloseMode = CloseMode.Always;
+    public Layer panelLayer = Layer.FirstLevel;
+    public bool isCustomLayer = false;
+    public float unLoadTime = 10;
 
-    [HideInInspector] public string PanelPath;
-    [HideInInspector] public string PanelComponentPath;
-    [HideInInspector] public string PanelPrefabPath;
+    [HideInInspector] public string panelPath;
+    [HideInInspector] public string panelComponentPath;
+    [HideInInspector] public string panelPrefabPath;
 
 
     public void RefreshPanelFolder()
@@ -125,8 +125,8 @@ public class UIRefSetting : MonoBehaviour
             m_PanelName = m_PanelName + "Panel";
         }
 
-        string extension = ScriptType == ExoprtScriptType.CSharp ? "cs" : "lua";
-        string scriptPath = ScriptType == ExoprtScriptType.CSharp ? DefaultCSharpScriptFolder : DefaultLuaScriptFolder;
+        string extension = scriptType == ExoprtScriptType.CSharp ? "cs" : "lua";
+        string scriptPath = scriptType == ExoprtScriptType.CSharp ? DefaultCSharpScriptFolder : DefaultLuaScriptFolder;
 
         if (string.IsNullOrEmpty(m_ScriptFolder))
         {
@@ -134,12 +134,12 @@ public class UIRefSetting : MonoBehaviour
         }
         else
         {
-            if(m_ScriptFolder.Contains(DefaultCSharpScriptFolder) && ScriptType != ExoprtScriptType.CSharp)
+            if(m_ScriptFolder.Contains(DefaultCSharpScriptFolder) && scriptType != ExoprtScriptType.CSharp)
             {
                 m_ScriptFolder = m_ScriptFolder.Replace(DefaultCSharpScriptFolder, DefaultLuaScriptFolder);
             }
 
-            if (m_ScriptFolder.Contains(DefaultLuaScriptFolder) && ScriptType != ExoprtScriptType.Lua)
+            if (m_ScriptFolder.Contains(DefaultLuaScriptFolder) && scriptType != ExoprtScriptType.Lua)
             {
                 m_ScriptFolder = m_ScriptFolder.Replace(DefaultLuaScriptFolder, DefaultCSharpScriptFolder);
             }
@@ -155,8 +155,8 @@ public class UIRefSetting : MonoBehaviour
             m_ScriptFolder += "/";
         }
 
-        PanelPath = string.Format(m_ScriptFolder + "{0}.{1}", m_PanelName, extension);
-        PanelComponentPath = string.Format(m_ScriptFolder + "{0}Component.{1}", m_PanelName, extension);
+        panelPath = string.Format(m_ScriptFolder + "{0}.{1}", m_PanelName, extension);
+        panelComponentPath = string.Format(m_ScriptFolder + "{0}Component.{1}", m_PanelName, extension);
     }
 
     public void RefreshPrefabFolder()
@@ -176,7 +176,7 @@ public class UIRefSetting : MonoBehaviour
             m_PrefabFolder += "/";
         }
 
-        PanelPrefabPath = string.Format(m_PrefabFolder + "{0}.prefab", m_PanelName);
+        panelPrefabPath = string.Format(m_PrefabFolder + "{0}.prefab", m_PanelName);
     }
 
     private const string DefaultCSharpScriptFolder = "Assets/Scripts/UI/";

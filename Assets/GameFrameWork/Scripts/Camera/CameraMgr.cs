@@ -19,7 +19,7 @@ namespace GameFrameWork.Camera
 
     public class CameraMgr : BaseMgr<CameraMgr>
     {
-        public GameObject CameraRoot
+        public GameObject cameraRoot
         {
             get
             {
@@ -37,7 +37,7 @@ namespace GameFrameWork.Camera
             m_ListCamera.Add(InitCamera("MapCamera", CameraDepthDefine.MapCamera, "MainCamera", MaskName.Map));
             m_ListCamera.Add(InitCamera("RoleCamera", CameraDepthDefine.RoleCamera, maskName: MaskName.Unit));
 
-            m_CameraFollow.Camera = UnityEngine.Camera.main;
+            m_CameraFollow.camera = UnityEngine.Camera.main;
             DontDestroyOnLoad(m_CameraRoot);
         }
 
@@ -84,7 +84,7 @@ namespace GameFrameWork.Camera
 
         public void SetFollowMode(FollowMode mode)
         {
-            m_CameraFollow.FollowMode = mode;
+            m_CameraFollow.followMode = mode;
         }
 
         public bool IsOutVision(Vector2 targetPos)

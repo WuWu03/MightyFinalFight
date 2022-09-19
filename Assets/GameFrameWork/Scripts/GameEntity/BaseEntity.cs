@@ -4,15 +4,15 @@ namespace GameFrameWork.GameEntity
 {
     public class BaseEntity : MonoBehaviour
     {
-        public string Name
+        public string entityName
         {
             get
             {
-                return m_Name;
+                return m_EntityName;
             }
         }
 
-        public int Id
+        public int id
         {
             get
             {
@@ -20,7 +20,7 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public string Layer 
+        public string layer 
         {
             get 
             {
@@ -31,7 +31,7 @@ namespace GameFrameWork.GameEntity
         public virtual void Init(int id, string name)
         {
             m_Id = id;
-            m_Name = name;
+            m_EntityName = name;
             gameObject.name = name;
         }
 
@@ -39,7 +39,7 @@ namespace GameFrameWork.GameEntity
 
         public void SetName(string name)
         {
-            m_Name = name;
+            m_EntityName = name;
             gameObject.name = name;
         }
 
@@ -79,7 +79,7 @@ namespace GameFrameWork.GameEntity
         protected virtual void OnDestroy() { }
        
         private int m_Id = 0;
-        private string m_Name = string.Empty;
+        private string m_EntityName = string.Empty;
         private string m_Layer = string.Empty;   
     }
 }

@@ -13,16 +13,16 @@ namespace GameFrameWork.Editor
         /// </summary>
         public static void Build(BuildTarget target, bool isShowNotify = true)
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
 
             FileUitl.DeleteDirectory(config.AssetBuildFullDir);
             FileUitl.VerifyDirectory(config.AssetBuildFullDir);
             AssetDatabase.Refresh();
             m_BuildMaps.Clear();
 
-            if (AppConfig.Ins.UseLua)
+            if (AppConfig.instance.useLua)
             {
-                if (AppConfig.Ins.LoadLuaAB) HandleLuaBundle();
+                if (AppConfig.instance.loadLuaAB) HandleLuaBundle();
                 else HandleLuaFile();
             }
 
@@ -31,9 +31,9 @@ namespace GameFrameWork.Editor
                 BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
                 BuildFileIndex();
 
-                if (AppConfig.Ins.UseLua)
+                if (AppConfig.instance.useLua)
                 {
-                    FileUitl.DeleteDirectory(PathUtil.LuaTempDir);
+                    FileUitl.DeleteDirectory(EditorPathUtil.luaPath);
                 }
 
                 AssetDatabase.Refresh();
@@ -161,7 +161,7 @@ namespace GameFrameWork.Editor
         private static void BuildFileIndex()
         {
             ///----------------------创建文件列表-----------------------
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
             string versionPath = config.AssetBuildFullDir + "/Version.txt";
             FileUitl.DeleteFile(versionPath);
 
@@ -263,7 +263,7 @@ namespace GameFrameWork.Editor
         /// </summary>
         private static void HandleLuaFile()
         {
-            //string resPath = Utils.PathUtil.GetAssetFullDir();
+            //string resPath = Utils.EditorPathUtil.GetAssetFullDir();
             //string luaPath = resPath + "lua/";
 
             ////----------复制Lua文件----------------
@@ -320,14 +320,14 @@ namespace GameFrameWork.Editor
             //    isWin = true;
             //    luaexe = "luajit.exe";
             //    args = "-b " + srcFile + " " + outFile;
-            //    exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
+            //    exedir = Utils.EditorPathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit/";
             //}
             //else if (Application.platform == RuntimePlatform.OSXEditor)
             //{
             //    isWin = false;
             //    luaexe = "./luajit";
             //    args = "-b " + srcFile + " " + outFile;
-            //    exedir = Utils.PathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
+            //    exedir = Utils.EditorPathUtil.AppDataPath.Replace("assets", "") + "LuaEncoder/luajit_mac/";
             //}
 
             //Directory.SetCurrentDirectory(exedir);

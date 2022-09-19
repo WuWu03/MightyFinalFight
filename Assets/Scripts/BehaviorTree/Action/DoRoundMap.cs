@@ -19,11 +19,11 @@ public class DoRoundMap : Action
         m_MoveTime = Random.Range(4f, 8f);
         m_MoveTimer = -1;
 
-        Vector2 pos = m_Owner.Owner.Pos;
-        Rect vision = CameraMgr.Ins.GetVision();
-        Rect area = StageMgr.Ins.GetMoveArea();
+        Vector2 pos = m_Owner.owner.pos;
+        Rect vision = CameraMgr.instance.GetVision();
+        Rect area = StageMgr.instance.GetMoveArea();
 
-        float tirggerSize = m_Owner.Owner.GetCurrTriggerSize().x / 2f;
+        float tirggerSize = m_Owner.owner.GetCurrTriggerSize().x / 2f;
         Vector2 leftTop = new Vector2(vision.xMin + tirggerSize, area.yMax);
         Vector2 leftBottom = new Vector2(vision.xMin + tirggerSize, area.yMin);
         Vector2 rightTop = new Vector2(vision.xMax - tirggerSize, area.yMax);
@@ -62,8 +62,8 @@ public class DoRoundMap : Action
 
         if (!m_IsArravied)
         {
-            m_IsArravied = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.Owner.Pos) <= 0.05f;
-            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.Owner.Pos).normalized, false);
+            m_IsArravied = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.owner.pos) <= 0.05f;
+            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.owner.pos).normalized, false);
             m_Owner.OppositePlayer();
         }
         else

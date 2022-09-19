@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BaseRoleCtrl : BaseCtrl
 {
-    public bool AttackSuccess
+    public bool isAttackSuccess
     {
         get
         {
@@ -22,9 +22,9 @@ public class BaseRoleCtrl : BaseCtrl
     public virtual void SetData(BaseRoleSkillData data)
     {
         m_Data = data;
-        m_SkillManager = new SkillManager(m_Owner, data.SkillIds);
+        m_SkillManager = new SkillManager(m_Owner, data.skillIds);
 
-        if (m_Owner.IsResComplete && !IsRunning())
+        if (m_Owner.isResComplete && !IsRunning())
         {
             Start();
         }
@@ -40,14 +40,14 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void Move(Vector2 dir, bool canChangeDir = true)
     {
-        if (!m_Owner.CanMove)
+        if (!m_Owner.canMove)
         {
             return;
         }
 
         MoveData moveData = MoveData.Create();
-        moveData.Dir = dir;
-        moveData.CanChangeDir = canChangeDir;
+        moveData.dir = dir;
+        moveData.canChangeDir = canChangeDir;
         m_Owner.OnMoveMsg(moveData);
 
         ReferencePool.Release(moveData);
@@ -55,7 +55,7 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void Attack(Vector2 dir)
     {
-        if (!m_Owner.CanAttack)
+        if (!m_Owner.canAttack)
         {
             return;
         }
@@ -84,7 +84,7 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void Skill(int skillID)
     {
-        if (!m_Owner.CanSkill)
+        if (!m_Owner.canSkill)
         {
             return;
         }
@@ -116,9 +116,9 @@ public class BaseRoleCtrl : BaseCtrl
             return;
         }
 
-        for (int i = 0; i < m_Data.AttackIds.Length; i++)
+        for (int i = 0; i < m_Data.attackIds.Length; i++)
         {
-            if(m_CurrSkillID == m_Data.AttackIds[i])
+            if(m_CurrSkillID == m_Data.attackIds[i])
             {
                 m_AttackIndex = -1;
                 m_AttackTimer = 0;
@@ -132,14 +132,14 @@ public class BaseRoleCtrl : BaseCtrl
 
     public void Jump(Vector2 jumpDir, bool canChangeDir, bool isForceJump = false)
     {
-        if (!isForceJump && !m_Owner.CanJump)
+        if (!isForceJump && !m_Owner.canJump)
         {
             return;
         }
 
         JumpData jumpData = JumpData.Create();
-        jumpData.Dir = jumpDir;
-        jumpData.CanChangeDir = canChangeDir;
+        jumpData.dir = jumpDir;
+        jumpData.canChangeDir = canChangeDir;
         m_Owner.OnJumpMsg(jumpData);
 
         ReferencePool.Release(jumpData);
@@ -149,7 +149,7 @@ public class BaseRoleCtrl : BaseCtrl
     {
         if (m_AttackTimer > 0)
         {
-            float currWait = m_Data.AttackWait[m_AttackIndex];
+            float currWait = m_Data.attackWait[m_AttackIndex];
 
             if (currWait < 0)
             {
@@ -158,7 +158,7 @@ public class BaseRoleCtrl : BaseCtrl
                     m_AttackIndex = -1;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
-                    if (m_Owner.IsInGround)
+                    if (m_Owner.isInGround)
                         m_Owner.ChangeDefaultState();
                 }
             }
@@ -188,19 +188,19 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if (m_Data.AttackWait == null || m_Data.AttackWait.Length < 1) return;
-        if (m_AttackIndex >= m_Data.AttackWait.Length - 1) return;
+        if (m_Data.attackWait == null || m_Data.attackWait.Length < 1) return;
+        if (m_AttackIndex >= m_Data.attackWait.Length - 1) return;
 
-        if (m_AttackTimer > 0 && m_Data.AttackNextTime != null && m_Data.AttackNextTime.Length > 0)
+        if (m_AttackTimer > 0 && m_Data.attackNextTime != null && m_Data.attackNextTime.Length > 0)
         {
-            if (Time.time - m_AttackTimer < m_Data.AttackNextTime[m_AttackIndex]) return;
+            if (Time.time - m_AttackTimer < m_Data.attackNextTime[m_AttackIndex]) return;
         }
 
-        if (AttackSuccess) m_AttackIndex++;
+        if (isAttackSuccess) m_AttackIndex++;
         else m_AttackIndex = 0;
 
         m_AttackTimer = Time.time;
-        m_CurrSkillID = m_Data.AttackIds[m_AttackIndex];
+        m_CurrSkillID = m_Data.attackIds[m_AttackIndex];
         m_SkillManager.DeploySkill(m_CurrSkillID);
 
         if (m_CurrSkillID == 3004)
@@ -212,7 +212,7 @@ public class BaseRoleCtrl : BaseCtrl
     protected virtual void JumpAttack(Vector2 dir)
     {
         m_AttackSuccess = false;
-        m_CurrSkillID = (dir.y < 0 && m_Data.JumpAttackIds.Length > 1) ? m_Data.JumpAttackIds[1] : m_Data.JumpAttackIds[0];
+        m_CurrSkillID = (dir.y < 0 && m_Data.jumpAttackIds.Length > 1) ? m_Data.jumpAttackIds[1] : m_Data.jumpAttackIds[0];
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 

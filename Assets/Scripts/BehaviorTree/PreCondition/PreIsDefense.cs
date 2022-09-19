@@ -10,12 +10,12 @@ public class PreIsDefense : PreCondition
     public PreIsDefense(string name, string args, object owner) : base(name, args, owner)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
-        m_Owner.Owner.OnHurtEvent += OnHurtEvent;
+        m_Owner.owner.onHurtEvent += OnHurtEvent;
     }
 
     private bool OnHurtEvent(HurtData data)
     {
-        if (m_Owner.Owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.IsSwoon)
+        if (m_Owner.owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
         {
             m_IsDefense = false;
             m_HurtTimer = Time.time;
@@ -29,7 +29,7 @@ public class PreIsDefense : PreCondition
         }
 
         m_HurtTimer = -1;
-        m_IsDefense = !m_Owner.Owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.Owner.IsBeCatch && data.CanBeDefense;
+        m_IsDefense = !m_Owner.owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.owner.isBeCatch && data.canBeDefense;
 
         return !m_IsDefense;
     }
@@ -47,7 +47,7 @@ public class PreIsDefense : PreCondition
 
     protected override void OnDestroy()
     {
-        m_Owner.Owner.OnHurtEvent -= OnHurtEvent;
+        m_Owner.owner.onHurtEvent -= OnHurtEvent;
     }
 
     private float m_HurtTimer = -1;

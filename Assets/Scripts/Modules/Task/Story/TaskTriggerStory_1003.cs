@@ -17,11 +17,11 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
     {
         m_IsSwoon = false;
         m_BossState = false;
-        PlayerMgr.Ins.CanContrl = false;
-        PlayerMgr.Ins.Player.UpdatePosZ(0);
-        SoundMgr.Ins.PauseBGM();
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
-        UIMgr.Ins.GetPanel<MainPanel>().Hide();
+        PlayerMgr.instance.canContrl = false;
+        PlayerMgr.instance.player.UpdatePosZ(0);
+        SoundMgr.instance.PauseBGM();
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
+        UIMgr.instance.GetPanel<MainPanel>().Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
@@ -30,44 +30,44 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         int defense = m_TaskData.Targets[0].DefenseValue;
         int hpBarWidth = m_TaskData.Targets[0].HpBarWidth;
         Vector2Int pos = m_TaskData.Targets[0].Pos;
-        m_Boss = SceneEntityMgr.Ins.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
-        m_Boss.CurrCtrl.Stop();
+        m_Boss = SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
+        m_Boss.currCtrl.Stop();
     }
 
     public override void Trigger()
     {
-        if (m_Boss.IsResComplete && !m_BossState)
+        if (m_Boss.isResComplete && !m_BossState)
         {
             m_BossState = true;
-            m_Boss.CurrCtrl.Stop();
+            m_Boss.currCtrl.Stop();
             m_Boss.ChangeDefaultState();
             m_Boss.SetDir(-1);
         }
 
-        if (PlayerMgr.Ins.Player.IsResComplete && !m_IsSwoon)
+        if (PlayerMgr.instance.player.isResComplete && !m_IsSwoon)
         {
             m_IsSwoon = true;
-            Rect vision = CameraMgr.Ins.GetVision();
-            PlayerMgr.Ins.Player.SetActive(true);
-            PlayerMgr.Ins.Player.SetPosXY(vision.xMin + 0.5f, vision.yMax);
-            PlayerMgr.Ins.Player.PlayAnimation(AnimName.SwoonUp);
-            PlayerMgr.Ins.Player.transform.DOMoveY(-0.6f, 2.2f).SetEase(Ease.Linear).OnComplete(OnPlayComplete);
+            Rect vision = CameraMgr.instance.GetVision();
+            PlayerMgr.instance.player.SetActive(true);
+            PlayerMgr.instance.player.SetPosXY(vision.xMin + 0.5f, vision.yMax);
+            PlayerMgr.instance.player.PlayAnimation(AnimName.SwoonUp);
+            PlayerMgr.instance.player.transform.DOMoveY(-0.6f, 2.2f).SetEase(Ease.Linear).OnComplete(OnPlayComplete);
         }
     }
 
     private void OnPlayComplete()
     {
-        PlayerMgr.Ins.Player.PlayAnimation(AnimName.SwoonDown);
+        PlayerMgr.instance.player.PlayAnimation(AnimName.SwoonDown);
         Timer.Register(1, MoveTo);
     }
 
     private void MoveTo()
     {
-        SoundMgr.Ins.StartBGM();
-        PlayerMgr.Ins.Player.SetPos2(PlayerMgr.Ins.Player.transform.localPosition);
-        PlayerMgr.Ins.Player.ChangeState<RoleAwaken>();
+        SoundMgr.instance.StartBGM();
+        PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
+        PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
-        MainPanel mainPanel = UIMgr.Ins.GetPanel<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
         CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
         group.alpha = 0f;
         mainPanel.Show();
@@ -76,10 +76,10 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         black.GetComponent<SpriteRenderer>().DOFade(0, 1).OnComplete(() =>
         {
             black.SetActive(false);
-            PlayerMgr.Ins.Player.AutoMoveToPos(new Vector2(0.8f, -0.6f),()=> 
+            PlayerMgr.instance.player.AutoMoveToPos(new Vector2(0.8f, -0.6f),()=> 
             {
-                PlayerMgr.Ins.CanContrl = true;
-                m_Boss.CurrCtrl.Start();
+                PlayerMgr.instance.canContrl = true;
+                m_Boss.currCtrl.Start();
             });
         });
     }

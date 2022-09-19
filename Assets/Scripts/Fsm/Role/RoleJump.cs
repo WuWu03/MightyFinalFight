@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RoleJump : BaseFsmState
 {
-    public float Dir
+    public float dir
     {
         set
         {
@@ -12,7 +12,7 @@ public class RoleJump : BaseFsmState
     }
 
 
-    public bool CanChangeDir
+    public bool canChangeDir
     {
         set
         {
@@ -20,7 +20,7 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    public bool IsCatch
+    public bool isCatch
     {
         set
         {
@@ -30,31 +30,35 @@ public class RoleJump : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.AddForce(m_Dir * m_Owner.Attribute.JumpForce.x, m_Owner.Attribute.JumpForce.y);
+        m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, m_Owner.entityAttribute.jumpForce.y);
         m_Owner.PlayAnimation(m_IsCatch ? AnimName.Catch : AnimName.JumpUp);
         m_HasAddXForce = m_Dir != 0;
 
         if (m_CanChangeDir)
+        {
             m_Owner.SetDir(m_Dir);
+        }
 
-        m_Owner.OnDropEvent.AddListener(OnDrop);
+        m_Owner.onDropEvent.AddListener(OnDrop);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (m_Owner.IsFloat)
+        if (m_Owner.isFloat)
         {
             if (Mathf.Abs(m_Dir) > 0.01f && !m_HasAddXForce)
             {
                 m_HasAddXForce = true;
-                m_Owner.AddForce(m_Dir * m_Owner.Attribute.JumpForce.x, 0f);
+                m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, 0f);
                 if (m_CanChangeDir)
+                {
                     m_Owner.SetDir(m_Dir);
+                }
             }
 
             if (m_HasAddXForce && !m_IsCatch)
@@ -79,7 +83,9 @@ public class RoleJump : BaseFsmState
     private void OnDrop()
     {
         if (!m_IsCatch && !m_Owner.IsAnyState(typeof(RoleAttack)))
+        {
             m_Owner.PlayAnimation(AnimName.JumpDown);
+        }
     }
 
     private float m_Dir = 0;

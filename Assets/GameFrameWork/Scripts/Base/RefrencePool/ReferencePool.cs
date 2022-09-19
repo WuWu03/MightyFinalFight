@@ -7,7 +7,7 @@ namespace GameFrameWork
 {
     public static class ReferencePool
     {
-        public static bool EnableStrickCheck
+        public static bool enableStrickCheck
         {
             get
             {
@@ -19,7 +19,7 @@ namespace GameFrameWork
             }
         }
 
-        public static int Count
+        public static int count
         {
             get
             {
@@ -36,12 +36,12 @@ namespace GameFrameWork
             {
                 foreach (KeyValuePair<Type,ReferenceCollection> kvp in m_DicReferenceCollection)
                 {
-                    Type type = kvp.Value.ReferenceType;
-                    int usingCount = kvp.Value.UsingReferenceCount;
-                    int acquireCount = kvp.Value.AcquireReferenceCount;
-                    int addCount = kvp.Value.AddReferenceCount;
-                    int releaseCount = kvp.Value.ReleaseReferenceCount;
-                    int removeCount = kvp.Value.RemoveReferenceCount;
+                    Type type = kvp.Value.referenceType;
+                    int usingCount = kvp.Value.usingReferenceCount;
+                    int acquireCount = kvp.Value.acquireReferenceCount;
+                    int addCount = kvp.Value.addReferenceCount;
+                    int releaseCount = kvp.Value.releaseReferenceCount;
+                    int removeCount = kvp.Value.removeReferenceCount;
 
                     referencePoolInfos[index] = new ReferencePoolInfo(type, usingCount, acquireCount, addCount, releaseCount, removeCount);
                     index++;

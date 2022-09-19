@@ -6,7 +6,7 @@ namespace GameFrameWork.Scene
 {
     public class LoadSceneFailureEventArgs : BaseEventArgs
     {
-        public string SceneName
+        public string sceneName
         {
             get
             {
@@ -14,7 +14,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public string ErrorMessage
+        public string errorMessage
         {
             get
             {
@@ -22,20 +22,20 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public object Args
+        public object arg
         {
             get
             {
-                return m_Args;
+                return m_Arg;
             }
         }
 
-        public static LoadSceneFailureEventArgs Create(string sceneName,string errorMessage,object args)
+        public static LoadSceneFailureEventArgs Create(string sceneName, string errorMessage, object arg)
         {
             LoadSceneFailureEventArgs failureEventArgs = ReferencePool.Acquire<LoadSceneFailureEventArgs>();
             failureEventArgs.m_SceneName = sceneName;
             failureEventArgs.m_ErrorMessage = errorMessage;
-            failureEventArgs.m_Args = args;
+            failureEventArgs.m_Arg = arg;
             return failureEventArgs;
         }
 
@@ -43,11 +43,11 @@ namespace GameFrameWork.Scene
         {
             m_SceneName = string.Empty;
             m_ErrorMessage = string.Empty;
-            m_Args = null;
+            m_Arg = null;
         }
 
         private string m_SceneName = string.Empty;
         private string m_ErrorMessage = string.Empty;
-        private object m_Args = null;
+        private object m_Arg = null;
     }
 }

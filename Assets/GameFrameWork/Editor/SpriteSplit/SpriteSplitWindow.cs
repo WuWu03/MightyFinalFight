@@ -30,7 +30,7 @@ namespace GameFrameWork.Editor
         private void MainGUI()
         {
             SplitType type = m_SplitType;
-            m_SplitType = (SplitType)EditorUtility.EnumPopup("切图模式",m_SplitType);
+            m_SplitType = (SplitType)EditorUtil.EnumPopup("切图模式",m_SplitType);
 
             if(type != m_SplitType)
             {

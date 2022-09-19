@@ -7,23 +7,23 @@ namespace GameFrameWork.Input
 {
     public class KeyArgs : BaseEventArgs
     {
-        public string KeyName { get; set; }
-        public bool IsShift { get; set; }
-        public KeyType ReplaceKeyType { get; set; }
+        public string keyName { get; set; }
+        public bool isShift { get; set; }
+        public KeyType replaceKeyType { get; set; }
 
         public static KeyArgs Create(string keyName, KeyType replaceKeyType, bool isShift)
         {
             KeyArgs args = ReferencePool.Acquire<KeyArgs>();
-            args.KeyName = keyName;
-            args.ReplaceKeyType = replaceKeyType;
-            args.IsShift = isShift;
+            args.keyName = keyName;
+            args.replaceKeyType = replaceKeyType;
+            args.isShift = isShift;
             return args;
         }
 
         public override void Clear()
         {
-            KeyName = null;
-            IsShift = false;
+            keyName = null;
+            isShift = false;
         }
     }
 }

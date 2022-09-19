@@ -4,9 +4,9 @@ using System.Collections;
 
 namespace GameFrameWork
 {
-    public abstract class Singleton<T> where T : Singleton<T>,new()
+    public abstract class Singleton<T> where T : Singleton<T>, new()
     {
-        public static T Ins
+        public static T Instance
         {
             get
             {

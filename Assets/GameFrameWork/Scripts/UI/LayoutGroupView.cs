@@ -7,8 +7,8 @@ namespace GameFrameWork.UI
 {
     public class LayoutGroupView<T> where T : LayoutGroupViewItem, new()
     {
-        public GameFrameWorkAction<T> OnItemUpdate;
-        public GameFrameWorkAction<T,bool> OnItemSelect;
+        public GameFrameWorkAction<T> onItemUpdateEvent;
+        public GameFrameWorkAction<T,bool> onItemSelectEvent;
         
         public void Init(GameObject parent,GameObject item, int maxCount = 1, ScrollRect scroll = null)
         {
@@ -46,18 +46,18 @@ namespace GameFrameWork.UI
             for (int i = 0; i < count; i++)
             {
                 m_ListItem[i].gameObject.SetActive(true);
-                OnItemUpdate?.Invoke(m_ListItem[i]);
+                onItemUpdateEvent?.Invoke(m_ListItem[i]);
             }
         }
 
         public void SelectItem(int index)
         {
-            OnItemSelect?.Invoke(m_ListItem[m_CurrSelectIndex], false);
+            onItemSelectEvent?.Invoke(m_ListItem[m_CurrSelectIndex], false);
 
             if (index >= 0 && index < m_ListItem.Count && m_ListItem[index] != null)
             {
                 m_CurrSelectIndex = index;
-                OnItemSelect?.Invoke(m_ListItem[index], true);
+                onItemSelectEvent?.Invoke(m_ListItem[index], true);
             }
         }
         
@@ -80,11 +80,11 @@ namespace GameFrameWork.UI
 
             T script = new T();
             script.Create(item, index);
-            OnItemUpdate?.Invoke(script);
+            onItemUpdateEvent?.Invoke(script);
 
-            if (script.SelectButton != null)
+            if (script.selectButton != null)
             {
-                script.SelectButton.onClick.AddListener(delegate () { SelectItem(index); });
+                script.selectButton.onClick.AddListener(delegate () { SelectItem(index); });
             }
             m_ListItem.Add(script);
         }

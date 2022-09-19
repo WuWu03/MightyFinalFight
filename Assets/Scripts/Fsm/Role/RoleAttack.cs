@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RoleAttack : BaseFsmState
 {
-    public float Dir
+    public float dir
     {
         set
         {
@@ -12,7 +12,7 @@ public class RoleAttack : BaseFsmState
     }
 
 
-    public bool CanChangeDir
+    public bool canChangeDir
     {
         set
         {
@@ -22,7 +22,7 @@ public class RoleAttack : BaseFsmState
 
     public override void OnInit(BaseFsm fsm)
     {
-        m_Owner = fsm.Owner as BaseRole;
+        m_Owner = fsm.owner as BaseRole;
     }
 
     public override void OnEnter(BaseFsm fsm)

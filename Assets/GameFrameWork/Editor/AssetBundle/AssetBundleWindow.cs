@@ -47,17 +47,17 @@ namespace GameFrameWork.Editor
         {
             if (m_AssetBundleConfig != null) return;
 
-            if (!Directory.Exists(PathUtil.AssetBundleConfigFullPath))
+            if (!Directory.Exists(EditorPathUtil.assetBundleConfigFullPath))
             {
-                Directory.CreateDirectory(PathUtil.AssetBundleConfigFullPath);
+                Directory.CreateDirectory(EditorPathUtil.assetBundleConfigFullPath);
             }
 
-            if (!File.Exists(PathUtil.AssetBundleDataFullPath))
+            if (!File.Exists(EditorPathUtil.assetBundleDataFullPath))
             {
-                EditorUtility.CreateConfigData<AssetBundleConfig, AssetBundleData>(PathUtil.AssetBundleDataName, PathUtil.AssetBundleDataExtend, PathUtil.EdiorConfiglPath);
+                EditorUtil.CreateConfigData<AssetBundleConfig, AssetBundleData>(EditorPathUtil.assetBundleDataName, EditorPathUtil.assetBundleDataExtend, EditorPathUtil.ediorConfigPath);
             }
 
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(PathUtil.AssetBundleDataPath);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
             for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
             {
                 AssetBundleData data = new AssetBundleData()
@@ -124,7 +124,7 @@ namespace GameFrameWork.Editor
             if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
 
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
-            EditorUtility.GUIBoxScope(() =>
+            EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
@@ -159,7 +159,7 @@ namespace GameFrameWork.Editor
                 if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i]) continue;
                 index++;
                 m_ListData[i].Id = index;
-                EditorUtility.GUIBoxScope(() => 
+                EditorUtil.GUIBoxScope(() => 
                 {
                     GUILayout.BeginVertical();
                     GUILayout.BeginHorizontal();
@@ -232,7 +232,7 @@ namespace GameFrameWork.Editor
 
         private void LockConfigGUI()
         {
-            EditorUtility.GUIBoxScope(() =>
+            EditorUtil.GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.LockConfig = GUILayout.Toggle(m_AssetBundleConfig.LockConfig, "锁定所有配置", GUI.skin.toggle);
             });
@@ -240,7 +240,7 @@ namespace GameFrameWork.Editor
         private void CopyAssetGUI()
         {
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
-            EditorUtility.GUIBoxScope(() =>
+            EditorUtil.GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.IsCopyAsset = GUILayout.Toggle(m_AssetBundleConfig.IsCopyAsset, "打包完成后自动复制资源到指定文件夹", GUI.skin.toggle);
             });

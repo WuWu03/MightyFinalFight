@@ -12,24 +12,24 @@ public class SkillNearHitSelector : SkillBaseSelector
     {
         m_ListTargets.Clear();
 
-        for (int i = 0; i < m_Owner.Targets.Count; i++)
+        for (int i = 0; i < m_Owner.targets.Count; i++)
         {
-            ICanBeHit hit = m_Owner.Targets[i].GetComponent<ICanBeHit>();
+            ICanBeHit hit = m_Owner.targets[i].GetComponent<ICanBeHit>();
             if (hit == null) continue;
 
             bool isInRange = false;
             BaseSceneObject hitObj = hit as BaseSceneObject;
 
-            Vector2 target = (hitObj.Pos - m_Owner.Pos).normalized;
-            Vector2 normal = m_Owner.Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
-            Vector2 pos = m_Owner.Pos + m_SkillEffect.SelectorOffest;
+            Vector2 target = (hitObj.pos - m_Owner.pos).normalized;
+            Vector2 normal = m_Owner.dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+            Vector2 pos = m_Owner.pos + m_SkillEffect.SelectorOffest;
 
             if (Vector2.Angle(target, normal) <= m_SkillEffect.SelectorAngle / 2)
             {
-                isInRange = Vector2.Distance(hitObj.Pos, pos) <= m_SkillEffect.SelectorRadius;
+                isInRange = Vector2.Distance(hitObj.pos, pos) <= m_SkillEffect.SelectorRadius;
             }
 
-            if (isInRange && hit.CanBeHit)
+            if (isInRange && hit.canBeHit)
             {
                 m_ListTargets.Add(hit);
             }
@@ -40,7 +40,7 @@ public class SkillNearHitSelector : SkillBaseSelector
 
     public override List<GameObject> GetTargetsObj()
     {
-        return m_Owner.Targets;
+        return m_Owner.targets;
     }
 
     public override void Reset()

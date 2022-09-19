@@ -19,19 +19,19 @@ public class Trap : BaseSceneItem
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        SetCollider(m_TrapData.TriggerOffest, m_TrapData.TriggerSize);
-        m_Collider.enabled = true;
-        m_Collider.isTrigger = true;
+        SetCollider(m_TrapData.triggerOffest, m_TrapData.triggerSize);
+        m_BoxCollider2D.enabled = true;
+        m_BoxCollider2D.isTrigger = true;
     }
 
     protected override void OnTriggerStay2D(Collider2D collision)
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
-        if (target == null || target.IsDropTrag) return;
+        if (target == null || target.isDropTrag) return;
 
-        float width = m_Collider.size.x;
-        float boundsLeft = target.Pos.x - 0.1f;
-        float boundsRight = target.Pos.x + 0.1f;
+        float width = m_BoxCollider2D.size.x;
+        float boundsLeft = target.pos.x - 0.1f;
+        float boundsRight = target.pos.x + 0.1f;
         float selfLeft = m_Pos.x - width / 2;
         float selfRight = m_Pos.x + width / 2;
 
@@ -39,14 +39,14 @@ public class Trap : BaseSceneItem
 
         if (!isEnter) return;
         Vector2 rebirthPos = Vector2.zero;
-        if (target.Pos.x < m_Pos.x)
-            rebirthPos = new Vector2(m_Pos.x - width - 0.1f, target.Pos.y);
+        if (target.pos.x < m_Pos.x)
+            rebirthPos = new Vector2(m_Pos.x - width - 0.1f, target.pos.y);
         else
-            rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.Pos.y);
+            rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.pos.y);
 
         DropTrapData dropTrapData = ReferencePool.Acquire<DropTrapData>();
-        dropTrapData.RebirthPos = rebirthPos;
-        dropTrapData.AttackValue = 1;
+        dropTrapData.rebirthPos = rebirthPos;
+        dropTrapData.attackValue = 1;
 
         target.OnDropTragMsg(dropTrapData);
     }

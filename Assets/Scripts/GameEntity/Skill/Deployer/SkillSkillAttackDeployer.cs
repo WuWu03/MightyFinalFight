@@ -52,7 +52,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        SoundMgr.Ins.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
     }
 
     public override void OnExit()

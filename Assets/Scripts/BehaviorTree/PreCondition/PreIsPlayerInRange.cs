@@ -20,8 +20,8 @@ public class PreIsPlayerInRange : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        Vector2 playerPos = PlayerMgr.Ins.Player.Pos;
-        Vector2 ownerPos = (m_Owner as BaseRoleCtrl).Owner.Pos;
+        Vector2 playerPos = PlayerMgr.instance.player.pos;
+        Vector2 ownerPos = (m_Owner as BaseRoleCtrl).owner.pos;
 
         float xDistance = Mathf.Abs(playerPos.x - ownerPos.x);
         float yDistance = Mathf.Abs(playerPos.y - ownerPos.y);

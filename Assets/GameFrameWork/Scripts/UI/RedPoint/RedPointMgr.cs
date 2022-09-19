@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEngine.UI;
+using GameFrameWork.Log;
 
 namespace GameFrameWork.UI
 {
@@ -12,21 +11,26 @@ namespace GameFrameWork.UI
             m_ListRedPointTrees = new List<RedPoint>();
         }
 
-        public void Regist(string key, string subKey, string parentKey, RedPointType type)
+        public void Add(string key, string subKey, string parentKey, RedPointType type)
         {
-            RedPoint root = GetRedPointTree(key);
+            RedPoint root = GetRoot(key);
 
             if (string.IsNullOrEmpty(subKey) && string.IsNullOrEmpty(parentKey))
             {
-                if (root == null)
-                    root = new RedPoint(key, key, true, type);
+                if (root != null)
+                {
+                    GameFrameworkLog.LogError("The red point root [" + key + "] is already exist!");
+                    return;
+                }
+
+                root = new RedPoint(key, key, true, type);
                 m_ListRedPointTrees.Add(root);
             }
             else
             {
                 if (root == null)
                 {
-                    Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
+                    GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please add it first");
                     return;
                 }
 
@@ -35,62 +39,81 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void InitPoint(string key, string subKey, GameFrameWorkAction<RedPointState, int> onShow, Button btn = null)
+        public void Remove(string key, string subKey)
         {
-            RedPoint root = GetRedPointTree(key);
+            if(string.IsNullOrEmpty(subKey) || key.Equals(subKey))
+            {
+                for (int i = m_ListRedPointTrees.Count - 1; i >= 0; i--)
+                {
+                    if (m_ListRedPointTrees[i].key.Equals(key))
+                    {
+                        m_ListRedPointTrees[i].Dispose();
+                        m_ListRedPointTrees.RemoveAt(i);
+                        return;
+                    }
+                }
+
+                return;
+            }
+
+            RedPoint root = GetRoot(key);
 
             if (root == null)
             {
-                Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
+                return;
+            }
+
+            root.RemoveChild(subKey);
+        }
+
+        public void Init(string key, string subKey, GameFrameWorkAction<RedPointState, int> showEvent, Button btn = null)
+        {
+            RedPoint root = GetRoot(key);
+
+            if (root == null)
+            {
+                GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please add it first");
                 return;
             }
 
             RedPoint node = root.GetChild(subKey);
 
-            if(node == null)
+            if (node == null)
             {
-                Log.GameFrameworkLog.LogError("The red point node [" + subKey + "] is invalid,please regist first");
+                GameFrameworkLog.LogError("The red point node [" + subKey + "] is invalid,please add it first");
                 return;
             }
 
-            node.Init(onShow, btn);
+            node.Init(showEvent, btn);
         }
 
-        public void SetPointState(string key, string subKey, RedPointState state, int data = 0)
+        public void SetState(string key, string subKey, RedPointState state, int data = 0)
         {
-            RedPoint root = GetRedPointTree(key);
+            RedPoint root = GetRoot(key);
 
             if (root == null)
             {
-                Log.GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please regist first");
+                GameFrameworkLog.LogError("The red point root [" + key + "] is invalid,please add it first");
                 return;
             }
 
-            root.SetTreeState(subKey, state, data);
+            root.SetState(subKey, state, data);
         }
 
-        public void Remove(string key)
-        {
-            for (int i = m_ListRedPointTrees.Count - 1; i >= 0; i--)
-            {
-                if(m_ListRedPointTrees[i].Key.Equals(key))
-                {
-                    m_ListRedPointTrees[i].Dispose();
-                    m_ListRedPointTrees.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-
-        public RedPoint GetRedPointTree(string key)
+ 
+        private RedPoint GetRoot(string key)
         {
             if (string.IsNullOrEmpty(key))
+            {
                 return null;
+            }
 
             for (int i = 0; i < m_ListRedPointTrees.Count; i++)
             {
-                if (m_ListRedPointTrees[i].Key.Equals(key))
+                if (m_ListRedPointTrees[i].key.Equals(key))
+                {
                     return m_ListRedPointTrees[i];
+                }
             }
 
             return null;
@@ -102,6 +125,7 @@ namespace GameFrameWork.UI
             {
                 m_ListRedPointTrees[i].Dispose();
             }
+
             m_ListRedPointTrees.Clear();
         }
 

@@ -7,12 +7,12 @@ namespace GameFrameWork.Fsm
     {
         public FsmMachine(System.Object owner,string name):base(owner,name)
         {
-            this.m_CurrentState = null;
-            this.m_CurrentStateTime = 0;
-            this.m_DicStates = new Dictionary<Type, BaseFsmState>();
-            this.m_IsDestroyed = true;
+            m_CurrentState = null;
+            m_CurrentStateTime = 0;
+            m_DicStates = new Dictionary<Type, BaseFsmState>();
+            m_IsDestroyed = true;
         }
-        public override int FsmStateCount
+        public override int fsmStateCount
         {
             get
             {
@@ -20,23 +20,23 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override bool IsRunning
+        public override bool isRunning
         {
             get
             {
-                return this.m_CurrentState != null;
+                return m_CurrentState != null;
             }
         }
 
-        public override bool IsDestroy
+        public override bool isDestroy
         {
             get
             {
-                return this.m_IsDestroyed;
+                return m_IsDestroyed;
             }
         }
 
-        public override BaseFsmState CurrState
+        public override BaseFsmState currState
         {
             get
             {
@@ -44,7 +44,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override Type CurrStateType
+        public override Type currStateType
         {
             get
             {
@@ -57,18 +57,12 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override float CurrStateTime
+        public override float currStateTime
         {
             get
             {
-                return this.m_CurrentStateTime;
+                return m_CurrentStateTime;
             }
-        }
-
-        private BaseFsmState DefaultState
-        {
-            get;
-            set;
         }
         
         public static FsmMachine Create(System.Object owner,string name,params BaseFsmState[] states)
@@ -79,7 +73,7 @@ namespace GameFrameWork.Fsm
             }
 
             FsmMachine fsm = new FsmMachine(owner, name);
-            fsm.Name = name;
+            fsm.name = name;
             fsm.m_IsDestroyed = false;
 
             if (states != null)
@@ -101,7 +95,7 @@ namespace GameFrameWork.Fsm
 
         public override void Start<T>()
         {
-            if (this.IsRunning)
+            if (isRunning)
             {
                 throw new Exception("Fsm is running.");
             }
@@ -113,9 +107,9 @@ namespace GameFrameWork.Fsm
                 throw new Exception("Fsm state is invalid.");
             }
 
-            DefaultState = fsmState;
-            this.m_CurrentStateTime = 0;
-            this.m_CurrentState = fsmState;
+            m_DefaultState = fsmState;
+            m_CurrentStateTime = 0;
+            m_CurrentState = fsmState;
             fsmState.OnEnter(this);
         }
 
@@ -149,7 +143,7 @@ namespace GameFrameWork.Fsm
                 return;
             }
 
-            BaseFsmState state = this.GetState<T>();
+            BaseFsmState state = GetState<T>();
 
             if (state == null)
             {
@@ -169,14 +163,14 @@ namespace GameFrameWork.Fsm
                 throw new Exception("Fsm is invalid or destroyed.");
             }
 
-            if (DefaultState == null)
+            if (m_DefaultState == null)
             {
                 throw new Exception("Fsm is invalid or destroyed.");
             }
 
             m_CurrentStateTime = 0f;
             m_CurrentState.OnExit(this, false);
-            m_CurrentState = DefaultState;
+            m_CurrentState = m_DefaultState;
             m_CurrentState.OnEnter(this);
         }
 
@@ -209,8 +203,8 @@ namespace GameFrameWork.Fsm
                 return;
             }
 
-            this.m_CurrentStateTime += deltaTime;
-            this.m_CurrentState.OnUpdate(this, deltaTime, unscaleDeltaTime);
+            m_CurrentStateTime += deltaTime;
+            m_CurrentState.OnUpdate(this, deltaTime, unscaleDeltaTime);
         }
 
         public override void ShutDown()
@@ -236,11 +230,12 @@ namespace GameFrameWork.Fsm
                 throw new Exception("Fsm state is invalid");
             }
 
-            DefaultState = state;
+            m_DefaultState = state;
         }
 
         private readonly Dictionary<Type, BaseFsmState> m_DicStates;
         private BaseFsmState m_CurrentState;
+        private BaseFsmState m_DefaultState;
         private float m_CurrentStateTime;
         private bool m_IsDestroyed;
     }

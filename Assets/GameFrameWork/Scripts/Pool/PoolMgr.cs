@@ -6,10 +6,9 @@ namespace GameFrameWork.Pool
 {
     public class PoolMgr : BaseMgr<PoolMgr>
     {
-        #region -- PoolItem
         class Pool
         {
-            public List<GameObject> PoolList
+            public List<GameObject> poolList
             {
                 get
                 {
@@ -18,7 +17,7 @@ namespace GameFrameWork.Pool
             }
 
            
-            public string Tag
+            public string tag
             {
                 get
                 {
@@ -41,18 +40,18 @@ namespace GameFrameWork.Pool
 
             public GameObject Spawn(bool isActive = true)
             {
-                for (int i = 0; i < PoolList.Count; i++)
+                for (int i = 0; i < poolList.Count; i++)
                 {
-                    if (!PoolList[i].activeSelf)
+                    if (!poolList[i].activeSelf)
                     {
-                        PoolList[i].SetActive(isActive);
-                        return PoolList[i];
+                        poolList[i].SetActive(isActive);
+                        return poolList[i];
                     }
                 }
 
                 GameObject go = GameObject.Instantiate(m_Obj, m_CachePool, false);
                 go.SetActive(isActive);
-                PoolList.Add(go);
+                poolList.Add(go);
 
                 return go;
             }
@@ -68,21 +67,21 @@ namespace GameFrameWork.Pool
 
             public void UnSpawnAll()
             {
-                for (int i = 0; i < PoolList.Count; i++)
+                for (int i = 0; i < poolList.Count; i++)
                 {
-                    PoolList[i].SetActive(false);
+                    poolList[i].SetActive(false);
                 }
             }
 
             public void Clear()
             {
-                for (int i = PoolList.Count - 1; i > 0; i--)
+                for (int i = poolList.Count - 1; i > 0; i--)
                 {
-                    GameObject go = PoolList[i];
+                    GameObject go = poolList[i];
 
                     if (go != null)
                     {
-                        PoolList.RemoveAt(i);
+                        poolList.RemoveAt(i);
                         GameObject.Destroy(go);
                     }
                 }
@@ -94,7 +93,6 @@ namespace GameFrameWork.Pool
             private List<GameObject> m_ListPool = null;
             private string m_Tag = string.Empty;
         }
-        #endregion
 
         private Dictionary<string, Pool> m_DicPool = null;
 

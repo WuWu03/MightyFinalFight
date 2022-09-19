@@ -15,7 +15,7 @@ public class SkillManager
 
     public void DeploySkill(int id)
     {
-        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.SkillId == id)
+        if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.skillId == id)
         {
             return;
         }
@@ -24,7 +24,7 @@ public class SkillManager
 
         for (int i = 0; i < m_SkillDeployers.Length; i++)
         {
-            if (m_SkillDeployers[i].SkillId.Equals(id))
+            if (m_SkillDeployers[i].skillId.Equals(id))
             {
                 deployer = m_SkillDeployers[i];
                 break;
@@ -35,7 +35,7 @@ public class SkillManager
         {
             RemoveAllEvent();
 
-            if (!SkillFactory.CheckStatus(deployer.SkillData.SkillPrevConditions, m_Owner))
+            if (!SkillFactory.CheckStatus(deployer.skillData.SkillPrevConditions, m_Owner))
             {
                 return;
             }
@@ -63,7 +63,7 @@ public class SkillManager
         {
             ExitSkill();
 
-            if (m_Owner.CanChangeDefaultState && !m_Owner.IsAddGroundForce)
+            if (m_Owner.canChangeDefaultState && !m_Owner.isAddGroundForce)
             {
                 m_Owner.ChangeDefaultState();
             }
@@ -77,7 +77,7 @@ public class SkillManager
             return false;
         }
 
-        if (!m_CurrSkillDeployer.SkillId.Equals(id))
+        if (!m_CurrSkillDeployer.skillId.Equals(id))
         {
             return false;
         }
@@ -92,7 +92,7 @@ public class SkillManager
             return false;
         }
 
-		if (!m_CurrSkillDeployer.SkillId.Equals(id))
+		if (!m_CurrSkillDeployer.skillId.Equals(id))
         {
             return false;
         }

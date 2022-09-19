@@ -4,7 +4,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ParticleSystem))]
 public class ParticleMask : MonoBehaviour
 {
-    public RectTransform ClipRect;
+    public RectTransform clipRect;
     //public Material mt;
     public Material[] mt;
     private void Awake()
@@ -35,7 +35,7 @@ public class ParticleMask : MonoBehaviour
         {
             if (!mt[i].shader.name.Contains("Particle_Additive_Clip")) continue;
             Vector3[] wc = new Vector3[4];
-            ClipRect.GetWorldCorners(wc);        // 计算world space中的点坐标
+            this.clipRect.GetWorldCorners(wc);        // 计算world space中的点坐标
             var clipRect = new Vector4(wc[0].x, wc[0].y, wc[2].x, wc[2].y);// 选取左下角和右上角
             mt[i].SetVector("_ClipRect", clipRect);                           // 设置裁剪区域
             mt[i].SetFloat("_UseClipRect", 1.0f); // 开启裁剪
