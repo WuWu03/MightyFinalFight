@@ -13,25 +13,32 @@ public class PreIsDefense : PreCondition
         m_Owner.owner.onHurtEvent += OnHurtEvent;
     }
 
-    private bool OnHurtEvent(HurtData data)
+    private void OnHurtEvent(HurtData data)
     {
         if (m_Owner.owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
         {
             m_IsDefense = false;
             m_HurtTimer = Time.time;
-            return true;
+            return;
         }
 
         if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
         {
             m_IsDefense = false;
-            return true;
+            return;
         }
 
         m_HurtTimer = -1;
         m_IsDefense = !m_Owner.owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.owner.isBeCatch && data.canBeDefense;
+        data.isDefense = m_IsDefense;
 
-        return !m_IsDefense;
+        if (m_IsDefense)
+        {
+            data.hurtSound = "Sound/OnEat";
+            data.attackValue = 0;
+        }
+
+        return;
     }
 
     protected override bool OnCheckPreCondition()

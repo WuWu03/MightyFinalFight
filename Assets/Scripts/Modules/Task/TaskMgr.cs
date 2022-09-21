@@ -55,6 +55,11 @@ public class TaskMgr : BaseMgr<TaskMgr>
         return false;
     }
 
+    public void GiveupTask()
+    {
+        m_CurrTaskList.Clear();
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -96,6 +101,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         m_CurrTaskIndex++;
         m_LastTaskIndex = -1;
+
         if (m_CurrTaskIndex >= m_CurrTaskList.Count)
         {
             m_CurrTaskIndex = 0;

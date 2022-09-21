@@ -12,7 +12,7 @@ public class PreIsInSpecialState : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        if (m_Timer > 0 && Time.time - m_Timer < 0.5f)
+        if (m_Timer > 0 && Time.time - m_Timer < 1f)
         {
             return true;
         }

@@ -140,10 +140,17 @@ public class BaseEnemy : BaseRole
 
         Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
         MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
-        mainPanel.ShowEnemyDamage(data.attackValue, damagePos);
 
-        base.OnGroundHurtMsg(data);
-        mainPanel.SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
+        if (data.attackValue > 0)
+        {
+            mainPanel.ShowEnemyDamage(data.attackValue, damagePos);
+            base.OnGroundHurtMsg(data);
+            mainPanel.SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
+        }
+        else
+        {
+            base.OnGroundHurtMsg(data);
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)

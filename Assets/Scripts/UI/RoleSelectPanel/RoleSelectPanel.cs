@@ -108,7 +108,7 @@ public class RoleSelectPanel : BasePanel
         SoundMgr.instance.StopBGM();
 		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.instance.selectRoleId = DataHelper.roleSelectDatas[m_CurrSelectIndex].roleId;
-		StageMgr.instance.nextStageId = StaticConfig.StageConfig.GetDataByIndex(0).Id;
+
 		UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0.5f, () =>
 		{
 			UIMgr.instance.Close<LoadPanel>();

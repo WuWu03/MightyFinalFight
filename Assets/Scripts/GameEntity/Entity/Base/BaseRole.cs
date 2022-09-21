@@ -136,7 +136,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public event GameFrameWorkBooleanAction<HurtData> onHurtEvent
+    public event GameFrameWorkAction<HurtData> onHurtEvent
     {
         add
         {
@@ -230,6 +230,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             return;
         }
+
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
         RoleAttack roleAttack = GetState<RoleAttack>();
         roleAttack.canChangeDir = data.canChangeDir;
@@ -244,6 +245,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             return;
         }
+
         RoleSkill skillState = GetState<RoleSkill>();
         skillState.canChangeDir = data.CanChangeDir;
         skillState.canMove = data.CanMove;
@@ -341,15 +343,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHurtMsg(HurtData data)
     {
-        if (data == null || !canBeHit) 
+        if (data == null || !canBeHit)
         {
             return;
         }
 
-        if (m_OnHurtEvent != null && !m_OnHurtEvent.Invoke(data))
-        {
-            return;
-        }
+        m_OnHurtEvent?.Invoke(data);
 
         if (m_CurrCtrl != null)
         {
@@ -369,22 +368,25 @@ public class BaseRole : BaseAvatar, ICanBeHit
             data.hurtAnim = AnimName.Hurt;
         }
 
-        if (m_IsSmoon)
+        if (!data.isDefense)
         {
-            GetState<RoleSwoon>().force = data.attackForce;
-            ChangeState<RoleSwoon>();
-        }
-        else
-        {
-            GetState<RoleHurt>().hurtAnim = data.hurtAnim;
-            ChangeState<RoleHurt>();
+            if (m_IsSmoon)
+            {
+                GetState<RoleSwoon>().force = data.attackForce;
+                ChangeState<RoleSwoon>();
+            }
+            else
+            {
+                GetState<RoleHurt>().hurtAnim = data.hurtAnim;
+                ChangeState<RoleHurt>();
+            }
         }
 
         if (data.isGroundHurt && data.attackForce.y > 0)
         {
             m_OnGroundHurtData = data;
         }
-        else if (data.attackValue > 0)
+        else
         {
             OnGroundHurtMsg(data);
         }
@@ -393,7 +395,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void OnDefenseMsg(float attackerDir)
     {
         SetDir(-attackerDir);
-        SetPosX(m_Pos.x + attackerDir * 0.07f);
+        SetPosX(m_Pos.x + attackerDir * 0.04f);
         ChangeState<RoleDefense>(true);
     }
 
@@ -450,15 +452,21 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
-        if (skillData.Type != SkillConfigData.SkillType.Skill && m_CurrCtrl != null)
+        if (skillData.Type == SkillConfigData.SkillType.Normal && m_CurrCtrl != null)
         {
-            m_CurrCtrl.OnAttackSuccess(isHurtTarget);
+            m_CurrCtrl.SetNormalAttackState(isHurtTarget);
         }
     }
 
     protected virtual void OnGroundHurtMsg(HurtData data)
     {
         string hurtSound = string.IsNullOrEmpty(data.hurtSound) ? SoundName.DefaultHurt : data.hurtSound;
+
+        if (data.isSwoon)
+        {
+            Debug.Log(hurtSound);
+        }
+
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
         m_EntityAttribute.SubHealth(data.attackValue);
 
@@ -496,6 +504,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        m_Rigidbody2D.drag = 0;
         onDropEvent.Invoke();
         onDropEvent.RemoveAllListeners();
 
@@ -528,6 +537,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             {
                 return;
             }
+
             CheckGroundHurt();
             ResetRigidbody();
         }
@@ -544,7 +554,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 ChangeDefaultState();
                 SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultDrop);
             }
-            else ChangeState<RoleDead>();
+            else
+            {
+                ChangeState<RoleDead>();
+            }
         }
     }
 
@@ -679,7 +692,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeThrow = false;
     protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
-    protected event GameFrameWorkBooleanAction<HurtData> m_OnHurtEvent = null;
+    protected event GameFrameWorkAction<HurtData> m_OnHurtEvent = null;
 
     private bool m_IsAutoMove = false;
     private bool m_XArrived = false;

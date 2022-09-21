@@ -2,6 +2,7 @@
 using GameFrameWork;
 using GameFrameWork.Sound;
 using System.Data.Common;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class BaseRoleCtrl : BaseCtrl
@@ -13,6 +14,7 @@ public class BaseRoleCtrl : BaseCtrl
             return m_AttackSuccess;
         }
     }
+
 
     protected override void OnInit()
     {
@@ -72,13 +74,8 @@ public class BaseRoleCtrl : BaseCtrl
         }
     }
 
-    public void OnAttackSuccess(bool success)
+    public void SetNormalAttackState(bool success)
     {
-        if (m_AttackSuccess && !success && m_AttackIndex < 3)
-        {
-            ExitSkill();
-        }
-
         m_AttackSuccess = success;
     }
 
@@ -120,7 +117,7 @@ public class BaseRoleCtrl : BaseCtrl
         {
             if(m_CurrSkillID == m_Data.attackIds[i])
             {
-                m_AttackIndex = -1;
+                m_AttackIndex = 0;
                 m_AttackTimer = 0;
                 m_AttackSuccess = false;
                 break;
@@ -153,21 +150,21 @@ public class BaseRoleCtrl : BaseCtrl
 
             if (currWait < 0)
             {
-                if (m_Owner.IsPlayComplete())
+                if (m_Owner.IsPlayComplete() && m_Owner.isInGround)
                 {
-                    m_AttackIndex = -1;
+                    m_AttackIndex = 0;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
-                    if (m_Owner.isInGround)
-                        m_Owner.ChangeDefaultState();
+                    m_Owner.ChangeDefaultState();
                 }
             }
             else
             {
                 float attckStamp = Time.time - m_AttackTimer;
+
                 if (attckStamp > currWait)
                 {
-                    m_AttackIndex = -1;
+                    m_AttackIndex = 0;
                     m_AttackTimer = 0;
                     m_AttackSuccess = false;
                     m_Owner.ChangeDefaultState();
@@ -188,22 +185,41 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if (m_Data.attackWait == null || m_Data.attackWait.Length < 1) return;
-        if (m_AttackIndex >= m_Data.attackWait.Length - 1) return;
+        if (m_Data.attackWait == null || m_Data.attackWait.Length < 1)
+        {
+            return;
+        }
 
         if (m_AttackTimer > 0 && m_Data.attackNextTime != null && m_Data.attackNextTime.Length > 0)
         {
-            if (Time.time - m_AttackTimer < m_Data.attackNextTime[m_AttackIndex]) return;
+            if(m_AttackIndex >= m_Data.attackNextTime.Length)
+            {
+                return;
+            }
+
+            if (Time.time - m_AttackTimer < m_Data.attackNextTime[m_AttackIndex])
+            {
+                return;
+            }
         }
 
-        if (isAttackSuccess) m_AttackIndex++;
-        else m_AttackIndex = 0;
+        if(m_AttackSuccess)
+        {
+            if (m_AttackIndex < m_Data.attackWait.Length - 1)
+            {
+                m_AttackIndex++;
+            }
+        }
+        else
+        {
+            m_AttackIndex = 0;
+        }
 
         m_AttackTimer = Time.time;
         m_CurrSkillID = m_Data.attackIds[m_AttackIndex];
         m_SkillManager.DeploySkill(m_CurrSkillID);
 
-        if (m_CurrSkillID == 3004)
+        if (m_CurrSkillID == 1003004)
         {
             m_Owner.SetDefaultState<HeroAttackEnd>();
         }
@@ -217,7 +233,7 @@ public class BaseRoleCtrl : BaseCtrl
     }
 
     private int m_CurrSkillID = 0;
-    private int m_AttackIndex = -1;
+    private int m_AttackIndex = 0;
     private bool m_AttackSuccess = false;
     private float m_AttackTimer = 0;
     private BaseRoleSkillData m_Data = null;

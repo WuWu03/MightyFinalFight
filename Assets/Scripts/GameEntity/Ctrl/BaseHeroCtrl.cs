@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class BaseHeroCtrl : BaseRoleCtrl
@@ -11,12 +12,14 @@ public class BaseHeroCtrl : BaseRoleCtrl
         m_WeaponAttackID = heroSkillData.weaponAttackID;
         m_ThrowWeaponID = heroSkillData.throwWeaponID;
         m_JumpAttackID = heroSkillData.jumpAttackIds[1];
+
         base.SetData(data);
     }
 
     protected override void NormalAttack(Vector2 dir)
     {
         BaseHero hero = m_Owner as BaseHero;
+
         if (hero.isCatch)
         {
             bool isThrowing = m_SkillManager.IsCurrSkill(m_ThrowAttackID);
@@ -95,6 +98,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
         if (!m_Owner.IsAnimation(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
         {
             base.NormalAttack(dir);
+
         }
     }
 

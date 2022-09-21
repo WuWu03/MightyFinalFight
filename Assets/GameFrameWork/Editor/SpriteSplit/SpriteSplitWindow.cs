@@ -418,7 +418,7 @@ namespace GameFrameWork.Editor
         private string m_OutPutPath = string.Empty;
         private string m_OutPutPackTag = string.Empty;
         private bool m_OutPutGenMipmaps = false;
-        private bool m_FoldOut = false;
+        //private bool m_FoldOut = false;
         private bool m_IsUseAuto = false;
         private TextureImporterType m_OutPutType = TextureImporterType.Sprite;
     }

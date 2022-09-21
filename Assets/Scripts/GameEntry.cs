@@ -27,9 +27,8 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnStartGame()
     {
-        DataHelper.levelDatas.GetDatasByAttr("{roleId = 1001}");
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
-        UIMgr.instance.Open<TitlePanel>();
+        UIMgr.instance.Open<RoleSelectPanel>();
     }
 
     protected override void OnExit()

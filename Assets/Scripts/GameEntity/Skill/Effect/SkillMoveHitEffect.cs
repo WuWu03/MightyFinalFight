@@ -15,7 +15,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.SetDrag(m_SkillEffect.AddSelfDrag);
         m_Owner.SetGravityScale(m_SkillEffect.Gravity);
 
-        if (m_SkillEffect.Args == "OnGroundPickUp")
+        if (m_SkillEffect.Args == "HeroAttackEnd")
         {
             m_Owner.onGroundEvent.AddListener(OnGround);
         }
@@ -23,7 +23,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
     private void OnGround()
     {
-        m_Owner.SetDefaultState<HeroPickUp>();
+        m_Owner.SetDefaultState<HeroAttackEnd>();
     }
 
     protected override void OnComplete()

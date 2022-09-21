@@ -8,7 +8,7 @@ using UnityEngine;
 
 public static class SkillEditorHelper
 {
-    public static SkillConfigData CurrConfigData
+    public static SkillConfigData currConfigData
     {
         get
         {
@@ -16,11 +16,25 @@ public static class SkillEditorHelper
             {
                 return null;
             }
+
             return m_SkillConfig.Datas[m_CurrSelectIndex];
         }
     }
 
-    public static int CurrSelectIndex
+    public static List<SkillConfigData> skillDatas
+    {
+        get
+        {
+            if (!HasData())
+            {
+                return null;
+            }
+
+            return m_SkillConfig.Datas;
+        }
+    }
+
+    public static int currSelectIndex
     {
         get
         {
@@ -32,7 +46,7 @@ public static class SkillEditorHelper
         }
     }
 
-    public static string CurrShowName
+    public static string currShowName
     {
         get
         {
@@ -40,7 +54,7 @@ public static class SkillEditorHelper
         }
     }
 
-    public static string[] ShowNames
+    public static string[] showNames
     {
         get
         {
@@ -48,7 +62,7 @@ public static class SkillEditorHelper
         }
     }
 
-    public static GUIStyle SelectButtonOnStyle
+    public static GUIStyle selectButtonOnStyle
     {
         get
         {
@@ -56,7 +70,7 @@ public static class SkillEditorHelper
         }
     }
 
-    public static GUIStyle SelectButtonStyle
+    public static GUIStyle selectButtonStyle
     {
         get
         {

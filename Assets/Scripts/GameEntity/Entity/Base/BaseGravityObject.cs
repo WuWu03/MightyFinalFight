@@ -99,6 +99,7 @@ public class BaseGravityObject : BaseSceneObject
             return;
         }
 
+        m_Rigidbody2D.drag = 0;
         m_OnDropEvent.Invoke();
         m_OnDropEvent.RemoveAllListeners();
         OnDrop();

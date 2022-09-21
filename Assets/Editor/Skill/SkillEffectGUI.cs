@@ -22,9 +22,9 @@ public class SkillEffectGUI : SkillGUI
         base.OnGUI();
         EditorGUILayout.Space(10f);
         m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
-        for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillEffects.Length; i++)
+        for (int i = 0; i < SkillEditorHelper.currConfigData.SkillEffects.Length; i++)
         {
-            SkillConfigData.SkillEffect skillEffect = SkillEditorHelper.CurrConfigData.SkillEffects[i];
+            SkillConfigData.SkillEffect skillEffect = SkillEditorHelper.currConfigData.SkillEffects[i];
             SkillConfigData.SkillEffect tempEffect = m_ListSkillEffect[i];
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
@@ -34,7 +34,7 @@ public class SkillEffectGUI : SkillGUI
                 GUILayout.Label((i + 1).ToString() + ".");
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
-                    SkillEditorHelper.CurrConfigData.SkillEffects = CommonUtil.DeleteElement(SkillEditorHelper.CurrConfigData.SkillEffects, i);
+                    SkillEditorHelper.currConfigData.SkillEffects = CommonUtil.DeleteElement(SkillEditorHelper.currConfigData.SkillEffects, i);
                     m_ListSkillEffect.RemoveAt(i);
                     return;
                 }
@@ -42,7 +42,7 @@ public class SkillEffectGUI : SkillGUI
 
                 skillEffect.EffectorType = (SkillConfigData.SkillEffectorType)EditorGUILayout.EnumPopup("EffectorType", skillEffect.EffectorType);
                 skillEffect.SelectorType = (SkillConfigData.SkillSelectorType)EditorGUILayout.EnumPopup("SelectorType", skillEffect.SelectorType);
-
+                
                 if (skillEffect.EffectorType != SkillConfigData.SkillEffectorType.BulletHitEffect)
                 {
                     skillEffect.Bullets = null;
@@ -65,7 +65,7 @@ public class SkillEffectGUI : SkillGUI
         if (GUILayout.Button("增加技能效果器"))
         {
             m_ListSkillEffect.Add(new SkillConfigData.SkillEffect());
-            SkillEditorHelper.CurrConfigData.SkillEffects = CommonUtil.AddElement(SkillEditorHelper.CurrConfigData.SkillEffects, new SkillConfigData.SkillEffect());
+            SkillEditorHelper.currConfigData.SkillEffects = CommonUtil.AddElement(SkillEditorHelper.currConfigData.SkillEffects, new SkillConfigData.SkillEffect());
             return;
         }
     }
@@ -241,6 +241,15 @@ public class SkillEffectGUI : SkillGUI
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        tempEffect.AddSelfVelocity = EditorGUILayout.Vector2Field("AddSelfVelocity", tempEffect.AddSelfVelocity);
+        if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
+        {
+            skillEffect.AddSelfVelocity = tempEffect.AddSelfVelocity;
+            ShowNotification("更改成功");
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         tempEffect.MoveTarget = EditorGUILayout.Vector2Field("MoveTarget", tempEffect.MoveTarget);
         if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
         {
@@ -254,15 +263,6 @@ public class SkillEffectGUI : SkillGUI
         if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
         {
             skillEffect.ScaleTarget = tempEffect.ScaleTarget;
-            ShowNotification("更改成功");
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        tempEffect.AddSelfVelocity = EditorGUILayout.Vector2Field("AddSelfVelocity", tempEffect.AddSelfVelocity);
-        if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(40)))
-        {
-            skillEffect.AddSelfVelocity = tempEffect.AddSelfVelocity;
             ShowNotification("更改成功");
         }
         EditorGUILayout.EndHorizontal();
@@ -342,9 +342,9 @@ public class SkillEffectGUI : SkillGUI
     private void CloneEffects()
     {
         m_ListSkillEffect.Clear();
-        for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillEffects.Length; i++)
+        for (int i = 0; i < SkillEditorHelper.currConfigData.SkillEffects.Length; i++)
         {
-            m_ListSkillEffect.Add(Clone(SkillEditorHelper.CurrConfigData.SkillEffects[i]));
+            m_ListSkillEffect.Add(Clone(SkillEditorHelper.currConfigData.SkillEffects[i]));
         }
     }
 

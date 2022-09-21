@@ -26,8 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159804156849249023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.068, z: 0}
+  m_LocalPosition: {x: 0.0374, y: 0.1907, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 789908681430574713}
   m_RootOrder: 0
@@ -43,6 +44,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -110,6 +112,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5231157572599755075}
   m_Father: {fileID: 0}
@@ -175,8 +178,8 @@ MonoBehaviour:
     Offest: {x: 0, y: 0.19293566}
     Size: {x: 0.3, y: 0.391849}
   - AnimName: Attack
-    Offest: {x: 0.089247406, y: 0.21905302}
-    Size: {x: 0.47899753, y: 0.45881006}
+    Offest: {x: 0.061913416, y: 0.21905302}
+    Size: {x: 0.42432955, y: 0.45881006}
   - AnimName: JumpUp
     Offest: {x: 0, y: 0.20248598}
     Size: {x: 0.27841341, y: 0.4183129}

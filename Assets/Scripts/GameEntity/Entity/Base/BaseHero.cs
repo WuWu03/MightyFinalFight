@@ -9,6 +9,11 @@ public class BaseHero : BaseRole
     {
         get
         {
+            if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
+            {
+                return false;
+            }
+
             return (base.canMove || IsAnyState(typeof(HeroCatch))) && (!HasCatch() || m_IsCatchControl);
         }
     }
@@ -25,6 +30,11 @@ public class BaseHero : BaseRole
     {
         get
         {
+            if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
+            {
+                return false;
+            }
+
             return base.canAttack || HasCatch();
         }
     }
@@ -220,6 +230,7 @@ public class BaseHero : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
+        Debug.Log("受伤了哈哈哈");
         if (HasCatch())
         {
             ResetCatch(false);
@@ -249,7 +260,7 @@ public class BaseHero : BaseRole
                 hitTime = data.isBoss ? 6 : 3;
             }
 
-            if (hitTime >= (data.isBoss ? 6 : 3))
+            if (hitTime >= (data.isBoss ? 6 : 3) || m_EntityAttribute.health - data.attackValue <= 0)
             {
                 data.attackForce = SkillFactory.GetSmoonForce(data.attackerDir);
                 data.isSwoon = true;
@@ -262,6 +273,7 @@ public class BaseHero : BaseRole
 
         DropWeaponMsg(data.attackerDir);
         base.OnHurtMsg(data);
+        m_HurtTimer = Time.time;
     }
 
     public override void OnDropTragMsg(DropTrapData data)
@@ -555,6 +567,7 @@ public class BaseHero : BaseRole
     private float m_RebirthLightTime = 1f/30f;
     private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
+    private float m_HurtTimer = 0f;
     private bool m_IsDropInGround = false;
     private int m_CatchAttackCount = 0;
     private List<ICanBeHit> m_ListCatchTarget = null;

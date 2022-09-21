@@ -100,9 +100,9 @@ public class SkillConfigData : BaseConfigData
         public Vector2 SelectorOffest;//选择器偏移
         public Vector2 AddTargetForce;//对目标施加力
         public Vector2 AddSelfForce;//对自身施加力
+        public Vector2 AddSelfVelocity;//自身速度
         public Vector2 MoveTarget;//把目标移动
         public Vector2 ScaleTarget;//目标缩放
-        public Vector2 AddSelfVelocity;//自身速度
         public float SelectorAngle;//选择器角度
         public float SelectorRadius;//选择器半径
         public float AddSelfDrag;//自身的空气阻力

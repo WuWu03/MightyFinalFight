@@ -120,7 +120,11 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (string.IsNullOrEmpty(animName))
         {
-            if (string.IsNullOrEmpty(m_CurrAnimName)) return;
+            if (string.IsNullOrEmpty(m_CurrAnimName))
+            {
+                return;
+            }
+
             animName = m_CurrAnimName;
         }
         m_Animator.animation.Stop(animName);
@@ -181,6 +185,8 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void ChangeDefaultState()
     {
+        if (this is BaseHero && m_CurrAnimName == AnimName.Attack4)
+            Debug.Log("回到默认状态");
         m_FsmMachine.ChangeDefaultState();
     }
 

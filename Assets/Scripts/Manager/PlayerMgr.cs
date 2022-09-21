@@ -266,6 +266,12 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return false;
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            StageMgr.instance.StageEnterNext();
+            return false;
+        }
+
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
         bool result = asix.x != 0 || asix.y != 0;
 

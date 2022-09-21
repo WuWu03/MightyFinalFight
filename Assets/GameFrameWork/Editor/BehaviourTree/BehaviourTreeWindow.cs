@@ -27,6 +27,7 @@ namespace GameFrameWork.Editor
         {
             string jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
             File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
+            m_BehaviourTreeWindowConfig = null;
         }
 
         private void OnGUI()
@@ -501,6 +502,10 @@ namespace GameFrameWork.Editor
 
                 string jsonStr = LitJson.JsonMapper.ToJson(config);
                 File.WriteAllText(EditorPathUtil.behaviourTreeConfigDataFullPath, jsonStr);
+
+                jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
+                File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
+
                 ShowNotification(new GUIContent("保存成功"));
             }
         }

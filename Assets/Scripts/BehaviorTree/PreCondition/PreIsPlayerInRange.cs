@@ -26,6 +26,10 @@ public class PreIsPlayerInRange : PreCondition
         float xDistance = Mathf.Abs(playerPos.x - ownerPos.x);
         float yDistance = Mathf.Abs(playerPos.y - ownerPos.y);
 
+        if(yDistance <= 0.05f && xDistance <= m_Range)
+        {
+
+        }
         return yDistance <= 0.05f && xDistance <= m_Range;
     }
 

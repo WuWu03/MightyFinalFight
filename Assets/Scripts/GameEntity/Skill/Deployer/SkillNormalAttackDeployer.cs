@@ -24,11 +24,6 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         attackData.animTime = m_SkillData.AnimTime;
         attackData.canChangeDir = m_SkillData.CanChangeDir;
 
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
-        {
-            attackData.addSelfForce = m_SkillData.SkillEffects[0].AddSelfForce;
-        }
-
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(attackData);

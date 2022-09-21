@@ -36,7 +36,7 @@ public class SkillEditorWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         for (int i = 0; i < m_TabNames.Length; i++)
         {
-            if (GUILayout.Button(m_TabNames[i], i == m_CurrPage ? SkillEditorHelper.SelectButtonOnStyle : SkillEditorHelper.SelectButtonStyle))
+            if (GUILayout.Button(m_TabNames[i], i == m_CurrPage ? SkillEditorHelper.selectButtonOnStyle : SkillEditorHelper.selectButtonStyle))
             {
                 m_CurrPage = i;
                 m_SkillGUIs[m_CurrPage].UpdateData();
@@ -45,11 +45,11 @@ public class SkillEditorWindow : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        int selectIndex = EditorGUILayout.Popup("选择处理项", SkillEditorHelper.CurrSelectIndex, SkillEditorHelper.ShowNames);
+        int selectIndex = EditorGUILayout.Popup("选择处理项", SkillEditorHelper.currSelectIndex, SkillEditorHelper.showNames);
 
-        if (selectIndex != SkillEditorHelper.CurrSelectIndex)
+        if (selectIndex != SkillEditorHelper.currSelectIndex)
         {
-            SkillEditorHelper.CurrSelectIndex = selectIndex;
+            SkillEditorHelper.currSelectIndex = selectIndex;
             m_SkillGUIs[m_CurrPage].UpdateData();
             return;
         }
@@ -71,7 +71,7 @@ public class SkillEditorWindow : EditorWindow
             return;
         }
 
-        if (SkillEditorHelper.CurrConfigData != null)
+        if (SkillEditorHelper.currConfigData != null)
         {
             m_SkillGUIs[m_CurrPage].Draw();
         }

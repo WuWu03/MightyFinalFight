@@ -17,9 +17,9 @@ public class UIAtlasSelector : ScriptableWizard
     SerializedObject mObject;
     SerializedProperty mProperty;
 
-    Vector2 mPos = Vector2.zero;
-    Callback mCallback;
-    float mClickTime = 0f;
+    //Vector2 mPos = Vector2.zero;
+    public Callback mCallback;
+    //float mClickTime = 0f;
 
     static public void ShowSelected()
     {

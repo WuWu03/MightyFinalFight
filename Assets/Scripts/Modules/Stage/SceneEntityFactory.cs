@@ -20,11 +20,11 @@ public static class SceneEntityFactory
         return role;
     }
 
-    public static void CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
+    public static BaseSceneItem CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
     {
         if (data == null)
         {
-            return;
+            return null;
         }
 
         BaseSceneItem sceneItem = null;
@@ -56,7 +56,7 @@ public static class SceneEntityFactory
 
         if (sceneItem == null)
         {
-            return;
+            return null;
         }
 
         SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
@@ -71,6 +71,8 @@ public static class SceneEntityFactory
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
         sceneItem.SetLayer(LayerName.Unit);
+
+        return sceneItem;
     }
 
     public static BaseEnemy CreateEnemy(RoleData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)

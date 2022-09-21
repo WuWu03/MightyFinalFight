@@ -26,10 +26,10 @@ public class StagePanel : BasePanel
 
 	protected override void OnOpen()
 	{
-		int stageId = StageMgr.instance.nextStageId;
+		int stageIndex = StageMgr.instance.stageIndex;
 		int characterId = PlayerMgr.instance.selectRoleId;
 
-		StageConfigData stageConfigData = StaticConfig.StageConfig.GetData(stageId);
+		StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
         RoleSelectData roleSelectData = DataHelper.roleSelectDatas.GetDataById(characterId);
 
 		GetRoundTxt(0).text = stageConfigData.StageIndex.ToString();

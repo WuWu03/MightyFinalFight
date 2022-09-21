@@ -11,15 +11,11 @@ using UnityEngine.SceneManagement;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
-    public int nextStageId
+    public StageConfigData currStageData
     {
         get
         {
-            return m_NextStageId;
-        }
-        set
-        {
-            m_NextStageId = value;
+            return m_CurrStageData;
         }
     }
 
@@ -27,31 +23,7 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         get
         {
-            return m_CurrStageData.StageIndex;
-        }
-    }
-
-    public int stageLevel
-    {
-        get
-        {
-            return m_CurrStageData.Level;
-        }
-    }
-
-    public int width
-    {
-        get
-        {
-            return m_CurrStageData.Width;
-        }
-    }
-
-    public int heigth
-    {
-        get
-        {
-            return m_CurrStageData.Height;
+            return m_StageIndex;
         }
     }
 
@@ -84,21 +56,32 @@ public class StageMgr : BaseMgr<StageMgr>
 
     }
 
-    public void StageEnterNext()
+
+    public void StageEnter(int stageId)
     {
-        StageEnter(m_NextStageId);
+        StageConfigData configData = StaticConfig.StageConfig.GetData(stageId);
+        StageEnter(configData);
     }
 
-    public void StageEnter(int id)
+
+    public void StageEnterNext()
     {
-        if (m_CurrStageData != null && m_CurrStageData.Id == id)
+        StageConfigData configData = StaticConfig.StageConfig.GetDataByIndex(m_StageIndex);
+        StageEnter(configData);
+        m_StageIndex++;
+    }
+
+
+    private void StageEnter(StageConfigData configData)
+    {
+        if (m_CurrStageData != null && m_CurrStageData.Id == configData.Id)
         {
             return;
         }
 
-        m_CurrStageData = StaticConfig.StageConfig.GetData(id);
+        m_CurrStageData = configData;
 
-        PlayerMgr.instance.canContrl = false; 
+        PlayerMgr.instance.canContrl = false;
         CameraMgr.instance.EndFollow();
         SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
 
@@ -106,9 +89,11 @@ public class StageMgr : BaseMgr<StageMgr>
         {
             m_OnStageStartEnterEvent?.Invoke();
             m_OnStageStartEnterEvent = null;
-            SceneEntityMgr.instance.ReleaseSceneBuildings();
+
+            TaskMgr.instance.GiveupTask();
+            SceneEntityMgr.instance.ReleaseAll();
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
-        });  
+        });
     }
 
     public Rect GetMoveArea()
@@ -215,5 +200,5 @@ public class StageMgr : BaseMgr<StageMgr>
     private event GameFrameWorkAction m_OnStageStartEnterEvent = null;
     private event GameFrameWorkAction m_OnStageEndEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
-    private int m_NextStageId = 0;
+    private int m_StageIndex = 0;
 }

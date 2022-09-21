@@ -31,7 +31,7 @@ public class MainPanel : BasePanel
 		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
 		m_Component.levelListGroupView.Update(5);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelData.exp);
-		SetRound(StageMgr.instance.stageIndex);
+		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
 		SetPlayerHP(PlayerMgr.instance.levelData.hpValue, PlayerMgr.instance.levelData.hpValue, PlayerMgr.instance.levelData.hpBarWidth);
 
@@ -60,7 +60,7 @@ public class MainPanel : BasePanel
 
 	private void OnItemUpdate(MainPanelComponent.LevelListItem item)
 	{
-		int stageIndex = StageMgr.instance.stageIndex;
+		int stageIndex = StageMgr.instance.currStageData.StageIndex;
 		int playerLevel = PlayerMgr.instance.level;
 		item.imgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= item.id);
 		item.imgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= item.id);

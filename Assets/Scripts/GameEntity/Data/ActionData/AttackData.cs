@@ -10,7 +10,6 @@ public class AttackData : BaseEventArgs
     public float animSpeed { get; set; }
     public float dir { get; set; }
     public bool canChangeDir { get; set; }
-    public Vector2 addSelfForce { get; set; }
 
     public static AttackData Create()
     {
@@ -25,7 +24,6 @@ public class AttackData : BaseEventArgs
         animSpeed = 0;
         dir = 0;
         canChangeDir = false;
-        addSelfForce = Vector2.zero;
     }
 
     public override GameFrameWorkEventArgs Clone()

@@ -21,7 +21,6 @@ public class DoDefense : Action
         return BehaviorTreeState.Success;
     }
 
-
     public override void Reset()
     {
         base.Reset();

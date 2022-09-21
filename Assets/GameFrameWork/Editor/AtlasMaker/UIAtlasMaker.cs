@@ -859,7 +859,7 @@ public class UIAtlasMaker : EditorWindow
                     replace = true;
 
                     // Create a new prefab for the atlas
-                    Object prefab = (go != null) ? go : PrefabUtility.CreateEmptyPrefab(path);
+                    GameObject prefab = (go != null) ? go : PrefabUtility.SaveAsPrefabAsset(new GameObject(), path);
 
                     // Create a new game object for the atlas
                     string atlasName = path.Replace(".prefab", "");
@@ -867,7 +867,7 @@ public class UIAtlasMaker : EditorWindow
                     go = new GameObject(atlasName);
                     go.AddComponent<UIAtlas>();
                     // Update the prefab
-                    PrefabUtility.ReplacePrefab(go, prefab);
+                    PrefabUtility.SaveAsPrefabAsset(prefab, path);
                     DestroyImmediate(go);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
