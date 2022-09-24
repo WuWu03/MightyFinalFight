@@ -22,10 +22,10 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
         if (hero.isCatch)
         {
-            bool isThrowing = m_SkillManager.IsCurrSkill(m_ThrowAttackID);
-            bool isThrowingComplete = m_SkillManager.IsSkillComplete(m_ThrowAttackID);
-            bool isCatchAttack = m_SkillManager.IsCurrSkill(m_CatchAttackID);
-            bool isCatchAttackComplete = m_SkillManager.IsSkillComplete(m_CatchAttackID);
+            bool isThrowing = IsCurrSkill(m_ThrowAttackID);
+            bool isThrowingComplete = IsSkillComplete(m_ThrowAttackID);
+            bool isCatchAttack = IsCurrSkill(m_CatchAttackID);
+            bool isCatchAttackComplete = IsSkillComplete(m_CatchAttackID);
 
             if (isThrowing && !isThrowingComplete)//正在扔出敌人
             {
@@ -33,7 +33,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CatchAttacTime))//正在捕捉攻击
+            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CATCH_ATTACK_TIME))//正在捕捉攻击
             {
                 return;
             }
@@ -41,7 +41,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             if(m_Owner.isFloat && dir.y < 0)
             {
                 m_CatchAttackTimer = 0;
-                m_SkillManager.DeploySkill(m_JumpAttackID);
+                DeploySkill(m_JumpAttackID);
                 return;
             }
 
@@ -51,14 +51,14 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 m_Owner.SetDir(dir.x);
 
                 hero.OnHitStart()[0].SetThrow(true);
-                m_SkillManager.DeploySkill(m_ThrowAttackID);
+                DeploySkill(m_ThrowAttackID);
                 return;
             }
 
-            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CatchAttacTime)
+            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_TIME)
             {
                 m_CatchAttackTimer = Time.time;
-                m_SkillManager.DeploySkill(m_CatchAttackID);
+                DeploySkill(m_CatchAttackID);
             }
 
             return;
@@ -74,13 +74,13 @@ public class BaseHeroCtrl : BaseRoleCtrl
         }
         else if (hero.weapon != null)
         {
-            bool isWeaponAttack = m_SkillManager.IsCurrSkill(m_WeaponAttackID);
+            bool isWeaponAttack = IsCurrSkill(m_WeaponAttackID);
             if (hero.weapon.entityAttribute.health <= 1)
             {
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {
                     hero.UseWeaponMsg();
-                    m_SkillManager.DeploySkill(m_ThrowWeaponID);
+                    DeploySkill(m_ThrowWeaponID);
                 }
             }
             else
@@ -88,7 +88,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {
                     hero.UseWeaponMsg();
-                    m_SkillManager.DeploySkill(m_WeaponAttackID);
+                    DeploySkill(m_WeaponAttackID);
                 }
             }
 
@@ -98,7 +98,6 @@ public class BaseHeroCtrl : BaseRoleCtrl
         if (!m_Owner.IsAnimation(AnimName.ThrowWeapon) || m_Owner.IsPlayComplete())
         {
             base.NormalAttack(dir);
-
         }
     }
 
@@ -115,9 +114,10 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 continue;
             }
 
-            bool isInRange = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.2f &&
-                             Mathf.Abs(item.pos.x - m_Owner.pos.x) <= item.bound.width / 2;
-            if (isInRange)
+            bool isXNear = Mathf.Abs(item.pos.x - m_Owner.pos.x) <= item.bound.width / 2;
+            bool isYNear = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.2f;
+
+            if (isXNear && isYNear)
             {
                 return item;
             }
@@ -142,5 +142,5 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_JumpAttackID;
     private float m_CatchAttackTimer = 0f;
 
-    private const float CatchAttacTime = 0.3f;
+    private const float CATCH_ATTACK_TIME = 0.3f;
 }

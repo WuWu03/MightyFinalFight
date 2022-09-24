@@ -20,7 +20,7 @@ public class DoSkill : Action
 
     protected override void OnEnter()
     {
-        m_ActionOwner.Skill(m_SkllId);
+        m_ActionOwner.DeploySkill(m_SkllId);
     }
 
     public override BehaviorTreeState Excute()

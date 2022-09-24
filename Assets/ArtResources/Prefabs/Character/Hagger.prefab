@@ -26,8 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4911007044370016020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.051799998, y: 0.1548, z: -0.001}
+  m_LocalPosition: {x: 0, y: 0.19399999, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4911007044937298928}
   m_RootOrder: 1
@@ -43,6 +44,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -107,8 +109,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4911007044377282604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.051799998, y: 0.1548, z: 0}
+  m_LocalPosition: {x: 0, y: 0.19399999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4911007044937298928}
   m_RootOrder: 0
@@ -124,6 +127,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -191,6 +195,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4911007044377282605}
   - {fileID: 4911007044370016021}
@@ -263,8 +268,8 @@ MonoBehaviour:
     Offest: {x: 0.10405594, y: 0.17703027}
     Size: {x: 0.3540423, y: 0.35404217}
   - AnimName: Attack4
-    Offest: {x: 0.017546669, y: 0.20940009}
-    Size: {x: 0.49454287, y: 0.5489398}
+    Offest: {x: 0.088080436, y: 0.21260616}
+    Size: {x: 0.41759694, y: 0.5681763}
   - AnimName: Move
     Offest: {x: 0.012162402, y: 0.16892207}
     Size: {x: 0.24593207, y: 0.3324201}

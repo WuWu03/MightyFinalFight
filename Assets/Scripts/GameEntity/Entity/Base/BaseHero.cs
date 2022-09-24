@@ -230,7 +230,6 @@ public class BaseHero : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
-        Debug.Log("受伤了哈哈哈");
         if (HasCatch())
         {
             ResetCatch(false);

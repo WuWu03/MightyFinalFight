@@ -97,12 +97,8 @@ public abstract class SkillBaseDeployer
 
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
-            if (result)
-            {
-                ResetEffect();
-            }
-
             result = result && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
+
         }
         else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
@@ -111,14 +107,13 @@ public abstract class SkillBaseDeployer
             if (result)
             {
                 OnAnimationEffectComplete();
-                ResetEffect();
             }
         }
-        else if(result)
+        
+        if(result)
         {
             ResetEffect();
         }
-
 
         return result;
     }
@@ -263,9 +258,16 @@ public abstract class SkillBaseDeployer
     private void ResetEffect()
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
+        {
             m_SkillEffects[i].Reset();
+        }
+
         for (int i = 0; i < m_SkillSelectors.Length; i++)
+        {
             m_SkillSelectors[i].Reset();
+        }
+
+        m_Owner.ResetRigidbody(false);
     }
 
     protected virtual void OnAnimationEffectComplete() { }

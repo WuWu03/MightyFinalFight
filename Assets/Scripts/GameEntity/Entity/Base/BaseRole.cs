@@ -211,7 +211,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnUpdate();
 
         if (m_CurrCtrl != null)
+        {
             m_CurrCtrl.Update();
+        }
 
         CheckAutoMove();
     }
@@ -515,7 +517,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
- 
         m_IsDropGround = true;
         m_DropGourndTime = Time.time;
         onGroundEvent.Invoke();

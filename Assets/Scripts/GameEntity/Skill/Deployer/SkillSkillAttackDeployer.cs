@@ -14,6 +14,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
         if (m_SkillData.TriggerType != SkillTriggerType.Animtion)
         {
+            m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.OnSkillMsg(m_SkillData);
             base.DeploySkill();
             return;
@@ -33,7 +34,9 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
             m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
 
             if (!m_SkillData.IsInEffectPlaySound)
+            {
                 m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
+            }
         }
 
         return isComplete;

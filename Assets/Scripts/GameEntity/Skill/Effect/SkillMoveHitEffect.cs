@@ -11,24 +11,15 @@ public class SkillMoveHitEffect : SkillBaseEffect
     {
         m_HasEffect = true;
         m_StartPos = m_Owner.transform.localPosition;
-        m_Owner.SetVelocity(m_SkillEffect.AddSelfVelocity.x * m_Owner.dir, m_SkillEffect.AddSelfVelocity.y);
-        m_Owner.SetDrag(m_SkillEffect.AddSelfDrag);
-        m_Owner.SetGravityScale(m_SkillEffect.Gravity);
 
         if (m_SkillEffect.Args == "HeroAttackEnd")
         {
-            m_Owner.onGroundEvent.AddListener(OnGround);
+            m_Owner.SetDefaultState<HeroAttackEnd>();
         }
     }
 
-    private void OnGround()
+    protected override void OnReset()
     {
-        m_Owner.SetDefaultState<HeroAttackEnd>();
-    }
-
-    protected override void OnComplete()
-    {
-        m_Owner.ResetRigidbody(false);
         m_HasEffect = false;
     }
 

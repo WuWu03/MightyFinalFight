@@ -10,6 +10,12 @@ public class SkillFactory
         SkillBaseDeployer ret = null;
         SkillConfigData data = StaticConfig.SkillConfig.GetData(skillId);
 
+        if (data == null)
+        {
+            GameFrameworkLog.LogError("skill data is invalid skillId:", skillId);
+            return null;
+        }
+
         switch (data.DeployerType)
         {
             case SkillDeployerType.NormalAttack:

@@ -1392,7 +1392,7 @@ MonoBehaviour:
     AnimSpeed: 1
     AnimTime: 1
     EXP: 4
-    IsInEffectPlaySound: 0
+    IsInEffectPlaySound: 1
     CanChangeDir: 0
     CanMove: 0
     SkillPrevConditions:
@@ -1437,7 +1437,7 @@ MonoBehaviour:
       SelectorRadius: 10
       AddSelfDrag: 20
       MoveDistance: -1
-      Gravity: 1
+      Gravity: 0
       DamageMulity: 0
       IsSmoon: 1
       IsShakeCamera: 0
@@ -1445,7 +1445,7 @@ MonoBehaviour:
       IsOnGroundEffect: 0
       CanBeDefense: 1
       HitOne: 0
-      Args: OnGroundPickUp
+      Args: HeroAttackEnd
   - Id: 1002012
     Level: 0
     Name: GuyAttack_Weapon
@@ -1743,7 +1743,7 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0
-      CanBeDefense: 1
+      CanBeDefense: 0
       HitOne: 0
       Args: 
     - EffectorType: 1
@@ -1768,7 +1768,7 @@ MonoBehaviour:
       IsOnGroundEffect: 0
       CanBeDefense: 0
       HitOne: 0
-      Args: 
+      Args: HeroAttackEnd
   - Id: 1003005
     Level: 0
     Name: HaggerJumpAttack1
@@ -1973,7 +1973,7 @@ MonoBehaviour:
       SelectorRadius: 10
       AddSelfDrag: 10
       MoveDistance: -1
-      Gravity: 1
+      Gravity: 0
       DamageMulity: 0
       IsSmoon: 0
       IsShakeCamera: 0
@@ -2285,7 +2285,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 0.4
+    AnimSpeed: 0.2
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
@@ -2331,7 +2331,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 1.5
+    AnimSpeed: 0.6
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0

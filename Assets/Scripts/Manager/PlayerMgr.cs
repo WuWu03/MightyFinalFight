@@ -120,12 +120,12 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_EXP = 0;
 
         m_RoleData = DataHelper.roleDatas.GetDataById(m_SelectRoleId);
-        m_LevelData = DataHelper.levelDatas.GetSingDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);// StaticConfig.LevelConfig.GetData(m_SelectRoleId).Levels[m_Level - 1];
+        m_LevelData = DataHelper.levelDatas.GetSingDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
-        m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_RoleData.assetName));
         m_Player.SetLayer(LayerName.Unit);
+        m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
@@ -266,9 +266,15 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return false;
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             StageMgr.instance.StageEnterNext();
+            return false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1 });
             return false;
         }
 
@@ -285,7 +291,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (InputMgr.instance.GetKeyDown(KeyType.B, true) || InputMgr.instance.GetKeyDown(KeyType.Y))
         {
-            m_CurrCtrl.Jump(asix, m_RoleData.id != 2001);
+            m_CurrCtrl.Jump(asix, m_RoleData.id != 1002);
             result = true;
         }
 
@@ -301,7 +307,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void OnComboKeyEvent(int id, bool isTrigger)
     {
-        m_CurrCtrl.Skill(id);
+        m_CurrCtrl.DeploySkill(id);
     }
 
     private BaseHeroCtrl m_CurrCtrl = null;

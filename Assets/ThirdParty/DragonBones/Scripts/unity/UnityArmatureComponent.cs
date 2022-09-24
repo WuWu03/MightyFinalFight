@@ -143,7 +143,7 @@ namespace DragonBones
                     }
                     catch (System.Exception e)
                     {
-
+                        Debug.LogException(e);
                     }
                 }
             }

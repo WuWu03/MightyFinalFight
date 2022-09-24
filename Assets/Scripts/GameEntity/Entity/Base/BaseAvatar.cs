@@ -185,8 +185,6 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void ChangeDefaultState()
     {
-        if (this is BaseHero && m_CurrAnimName == AnimName.Attack4)
-            Debug.Log("回到默认状态");
         m_FsmMachine.ChangeDefaultState();
     }
 

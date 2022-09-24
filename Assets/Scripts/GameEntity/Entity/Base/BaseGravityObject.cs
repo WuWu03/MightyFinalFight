@@ -34,7 +34,7 @@ public class BaseGravityObject : BaseSceneObject
         }
     }
 
-    public Rigidbody2D rigidbody2D
+    public new Rigidbody2D rigidbody2D
     {
         get
         {

@@ -13,6 +13,11 @@ public class SkillNearHitEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector skillSelector)
     {
+        if (m_SkillEffect.Args == "HeroAttackEnd")
+        {
+            m_Owner.SetDefaultState<HeroAttackEnd>();
+        }
+
         bool hurtTarget = false;
         List<ICanBeHit> targets = m_Owner.OnHitStart();
 

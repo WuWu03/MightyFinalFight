@@ -16,11 +16,6 @@ public class BaseRoleCtrl : BaseCtrl
     }
 
 
-    protected override void OnInit()
-    {
-        base.OnInit();
-    }
-
     public virtual void SetData(BaseRoleSkillData data)
     {
         m_Data = data;
@@ -30,14 +25,6 @@ public class BaseRoleCtrl : BaseCtrl
         {
             Start();
         }
-    }
-
-    protected override void OnRelease()
-    {
-        ReferencePool.Release(m_Data);
-        m_SkillManager.Release();
-        m_SkillManager = null;
-        base.OnRelease();
     }
 
     public void Move(Vector2 dir, bool canChangeDir = true)
@@ -79,7 +66,7 @@ public class BaseRoleCtrl : BaseCtrl
         m_AttackSuccess = success;
     }
 
-    public void Skill(int skillID)
+    public void DeploySkill(int skillID)
     {
         if (!m_Owner.canSkill)
         {
@@ -92,6 +79,7 @@ public class BaseRoleCtrl : BaseCtrl
         }
 
         ExitSkill();
+
         m_CurrSkillID = skillID;
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
@@ -183,24 +171,19 @@ public class BaseRoleCtrl : BaseCtrl
         }
     }
 
+    protected override void OnRelease()
+    {
+        ReferencePool.Release(m_Data);
+        m_SkillManager.Release();
+        m_SkillManager = null;
+        base.OnRelease();
+    }
+
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if (m_Data.attackWait == null || m_Data.attackWait.Length < 1)
+        if(!IsCanNormalAttack())
         {
             return;
-        }
-
-        if (m_AttackTimer > 0 && m_Data.attackNextTime != null && m_Data.attackNextTime.Length > 0)
-        {
-            if(m_AttackIndex >= m_Data.attackNextTime.Length)
-            {
-                return;
-            }
-
-            if (Time.time - m_AttackTimer < m_Data.attackNextTime[m_AttackIndex])
-            {
-                return;
-            }
         }
 
         if(m_AttackSuccess)
@@ -218,18 +201,45 @@ public class BaseRoleCtrl : BaseCtrl
         m_AttackTimer = Time.time;
         m_CurrSkillID = m_Data.attackIds[m_AttackIndex];
         m_SkillManager.DeploySkill(m_CurrSkillID);
-
-        if (m_CurrSkillID == 1003004)
-        {
-            m_Owner.SetDefaultState<HeroAttackEnd>();
-        }
     }
 
     protected virtual void JumpAttack(Vector2 dir)
     {
         m_AttackSuccess = false;
-        m_CurrSkillID = (dir.y < 0 && m_Data.jumpAttackIds.Length > 1) ? m_Data.jumpAttackIds[1] : m_Data.jumpAttackIds[0];
+
+        if(dir.y < 0 && m_Data.jumpAttackIds.Length > 1)
+        {
+            m_CurrSkillID = m_Data.jumpAttackIds[1];
+        }
+        else
+        {
+            m_CurrSkillID = m_Data.jumpAttackIds[0];
+        }
+
         m_SkillManager.DeploySkill(m_CurrSkillID);
+    }
+
+    protected virtual bool IsCanNormalAttack()
+    {
+        if (m_Data.attackWait == null || m_Data.attackWait.Length < 1)
+        {
+            return false;
+        }
+
+        if (m_AttackTimer > 0 && m_Data.attackNextTime != null && m_Data.attackNextTime.Length > 0)
+        {
+            if (m_AttackIndex >= m_Data.attackNextTime.Length)
+            {
+                return false;
+            }
+
+            if (Time.time - m_AttackTimer < m_Data.attackNextTime[m_AttackIndex])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private int m_CurrSkillID = 0;
@@ -237,6 +247,5 @@ public class BaseRoleCtrl : BaseCtrl
     private bool m_AttackSuccess = false;
     private float m_AttackTimer = 0;
     private BaseRoleSkillData m_Data = null;
-
-    protected SkillManager m_SkillManager = null;
+    private SkillManager m_SkillManager = null;
 }
