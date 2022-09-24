@@ -2007,10 +2007,10 @@ MonoBehaviour:
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 1
+      ForceType: 2
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
-      AddTargetForce: {x: 0, y: 0}
+      AddTargetForce: {x: 40, y: 150}
       AddSelfForce: {x: 0, y: 0}
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}

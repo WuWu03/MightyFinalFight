@@ -21,6 +21,7 @@ public class RoleDead : BaseFsmState
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4, 1);
         m_Owner.SetPos2(m_Owner.pos);
+        m_Owner.SetThrow(false);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

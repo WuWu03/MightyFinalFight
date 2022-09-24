@@ -157,7 +157,8 @@ public class BaseEnemy : BaseRole
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         base.OnTriggerEnter2D(collision);
-        if (collision.gameObject.Equals(gameObject))
+
+        if (isBeCatch || collision.gameObject.Equals(gameObject))
         {
             return;
         }

@@ -433,6 +433,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public virtual void SetCatch(bool value)
     {
         m_IsBeCatch = value;
+
         if (value && m_CurrCtrl != null)
         {
             m_CurrCtrl.ExitSkill();
@@ -524,6 +525,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         onGroundEvent.Invoke();
         onGroundEvent.RemoveAllListeners();
         OnGround();
+
         m_IsJumpAttack = false;
 
         if (!m_IsAddGroundForce)

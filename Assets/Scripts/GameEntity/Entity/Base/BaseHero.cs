@@ -401,7 +401,11 @@ public class BaseHero : BaseRole
         if (m_ListCatchTarget.Count < 1)
         {
             bool isCheck = false;
-            if (IsAnyState(typeof(RoleIdle))) isCheck = m_IsDropInGround;
+            if (IsAnyState(typeof(RoleIdle)))
+            {
+                isCheck = m_IsDropInGround;
+            }
+
             isCheck = isCheck || IsAnyState(typeof(RoleMove));
             m_IsDropInGround = false;
 
@@ -452,7 +456,9 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if ((Time.time - m_CatchStamp >= m_CatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsPlayComplete()))
+        bool isOutCatchTime = Time.time - m_CatchStamp >= m_CatchTime;
+
+        if ((isOutCatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsPlayComplete()))
         {
             ResetCatch();
             return;
