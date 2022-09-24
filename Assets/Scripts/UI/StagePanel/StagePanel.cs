@@ -53,7 +53,7 @@ public class StagePanel : BasePanel
 		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfigData.animSpeed;
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfigData.animName, 1);
 
-		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfigData.soundName);
+		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfigData.soundName); 
 		Timer.Register(roleSelectConfigData.showTime, OnTimer);
     }
 

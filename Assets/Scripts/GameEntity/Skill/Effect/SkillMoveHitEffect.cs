@@ -18,6 +18,12 @@ public class SkillMoveHitEffect : SkillBaseEffect
         }
     }
 
+    protected override void OnComplete()
+    {
+        base.OnComplete();
+        m_Owner.rigidbody2D.velocity = Vector2.zero;
+    }
+
     protected override void OnReset()
     {
         m_HasEffect = false;

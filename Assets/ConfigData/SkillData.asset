@@ -1994,7 +1994,7 @@ MonoBehaviour:
     Key:
       Keys: 0500000006000000
       AddTrigger: 1
-    AnimSpeed: 0.4
+    AnimSpeed: 0.5
     AnimTime: -1
     EXP: 4
     IsInEffectPlaySound: 0

@@ -223,7 +223,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnLateUpdate();
 
         if (m_CurrCtrl != null)
+        {
             m_CurrCtrl.LateUpdate();
+        }
     }
 
     public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)

@@ -92,6 +92,7 @@ public class BaseEnemy : BaseRole
     public override void SetCatch(bool value)
     {
         base.SetCatch(value);
+
         if(value)
         {
             ChangeState<RoleIdle>();
