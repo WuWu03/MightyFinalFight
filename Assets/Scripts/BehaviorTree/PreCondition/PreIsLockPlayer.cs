@@ -11,7 +11,11 @@ public class PreIsLockPlayer : PreCondition
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
-            if (m.Success) m_Distance = float.Parse(m.Groups[2].Value);
+
+            if (m.Success)
+            {
+                m_Distance = float.Parse(m.Groups[2].Value);
+            }
         }
 
         m_Owner = base.m_Owner as BaseEnemyCtrl;

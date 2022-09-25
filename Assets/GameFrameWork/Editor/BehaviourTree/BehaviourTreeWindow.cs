@@ -25,8 +25,6 @@ namespace GameFrameWork.Editor
 
         private void OnDisable()
         {
-            string jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
-            File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
             m_BehaviourTreeWindowConfig = null;
         }
 
@@ -89,7 +87,9 @@ namespace GameFrameWork.Editor
                 EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y, rect.width + 25, 1), Color.black);
 
                 if (index > 0)
+                {
                     EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y + rect.height, rect.width + 25, 1), Color.black);
+                }
             };
 
             m_LeftList.onSelectCallback = (ReorderableList list) => 
@@ -193,8 +193,10 @@ namespace GameFrameWork.Editor
 
         private void RightViewGUI(UnityEngine.Event e)
         {
-            if (m_BehaviourTreeWindowConfig.dataList == null) return;
-            if (m_BehaviourTreeWindowConfig.dataList.Count < 1) return;
+            if (m_BehaviourTreeWindowConfig.dataList == null || m_BehaviourTreeWindowConfig.dataList.Count < 1)
+            {
+                return;
+            }
 
             PopMenu(e);
             MouseMove(e);
@@ -207,14 +209,14 @@ namespace GameFrameWork.Editor
                 m_RightWindowNode.OnGUI(e);
             }
 
-            List<BehaviourTreeWindowNode> list = null;
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
                     list[i].OnGUI(e);
                 }
             }
+
             EndWindows();
 
             if(m_IsDrawTransition)
@@ -233,9 +235,7 @@ namespace GameFrameWork.Editor
                 {
                     m_RightWindowNode.MouseMove(e.mousePosition - m_MouseDownPos);
 
-                    List<BehaviourTreeWindowNode> list = null;
-
-                    if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+                    if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
                     {
                         for (int i = 0; i < list.Count; i++)
                         {
@@ -259,7 +259,16 @@ namespace GameFrameWork.Editor
             {
                 if (m_RightWindowNode != null && e.alt)
                 {
-                    m_RightWindowNode.MouseScroll(e.delta);
+                    float scale = e.delta.y * 0.005f;
+
+                    if (e.delta.y > 0 && m_WindowScale - scale <= 1)
+                    {
+                        m_RightWindowNode.ResetScale();
+                        return;
+                    }
+
+                    m_WindowScale -= scale;
+                    m_RightWindowNode.MouseScroll(1 - scale);
                 }
             }
         }
@@ -276,6 +285,7 @@ namespace GameFrameWork.Editor
                 if (m_IsDrawTransition)
                 {
                     BehaviourTreeWindowNode node = GetFreeWindowNode(e.mousePosition);
+
                     if (node == null)
                     {
                         node = GetWindowNode(m_RightWindowNode, e.mousePosition);
@@ -303,6 +313,7 @@ namespace GameFrameWork.Editor
 
                     m_CurrWindowNode = GetFreeWindowNode(e.mousePosition);
                     m_CurrMousePosition = e.mousePosition;
+
                     if (m_CurrWindowNode != null)
                     {
                         ShowRightMenu(true);
@@ -337,7 +348,10 @@ namespace GameFrameWork.Editor
                 else
                 {
                     if (m_CurrWindowNode.parent == null && !m_CurrWindowNode.isParent)
+                    {
                         menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
+                    }
+
                     menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.parent == null ? 4 : 5);
                 }
             }
@@ -374,9 +388,7 @@ namespace GameFrameWork.Editor
 
         private void AddFreeWindowNode()
         {
-            List<BehaviourTreeWindowNode> list = null;
-
-            if (!m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            if (!m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 list = new List<BehaviourTreeWindowNode>();
                 m_DicFreeWindowNode.Add(m_CurrSelect, list);
@@ -391,9 +403,7 @@ namespace GameFrameWork.Editor
 
         private void DeleteFreeWindowNode()
         {
-            List<BehaviourTreeWindowNode> list = null;
-
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 list.Remove(m_CurrWindowNode);
                 m_CurrWindowNode = null;
@@ -443,6 +453,7 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < node.children.Count; i++)
             {
                 BehaviourTreeWindowNode ret = GetWindowNode(node.children[i], mousePosition);
+
                 if (ret != null)
                 {
                     return ret;
@@ -454,9 +465,7 @@ namespace GameFrameWork.Editor
 
         private BehaviourTreeWindowNode GetFreeWindowNode(Vector2 mousePosition)
         {
-            List<BehaviourTreeWindowNode> list = null;
-
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out list))
+            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
@@ -497,7 +506,6 @@ namespace GameFrameWork.Editor
                 {
                     config.datas[i].id = m_BehaviourTreeWindowConfig.dataList[i].id;
                     ExportConfig(config.datas[i], m_BehaviourTreeWindowConfig.dataList[i]);
-
                 }
 
                 string jsonStr = LitJson.JsonMapper.ToJson(config);
@@ -553,6 +561,7 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private float m_WindowScale = 1;
         private bool m_IsDrawTransition = false;
         private Vector2 m_CurrMousePosition = Vector2.zero;
         private BehaviourTreeWindowNode m_RightWindowNode = null;

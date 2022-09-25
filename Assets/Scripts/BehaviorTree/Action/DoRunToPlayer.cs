@@ -30,8 +30,8 @@ public class DoRunToPlayer : Action
             m_Owner.OppositePlayer();
             return BehaviorTreeState.Success;
         }
-    
-        m_IsArravied = Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
+
+        m_IsArravied = Vector2.Distance(m_TargetPos, m_Owner.owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
 
         if (!m_IsArravied)
         {

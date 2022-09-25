@@ -383,10 +383,10 @@ MonoBehaviour:
       AddSelfVelocity: {x: 1, y: 5}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 15
-      SelectorRadius: 10
+      SelectorAngle: 20
+      SelectorRadius: 5
       AddSelfDrag: 5
-      MoveDistance: 1
+      MoveDistance: 0
       Gravity: 1
       DamageMulity: 0
       IsSmoon: 1
@@ -2494,7 +2494,7 @@ MonoBehaviour:
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 1.5
-      Gravity: 1
+      Gravity: 0
       DamageMulity: 1.5
       IsSmoon: 1
       IsShakeCamera: 0
@@ -2515,7 +2515,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 0.5
+    AnimSpeed: 0.6
     AnimTime: 3
     EXP: 0
     IsInEffectPlaySound: 0
@@ -2536,8 +2536,8 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 25
-      SelectorRadius: 10
+      SelectorAngle: 40
+      SelectorRadius: 20
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 1

@@ -51,8 +51,6 @@ namespace GameFrameWork.Editor
         
         public BehaviourTreeWindowNode(BehaviourTreeWindowData data,bool isParent,BehaviourTreeWindowNode parent = null)
         {
-            m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
-
             InitCompositesName();
             InitPreConditionName();
             UpdateData(data, isParent, parent);
@@ -100,6 +98,7 @@ namespace GameFrameWork.Editor
             {
                 m_Data.preConditions.Add(new BehaviourTreeWindowPreConditon());
                 m_WindowRect.height += m_Data.preConditions.Count > 1 ? 52 : 0;
+                m_Data.windowRect.height = m_WindowRect.height;
                 list.list = m_Data.preConditions;
             };
 
@@ -107,6 +106,7 @@ namespace GameFrameWork.Editor
             {
                 m_Data.preConditions.RemoveAt(list.index);
                 m_WindowRect.height -= m_Data.preConditions.Count > 0 ? 52 : 0;
+                m_Data.windowRect.height = m_WindowRect.height;
                 list.list = m_Data.preConditions;
             };
 
@@ -134,6 +134,7 @@ namespace GameFrameWork.Editor
             m_Data = data;
             m_Parent = parent;
             m_IsParent = isParent;
+            m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
 
             if (m_Data != null)
             {
@@ -225,6 +226,8 @@ namespace GameFrameWork.Editor
         public void MouseMove(Vector2 delta)
         {
             m_WindowRect.position += delta;
+            m_Data.windowRect.x = m_WindowRect.position.x;
+            m_Data.windowRect.y = m_WindowRect.position.y;
 
             for (int i = 0; i < m_Children.Count; i++)
             {
@@ -232,16 +235,28 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public void MouseScroll(Vector2 delta)
+        public void MouseScroll(float scale)
         {
-            //m_WindowRect.width += delta.y;
-            //m_WindowRect.height += delta.y;
-            //m_WindowRect.position += Vector2.one * delta.y * 2;
+            m_WindowRect.width *= scale;
+            m_WindowRect.height *= scale;
+            m_WindowRect.position *= scale;
+            m_Data.windowRect.x = m_WindowRect.position.x;
+            m_Data.windowRect.y = m_WindowRect.position.y;
 
-            //for (int i = 0; i < m_Children.Count; i++)
-            //{
-            //    m_Children[i].MouseScroll(delta);
-            //}
+            for (int i = 0; i < m_Children.Count; i++)
+            {
+                m_Children[i].MouseScroll(scale);
+            }
+        }
+
+        public void ResetScale()
+        {
+            m_WindowRect = new Rect(m_Data.windowRect.x, m_Data.windowRect.y, m_Data.windowRect.width, m_Data.windowRect.height);
+
+            for (int i = 0; i < m_Children.Count; i++)
+            {
+                m_Children[i].ResetScale();
+            }
         }
 
         public void ChangeName()
@@ -296,7 +311,11 @@ namespace GameFrameWork.Editor
 
         private static void InitCompositesName()
         {
-            if (m_CompositesNames != null) return;
+            if (m_CompositesNames != null)
+            {
+                return;
+            }
+
             m_CompositesNames = GetAssembly("GameFrameWork.BehaviourTree.Composites", "Action");
         }
 

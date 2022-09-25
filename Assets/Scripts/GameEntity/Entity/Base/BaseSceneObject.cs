@@ -380,6 +380,11 @@ public class BaseSceneObject : BaseEntity
             return;
         }
 
+        if (m_ListTargets.Contains(collision.gameObject))
+        {
+            return;
+        }
+
         BaseSceneObject bso = collision.gameObject.GetComponent<BaseSceneObject>();
 
         if (bso == null || bso.objectType == ObjectType.CantBreakItem || bso.objectType == m_ObjectType)
@@ -387,13 +392,13 @@ public class BaseSceneObject : BaseEntity
             return;
         }
 
-        if (!m_ListTargets.Contains(collision.gameObject))
-        {
-            m_ListTargets.Add(collision.gameObject);
-        }
+        m_ListTargets.Add(collision.gameObject);
     }
 
-    protected virtual void OnTriggerStay2D(Collider2D collision) { }
+    protected virtual void OnTriggerStay2D(Collider2D collision) 
+    {
+        OnTriggerEnter2D(collision);
+    }
 
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
