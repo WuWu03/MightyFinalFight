@@ -9,9 +9,9 @@ namespace GameFrameWork.Editor
 {
 	public static class EditorUtil
 	{
-		public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
-																							  where P : BaseConfigData
-		{
+		public static void CreateConfigData<T,P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
+                                                                                             where P : BaseConfigData
+        {
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
 
@@ -108,7 +108,11 @@ namespace GameFrameWork.Editor
 				BeginContents();
 				int size = sp.intValue;
 				int newSize = EditorGUILayout.IntField("Size", size);
-				if (newSize != size) obj.FindProperty(property + ".Array.size").intValue = newSize;
+
+				if (newSize != size)
+				{
+					obj.FindProperty(property + ".Array.size").intValue = newSize;
+				}
 
 				EditorGUI.indentLevel = 1;
 

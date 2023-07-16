@@ -1,11 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using GameFrameWork.Utilities;
-using System;
 using System.IO;
-using GameFrameWork.Serialize;
+using UnityEditor;
+using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
@@ -22,12 +19,49 @@ namespace GameFrameWork.Editor
 
         private void OnDisable()
         {
-            SaveConfig();
+            
+            //SaveConfig();
         }
 
         private void OnDestroy()
         {
-            SaveConfig();
+            if (IsConfigChanged())
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("警告", "配置未保存，是否保存？", "保存", "取消"))
+                {
+                    SaveConfig();
+                }
+            }
+        }
+
+        private bool IsConfigChanged()
+        {
+            if(m_ListData == null)
+            {
+                return false;
+            }
+
+            if(m_ListData.Count != m_AssetBundleConfig.Datas.Count)
+            {
+                return true;
+            }
+
+            Func<AssetBundleData, AssetBundleData, bool> equals = (a, b) =>
+            a.BundleType == b.BundleType &&
+            string.Equals(a.BundleName, b.BundleName) &&
+            string.Equals(a.BundleExtend, b.BundleExtend) &&
+            string.Equals(a.Pattern, b.Pattern) &&
+            string.Equals(a.AssetPath, b.AssetPath);
+
+            for (int i = 0; i < m_ListData.Count; i++)
+            {
+                if (!equals(m_ListData[i], m_AssetBundleConfig.Datas[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void OnGUI()
@@ -45,7 +79,10 @@ namespace GameFrameWork.Editor
 
         private void InitConfig()
         {
-            if (m_AssetBundleConfig != null) return;
+            if (m_AssetBundleConfig != null)
+            {
+                return;
+            }
 
             if (!Directory.Exists(EditorPathUtil.assetBundleConfigFullPath))
             {
@@ -58,18 +95,13 @@ namespace GameFrameWork.Editor
             }
 
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+
             for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
             {
-                AssetBundleData data = new AssetBundleData()
-                {
-                    BundleType = m_AssetBundleConfig.Datas[i].BundleType,
-                    BundleName = m_AssetBundleConfig.Datas[i].BundleName,
-                    BundleExtend = m_AssetBundleConfig.Datas[i].BundleExtend,
-                    Pattern = m_AssetBundleConfig.Datas[i].Pattern,
-                    AssetPath = m_AssetBundleConfig.Datas[i].AssetPath,
-                    AssetBundlePath = m_AssetBundleConfig.Datas[i].AssetBundlePath,
-                };
+                AssetBundleData data = m_AssetBundleConfig.Datas[i].Clone();
+
                 m_ListData.Add(data);
+
                 for (int j = 0; j < m_AssetBundleConfig.ListPattern.Count; j++)
                 {
                     if(data.Pattern.Equals(m_AssetBundleConfig.ListPattern[j]))
@@ -86,6 +118,7 @@ namespace GameFrameWork.Editor
                     }
                 }
             }
+
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
         }
 
@@ -120,8 +153,15 @@ namespace GameFrameWork.Editor
     
         private void MainGUI()
         {
-            if (m_AssetBundleConfig.ListExtendName == null) m_AssetBundleConfig.ListExtendName = new List<string>();
-            if (m_AssetBundleConfig.ListPattern == null) m_AssetBundleConfig.ListPattern = new List<string>();
+            if (m_AssetBundleConfig.ListExtendName == null)
+            {
+                m_AssetBundleConfig.ListExtendName = new List<string>();
+            }
+
+            if (m_AssetBundleConfig.ListPattern == null)
+            {
+                m_AssetBundleConfig.ListPattern = new List<string>();
+            }
 
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
             EditorUtil.GUIBoxScope(() =>
@@ -149,6 +189,7 @@ namespace GameFrameWork.Editor
                 }
                 GUILayout.EndVertical();
             });
+
             GUI.enabled = true;
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
@@ -156,9 +197,14 @@ namespace GameFrameWork.Editor
             int index = 0;
             for (int i = 0; i < m_ListData.Count; i++)
             {
-                if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i]) continue;
+                if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i])
+                {
+                    continue;
+                }
+
                 index++;
                 m_ListData[i].Id = index;
+
                 EditorUtil.GUIBoxScope(() => 
                 {
                     GUILayout.BeginVertical();
@@ -180,16 +226,21 @@ namespace GameFrameWork.Editor
                     GUILayout.EndHorizontal();
 
                     m_ListData[i].BundleType = (AssetBundleData.AssetType)EditorGUILayout.EnumPopup("包类型：", m_ListData[i].BundleType);
-
                     m_ListData[i].AssetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].AssetPath);
+
                     if (!string.IsNullOrEmpty(m_ListData[i].AssetPath) && !m_ListData[i].AssetPath.EndsWith("/"))
+                    {
                         m_ListData[i].AssetPath += "/";
+                    }
 
                     if (m_ListData[i].BundleType == AssetBundleData.AssetType.MapSingle)
                     {
                         m_ListData[i].AssetBundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].AssetBundlePath);
+
                         if (!string.IsNullOrEmpty(m_ListData[i].AssetBundlePath) && !m_ListData[i].AssetBundlePath.EndsWith("/"))
+                        {
                             m_ListData[i].AssetBundlePath += "/";
+                        }
                     }
                     else
                     {
@@ -209,6 +260,7 @@ namespace GameFrameWork.Editor
                     }
 
                     GUI.enabled = true;
+
                     if (GUILayout.Button("选中该资源/路径"))
                     {
                         string assetPath = m_ListData[i].AssetPath.Substring(0, m_ListData[i].AssetPath.LastIndexOf("/"));

@@ -290,7 +290,10 @@ namespace GameFrameWork.Sound
 
         private void CheckSound()
         {
-            if (m_PlayingList.Count < 1) return;
+            if (m_PlayingList.Count < 1)
+            {
+                return;
+            }
 
             for (int i = m_PlayingList.Count - 1; i >= 0; i--)
             {

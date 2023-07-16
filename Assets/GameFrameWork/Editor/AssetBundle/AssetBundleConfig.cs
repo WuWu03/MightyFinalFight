@@ -46,5 +46,18 @@ namespace GameFrameWork.Editor
             AssetBundleData data = obj as AssetBundleData;
             return string.Compare(this.AssetPath, data.AssetPath);
         }
+
+        public AssetBundleData Clone()
+        {
+            AssetBundleData data = new AssetBundleData();
+            data.BundleType = this.BundleType;
+            data.BundleName = this.BundleName;
+            data.BundleExtend = this.BundleExtend;
+            data.Pattern = this.Pattern;
+            data.AssetPath = this.AssetPath;
+            data.AssetBundlePath = this.AssetBundlePath;
+
+            return data;
+        }
     }
 }

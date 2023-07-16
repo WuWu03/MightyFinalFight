@@ -65,13 +65,21 @@ namespace GameFrameWork.Editor
             {
                 if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)
                 {
-                    bool result = AddBuildMapSingle(config.Datas[i].Pattern, config.Datas[i].AssetPath, config.Datas[i].AssetBundlePath, config.Datas[i].BundleExtend);
-                    if (!result) return false;
+                    bool result = AddBuildMapSingle(config.Datas[i].Pattern, config.Datas[i].AssetPath, config.Datas[i].AssetBundlePath, config.Datas[i].BundleExtend, i);
+
+                    if (!result)
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    bool result =  AddBuildMap(config.Datas[i].BundleName + config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath);
-                    if (!result) return false;
+                    bool result = AddBuildMap(config.Datas[i].BundleName + config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath, i);
+
+                    if (!result)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -80,11 +88,11 @@ namespace GameFrameWork.Editor
             //AddBuildMapSingle("*.prefab", "Assets/AssetsLibrary/UI/Prefabs", "UI/Prefabs/");
         }
 
-        private static bool AddBuildMap(string bundleName, string pattern, string path)
+        private static bool AddBuildMap(string bundleName, string pattern, string path,int index)
         {
             if (!Directory.Exists(path))
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
                 return false;
             }
 
@@ -92,7 +100,7 @@ namespace GameFrameWork.Editor
 
             if (files.Length < 1)
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
                 return false;
             }
 
@@ -109,18 +117,19 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        private static bool AddBuildMapSingle(string pattern, string path, string abPath, string extend)
+        private static bool AddBuildMapSingle(string pattern, string path, string abPath, string extend, int index)
         {
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "资源路径不存在\n" + path, "确定");
+                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
                 return false;
             }
 
             string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
+
             if (files.Length < 1)
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "该路径下无任何文件\n"+ path, "确定"); 
+                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");         
                 return false;
             }
 

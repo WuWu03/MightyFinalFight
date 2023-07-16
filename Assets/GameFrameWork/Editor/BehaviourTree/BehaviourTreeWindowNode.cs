@@ -277,7 +277,7 @@ namespace GameFrameWork.Editor
             }
             else
             {
-                string name = m_IsChangeName ? string.Empty : m_Data.name + (m_IsParent ? "(父节点)" : string.Empty);
+                string name = m_IsChangeName ? string.Empty : m_Data.name + (m_IsParent ? "(根节点)" : string.Empty);
                 EditorGUI.LabelField(new Rect(x, y, width, height), name);
             }
 

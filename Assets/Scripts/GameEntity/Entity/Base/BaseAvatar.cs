@@ -14,7 +14,7 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public DBTrigger dragonBonesTrigger
+    public HitTrigger dragonBonesTrigger
     {
         get
         {
@@ -82,11 +82,16 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
-        m_DragonBonesTrigger = m_ResGO.GetComponent<DBTrigger>();
+        m_DragonBonesTrigger = m_ResGO.GetComponent<HitTrigger>();
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
     {
+        if (animName.Contains("Roll"))
+        {
+            Debug.Log("ssdfs");
+        }
+
         if (m_Animator == null)
         {
             GameFrameworkLog.LogError("Animator is invalid!");
@@ -199,7 +204,7 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
     protected string m_CurrAnimName = string.Empty;
-    protected DBTrigger m_DragonBonesTrigger = null;
+    protected HitTrigger m_DragonBonesTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
 }

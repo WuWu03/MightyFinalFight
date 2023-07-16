@@ -106,6 +106,11 @@ namespace GameFrameWork.Resources
 
         private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
         {
+            if (resPath.Contains("Loop"))
+            {
+                Debug.Log("fuck you xxxxxxxxxxxxxxxxxxxxxxxxxx");
+            }
+
             if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
             {
                 Log.GameFrameworkLog.LogError(StringUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));

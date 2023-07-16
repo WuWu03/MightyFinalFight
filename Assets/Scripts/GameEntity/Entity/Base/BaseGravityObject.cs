@@ -173,13 +173,13 @@ public class BaseGravityObject : BaseSceneObject
     public void ResetRigidbody(bool changBodyType = true)
     {
         m_Rigidbody2D.gravityScale = 1;
-        m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.drag = 0;
         m_Rigidbody2D.angularDrag = 0;
-        m_Rigidbody2D.angularVelocity = 0;
-
+      
         if (changBodyType)
         {
+            m_Rigidbody2D.angularVelocity = 0;
+            m_Rigidbody2D.velocity = Vector2.zero;
             m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
     }

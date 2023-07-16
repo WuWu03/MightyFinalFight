@@ -385,7 +385,7 @@ MonoBehaviour:
       ScaleTarget: {x: 0, y: 0}
       SelectorAngle: 20
       SelectorRadius: 5
-      AddSelfDrag: 5
+      AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 1
       DamageMulity: 0

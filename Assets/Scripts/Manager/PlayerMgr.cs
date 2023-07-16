@@ -266,6 +266,18 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return false;
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            m_CurrCtrl.DeploySkill(1001004);
+            return false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            m_CurrCtrl.DeploySkill(1001008);
+            return false;
+        }
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             StageMgr.instance.StageEnterNext();

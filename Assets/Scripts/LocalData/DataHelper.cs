@@ -18,9 +18,9 @@ public static partial class DataHelper
 
 	public static void Init(string filePath)
 	{
-        levelDatas = LoadData<LevelData>(filePath, "LevelData.bytes");
-        roleDatas = LoadData<RoleData>(filePath, "RoleData.bytes");
-        roleSelectDatas = LoadData<RoleSelectData>(filePath, "RoleSelectData.bytes");
+        levelDatas = LoadData<LevelData>(filePath, "LevelData");
+        roleDatas = LoadData<RoleData>(filePath, "RoleData");
+        roleSelectDatas = LoadData<RoleSelectData>(filePath, "RoleSelectData");
 	}
 
 }

@@ -46,7 +46,7 @@ public class MainPanel : BasePanel
 			m_Component.enemyHpBar.gameObject.SetActive(false);
 			m_EnemyHpBarHideTimer = -1;
 		}
-	}
+    }
 
 	protected override void OnClose()
 	{

@@ -31,7 +31,7 @@ MonoBehaviour:
     BundleType: 1
     BundleName: fonts
     BundleExtend: .assetbundle
-    Pattern: '*.ttf'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/Fonts/
     AssetBundlePath: 
   - Id: 4
@@ -178,21 +178,21 @@ MonoBehaviour:
     BundleType: 1
     BundleName: Models/SceneBuilding/Movie
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/Models/SceneBuilding/Movie/
     AssetBundlePath: 
   - Id: 25
     BundleType: 1
     BundleName: Models/Weapon/CodyWeapon
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/Models/Weapon/CodyWeapon/
     AssetBundlePath: 
   - Id: 26
     BundleType: 1
     BundleName: Models/Weapon/GuyWeapon
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*'
     AssetPath: Assets/ArtResources/Models/Weapon/GuyWeapon/
     AssetBundlePath: 
   - Id: 27
@@ -213,35 +213,35 @@ MonoBehaviour:
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/FX/
     AssetBundlePath: ArtResources/Prefabs/FX/
   - Id: 30
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/SceneBuilding/
     AssetBundlePath: ArtResources/Prefabs/SceneBuilding/
   - Id: 31
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/SceneItem/
     AssetBundlePath: ArtResources/Prefabs/SceneItem/
   - Id: 32
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/Prefabs/Weapon/
     AssetBundlePath: ArtResources/Prefabs/Weapon/
   - Id: 33
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.prefab'
+    Pattern: '*.png'
     AssetPath: Assets/ArtResources/Texture/SceneBuilding/
     AssetBundlePath: Texture/SceneBuilding/
   - Id: 34
@@ -262,7 +262,7 @@ MonoBehaviour:
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
-    Pattern: '*.png'
+    Pattern: '*.prefab'
     AssetPath: Assets/ArtResources/UI/Prefabs/
     AssetBundlePath: ArtResources/UI/Prefabs/
   - Id: 37
@@ -295,7 +295,7 @@ MonoBehaviour:
     AssetBundlePath: 
   - Id: 41
     BundleType: 1
-    BundleName: 
+    BundleName: UIAtlas/StagePanel
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/StagePanel/

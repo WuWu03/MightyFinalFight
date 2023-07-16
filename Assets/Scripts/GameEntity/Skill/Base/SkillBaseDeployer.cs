@@ -163,7 +163,9 @@ public abstract class SkillBaseDeployer
         else
         {
             if (m_Owner.isFloat && !m_ListGroundEffect.Contains(m_CurrEffectIndex))
+            {
                 m_ListGroundEffect.Add(m_CurrEffectIndex);
+            }
         }
 
         m_CurrEffectIndex++;

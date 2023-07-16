@@ -63,12 +63,12 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
             m_DBTriggers = new TriggerData[m_CurrDB.animation.animationNames.Count];
-            TriggerData[] currDB = m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas;
+            TriggerData[] currDB = m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas;
 
             if(currDB == null)
             {
-                m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas = new TriggerData[0];
-                currDB = m_CurrGo.GetOrAddComponent<DBTrigger>().TriggerDatas;
+                m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas = new TriggerData[0];
+                currDB = m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas;
             }
 
             int dbIndex = 0;
@@ -141,7 +141,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
             m_CurrTriggerData.Offest = m_CurrCollider.offset;
             m_CurrTriggerData.Size = m_CurrCollider.size;
 
-            m_CurrDB.GetComponent<DBTrigger>().TriggerDatas = m_DBTriggers;
+            m_CurrDB.GetComponent<HitTrigger>().TriggerDatas = m_DBTriggers;
             Component.DestroyImmediate(m_CurrCollider);
             m_CurrAnimName = string.Empty;
             bool isSuccess = false;

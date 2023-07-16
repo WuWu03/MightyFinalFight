@@ -50,7 +50,11 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
     private void RealPlaySound()
     {
-        if (m_QueueSound.Count < 1) return;
+        if (m_QueueSound.Count < 1)
+        {
+            return;
+        }
+
         string soundName = m_QueueSound.Dequeue();
 
         if (m_Owner.isHitSuccess)

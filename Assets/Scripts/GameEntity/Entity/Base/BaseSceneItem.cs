@@ -27,7 +27,7 @@ public class BaseSceneItem : BaseGravityObject
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        m_DBTrigger = go.GetComponent<DBTrigger>();
+        m_DBTrigger = go.GetComponent<HitTrigger>();
     }
 
     protected void SetTrigger(string animName)
@@ -51,6 +51,6 @@ public class BaseSceneItem : BaseGravityObject
         base.Release();
     }
 
-    protected DBTrigger m_DBTrigger = null;
+    protected HitTrigger m_DBTrigger = null;
     protected BaseRole m_Owner = null;
 }
