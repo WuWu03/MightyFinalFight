@@ -22,7 +22,6 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
         m_IsOnGround = false;
         m_CanEffect = true;
-        Debug.Log("初始放技能");
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 

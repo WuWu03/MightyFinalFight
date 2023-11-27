@@ -22,8 +22,6 @@ public class SkillNearHitEffect : SkillBaseEffect
             targets = skillSelector.GetTargets();
         }
 
-        Debug.Log("准备打人" + targets);
-
         for (int i = 0; i < targets.Count; i++)
         {
             HurtData hurtData = SkillFactory.GetHurtData(targets[i], m_Owner, m_SkillData, m_SkillEffect);
@@ -33,9 +31,6 @@ public class SkillNearHitEffect : SkillBaseEffect
             {
                 m_IsPause = isPause;
             }
-
-            Debug.Log(m_IsHurtTarget);
-
 
             if (hurtData != null && !m_IsHurtTarget)
             {
@@ -70,7 +65,6 @@ public class SkillNearHitEffect : SkillBaseEffect
 
     protected override void OnReset()
     {
-        Debug.Log("reset了");
         base.OnReset();
         m_IsHurtTarget = false;
         m_IsPause = false;

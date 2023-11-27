@@ -59,7 +59,6 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        Debug.Log("技能类型++++++++++++++++++" + m_SkillData.TriggerType);
         if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             m_EnternalTriggerTimer = Time.time;
@@ -180,12 +179,9 @@ public abstract class SkillBaseDeployer
     private void JustEffect()
     {
         m_CurrEffectIndex = 0;
-        Debug.Log("当前索引" + m_CurrEffectIndex);
-        Debug.Log(m_SkillEffects.Length);
 
         for (int i = 0; i < m_SkillEffects.Length; i++)
         {
-            Debug.Log("技能效果器" + m_SkillEffects[i]);
             if (m_SkillEffects[m_CurrEffectIndex] == null)
             {
                 continue;
