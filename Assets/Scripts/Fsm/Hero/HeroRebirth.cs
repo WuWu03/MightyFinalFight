@@ -27,8 +27,8 @@ public class HeroRebirth : BaseFsmState
         if (m_ReBirthPos == Vector2.zero)
         {
             Rect visionRect = CameraMgr.instance.GetVision();
-            float rebirthPosX = visionRect.xMin + m_Owner.boxCollider2D.size.x;
-            float rebirthPosY = visionRect.yMax + m_Owner.boxCollider2D.size.y;
+            float rebirthPosX = visionRect.xMin + m_Owner.bound.size.x;
+            float rebirthPosY = visionRect.yMax + m_Owner.bound.size.y;
             m_Owner.transform.localPosition = new Vector3(rebirthPosX, rebirthPosY, rebirthPosY);
         }
         else

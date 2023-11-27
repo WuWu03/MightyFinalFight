@@ -103,16 +103,16 @@ public class BaseHeroCtrl : BaseRoleCtrl
 
     private BaseSceneItem IsNearSceneItem()
     {
-        List<GameObject> list = m_Owner.targets;
+        List<BaseSceneItem> list = SceneEntityMgr.instance.GetSceneItems();
+
+        if(list == null || list.Count < 1)
+        {
+            return null;
+        }
 
         for (int i = 0; i < list.Count; i++)
         {
-            BaseSceneItem item = list[i].GetComponent<BaseSceneItem>();
-
-            if (item == null)
-            {
-                continue;
-            }
+            BaseSceneItem item = list[i];
 
             bool isXNear = Mathf.Abs(item.pos.x - m_Owner.pos.x) <= item.bound.width / 2;
             bool isYNear = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.2f;

@@ -7,25 +7,81 @@ using UnityEngine;
 
 public class SkillBulletSelector : SkillBaseSelector
 {
-    public SkillBulletSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBulletSelector(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) 
+    {
+
+    }
 
     public override List<ICanBeHit> GetTargets()
     {
-        return null;
+        m_ListTargets.Clear();
+
+        if (m_Owner.objectType == ObjectType.Player)
+        {
+            List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
+            List<BaseSceneItem> sceneItemTargets = SceneEntityMgr.instance.GetSceneItems();
+
+            if (enemyTargets != null)
+            {
+                for (int i = 0; i < enemyTargets.Count; i++)
+                {
+                    CheckTarget(enemyTargets[i]);
+                }
+            }
+
+            if (sceneItemTargets != null)
+            {
+                for (int i = 0; i < sceneItemTargets.Count; i++)
+                {
+                    CheckTarget(sceneItemTargets[i]);
+                }
+            }
+        }
+        else
+        {
+            CheckTarget(PlayerMgr.instance.player);
+        }
+
+        return m_ListTargets;
     }
 
-    public override List<GameObject> GetTargetsObj()
+    private void CheckTarget(BaseAvatar ba)
     {
-        return null;
+        if (ba == null)
+        {
+            return;
+        }
+
+        ICanBeHit hit = ba.GetComponent<ICanBeHit>();
+
+        if (hit == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < m_Owner.bullets.Count; i++)
+        {
+            bool isInRange = false;
+
+            if( Mathf.Abs(ba.pos.y - m_Owner.bullets[i].pos.y) < m_SkillEffect.Bullets[i].HitRange)
+            {
+                isInRange = SkillUtil.IsRectangleCollide(ba.bound, m_Owner.bound);
+            }
+
+            if (isInRange && hit.canBeHit)
+            {
+                m_ListTargets.Add(hit);
+            }
+        }
     }
 
     public override void Reset()
     {
-
+        m_ListTargets.Clear();
     }
 
     public override void Exit()
     {
-
+        m_ListTargets.Clear();
     }
 }

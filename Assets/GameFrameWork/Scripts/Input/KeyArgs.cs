@@ -8,22 +8,28 @@ namespace GameFrameWork.Input
     public class KeyArgs : BaseEventArgs
     {
         public string keyName { get; set; }
-        public bool isShift { get; set; }
+        public KeyType keyType { get; set; }
         public KeyType replaceKeyType { get; set; }
+        public bool isTurbo { get; set; }
+        public bool isCheckCombo { get; set; }
 
-        public static KeyArgs Create(string keyName, KeyType replaceKeyType, bool isShift)
+        public static KeyArgs Create(string keyName, KeyType keyType, KeyType replaceKeyType, bool isTurbo, bool isChcekCombo)
         {
             KeyArgs args = ReferencePool.Acquire<KeyArgs>();
             args.keyName = keyName;
+            args.keyType = keyType;
             args.replaceKeyType = replaceKeyType;
-            args.isShift = isShift;
+            args.isTurbo = isTurbo;
+            args.isCheckCombo = isChcekCombo;
             return args;
         }
 
         public override void Clear()
         {
             keyName = null;
-            isShift = false;
+            isTurbo = false;
+            keyType = KeyType.None;
+            replaceKeyType = KeyType.None;
         }
     }
 }

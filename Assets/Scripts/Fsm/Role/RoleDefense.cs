@@ -12,7 +12,7 @@ public class RoleDefense : BaseFsmState
     {
         m_Timer = -1f;
         m_Owner.ResetRigidbody();
-        m_Owner.PlayAnimation(AnimName.Defense, 0, 1);
+        m_Owner.PlayAnimation(AnimName.Defense);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

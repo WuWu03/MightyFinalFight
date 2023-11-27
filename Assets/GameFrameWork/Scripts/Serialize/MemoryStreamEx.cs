@@ -224,7 +224,7 @@ namespace GameFrameWork.Serialize
 
         #region UTF8String
         /// <summary>
-        /// 从流中读取一个sting数组
+        /// 从流中读取一个sting
         /// </summary>
         /// <returns></returns>
         public string ReadUTF8String()

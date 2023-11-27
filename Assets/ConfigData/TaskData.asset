@@ -27,49 +27,49 @@ MonoBehaviour:
     Targets:
     - EntityID: 1
       SourceID: 2001
-      Hp: 300
+      Hp: 10000
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -38}
     - EntityID: 2
       SourceID: 2001
-      Hp: 500
+      Hp: 4
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 300
       Pos: {x: -178, y: -46}
     - EntityID: 3
       SourceID: 2001
-      Hp: 300
+      Hp: 4
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -54}
     - EntityID: 4
       SourceID: 2001
-      Hp: 300
+      Hp: 4
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -62}
     - EntityID: 5
       SourceID: 2001
-      Hp: 300
+      Hp: 4
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
       Pos: {x: -178, y: -70}
     - EntityID: 6
       SourceID: 2002
-      Hp: 250
+      Hp: 4
       AttackValue: 10
       DefenseValue: 5
       HpBarWidth: 100
       Pos: {x: -100, y: -54}
     - EntityID: 7
       SourceID: 2002
-      Hp: 250
+      Hp: 4
       AttackValue: 10
       DefenseValue: 5
       HpBarWidth: 100
@@ -78,10 +78,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1002
+    FailureID: 0
   - Id: 1002
     ConditionType: 2
     Position:
@@ -98,10 +100,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1003
+    FailureID: 0
   - Id: 1003
     ConditionType: 1
     Position:
@@ -132,10 +136,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1004
+    FailureID: 0
   - Id: 1004
     ConditionType: 2
     Position:
@@ -166,10 +172,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1005
+    FailureID: 0
   - Id: 1005
     ConditionType: 0
     Position:
@@ -186,10 +194,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1006
+    FailureID: 0
   - Id: 1006
     ConditionType: 0
     Position:
@@ -206,10 +216,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 1002
     TalkID: 0
     PrevID: 0
     NextID: 0
+    FailureID: 0
   - Id: 1007
     ConditionType: 0
     Position:
@@ -226,10 +238,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 1
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1008
+    FailureID: 0
   - Id: 1008
     ConditionType: 1
     Position:
@@ -253,10 +267,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1009
+    FailureID: 0
   - Id: 1009
     ConditionType: 2
     Position:
@@ -280,10 +296,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1010
+    FailureID: 0
   - Id: 1010
     ConditionType: 0
     Position:
@@ -307,10 +325,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 1011
+    FailureID: 0
   - Id: 1011
     ConditionType: 0
     Position:
@@ -327,10 +347,12 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 1003
     TalkID: 0
     PrevID: 0
     NextID: 0
+    FailureID: 0
   - Id: 1012
     ConditionType: 0
     Position:
@@ -354,7 +376,9 @@ MonoBehaviour:
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
+    WaitTime: 0
     MapID: 0
     TalkID: 0
     PrevID: 0
     NextID: 0
+    FailureID: 0

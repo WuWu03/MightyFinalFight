@@ -1,7 +1,8 @@
-﻿using GameFrameWork.Log;
+﻿using GameFrameWork.Debug;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static SkillConfigData;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class SkillFactory
 {
@@ -12,7 +13,7 @@ public class SkillFactory
 
         if (data == null)
         {
-            GameFrameworkLog.LogError("skill data is invalid skillId:", skillId);
+            GameFrameworkLog.DebugError("skill data is invalid skillId:", skillId);
             return null;
         }
 
@@ -158,26 +159,20 @@ public class SkillFactory
         return ret;
     }
 
-    public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
+    public static HurtData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
     {
         if (hit == null || !hit.canBeHit)
         {
-            return false;
+            return null;
         }
 
         float dir = (hit as BaseSceneObject).pos.x - owner.pos.x >= 0 ? 1 : -1;
-        int defenseValue = 0;
         bool isBoss = false;
         bool isCritical = false;
 
         if (effect.ForceType == SkillAddForceType.SelfDir)
         {
             dir = owner.dir;
-        }
-
-        if (hit is BaseRole)
-        {
-            defenseValue = (hit as BaseRole).entityAttribute.defenseValue;
         }
 
         if (owner is BaseEnemy)
@@ -194,15 +189,27 @@ public class SkillFactory
         hurtData.canBeDefense = effect.CanBeDefense;
         hurtData.isSwoon = effect.IsSmoon;
         hurtData.attackerId = owner.id;
-        hurtData.attackValue = CacDamage(owner.entityAttribute.attackValue, defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
+        hurtData.attackValue = 1;// CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
         hurtData.isCritical = isCritical;
         hurtData.hurtSound = data.HurtSound;
         hurtData.hurtAnim = string.Empty;
         hurtData.isGroundHurt = effect.IsOnGroundHurt;
         hurtData.isBoss = isBoss;
-        hit.OnHurtMsg(hurtData);
 
-        return !hit.isDead;
+        return hurtData;
+    }
+
+    public static bool SkillHit(ICanBeHit hit,BaseRole owner, SkillConfigData data, SkillEffect effect)
+    {
+        HurtData hurtData = GetHurtData(hit, owner, data, effect);
+
+        if (hurtData != null)
+        {
+            hit.OnHurtMsg(hurtData);
+            return !hit.IsHurtWillDie(hurtData.attackValue);
+        }
+
+        return false;
     }
 
     public static int CacDamage(int attack, int defense, int critical, float mulity, out bool isCritical)
@@ -229,7 +236,7 @@ public class SkillFactory
                      "\n[偏移: " + fluctuate + "]" +
                      "\n[是否暴击： " + isCri + "]";
 
-        GameFrameworkLog.Log(str);
+        GameFrameworkLog.Debug(str);
         isCritical = isCri;
         return Mathf.FloorToInt(damage);
     }

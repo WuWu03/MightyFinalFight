@@ -1,7 +1,9 @@
 ﻿using DragonBones;
 using GameFrameWork;
 using GameFrameWork.GameEntity;
+using System.Collections.Generic;
 using UnityEngine;
+using static SkillConfigData;
 
 public class Bullet : BaseSceneItem
 {
@@ -48,69 +50,97 @@ public class Bullet : BaseSceneItem
         }
 
         UpdatePos2(transform.localPosition);
+        CheckHit();
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    private void CheckHit()
     {
-        CheckHit(collision);
-    }
-
-    protected override void OnTriggerStay2D(Collider2D collision)
-    {
-        CheckHit(collision);
-    }
-
-    private void CheckHit(Collider2D collision)
-    {
-        if (!m_IsResComplete || (!m_BulletData.isPenatrate && m_IsHit) || collision.gameObject.Equals(m_Owner.gameObject))
+        if (!m_IsResComplete)
         {
             return;
         }
 
-        BaseSceneObject targetObj = collision.gameObject.GetComponent<BaseSceneObject>();
-
-        if(targetObj == null)
+        if (!m_BulletData.isPenatrate && m_IsHit)
         {
             return;
         }
 
-        bool isInRange = Mathf.Abs(targetObj.pos.y - m_Pos.y) < m_BulletData.hitRange;
-
-        if (isInRange)
+        if (m_Owner.objectType == ObjectType.Player)
         {
-            ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
+            List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
+            List<BaseSceneItem> sceneItemTargets = SceneEntityMgr.instance.GetSceneItems();
 
-            if (m_SkillBulletEffect != null)
+            if (enemyTargets != null)
             {
-                m_SkillBulletEffect.BulletEffect(hit);
+                for (int i = 0; i < enemyTargets.Count; i++)
+                {
+                    CheckTarget(enemyTargets[i]);
+                }
             }
 
-            if (!m_BulletData.isPenatrate)
+            if (sceneItemTargets != null)
             {
-                SetVelocity(Vector2.zero);
+                for (int i = 0; i < sceneItemTargets.Count; i++)
+                {
+                    CheckTarget(sceneItemTargets[i]);
+                }
             }
-
-            if (!string.IsNullOrEmpty(m_BulletData.hitAnim))
-            {
-                m_Animator.animation.timeScale = m_BulletData.hitAnimSpeed;
-                m_Animator.animation.Play(m_BulletData.hitAnim, 1);
-                SetTrigger(m_BulletData.hitAnim);
-            }
-
-            m_IsHit = true;
         }
+        else
+        {
+            CheckTarget(PlayerMgr.instance.player);
+        }
+    }
+
+    private void CheckTarget(BaseAvatar ba)
+    {
+        if (ba == null)
+        {
+            return;
+        }
+
+        ICanBeHit hit = ba.GetComponent<ICanBeHit>();
+
+        if (hit == null || !hit.canBeHit)
+        {
+            return;
+        }
+
+        bool isInRange = false;
+
+        if (Mathf.Abs(ba.pos.y - m_Pos.y) < m_BulletData.hitRange)
+        {
+            isInRange = SkillUtil.IsRectangleCollide(ba.bound, m_Bound);
+        }
+
+        if(!isInRange)
+        {
+            return;
+        }
+
+        if (!m_BulletData.isPenatrate)
+        {
+            SetVelocity(Vector2.zero);
+        }
+
+        if (!string.IsNullOrEmpty(m_BulletData.hitAnim))
+        {
+            PlayAnimation(m_BulletData.hitAnim, 1, m_BulletData.hitAnimSpeed);
+        }
+
+        if (m_SkillBulletEffect != null)
+        {
+            m_SkillBulletEffect.BulletEffect(hit);
+        }
+
+        m_IsHit = true;
     }
 
     protected override void OnResComplete(GameObject go,object[] param)
     {
         base.OnResComplete(go, param);
-        go.SetActive(true);
-        
-        m_BoxCollider2D.enabled = true;
-        m_BoxCollider2D.isTrigger = true;
-        m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_Animator.animation.timeScale = m_BulletData.normalAnimSpeed;
-        m_Animator.animation.Play(m_BulletData.normalAnim, 0);
+
+        PlayAnimation(m_BulletData.normalAnim, 1, m_BulletData.normalAnimSpeed);
         SetTrigger(m_BulletData.normalAnim);
         SetDrag(m_BulletData.drag);
         SetGravityScale(0f);
@@ -127,6 +157,5 @@ public class Bullet : BaseSceneItem
 
     private bool m_IsHit = false;
     private SkillBulletEffect m_SkillBulletEffect = null;
-    private UnityArmatureComponent m_Animator = null;
     private BulletData m_BulletData = null;
 }

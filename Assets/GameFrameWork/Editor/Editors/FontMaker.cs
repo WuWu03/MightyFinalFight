@@ -14,13 +14,13 @@ namespace GameFrameWork.Editor
             if (Selection.objects == null) return;
             if (Selection.objects.Length == 0)
             {
-                Debug.LogWarning("没有选中Sprite文件，需要将Sprite Mode设置成Multiple，切分好，并且以以名字的最后一个字符当做ascii码");
+                UnityEngine.Debug.LogWarning("没有选中Sprite文件，需要将Sprite Mode设置成Multiple，切分好，并且以以名字的最后一个字符当做ascii码");
                 return;
             }
             Object o = Selection.objects[0];
             if (o.GetType() != typeof(Texture2D))
             {
-                Debug.LogWarning("选中的并不是图片文件");
+                UnityEngine.Debug.LogWarning("选中的并不是图片文件");
                 return;
             }
             string selectionPath = AssetDatabase.GetAssetPath(o);
@@ -78,7 +78,7 @@ namespace GameFrameWork.Editor
                     {
                         pivot = -lineSpace / 2;
                     }
-                    Debug.Log(pivot);
+                    UnityEngine.Debug.Log(pivot);
                     int offsetY = (int)(pivot + (lineSpace - rect.height) / 2);
                     //设置字符映射到材质上的坐标  
                     info.uvBottomLeft = new Vector2((float)rect.x / tex.width, (float)(rect.y) / tex.height);
@@ -111,11 +111,11 @@ namespace GameFrameWork.Editor
 
                 //最佳高度：上下各留一个像素的间距，如果不需要可以注释掉，根据需求更改  
                 //打印是为了使使用者方便填写行高，因为font不支持设置行高。  
-                Debug.Log("创建字体成功, 最大高度：" + lineSpace + ", 最佳高度：" + (lineSpace + 2));
+                UnityEngine.Debug.Log("创建字体成功, 最大高度：" + lineSpace + ", 最佳高度：" + (lineSpace + 2));
             }
             else
             {
-                Debug.LogWarning("没有选中Sprite文件，需要将Sprite放到Resources文件夹下面，可以参考函数上方的说明操作");
+                UnityEngine.Debug.LogWarning("没有选中Sprite文件，需要将Sprite放到Resources文件夹下面，可以参考函数上方的说明操作");
             }
         }
     }

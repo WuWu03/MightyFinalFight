@@ -119,25 +119,3 @@ namespace GameFrameWork.Editor
 		}
 	}
 }
-
-namespace TestJson
-{
-    public class BehaviourTreeConfig
-    {
-        public BehaviourTreeData[] datas;
-    }
-
-    public class BehaviorTreeBaseData
-    {
-        public int id;
-        public string name;
-        public string classType;
-        public string args;
-    }
-
-    public class BehaviourTreeData : BehaviorTreeBaseData
-    {
-        public BehaviourTreeData[] children;
-        public BehaviorTreeBaseData[] preConditions;
-    }
-}

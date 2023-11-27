@@ -5,37 +5,14 @@ using UnityEngine;
 
 namespace GameFrameWork.Resources
 {
-    public abstract class ResourcesPool<T, P> : BaseMgr<P> where T : UnityEngine.Object where P : ResourcesPool<T, P>, new()
+    public class ResourcesPool : BaseMgr<ResourcesPool>
     {
-        class LoadRequest
-        {
-            public LoadRequest(GameFrameWorkAction<T, object[]> callback, object[] args)
-            {
-                m_Callback = callback;
-                m_Args = args;
-            }
-
-            public bool Call(T go)
-            {
-                if (m_Callback != null)
-                {
-                    m_Callback?.Invoke(go, m_Args);
-                    return true;
-                }
-
-                return false;
-            }
-
-            private GameFrameWorkAction<T, object[]> m_Callback;
-            private object[] m_Args;
-        }
-
         protected override void OnAwake()
         {
-            m_PoolRoot = new GameObject("Res" + GetType().Name).transform;
+            m_PoolRoot = new GameObject("ResPool").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
-            m_DicPool = new Dictionary<string, Queue<T>>();
+            m_DicPool = new Dictionary<string, Queue<UnityEngine.Object>>();
             m_DicLoadCallback = new Dictionary<string, List<LoadRequest>>();
         }
 
@@ -51,31 +28,30 @@ namespace GameFrameWork.Resources
             }
         }
 
-        public virtual void Get(string resPath, GameFrameWorkAction<T, object[]> call, params object[] args)
+        public virtual void Get<T>(string assetPath, GameFrameWorkAction<string,UnityEngine.Object, object[]> call, params object[] args) where T:UnityEngine.Object
         {
-            if (string.IsNullOrEmpty(resPath))
+            if (string.IsNullOrEmpty(assetPath))
             {
-                Log.GameFrameworkLog.LogError("Rescource param is invalid.");
+                Debug.GameFrameworkLog.DebugError("Rescource param is invalid.");
                 return;
             }
 
-            Queue<T> pool = GetOrCreatePool(resPath);
+            Queue<UnityEngine.Object> pool = GetOrCreatePool(assetPath);
 
             if (pool.Count > 0)
             {
-                T go = pool.Dequeue();
-                call(go, args);
+                UnityEngine.Object go = pool.Dequeue();
+                call(assetPath, go, args);
                 return;
             }
 
-            LoadRequest request = new LoadRequest(call, args);
+            LoadRequest request = new LoadRequest(assetPath, call, args);
 
-            if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
+            if (!m_DicLoadCallback.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                listLoadRequest = new List<LoadRequest>();
-                listLoadRequest.Add(request);
-                m_DicLoadCallback.Add(resPath, listLoadRequest);
-                ResourcesMgr.instance.LoadAssetAsync(resPath, OnLoaded, true, typeof(T));
+                listLoadRequest = new List<LoadRequest>() { request };
+                m_DicLoadCallback.Add(assetPath, listLoadRequest);
+                ResourcesMgr.instance.LoadAssetAsync<T>(assetPath, OnLoaded, true);
             }
             else
             {
@@ -83,20 +59,27 @@ namespace GameFrameWork.Resources
             }
         }
 
-        public virtual void Put(string resPath, T go)
+        public virtual void Put(string assetPath, UnityEngine.Object go)
         {
-            if (string.IsNullOrEmpty(resPath) || go == null)
+            if (string.IsNullOrEmpty(assetPath) || go == null)
             {
                 return;
             }
 
-            Queue<T> pool = GetOrCreatePool(resPath);
+            if(go is GameObject tempGO)
+            {
+                tempGO.SetActive(false);
+                tempGO.transform.SetParent(m_PoolRoot, false);
+                tempGO.transform.localPosition = Vector3.zero;
+            }
+
+            Queue<UnityEngine.Object> pool = GetOrCreatePool(assetPath);
             pool.Enqueue(go);
         }
 
-        public int GetCount(string resPath)
+        public int GetCount(string assetPath)
         {
-            if (m_DicPool.TryGetValue(resPath, out Queue<T> pool))
+            if (m_DicPool.TryGetValue(assetPath, out Queue<UnityEngine.Object> pool))
             {
                 return pool.Count;
             }
@@ -104,42 +87,37 @@ namespace GameFrameWork.Resources
             return 0;
         }
 
-        private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
+        private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
         {
-            if (resPath.Contains("Loop"))
+            if (!m_DicLoadCallback.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                Debug.Log("fuck you xxxxxxxxxxxxxxxxxxxxxxxxxx");
-            }
-
-            if (!m_DicLoadCallback.TryGetValue(resPath, out List<LoadRequest> listLoadRequest))
-            {
-                Log.GameFrameworkLog.LogError(StringUtil.FormatDefault("Resource [", resPath, "] load complete,but the callback is invalid."));
+                Debug.GameFrameworkLog.DebugError(StringUtil.FormatDefault("Resource [", assetPath, "] load complete,but the callback is invalid."));
                 return;
             }
 
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
-                T go = m_NeedInstantiate ? UnityEngine.Object.Instantiate(obj) as T : obj as T;
+                UnityEngine.Object go = obj is GameObject ? UnityEngine.Object.Instantiate(obj) as GameObject : obj;
 
                 if (!listLoadRequest[i].Call(go))
                 {
-                    Put(resPath, go);
+                    Put(assetPath, go);
                 }
             }
 
-            m_DicLoadCallback.Remove(resPath);
+            m_DicLoadCallback.Remove(assetPath);
         }
 
-        public Queue<T> GetPool(string path)
+        public Queue<UnityEngine.Object> GetPool(string path)
         {
             return this.GetOrCreatePool(path);
         }
 
-        private Queue<T> GetOrCreatePool(string path)
+        private Queue<UnityEngine.Object> GetOrCreatePool(string path)
         {
-            if (!m_DicPool.TryGetValue(path, out Queue<T> pool))
+            if (!m_DicPool.TryGetValue(path, out Queue<UnityEngine.Object> pool))
             {
-                pool = new Queue<T>();
+                pool = new Queue<UnityEngine.Object>();
                 m_DicPool.Add(path, pool);
             }
 
@@ -152,12 +130,10 @@ namespace GameFrameWork.Resources
             m_DicLoadCallback.Clear();
         }
 
-        protected abstract bool m_NeedInstantiate { get; }
-
         public const int CollectTime = 15;
         private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
-        private Dictionary<string, Queue<T>> m_DicPool = null;
+        private Dictionary<string, Queue<UnityEngine.Object>> m_DicPool = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadCallback = null;
     }
 }

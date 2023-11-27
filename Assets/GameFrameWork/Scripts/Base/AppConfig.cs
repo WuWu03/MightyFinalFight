@@ -39,5 +39,8 @@ namespace GameFrameWork
 
         [Header("* 苹果打包路径")]
         public string iosBuildPath = string.Empty;
+
+        [Header("* 版本文件名称")]
+        public string versionFileName = string.Empty;
     }
 }

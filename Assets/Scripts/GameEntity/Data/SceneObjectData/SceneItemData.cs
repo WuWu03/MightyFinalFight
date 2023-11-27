@@ -14,14 +14,14 @@ public class SceneItemData : BaseSceneObjectData
         Trap,
     }
 
-    public ItemType itemType { get; set; }
+    public int itemType { get; set; }
     public bool canDrop { get; set; }
     public int value { get; set; }
 
     public override void Clear()
     {
         base.Clear();
-        itemType = ItemType.None;
+        itemType = 0;
         canDrop = false;
         value = 0;
     }

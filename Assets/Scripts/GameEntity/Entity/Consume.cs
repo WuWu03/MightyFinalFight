@@ -15,13 +15,13 @@ public class Consume : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.HP)
+        if (m_ConsumeInfo.itemType == 2)
             AddHP();
-        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.EXP)
+        if (m_ConsumeInfo.itemType == 3)
             AddExp();
-        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.Life)
+        if (m_ConsumeInfo.itemType == 4)
             AddExp();
-        if (m_ConsumeInfo.itemType == SceneItemData.ItemType.Money)
+        if (m_ConsumeInfo.itemType == 5)
             AddMoney();
         Release();
     }
@@ -29,14 +29,6 @@ public class Consume : BaseSceneItem
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        BoxCollider2D boxCollider2D = go.GetComponent<BoxCollider2D>();
-
-        if (boxCollider2D != null)
-        {
-            SetCollider(boxCollider2D.offset, boxCollider2D.size);
-            boxCollider2D.enabled = false;
-        }
-
         ResetRigidbody();
     }
 

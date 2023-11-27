@@ -47,7 +47,7 @@ MonoBehaviour:
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
       SelectorAngle: 20
-      SelectorRadius: 10
+      SelectorRadius: 0.1
       AddSelfDrag: 0
       MoveDistance: 0
       Gravity: 1
@@ -163,7 +163,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 0.8
+    AnimSpeed: 0.9
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 15
+      SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 15
+      SelectorAngle: 20
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
@@ -286,7 +286,7 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0
-      CanBeDefense: 1
+      CanBeDefense: 0
       HitOne: 0
       Args: 
   - Id: 1001007
@@ -323,13 +323,13 @@ MonoBehaviour:
         AssetName: FX/CodyBullet
         NormalAnim: Normal
         HitAnim: Hit
-        NormalAnimSpeed: 0.2
+        NormalAnimSpeed: 0.3
         HitAnimSpeed: 0.5
         Dir: {x: 1, y: 0}
-        Pos: {x: 0.18, y: 0.12}
-        Velocity: {x: 8, y: 0}
-        HitRange: 0.2
-        Drag: 20
+        Pos: {x: 0.18, y: 0}
+        Velocity: {x: 6, y: 0}
+        HitRange: 0.05
+        Drag: 8
         IsPenatrate: 0
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 100}
@@ -362,7 +362,7 @@ MonoBehaviour:
     Key:
       Keys: 0100000005000000
       AddTrigger: 1
-    AnimSpeed: 0.8
+    AnimSpeed: 0.9
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
@@ -375,7 +375,7 @@ MonoBehaviour:
     SkillEffects:
     - EffectorType: 1
       SelectorType: 1
-      ForceType: 0
+      ForceType: 1
       Bullets: []
       SelectorOffest: {x: 0, y: 0}
       AddTargetForce: {x: 40, y: 120}
@@ -383,9 +383,9 @@ MonoBehaviour:
       AddSelfVelocity: {x: 1, y: 5}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 360
       SelectorRadius: 5
-      AddSelfDrag: 0
+      AddSelfDrag: 5
       MoveDistance: 0
       Gravity: 1
       DamageMulity: 0
@@ -1533,14 +1533,14 @@ MonoBehaviour:
       Bullets:
       - Name: GuyBullet
         AssetName: Weapon/GuyWeapon
-        NormalAnim: 
+        NormalAnim: Hit
         HitAnim: Hit
         NormalAnimSpeed: 0
         HitAnimSpeed: 0.6
         Dir: {x: 0, y: 0}
-        Pos: {x: 0.2, y: 0.14}
+        Pos: {x: 0.2, y: 0.1}
         Velocity: {x: 8, y: 0}
-        HitRange: 0.5
+        HitRange: 0.05
         Drag: 0
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}

@@ -34,7 +34,7 @@ namespace GameFrameWork.Editor
 				PropertyInfo pi = type.GetProperty(setProperty.name);
 				if (pi == null)
 				{
-					Debug.LogError("Invalid property name: " + setProperty.name + "\nCheck your [SetProperty] attribute");
+                    UnityEngine.Debug.LogError("Invalid property name: " + setProperty.name + "\nCheck your [SetProperty] attribute");
 				}
 				else
 				{

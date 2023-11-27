@@ -14,11 +14,6 @@ public class SkillNoneSelector : SkillBaseSelector
         return null;
     }
 
-    public override List<GameObject> GetTargetsObj()
-    {
-        return null;
-    }
-
     public override void Reset()
     {
 

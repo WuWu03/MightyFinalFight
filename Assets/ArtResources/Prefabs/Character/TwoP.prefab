@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6343520709513656393}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.14999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 1
+  dirty: 0
 --- !u!114 &8642772772913097770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,32 +172,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Idle
-    Offest: {x: -0.0008331537, y: 0.00036409497}
-    Size: {x: 0.16926485, y: 0.32461447}
+    Offest: {x: -0.0008331537, y: 0.15986641}
+    Size: {x: 0.16926485, y: 0.31874785}
   - AnimName: Move
-    Offest: {x: 0.0059279054, y: 0.008298993}
-    Size: {x: 0.18670055, y: 0.34824756}
+    Offest: {x: 0.0059279054, y: 0.1622982}
+    Size: {x: 0.18670055, y: 0.32771432}
   - AnimName: Attack1
-    Offest: {x: 0.050979435, y: -0.0082989335}
-    Size: {x: 0.2673192, y: 0.3099996}
+    Offest: {x: 0.050979435, y: 0.15010023}
+    Size: {x: 0.2673192, y: 0.30413294}
   - AnimName: Hurt
-    Offest: {x: -0.0011855364, y: 0.0010341406}
-    Size: {x: 0.22938108, y: 0.3239236}
+    Offest: {x: -0.0011855364, y: 0.15796664}
+    Size: {x: 0.22938108, y: 0.32099026}
   - AnimName: SmoonUp
-    Offest: {x: 0.0009237081, y: -0.037873536}
-    Size: {x: 0.24437639, y: 0.24807149}
+    Offest: {x: 0.0009237081, y: 0.11759234}
+    Size: {x: 0.24437639, y: 0.2304716}
   - AnimName: SmoonDown
-    Offest: {x: 0.002396971, y: -0.06951302}
-    Size: {x: 0.30487043, y: 0.22337282}
+    Offest: {x: 0.002396971, y: 0.065419614}
+    Size: {x: 0.30487043, y: 0.15297318}
   - AnimName: Awaken
-    Offest: {x: 0.01677899, y: -0.022771478}
-    Size: {x: 0.21857843, y: 0.28329754}
+    Offest: {x: 0.01677899, y: 0.12829438}
+    Size: {x: 0.21857843, y: 0.26276433}
   - AnimName: Dead
-    Offest: {x: 0.000000029802322, y: -0.09351522}
-    Size: {x: 0.3106585, y: 0.17172134}
+    Offest: {x: 0.000000029802322, y: 0.08093343}
+    Size: {x: 0.3106585, y: 0.16292138}
   - AnimName: Wait1
-    Offest: {x: 0.000000014901161, y: -0.015754998}
-    Size: {x: 0.23049286, y: 0.29848802}
+    Offest: {x: 0.000000014901161, y: 0.14411086}
+    Size: {x: 0.23049286, y: 0.28968805}
   - AnimName: Wait2
-    Offest: {x: -0.0013358891, y: -0.005343735}
-    Size: {x: 0.22248691, y: 0.316002}
+    Offest: {x: -0.0013358891, y: 0.14572215}
+    Size: {x: 0.22248691, y: 0.2954688}

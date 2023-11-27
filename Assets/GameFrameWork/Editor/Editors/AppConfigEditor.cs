@@ -45,6 +45,15 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(androidBuildPath);
 #endif
 
+            SerializedProperty versionFileName = serializedObject.FindProperty("versionFileName");
+
+            if (!string.IsNullOrEmpty(versionFileName.stringValue) && !versionFileName.stringValue.Contains(".txt"))
+            {
+                versionFileName.stringValue += ".txt";
+            }
+
+            EditorGUILayout.PropertyField(versionFileName);
+
             if (m_AppConfig.useLua)
             {
                 EditorGUILayout.PropertyField(loadLuaAB);
@@ -60,7 +69,8 @@ namespace GameFrameWork.Editor
              || loadLuaAB.boolValue != m_AppConfig.loadLuaAB
              || luaByteMode.boolValue != m_AppConfig.luaByteMode
              || luaDirectory.stringValue != m_AppConfig.luaDirectory
-             || logColor.colorValue != m_AppConfig.logColor)
+             || logColor.colorValue != m_AppConfig.logColor
+             || versionFileName.stringValue != m_AppConfig.versionFileName)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
             }
@@ -71,6 +81,7 @@ namespace GameFrameWork.Editor
             m_AppConfig.openLog = openLog.boolValue;
             m_AppConfig.useLua = useLua.boolValue;
             m_AppConfig.logColor = logColor.colorValue;
+            m_AppConfig.versionFileName = versionFileName.stringValue;
 
 #if UNITY_IOS
             if(appConfig.iosBuildPath != iosBuildPath.stringValue)

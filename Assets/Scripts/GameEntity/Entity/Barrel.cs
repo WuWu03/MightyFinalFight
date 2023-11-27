@@ -38,13 +38,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         }
     }
 
-    public UnityArmatureComponent armatureAnimator
-    {
-        get
-        {
-            return m_ArmatureAnimator;
-        }
-    }
 
     public BarrelData barrelData
     {
@@ -73,11 +66,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_FsmMachine = new FsmMachine(this, this.GetType().Name);
-        m_FsmMachine.AddState<BarrelIdle>();
-        m_FsmMachine.AddState<BarrelMove>();
-        m_FsmMachine.AddState<BarrelDrop>();
-        m_FsmMachine.AddState<BarrelDead>();
+        AddState<BarrelIdle>();
+        AddState<BarrelMove>();
+        AddState<BarrelDrop>();
+        AddState<BarrelDead>();
     }
 
     public override void SetData(BaseSceneObjectData info)
@@ -92,6 +84,11 @@ public class Barrel : BaseSceneItem, ICanBeHit
         m_FsmMachine = null;
         m_BarrelData = null;
         base.Release();
+    }
+
+    public bool IsHurtWillDie(int attackValue)
+    {
+        return m_EntityAttribute.health - attackValue <= 0;
     }
 
     public void OnHurtMsg(HurtData data)
@@ -114,15 +111,15 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     protected override void OnUpdate()
     {
+        base.OnUpdate();
+
         bool isOut = m_BarrelData.dir > 0 ? IsOutVersionXRight(m_Pos.x) : IsOutVersionXLeft(m_Pos.x);
+
         if (isOut)
         {
             Release();
             return;
         }
-        base.OnUpdate();
-       
-        m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -144,21 +141,20 @@ public class Barrel : BaseSceneItem, ICanBeHit
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        m_ArmatureAnimator = go.GetComponent<UnityArmatureComponent>();
-        m_ArmatureAnimator.animation.Play(AnimName.Idle, 0);
+        PlayAnimation(AnimName.Idle, 0);
 
         if (!m_BarrelData.isFloat)
         {
             if (m_BarrelData.moveSpeed > 0)
             {
                 SetTrigger(AnimName.Move);
-                m_FsmMachine.Start<BarrelMove>();
+                ChangeState<BarrelMove>();
                 SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
             }
             else
             {
                 SetTrigger(AnimName.Idle);
-                m_FsmMachine.Start<BarrelIdle>();
+                ChangeState<BarrelIdle>();
             }
         }
         else
@@ -171,12 +167,15 @@ public class Barrel : BaseSceneItem, ICanBeHit
     protected override void OnGround()
     {
         SetTrigger(AnimName.Drop);
-        m_FsmMachine.Start<BarrelDrop>();
+        ChangeState<BarrelDrop>();
     }
 
     private void CheckStrike(GameObject go)
     {
-        if (!m_IsResComplete || m_BarrelData.moveSpeed <= 0 || isDead) return;
+        if (!m_IsResComplete || m_BarrelData.moveSpeed <= 0 || isDead)
+        {
+            return;
+        }
 
         BaseRole role = go.GetComponent<BaseRole>();
         ICanBeHit hit = go.GetComponent<ICanBeHit>();
@@ -193,7 +192,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
 
     private void CheckThrow(GameObject go)
     {
-        if (!m_IsResComplete || isDead) return;
+        if (!m_IsResComplete || isDead)
+        {
+            return;
+        }
 
         BaseRole role = go.GetComponent<BaseRole>();
         ICanBeHit hit = go.GetComponent<ICanBeHit>();
@@ -203,7 +205,10 @@ public class Barrel : BaseSceneItem, ICanBeHit
             return;
         }
 
-        if (Mathf.Abs(role.pos.y - m_Pos.y) > 0.1f) return;
+        if (Mathf.Abs(role.pos.y - m_Pos.y) > 0.1f)
+        {
+            return;
+        }
 
         HurtData hurtData = HurtData.Create();
         hurtData.attackerDir = -role.dir;
@@ -218,17 +223,6 @@ public class Barrel : BaseSceneItem, ICanBeHit
         OnHurtMsg(hurtData);
     }
 
-    private void ChangeState<T>() where T : BaseFsmState
-    {
-        m_FsmMachine.ChangeState<T>();
-    }
-
-    private T GetState<T>() where T : BaseFsmState
-    {
-        return m_FsmMachine.GetState<T>();
-    }
-
-    private FsmMachine m_FsmMachine = null;
     private UnityArmatureComponent m_ArmatureAnimator = null;
     private BarrelData m_BarrelData = null;
 }

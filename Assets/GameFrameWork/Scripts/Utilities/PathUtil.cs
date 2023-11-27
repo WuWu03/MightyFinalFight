@@ -7,6 +7,7 @@ namespace GameFrameWork.Utilities
 {
     public class PathUtil
     {
+        public static string appDataPath = Application.dataPath + "/";
         public static string streamingAssetsPath = Application.streamingAssetsPath + "/";
         public static string persistentDataPath = Application.persistentDataPath + "/";
         public static string luaPath = "Lua";

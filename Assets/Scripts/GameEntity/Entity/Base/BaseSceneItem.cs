@@ -3,8 +3,9 @@ using GameFrameWork.Camera;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static SkillConfigData;
 
-public class BaseSceneItem : BaseGravityObject
+public class BaseSceneItem : BaseAvatar
 {
     public virtual bool canPickUp
     {
@@ -27,22 +28,6 @@ public class BaseSceneItem : BaseGravityObject
     protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
-        m_DBTrigger = go.GetComponent<HitTrigger>();
-    }
-
-    protected void SetTrigger(string animName)
-    {
-        if (m_DBTrigger == null)
-        {
-            return;
-        }
-
-        TriggerData triggerData = m_DBTrigger.GetTriggerData(animName);
-
-        if (triggerData != null)
-        {
-            SetCollider(triggerData.Offest, triggerData.Size);
-        }
     }
 
     public override void Release()
@@ -51,6 +36,5 @@ public class BaseSceneItem : BaseGravityObject
         base.Release();
     }
 
-    protected HitTrigger m_DBTrigger = null;
     protected BaseRole m_Owner = null;
 }

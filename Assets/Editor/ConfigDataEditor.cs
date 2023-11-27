@@ -6,8 +6,6 @@ using UnityEngine;
 [CustomEditor(typeof(TaskConfig), true)]
 public class TaskConfigEditor : ConfigDataEditor<TaskConfig, TaskConfigData> { }
 
-[CustomEditor(typeof(SceneItemConfig), true)]
-public class SceneItemConfigEditor : ConfigDataEditor<SceneItemConfig, SceneItemConfigData> { }
 
 [CustomEditor(typeof(SkillConfig), true)]
 public class SkillConfigEditor : ConfigDataEditor<SkillConfig, SkillConfigData> 

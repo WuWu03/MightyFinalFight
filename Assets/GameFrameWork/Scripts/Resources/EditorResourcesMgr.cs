@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using GameFrameWork.Utilities;
-using GameFrameWork.Log;
+using GameFrameWork.Debug;
 
 namespace GameFrameWork.Resources
 {
-    public class EditorResourcesMgr:Singleton<EditorResourcesMgr>
+    public class EditorResourcesMgr : Singleton<EditorResourcesMgr>
     {
 #if UNITY_EDITOR
-        class LoadRequest 
-        {
-            public GameFrameWorkAction<string, UnityEngine.Object, object[]> onLoadEvent;
-            public object[] args;
-        }
+        //class LoadRequest 
+        //{
+        //    public GameFrameWorkAction<string, UnityEngine.Object, object[]> onLoadEvent;
+        //    public object[] args;
+        //}
 
         public EditorResourcesMgr()
         {
@@ -26,19 +26,19 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 加载资源
         /// </summary>
-        /// <param name="resourcePath">资源路径</param>
+        /// <param name="assetPath">资源路径</param>
         /// <returns>资源对象</returns>
-        private UnityEngine.Object Load(string resourcePath, Type t)
+        private UnityEngine.Object Load(string assetPath, Type t)
         {
             UnityEngine.Object obj;
 
-            if (m_LoadedAssets.TryGetValue(resourcePath, out obj))
+            if (m_LoadedAssets.TryGetValue(assetPath, out obj))
             {
                 return obj;
             }
 
-            string fileName = Path.GetFileName(resourcePath);
-            string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(resourcePath));
+            string fileName = Path.GetFileName(assetPath);
+            string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(assetPath));
             string paName = StringUtil.FormatDefault(fileName, "*");
             string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
 
@@ -50,45 +50,45 @@ namespace GameFrameWork.Resources
                     continue;
                 }
 
-                GameFrameworkLog.Log(StringUtil.FormatDefault("开始编辑器加载资源：", files[i]));
+                GameFrameworkLog.Debug(StringUtil.FormatDefault("开始编辑器加载资源：", files[i]));
                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
                 break;
             }
 
             if (obj == null)
             {
-                GameFrameworkLog.Log(StringUtil.FormatDefault("无效的资源路径 => ", resourcePath));
+                GameFrameworkLog.Debug(StringUtil.FormatDefault("无效的资源路径 => ", assetPath));
                 return null;
             }
 
-            m_LoadedAssets.Add(resourcePath, obj);
+            m_LoadedAssets.Add(assetPath, obj);
             return obj;
         }
 
-        public void LoadForEditorAsync(string resourcePath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
+        public void LoadForEditorAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
         {
             List<LoadRequest> list = null;
 
-            if (!m_DicLoadRequest.TryGetValue(resourcePath, out list))
+            if (!m_DicLoadRequest.TryGetValue(assetPath, out list))
             {
                 list = new List<LoadRequest>();
-                m_DicLoadRequest.Add(resourcePath, list);
+                m_DicLoadRequest.Add(assetPath, list);
             }
 
-            list.Add(new LoadRequest() { onLoadEvent = action, args = param });
-            ResourcesMgr.instance.StartCoroutine(InnerLoad(resourcePath, t));
+            list.Add(new LoadRequest(assetPath, action, param));
+            ResourcesMgr.instance.StartCoroutine(InnerLoad(assetPath, t));
         }
 
-        public UnityEngine.Object LoadForEditor(string resourcePath, Type t = null)
+        public UnityEngine.Object LoadForEditor(string assetPath, Type t = null)
         {
-            return Load(resourcePath, t);
+            return Load(assetPath, t);
         }
 
         // 模拟异步加载的行为
-        private IEnumerator InnerLoad(string resourcePath, Type t = null)
+        private IEnumerator InnerLoad(string assetPath, Type t = null)
         {
             // 等待一帧
-            UnityEngine.Object obj = Load(resourcePath, t);
+            UnityEngine.Object obj = Load(assetPath, t);
             // 等待一帧
             yield return null;
             //// 等待一秒
@@ -96,14 +96,14 @@ namespace GameFrameWork.Resources
             // 返回资源
             List<LoadRequest> list = null;
 
-            if (m_DicLoadRequest.TryGetValue(resourcePath, out list))
+            if (m_DicLoadRequest.TryGetValue(assetPath, out list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i].onLoadEvent?.Invoke(resourcePath, obj, list[i].args);
+                    list[i].Call(obj);
                 }
 
-                m_DicLoadRequest.Remove(resourcePath);
+                m_DicLoadRequest.Remove(assetPath);
             }
         }
 

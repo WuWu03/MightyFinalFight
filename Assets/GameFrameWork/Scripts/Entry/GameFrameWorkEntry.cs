@@ -36,9 +36,7 @@ namespace GameFrameWork
             SoundMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
-            GameObjectPool.Init(m_Manager);
-            AudioClipPool.Init(m_Manager);
-            SpritePool.Init(m_Manager);
+            ResourcesPool.Init(m_Manager);
             UITools.InitUIResPath(InitUIResPath());
             OnInit(m_Manager);
         }
@@ -54,9 +52,7 @@ namespace GameFrameWork
             RedPointMgr.instance.ShutDown();
             InputMgr.instance.ShutDown();
             ResourcesMgr.instance.ShutDown();
-            GameObjectPool.instance.ShutDown();
-            AudioClipPool.instance.ShutDown();
-            SpritePool.instance.ShutDown();
+            ResourcesPool.instance.ShutDown();
             EntityMgr.instance.ShutDown();
             FsmMgr.instance.ShutDown();
             CameraMgr.instance.ShutDown();

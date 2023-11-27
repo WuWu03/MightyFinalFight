@@ -15,11 +15,14 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        if (!m_IsOnGround) return;
+        if (!m_IsOnGround)
+        {
+            return;
+        }
 
         m_IsOnGround = false;
         m_CanEffect = true;
-
+        Debug.Log("初始放技能");
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
@@ -59,13 +62,13 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         {
             if (m_CanEffect)
             {
-                if (m_Owner.isHitSuccess)
+                if (m_Owner.currCtrl.isHitSuccess)
                 {
                     m_CanEffect = false;
                     return;
-                }   
-                
-                base.DeploySkill();  
+                }
+
+                base.DeploySkill();
             }
         }
 
@@ -87,6 +90,11 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
+        if(m_SkillData.Type == SkillConfigData.SkillType.Normal)
+        {
+            m_Owner.currCtrl.SetHitState(false);
+        }
+
         m_CanEffect = true;
     }
 

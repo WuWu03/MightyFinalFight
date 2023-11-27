@@ -11,7 +11,7 @@ public class HeroPickUp : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.PlayAnimation(AnimName.PickUp, 1, 1f);
+        m_Owner.PlayAnimation(AnimName.PickUp, 1);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)

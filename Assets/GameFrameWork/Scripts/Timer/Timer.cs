@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Object = UnityEngine.Object;
@@ -55,6 +54,7 @@ namespace GameFrameWork.Timer
             if (Timer.m_TimerManager == null)
             {
                 TimerManager managerInScene = Object.FindObjectOfType<TimerManager>();
+
                 if (managerInScene != null)
                 {
                     Timer.m_TimerManager = managerInScene;
@@ -189,8 +189,7 @@ namespace GameFrameWork.Timer
         private readonly MonoBehaviour m_AutoDestroyOwner;
         private readonly bool m_HasAutoDestroyOwner;
 
-        private Timer(float duration, Action onComplete, Action<float> onUpdate,
-            bool isLooped, bool usesRealTime, MonoBehaviour autoDestroyOwner)
+        private Timer(float duration, Action onComplete, Action<float> onUpdate, bool isLooped, bool usesRealTime, MonoBehaviour autoDestroyOwner)
         {
             this.duration = duration;
             this.m_OnComplete = onComplete;

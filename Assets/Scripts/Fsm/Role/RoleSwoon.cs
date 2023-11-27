@@ -22,7 +22,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.ResetRigidbody();
         m_Owner.onGroundEvent.AddListener(OnBounce);
         m_Owner.AddForce(m_Force);
-        m_Owner.PlayAnimation(AnimName.SwoonUp, 0);
+        m_Owner.PlayAnimation(AnimName.SwoonUp);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -42,7 +42,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.SetGravityScale(1.0f);
         m_Owner.SetVelocityY(1.5f);
         m_Owner.StopAnimation(AnimName.SwoonUp);
-        m_Owner.PlayAnimation(AnimName.SwoonDown,0);
+        m_Owner.PlayAnimation(AnimName.SwoonDown);
         GameFrameWork.Sound.SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnFallDown");
     }
 

@@ -401,7 +401,7 @@ namespace GameFrameWork.UI
                         {
                             onHrefClickEvent(hrefInfo.name);
                         }
-                        Debug.Log("点击了:" + hrefInfo.name);
+                        UnityEngine.Debug.Log("点击了:" + hrefInfo.name);
                         return;
                     }
                 }

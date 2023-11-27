@@ -20,38 +20,31 @@ public static class SceneEntityFactory
         return role;
     }
 
-    public static BaseSceneItem CreateSceneItem(SceneItemConfigData data, Vector2Int pos)
+    public static BaseSceneItem CreateSceneItem(SceneItemConfigData sceneItemConfigData, Vector2Int pos)
     {
-        if (data == null)
+        if (sceneItemConfigData == null)
         {
             return null;
         }
 
         BaseSceneItem sceneItem = null;
-        SceneItemData.ItemType type = SceneItemData.ItemType.None;
         ObjectType objectType = ObjectType.NONE;
 
-        if (data.Type == SceneItemConfigData.ItemType.Weapon)
+        if (sceneItemConfigData.type == 1)
         {
-            data = StaticConfig.SceneItemConfig.GetData(PlayerMgr.instance.roleData.weaponId);
-            type = SceneItemData.ItemType.Weapon;
+            sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
-            sceneItem = EntityMgr.instance.GetEntity<Weapon>(data.Name);
+            sceneItem = EntityMgr.instance.GetEntity<Weapon>(sceneItemConfigData.name);
         }
-        else if(data.Type == SceneItemConfigData.ItemType.Trap)
+        else if(sceneItemConfigData.type == 6)
         {
-            type = SceneItemData.ItemType.Trap;
             objectType = ObjectType.CantBreakItem;
-            sceneItem = EntityMgr.instance.GetEntity<Trap>(data.Name);
+            sceneItem = EntityMgr.instance.GetEntity<Trap>(sceneItemConfigData.name);
         }
         else
         {
-            if (data.Type == SceneItemConfigData.ItemType.EXP) type = SceneItemData.ItemType.EXP; 
-            else if(data.Type == SceneItemConfigData.ItemType.HP) type = SceneItemData.ItemType.HP;
-            else if(data.Type == SceneItemConfigData.ItemType.Life) type = SceneItemData.ItemType.Life;
-            else if(data.Type == SceneItemConfigData.ItemType.Money) type = SceneItemData.ItemType.Money;
             objectType = ObjectType.Consume;
-            sceneItem = EntityMgr.instance.GetEntity<Consume>(data.Name);
+            sceneItem = EntityMgr.instance.GetEntity<Consume>(sceneItemConfigData.name);
         }
 
         if (sceneItem == null)
@@ -61,13 +54,13 @@ public static class SceneEntityFactory
 
         SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
 
-        sceneItemData.id = data.Id;
-        sceneItemData.itemType = type;
-        sceneItemData.value = data.Value;
-        sceneItemData.canDrop = data.CanDrop;
+        sceneItemData.id = sceneItemConfigData.id;
+        sceneItemData.itemType = sceneItemConfigData.type;
+        sceneItemData.value = sceneItemConfigData.value;
+        sceneItemData.canDrop = sceneItemConfigData.canDrop;
 
         sceneItem.SetData(sceneItemData);
-        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, data.AssetName));
+        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, sceneItemConfigData.assetName));
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
         sceneItem.SetLayer(LayerName.Unit);
@@ -75,7 +68,7 @@ public static class SceneEntityFactory
         return sceneItem;
     }
 
-    public static BaseEnemy CreateEnemy(RoleData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
+    public static BaseEnemy CreateEnemy(RoleConfigData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = EntityMgr.instance.GetEntity<BaseEnemy>(enemyConfigData.name);
         BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();

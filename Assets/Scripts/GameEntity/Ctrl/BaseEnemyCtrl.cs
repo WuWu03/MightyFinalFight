@@ -21,13 +21,18 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     protected override void OnStart()
     {
         base.OnStart();
-        m_BehaviourTreeMgr.Start();
+        //m_BehaviourTreeMgr.Start();
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
         m_BehaviourTreeMgr.Update(Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            m_Owner.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1 });
+        }
     }
 
     protected override void OnRelease()

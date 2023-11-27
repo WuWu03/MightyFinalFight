@@ -19,15 +19,15 @@ namespace GameFrameWork.UI
         public static void SetSprite(this Image renderer, string name)
         {
             string realPath = m_uiResPath.GetUISpritePath(name);
-            SpritePool.instance.Get(realPath, (Sprite sprite, object[] param) =>
+            ResourcesPool.instance.Get<Sprite>(realPath, (string resPath, UnityEngine.Object obj, object[] param) =>
             {
-                renderer.sprite = sprite;
+                renderer.sprite = obj as Sprite;
             });
         }
 
-        public static void LoadUI(string uiName, GameFrameWorkAction<GameObject, object[]> loadCallback, params object[] param)
+        public static void LoadUI(string uiName, GameFrameWorkAction<string, UnityEngine.Object, object[]> loadCallback, params object[] param)
         {
-            GameObjectPool.instance.Get(GetUIResPath(uiName), loadCallback, param);
+            ResourcesPool.instance.Get<GameObject>(GetUIResPath(uiName), loadCallback, param);
         }
 
         private static UIResPath m_uiResPath = null;

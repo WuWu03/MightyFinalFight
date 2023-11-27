@@ -10,8 +10,7 @@ public class BarrelMove : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.armatureAnimator.animation.timeScale = m_Owner.barrelData.moveSpeed * 0.5f;
-        m_Owner.armatureAnimator.animation.Play(AnimName.Move, 0);
+        m_Owner.PlayAnimation(AnimName.Move, 0, m_Owner.barrelData.moveSpeed * 0.5f);
     }
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -23,7 +22,7 @@ public class BarrelMove : BaseFsmState
 
     public override void OnExit(BaseFsm fsm, bool isShutdown)
     {
-        m_Owner.armatureAnimator.animation.Stop(AnimName.Move);
+        m_Owner.StopAnimation(AnimName.Move);
     }
 
     public override void OnDestroy(BaseFsm fsm)

@@ -94,7 +94,7 @@ namespace GameFrameWork.Editor
 				else if (label != null) EditorGUILayout.PropertyField(sp, new GUIContent(label), options);
 				else EditorGUILayout.PropertyField(sp, options);
 			}
-			else Debug.LogWarning("Unable to find property " + property);
+			else UnityEngine.Debug.LogWarning("Unable to find property " + property);
 
 			return sp;
 		}

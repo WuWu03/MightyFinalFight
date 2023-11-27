@@ -262,7 +262,7 @@ namespace GameFrameWork.UI
 
             if (type == null)
             {
-                Log.GameFrameworkLog.LogError("Panel is invalid!");
+                Debug.GameFrameworkLog.DebugError("Panel is invalid!");
                 return null;
             }
 
@@ -359,10 +359,10 @@ namespace GameFrameWork.UI
             }
         }
 
-        private void OnResComplete(GameObject go, object[] param)
+        private void OnResComplete(string resPath, UnityEngine.Object obj, object[] param)
         {
             WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
-            waitLoadPanel.panel.Init(go, UITools.GetUIResPath(waitLoadPanel.panel.panelName), waitLoadPanel.param);
+            waitLoadPanel.panel.Init(obj as GameObject, UITools.GetUIResPath(waitLoadPanel.panel.panelName), waitLoadPanel.param);
         }
 
         protected override void OnUpdate()

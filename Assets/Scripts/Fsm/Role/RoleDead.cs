@@ -19,7 +19,7 @@ public class RoleDead : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.PlayAnimation(AnimName.Dead, 4, 1);
+        m_Owner.PlayAnimation(AnimName.Dead, 4);
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetThrow(false);
     }

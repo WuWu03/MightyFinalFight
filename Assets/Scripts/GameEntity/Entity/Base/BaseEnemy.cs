@@ -12,17 +12,7 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    public event GameFrameWorkAction<int> onDeadEvent
-    {
-        add 
-        {
-            m_OnDeadEventHandler += value;
-        }
-        remove
-        {
-            m_OnDeadEventHandler -= value;
-        }
-    }
+
 
     public override void Init(int id, string name)
     {
@@ -47,8 +37,7 @@ public class BaseEnemy : BaseRole
                 return;
             }
 
-            Rect bound = GetBound(pos);
-            bool isMapXCanMove = StageMgr.instance.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
+            bool isMapXCanMove = StageMgr.instance.CanMovePosX(m_MoveDir.x > 0 ? m_Bound.xMax : m_Bound.xMin);
             bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
 
             if (!isMapXCanMove) pos.x = m_Pos.x;
@@ -102,10 +91,8 @@ public class BaseEnemy : BaseRole
     public override void Release()
     {
         PlayerMgr.instance.AddExp(m_SkillExp);
-        m_OnDeadEventHandler?.Invoke(m_EntityId);
         m_SkillExp = 0;
         m_HurtAnim = null;
-        m_OnDeadEventHandler = null;
         base.Release();
     }
 
@@ -115,8 +102,7 @@ public class BaseEnemy : BaseRole
 
         if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
         {
-            Rect bound = GetBound(transform.localPosition);
-            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
+            float x = m_Rigidbody2D.velocity.x > 0 ? m_Bound.xMax : m_Bound.xMin;
 
             if (!StageMgr.instance.CanMovePosX(x))
             {
@@ -136,7 +122,7 @@ public class BaseEnemy : BaseRole
         {
             int dir = data.attackerPos.x > m_Pos.x ? -1 : 1;
             Vector3 pos = new Vector3(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -m_Dir);
-            EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleData.hitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+            EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
         }
 
         Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
@@ -193,7 +179,7 @@ public class BaseEnemy : BaseRole
         OnHurtMsg(hurtData);
     }
 
-    private GameFrameWorkAction<int> m_OnDeadEventHandler = null;
+   
     private int m_SkillExp = 0;
     private int m_HpBarWidth = 0;
     private bool m_IsBoss = false;

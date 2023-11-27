@@ -1,10 +1,14 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
+using GameFrameWork.GameEntity;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
+using GameFrameWork.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static SkillConfigData;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
@@ -128,14 +132,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public bool isHitSuccess
-    {
-        get
-        {
-            return m_CurrCtrl != null && m_CurrCtrl.isAttackSuccess;
-        }
-    }
-
     public event GameFrameWorkAction<HurtData> onHurtEvent
     {
         add
@@ -145,6 +141,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         remove
         {
             m_OnHurtEvent -= value;
+        }
+    }
+
+    public List<Bullet> bullets
+    {
+        get
+        {
+            return m_Bullets;
         }
     }
 
@@ -161,6 +165,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleAwaken>();
         AddState<RoleSkill>();
         AddState<RoleDefense>();
+
+        m_Bullets = new List<Bullet>();
     }
 
     public override void SetData(BaseSceneObjectData data)
@@ -345,54 +351,59 @@ public class BaseRole : BaseAvatar, ICanBeHit
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
     }
 
-    public virtual void OnHurtMsg(HurtData data)
+    public virtual bool IsHurtWillDie(int attackValue)
     {
-        if (data == null || !canBeHit)
+        return m_EntityAttribute.health - attackValue <= 0;
+    }
+
+    public virtual void OnHurtMsg(HurtData hurtData)
+    {
+        if (hurtData == null || !canBeHit)
         {
             return;
         }
 
-        m_OnHurtEvent?.Invoke(data);
+        m_OnHurtEvent?.Invoke(hurtData);
 
         if (m_CurrCtrl != null)
         {
             m_CurrCtrl.ExitSkill();
         }
 
-        if (m_EntityAttribute.health - data.attackValue <= 0 && !data.isSwoon)
+        if (m_EntityAttribute.health - hurtData.attackValue <= 0 && !hurtData.isSwoon)
         {
-            data.isSwoon = true;
-            data.attackForce = SkillFactory.GetSmoonForce(data.attackerDir);
+            hurtData.isSwoon = true;
+            hurtData.attackForce = SkillFactory.GetSmoonForce(hurtData.attackerDir);
         }
 
-        m_IsSmoon = data.isSwoon;
+        m_IsSmoon = hurtData.isSwoon;
 
-        if (string.IsNullOrEmpty(data.hurtAnim))
+        if (string.IsNullOrEmpty(hurtData.hurtAnim))
         {
-            data.hurtAnim = AnimName.Hurt;
+            hurtData.hurtAnim = AnimName.Hurt;
         }
 
-        if (!data.isDefense)
+        if (!hurtData.isDefense)
         {
             if (m_IsSmoon)
             {
-                GetState<RoleSwoon>().force = data.attackForce;
+                GetState<RoleSwoon>().force = hurtData.attackForce;
                 ChangeState<RoleSwoon>();
             }
             else
             {
-                GetState<RoleHurt>().hurtAnim = data.hurtAnim;
+                GetState<RoleHurt>().hurtAnim = hurtData.hurtAnim;
                 ChangeState<RoleHurt>();
             }
         }
 
-        if (data.isGroundHurt && data.attackForce.y > 0)
+        if (hurtData.isGroundHurt && hurtData.attackForce.y > 0)
         {
-            m_OnGroundHurtData = data;
+            m_OnGroundHurtData = hurtData;
         }
         else
         {
-            OnGroundHurtMsg(data);
+            OnGroundHurtMsg(hurtData);
         }
     }
 
@@ -457,22 +468,21 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
-        if (skillData.Type == SkillConfigData.SkillType.Normal && m_CurrCtrl != null)
+        if (m_CurrCtrl != null)
         {
-            m_CurrCtrl.SetNormalAttackState(isHurtTarget);
+            m_CurrCtrl.SetHitState(isHurtTarget);
         }
     }
 
+
     protected virtual void OnGroundHurtMsg(HurtData data)
     {
-        string hurtSound = string.IsNullOrEmpty(data.hurtSound) ? SoundName.DefaultHurt : data.hurtSound;
-
-        if (data.isSwoon)
+        if (!data.isNotPlayHurtSound)
         {
-            Debug.Log(hurtSound);
+            string hurtSound = string.IsNullOrEmpty(data.hurtSound) ? SoundName.DefaultHurt : data.hurtSound;
+            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
         }
 
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
         m_EntityAttribute.SubHealth(data.attackValue);
 
         if (m_EntityAttribute.IsDie() && !m_IsSmoon)
@@ -632,6 +642,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
             if (m_EntityAttribute.health > 0)
                 ChangeState<RoleAwaken>();
+
             else
                 ChangeState<RoleDead>();
         });
@@ -698,6 +709,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected event GameFrameWorkAction<HurtData> m_OnHurtEvent = null;
+    protected List<Bullet> m_Bullets = null;
 
     private bool m_IsAutoMove = false;
     private bool m_XArrived = false;

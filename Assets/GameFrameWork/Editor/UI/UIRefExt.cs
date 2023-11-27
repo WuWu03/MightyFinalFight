@@ -10,7 +10,7 @@ namespace GameFrameWork.Editor
             UIRefRoot uiRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();
             if (uiRefRoot == null)
             {
-                Debug.LogError("没有 UIRefSetting 组件");
+                UnityEngine.Debug.LogError("没有 UIRefSetting 组件");
                 return;
             }
 

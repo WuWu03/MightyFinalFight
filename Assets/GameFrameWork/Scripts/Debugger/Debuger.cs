@@ -1,31 +1,31 @@
 ﻿using GameFrameWork.Utilities;
 using UnityEngine;
 
-namespace GameFrameWork.Log
+namespace GameFrameWork.Debug
 {
     public static class GameFrameworkLog
     {
-        public static void Log(params object[] args)
+        public static void Debug(params object[] args)
         {
             if (!AppConfig.instance.openLog)
             {
                 return;
             }
 
-            Debug.Log(GetLogInfo(args));
+            UnityEngine.Debug.Log(GetDebugInfo(args));
         }
 
-        public static void LogError(params object[] args)
+        public static void DebugError(params object[] args)
         {
             if (!AppConfig.instance.openLog)
             {
                 return;
             }
 
-            Debug.LogError(GetLogInfo(args));
+            UnityEngine.Debug.LogError(GetDebugInfo(args));
         }
 
-        private static string GetLogInfo(object[] args)
+        private static string GetDebugInfo(object[] args)
         {
             m_LogColor = AppConfig.instance.logColor;
 

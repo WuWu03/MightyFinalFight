@@ -33,7 +33,7 @@ public class RoleSelectPanel : BasePanel
 		m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
 		m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
 
-		m_Component.roleContentGroupView.Update(DataHelper.roleSelectDatas.Length);
+		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 
 		SoundMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm14Character", true);
@@ -53,12 +53,12 @@ public class RoleSelectPanel : BasePanel
 			if (axis.y < 0)
 			{
 				m_CurrSelectIndex++;
-				if (m_CurrSelectIndex >= DataHelper.roleSelectDatas.Length) m_CurrSelectIndex = 0;
+				if (m_CurrSelectIndex >= ConfigDataHelper.roleSelectConfigDatas.Length) m_CurrSelectIndex = 0;
 			}
 			else
 			{
 				m_CurrSelectIndex--;
-				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = DataHelper.roleSelectDatas.Length - 1;
+				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataHelper.roleSelectConfigDatas.Length - 1;
 			}
 
            m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
@@ -84,11 +84,11 @@ public class RoleSelectPanel : BasePanel
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{
-		RoleSelectData roleSelectData = DataHelper.roleSelectDatas[item.index];
+		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.index];
 
-		item.txtDesc.text = roleSelectData.desc;
-		item.txtName.text = roleSelectData.name;
-		item.btnRoleIcon.image.SetSprite(roleSelectData.headIcon);
+		item.txtDesc.text = roleSelectConfigData.desc;
+		item.txtName.text = roleSelectConfigData.name;
+		item.btnRoleIcon.image.SetSprite(roleSelectConfigData.headIcon);
 	}
 
 	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)
@@ -107,7 +107,7 @@ public class RoleSelectPanel : BasePanel
 
         SoundMgr.instance.StopBGM();
 		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
-		PlayerMgr.instance.selectRoleId = DataHelper.roleSelectDatas[m_CurrSelectIndex].roleId;
+		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0.5f, () =>
 		{

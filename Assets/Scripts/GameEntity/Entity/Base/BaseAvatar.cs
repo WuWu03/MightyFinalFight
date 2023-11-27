@@ -1,11 +1,22 @@
-﻿using GameFrameWork.Fsm;
-using System;
+﻿using System;
 using UnityEngine;
 using DragonBones;
-using GameFrameWork.Log;
+using GameFrameWork.Debug;
+using System.Collections.Generic;
+using GameFrameWork;
+using GameFrameWork.Fsm;
+using System.Linq;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
+    public BoxCollider2D boxCollider2D
+    {
+        get
+        {
+            return m_BoxCollider2D;
+        }
+    }
+
     public UnityArmatureComponent armatureAnimator
     {
         get
@@ -22,17 +33,35 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
+    public List<BaseSceneObject> targets
+    {
+        get
+        {
+            return m_ListTargets;
+        }
+    }
+
+    public Rect bound
+    {
+        get
+        {
+            return m_Bound;
+        }
+    }
     public override void Init(int id, string name)
     {
         base.Init(id, name);
+        m_BoxCollider2D = gameObject.GetOrAddComponent<BoxCollider2D>();
+        m_BoxCollider2D.isTrigger = true;
+        m_BoxCollider2D.enabled = false;
+        m_ListTargets = new List<BaseSceneObject>();
         m_FsmMachine = FsmMachine.Create(this, this.GetType().Name);
     }
 
-    public override void Release()
+    public override void UpdatePos(Vector2 pos, float posZ)
     {
-        m_FsmMachine.ShutDown();
-        m_FsmMachine = null;
-        base.Release();
+        base.UpdatePos(pos, posZ);
+        UpdateBound();
     }
 
     public Vector2 GetCurrTriggerSize()
@@ -57,6 +86,19 @@ public abstract class BaseAvatar : BaseGravityObject
         return Vector2.zero;
     }
 
+    public override void Release()
+    {
+        m_FsmMachine.ShutDown();
+        m_ListTargets.Clear();
+        m_Animator.animation.Reset();
+
+        m_FsmMachine = null;
+        m_ListTargets = null;
+        m_CurrAnimName = string.Empty;
+
+        base.Release();
+    }
+
     protected void SetTrigger(string animName)
     {
         if (m_DragonBonesTrigger == null)
@@ -72,6 +114,24 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
+    protected void UpdateBound()
+    {
+        m_Bound.width = m_BoxCollider2D.size.x;
+        m_Bound.height = m_BoxCollider2D.size.y;
+        m_Bound.xMin = m_Pos.x + m_BoxCollider2D.offset.x * m_Dir - m_BoxCollider2D.size.x / 2;
+        m_Bound.xMax = m_Pos.x + m_BoxCollider2D.offset.x * m_Dir + m_BoxCollider2D.size.x / 2;
+        m_Bound.yMin = m_Pos.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
+        m_Bound.yMax = m_Pos.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
+        m_Bound.center = new Vector2(m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
+    }
+
+    protected void SetCollider(Vector2 offest, Vector2 size)
+    {
+        m_BoxCollider2D.size = size;
+        m_BoxCollider2D.offset = offest;
+        UpdateBound();
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -83,27 +143,30 @@ public abstract class BaseAvatar : BaseGravityObject
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
         m_DragonBonesTrigger = m_ResGO.GetComponent<HitTrigger>();
+        m_BoxCollider2D.enabled = true;
+        UpdateBound();
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
     {
-        if (animName.Contains("Roll"))
-        {
-            Debug.Log("ssdfs");
-        }
-
         if (m_Animator == null)
         {
-            GameFrameworkLog.LogError("Animator is invalid!");
+            GameFrameworkLog.DebugError("Animator is invalid!");
             return;
         }
 
         if (IsAnimation(animName))
         {
-            return;
+            if (!m_Animator.animation.isCompleted)
+            {
+                return; 
+            }
+
+            m_CurrAnimName = string.Empty;
         }
 
         SetTrigger(animName);
+        
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
         m_Animator.animation.Play(animName, playTimes);
@@ -132,6 +195,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
             animName = m_CurrAnimName;
         }
+
         m_Animator.animation.Stop(animName);
     }
 
@@ -178,6 +242,7 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.AddState<T>();
     }
 
+
     public T GetState<T>() where T : BaseFsmState
     {
         return m_FsmMachine.GetState<T>();
@@ -203,8 +268,15 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.SetDefaultState<T>();
     }
 
+    protected virtual void OnTriggerEnter2D(Collider2D collision) { }
+    protected virtual void OnTriggerStay2D(Collider2D collision) { }
+    protected virtual void OnTriggerExit2D(Collider2D collision) { }
+
     protected string m_CurrAnimName = string.Empty;
+    protected Rect m_Bound = Rect.zero;
+    protected BoxCollider2D m_BoxCollider2D = null;
     protected HitTrigger m_DragonBonesTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
+    protected List<BaseSceneObject> m_ListTargets = null;
 }

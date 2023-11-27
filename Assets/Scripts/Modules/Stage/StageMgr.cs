@@ -158,7 +158,7 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         if (m_CurrStageData.BGMs.Length > 0)
         {
-            AudioGroup[] group = new AudioGroup[m_CurrStageData.BGMs.Length];
+            AudioGroup[] groups = new AudioGroup[m_CurrStageData.BGMs.Length];
 
             for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
             {
@@ -166,10 +166,10 @@ public class StageMgr : BaseMgr<StageMgr>
                 bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
                 float volume = m_CurrStageData.BGMs[i].Volume;
                 float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
-                group[i] = AudioGroup.Create(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
+                groups[i] = AudioGroup.Create(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
             }
 
-            SoundMgr.instance.PlayBGMGroup(group, true);
+            SoundMgr.instance.PlayBGMGroup(groups, true);
         }
 
         if (!UIMgr.instance.IsPanelOpen<MainPanel>())

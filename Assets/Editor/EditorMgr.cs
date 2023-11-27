@@ -54,10 +54,16 @@ public class EditorMgr : MonoBehaviour
         AppConfig appConfig = GameObject.FindObjectOfType<AppConfig>();
         appConfig.loadAB = true;
         appConfig.openLog = openLog;
-        AssetBundleBuilder.Build(BuildTarget.StandaloneWindows, false);
+
+        using (AssetBundleBuilder builder = new AssetBundleBuilder())
+        {
+            builder.Build(BuildTarget.StandaloneWindows, false);
+        }
+
         AssetDatabase.Refresh();
 
         string[] scenes = new string[EditorBuildSettings.scenes.Length];
+
         for (int i = 0; i < scenes.Length; i++)
         {
             scenes[i] = EditorBuildSettings.scenes[i].path;
@@ -96,12 +102,6 @@ public class EditorMgr : MonoBehaviour
         GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
     }
 
-
-    [MenuItem("Assets/Config/CreateSceneItemData")]
-    public static void CreateSceneItemData()
-    {
-        GameFrameWork.Editor.EditorUtil.CreateConfigData<SceneItemConfig, SceneItemConfigData>("SceneItemData", ".asset");
-    }
 
     [MenuItem("Assets/Config/CreateTaskData")]
     public static void CreateTaskData()

@@ -133,8 +133,8 @@ namespace GameFrameWork.Camera
 
         public float GetOrthgraphicSize()
         {
-            float cameraRate = (float)Screen.width / Screen.height;
-            float sizeRate = cameraRate / NormalRate;
+            float screenRate = (float)Screen.width / Screen.height;
+            float sizeRate = screenRate / NormalRate;
 
             if (sizeRate < 1)
             {
@@ -143,10 +143,10 @@ namespace GameFrameWork.Camera
 
             if (sizeRate > 1)
             {
-                sizeRate = NormalRate / cameraRate;
+                sizeRate = NormalRate / screenRate;
             }
 
-            return sizeRate * NormalSize / 100;
+            return 1;// sizeRate * NormalSize / 100;
         }
 
         protected override void OnShutDown()
@@ -155,7 +155,9 @@ namespace GameFrameWork.Camera
         }
 
         private const float NormalRate = 1280f / 720f;
-        private const float NormalSize = 200f / 2;
+        private const float NormalWidth = 1280f;
+        private const float NormalHeight = 720f;
+        private const float NormalSize = 100;
 
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;

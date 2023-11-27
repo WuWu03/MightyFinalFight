@@ -17,7 +17,10 @@ public class Weapon : BaseSceneItem
 
     public void Drop(float attackerDir)
     {
-        if (!m_WeaponData.canDrop) return;
+        if (!m_WeaponData.canDrop)
+        {
+            return;
+        }
     
         SetActive(true);
         SetPosXY(m_Owner.pos.x, m_Owner.pos.y);

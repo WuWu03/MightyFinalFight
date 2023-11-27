@@ -33,7 +33,7 @@ namespace GameFrameWork.Editor
         {
             if (Selection.gameObjects == null || Selection.gameObjects.Length < 1)
             {
-                Debug.Log("没选中任何物体!");
+                UnityEngine.Debug.Log("没选中任何物体!");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace GameFrameWork.Editor
         {
             if (Selection.gameObjects == null || Selection.gameObjects.Length < 1)
             {
-                Debug.Log("没选中任何物体!");
+                UnityEngine.Debug.Log("没选中任何物体!");
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace GameFrameWork.Editor
             editor.SelectAll();
             editor.Copy();
             UnityEditor.EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
-            Debug.Log("拷贝路径成功!");
+            UnityEngine.Debug.Log("拷贝路径成功!");
         }
 
         private static string GetCSComponentPath(string componentName, string objName, string path = "")

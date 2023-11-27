@@ -15,14 +15,14 @@ namespace GameFrameWork.Editor
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemGUI;
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-            m_DicAssetContainer = new Dictionary<string, bool>();
+            m_DicAssetContainer = new Dictionary<string, int>();
         }
 
         private static void ProjectWindowItemGUI(string guid, Rect selectionRect)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-            if (!assetPath.Contains("Assets"))
+            if (!assetPath.Contains("Assets") || assetPath.Substring(assetPath.IndexOf("Assets")).Equals("Assets"))
             {
                 return;
             }
@@ -34,24 +34,26 @@ namespace GameFrameWork.Editor
                 path = assetPath.Substring(0, assetPath.LastIndexOf("/"));
             }
 
-            if (IsAssetInBuildMap(path))
+            int result = IsAssetInBuildMap(path);
+
+            if (result != 0)
             {
                 GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+                labelStyle.normal.textColor = result == 1 ? Color.red : Color.green;
 
-                labelStyle.normal.textColor = Color.red;
-
-                float x = selectionRect.x + selectionRect.width - 15;
+                float x = selectionRect.x + selectionRect.width - 40; 
                 float y = selectionRect.y;
-                float width = 15f;
+                float width = 40f;
                 float height = selectionRect.height;
+                string label = result == 1 ? "Map" : "Single";
 
-                GUI.Label(new Rect(x, y, width, height), "¡ù", labelStyle);
+                GUI.Label(new Rect(x, y, width, height), label, labelStyle);
             }
         }
 
-        private static bool IsAssetInBuildMap(string assetPath)
+        private static int IsAssetInBuildMap(string assetPath)
         {
-            bool result = false;
+            int result = 0;
 
             if (m_AssetBundleConfig == null)
             {
@@ -64,10 +66,29 @@ namespace GameFrameWork.Editor
                 {
                     if(m_AssetBundleConfig.Datas[i].AssetPath.Contains(assetPath))
                     {
-                        result = true;
-                        m_DicAssetContainer.Add(assetPath, true);
+                        result = m_AssetBundleConfig.Datas[i].BundleType == AssetBundleData.AssetType.Map ? 1 : 2;
+                        m_DicAssetContainer.Add(assetPath, result);
                         break;
                     }
+                }
+            }
+            else
+            {
+                bool hasFind = false;
+
+                for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
+                {
+                    if (m_AssetBundleConfig.Datas[i].AssetPath.Contains(assetPath))
+                    {
+                        hasFind = true;
+                        break;
+                    }
+                }
+
+                if (!hasFind)
+                {
+                    m_DicAssetContainer.Remove(assetPath);
+                    result = 0;
                 }
             }
 
@@ -75,7 +96,7 @@ namespace GameFrameWork.Editor
         }
 
 
-        private static Dictionary<string, bool> m_DicAssetContainer = null;
+        private static Dictionary<string, int> m_DicAssetContainer = null;
         private static AssetBundleConfig m_AssetBundleConfig = null;
     }
 }

@@ -26,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644640882698586319}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,7 +35,6 @@ Transform:
   - {fileID: 2723875450521917906}
   - {fileID: 3067008567743706593}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2906558588607097238
 MonoBehaviour:
@@ -159,8 +159,8 @@ MonoBehaviour:
     Offest: {x: 0.0024832487, y: 0.14982308}
     Size: {x: 0.2037028, y: 0.299722}
   - AnimName: Skill1
-    Offest: {x: 0.009105265, y: 0.15065083}
-    Size: {x: 0.22025788, y: 0.3046885}
+    Offest: {x: -0.06063676, y: 0.16001216}
+    Size: {x: 0.43837714, y: 0.32341117}
   - AnimName: Skill2
     Offest: {x: 0.041387558, y: 0.17051685}
     Size: {x: 0.32455444, y: 0.3377986}
@@ -195,13 +195,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7702529374937591995}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.156, z: 0}
+  m_LocalPosition: {x: -0.0872, y: 0.16129999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1827891400007914875}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &3269716423076454332
 MeshRenderer:
@@ -278,13 +278,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8855023976403987452}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.156, z: -0.001}
+  m_LocalPosition: {x: -0.0872, y: 0.16129999, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1827891400007914875}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &799711818621305021
 MeshRenderer:

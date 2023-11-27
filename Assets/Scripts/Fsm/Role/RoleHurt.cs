@@ -28,7 +28,9 @@ public class RoleHurt : BaseFsmState
             if (m_Owner.entityAttribute.health <= 0)
             {
                 if (m_Owner.isInGround)
+                {
                     ChangeState<RoleDead>(fsm);
+                }
             }
             else ChangeState<RoleIdle>(fsm);
         }

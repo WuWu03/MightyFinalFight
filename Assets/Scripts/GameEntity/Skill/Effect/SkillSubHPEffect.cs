@@ -9,7 +9,10 @@ public class SkillSubHPEffect : SkillBaseEffect
 
     public override void Effect(ISkillSelector selector)
     {
-        if (!m_Owner.isHitSuccess) return;
+        if (!m_Owner.currCtrl.isHitSuccess)
+        {
+            return;
+        }
 
         foreach (Match m in m_Regex.Matches(m_SkillEffect.Args))
         {

@@ -57,9 +57,12 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         string soundName = m_QueueSound.Dequeue();
 
-        if (m_Owner.isHitSuccess)
+        if (m_Owner.currCtrl.isHitSuccess)
         {
-            if (m_SkillData.IsInEffectPlaySound) SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
+            if (m_SkillData.IsInEffectPlaySound)
+            {
+                SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + soundName);
+            }
         }
         else
         {

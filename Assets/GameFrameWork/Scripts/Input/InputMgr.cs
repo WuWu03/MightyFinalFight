@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro.EditorUtilities;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameFrameWork.Input
@@ -9,8 +11,8 @@ namespace GameFrameWork.Input
     public class InputMgr : BaseMgr<InputMgr>
     {
         public GameFrameWorkFloatAction getDirectionEvent;
-        public GameFrameWorkBooleanAction afterTriggerEvent;
         public GameFrameWorkBooleanAction<int> getPreconditonEvent;
+
         public bool isRunning
         {
             get
@@ -27,19 +29,31 @@ namespace GameFrameWork.Input
         {
             m_ListComboKeyEvent = new List<ComboKeyEventArgs>();
             m_ListComboKey = new List<KeyType>();
+            m_TriggerKey = new List<KeyType>();
             m_QueueKeyDown = new Queue<string>();
+            m_DicAfterTriggerEvents = new Dictionary<KeyType, List<GameFrameWorkAction>>();
 
             InputHelper.Init();
         }
 
-        public void AddKey(KeyType keyType, string keyName)
+        public void AddKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
         {
-            AddKey(keyType, keyName, KeyType.None, false);
+            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, false);
         }
 
-        public void AddKey(KeyType keyType, string keyName, KeyType replaceKeyType, bool isShift)
+        public void AddTurboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
         {
-            InputHelper.AddKey(keyType, keyName, replaceKeyType, isShift);
+            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, false);
+        }
+
+        public void AddComboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        {
+            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, true);
+        }
+
+        public void AddTurboComboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        {
+            InputHelper.AddKey(keyType, keyName, replaceKeyType, true, true);
         }
 
         public void AddAxis(AxisType axisType, string horizontal, string vertical)
@@ -68,54 +82,37 @@ namespace GameFrameWork.Input
         public void RemoveAllComboKeyEvent()
         {
             getDirectionEvent = null;
-            afterTriggerEvent = null;
             getPreconditonEvent = null;
             m_ListComboKeyEvent.Clear();
         }
 
-        protected override void OnUpdate()
+        public void AddAfterTriggerEvent(KeyType keyType, GameFrameWorkAction afterTriggerEvent)
         {
-            if (m_QueueKeyDown.Count > 0)
+            if (m_DicAfterTriggerEvents.TryGetValue(keyType, out List<GameFrameWorkAction> eventList))
             {
-                lock (m_QueueKeyDown)
+                if (!eventList.Contains(afterTriggerEvent))
                 {
-                    while (m_QueueKeyDown.Count > 0)
-                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
+                    eventList.Add(afterTriggerEvent);
                 }
-            }
 
-            if (m_AxisDownIndex >= 0)
-            {
-                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
-                m_AxisDownIndex = -1;
-                m_AxisDownType = AxisType.None;
-            }
-
-            if (!m_IsRunning || m_ListComboKeyEvent == null || m_ListComboKeyEvent.Count < 1)
-            {
                 return;
             }
 
-            if (m_KeyDownTimer > 0 && Time.time - m_KeyDownTimer >= KeyDownTime)
-            {
-                ResetComboKeys();
-            }
+            eventList = new List<GameFrameWorkAction>() { afterTriggerEvent };
+            m_DicAfterTriggerEvents.Add(keyType, eventList);
+        }
 
-            if (CheckComboAxis(AxisType.LeftAxis)) m_KeyDownTimer = Time.time;
-            //if (CheckComboAxis(AxisType.CrossAxis)) m_KeyDownTime = Time.time;
-            if (CheckComboKey(KeyType.A)) m_KeyDownTimer = Time.time;
-            if (CheckComboKey(KeyType.B)) m_KeyDownTimer = Time.time;
-            if (CheckComboKey(KeyType.X)) m_KeyDownTimer = Time.time;
-            if (CheckComboKey(KeyType.Y)) m_KeyDownTimer = Time.time;
-            if (CheckComboKey(KeyType.LB)) m_KeyDownTimer = Time.time;
-            if (CheckComboKey(KeyType.RB)) m_KeyDownTimer = Time.time;
-            //if (CheckComboKey(KeyType.LT)) m_KeyDownTime = Time.time;
-            //if (CheckComboKey(KeyType.RT)) m_KeyDownTime = Time.time;
-
-            if (!TriggerKeyEvent())
+        public void RemoveAfterTriggerEvent(KeyType keyType, GameFrameWorkAction afterTriggerEvent)
+        {
+            if (m_DicAfterTriggerEvents.TryGetValue(keyType, out List<GameFrameWorkAction> eventList))
             {
-                afterTriggerEvent?.Invoke();
+                eventList.Remove(afterTriggerEvent);
             }
+        }
+
+        public void RemoveAllAfterTriggerEvent()
+        {
+            m_DicAfterTriggerEvents.Clear();
         }
 
         public Vector2 GetAxis(AxisType axisType, bool isOneKey = false)
@@ -189,7 +186,73 @@ namespace GameFrameWork.Input
 
             return GetKeyDown(key.keyName, isOneKey);
         }
- 
+
+        protected override void OnUpdate()
+        {
+            if (m_QueueKeyDown.Count > 0)
+            {
+                lock (m_QueueKeyDown)
+                {
+                    while (m_QueueKeyDown.Count > 0)
+                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
+                }
+            }
+
+            if (m_AxisDownIndex >= 0)
+            {
+                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
+                m_AxisDownIndex = -1;
+                m_AxisDownType = AxisType.None;
+            }
+
+            CheckCombo();
+
+        }
+
+        private void CheckCombo()
+        {
+            if (!m_IsRunning || m_ListComboKeyEvent == null || m_ListComboKeyEvent.Count < 1)
+            {
+                return;
+            }
+
+            if (CheckComboAxis(AxisType.LeftAxis))
+            {
+                m_KeyDownTimer = Time.time;
+            }
+
+            KeyArgs[] allKeys = InputHelper.GetAllKeys();
+
+            for (int i = 0; i < allKeys.Length; i++)
+            {
+                if (allKeys[i] != null && allKeys[i].isCheckCombo && CheckComboKey(allKeys[i]))
+                {
+                    m_CurrKeyDown = i;
+                    m_KeyDownTimer = Time.time;
+                }
+            }
+
+            bool isTrigger = TriggerKeyEvent();
+
+            if (m_KeyDownTimer > 0 && Time.time - m_KeyDownTimer >= KeyDownTime)
+            {
+                if (!isTrigger && m_CurrKeyDown >= 0)
+                {
+                    KeyType keyType = allKeys[m_CurrKeyDown].replaceKeyType != KeyType.None ? allKeys[m_CurrKeyDown].replaceKeyType : allKeys[m_CurrKeyDown].keyType;
+
+                    if (m_DicAfterTriggerEvents.TryGetValue(keyType, out List<GameFrameWorkAction> eventList))
+                    {
+                        for (int i = 0; i < eventList.Count; i++)
+                        {
+                            eventList[i]?.Invoke();
+                        }
+                    }
+                }
+
+                ResetComboKeys();
+            }
+        }
+
         private bool CheckComboAxis(AxisType axisType)
         {
             bool keyDown = false;
@@ -221,35 +284,27 @@ namespace GameFrameWork.Input
             return keyDown;
         }
 
-        private bool CheckComboKey(KeyType keyType)
+        private bool CheckComboKey(KeyArgs key)
         {
-            KeyArgs key = InputHelper.GetKey(keyType);
-            bool keyDown = false;
+            bool isKeyDown = false;
 
             if (key == null)
             {
-                return keyDown;
+                return isKeyDown;
             }
 
-            if (key.isShift)
+            if (GetKeyDown(key.keyName, key.isTurbo))
             {
-                if (GetKeyDown(key.keyName))
+                KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : key.keyType;
+
+                if (m_ListComboKey.Count < 1 || m_ListComboKey[m_ListComboKey.Count - 1] != replaceKeyType)
                 {
-                    KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : keyType;
-                    if (m_ListComboKey.Count < 1 || m_ListComboKey[m_ListComboKey.Count - 1] != replaceKeyType)
-                    {
-                        m_ListComboKey.Add(replaceKeyType);
-                        keyDown = true;
-                    }
+                    m_ListComboKey.Add(replaceKeyType);
+                    isKeyDown = true;
                 }
             }
-            else
-            {
-                keyDown = GetKeyDown(key.keyName, true);
-                if (keyDown) m_ListComboKey.Add(keyType);
-            }
 
-            return keyDown;
+            return isKeyDown;
         }
 
         private bool TriggerKeyEvent()
@@ -296,7 +351,12 @@ namespace GameFrameWork.Input
             if (input[inputIndex] != origin[originIndex])
             {
                 inputIndex++;
-                if (originIndex > 0) originIndex = 0;
+
+                if (originIndex > 0)
+                {
+                    originIndex = 0;
+                }
+
                 return IsMatch(origin, input, originIndex, inputIndex);
             }
             else
@@ -307,7 +367,7 @@ namespace GameFrameWork.Input
             }
         }
 
-        private bool GetKeyDown(string keyName, bool isOneKey = false)
+        private bool GetKeyDown(string keyName, bool isTurbo = false)
         {
             bool isKeyDown = UnityEngine.Input.GetButton(keyName);
 
@@ -318,13 +378,14 @@ namespace GameFrameWork.Input
 
             if (isKeyDown)
             {
-                if (isOneKey)
+                if (!isTurbo)
                 {
                     if (!m_QueueKeyDown.Contains(keyName))
                     {
                         lock (m_QueueKeyDown)
                             m_QueueKeyDown.Enqueue(keyName);
                     }
+
                     return !prev;
                 }
 
@@ -342,6 +403,7 @@ namespace GameFrameWork.Input
         {
             m_ListComboKey.Clear();
             m_KeyDownTimer = -1f;
+            m_CurrKeyDown = -1;
             m_CurrDir = 0;
         }
 
@@ -350,8 +412,10 @@ namespace GameFrameWork.Input
             InputHelper.Dispose();
             m_DicIsKeyDown.Clear();
             m_ListComboKey.Clear();
+            m_TriggerKey.Clear();
             m_ListComboKeyEvent.Clear();
             m_QueueKeyDown.Clear();
+            m_DicAfterTriggerEvents.Clear();
             m_IsRunning = false;
         }
 
@@ -359,12 +423,14 @@ namespace GameFrameWork.Input
         private float m_KeyDownTimer = -1f;
         private const float KeyDownTime = 0.04f;
         private bool m_IsRunning = false;
-
+        private int m_CurrKeyDown = -1;
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
         private AxisType m_AxisDownType = AxisType.None;
         private Dictionary<string, bool> m_DicIsKeyDown = new Dictionary<string, bool>();
         private List<KeyType> m_ListComboKey = null;
+        private List<KeyType> m_TriggerKey = null;
         private Queue<string> m_QueueKeyDown = null;
         private List<ComboKeyEventArgs> m_ListComboKeyEvent = null;
+        private Dictionary<KeyType, List<GameFrameWorkAction>> m_DicAfterTriggerEvents = null;
     }
 }

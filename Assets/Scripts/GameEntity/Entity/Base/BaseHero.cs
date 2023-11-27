@@ -124,8 +124,7 @@ public class BaseHero : BaseRole
 
         if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(m_Rigidbody2D.velocity.x) > 0)
         {
-            Rect bound = GetBound(transform.localPosition);
-            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
+            float x = m_Rigidbody2D.velocity.x > 0 ? m_Bound.xMax : m_Bound.xMin;
 
             if (IsOutVersionX(x))
             {
@@ -172,7 +171,9 @@ public class BaseHero : BaseRole
         if (skillData.Type == SkillConfigData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
         {
             if (!m_IsCatchControl)
+            {
                 ResetCatch(false);
+            }
             return;
         }
 
@@ -185,7 +186,7 @@ public class BaseHero : BaseRole
             hurtData.attackValue = 0;
             hurtData.isSwoon = true;
             hurtData.attackForce = SkillFactory.GetSmoonForce(m_Dir);
-
+            hurtData.isNotPlayHurtSound = true;
             m_ListCatchTarget[0].OnHurtMsg(hurtData);
         }
     }
@@ -214,10 +215,13 @@ public class BaseHero : BaseRole
     public override void OnJumpMsg(JumpData data)
     {
         data.isCatch = false;
+
         if (HasCatch())
         {
             if (!m_IsCatchControl)
+            {
                 ResetCatch();
+            }
             else
             {
                 m_CatchStamp = Time.time;
@@ -291,8 +295,7 @@ public class BaseHero : BaseRole
                 return;
             }
 
-            Rect bound = GetBound(pos);
-            float border = m_MoveDir.x > 0 ? bound.xMax : bound.xMin;
+            float border = m_MoveDir.x > 0 ? m_Bound.xMax : m_Bound.xMin;
             bool isMapXCanMove = StageMgr.instance.CanMovePosX(border) && !IsOutVersionX(border);
             bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
 
@@ -369,7 +372,7 @@ public class BaseHero : BaseRole
 
             if (IsAnyState(typeof(RoleIdle)))
             {
-                PlayAnimation(AnimName.Idle, 0, 1);
+                PlayAnimation(AnimName.Idle);
             }
         }
     }
@@ -409,37 +412,40 @@ public class BaseHero : BaseRole
             isCheck = isCheck || IsAnyState(typeof(RoleMove));
             m_IsDropInGround = false;
 
-            if (!isCheck || m_ListTargets.Count < 1)
+            List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
+
+            if (!isCheck || enemyTargets.Count < 1)
             {
                 return;
             }
 
-            for (int i = 0; i < m_ListTargets.Count; i++)
+            for (int i = 0; i < enemyTargets.Count; i++)
             {
-                ICanBeHit temp = m_ListTargets[i].GetComponent<ICanBeHit>();
-                if (temp == null || !temp.canBeHit || !(temp is BaseAvatar))
+                ICanBeHit temp = enemyTargets[i].GetComponent<ICanBeHit>();
+
+                if (temp == null || !temp.canBeHit || !(temp is BaseRole))
                 {
                     continue;
                 }
 
-                BaseAvatar tempAvatar = temp as BaseAvatar;
+                BaseRole tempEnemy = temp as BaseRole;
 
-                if (!tempAvatar.isInGround)
+                if (!tempEnemy.isInGround)
                 {
                     continue;
                 }
 
-                float distance = GetCatchDistance(tempAvatar);
-                float yOffest = Mathf.Abs(tempAvatar.pos.y - m_Pos.y);
-                float xOffest = Mathf.Abs(tempAvatar.pos.x - m_Pos.x);
-                float dirOffest = (tempAvatar.pos.x - m_Pos.x) * m_Dir;
+                float distance = GetCatchDistance(tempEnemy);
+                float yOffest = Mathf.Abs(tempEnemy.pos.y - m_Pos.y);
+                float xOffest = Mathf.Abs(tempEnemy.pos.x - m_Pos.x);
+                float dirOffest = (tempEnemy.pos.x - m_Pos.x) * m_Dir;
                 bool isInRange = yOffest <= 0.03f && xOffest <= distance && dirOffest > 0;
 
                 if (isInRange)
                 {
-                    tempAvatar.SetDir(m_Dir * -1);
-                    tempAvatar.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
-                    tempAvatar.SetDepth(m_Pos.y + 0.05f);
+                    tempEnemy.SetDir(m_Dir * -1);
+                    tempEnemy.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
+                    tempEnemy.SetDepth(m_Pos.y + 0.05f);
                     temp.SetCatch(true);
                     ChangeState<HeroCatch>();
                     SetDefaultState<HeroCatch>();
@@ -493,7 +499,7 @@ public class BaseHero : BaseRole
     {
         Vector2 targetSize = target.GetAnimTriggerSize(AnimName.Idle);
         Vector2 selfSize = GetAnimTriggerSize(AnimName.Catch);
-        float distance = targetSize.x / 2 + selfSize.x / 3 - 0.05f;
+        float distance = targetSize.x / 2 + selfSize.x / 2 - 0.05f;
 
         return distance;
     }

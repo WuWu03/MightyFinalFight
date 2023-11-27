@@ -17,7 +17,7 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.Init(manager);
         PlayerMgr.Init(manager);
         StaticConfig.InitConfig();
-        DataHelper.Init(PathUtil.configDataPath);
+        ConfigDataHelper.Init(PathUtil.configDataPath);
     }
 
     protected override GameFrameWork.UI.UIResPath InitUIResPath()

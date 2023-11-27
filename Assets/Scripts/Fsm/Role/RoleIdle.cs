@@ -10,16 +10,17 @@ public class RoleIdle : BaseFsmState
 
     public override void OnEnter(BaseFsm fsm)
     {
+        Debug.Log("战力了");
         m_Owner.ResetRigidbody();
         m_Owner.SetPos2(m_Owner.pos, true);
 
         if(m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
-            m_Owner.PlayAnimation(AnimName.Idle_Weapon, 0);
+            m_Owner.PlayAnimation(AnimName.Idle_Weapon);
         }
         else
         {
-            m_Owner.PlayAnimation(AnimName.Idle, 0);
+            m_Owner.PlayAnimation(AnimName.Idle);
         }
     }
 

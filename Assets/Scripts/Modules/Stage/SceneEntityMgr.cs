@@ -3,44 +3,44 @@ using GameFrameWork.GameEntity;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork.Log;
+using GameFrameWork.Debug;
 
 public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 {
     private void Awake()
     {
         m_DeadEnemies = new List<int>();
-        m_CurrEnemies = new List<BaseEnemy>();
+        m_Enemies = new List<BaseEnemy>();
         m_SceneBuildings = new List<BaseSceneObject>();
         m_SceneItems = new List<BaseSceneItem>();
     }
 
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(DataHelper.roleDatas.GetDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataHelper.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
 
         if(enemy == null)
         {
-            GameFrameworkLog.LogError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
+            GameFrameworkLog.DebugError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
             return null;
         }
 
-        enemy.onDeadEvent += OnEnemyDead;
-        m_CurrEnemies.Add(enemy);
+        enemy.onReleaseEvent += OnEnemyRelease;
+        m_Enemies.Add(enemy);
         return enemy;
     }
 
     public BaseSceneItem CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemConfigData data = StaticConfig.SceneItemConfig.GetData(id);
-        BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(data, pos);
+        SceneItemConfigData sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(id);
+        BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
 
         if (sceneItem == null)
         {
-            GameFrameworkLog.LogError("create sceneItem failed id:" + id);
+            GameFrameworkLog.DebugError("create sceneItem failed id:" + id);
             return null;
         }
-
+        sceneItem.onReleaseEvent += OnSceneItemRelease;
         m_SceneItems.Add(sceneItem);
         return sceneItem;
     }
@@ -53,10 +53,11 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             if(sceneBuilding == null)
             {
-                GameFrameworkLog.LogError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
+                GameFrameworkLog.DebugError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
                 continue;
             }
 
+            sceneBuilding.onReleaseEvent += OnSceneBuildingsRelease;
             m_SceneBuildings.Add(sceneBuilding);
         }
     }
@@ -87,7 +88,24 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "Item/Barrel"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
+            sceneItem.onReleaseEvent += OnSceneItemRelease;
+            m_SceneItems.Add(sceneItem);
         }
+    }
+
+    public List<BaseEnemy> GetEnemies()
+    {
+        return m_Enemies;
+    }
+
+    public List<BaseSceneItem> GetSceneItems()
+    {
+        return m_SceneItems;
+    }
+
+    public List<BaseSceneObject> GetSceneBuildings()
+    {
+        return m_SceneBuildings;
     }
 
     public void ReleaseAll()
@@ -101,13 +119,13 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         m_DeadEnemies.Clear();
 
-        for (int i = 0; i < m_CurrEnemies.Count; i++)
+        for (int i = 0; i < m_Enemies.Count; i++)
         {
-            m_CurrEnemies[i].onDeadEvent -= OnEnemyDead;
-            m_CurrEnemies[i].Release();
+            m_Enemies[i].onReleaseEvent -= OnEnemyRelease;
+            m_Enemies[i].Release();
         }
 
-        m_CurrEnemies.Clear();
+        m_Enemies.Clear();
     }
 
     public void ReleaseSceneItems()
@@ -144,7 +162,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public bool IsAllEnemyDead()
     {
-        return m_CurrEnemies.Count <= 0;
+        return m_Enemies.Count <= 0;
     }
 
     public BaseSceneObject GetSceneBuildingByName(string name)
@@ -160,22 +178,49 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         return null;
     }
 
-    private void OnEnemyDead(int id)
+    private void OnEnemyRelease(int id)
     {
         m_DeadEnemies.Add(id);
 
-        for (int i = m_CurrEnemies.Count - 1; i >= 0; i--)
+        for (int i = m_Enemies.Count - 1; i >= 0; i--)
         {
-            if (m_CurrEnemies[i].entityId == id)
+            if (m_Enemies[i].entityId == id)
             {
-                m_CurrEnemies[i].onDeadEvent -= OnEnemyDead;
-                m_CurrEnemies.RemoveAt(i);
+                m_Enemies[i].onReleaseEvent -= OnEnemyRelease;
+                m_Enemies.RemoveAt(i);
+                break;
+            }
+        }
+    }
+
+    private void OnSceneItemRelease(int id)
+    {
+        for (int i = m_SceneItems.Count - 1; i >= 0; i--)
+        {
+            if (m_SceneItems[i].entityId == id)
+            {
+                m_SceneItems[i].onReleaseEvent -= OnSceneItemRelease;
+                m_SceneItems.RemoveAt(i);
+                break;
+            }
+        }
+    }
+
+    private void OnSceneBuildingsRelease(int id)
+    {
+        for (int i = m_SceneBuildings.Count - 1; i >= 0; i--)
+        {
+            if (m_SceneBuildings[i].entityId == id)
+            {
+                m_SceneBuildings[i].onReleaseEvent -= OnSceneBuildingsRelease;
+                m_SceneBuildings.RemoveAt(i);
+                break;
             }
         }
     }
 
     private List<BaseSceneObject> m_SceneBuildings = null;
-    private List<int> m_DeadEnemies;
-    private List<BaseEnemy> m_CurrEnemies;
+    private List<BaseEnemy> m_Enemies;
     private List<BaseSceneItem> m_SceneItems = null;
+    private List<int> m_DeadEnemies;
 }

@@ -20,6 +20,12 @@
         get;
     }
 
+    EntityAttribute entityAttribute
+    {
+        get;
+    }
+
+    bool IsHurtWillDie(int attackValue);
     void OnHurtMsg(HurtData data);
     void SetCatch(bool value);
     void SetThrow(bool value);

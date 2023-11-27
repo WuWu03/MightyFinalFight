@@ -1,20 +1,15 @@
-﻿using DragonBones;
-using GameFrameWork;
-using GameFrameWork.Sound;
-using System.Data.Common;
-using System.Xml.Linq;
+﻿using GameFrameWork;
 using UnityEngine;
 
 public class BaseRoleCtrl : BaseCtrl
 {
-    public bool isAttackSuccess
+    public bool isHitSuccess
     {
         get
         {
-            return m_AttackSuccess;
+            return m_IsHitSuccess;
         }
     }
-
 
     public virtual void SetData(BaseRoleSkillData data)
     {
@@ -61,9 +56,9 @@ public class BaseRoleCtrl : BaseCtrl
         }
     }
 
-    public void SetNormalAttackState(bool success)
+    public void SetHitState(bool success)
     {
-        m_AttackSuccess = success;
+        m_IsHitSuccess = success;
     }
 
     public void DeploySkill(int skillID)
@@ -107,11 +102,11 @@ public class BaseRoleCtrl : BaseCtrl
             {
                 m_AttackIndex = 0;
                 m_AttackTimer = 0;
-                m_AttackSuccess = false;
                 break;
             }
         }
 
+        m_IsHitSuccess = false;
         m_SkillManager.ExitSkill();
     }
 
@@ -142,7 +137,7 @@ public class BaseRoleCtrl : BaseCtrl
                 {
                     m_AttackIndex = 0;
                     m_AttackTimer = 0;
-                    m_AttackSuccess = false;
+                    m_IsHitSuccess = false;
                     m_Owner.ChangeDefaultState();
                 }
             }
@@ -154,7 +149,7 @@ public class BaseRoleCtrl : BaseCtrl
                 {
                     m_AttackIndex = 0;
                     m_AttackTimer = 0;
-                    m_AttackSuccess = false;
+                    m_IsHitSuccess = false;
                     m_Owner.ChangeDefaultState();
                 }
             }
@@ -186,7 +181,7 @@ public class BaseRoleCtrl : BaseCtrl
             return;
         }
 
-        if(m_AttackSuccess)
+        if(m_IsHitSuccess)
         {
             if (m_AttackIndex < m_Data.attackWait.Length - 1)
             {
@@ -205,7 +200,7 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected virtual void JumpAttack(Vector2 dir)
     {
-        m_AttackSuccess = false;
+        m_IsHitSuccess = false;
 
         if(dir.y < 0 && m_Data.jumpAttackIds.Length > 1)
         {
@@ -244,7 +239,7 @@ public class BaseRoleCtrl : BaseCtrl
 
     private int m_CurrSkillID = 0;
     private int m_AttackIndex = 0;
-    private bool m_AttackSuccess = false;
+    private bool m_IsHitSuccess = false;
     private float m_AttackTimer = 0;
     private BaseRoleSkillData m_Data = null;
     private SkillManager m_SkillManager = null;

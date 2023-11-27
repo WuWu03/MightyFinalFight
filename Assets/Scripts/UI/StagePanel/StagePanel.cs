@@ -30,10 +30,10 @@ public class StagePanel : BasePanel
 		int characterId = PlayerMgr.instance.selectRoleId;
 
 		StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
-        RoleSelectData roleSelectData = DataHelper.roleSelectDatas.GetDataById(characterId);
+        RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
 		GetRoundTxt(0).text = stageConfigData.StageIndex.ToString();
-		GameObjectPool.instance.Get(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectData.assetName), OnLoaded);
+		ResourcesPool.instance.Get<GameObject>(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
 		{
@@ -43,18 +43,18 @@ public class StagePanel : BasePanel
 		m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActive(true);
 	}
 
-    private void OnLoaded(GameObject go, object[] args)
+    private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
     {
 		int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectData roleSelectConfigData = DataHelper.roleSelectDatas.GetDataById(characterId);
+        RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
-		m_Role = go;
+		m_Role = obj as GameObject; 
 		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
-		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfigData.animSpeed;
-		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfigData.animName, 1);
+		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
+		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
 
-		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfigData.soundName); 
-		Timer.Register(roleSelectConfigData.showTime, OnTimer);
+		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
+		Timer.Register(roleSelectConfig.showTime, OnTimer);
     }
 
 	private void OnTimer()
@@ -71,9 +71,9 @@ public class StagePanel : BasePanel
 	protected override void OnClose()
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
-		RoleSelectData roleSelectData = DataHelper.roleSelectDatas.GetDataById(characterId);
+        RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
-		GameObjectPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectData.assetName), m_Role);
+		ResourcesPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
 		m_Role = null;
 	}
 

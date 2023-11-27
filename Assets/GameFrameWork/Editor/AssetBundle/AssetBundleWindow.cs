@@ -168,7 +168,7 @@ namespace GameFrameWork.Editor
             {
                 GUILayout.BeginVertical();
                 m_AssetBundleConfig.AssetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.AssetBuildDir);
-
+ 
                 if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetBuildDir) && !m_AssetBundleConfig.AssetBuildDir.StartsWith("Assets/"))
                 {
                     m_AssetBundleConfig.AssetBuildDir = "Assets/" + m_AssetBundleConfig.AssetBuildDir;
@@ -474,11 +474,17 @@ namespace GameFrameWork.Editor
 
                     if (platFormIndex == 0)
                     {
-                        AssetBundleBuilder.Build(BuildTarget.StandaloneWindows);
+                        using(AssetBundleBuilder builder = new AssetBundleBuilder())
+                        {
+                            builder.Build(BuildTarget.StandaloneWindows);
+                        }
                     }
                     else if (platFormIndex == 1)
                     {
-                        AssetBundleBuilder.Build(BuildTarget.Android);
+                        using (AssetBundleBuilder builder = new AssetBundleBuilder())
+                        {
+                            builder.Build(BuildTarget.Android);
+                        }
                     }
                     else
                     {
@@ -488,7 +494,10 @@ namespace GameFrameWork.Editor
 #else
                         target = BuildTarget.iPhone;
 #endif
-                        AssetBundleBuilder.Build(target);
+                        using (AssetBundleBuilder builder = new AssetBundleBuilder())
+                        {
+                            builder.Build(target);
+                        }
                     }
                 }
             }

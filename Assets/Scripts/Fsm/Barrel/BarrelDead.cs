@@ -19,8 +19,7 @@ public class BarrelDead : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
-        m_Owner.armatureAnimator.animation.timeScale = 1;
-        m_Owner.armatureAnimator.animation.Play(AnimName.Dead, 1);
+        m_Owner.PlayAnimation(AnimName.Dead, 1);
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetDir(-m_AttackerDir);
     }

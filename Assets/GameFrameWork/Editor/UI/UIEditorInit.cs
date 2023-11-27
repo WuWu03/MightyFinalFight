@@ -206,7 +206,7 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(uiRefSetting.panelName) || uiRefSetting.panelName.Contains("/"))
             {
-                Debug.LogError("界面名字未设置正确");
+                UnityEngine.Debug.LogError("界面名字未设置正确");
                 Selection.activeGameObject = uiRefSetting.gameObject;
                 return false;
             }
@@ -237,7 +237,7 @@ namespace GameFrameWork.Editor
                         EditorUtil.GetHierarchy(component.gameObject)
                     });
 
-                    Debug.LogError(errorStr);
+                    UnityEngine.Debug.LogError(errorStr);
                     Selection.activeGameObject = component.gameObject;
                     return false;
                 }
@@ -306,7 +306,7 @@ namespace GameFrameWork.Editor
 
                 if (!hashSet.Add(name))
                 {
-                    Debug.LogError("有重复的引用名称 => " + component.refName + "; 引用对象=>" + path);
+                    UnityEngine.Debug.LogError("有重复的引用名称 => " + component.refName + "; 引用对象=>" + path);
                     Selection.activeGameObject = component.gameObject;
                     return false;
                 }
@@ -331,7 +331,7 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(value))
             {
-                Debug.LogWarning("没有需要导出到剪切板的对象");
+                UnityEngine.Debug.LogWarning("没有需要导出到剪切板的对象");
             }
             else
             {
@@ -362,7 +362,7 @@ namespace GameFrameWork.Editor
 
             GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
-            FileUitl.VerifyDirectory(Path.GetDirectoryName(path));
+            Utilities.FileUtil.VerifyDirectory(Path.GetDirectoryName(path));
 
             bool isSuccess;
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out isSuccess);
@@ -390,7 +390,7 @@ namespace GameFrameWork.Editor
         {
             if (!IsUIScene())
             {
-                Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
+                UnityEngine.Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
                 return false;
             }
 
@@ -398,7 +398,7 @@ namespace GameFrameWork.Editor
 
             if (root == null || root.transform.Find("UICanvas/Panel") == null)
             {
-                Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
+                UnityEngine.Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
                 return false;
             }
 

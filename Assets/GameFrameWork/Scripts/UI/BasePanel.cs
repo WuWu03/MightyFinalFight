@@ -59,7 +59,7 @@ namespace GameFrameWork.UI
 
             if (uiRefRoot == null)
             {
-                Log.GameFrameworkLog.LogError("UIRefRoot is null!");
+                Debug.GameFrameworkLog.DebugError("UIRefRoot is null!");
                 return;
             }
 

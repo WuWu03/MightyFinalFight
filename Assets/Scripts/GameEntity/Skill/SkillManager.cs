@@ -15,10 +15,6 @@ public class SkillManager
 
     public void DeploySkill(int id)
     {
-        if(id == 1003007)
-        {
-
-        }
         if (m_CurrSkillDeployer != null && m_CurrSkillDeployer.skillId == id)
         {
             return;
@@ -50,7 +46,7 @@ public class SkillManager
         }
         else
         {
-            GameFrameWork.Log.GameFrameworkLog.LogError("Skill not found id:", id);
+            GameFrameWork.Debug.GameFrameworkLog.DebugError("Skill not found id:", id);
         }
     }
 

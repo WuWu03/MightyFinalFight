@@ -41,6 +41,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
         effect.isAutoRelease = isAutoRelease;
         effect.SetRes(PathUtil.FormatPath(ResDefine.EffectPath, effectName));
         effect.SetLayer(LayerName.Unit);
+        effect.SetObjectType(ObjectType.CantBreakItem);
 
         if (isAutoPlay)
         {

@@ -11,8 +11,6 @@ public abstract class SkillBaseSelector : SkillBase, ISkillSelector
 
     public abstract List<ICanBeHit> GetTargets();
 
-    public abstract List<GameObject> GetTargetsObj();
-
     public abstract void Reset();
     public abstract void Exit();
 

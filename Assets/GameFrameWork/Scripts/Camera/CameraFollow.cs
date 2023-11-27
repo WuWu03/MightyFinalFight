@@ -86,7 +86,7 @@ namespace GameFrameWork.Camera
         {
             if (m_Target == null)
             {
-                Log.GameFrameworkLog.LogError("Don't have target to follow!");
+                Debug.GameFrameworkLog.DebugError("Don't have target to follow!");
                 return;
             }
 

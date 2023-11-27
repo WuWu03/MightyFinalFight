@@ -105,8 +105,8 @@ namespace GameFrameWork.Editor
             }
 
             sb.Append("}");
-            FileUitl.VerifyDirectory(setting.scriptFolder);
-            FileUitl.CreateTextFile(setting.panelComponentPath, sb.ToString());
+            FileUtil.VerifyDirectory(setting.scriptFolder);
+            FileUtil.CreateTextFile(setting.panelComponentPath, sb.ToString());
         }
 
         private void ExportPanel(UIRef[] uiRefs, UIRefSetting setting)
@@ -164,8 +164,8 @@ namespace GameFrameWork.Editor
             sb.AppendLine();
             sb.AppendFormat("\tprivate {0}Component m_Component = null;\r\n", setting.panelName);
             sb.Append("}");
-            FileUitl.VerifyDirectory(setting.scriptFolder);
-            FileUitl.CreateTextFile(setting.panelPath, sb.ToString());
+            FileUtil.VerifyDirectory(setting.scriptFolder);
+            FileUtil.CreateTextFile(setting.panelPath, sb.ToString());
         }
 
         private static void GenCSharpLayout(UIRef uiRef, StringBuilder sb)
