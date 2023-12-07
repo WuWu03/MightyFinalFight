@@ -48,16 +48,16 @@ namespace GameFrameWork.UI
             }
         }
 
-        protected UIRefRoot uiRefRoot { get; private set; }
+        protected UIRefRoot m_UIRefRoot { get; private set; }
 
         public void Init(GameObject go, string resPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
-            uiRefRoot = go.GetComponent<UIRefRoot>();
+            m_UIRefRoot = go.GetComponent<UIRefRoot>();
             this.resPath = resPath;
 
-            if (uiRefRoot == null)
+            if (m_UIRefRoot == null)
             {
                 Debug.GameFrameworkLog.DebugError("UIRefRoot is null!");
                 return;

@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8159804156849249023}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.185, z: 0}
+  m_LocalPosition: {x: 0, y: 0.19819999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 789908681430574713}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &3807184771359204519
 MeshRenderer:
@@ -109,6 +109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8556697543503234132}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -116,7 +117,6 @@ Transform:
   m_Children:
   - {fileID: 5231157572599755075}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3774062147811778107
 MonoBehaviour:
@@ -175,14 +175,14 @@ MonoBehaviour:
     Offest: {x: 0, y: 0.19362074}
     Size: {x: 0.3, y: 0.3966533}
   - AnimName: Move
-    Offest: {x: 0, y: 0.19293566}
-    Size: {x: 0.3, y: 0.391849}
+    Offest: {x: 0, y: 0.19911557}
+    Size: {x: 0.3, y: 0.39894545}
   - AnimName: Attack
-    Offest: {x: 0.061913416, y: 0.21905302}
-    Size: {x: 0.42432955, y: 0.45881006}
+    Offest: {x: 0.08466673, y: 0.22300056}
+    Size: {x: 0.45263165, y: 0.45091498}
   - AnimName: JumpUp
-    Offest: {x: 0, y: 0.20248598}
-    Size: {x: 0.27841341, y: 0.4183129}
+    Offest: {x: 0, y: 0.20380183}
+    Size: {x: 0.27841341, y: 0.4156812}
   - AnimName: JumpDown
     Offest: {x: 0, y: 0.16567038}
     Size: {x: 0.33, y: 0.3373184}

@@ -103,14 +103,14 @@ namespace GameFrameWork.ConfigData
             {
                 if (m_CurrRow < 0 || m_CurrRow >= row)
                 {
-                    return null;
+                    return string.Empty;
                 }
 
                 return m_Datas[m_CurrRow, m_DicFieldName[fieldName]];
             }
             catch 
             {
-                return null; 
+                return string.Empty;
             }
         }
 

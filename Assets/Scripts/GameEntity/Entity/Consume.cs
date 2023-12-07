@@ -30,16 +30,22 @@ public class Consume : BaseSceneItem
     {
         base.OnResComplete(go, param);
         ResetRigidbody();
+        
+        BoxCollider2D bc2 = go.GetComponent<BoxCollider2D>();
+        m_BoxCollider2D.size = bc2.size;
+        m_BoxCollider2D.offset = bc2.offset;
     }
 
     private void AddHP()
     {
         if (m_Owner.entityAttribute.IsFullHealth())
+        {
             AddExp();
+        }
         else
         {
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            //UIMgr.Ins.GetPanel<MainPanel>().SetPlayerHP(m_Health, m_MaxHealth);
+            UIMgr.instance.GetPanel<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }

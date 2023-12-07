@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PreIsPlayerInRange : PreCondition
 {
-    public PreIsPlayerInRange(string name, string args, object owner) : base(name, args, owner)
+    public PreIsPlayerInRange(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         if (!string.IsNullOrEmpty(args))
         {
@@ -26,15 +26,19 @@ public class PreIsPlayerInRange : PreCondition
         float xDistance = Mathf.Abs(playerPos.x - ownerPos.x);
         float yDistance = Mathf.Abs(playerPos.y - ownerPos.y);
 
-        if(yDistance <= 0.05f && xDistance <= m_Range)
+        if(m_Range > 0)
         {
-
+            return yDistance <= 0.01f && xDistance <= m_Range;
         }
-        return yDistance <= 0.05f && xDistance <= m_Range;
+
+        Vector2 ownerTriggerSize = (m_Owner as BaseRoleCtrl).owner.GetCurrTriggerSize();
+        Vector2 playerTriggerSize = PlayerMgr.instance.player.GetCurrTriggerSize();
+
+        return yDistance <= 0.01f && xDistance <= playerTriggerSize.x / 2 + ownerTriggerSize.x / 2 + 0.01f;
     }
 
-    private float m_Range = 0.5f;
-    private Regex m_Regex = new Regex(@"(Range:)([0-9]+\.?[0-9]+)");
+    private float m_Range = -1;
+    private Regex m_Regex = new Regex(@"(Range:)(-?[0-9]+(\.[0-9])?)");
 }
 
 

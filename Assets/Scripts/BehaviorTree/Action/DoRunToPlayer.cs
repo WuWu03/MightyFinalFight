@@ -3,52 +3,70 @@ using UnityEngine;
 
 public class DoRunToPlayer : Action
 {
-    public DoRunToPlayer(string name, string args, object owner) : base(name, args, owner) 
+    public DoRunToPlayer(string name, string args, object owner, int priority) : base(name, args, owner, priority) 
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
+    public override bool CanExcute()
+    {
+        return m_State == BehaviourTreeState.Running;
     }
 
     protected override void OnEnter()
     {
         base.OnEnter();
-       
+        m_State = BehaviourTreeState.Running;
+        m_RunTimer = -1f;
     }
 
     protected override void OnUpdate(float deltaTime)
     {
         base.OnUpdate(deltaTime);
-        m_TargetPos = PlayerMgr.instance.player.pos;
-        float distance = PlayerMgr.instance.player.GetCurrTriggerSize().x / 2 + m_Owner.owner.GetCurrTriggerSize().x / 2 - 0.05f;
-        m_TargetPos.x += distance * (m_TargetPos.x - m_Owner.owner.pos.x > 0 ? -1f : 1f);
-    }
 
-    public override BehaviorTreeState Excute()
-    {
-        if (m_IsArravied)
+        if(m_RunTimer > 2f)
         {
-            m_Owner.Move(Vector2.zero, false);
-            m_Owner.OppositePlayer();
-            return BehaviorTreeState.Success;
+            m_State = BehaviourTreeState.Failure;
+            return;
         }
 
-        m_IsArravied = Vector2.Distance(m_TargetPos, m_Owner.owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
+        Vector2 targetPos = PlayerMgr.instance.player.pos;
+        float distance = PlayerMgr.instance.player.GetCurrTriggerSize().x / 2 + m_ActionOwner.owner.GetCurrTriggerSize().x / 2 - 0.05f;
 
-        if (!m_IsArravied)
+        targetPos.x += distance * (targetPos.x - m_ActionOwner.owner.pos.x > 0 ? -1f : 1f);
+        bool isArravied = Vector2.Distance(targetPos, m_ActionOwner.owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
+
+        if (isArravied)
         {
-            m_Owner.Move((m_TargetPos - m_Owner.owner.pos).normalized, false);
-            m_Owner.OppositePlayer();
+            m_ActionOwner.Move(Vector2.zero, false);
+            m_ActionOwner.OppositePlayer();
+            m_State = BehaviourTreeState.Success;
         }
+        else
+        {
+            m_ActionOwner.Move((targetPos - m_ActionOwner.owner.pos).normalized, false);
+            m_ActionOwner.OppositePlayer();
 
-        return BehaviorTreeState.Running;
+            if(m_RunTimer < 0)
+            {
+                m_RunTimer = Time.time;
+            }
+        }
     }
 
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
-        m_IsArravied = false;
+        base.OnReset();
+        m_State = BehaviourTreeState.None;
+        m_RunTimer = -1f;
     }
 
-    private Vector2 m_TargetPos = Vector2.zero;
-    private bool m_IsArravied = false;
-    private new BaseEnemyCtrl m_Owner = null;
+    private float m_RunTimer = -1f;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
+    private BaseEnemyCtrl m_ActionOwner = null;
 }

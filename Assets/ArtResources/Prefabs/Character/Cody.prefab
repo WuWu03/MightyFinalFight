@@ -53,8 +53,8 @@ MonoBehaviour:
   isUGUI: 0
   debugDraw: 0
   animationName: Skill2
-  _playTimes: 0
-  _timeScale: 0.03
+  _playTimes: 5
+  _timeScale: 1
   _sortingMode: 0
   _sortingLayerName: Default
   _sortingOrder: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
     Offest: {x: 0.050283834, y: 0.15585066}
     Size: {x: 0.31761643, y: 0.31605533}
   - AnimName: Attack3
-    Offest: {x: 0.050358295, y: 0.15588509}
-    Size: {x: 0.30497915, y: 0.3192511}
+    Offest: {x: 0.063897066, y: 0.15588509}
+    Size: {x: 0.3172871, y: 0.3192511}
   - AnimName: Attack4
     Offest: {x: 0.058745556, y: 0.20889157}
     Size: {x: 0.3241002, y: 0.42377424}
@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 6541314054696026023}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.14999999, z: -0.001}
+  m_LocalPosition: {x: 0, y: 0.145, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -277,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 6541314055108036603}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.14999999, z: 0}
+  m_LocalPosition: {x: 0, y: 0.145, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

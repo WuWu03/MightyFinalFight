@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PreIsPlayerSpecialState : PreCondition
 {
-    public PreIsPlayerSpecialState(string name, string args, object owner) : base(name, args, owner)
+    public PreIsPlayerSpecialState(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
 
     }

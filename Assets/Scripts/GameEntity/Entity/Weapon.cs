@@ -26,14 +26,13 @@ public class Weapon : BaseSceneItem
         SetPosXY(m_Owner.pos.x, m_Owner.pos.y);
         AddForce(40f * attackerDir, 150f);
         SetTrigger(AnimName.Drop);
-
-        m_Animator.animation.Play(AnimName.Drop, 0);
+        PlayAnimation(AnimName.Drop);
         m_Owner = null;
     }
 
     public override void SetOwner(BaseRole owner)
     {
-        base.SetOwner(owner);
+        m_Owner = owner;
         gameObject.SetActive(false);
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
     }
@@ -42,7 +41,8 @@ public class Weapon : BaseSceneItem
     {
         base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_Animator.animation.Play(AnimName.Idle, 0);
+        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+        PlayAnimation(AnimName.Idle);
         SetPos2(m_Pos);
         ResetRigidbody();
         SetTrigger(AnimName.Idle);
@@ -58,7 +58,32 @@ public class Weapon : BaseSceneItem
         }
         else
         {
-            m_Animator.animation.Play(AnimName.Idle, 0);
+            PlayAnimation(AnimName.Idle);
+        }
+    }
+
+    private void PlayAnimation(string animName)
+    {
+        if(m_Animator == null)
+        {
+            return;
+        }
+
+        m_Animator.animation.Play(animName);
+    }
+
+    private void SetTrigger(string animName)
+    {
+        if (m_HitTrigger == null)
+        {
+            return;
+        }
+
+        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
+
+        if (triggerData != null)
+        {
+            SetCollider(triggerData.Offest, triggerData.Size);
         }
     }
 
@@ -66,8 +91,11 @@ public class Weapon : BaseSceneItem
     {
         base.Release();
         m_WeaponData = null;
+        m_HitTrigger = null;
+        m_Animator = null;
     }
 
+    private HitTrigger m_HitTrigger = null;
     private UnityArmatureComponent m_Animator = null;
     private SceneItemData m_WeaponData = null;
 }

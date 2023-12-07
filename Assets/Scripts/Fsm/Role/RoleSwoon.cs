@@ -39,7 +39,7 @@ public class RoleSwoon : BaseFsmState
     private void OnBounce()
     {
         m_IsBounce = true;
-        m_Owner.SetGravityScale(1.0f);
+        m_Owner.SetGravityScale(0.8f);
         m_Owner.SetVelocityY(1.5f);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown);

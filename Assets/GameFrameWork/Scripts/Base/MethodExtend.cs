@@ -32,6 +32,18 @@ namespace GameFrameWork
             return ret;
         }
 
+        public static T GetOrAddComponentInChildren<T>(this GameObject go) where T : Component
+        {
+            T ret = go.GetComponentInChildren<T>(true);
+
+            if (ret == null)
+            {
+                ret = go.AddComponent<T>();
+            }
+
+            return ret;
+        }
+
         public static void SetLayer(this GameObject gameObject, string layer, bool isChild = true)
         {
             gameObject.layer = LayerMask.NameToLayer(layer);

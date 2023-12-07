@@ -45,14 +45,14 @@ public class SkillBulletSelector : SkillBaseSelector
         return m_ListTargets;
     }
 
-    private void CheckTarget(BaseAvatar ba)
+    private void CheckTarget(BaseSceneObject bso)
     {
-        if (ba == null)
+        if (bso == null)
         {
             return;
         }
 
-        ICanBeHit hit = ba.GetComponent<ICanBeHit>();
+        ICanBeHit hit = bso.GetComponent<ICanBeHit>();
 
         if (hit == null)
         {
@@ -63,9 +63,9 @@ public class SkillBulletSelector : SkillBaseSelector
         {
             bool isInRange = false;
 
-            if( Mathf.Abs(ba.pos.y - m_Owner.bullets[i].pos.y) < m_SkillEffect.Bullets[i].HitRange)
+            if( Mathf.Abs(bso.pos.y - m_Owner.bullets[i].pos.y) < m_SkillEffect.Bullets[i].HitRange)
             {
-                isInRange = SkillUtil.IsRectangleCollide(ba.bound, m_Owner.bound);
+                isInRange = SkillUtil.IsRectangleCollide(bso.bound, m_Owner.bound);
             }
 
             if (isInRange && hit.canBeHit)

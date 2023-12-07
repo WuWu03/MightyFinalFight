@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PreIsLockPlayer : PreCondition
 {
-    public PreIsLockPlayer(string name, string args, object owner) : base(name, args, owner) 
+    public PreIsLockPlayer(string name, string args, object owner, int priority) : base(name, args, owner, priority)    
     {
         if (!string.IsNullOrEmpty(args))
         {
@@ -41,7 +41,7 @@ public class PreIsLockPlayer : PreCondition
     }
 
     private float m_Distance = 0f;
-    private Regex m_Regex = new Regex(@"(Distance:)([0-9]+\.?[0-9]*)");
+    private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
     private bool m_IsLockPlayer = false;
     private new BaseEnemyCtrl m_Owner = null;
 }

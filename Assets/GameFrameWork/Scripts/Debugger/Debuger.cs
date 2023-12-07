@@ -30,7 +30,7 @@ namespace GameFrameWork.Debug
             m_LogColor = AppConfig.instance.logColor;
 
             string logInfo = StringUtil.FormatDefault(args);
-            string color = CommonUtil.ToRGBHex(m_LogColor);
+            string color = CommonUtil.RGBToHex(m_LogColor);
 
             if (!string.IsNullOrEmpty(color))
             {

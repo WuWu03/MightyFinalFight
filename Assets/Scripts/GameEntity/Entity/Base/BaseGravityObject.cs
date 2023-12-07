@@ -71,7 +71,7 @@ public class BaseGravityObject : BaseSceneObject
         base.Init(id, name);
 
         m_Rigidbody2D = gameObject.GetOrAddComponent<Rigidbody2D>();
-        m_Rigidbody2D.gravityScale = 1.0f;
+        m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
@@ -153,6 +153,11 @@ public class BaseGravityObject : BaseSceneObject
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.velocity = velocity;
         m_IsAddGroundForce = isGroundForce;
+
+        if (isGroundForce)
+        {
+            Debug.Log("出发了额额撒旦飞洒地方");
+        }
     }
 
     public void SetGravityScale(float gravity)
@@ -172,7 +177,7 @@ public class BaseGravityObject : BaseSceneObject
 
     public void ResetRigidbody(bool changBodyType = true)
     {
-        m_Rigidbody2D.gravityScale = 1;
+        m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.drag = 0;
         m_Rigidbody2D.angularDrag = 0;
       

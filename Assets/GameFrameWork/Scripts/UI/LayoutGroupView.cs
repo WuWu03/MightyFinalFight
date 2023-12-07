@@ -10,43 +10,39 @@ namespace GameFrameWork.UI
         public GameFrameWorkAction<T> onItemUpdateEvent;
         public GameFrameWorkAction<T,bool> onItemSelectEvent;
         
-        public void Init(GameObject parent,GameObject item, int maxCount = 1, ScrollRect scroll = null)
+        public void Init(GameObject parent,GameObject item, int initCount = 1, ScrollRect scroll = null)
         {
-            m_Parent = parent;
             m_Item = item;
             m_ItemParent = parent;
             m_ScrollRect = scroll;
             m_ListItem = new List<T>();
-            Update(maxCount);
+
+            for (int i = 0; i < initCount; i++)
+            {
+                GetItem(i);
+            }
         }
 
         public void Update(int count)
         {
-            int diff = m_MaxCount - count;
-
-            if (diff > 0)
+            for(int i = 0; i < count; i++)
             {
-                for (int i = count; i < m_ListItem.Count; i++)
+                if(i < m_ListItem.Count)
                 {
-                    m_ListItem[i].gameObject.SetActive(false);
+                    m_ListItem[i].gameObject.SetActive(true);
+                    onItemUpdateEvent?.Invoke(m_ListItem[i]);
+                }
+                else
+                {
+                    GetItem(i);
+                    m_ListItem[i].gameObject.SetActive(true);
+                    onItemUpdateEvent?.Invoke(m_ListItem[i]);
                 }
             }
-            else
+
+            for (int i = count; i < m_ListItem.Count; i++)
             {
-                diff = -diff;
-
-                for (int i = 0; i < diff; i++)
-                {
-                    GetItem(m_ListItem.Count);
-                }
-
-                m_MaxCount += diff;
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                m_ListItem[i].gameObject.SetActive(true);
-                onItemUpdateEvent?.Invoke(m_ListItem[i]);
+                m_ListItem[i].gameObject.SetActive(false);
             }
         }
 
@@ -80,7 +76,6 @@ namespace GameFrameWork.UI
 
             T script = new T();
             script.Create(item, index);
-            onItemUpdateEvent?.Invoke(script);
 
             if (script.selectButton != null)
             {
@@ -90,8 +85,6 @@ namespace GameFrameWork.UI
         }
 
         private List<T> m_ListItem = null;
-        private int m_MaxCount = 0;
-        private GameObject m_Parent;
         private GameObject m_ItemParent = null;
         private GameObject m_Item = null;
         private ScrollRect m_ScrollRect;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoJumpAttack : DoAttack
 {
-    public DoJumpAttack(string name, string args, object owner) : base(name, args, owner)
+    public DoJumpAttack(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         if (!string.IsNullOrEmpty(args))
         {
@@ -12,9 +12,20 @@ public class DoJumpAttack : DoAttack
         }
     }
 
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
     protected override void OnEnter()
     {
         base.OnEnter();
+        m_State = BehaviourTreeState.Running;
+
         m_IsGround = false;
         m_Owner.owner.onGroundEvent.AddListener(OnGround);
 
@@ -38,22 +49,26 @@ public class DoJumpAttack : DoAttack
             m_CurrAttackCount++;
         }
 
-        m_IsGround = true;
-    }
-
-    private void OnDrop()
-    {
         if (!m_IsMoveJump)
         {
             m_Owner.OppositePlayer();
         }
 
+        m_IsGround = true;
+    }
+
+    private void OnDrop()
+    {
         m_Owner.Attack(Vector2.zero);
     }
 
     protected override void OnUpdate(float deltaTime)
     {
-        base.OnUpdate(deltaTime);
+        if (m_CurrAttackCount >= m_AttackCount && m_Owner.owner.isInGround)
+        {
+            m_State = BehaviourTreeState.Success;
+            return;
+        }
 
         if (!m_IsGround || m_CurrAttackCount >= m_AttackCount)
         {
@@ -67,37 +82,22 @@ public class DoJumpAttack : DoAttack
             m_StartJump = false;
             m_Owner.owner.onDropEvent.AddListener(OnDrop);
             m_Owner.owner.onGroundEvent.AddListener(OnGround);
-            m_Owner.OppositePlayer();
             m_Owner.Jump(GetJumpDir(), false, true);
         }
         else
         {
             m_Owner.owner.onDropEvent.AddListener(OnDrop);
             m_Owner.owner.onGroundEvent.AddListener(OnGround);
-
-            if (!m_IsMoveJump)
-            {
-                m_Owner.OppositePlayer();
-            }
             m_Owner.Jump(GetJumpDir(), false, true);
         }
     }
 
-    public override BehaviorTreeState Excute()
+
+    protected override void OnReset()
     {
-        if (m_CurrAttackCount >= m_AttackCount && m_Owner.owner.isInGround)
-        {
-            return BehaviorTreeState.Success;
-        }
-
-        return BehaviorTreeState.Running;
+        base.OnReset();
+        m_State = BehaviourTreeState.None;
     }
-
-    public override void Reset()
-    {
-        base.Reset();
-    }
-
     private Vector2 GetJumpDir()
     {
         if (!m_IsMoveJump)
@@ -112,4 +112,6 @@ public class DoJumpAttack : DoAttack
     private bool m_IsMoveJump = false;
     private Regex m_Regex = new Regex(@"(Move)");
     private bool m_IsGround = false;
+
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

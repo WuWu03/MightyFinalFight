@@ -175,7 +175,7 @@ namespace GameFrameWork.Input
         //    float x = UnityEngine.Input.scro(axisArgs.Horizontal);
         //}
 
-        public bool GetKeyDown(KeyType keyType, bool isOneKey = false)
+        public bool GetKeyDown(KeyType keyType, bool isTurbo = false)
         {
             KeyArgs key = InputHelper.GetKey(keyType);
 
@@ -184,7 +184,7 @@ namespace GameFrameWork.Input
                 return false;
             }
 
-            return GetKeyDown(key.keyName, isOneKey);
+            return GetKeyDown(key.keyName, isTurbo);
         }
 
         protected override void OnUpdate()
@@ -206,7 +206,6 @@ namespace GameFrameWork.Input
             }
 
             CheckCombo();
-
         }
 
         private void CheckCombo()
@@ -421,7 +420,7 @@ namespace GameFrameWork.Input
 
         private float m_CurrDir = 0;
         private float m_KeyDownTimer = -1f;
-        private const float KeyDownTime = 0.04f;
+        private const float KeyDownTime = 0.05f;
         private bool m_IsRunning = false;
         private int m_CurrKeyDown = -1;
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical

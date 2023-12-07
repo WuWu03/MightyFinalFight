@@ -12,8 +12,6 @@ public class BaseEnemy : BaseRole
         }
     }
 
-
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
@@ -49,6 +47,14 @@ public class BaseEnemy : BaseRole
 
     public override void OnHurtMsg(HurtData data)
     {
+        if (data.isBoss)
+        {
+            if (IsAnyState(typeof(RoleAttack)))
+            {
+                return;
+            }
+        }
+
         if(m_IsBeCatch)
         {
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork;
 
-public class Trap : BaseSceneItem
+public class Trap : SceneBuilding
 {
     public override void Init(int id, string name)
     {

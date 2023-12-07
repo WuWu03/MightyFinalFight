@@ -1,5 +1,6 @@
 using DG.Tweening;
 using GameFrameWork.Camera;
+using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Sound;
 using GameFrameWork.Timer;
@@ -25,13 +26,15 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
-        int hp = m_TaskData.Targets[0].Hp;
-        int attack = m_TaskData.Targets[0].AttackValue;
+        int hp = 5000;// m_TaskData.Targets[0].Hp;
+        int attack = 1;// m_TaskData.Targets[0].AttackValue;
         int defense = m_TaskData.Targets[0].DefenseValue;
         int hpBarWidth = m_TaskData.Targets[0].HpBarWidth;
         Vector2Int pos = m_TaskData.Targets[0].Pos;
         m_Boss = SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
         m_Boss.currCtrl.Stop();
+
+        EventMgr.instance.Subscribe(EventDefine.TalkEndEventId, OnTalkEnd);
     }
 
     public override void Trigger()
@@ -78,10 +81,22 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
             black.SetActive(false);
             PlayerMgr.instance.player.AutoMoveToPos(new Vector2(0.8f, -0.6f),()=> 
             {
-                PlayerMgr.instance.canContrl = true;
-                m_Boss.currCtrl.Start();
+                UIMgr.instance.Open<TalkPanel>(m_TaskData.TalkID);
             });
         });
+    }
+
+    public override void Complete()
+    {
+        base.Complete();
+        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEventId, OnTalkEnd);
+    }
+
+    private void OnTalkEnd(object sender, GameEventArgs e)
+    {
+        m_Boss.currCtrl.Start();
+        PlayerMgr.instance.canContrl = true;
+        Complete();
     }
 
     private BaseEnemy m_Boss = null;

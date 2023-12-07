@@ -26,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5312874009602592689}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,7 +34,6 @@ Transform:
   m_Children:
   - {fileID: 8575784088222548484}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7016215571579353214
 MonoBehaviour:
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 1
+  dirty: 0
 --- !u!114 &4944077104013381472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,17 +89,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: -0.000000029802322, y: 0.13468653}
-    Size: {x: 0.17691588, y: 0.2741896}
+    Offest: {x: -0.000000029802322, y: 0.15181366}
+    Size: {x: 0.17691588, y: 0.20057482}
   - AnimName: Dead
-    Offest: {x: -0.082308486, y: 0.19267642}
-    Size: {x: 0.32656762, y: 0.39765215}
+    Offest: {x: -0.0047121495, y: 0.19267642}
+    Size: {x: 0.17137495, y: 0.39765215}
   - AnimName: Drop
-    Offest: {x: -0.0037413388, y: 0.1571342}
-    Size: {x: 0.19936362, y: 0.31908506}
+    Offest: {x: -0.000214234, y: 0.12539025}
+    Size: {x: 0.16644394, y: 0.25559714}
   - AnimName: Idle
-    Offest: {x: 0.0037412494, y: 0.12346259}
-    Size: {x: 0.17691585, y: 0.25922436}
+    Offest: {x: 0.00021414459, y: 0.1246383}
+    Size: {x: 0.16986164, y: 0.24511595}
 --- !u!1 &8137241495959884460
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,13 +125,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8137241495959884460}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2207548297214873382}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &203803755695339563
 MeshRenderer:

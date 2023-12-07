@@ -32,14 +32,15 @@ public static class SceneEntityFactory
 
         if (sceneItemConfigData.type == 1)
         {
+            EntityAttribute weaponAttribute = ReferencePool.Acquire<EntityAttribute>();
+            weaponAttribute.health = 1; //sceneItemConfigData.value;// hp;
+            weaponAttribute.maxHealth = 1;// sceneItemConfigData.value;
+
             sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
             sceneItem = EntityMgr.instance.GetEntity<Weapon>(sceneItemConfigData.name);
-        }
-        else if(sceneItemConfigData.type == 6)
-        {
-            objectType = ObjectType.CantBreakItem;
-            sceneItem = EntityMgr.instance.GetEntity<Trap>(sceneItemConfigData.name);
+
+            sceneItem.SetAttribute(weaponAttribute);
         }
         else
         {
@@ -95,18 +96,18 @@ public static class SceneEntityFactory
         enemyAttribute.defenseValue = defense;
         enemyAttribute.moveSpeed = enemyConfigData.moveSpeed;
 
-        enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.assetName));
         enemy.SetData(enemyData);
         enemy.SetAttribute(enemyAttribute);
         enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
         enemy.SetObjectType(ObjectType.Monster);
         enemy.SetMapPos(pos);
         enemy.SetLayer(LayerName.Unit);
+        enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.assetName));
 
         return enemy;
     }
 
-    public static BaseSceneObject CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
+    public static SceneBuilding CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
     {
         if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Trap)
         {
@@ -133,4 +134,30 @@ public static class SceneEntityFactory
         return null;
     }
 
+    public static Barrel CreateBarrel(int entityId, float dir, int groundY, int itemId, bool isFloat, float moveSpeed, Vector2Int pos)
+    {
+        Barrel barrel = EntityMgr.instance.GetEntity<Barrel>("Barrel");
+        BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
+        EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
+
+        barrelData.entityId = entityId;
+        barrelData.value = 0;
+        barrelData.canDrop = false;
+        barrelData.dir = dir;
+        barrelData.groundY = groundY;
+        barrelData.isFloat = isFloat;
+        barrelData.moveSpeed = moveSpeed;
+        barrelData.itemId = itemId == -1 ? ConfigDataHelper.sceneItemConfigDatas[Random.Range(0, ConfigDataHelper.sceneItemConfigDatas.Length)].id : itemId;
+        barrelAttribute.health = 1;
+        barrelAttribute.maxHealth = 1;
+
+        barrel.SetData(barrelData);
+        barrel.SetMapPos(pos);
+        barrel.SetAttribute(barrelAttribute);
+        barrel.SetObjectType(ObjectType.Barrel);
+        barrel.SetLayer(LayerName.Unit);
+        barrel.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
+
+        return barrel;
+    }
 }

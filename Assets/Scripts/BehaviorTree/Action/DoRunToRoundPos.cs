@@ -4,64 +4,71 @@ using GameFrameWork.Camera;
 
 public class DoRunToRoundPos : Action
 {
-    public DoRunToRoundPos(string name, string args, object owner) : base(name, args, owner)
+    public DoRunToRoundPos(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+    }
+
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
     }
 
     protected override void OnEnter()
     {
         Rect visionRect = CameraMgr.instance.GetVision();
-        Vector2 selfPos = m_Owner.owner.pos;
+        Vector2 selfPos = m_ActionOwner.owner.pos;
         Vector2 targetPos = PlayerMgr.instance.player.pos;
         float randomY = StageMgr.instance.GetRandomPosY();
         float dir = targetPos.x > selfPos.x ? 1 : -1;
         float radius = Random.Range(0.2f, Vector2.Distance(selfPos, targetPos));
         Vector2 to = targetPos + Vector2.right * radius * dir;
-        to.x = Mathf.Clamp(to.x, visionRect.xMin + m_Owner.owner.bound.width, visionRect.xMax - m_Owner.owner.bound.width);
+        to.x = Mathf.Clamp(to.x, visionRect.xMin + m_ActionOwner.owner.bound.width, visionRect.xMax - m_ActionOwner.owner.bound.width);
         m_RoundPos[0].x = targetPos.x;
         m_RoundPos[0].y = randomY;
         m_RoundPos[1] = to;
         m_CurrIndex = 0;
-        m_IsArravied = false;
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if (m_IsArravied)
+        base.OnUpdate(deltaTime);
+
+        bool isArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - m_ActionOwner.owner.pos.x) <= 0.03f && Mathf.Abs(m_RoundPos[m_CurrIndex].y - m_ActionOwner.owner.pos.y) <= 0.03f;
+
+        if (isArravied)
         {
             if (m_CurrIndex >= m_RoundPos.Length - 1)
             {
-                m_Owner.Move(Vector2.zero, false);
-                m_Owner.OppositePlayer();
-                return BehaviorTreeState.Success;
+                m_ActionOwner.Move(Vector2.zero, false);
+                m_ActionOwner.OppositePlayer();
+                m_State = BehaviourTreeState.Success;
+                return;
             }
 
-            m_IsArravied = false;
-            m_Owner.OppositePlayer();
+            m_ActionOwner.OppositePlayer();
             m_CurrIndex++;
         }
-
-        m_IsArravied = Mathf.Abs(m_RoundPos[m_CurrIndex].x - m_Owner.owner.pos.x) <= 0.03f &&
-                       Mathf.Abs(m_RoundPos[m_CurrIndex].y - m_Owner.owner.pos.y) <= 0.03f;
-
-        if (!m_IsArravied)
+        else
         {
-            m_Owner.Move((m_RoundPos[m_CurrIndex] - m_Owner.owner.pos).normalized, false);
-            m_Owner.OppositePlayer();
+            m_ActionOwner.Move((m_RoundPos[m_CurrIndex] - m_ActionOwner.owner.pos).normalized, false);
+            m_ActionOwner.OppositePlayer();
         }
-
-        return BehaviorTreeState.Running;
     }
 
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
-        m_IsArravied = false;
+        base.OnReset();
+        m_CurrIndex = 0;
     }
 
     private int m_CurrIndex = 0;
     private Vector2[] m_RoundPos = new Vector2[2] { Vector2.zero, Vector2.zero };
-    private bool m_IsArravied = false;
-    private new BaseEnemyCtrl m_Owner = null;
+    private BaseEnemyCtrl m_ActionOwner = null;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

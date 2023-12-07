@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PreIsInSpecialState : PreCondition
 {
-    public PreIsInSpecialState(string name, string args, object owner) : base(name, args, owner)
+    public PreIsInSpecialState(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseRoleCtrl;
 

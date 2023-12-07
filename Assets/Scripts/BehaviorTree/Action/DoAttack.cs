@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoAttack : Action
 {
-    public DoAttack(string name, string args, object owner) : base(name, args, owner) 
+    public DoAttack(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
 
@@ -19,55 +19,80 @@ public class DoAttack : Action
         }
     }
 
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
     protected override void OnEnter()
     {
+        m_State = BehaviourTreeState.Running;
+
         if (m_IsRandomAttckCount)
         {
             m_AttackCount = Random.Range(1, 9);
         }
 
         m_CurrAttackCount = 0;
-        m_AttackTimer = -1;
+        m_AttackTimer = -1f;
+        m_IsAttacking = false;
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if (m_AttackTimer > 0 && Time.time - m_AttackTimer < 0.5f)
-        {
-            return BehaviorTreeState.Running;
-        }
+        base.OnUpdate(deltaTime);
 
-        m_Owner.Attack(Vector2.zero);
-        m_Owner.OppositePlayer();
-        m_AttackTimer = -1;
+        if (!m_IsAttacking)
+        {
+            m_Owner.OppositePlayer();
+            m_Owner.Attack(Vector2.zero);
+            m_IsAttacking = true;
+        }
 
         if (m_Owner.owner.IsPlayComplete())
         {
-            m_AttackTimer = Time.time;
-            m_CurrAttackCount++;
-            if (m_CurrAttackCount >= m_AttackCount)
+            if (m_AttackTimer < 0)
             {
-                return BehaviorTreeState.Success;
+                m_AttackTimer = Time.time;
             }
         }
 
-        return BehaviorTreeState.Running;
+        if (m_AttackTimer > 0 && Time.time - m_AttackTimer >= 0.05f/m_Owner.owner.entityAttribute.attackSpeed)
+        {
+            m_CurrAttackCount++;
+            m_AttackTimer = -1;
+            m_IsAttacking = false;
+
+            if (m_CurrAttackCount >= m_AttackCount)
+            {
+                m_State = BehaviourTreeState.Success;
+                return;
+            }
+        }
     }
 
-
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
+
         m_CurrAttackCount = 0;
-        m_AttackTimer = -1;
+        m_AttackTimer = -1f;
+        m_IsAttacking = false;
     }
 
     protected int m_CurrAttackCount = 0;
     protected int m_AttackCount = 0;
-    private float m_AttackTimer = -1f;
-    private Regex m_Regex = new Regex(@"(AttackTime:)(-?[0-9]+)");
-
     protected new BaseEnemyCtrl m_Owner = null;
     protected bool m_IsRandomAttckCount = false;
 
+    private float m_AttackTimer = -1f;
+    private bool m_IsAttacking = false;
+
+    private Regex m_Regex = new Regex(@"(AttackTime:)(-?[0-9]+)");
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

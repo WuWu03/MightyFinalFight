@@ -15,6 +15,7 @@ public class SkillNearHitSelector : SkillBaseSelector
         {
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
             List<BaseSceneItem> sceneItemTargets = SceneEntityMgr.instance.GetSceneItems();
+            List<Barrel> barrelTargets = SceneEntityMgr.instance.GetBarrels();
 
             if (enemyTargets != null)
             {
@@ -31,6 +32,14 @@ public class SkillNearHitSelector : SkillBaseSelector
                     CheckTarget(sceneItemTargets[i]);
                 }
             }
+
+            if (barrelTargets != null)
+            {
+                for (int i = 0; i < barrelTargets.Count; i++)
+                {
+                    CheckTarget(barrelTargets[i]);
+                }
+            }
         }
         else
         {
@@ -40,14 +49,14 @@ public class SkillNearHitSelector : SkillBaseSelector
         return m_ListTargets;
     }
 
-    private void CheckTarget(BaseAvatar ba)
+    private void CheckTarget(BaseSceneObject bso)
     {
-        if(ba == null)
+        if(bso == null)
         {
             return;
         }
 
-        ICanBeHit hit = ba.GetComponent<ICanBeHit>();
+        ICanBeHit hit = bso.GetComponent<ICanBeHit>();
 
         if (hit == null)
         {
@@ -56,9 +65,9 @@ public class SkillNearHitSelector : SkillBaseSelector
 
         bool isInRange = false;
 
-        if(SkillUtil.IsRectangleCollide(ba.bound, m_Owner.bound))
+        if(SkillUtil.IsRectangleCollide(bso.bound, m_Owner.bound))
         {
-            Vector2 target = (ba.pos - m_Owner.pos).normalized;
+            Vector2 target = (bso.pos - m_Owner.pos).normalized;
             Vector2 normal = m_Owner.dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
             float angle = Vector2.Angle(target, normal);
 
@@ -68,10 +77,10 @@ public class SkillNearHitSelector : SkillBaseSelector
                 //float w = m_Owner.bound.width / 2;
                 float h = m_Owner.bound.height / 2;
                 //float x = w * Mathf.Cos(angle * Mathf.Rad2Deg);
-                float y = h * Mathf.Sin(angle * Mathf.Rad2Deg);
+                float y = Mathf.Max(h * Mathf.Sin(angle * Mathf.Rad2Deg), 0.01f);
                 //float distance = Vector2.Distance(m_Owner.pos, ba.pos);
 
-                isInRange = Mathf.Abs(m_Owner.pos.y - ba.pos.y) <= Mathf.Abs(y);//x坐标满足条件只需检测y坐标
+                isInRange = Mathf.Abs(m_Owner.pos.y - bso.pos.y) <= Mathf.Abs(y);//x坐标满足条件只需检测y坐标
 
                 //!(ba.bound.xMin > m_Owner.bound.xMax || ba.bound.yMin > m_Owner.bound.yMax || m_Owner.bound.xMin > ba.bound.xMax || m_Owner.bound.yMin > ba.bound.yMax);
             }

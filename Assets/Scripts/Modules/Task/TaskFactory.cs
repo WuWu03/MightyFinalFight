@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class TaskFactory
@@ -17,11 +18,8 @@ public static class TaskFactory
             case TaskConfigData.TaskConditionType.MoveToPos:
                 ret = new TaskMoveToPos(data);
                 break;
-            case TaskConfigData.TaskConditionType.KillEnemy:
+            case TaskConfigData.TaskConditionType.KillTarget:
                 ret = new TaskKillEnemy(data);
-                break;
-            case TaskConfigData.TaskConditionType.WaitBarrels:
-                ret = new TaskWaitBarrels(data);
                 break;
             case TaskConfigData.TaskConditionType.PrevTask:
                 ret = new TaskPrev(data);
@@ -39,15 +37,13 @@ public static class TaskFactory
         {
             case TaskConfigData.TaskTriggerType.None:
                 break;
-            case TaskConfigData.TaskTriggerType.Enemy:
-                ret = new TaskTriggerEnemy(data);
-                break;
-            case TaskConfigData.TaskTriggerType.Barrels:
+            case TaskConfigData.TaskTriggerType.CreateTargets:
+                ret = new TaskTriggerCreateTargets(data);
                 break;
             case TaskConfigData.TaskTriggerType.Story:
                 string className = StringUtil.FormatDefault("TaskTriggerStory_", data.StoryId);
                 Type t = Type.GetType(className);
-                if(t != null)
+                if (t != null)
                 {
                     ret = (BaseTaskTrigger)System.Activator.CreateInstance(t, data);
                 }
@@ -60,6 +56,12 @@ public static class TaskFactory
                 break;
             case TaskConfigData.TaskTriggerType.AutoMoveToPos:
                 ret = new TaskTriggerAutoMoveToPos(data);
+                break;
+            case TaskConfigData.TaskTriggerType.Talk:
+                ret = new TaskTriggerTalk(data);
+                break;
+            case TaskConfigData.TaskTriggerType.RoundClear:
+                ret = new TaskTriggerRoundClear(data);
                 break;
         }
 

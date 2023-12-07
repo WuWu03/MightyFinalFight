@@ -152,7 +152,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         heroSkillData.attackIds = m_RoleConfigData.attactIds;
         heroSkillData.jumpAttackIds = m_RoleConfigData.jumpAttackIds;
         heroSkillData.skillIds = m_RoleConfigData.skillIds;
-        heroSkillData.attackWait = m_RoleConfigData.attackWait;
+        heroSkillData.attackWait = new float[3] { 0.2f, 0.4f,1f };//m_RoleConfigData.attackWait;
         heroSkillData.attackNextTime = m_RoleConfigData.attackNextTime;
         heroSkillData.catchAttackID = m_RoleConfigData.catchAttackId;
         heroSkillData.throwAttackID = m_RoleConfigData.throwAttackId;
@@ -178,7 +178,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         CameraMgr.instance.SetTarget(m_Player.transform);
         InputMgr.instance.getDirectionEvent = GetDirction;
-        //InputMgr.instance.afterTriggerEvent = AfterTrigger;
         InputMgr.instance.getPreconditonEvent = GetPreCondition;
         InputMgr.instance.isRunning = true;
     }
@@ -277,7 +276,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_CurrCtrl.Attack(asix);
     }
 
-
     private void AfterTriggerJump()
     {
         if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
@@ -307,7 +305,13 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1 });
+            //UIMgr.instance.Open<TalkPanel>(1001);// m_TaskData.TalkID);
+            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            StageMgr.instance.StageEnterNext();
         }
     }
 

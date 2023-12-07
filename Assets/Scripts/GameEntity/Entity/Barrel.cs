@@ -3,16 +3,8 @@ using GameFrameWork.Fsm;
 using GameFrameWork.Sound;
 using UnityEngine;
 
-public class Barrel : BaseSceneItem, ICanBeHit
+public class Barrel : BaseAvatar, ICanBeHit
 {
-    public override bool canPickUp
-    {
-        get
-        {
-            return false;
-        }
-    }
-
     public bool canBeHit
     {
         get
@@ -72,16 +64,14 @@ public class Barrel : BaseSceneItem, ICanBeHit
         AddState<BarrelDead>();
     }
 
-    public override void SetData(BaseSceneObjectData info)
+    public override void SetData(BaseSceneObjectData data)
     {
-        base.SetData(info);
-        m_BarrelData = info as BarrelData;
+        base.SetData(data);
+        m_BarrelData = data as BarrelData;
     }
 
     public override void Release()
     {
-        m_FsmMachine.ShutDown();
-        m_FsmMachine = null;
         m_BarrelData = null;
         base.Release();
     }
@@ -113,12 +103,15 @@ public class Barrel : BaseSceneItem, ICanBeHit
     {
         base.OnUpdate();
 
-        bool isOut = m_BarrelData.dir > 0 ? IsOutVersionXRight(m_Pos.x) : IsOutVersionXLeft(m_Pos.x);
-
-        if (isOut)
+        if (m_BarrelData != null)
         {
-            Release();
-            return;
+            bool isOut = m_BarrelData.dir > 0 ? IsOutVersionXRight(m_Pos.x) : IsOutVersionXLeft(m_Pos.x);
+
+            if (isOut)
+            {
+                Release();
+                return;
+            }
         }
     }
 
@@ -148,13 +141,13 @@ public class Barrel : BaseSceneItem, ICanBeHit
             if (m_BarrelData.moveSpeed > 0)
             {
                 SetTrigger(AnimName.Move);
-                ChangeState<BarrelMove>();
+                m_FsmMachine.Start<BarrelMove>();
                 SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
             }
             else
             {
                 SetTrigger(AnimName.Idle);
-                ChangeState<BarrelIdle>();
+                m_FsmMachine.Start<BarrelIdle>();
             }
         }
         else
@@ -184,10 +177,20 @@ public class Barrel : BaseSceneItem, ICanBeHit
         {
             return;
         }
+        
+        bool isInRange = false;
 
-        HurtData hurtData = HurtData.Create();
-        hurtData.attackerDir = -role.dir;
-        hit.OnHurtMsg(hurtData);
+        if (SkillUtil.IsRectangleCollide(role.bound, m_Bound))
+        {
+            isInRange = Mathf.Abs(role.pos.y - m_Pos.y) < 0.1f;
+        }
+
+        if(isInRange)
+        {
+            HurtData hurtData = HurtData.Create();
+            hurtData.attackerDir = -role.dir;
+            hit.OnHurtMsg(hurtData);
+        }
     }
 
     private void CheckThrow(GameObject go)
@@ -223,6 +226,5 @@ public class Barrel : BaseSceneItem, ICanBeHit
         OnHurtMsg(hurtData);
     }
 
-    private UnityArmatureComponent m_ArmatureAnimator = null;
     private BarrelData m_BarrelData = null;
 }

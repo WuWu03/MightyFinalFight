@@ -166,16 +166,25 @@ public class SkillFactory
             return null;
         }
 
-        float dir = (hit as BaseSceneObject).pos.x - owner.pos.x >= 0 ? 1 : -1;
-        bool isBoss = false;
-        bool isCritical = false;
+        if (hit is BaseEnemy)//boss攻击优先级更高;
+        {
+            BaseEnemy baseEnemy = hit as BaseEnemy;
+          
+            if (baseEnemy.isBoss && baseEnemy.currCtrl.IsInSkill())
+            {
+                return null;
+            }
+        }
 
+        float dir = (hit as BaseSceneObject).pos.x - owner.pos.x >= 0 ? 1 : -1;
+        bool isCritical = false;
+        bool isBoss = false;
         if (effect.ForceType == SkillAddForceType.SelfDir)
         {
             dir = owner.dir;
         }
 
-        if (owner is BaseEnemy)
+        if(owner is BaseEnemy)
         {
             isBoss = (owner as BaseEnemy).isBoss;
         }
@@ -189,7 +198,7 @@ public class SkillFactory
         hurtData.canBeDefense = effect.CanBeDefense;
         hurtData.isSwoon = effect.IsSmoon;
         hurtData.attackerId = owner.id;
-        hurtData.attackValue = 1;// CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
+        hurtData.attackValue = CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
         hurtData.isCritical = isCritical;
         hurtData.hurtSound = data.HurtSound;
         hurtData.hurtAnim = string.Empty;

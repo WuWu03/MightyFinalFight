@@ -20,6 +20,8 @@ MonoBehaviour:
     Level: 1
     Width: 1016
     Height: 152
+    StageColor: 9C9797
+    StageShowColor: 1
     InitPos: {x: -450, y: -50}
     SceneBuildings:
     - SceneObjType: 2
@@ -58,6 +60,8 @@ MonoBehaviour:
     Level: 2
     Width: 1016
     Height: 152
+    StageColor: 9C9797
+    StageShowColor: 1
     InitPos: {x: -505, y: -32}
     SceneBuildings:
     - SceneObjType: 1
@@ -102,16 +106,16 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Pit
-    TaskIDs: ef030000
+    TaskIDs: f0030000
     BGMs: []
     MovePoints:
-    - {x: -473, y: -17}
-    - {x: 345, y: -17}
-    - {x: 360, y: 1}
-    - {x: 508, y: 1}
-    - {x: 508, y: -44}
-    - {x: 316, y: -43}
-    - {x: 316, y: -58}
+    - {x: -470, y: -17}
+    - {x: 343, y: -17}
+    - {x: 361, y: 2}
+    - {x: 507, y: 2}
+    - {x: 506, y: -44}
+    - {x: 317, y: -44}
+    - {x: 317, y: -58}
     - {x: -514, y: -58}
   - Id: 1003
     Name: Stage1_3
@@ -120,6 +124,8 @@ MonoBehaviour:
     Level: 3
     Width: 504
     Height: 152
+    StageColor: 9C9797
+    StageShowColor: 1
     InitPos: {x: -215, y: -53}
     SceneBuildings:
     - SceneObjType: 2
@@ -143,7 +149,7 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBeltLast
-    TaskIDs: f4030000
+    TaskIDs: f5030000
     BGMs:
     - ClipName: bgm06Boss_Start
       IsLoop: 0
@@ -158,49 +164,55 @@ MonoBehaviour:
     - {x: 252, y: -31}
     - {x: 252, y: -76}
     - {x: -252, y: -76}
-  - Id: 0
+  - Id: 2001
+    Name: Stage2_1
+    SceneName: Stage2_1
+    StageIndex: 2
+    Level: 1
+    Width: 1016
+    Height: 152
+    StageColor: 7700FF
+    StageShowColor: 2
+    InitPos: {x: -488, y: -47}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs:
+    - ClipName: bgm02_Start
+      IsLoop: 0
+      Volume: 1
+      LerpTime: 0
+    - ClipName: bgm02_Loop
+      IsLoop: 1
+      Volume: 1
+      LerpTime: 0
+    MovePoints:
+    - {x: -506, y: -30}
+    - {x: 506, y: -30}
+    - {x: 506, y: -75}
+    - {x: -506, y: -75}
+  - Id: 2002
+    Name: Stage2_2
+    SceneName: Stage2_2
+    StageIndex: 2
+    Level: 2
+    Width: 1275
+    Height: 152
+    StageColor: 7700FF
+    StageShowColor: 2
+    InitPos: {x: 0, y: 0}
+    SceneBuildings: []
+    TaskIDs: 
+    BGMs: []
+    MovePoints: []
+  - Id: 5001
     Name: 
     SceneName: 
     StageIndex: 0
     Level: 0
     Width: 1016
     Height: 152
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - Id: 0
-    Name: 
-    SceneName: 
-    StageIndex: 0
-    Level: 0
-    Width: 1016
-    Height: 152
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - Id: 0
-    Name: 
-    SceneName: 
-    StageIndex: 0
-    Level: 0
-    Width: 760
-    Height: 152
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - Id: 0
-    Name: 
-    SceneName: 
-    StageIndex: 0
-    Level: 0
-    Width: 546
-    Height: 152
+    StageColor: 0
+    StageShowColor: 0
     InitPos: {x: 0, y: 0}
     SceneBuildings: []
     TaskIDs: 
@@ -213,18 +225,8 @@ MonoBehaviour:
     Level: 0
     Width: 504
     Height: 152
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - Id: 0
-    Name: 
-    SceneName: 
-    StageIndex: 0
-    Level: 0
-    Width: 1016
-    Height: 152
+    StageColor: 7700FF
+    StageShowColor: 2
     InitPos: {x: 0, y: 0}
     SceneBuildings: []
     TaskIDs: 

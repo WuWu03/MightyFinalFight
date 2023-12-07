@@ -332,12 +332,17 @@ public class BaseHero : BaseRole
 
     public virtual void PickUpSceneItemMsg(BaseSceneItem item)
     {
-        if (item == null) return;
+        if (item == null)
+        {
+            return;
+        }
+
         ChangeState<HeroPickUp>();
 
         if (item.objectType == ObjectType.Weapon)
         {
             Weapon weapon = item as Weapon;
+
             if (m_Weapon == null)
             {
                 weapon.SetOwner(this);
@@ -365,15 +370,16 @@ public class BaseHero : BaseRole
     public virtual void UseWeaponMsg()
     {
         m_Weapon.entityAttribute.SubHealth(1);
-        if (m_Weapon.entityAttribute.health<= 0)
+
+        if (m_Weapon.entityAttribute.health <= 0)
         {
             m_Weapon.Release();
             m_Weapon = null;
 
-            if (IsAnyState(typeof(RoleIdle)))
-            {
-                PlayAnimation(AnimName.Idle);
-            }
+            //if (IsAnyState(typeof(RoleIdle)))
+            //{
+            //    PlayAnimation(AnimName.Idle);
+            //}
         }
     }
 

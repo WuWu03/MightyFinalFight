@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoSkill : Action
 {
-    public DoSkill(string name, string args, object owner) : base(name, args, owner)
+    public DoSkill(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
 
@@ -18,28 +18,49 @@ public class DoSkill : Action
         }
     }
 
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
     protected override void OnEnter()
     {
-        m_ActionOwner.DeploySkill(m_SkllId);
+        m_State = BehaviourTreeState.Running;
+        m_HasDeploy = false;
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if (m_ActionOwner.IsSkillComplete(m_SkllId))
+        base.OnUpdate(deltaTime);
+
+        if (!m_HasDeploy)
         {
-            return BehaviorTreeState.Success;
+            m_ActionOwner.DeploySkill(m_SkllId);
+            m_HasDeploy = true;
         }
 
-        return BehaviorTreeState.Running;
+        if (m_ActionOwner.IsSkillComplete(m_SkllId))
+        {
+            m_State = BehaviourTreeState.Success;
+            return;
+        }
     }
 
-
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
+        m_State = BehaviourTreeState.None;
+        m_HasDeploy = false;
     }
 
     private int m_SkllId = 0;
+    private bool m_HasDeploy = false;
     private Regex m_Regex = new Regex(@"(SkillId:)(-?[0-9]+)");
     private BaseEnemyCtrl m_ActionOwner = null;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

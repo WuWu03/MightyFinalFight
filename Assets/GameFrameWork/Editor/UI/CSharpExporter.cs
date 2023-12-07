@@ -143,7 +143,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine();
             sb.AppendLine("\tprotected override void OnInit(object[] param)");
             sb.AppendLine("\t{");
-            sb.AppendFormat("\t\tm_Component = new {0}Component(UIRefRoot);\r\n", setting.panelName);
+            sb.AppendFormat("\t\tm_Component = new {0}Component(m_UIRefRoot);\r\n", setting.panelName);
             sb.AppendLine("\t}");
             sb.AppendLine();
             sb.AppendLine("\tprotected override void OnOpen()");

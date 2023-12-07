@@ -136,6 +136,9 @@ public class MapEditorWindow : EditorWindow
         EditorGUILayout.FloatField("地图宽", MapEditorHelper.Texture.width);
         EditorGUILayout.FloatField("地图高", MapEditorHelper.Texture.height);
 
+        MapEditorHelper.StageColor = EditorGUILayout.TextField("关卡色调", MapEditorHelper.StageColor);
+        MapEditorHelper.StageShowColor = EditorGUILayout.IntField("关卡面板色调", MapEditorHelper.StageShowColor);
+
         Vector2 currPos = EditorGUILayout.Vector2Field("当前坐标", MapEditorHelper.CurrPos);
         Vector2 initPos = EditorGUILayout.Vector2Field("出生坐标", MapEditorHelper.InitPos);
         MapEditorHelper.SetCurrPos(currPos);
@@ -195,7 +198,7 @@ public class MapEditorWindow : EditorWindow
             if (GUILayout.Button(m_TabNames[i], i == m_CurrPage ? MapEditorHelper.SelectButtonOnStyle : MapEditorHelper.SelectButtonStyle))
             {
                 m_CurrPage = i;
-                return;
+                break;
             }
         }
         EditorGUILayout.EndHorizontal();
@@ -282,7 +285,6 @@ public class MapEditorWindow : EditorWindow
                     if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                     {
                         MapEditorHelper.ListBGM.RemoveAt(i);
-                        return;
                     }
                 }
 
@@ -439,7 +441,7 @@ public class MapEditorWindow : EditorWindow
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
         float width = Mathf.Max(screenSize.x, texSize.x);
-        float height = Mathf.Max(screenSize.y, texSize.y) + 620;
+        float height = Mathf.Max(screenSize.y, texSize.y) + 660;
 
         minSize = new Vector2(width, height);
         maxSize = minSize;  

@@ -88,6 +88,29 @@ public static class MapEditorHelper
         }
     }
 
+    public static string StageColor
+    {
+        get
+        {
+            return m_CurrData.StageColor;
+        }
+        set
+        {
+            m_CurrData.StageColor = value;
+        }
+    }
+
+    public static int StageShowColor
+    {
+        get
+        {
+            return m_CurrData.StageShowColor;
+        }
+        set
+        {
+            m_CurrData.StageShowColor = value;
+        }
+    }
     public static List<int> ListTaskId
     {
         get
@@ -387,6 +410,7 @@ public static class MapEditorHelper
 
         StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageData.asset");
         stageConfig.Datas.Clear();
+        m_MapEditorConfig.Datas.Sort();
 
         for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)
         {
@@ -404,6 +428,8 @@ public static class MapEditorHelper
             data.BGMs = configData.ListBGM.ToArray();
             data.SceneBuildings = configData.ListSceneBuilding.ToArray();
             data.MovePoints = new Vector2Int[configData.ListMovePoints.Count];
+            data.StageColor = configData.StageColor;
+            data.StageShowColor = configData.StageShowColor;
 
             for (int j = 0; j < data.MovePoints.Length; j++)
             {

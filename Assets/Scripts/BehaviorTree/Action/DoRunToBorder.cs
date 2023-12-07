@@ -5,50 +5,65 @@ using UnityEngine;
 
 public class DoRunToBorder : Action
 {
-    public DoRunToBorder(string name, string args, object owner) : base(name, args, owner)
+    public DoRunToBorder(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+    }
+
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
     }
 
     protected override void OnEnter()
     {
+        m_State = BehaviourTreeState.Running;
         Rect vision = CameraMgr.instance.GetVision();
-        Vector2 pos = m_Owner.owner.pos;
+        Vector2 pos = m_ActionOwner.owner.pos;
 
         float leftDistance = Mathf.Abs(pos.x - vision.xMin);
         float rightDistance = Mathf.Abs(pos.x - vision.xMax);
 
         m_BorderPosX = leftDistance < rightDistance ? vision.xMin : vision.xMax;
         m_MoveDir = leftDistance < rightDistance ? -1 : 1;
-        m_IsArrived = false;
-        m_Owner.owner.ChangeDefaultState();
+        m_ActionOwner.owner.ChangeDefaultState();
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if(!m_IsArrived)
+        base.OnUpdate(deltaTime);
+
+        Rect ownerBound = m_ActionOwner.owner.bound;
+        Vector2 size = m_ActionOwner.owner.GetCurrTriggerSize();
+        float distance = m_MoveDir > 0 ? Mathf.Abs(ownerBound.xMax - m_BorderPosX) : Mathf.Abs(ownerBound.xMin - m_BorderPosX);
+        bool isArrive = distance <= size.x;
+
+        if (isArrive)
         {
-            Rect ownerBound = m_Owner.owner.bound;
-            Vector2 size = m_Owner.owner.GetCurrTriggerSize();
-            float distance = m_MoveDir > 0 ? Mathf.Abs(ownerBound.xMax - m_BorderPosX) : Mathf.Abs(ownerBound.xMin - m_BorderPosX);
-            m_IsArrived = distance <= size.x;
-            m_Owner.Move(Vector2.right * m_MoveDir);
-            m_Owner.OppositePlayer();
-            return BehaviorTreeState.Running;
+            m_State = BehaviourTreeState.Success;
         }
-
-        return BehaviorTreeState.Success;
+        else
+        {
+            m_ActionOwner.Move(Vector2.right * m_MoveDir);
+            m_ActionOwner.OppositePlayer();
+        }
     }
 
-
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
+        m_State = BehaviourTreeState.None;
+        m_MoveDir = 1;
+        m_BorderPosX = 0;
     }
 
-
-    private bool m_IsArrived = false;
     private int m_MoveDir = 1;
     private float m_BorderPosX = 0;
-    protected new BaseEnemyCtrl m_Owner = null;
+    private BaseEnemyCtrl m_ActionOwner = null;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

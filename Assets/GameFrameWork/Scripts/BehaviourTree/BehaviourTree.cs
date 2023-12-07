@@ -13,9 +13,9 @@ namespace GameFrameWork.BehaviourTree
 
         public void Start()
         {
-            Reset();
-            m_Root.Enter();
+            m_Root.Start();
             m_IsRunning = true;
+            m_IsPause = false;
         }
 
         public void Update(float deltaTime)
@@ -26,6 +26,16 @@ namespace GameFrameWork.BehaviourTree
             }
 
             m_Root.Update(deltaTime);
+        }
+
+        public void LateUpate(float deltaTime)
+        {
+            if (!m_IsRunning || m_IsPause)
+            {
+                return;
+            }
+
+            m_Root.LateUpdate(deltaTime);
         }
 
         public void Pasuse(bool value)
@@ -51,13 +61,16 @@ namespace GameFrameWork.BehaviourTree
 
         private Node Load(BehaviourTreeData data, object owner)
         {
-            Node root = BehaviourFactory.GetNodeByClassType(data.name, data.classType, data.args, owner);
+            Node root = BehaviourFactory.GetNodeByClassType(data.name, data.classType, data.args, owner, data.priority);
 
             if (data.preConditions != null && data.preConditions.Length > 0)
             {
                 for (int i = 0; i < data.preConditions.Length; i++)
                 {
-                    root.AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner));
+                    if(root is Task)
+                    {
+                        (root as Task).AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner, 0));
+                    }
                 }
             }
 
@@ -65,7 +78,10 @@ namespace GameFrameWork.BehaviourTree
             {
                 for (int i = 0; i < data.children.Length; i++)
                 {
-                    root.AddChild(Load(data.children[i], owner));
+                    if(root is ParentTask)
+                    {
+                        (root as ParentTask).AddChild(Load(data.children[i], owner) as Task);
+                    }
                 }
             }
 

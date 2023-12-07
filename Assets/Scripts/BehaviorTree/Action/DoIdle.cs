@@ -1,40 +1,51 @@
 ﻿using GameFrameWork.BehaviourTree;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 
 public class DoIdle : Action
 {
-    public DoIdle(string name, string args, object owner) : base(name, args, owner)
+    public DoIdle(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
     }
 
-    protected override void OnEnter()
+    public override bool CanExcute()
     {
-        m_IdleTime = Random.Range(0.5f, 2f);
-        m_IdleTimer = Time.time;
+        return m_State != BehaviourTreeState.Success;
     }
 
-    public override BehaviorTreeState Excute()
+    public override BehaviourTreeState Excute()
     {
-        if(Time.time - m_IdleTimer >= m_IdleTime)
+        return m_State;
+    }
+
+    protected override void OnEnter()
+    {
+        float idleTime = 1 / m_Owner.owner.entityAttribute.moveSpeed;
+        m_IdleTime = Random.Range(Mathf.Max(idleTime - 0.5f, 0.1f), Mathf.Max(idleTime, 0.2f));
+        m_IdleTimer = Time.time;
+        m_State = BehaviourTreeState.Running;
+    }
+
+    protected override void OnUpdate(float deltaTime)
+    {
+        base.OnUpdate(deltaTime);
+
+        if (Time.time - m_IdleTimer >= m_IdleTime)
         {
-            return BehaviorTreeState.Success;
+            m_State = BehaviourTreeState.Success;
+            return;
         }
 
         m_Owner.Move(Vector2.zero);
         m_Owner.OppositePlayer();
-
-        return BehaviorTreeState.Running;
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
     }
 
     private float m_IdleTime = 0f;
     private float m_IdleTimer = 0f;
     private new BaseEnemyCtrl m_Owner = null;
+
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

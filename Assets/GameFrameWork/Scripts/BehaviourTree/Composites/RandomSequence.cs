@@ -6,105 +6,90 @@ using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
-    public class RandomSequence : Composites
+    public class RandomSequence : Composite
     {
-        public RandomSequence(string name, string args, object owner) : base(name, args, owner)
+        public RandomSequence(string name, string args, object owner, int priority) : base(name, args, owner, priority)
         {
-            m_CurrChildIndex = 0;
-            m_LastChildIndex = -1;
-            m_ListWeight = new List<int>();
 
-            if (!string.IsNullOrEmpty(args))
-            {
-                Match m = m_Regex.Match(args);
-                if (m.Success)
-                {
-                    string[] str = m.Groups[3].Value.Split(',');
-                    m_Weights = new int[str.Length];
-
-                    for (int i = 0; i < str.Length; i++)
-                    {
-                        m_Weights[i] = str[i].ToInt();
-                    }
-
-                    m_ListWeight.AddRange(m_Weights);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < GetChildCount(); i++)
-                {
-                    m_ListWeight.Add(1);
-                }
-            }
         }
 
-        protected override void OnEnter()
+        public override BehaviourTreeState Excute()
         {
-            m_ListWeight.Clear();
-            m_ListWeight.AddRange(m_Weights);
-            m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
-            m_LastChildIndex = -1;
-            m_ListWeight.Remove(m_CurrChildIndex);
-        }
-
-        protected override void OnUpdate(float deltaTime)
-        {
-            Node child = GetChild(m_CurrChildIndex);
-            if (child != null)
+            if (m_State == BehaviourTreeState.Failure)
             {
-                if (child.CanExcute() && child.CheckPreCondition() && CheckPreCondition())
-                {
-                    if (m_CurrChildIndex != m_LastChildIndex)
-                    {
-                        m_LastChildIndex = m_CurrChildIndex;
-                        child.Enter();
-                    }
-
-                    child.Update(deltaTime);
-                    BehaviorTreeState state = child.Excute();
-                    if (state != BehaviorTreeState.Running)
-                    {
-                        m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
-                        m_ListWeight.Remove(m_CurrChildIndex);
-
-                        if (state == BehaviorTreeState.Failure)
-                        {
-                            m_State = BehaviorTreeState.Failure;
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    m_CurrChildIndex = CommonUtil.RandomByWeight(m_ListWeight.ToArray());
-                    m_ListWeight.Remove(m_CurrChildIndex);
-                }
+                return BehaviourTreeState.Failure;
+            }
+            else if (m_CurrChildIndex >= GetChildCount())
+            {
+                return BehaviourTreeState.Success;
             }
 
-            if (m_ListWeight.Count < 1)
-            {
-                Reset();
-                m_State = BehaviorTreeState.Success;
-            }
+            return BehaviourTreeState.Running;
         }
 
         public override bool CanExcute()
         {
-            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Failure;
+            return m_CurrChildIndex < GetChildCount() && m_State != BehaviourTreeState.Failure;
         }
 
-        public override void Reset()
+        protected override int GetCurrChildIndex()
         {
-            base.Reset();
-            m_ListWeight.Clear();
-            m_LastChildIndex = -1;
+            return m_ChildrenIndexes[m_CurrChildIndex];
         }
 
-        private int m_CurrChildIndex;
-        private int m_LastChildIndex;
-        private int[] m_Weights;
-        private List<int> m_ListWeight = null;
-        private Regex m_Regex = new Regex(@"(Weight:)(\[)([^\[\]]+)(\])");
+        protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
+        {
+            base.OnChildExcuteResult(childIndex, state);
+            m_State = state;
+            m_CurrChildIndex++;
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            m_ChildrenIndexes = new int[GetChildCount()];
+            m_CurrChildIndex = 0;
+
+            for (int i = 0; i < GetChildCount(); i++)
+            {
+                m_ChildrenIndexes[i] = i;
+            }
+
+            ShuffChildren();
+        }
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+
+            m_CurrChildIndex = 0;
+            m_State = BehaviourTreeState.Running;
+        }
+
+        protected override void OnReset()
+        {
+            base.OnReset();
+
+            m_CurrChildIndex = 0;
+            m_State = BehaviourTreeState.None;
+
+            ShuffChildren();
+        }
+
+        private void ShuffChildren()
+        {
+            for (int i = m_ChildrenIndexes.Length; i > 0; --i)
+            {
+                int j = Random.Range(0, i);
+                int childIndex = m_ChildrenIndexes[j];
+                m_ChildrenIndexes[j] = m_ChildrenIndexes[i - 1];
+                m_ChildrenIndexes[i - 1] = childIndex;
+            }
+        }
+
+        private int m_CurrChildIndex = 0;
+        private BehaviourTreeState m_State = BehaviourTreeState.None;
+        private int[] m_ChildrenIndexes = null;
     }
 }

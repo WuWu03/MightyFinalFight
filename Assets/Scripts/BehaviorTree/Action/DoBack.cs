@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DoBack : Action
 {
-    public DoBack(string name, string args, object owner) : base(name, args, owner)
+    public DoBack(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
         if (!string.IsNullOrEmpty(args))
@@ -18,6 +18,11 @@ public class DoBack : Action
         }
     }
 
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
     protected override void OnEnter()
     {
         m_TargetPos = Vector2.zero;
@@ -25,41 +30,40 @@ public class DoBack : Action
         m_TargetPos.x += m_BackDistance * -m_Owner.owner.dir;
         Rect visionRect = CameraMgr.instance.GetVision();
         m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.owner.bound.width, visionRect.xMax - m_Owner.owner.bound.width);
-        m_IsArravied = false;
+
+        m_State = BehaviourTreeState.Running;
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if (m_IsArravied)
+        base.OnUpdate(deltaTime);
+
+        Vector2 enemyPos = m_Owner.owner.pos;
+        bool isArrived = Mathf.Abs(m_TargetPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(m_TargetPos.y - enemyPos.y) <= 0.01f;
+
+        if(isArrived)
         {
             m_Owner.Move(Vector2.zero, false);
             m_Owner.OppositePlayer();
-            return BehaviorTreeState.Success;
+            m_State = BehaviourTreeState.Success;
         }
-
-        Vector2 enemyPos = m_Owner.owner.pos;
-
-        m_IsArravied = Mathf.Abs(m_TargetPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(m_TargetPos.y - enemyPos.y) <= 0.01f;
-
-        if (!m_IsArravied)
+        else
         {
             m_Owner.Move((m_TargetPos - enemyPos).normalized, false);
             m_Owner.OppositePlayer();
         }
-
-        return BehaviorTreeState.Running;
     }
 
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
         m_TargetPos = Vector2.zero;
-        m_IsArravied = false;
     }
 
-    private bool m_IsArravied = false;
     private Vector2 m_TargetPos = Vector2.zero;
     private float m_BackDistance = 0;
     private Regex m_Regex = new Regex(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
     private new BaseEnemyCtrl m_Owner = null;
+
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

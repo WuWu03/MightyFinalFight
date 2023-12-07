@@ -8,6 +8,7 @@ using System;
 using System.Reflection;
 using UnityEngine.Networking;
 using UnityEditor;
+using UnityEngine.UIElements;
 /// <summary>
 /// 游戏里常用的实用工具
 /// </summary>
@@ -16,7 +17,6 @@ namespace GameFrameWork.Utilities
 {
     public class CommonUtil
     {
-
         public static Vector3 HexagonXToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
         {
             return new Vector3(hexagonPos.x * scaleX, hexagonPos.y * scaleY, 0);
@@ -153,7 +153,7 @@ namespace GameFrameWork.Utilities
 
         public static int RandomByWeight(int[] weights)
         {
-            if(weights == null || weights.Length < 1)
+            if (weights == null || weights.Length < 1)
             {
                 return -1;
             }
@@ -177,22 +177,35 @@ namespace GameFrameWork.Utilities
                 }
             }
 
-            return -1;
+            return 0;
         }
 
-        public static string ToRGBHex(Color c)
+        public static string RGBToHex(Color color)
         {
-            if (c == default(Color))
+            if (color == default(Color))
             {
-                c = Color.black;
+                color = Color.black;
             }
 
-            byte r = (byte)(Mathf.Clamp01(c.r) * 255);
-            byte g = (byte)(Mathf.Clamp01(c.g) * 255);
-            byte b = (byte)(Mathf.Clamp01(c.b) * 255);
-            byte a = (byte)(Mathf.Clamp01(c.a) * 255);
+            byte r = (byte)(Mathf.Clamp01(color.r) * 255);
+            byte g = (byte)(Mathf.Clamp01(color.g) * 255);
+            byte b = (byte)(Mathf.Clamp01(color.b) * 255);
+            byte a = (byte)(Mathf.Clamp01(color.a) * 255);
 
             return StringUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+        }
+
+        public static Color HexToRGB(string hex)
+        {
+            hex = hex.TrimStart('#').PadRight(8, 'F');
+
+            int hexValue = Convert.ToInt32(hex, 16);
+            float r = (byte)((hexValue >> 24) & 0xFF) / 255f;
+            float g = (byte)((hexValue >> 16) & 0xFF) / 255f;
+            float b = (byte)((hexValue >> 8) & 0xFF) / 255f;
+            float a = (byte)(hexValue & 0xFF) / 255f;
+
+            return new Color(r, g, b, a);
         }
 
         public static T[] AddElement<T>(T[] array, T newElement)
@@ -256,71 +269,48 @@ namespace GameFrameWork.Utilities
             {
                 var pi = polyPoints[i];
                 var pj = polyPoints[j];
-                if (((pi.y >= p.y && p.y > pj.y) || (pj.y >= p.y && p.y > pi.y)) &&
-                    (p.x < (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x))
+                if (((pi.y >= p.y && p.y > pj.y) || (pj.y >= p.y && p.y > pi.y)) && (p.x < (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x))
                     inside = !inside;
             }
             return inside;
         }
 
-        public static Vector2Int[] PolygonRandomPoints(Vector2Int[] polyPoints, int maxCount = 1)
+        public static Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints, Rect vision)
         {
-            List<Vector2Int> result = new List<Vector2Int>();
-            Vector2Int centerPT = Vector2Int.zero;
+            int minX = polygonPoints[0].x, minY = polygonPoints[0].y;
+            int maxX = polygonPoints[0].x, maxY = polygonPoints[0].y;
 
-            for (int i = 0; i < polyPoints.Length; i++)
+            for (int i = 0; i < polygonPoints.Length; i++)
             {
-                centerPT += polyPoints[i];
-            }
-
-            centerPT /= polyPoints.Length;
-
-            for (int i = 0; i < polyPoints.Length; i++)
-            {
-                int count = 0;
-                int index1 = i;
-                int index2 = i + 1;
-
-                if (i == polyPoints.Length - 1)
+                if(vision == Rect.zero)
                 {
-                    index1 = 0;
-                    index2 = polyPoints.Length - 1;
+                    minX = Mathf.Min(minX, polygonPoints[i].x);
+                    minY = Mathf.Min(minY, polygonPoints[i].y);
+                    maxX = Mathf.Max(maxX, polygonPoints[i].x);
+                    maxY = Mathf.Max(maxY, polygonPoints[i].y);
                 }
-
-                while (count < maxCount)
+                else
                 {
-                    Vector2Int ab = polyPoints[index1] - centerPT;
-                    Vector2Int ac = polyPoints[index2] - centerPT;
-
-                    float x = UnityEngine.Random.Range(0, 1);
-                    float y = UnityEngine.Random.Range(0, 1);
-                    float x1 = 0;
-                    float y1 = 0;
-
-                    if (x + y > 10)
-                    {
-                        x1 = 1 - x;
-                        y1 = 1 - y;
-                    }
-                    else
-                    {
-                        x1 = x;
-                        y1 = y;
-                    }
-
-                    int abx = Mathf.RoundToInt((float)ab.x * x1);
-                    int aby = Mathf.RoundToInt((float)ab.y * x1);
-
-                    int acx = Mathf.RoundToInt((float)ac.x * y1);
-                    int acy = Mathf.RoundToInt((float)ac.y * y1);
-
-                    Vector2Int pt = centerPT + new Vector2Int(abx, aby) + new Vector2Int(acx, acy);
-                    result.Add(pt);
-                    count++;
+                    minX = Mathf.Min(minX, polygonPoints[i].x, (int)vision.xMin * 100);
+                    minY = Mathf.Min(minY, polygonPoints[i].y, (int)vision.yMin * 100);
+                    maxX = Mathf.Max(maxX, polygonPoints[i].x, (int)vision.xMax * 100);
+                    maxY = Mathf.Max(maxY, polygonPoints[i].y, (int)vision.yMax * 100);
                 }
             }
 
-            return result.ToArray();
+            Vector2Int randomPoint = Vector2Int.zero;
+            int maxCacTime = 100;
+            int currTime = 0;
+
+            do
+            {
+                randomPoint.x = UnityEngine.Random.Range(minX, maxX);
+                randomPoint.y = UnityEngine.Random.Range(minY, maxY);
+                currTime++;
+            }
+            while (!PolygonContainsPoint(polygonPoints, randomPoint) && currTime < maxCacTime);
+
+            return randomPoint;
         }
     }
 }

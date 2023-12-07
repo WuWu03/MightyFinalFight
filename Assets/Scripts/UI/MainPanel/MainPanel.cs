@@ -11,6 +11,8 @@ using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using GameFrameWork.Pool;
 using GameFrameWork.Camera;
+using System;
+using GameFrameWork.Event;
 
 public class MainPanel : BasePanel
 {
@@ -22,14 +24,13 @@ public class MainPanel : BasePanel
 
     protected override void OnInit(object[] param)
 	{
-		m_Component = new MainPanelComponent(uiRefRoot);
+		m_Component = new MainPanelComponent(m_UIRefRoot);
 		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
     protected override void OnOpen()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
-		m_Component.levelListGroupView.Update(5);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
@@ -37,7 +38,15 @@ public class MainPanel : BasePanel
 
 		PoolMgr.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
 		PoolMgr.instance.AddPool("EmenyDamageText", m_Component.txtEnemyDamage.gameObject);
-	}
+
+		EventMgr.instance.Subscribe(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
+        SetColor();
+    }
+
+    private void OnStageEnterStartEvent(object sender, GameEventArgs e)
+    {
+		SetColor();
+    }
 
     protected override void OnUpdate()
     {
@@ -51,7 +60,8 @@ public class MainPanel : BasePanel
 	protected override void OnClose()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = null;
-	}
+        EventMgr.instance.UnSubscribe(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
+    }
 
 	protected override void OnDestroy()
 	{
@@ -180,6 +190,12 @@ public class MainPanel : BasePanel
 
 		return expStr;
 	}
+
+	private void SetColor()
+	{
+        m_Component.playerHpBarImage.color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
+        m_Component.levelListGroupView.Update(5);
+    }
 
 	private bool m_IsEnemyHpBarAnim = false;
 	private float m_EnemyHpBarHideTimer = -1;

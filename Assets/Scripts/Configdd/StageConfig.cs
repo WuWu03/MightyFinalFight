@@ -45,6 +45,8 @@ public class StageConfigData : BaseConfigData
     public int Level;
     public int Width;
     public int Height;
+    public string StageColor;//关卡色调
+    public int StageShowColor;//关卡面板色调
     public Vector2Int InitPos;//主角出生地点
     public SceneBuilding[] SceneBuildings;//场景出现的物体（陷阱，障碍物等）
     public int[] TaskIDs;//场景的任务

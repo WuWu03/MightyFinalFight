@@ -20,19 +20,17 @@ public class RoleSelectPanel : BasePanel
 
     protected override void OnInit(object[] param)
 	{
-		m_Component = new RoleSelectPanelComponent(uiRefRoot);
+		m_Component = new RoleSelectPanelComponent(m_UIRefRoot);
 		m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
+        m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
+        m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
 
-	}
+    }
 
     protected override void OnOpen()
     {
 		m_HasSelect = false;
-
 		m_Component.imgSelectRect.gameObject.SetActive(true);
-		m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
-		m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
-
 		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 

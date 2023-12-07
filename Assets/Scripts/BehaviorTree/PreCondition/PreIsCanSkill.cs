@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PreIsCanSkill : PreCondition
 {
-    public PreIsCanSkill(string name, string args, object owner) : base(name, args, owner)
+    public PreIsCanSkill(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_PreOwner = base.m_Owner as BaseRoleCtrl;
     }

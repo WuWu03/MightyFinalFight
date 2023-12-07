@@ -3,64 +3,59 @@
 
 namespace GameFrameWork.BehaviourTree
 {
-    public class Sequence : Composites
+    public class Sequence : Composite
     {
-        public Sequence(string name, string args, object owner) : base(name, args, owner) 
+        public Sequence(string name, string args, object owner, int priority) : base(name, args, owner, priority) 
         {
             m_CurrChildIndex = 0;
-            m_LastChildIndex = -1;
         }
 
-        protected override void OnUpdate(float deltaTime)
+        public override BehaviourTreeState Excute()
         {
-            Node child = GetChild(m_CurrChildIndex);
-            if (child != null)
+            if(m_State == BehaviourTreeState.Failure)
             {
-                if (child.CanExcute() && child.CheckPreCondition() && CheckPreCondition())
-                {
-                    if (m_CurrChildIndex != m_LastChildIndex)
-                    {
-                        m_LastChildIndex = m_CurrChildIndex;
-                        child.Enter();
-                    }
-
-                    child.Update(deltaTime);
-                    BehaviorTreeState state = child.Excute();
-                    if (state != BehaviorTreeState.Running)
-                    {
-                        m_CurrChildIndex++;
-                        if (state == BehaviorTreeState.Failure)
-                        {
-                            m_State = BehaviorTreeState.Failure;
-                            return;
-                        }
-                    }
-                }
-                else
-                {
-                    m_CurrChildIndex++;
-                }
+                return BehaviourTreeState.Failure;
+            }
+            else if(m_CurrChildIndex >= GetChildCount())
+            {
+                return BehaviourTreeState.Success;
             }
 
-            if(m_CurrChildIndex >= GetChildCount())
-            {
-                m_State = BehaviorTreeState.Success;
-            }
+            return BehaviourTreeState.Running;
         }
 
         public override bool CanExcute()
         {
-            return m_CurrChildIndex < GetChildCount() && m_State != BehaviorTreeState.Failure;
+            return m_CurrChildIndex < GetChildCount() && m_State != BehaviourTreeState.Failure;
         }
 
-        public override void Reset()
+        protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
         {
-            base.Reset();
-            m_CurrChildIndex = 0;
-            m_LastChildIndex = -1;
+            base.OnChildExcuteResult(childIndex, state);
+
+            m_CurrChildIndex++;
+            m_State = state;
         }
 
+        protected override int GetCurrChildIndex()
+        {
+            return m_CurrChildIndex;
+        }
+
+        protected override void OnEnter()
+        {
+            base.OnEnter();
+            m_State = BehaviourTreeState.Running;
+        }
+
+        protected override void OnReset()
+        {
+            base.OnReset();
+            m_CurrChildIndex = 0;
+            m_State = BehaviourTreeState.None;
+        }
+
+        private BehaviourTreeState m_State = BehaviourTreeState.None;
         private int m_CurrChildIndex;
-        private int m_LastChildIndex;
     }
 }

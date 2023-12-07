@@ -89,11 +89,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
-        if(m_SkillData.Type == SkillConfigData.SkillType.Normal)
-        {
-            m_Owner.currCtrl.SetHitState(false);
-        }
-
+        m_Owner.currCtrl.SetHitState(false);
         m_CanEffect = true;
     }
 
@@ -119,6 +115,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
-    private bool m_CanEffect = true;
+    private bool m_CanEffect = false;
+    private bool m_isss = false;
     private bool m_IsOnGround = true;
 }

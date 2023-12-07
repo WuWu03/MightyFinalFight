@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoDefense : Action
 {
-    public DoDefense(string name, string args, object owner) : base(name, args, owner)
+    public DoDefense(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
     }
@@ -14,16 +14,11 @@ public class DoDefense : Action
 
     }
 
-    public override BehaviorTreeState Excute()
+    public override BehaviourTreeState Excute()
     {
         m_Owner.owner.OnDefenseMsg(PlayerMgr.instance.player.dir);
         m_Owner.OppositePlayer();
-        return BehaviorTreeState.Success;
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
+        return BehaviourTreeState.Success;
     }
 
     protected new BaseEnemyCtrl m_Owner = null;

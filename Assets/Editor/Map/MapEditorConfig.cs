@@ -40,9 +40,35 @@ public class MapEditorConfigData : BaseConfigData
     public Vector2 InitPos = Vector2Int.zero;
     public int Width;
     public int Height;
-  
+    public string StageColor;
+    public int StageShowColor;
     public List<MoveArea> ListMovePoints;
     public List<int> ListTaskId;
     public List<StageConfigData.BGM> ListBGM;
     public List<StageConfigData.SceneBuilding> ListSceneBuilding;
+
+    public override int CompareTo(object obj)
+    {
+        MapEditorConfigData data = obj as MapEditorConfigData;
+
+        if (data.Id == this.Id)
+        {
+            return 0;
+        }
+
+        if (data.Id == 0)
+        {
+            return -1;
+        }
+
+        if (data.Id < this.Id)
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+
+    }
 }

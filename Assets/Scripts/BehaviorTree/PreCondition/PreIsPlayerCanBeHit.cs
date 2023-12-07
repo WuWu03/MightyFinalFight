@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PreIsPlayerCanBeHit : PreCondition
 {
-    public PreIsPlayerCanBeHit(string name, string args, object owner) : base(name, args, owner)
+    public PreIsPlayerCanBeHit(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
     }
 

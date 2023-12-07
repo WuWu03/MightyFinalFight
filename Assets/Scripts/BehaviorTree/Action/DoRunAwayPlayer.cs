@@ -1,34 +1,80 @@
 ﻿using GameFrameWork.BehaviourTree;
+using System.Security.Policy;
 using UnityEngine;
 
 public class DoRunAwayPlayer : Action
 {
-    public DoRunAwayPlayer(string name, string args, object owner) : base(name, args, owner)
+    public DoRunAwayPlayer(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
+    }
+
+    public override bool CanExcute()
+    {
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
     }
 
     protected override void OnEnter()
     {
         base.OnEnter();
+        m_State = BehaviourTreeState.Running;
     }
 
-    public override BehaviorTreeState Excute()
+    protected override void OnUpdate(float deltaTime)
     {
-        if (PlayerMgr.instance.player.dir != m_Owner.owner.dir)
+        base.OnUpdate(deltaTime);
+
+        float playerDir = PlayerMgr.instance.player.dir;
+        float ownerDir = m_Owner.owner.dir;
+
+        if(playerDir == ownerDir)
         {
-            m_Owner.Move((PlayerMgr.instance.player.pos - m_Owner.owner.pos).normalized, false);
-            m_Owner.OppositePlayer();
-            return BehaviorTreeState.Running;
+            m_State = BehaviourTreeState.Success;
+            return;
         }
 
-        return BehaviorTreeState.Success;
+        Vector2 playerPos = PlayerMgr.instance.player.pos;
+        Vector2 ownerPos = m_Owner.owner.pos;
+
+        if(playerPos.x > ownerPos.x)
+        {
+            if(playerDir != -1)
+            {
+                m_State = BehaviourTreeState.Success;
+                return;
+            }
+        }
+        else
+        {
+            if (playerDir != 1)
+            {
+                m_State = BehaviourTreeState.Success;
+                return;
+            }
+        }
+
+        Vector2 ownerSize = m_Owner.owner.GetCurrTriggerSize();
+
+        if(Vector2.Distance(playerPos,ownerPos) < ownerSize.x * 3)
+        {
+            m_Owner.Move((playerPos - ownerPos).normalized, false);
+            m_Owner.OppositePlayer();
+            return;
+        }
+
+        m_State = BehaviourTreeState.Success;
     }
 
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
     }
 
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
     private new BaseEnemyCtrl m_Owner = null;
 }

@@ -1,73 +1,28 @@
 ﻿using GameFrameWork;
+using GameFrameWork.Debug;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork.Debug;
 
 public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 {
     private void Awake()
     {
-        m_DeadEnemies = new List<int>();
-        m_Enemies = new List<BaseEnemy>();
-        m_SceneBuildings = new List<BaseSceneObject>();
-        m_SceneItems = new List<BaseSceneItem>();
+        m_ListDeadEnemies = new List<int>();
+        m_ListBreakBarrels = new List<int>();
+        m_ListEnemies = new List<BaseEnemy>();
+        m_ListSceneBuildings = new List<BaseSceneObject>();
+        m_ListSceneItems = new List<BaseSceneItem>();
+        m_ListBarrels = new List<Barrel>();
     }
-
-    public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
-    {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataHelper.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
-
-        if(enemy == null)
-        {
-            GameFrameworkLog.DebugError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
-            return null;
-        }
-
-        enemy.onReleaseEvent += OnEnemyRelease;
-        m_Enemies.Add(enemy);
-        return enemy;
-    }
-
-    public BaseSceneItem CreateSceneItem(int id, Vector2Int pos)
-    {
-        SceneItemConfigData sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(id);
-        BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
-
-        if (sceneItem == null)
-        {
-            GameFrameworkLog.DebugError("create sceneItem failed id:" + id);
-            return null;
-        }
-        sceneItem.onReleaseEvent += OnSceneItemRelease;
-        m_SceneItems.Add(sceneItem);
-        return sceneItem;
-    }
-
-    public void CreateSceneBuildings(StageConfigData data)
-    {
-        for (int i = 0; i < data.SceneBuildings.Length; i++)
-        {
-            BaseSceneObject sceneBuilding = SceneEntityFactory.CreateSceneBuilding(data.SceneBuildings[i]);
-
-            if(sceneBuilding == null)
-            {
-                GameFrameworkLog.DebugError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
-                continue;
-            }
-
-            sceneBuilding.onReleaseEvent += OnSceneBuildingsRelease;
-            m_SceneBuildings.Add(sceneBuilding);
-        }
-    }
-
 
     public void CreateBarrels()
     {
         for (int i = 0; i < 5; i++)
         {
-            BaseSceneItem sceneItem = EntityMgr.instance.GetEntity<Barrel>("Barrel");
+            Barrel sceneItem = EntityMgr.instance.GetEntity<Barrel>("Barrel");
             BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
             EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
 
@@ -85,27 +40,156 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             sceneItem.SetAttribute(barrelAttribute);
             sceneItem.SetData(barrelData);
-            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "Item/Barrel"));
+            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
-            sceneItem.onReleaseEvent += OnSceneItemRelease;
-            m_SceneItems.Add(sceneItem);
+            sceneItem.SetLayer(LayerName.Unit);
+            m_ListBarrels.Add(sceneItem);
         }
     }
 
+
+    public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
+    {
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataHelper.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+
+        if (enemy == null)
+        {
+            GameFrameworkLog.DebugError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
+            return null;
+        }
+
+        enemy.onReleaseEvent += OnEnemyRelease;
+        m_ListEnemies.Add(enemy);
+        return enemy;
+    }
+
+    public BaseSceneObject CreateSceneItem(int id, Vector2Int pos)
+    {
+        SceneItemConfigData sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(id);
+        BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
+
+        if (sceneItem == null)
+        {
+            GameFrameworkLog.DebugError("create sceneItem failed id:" + id);
+            return null;
+        }
+
+        m_ListSceneItems.Add(sceneItem);
+        return sceneItem;
+    }
+
+    public void CreateSceneBuildings(StageConfigData data)
+    {
+        for (int i = 0; i < data.SceneBuildings.Length; i++)
+        {
+            BaseSceneObject sceneBuilding = SceneEntityFactory.CreateSceneBuilding(data.SceneBuildings[i]);
+
+            if (sceneBuilding == null)
+            {
+                GameFrameworkLog.DebugError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
+                continue;
+            }
+
+            m_ListSceneBuildings.Add(sceneBuilding);
+        }
+    }
+
+
+    public Barrel CreateBarrel(int entityId, float dir, int groundY, int itemId, bool isFloat, float moveSpeed, Vector2Int pos)
+    {
+        Barrel barrel = SceneEntityFactory.CreateBarrel(entityId, dir, groundY, itemId, isFloat, moveSpeed, pos);
+
+        if (barrel == null)
+        {
+            GameFrameworkLog.DebugError("create barrel failed entityId:" + entityId);
+            return null;
+        }
+
+        barrel.onReleaseEvent += OnBarrelRelease;
+        m_ListBarrels.Add(barrel);
+        return barrel;
+    }
+
+
+
     public List<BaseEnemy> GetEnemies()
     {
-        return m_Enemies;
+        return m_ListEnemies;
     }
 
     public List<BaseSceneItem> GetSceneItems()
     {
-        return m_SceneItems;
+        return m_ListSceneItems;
     }
 
     public List<BaseSceneObject> GetSceneBuildings()
     {
-        return m_SceneBuildings;
+        return m_ListSceneBuildings;
+    }
+
+    public List<Barrel> GetBarrels()
+    {
+        return m_ListBarrels;
+    }
+
+    public BaseSceneObject GetSceneBuildingByName(string name)
+    {
+        for (int i = 0; i < m_ListSceneBuildings.Count; i++)
+        {
+            if (m_ListSceneBuildings[i].entityName == name)
+            {
+                return m_ListSceneBuildings[i];
+            }
+        }
+
+        return null;
+    }
+
+    public void ReleaseEnemies()
+    {
+        m_ListDeadEnemies.Clear();
+
+        for (int i = 0; i < m_ListEnemies.Count; i++)
+        {
+            m_ListEnemies[i].onReleaseEvent -= OnEnemyRelease;
+            m_ListEnemies[i].Release();
+        }
+
+        m_ListEnemies.Clear();
+    }
+
+    public void ReleaseSceneItems()
+    {
+        for (int i = 0; i < m_ListSceneItems.Count; i++)
+        {
+            m_ListSceneItems[i].Release();
+        }
+
+        m_ListSceneItems.Clear();
+    }
+
+    public void ReleaseSceneBuildings()
+    {
+        for (int i = 0; i < m_ListSceneBuildings.Count; i++)
+        {
+            m_ListSceneBuildings[i].Release();
+        }
+
+        m_ListSceneBuildings.Clear();
+    }
+
+    public void RleaseBarrels()
+    {
+        m_ListBarrels.Clear();
+
+        for (int i = 0; i < m_ListBarrels.Count; i++)
+        {
+            m_ListBarrels[i].onReleaseEvent -= OnBarrelRelease;
+            m_ListBarrels[i].Release();
+        }
+
+        m_ListBarrels.Clear();
     }
 
     public void ReleaseAll()
@@ -113,48 +197,30 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         ReleaseEnemies();
         ReleaseSceneItems();
         ReleaseSceneBuildings();
+        RleaseBarrels();
     }
 
-    public void ReleaseEnemies()
+    public bool IsEnemyDead(int entityId)
     {
-        m_DeadEnemies.Clear();
-
-        for (int i = 0; i < m_Enemies.Count; i++)
+        for (int i = 0; i < m_ListDeadEnemies.Count; i++)
         {
-            m_Enemies[i].onReleaseEvent -= OnEnemyRelease;
-            m_Enemies[i].Release();
-        }
-
-        m_Enemies.Clear();
-    }
-
-    public void ReleaseSceneItems()
-    {
-        for (int i = 0; i < m_SceneItems.Count; i++)
-        {
-            m_SceneItems[i].Release();
-        }
-
-        m_SceneItems.Clear();
-    }
-
-    public void ReleaseSceneBuildings()
-    {
-        for (int i = 0; i < m_SceneBuildings.Count; i++)
-        {
-            m_SceneBuildings[i].Release();
-        }
-
-        m_SceneBuildings.Clear();
-    }
-
-
-    public bool IsEnemyDead(int id)
-    {
-        for (int i = 0; i < m_DeadEnemies.Count; i++)
-        {
-            if (m_DeadEnemies[i] == id)
+            if (m_ListDeadEnemies[i] == entityId)
+            {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsBarrelBreak(int entityId)
+    {
+        for (int i = 0; i < m_ListBarrels.Count; i++)
+        {
+            if (m_ListBreakBarrels[i] == entityId)
+            {
+                return true;
+            }
         }
 
         return false;
@@ -162,65 +228,58 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public bool IsAllEnemyDead()
     {
-        return m_Enemies.Count <= 0;
+        return m_ListEnemies.Count <= 0;
     }
 
-    public BaseSceneObject GetSceneBuildingByName(string name)
+    public bool IsAllBarrelsBreak()
     {
-        for (int i = 0; i < m_SceneBuildings.Count; i++)
-        {
-            if (m_SceneBuildings[i].entityName == name)
-            {
-                return m_SceneBuildings[i];
-            }
-        }
-
-        return null;
+        return m_ListBarrels.Count <= 0;
     }
 
-    private void OnEnemyRelease(int id)
+    public int GetDeadEnemyCount()
     {
-        m_DeadEnemies.Add(id);
+        return m_ListDeadEnemies.Count;
+    }
 
-        for (int i = m_Enemies.Count - 1; i >= 0; i--)
+    public int GetBreakBarrelsCount()
+    {
+        return m_ListBreakBarrels.Count;
+    }
+
+    private void OnEnemyRelease(int entityId)
+    {
+        m_ListDeadEnemies.Add(entityId);
+
+        for (int i = m_ListEnemies.Count - 1; i >= 0; i--)
         {
-            if (m_Enemies[i].entityId == id)
+            if (m_ListEnemies[i].entityId == entityId)
             {
-                m_Enemies[i].onReleaseEvent -= OnEnemyRelease;
-                m_Enemies.RemoveAt(i);
+                m_ListEnemies[i].onReleaseEvent -= OnEnemyRelease;
+                m_ListEnemies.RemoveAt(i);
                 break;
             }
         }
     }
 
-    private void OnSceneItemRelease(int id)
+    private void OnBarrelRelease(int entityId)
     {
-        for (int i = m_SceneItems.Count - 1; i >= 0; i--)
+        m_ListBreakBarrels.Add(entityId);
+
+        for (int i = m_ListBarrels.Count - 1; i >= 0; i--)
         {
-            if (m_SceneItems[i].entityId == id)
+            if (m_ListBarrels[i].entityId == entityId)
             {
-                m_SceneItems[i].onReleaseEvent -= OnSceneItemRelease;
-                m_SceneItems.RemoveAt(i);
+                m_ListBarrels[i].onReleaseEvent -= OnEnemyRelease;
+                m_ListBarrels.RemoveAt(i);
                 break;
             }
         }
     }
 
-    private void OnSceneBuildingsRelease(int id)
-    {
-        for (int i = m_SceneBuildings.Count - 1; i >= 0; i--)
-        {
-            if (m_SceneBuildings[i].entityId == id)
-            {
-                m_SceneBuildings[i].onReleaseEvent -= OnSceneBuildingsRelease;
-                m_SceneBuildings.RemoveAt(i);
-                break;
-            }
-        }
-    }
-
-    private List<BaseSceneObject> m_SceneBuildings = null;
-    private List<BaseEnemy> m_Enemies;
-    private List<BaseSceneItem> m_SceneItems = null;
-    private List<int> m_DeadEnemies;
+    private List<BaseSceneObject> m_ListSceneBuildings = null;
+    private List<BaseEnemy> m_ListEnemies;
+    private List<BaseSceneItem> m_ListSceneItems = null;
+    private List<Barrel> m_ListBarrels = null;
+    private List<int> m_ListDeadEnemies = null;
+    private List<int> m_ListBreakBarrels = null;
 }

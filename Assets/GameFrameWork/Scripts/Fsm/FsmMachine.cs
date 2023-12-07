@@ -135,7 +135,7 @@ namespace GameFrameWork.Fsm
         {
             if (m_CurrentState == null)
             {
-                throw new Exception("Fsm is invalid or destroyed.");
+                throw new Exception("Fsm current state is invalid or destroyed.");
             }
 
             if (!isForce && m_CurrentState.GetType().Equals(typeof(T)))

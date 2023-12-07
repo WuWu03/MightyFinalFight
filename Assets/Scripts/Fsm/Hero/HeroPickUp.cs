@@ -11,6 +11,7 @@ public class HeroPickUp : BaseFsmState
     public override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
+        m_Owner.SetPos2(m_Owner.pos, true);
         m_Owner.PlayAnimation(AnimName.PickUp, 1);
     }
 

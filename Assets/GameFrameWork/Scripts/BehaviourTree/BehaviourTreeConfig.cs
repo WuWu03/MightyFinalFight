@@ -29,6 +29,8 @@
         public string name;
         public string classType;
         public string args;
+        public int priority;
+        public int repeatCount;
     }
 
     public class BehaviourTreeData : BehaviorTreeBaseData

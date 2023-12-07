@@ -41,15 +41,14 @@ public static partial class ConfigDataHelper
 
     public static T GetConfigDataById<T>(this T[] datas, int id) where T : BaseConfigData, new()
     {
-        for (int i = 0; i < datas.Length; i++)
+        try
         {
-            if (datas[i].id == id)
-            {
-                return datas[i];
-            }
+            return datas.First(data => data.id == id);
         }
-
-        return datas.Single(t => t.id == id);
+        catch
+        {
+            return null;
+        }
     }
 
     public static T GetSingConfigDataByAttr<T>(this T[] datas, string attr) where T : BaseConfigData, new()

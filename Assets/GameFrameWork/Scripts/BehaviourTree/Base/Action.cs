@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
-    public abstract class Action : Composites
+    public abstract class Action : Task
     {
-        public Action(string name,string args,object owner) : base(name, args, owner) { }
+        public Action(string name,string args,object owner, int priority) : base(name, args, owner, priority) { }
     }
 }

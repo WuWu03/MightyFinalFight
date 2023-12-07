@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class PreIsPlayerDistance : PreCondition
 {
-    public PreIsPlayerDistance(string name, string args, object owner) : base(name, args, owner) 
+    public PreIsPlayerDistance(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
             if (m.Success)
             {
-                m_Distance = float.Parse(m.Groups[2].Value);
+                m_Distance = Mathf.Abs(float.Parse(m.Groups[2].Value));
             }
         }
     }
@@ -24,17 +24,11 @@ public class PreIsPlayerDistance : PreCondition
         Vector2 ownerPos = (m_Owner as BaseRoleCtrl).owner.pos;
 
         float distance = Vector2.Distance(playerPos, ownerPos);
-       
-        if (m_Distance < 0)
-        {
-            return distance >= Mathf.Abs(m_Distance);
-        }
-
         return distance <= m_Distance;
     }
 
     private float m_Distance = 0.5f;
-    private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+\.?[0-9]+)");
+    private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
 }
 
    

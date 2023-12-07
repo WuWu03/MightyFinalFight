@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2022-9-4 16:7**************************************/
+/**2023-11-30 15:14**************************************/
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -12,8 +12,12 @@ public class MainPanelComponent : BasePanelComponent
 {
 	//player/playerHpBar,Slider
 	public Slider playerHpBar { get; private set; }
+	//player/playerHpBar/playerHpBarImage,Image
+	public Image playerHpBarImage { get; private set; }
 	//enemy/enemyHpBar,Slider
 	public Slider enemyHpBar { get; private set; }
+	//enemy/enemyHpBar/playerHpBarImage,Image
+	public Image playerHpBarImage1 { get; private set; }
 	//state/txtStage,Text
 	public Text txtStage { get; private set; }
 	//playerLife/txtPlayerLife,Text
@@ -35,14 +39,16 @@ public class MainPanelComponent : BasePanelComponent
 	protected override void InitComponent(UIRefRoot root)
 	{
 		playerHpBar = root.objects[0] as Slider;
-		enemyHpBar = root.objects[1] as Slider;
-		txtStage = root.objects[2] as Text;
-		txtPlayerLife = root.objects[3] as Text;
-		levelList = root.objects[4] as GameObject;
-		itemGO = root.objects[5] as GameObject;
-		txtExp = root.objects[6] as Text;
-		txtEnemyDamage = root.objects[7] as Text;
-		txtPlayerDamage = root.objects[8] as Text;
+		playerHpBarImage = root.objects[1] as Image;
+		enemyHpBar = root.objects[2] as Slider;
+		playerHpBarImage1 = root.objects[3] as Image;
+		txtStage = root.objects[4] as Text;
+		txtPlayerLife = root.objects[5] as Text;
+		levelList = root.objects[6] as GameObject;
+		itemGO = root.objects[7] as GameObject;
+		txtExp = root.objects[8] as Text;
+		txtEnemyDamage = root.objects[9] as Text;
+		txtPlayerDamage = root.objects[10] as Text;
 		levelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 

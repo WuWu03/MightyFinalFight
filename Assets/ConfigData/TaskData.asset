@@ -18,69 +18,111 @@ MonoBehaviour:
     Position:
       PosType: 0
       Pos: {x: -240, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
     TriggerType: 1
     Targets:
     - EntityID: 1
       SourceID: 2001
-      Hp: 10000
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -178, y: -38}
+      IsBarrel: 0
     - EntityID: 2
       SourceID: 2001
-      Hp: 4
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -178, y: -46}
+      IsBarrel: 0
     - EntityID: 3
       SourceID: 2001
-      Hp: 4
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -178, y: -54}
+      IsBarrel: 0
     - EntityID: 4
       SourceID: 2001
-      Hp: 4
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -178, y: -62}
+      IsBarrel: 0
     - EntityID: 5
       SourceID: 2001
-      Hp: 4
+      Hp: 300
       AttackValue: 15
       DefenseValue: 7
       HpBarWidth: 150
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -178, y: -70}
+      IsBarrel: 0
     - EntityID: 6
       SourceID: 2002
-      Hp: 4
+      Hp: 300
       AttackValue: 10
       DefenseValue: 5
       HpBarWidth: 100
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -100, y: -54}
+      IsBarrel: 0
     - EntityID: 7
       SourceID: 2002
-      Hp: 4
+      Hp: 300
       AttackValue: 10
       DefenseValue: 5
       HpBarWidth: 100
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -495, y: -62}
+      IsBarrel: 0
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
     ExitStartCamera: 0
     WaitTime: 0
     MapID: 0
-    TalkID: 0
+    TalkID: 1001
     PrevID: 0
     NextID: 1002
     FailureID: 0
@@ -89,12 +131,86 @@ MonoBehaviour:
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
-    TriggerType: 4
+    KillAllEnemies: 1
+    KillAllBarrels: 0
+    TriggerType: 1
+    Targets:
+    - EntityID: 8
+      SourceID: 0
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
+      HpBarWidth: 0
+      Dir: -1
+      GroundY: -40
+      ItemId: -1
+      IsFloat: 0
+      MoveSpeed: 1
+      Pos: {x: -40, y: -40}
+      IsBarrel: 1
+    - EntityID: 9
+      SourceID: 0
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
+      HpBarWidth: 0
+      Dir: -1
+      GroundY: -60
+      ItemId: -1
+      IsFloat: 0
+      MoveSpeed: 1
+      Pos: {x: -40, y: -60}
+      IsBarrel: 1
+    - EntityID: 10
+      SourceID: 0
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
+      HpBarWidth: 0
+      Dir: 1
+      GroundY: -40
+      ItemId: -1
+      IsFloat: 0
+      MoveSpeed: 1
+      Pos: {x: -430, y: -40}
+      IsBarrel: 1
+    - EntityID: 11
+      SourceID: 0
+      Hp: 0
+      AttackValue: 0
+      DefenseValue: 0
+      HpBarWidth: 0
+      Dir: 1
+      GroundY: -60
+      ItemId: -1
+      IsFloat: 0
+      MoveSpeed: 1
+      Pos: {x: -430, y: -60}
+      IsBarrel: 1
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1003
+    FailureID: 0
+  - Id: 1003
+    ConditionType: 2
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 1
+    TriggerType: 3
     Targets: []
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
@@ -104,34 +220,46 @@ MonoBehaviour:
     MapID: 0
     TalkID: 0
     PrevID: 0
-    NextID: 1003
+    NextID: 1004
     FailureID: 0
-  - Id: 1003
+  - Id: 1004
     ConditionType: 1
     Position:
       PosType: 0
       Pos: {x: 72, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
     TriggerType: 1
     Targets:
-    - EntityID: 7
+    - EntityID: 12
       SourceID: 2003
       Hp: 500
       AttackValue: 15
       DefenseValue: 10
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: 300, y: -54}
-    - EntityID: 8
+      IsBarrel: 0
+    - EntityID: 13
       SourceID: 2003
       Hp: 500
       AttackValue: 15
       DefenseValue: 10
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: 300, y: -62}
+      IsBarrel: 0
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -140,60 +268,24 @@ MonoBehaviour:
     MapID: 0
     TalkID: 0
     PrevID: 0
-    NextID: 1004
+    NextID: 1005
     FailureID: 0
-  - Id: 1004
+  - Id: 1005
     ConditionType: 2
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
-    TriggerType: 4
-    Targets:
-    - EntityID: 7
-      SourceID: 1003
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
-      HpBarWidth: 0
-      Pos: {x: 300, y: -54}
-    - EntityID: 8
-      SourceID: 1003
-      Hp: 0
-      AttackValue: 0
-      DefenseValue: 0
-      HpBarWidth: 0
-      Pos: {x: 300, y: -62}
+    KillAllEnemies: 1
+    KillAllBarrels: 0
+    TriggerType: 3
+    Targets: []
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
-    WaitTime: 0
-    MapID: 0
-    TalkID: 0
-    PrevID: 0
-    NextID: 1005
-    FailureID: 0
-  - Id: 1005
-    ConditionType: 0
-    Position:
-      PosType: 2
-      Pos: {x: 455, y: -35}
-    KillIDs: 
-    StoryId: 0
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
-    TriggerType: 6
-    Targets: []
-    TriggerPlayerCantCtrl: 1
-    ExitPlayerCanCtrl: 1
-    TriggerStopCamera: 0
-    ExitStartCamera: 0
     WaitTime: 0
     MapID: 0
     TalkID: 0
@@ -204,13 +296,35 @@ MonoBehaviour:
     ConditionType: 0
     Position:
       PosType: 2
-      Pos: {x: 0, y: 0}
-    KillIDs: 
+      Pos: {x: 455, y: -35}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
     TriggerType: 5
+    Targets: []
+    TriggerPlayerCantCtrl: 1
+    ExitPlayerCanCtrl: 1
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1007
+    FailureID: 0
+  - Id: 1007
+    ConditionType: 0
+    Position:
+      PosType: 2
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 4
     Targets: []
     TriggerPlayerCantCtrl: 1
     ExitPlayerCanCtrl: 1
@@ -222,17 +336,17 @@ MonoBehaviour:
     PrevID: 0
     NextID: 0
     FailureID: 0
-  - Id: 1007
+  - Id: 1008
     ConditionType: 0
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 1001
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
-    TriggerType: 3
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 2
     Targets: []
     TriggerPlayerCantCtrl: 1
     ExitPlayerCanCtrl: 1
@@ -242,18 +356,18 @@ MonoBehaviour:
     MapID: 0
     TalkID: 0
     PrevID: 0
-    NextID: 1008
+    NextID: 1009
     FailureID: 0
-  - Id: 1008
+  - Id: 1009
     ConditionType: 1
     Position:
       PosType: 0
       Pos: {x: -270, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
     TriggerType: 1
     Targets:
     - EntityID: 1
@@ -262,7 +376,13 @@ MonoBehaviour:
       AttackValue: 20
       DefenseValue: 20
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -116, y: -30}
+      IsBarrel: 0
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 1
@@ -271,19 +391,19 @@ MonoBehaviour:
     MapID: 0
     TalkID: 0
     PrevID: 0
-    NextID: 1009
+    NextID: 1010
     FailureID: 0
-  - Id: 1009
+  - Id: 1010
     ConditionType: 2
     Position:
       PosType: 0
       Pos: {x: -310, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
-    TriggerType: 0
+    KillAllEnemies: 1
+    KillAllBarrels: 0
+    TriggerType: 3
     Targets:
     - EntityID: 1
       SourceID: 1004
@@ -291,40 +411,17 @@ MonoBehaviour:
       AttackValue: 20
       DefenseValue: 20
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: -116, y: -30}
+      IsBarrel: 0
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 1
-    WaitTime: 0
-    MapID: 0
-    TalkID: 0
-    PrevID: 0
-    NextID: 1010
-    FailureID: 0
-  - Id: 1010
-    ConditionType: 0
-    Position:
-      PosType: 0
-      Pos: {x: 0, y: 0}
-    KillIDs: 
-    StoryId: 1002
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
-    TriggerType: 3
-    Targets:
-    - EntityID: 200501
-      SourceID: 2005
-      Hp: 30000
-      AttackValue: 20
-      DefenseValue: 20
-      HpBarWidth: 300
-      Pos: {x: 230, y: -43}
-    TriggerPlayerCantCtrl: 0
-    ExitPlayerCanCtrl: 0
-    TriggerStopCamera: 0
-    ExitStartCamera: 0
     WaitTime: 0
     MapID: 0
     TalkID: 0
@@ -336,12 +433,47 @@ MonoBehaviour:
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 1002
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 2
+    Targets:
+    - EntityID: 200501
+      SourceID: 2005
+      Hp: 30000
+      AttackValue: 20
+      DefenseValue: 20
+      HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
+      Pos: {x: 230, y: -43}
+      IsBarrel: 0
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1012
+    FailureID: 0
+  - Id: 1012
+    ConditionType: 0
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 0
-    BarrelsCount: 0
-    KillAll: 0
-    BarrelsAll: 0
-    TriggerType: 5
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 4
     Targets: []
     TriggerPlayerCantCtrl: 0
     ExitPlayerCanCtrl: 0
@@ -353,26 +485,76 @@ MonoBehaviour:
     PrevID: 0
     NextID: 0
     FailureID: 0
-  - Id: 1012
+  - Id: 1013
     ConditionType: 0
     Position:
       PosType: 0
       Pos: {x: 0, y: 0}
-    KillIDs: 
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
     StoryId: 1003
-    BarrelsCount: 0
-    KillAll: 1
-    BarrelsAll: 0
-    TriggerType: 3
+    KillAllEnemies: 1
+    KillAllBarrels: 0
+    TriggerType: 2
     Targets:
     - EntityID: 200501
       SourceID: 2005
-      Hp: 30000
+      Hp: 2
       AttackValue: 20
       DefenseValue: 20
       HpBarWidth: 300
+      Dir: 0
+      GroundY: 0
+      ItemId: 0
+      IsFloat: 0
+      MoveSpeed: 0
       Pos: {x: 230, y: -43}
+      IsBarrel: 0
     TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 1001
+    PrevID: 0
+    NextID: 1014
+    FailureID: 0
+  - Id: 1014
+    ConditionType: 2
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 0
+    KillAllEnemies: 1
+    KillAllBarrels: 0
+    TriggerType: 7
+    Targets: []
+    TriggerPlayerCantCtrl: 1
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1015
+    FailureID: 0
+  - Id: 1015
+    ConditionType: 0
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 0
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 8
+    Targets: []
+    TriggerPlayerCantCtrl: 1
     ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0

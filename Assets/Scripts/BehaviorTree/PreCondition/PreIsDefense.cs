@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PreIsDefense : PreCondition
 {
-    public PreIsDefense(string name, string args, object owner) : base(name, args, owner)
+    public PreIsDefense(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
         m_Owner.owner.onHurtEvent += OnHurtEvent;

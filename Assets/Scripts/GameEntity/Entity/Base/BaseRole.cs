@@ -246,7 +246,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         roleAttack.canChangeDir = data.canChangeDir;
         roleAttack.dir = data.dir;
         ChangeState<RoleAttack>();
-        PlayAnimation(data.animName, data.animTime, data.animSpeed * m_AttackSpeed);
+        PlayAnimation(data.animName, data.animTime, data.animSpeed);// + m_EntityAttribute.attackSpeed);
     }
 
     public virtual void OnSkillMsg(SkillConfigData data)
@@ -293,7 +293,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (data.isCatch)
             {
                 if (this is BaseHero)
+                {
                     ChangeState<HeroCatch>();
+                }
             }
             else
             {
@@ -353,6 +355,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual bool IsHurtWillDie(int attackValue)
     {
+        if(m_EntityAttribute.health == 1)
+        {
+
+        }
         return m_EntityAttribute.health - attackValue <= 0;
     }
 
@@ -692,12 +698,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_MoveToPos = Vector2.zero;
     }
 
-    protected int m_AttackValue = 0;
-    protected int m_DefenseValue = 0;
-    protected int m_CriticalValue = 0;
-    protected float m_AttackSpeed = 0.8f;
-    protected float m_MoveSpeed = 0.8f;
-    protected Vector2 m_JumpForce = Vector2.zero;
     protected Vector2 m_MoveToPos = Vector2.zero;
     protected Vector2 m_MoveDir = Vector2.zero;
 

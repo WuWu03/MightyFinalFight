@@ -14,19 +14,21 @@ namespace GameFrameWork.Editor.Config
 
         }
 
-        public BehaviourTreeWindowData(string name, int id, float x = 20, float y = 20)
+        public BehaviourTreeWindowData(string name, string classType,int id, float x = 20, float y = 20)
         {
             this.name = name;
             this.id = id;
+            this.classType = classType;
             children = new List<BehaviourTreeWindowData>();
             preConditions = new List<BehaviourTreeWindowPreConditon>();
-            windowRect = new WindowRect(x, y, 230, 205);
+            windowRect = new WindowRect(x, y, 230, 270);
         }
 
         public int id;
         public string name;
         public string classType;
         public string args;
+        public int priority;
         public WindowRect listRect;
         public WindowRect windowRect;
         public List<BehaviourTreeWindowData> children;

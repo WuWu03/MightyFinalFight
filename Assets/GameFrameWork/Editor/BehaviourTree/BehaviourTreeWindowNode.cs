@@ -51,24 +51,11 @@ namespace GameFrameWork.Editor
         
         public BehaviourTreeWindowNode(BehaviourTreeWindowData data,bool isParent,BehaviourTreeWindowNode parent = null)
         {
-            InitCompositesName();
-            InitPreConditionName();
             UpdateData(data, isParent, parent);
 
-            if (!string.IsNullOrEmpty(m_Data.classType))
-            {
-                string[] names = m_IsParent ? m_ParentCompositesNames : m_CompositesNames;
-                for (int i = 0; i < names.Length; i++)
-                {
-                    if(m_Data.classType == names[i])
-                    {
-                        m_CurrSelectComposite = i;
-                        break;
-                    }
-                }
-            }
+            string[] preConditionNames = BehaviourTreeUtil.GetPreConditionNames();
 
-            if(m_Data.preConditions != null && m_Data.preConditions.Count > 0)
+            if (m_Data.preConditions != null && m_Data.preConditions.Count > 0)
             {
                 for (int i = 0; i < m_Data.preConditions.Count; i++)
                 {
@@ -77,9 +64,9 @@ namespace GameFrameWork.Editor
                         continue;
                     }
 
-                    for (int j = 0; j < m_PreConditionNames.Length; j++)
+                    for (int j = 0; j < preConditionNames.Length; j++)
                     {
-                        if(m_Data.preConditions[i].classType == m_PreConditionNames[j])
+                        if(m_Data.preConditions[i].classType == preConditionNames[j])
                         {
                             m_Data.preConditions[i].selectIndex = j;
                             break;
@@ -118,8 +105,8 @@ namespace GameFrameWork.Editor
                 }
 
                 BehaviourTreeWindowPreConditon preConditon = m_Data.preConditions[index];
-                preConditon.selectIndex = EditorGUI.Popup(new Rect(rect.x, rect.y + 5, rect.width, 20), preConditon.selectIndex, m_PreConditionNames);
-                preConditon.classType = m_PreConditionNames[preConditon.selectIndex];
+                preConditon.selectIndex = EditorGUI.Popup(new Rect(rect.x, rect.y + 5, rect.width, 20), preConditon.selectIndex, preConditionNames);
+                preConditon.classType = preConditionNames[preConditon.selectIndex];
                 preConditon.args = EditorGUI.TextField(new Rect(rect.x, rect.y + 25, rect.width, 20), preConditon.args);
             };
 
@@ -154,17 +141,6 @@ namespace GameFrameWork.Editor
                 else
                 {
                     m_Children.Clear();
-                }
-
-                string[] assembly = isParent ? m_ParentCompositesNames : m_CompositesNames;
-
-                for (int i = 0; i < assembly.Length; i++)
-                {
-                    if (assembly[i].Equals(m_Data.classType))
-                    {
-                        m_CurrSelectComposite = i;
-                        break;
-                    }
                 }
 
                 for (int i = 0; i < m_Data.children.Count; i++)
@@ -264,6 +240,14 @@ namespace GameFrameWork.Editor
             m_IsChangeName = true;
         }
 
+        public void UpdateClassType(string classType)
+        {
+            if (m_Data != null)
+            {
+                m_Data.classType = classType;
+            }
+        }
+
         private void DrawNodeWindow(int id)
         {
             float width = m_WindowRect.width - 20;
@@ -286,15 +270,20 @@ namespace GameFrameWork.Editor
             EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
-                EditorGUILayout.LabelField("节点类型");
-                m_CurrSelectComposite = EditorGUILayout.Popup(m_CurrSelectComposite, m_IsParent ? m_ParentCompositesNames : m_CompositesNames);
-                m_Data.classType = m_IsParent ? m_ParentCompositesNames[m_CurrSelectComposite] : m_CompositesNames[m_CurrSelectComposite];
+
+                //m_CurrSelectComposite = EditorGUILayout.Popup(m_CurrSelectComposite, BehaviourTreeUtil.GetNodePathList());// m_IsParent ? m_ParentCompositesNames : m_CompositesNames);
+                EditorGUILayout.LabelField(new GUIContent(m_Data.classType), GUI.skin.button);
+                //m_Data.classType = m_IsParent ? m_ParentCompositesNames[m_CurrSelectComposite] : m_CompositesNames[m_CurrSelectComposite];
+                EditorGUILayout.LabelField(new GUIContent("参数"));
                 m_Data.args = EditorGUILayout.TextField(m_Data.args);
+                EditorGUILayout.LabelField(new GUIContent("权重"));
+                m_Data.priority = EditorGUILayout.IntField(m_Data.priority);
                 EditorGUILayout.EndVertical();
             });
 
             EditorGUILayout.Space(5);
             m_PreConditionList.DoLayoutList();
+      
             GUI.DragWindow();
         }
 
@@ -309,75 +298,8 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private static void InitCompositesName()
-        {
-            if (m_CompositesNames != null)
-            {
-                return;
-            }
-
-            m_CompositesNames = GetAssembly("GameFrameWork.BehaviourTree.Composites", "Action");
-        }
-
-        private static void InitPreConditionName()
-        {
-            if (m_PreConditionNames != null)
-            {
-                return;
-            }
-
-            List<string> assemblyList = new List<string>();
-            assemblyList.AddRange(GetAssembly("GameFrameWork.BehaviourTree.PreCondition", "PreCondition"));
-            assemblyList.Insert(0, "None");
-            m_PreConditionNames = assemblyList.ToArray();
-        }
-
-        private static string[] GetAssembly(string typeName,params string[] parttern)
-        {
-            Assembly assembly = Assembly.Load("Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-            Type baseType = assembly.GetType(typeName);
-            List<string> list = new List<string>();
-            Type[] allTypes = assembly.GetTypes();
-
-            foreach (Type type in allTypes)
-            {
-                Type temp = type;
-                while (temp.BaseType != null)
-                {
-                    temp = temp.BaseType;
-                    if (temp.Name.Equals(baseType.Name))
-                    {
-                        bool isParttern = false;
-
-                        for (int i = 0; i < parttern.Length; i++)
-                        {
-                            if (parttern[i].Equals(type.Name))
-                            {
-                                isParttern = true;
-                                break;
-                            }
-                        }
-
-                        if (!isParttern)
-                        {
-                            list.Add(type.Name);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return list.ToArray();
-        }
-
-        private static string[] m_ParentCompositesNames = new string[] { "Sequence", "LoopSequence", "Selector", "LoopSelector" };
-        private static string[] m_CompositesNames = null;
-        private static string[] m_PreConditionNames = null;
-
-        private int m_CurrSelectComposite = 0;
         private bool m_IsParent = false;
         private bool m_IsChangeName = false;
-
         private ReorderableList m_PreConditionList = null;
         private BehaviourTreeWindowNode m_Parent = null;
         private List<BehaviourTreeWindowNode> m_Children = null;

@@ -19,7 +19,7 @@ public class TitlePanel : BasePanel
 
 	protected override void OnInit(object[] param)
 	{
-		m_Component = new TitlePanelComponent(uiRefRoot);
+		m_Component = new TitlePanelComponent(m_UIRefRoot);
 	}
 
 	protected override void OnOpen()

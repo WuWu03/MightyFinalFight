@@ -8,6 +8,8 @@ using UnityEditor.SceneManagement;
 using UnityEditorInternal;
 using UnityEngine;
 using GameFrameWork.Editor.Config;
+using DG.Tweening.Plugins.Core.PathCore;
+using Unity.VisualScripting;
 
 namespace GameFrameWork.Editor
 {
@@ -182,7 +184,7 @@ namespace GameFrameWork.Editor
                     DeleteRootWindowNode();
                     break;
                 case 3:
-                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", m_BehaviourTreeWindowConfig.dataList.Count + 1);
+                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", string.Empty, m_BehaviourTreeWindowConfig.dataList.Count + 1);
                     m_BehaviourTreeWindowConfig.dataList.Add(data);
                     break;
                 default:
@@ -293,7 +295,7 @@ namespace GameFrameWork.Editor
 
                     if (node != null)
                     {
-                        SetFreeNodeParent(node);
+                        SetCurrNodeParent(node);
                         m_IsDrawTransition = false;
                     }
                 }
@@ -334,25 +336,43 @@ namespace GameFrameWork.Editor
 
             if (m_CurrWindowNode == null)
             {
-                menu.AddItem(new GUIContent("增加节点"), false, RightMenuContextCallback, 0);
+                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths("增加节点");
+
+                for (int i = 0; i < nodePaths.Length; i++)
+                {
+                    for (int j = 0; j < nodePaths[i].Length; j++)
+                    {
+                        menu.AddItem(new GUIContent(nodePaths[i][j]), false, RightMenuContextCallback, 10000 + (i + 1) * 1000 + j + 1);
+                    }
+                }
             }
             else
             {
-                menu.AddItem(new GUIContent("更改名称"), false, RightMenuContextCallback, 1);
-
+                menu.AddItem(new GUIContent("更改名称"), false, RightMenuContextCallback, 3);
+                menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
                 if (isFree)
                 {
-                    menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
-                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 3);
+                   
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 5);
                 }
                 else
                 {
-                    if (m_CurrWindowNode.parent == null && !m_CurrWindowNode.isParent)
-                    {
-                        menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 2);
-                    }
+                    //if (m_CurrWindowNode.parent == null && !m_CurrWindowNode.isParent)
+                    //{
+                    //  menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
+                    //}
 
-                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.parent == null ? 4 : 5);
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.parent == null ? 6 : 7);
+                }
+
+                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths("替换节点");
+
+                for (int i = 0; i < nodePaths.Length; i++)
+                {
+                    for (int j = 0; j < nodePaths[i].Length; j++)
+                    {
+                        menu.AddItem(new GUIContent(nodePaths[i][j]), false, RightMenuContextCallback, 20000 + (i + 1) * 1000 + j + 1);
+                    }
                 }
             }
             menu.AddSeparator("");
@@ -362,31 +382,49 @@ namespace GameFrameWork.Editor
         private void RightMenuContextCallback(object args)
         {
             int operation = (int)args;
+            int operationSubType = 0;
+            int operationIndex = 0;
 
+            if(operation > 10)
+            {
+                operationIndex = operation % 10 - 1;
+
+                while (operation >= 100)
+                {
+                    operation /= 10;
+                }
+
+                operationSubType = operation % 10 - 1;
+                operation /= 10;
+            }
+            
             switch (operation)
             {
-                case 0://增加节点
-                    AddFreeWindowNode();
+                case 1:
+                    AddFreeWindowNode(BehaviourTreeUtil.GetNodeNames()[operationSubType][operationIndex]);
                     break;
-                case 1://更改名称
+                case 2:
+                    ReplaceNodeClassType(BehaviourTreeUtil.GetNodeNames()[operationSubType][operationIndex]);
+                    break;
+                case 3://更改名称
                     m_CurrWindowNode.ChangeName();
                     break;
-                case 2://关联父节点
+                case 4://关联父节点
                     m_IsDrawTransition = true;
                     break;
-                case 3://删除自由节点
+                case 5://删除自由节点
                     DeleteFreeWindowNode();
                     break;
-                case 4://删除根节点
+                case 6://删除根节点
                     DeleteRootWindowNode();
                     break;
-                case 5://删除子节点
+                case 7://删除子节点
                     DeleteChildWindowNode();
                     break;
             }
         }
 
-        private void AddFreeWindowNode()
+        private void AddFreeWindowNode(string classType)
         {
             if (!m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
@@ -395,10 +433,18 @@ namespace GameFrameWork.Editor
             }
 
             int id = (m_CurrSelect + 1) * 1000 + list.Count + 1;
-            BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", id, m_CurrMousePosition.x, m_CurrMousePosition.y);
+            BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", classType, id, m_CurrMousePosition.x, m_CurrMousePosition.y);
             BehaviourTreeWindowNode node = new BehaviourTreeWindowNode(data, false);
 
             list.Add(node);
+        }
+
+        private void ReplaceNodeClassType(string classType)
+        {
+            if(m_CurrWindowNode != null)
+            {
+                m_CurrWindowNode.UpdateClassType(classType);
+            }
         }
 
         private void DeleteFreeWindowNode()
@@ -432,7 +478,7 @@ namespace GameFrameWork.Editor
             m_CurrWindowNode = null;
         }
 
-        private void SetFreeNodeParent(BehaviourTreeWindowNode parent)
+        private void SetCurrNodeParent(BehaviourTreeWindowNode parent)
         {
             if (m_CurrWindowNode == null)
             {
@@ -524,6 +570,7 @@ namespace GameFrameWork.Editor
             outData.classType = windowData.classType;
             outData.name = windowData.name;
             outData.args = windowData.args;
+            outData.priority = windowData.priority;
             outData.children = new BehaviourTreeData[windowData.children.Count];
             outData.preConditions = new BehaviorTreeBaseData[windowData.preConditions.Count];
 

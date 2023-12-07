@@ -79,6 +79,11 @@ public class BaseRoleCtrl : BaseCtrl
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
+    public bool IsInSkill()
+    {
+        return m_SkillManager.IsInSkill();
+    }
+
     public bool IsCurrSkill(int skillId)
     {
         return m_SkillManager.IsCurrSkill(skillId);
@@ -98,10 +103,13 @@ public class BaseRoleCtrl : BaseCtrl
 
         for (int i = 0; i < m_Data.attackIds.Length; i++)
         {
-            if(m_CurrSkillID == m_Data.attackIds[i])
+            if (m_CurrSkillID == m_Data.attackIds[i])
             {
+                m_IsHitSuccess = false;
+                m_IsAttack = false;
+                m_AttackTimer = -1;
+                m_CanAttack = true;
                 m_AttackIndex = 0;
-                m_AttackTimer = 0;
                 break;
             }
         }
@@ -127,31 +135,33 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected override void OnUpdate()
     {
+        if (m_IsAttack)
+        {
+            if (m_Owner.IsPlayComplete() )
+            {
+                m_AttackTimer = Time.time;
+                m_IsAttack = false;
+            }
+        }
+
         if (m_AttackTimer > 0)
         {
-            float currWait = m_Data.attackWait[m_AttackIndex];
-
-            if (currWait < 0)
+            if (Time.time - m_AttackTimer > 0.0555f)
             {
-                if (m_Owner.IsPlayComplete() && m_Owner.isInGround)
+                if (m_AttackIndex < m_Data.attackIds.Length - 1)
                 {
-                    m_AttackIndex = 0;
-                    m_AttackTimer = 0;
-                    m_IsHitSuccess = false;
-                    m_Owner.ChangeDefaultState();
+                    m_CanAttack = true;
                 }
             }
-            else
-            {
-                float attckStamp = Time.time - m_AttackTimer;
 
-                if (attckStamp > currWait)
-                {
-                    m_AttackIndex = 0;
-                    m_AttackTimer = 0;
-                    m_IsHitSuccess = false;
-                    m_Owner.ChangeDefaultState();
-                }
+            if(Time.time - m_AttackTimer > 0.2f && m_Owner.isInGround)
+            {
+                m_IsHitSuccess = false;
+                m_IsAttack = false;
+                m_AttackTimer = -1;
+                m_CanAttack = true;
+                m_AttackIndex = 0;
+                m_Owner.ChangeDefaultState();
             }
         }
     }
@@ -176,14 +186,14 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if(!IsCanNormalAttack())
+        if(!m_CanAttack)
         {
             return;
         }
 
         if(m_IsHitSuccess)
         {
-            if (m_AttackIndex < m_Data.attackWait.Length - 1)
+            if (m_AttackIndex < m_Data.attackIds.Length - 1)
             {
                 m_AttackIndex++;
             }
@@ -193,7 +203,9 @@ public class BaseRoleCtrl : BaseCtrl
             m_AttackIndex = 0;
         }
 
-        m_AttackTimer = Time.time;
+        m_IsAttack = true;
+        m_CanAttack = false;
+        m_AttackTimer = -1;
         m_CurrSkillID = m_Data.attackIds[m_AttackIndex];
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
@@ -240,7 +252,9 @@ public class BaseRoleCtrl : BaseCtrl
     private int m_CurrSkillID = 0;
     private int m_AttackIndex = 0;
     private bool m_IsHitSuccess = false;
-    private float m_AttackTimer = 0;
+    private bool m_IsAttack = false;
+    private bool m_CanAttack = true;
+    private float m_AttackTimer = -1;
     private BaseRoleSkillData m_Data = null;
     private SkillManager m_SkillManager = null;
 }

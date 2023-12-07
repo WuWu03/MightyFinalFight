@@ -21,7 +21,7 @@ public class StagePanel : BasePanel
 
 	protected override void OnInit(object[] param)
 	{
-		m_Component = new StagePanelComponent(uiRefRoot);
+		m_Component = new StagePanelComponent(m_UIRefRoot);
 	}
 
 	protected override void OnOpen()
@@ -32,7 +32,7 @@ public class StagePanel : BasePanel
 		StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
         RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
-		GetRoundTxt(0).text = stageConfigData.StageIndex.ToString();
+		GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
 		ResourcesPool.instance.Get<GameObject>(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
@@ -52,8 +52,9 @@ public class StagePanel : BasePanel
 		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
 		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
+        m_Role.SetActive(true);
 
-		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
+        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
 		Timer.Register(roleSelectConfig.showTime, OnTimer);
     }
 
@@ -72,7 +73,6 @@ public class StagePanel : BasePanel
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
         RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
-
 		ResourcesPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
 		m_Role = null;
 	}

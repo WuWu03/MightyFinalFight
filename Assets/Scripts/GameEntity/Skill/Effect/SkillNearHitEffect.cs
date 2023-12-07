@@ -25,6 +25,12 @@ public class SkillNearHitEffect : SkillBaseEffect
         for (int i = 0; i < targets.Count; i++)
         {
             HurtData hurtData = SkillFactory.GetHurtData(targets[i], m_Owner, m_SkillData, m_SkillEffect);
+
+            if (hurtData == null) 
+            {
+                continue;
+            }
+
             bool isPause = false;// (m_Owner is BaseHero);
 
             if (!m_IsPause)
@@ -32,7 +38,7 @@ public class SkillNearHitEffect : SkillBaseEffect
                 m_IsPause = isPause;
             }
 
-            if (hurtData != null && !m_IsHurtTarget)
+            if (!m_IsHurtTarget)
             {
                 m_IsHurtTarget = !targets[i].IsHurtWillDie(hurtData.attackValue);
             }
@@ -55,12 +61,18 @@ public class SkillNearHitEffect : SkillBaseEffect
             }
         }
 
-        if(!m_IsPause)
+        m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
+
+        if (!m_IsPause)
         {
             Complete();
         }
+    }
 
-        m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
+    protected override void OnComplete()
+    {
+        base.OnComplete();
+        m_IsHurtTarget = false;
     }
 
     protected override void OnReset()

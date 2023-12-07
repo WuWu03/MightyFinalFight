@@ -19,7 +19,7 @@ public class LoadPanel : BasePanel
 
 	protected override void OnInit(object[] param)
 	{
-		m_Component = new LoadPanelComponent(uiRefRoot);
+		m_Component = new LoadPanelComponent(m_UIRefRoot);
 	}
 
 	protected override void OnOpen()

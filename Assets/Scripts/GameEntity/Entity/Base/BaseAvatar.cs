@@ -25,58 +25,30 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public HitTrigger dragonBonesTrigger
+    public HitTrigger hitTrigger
     {
         get
         {
-            return m_DragonBonesTrigger;
+            return m_HitTrigger;
         }
     }
 
-    public List<BaseSceneObject> targets
-    {
-        get
-        {
-            return m_ListTargets;
-        }
-    }
 
-    public Rect bound
-    {
-        get
-        {
-            return m_Bound;
-        }
-    }
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_BoxCollider2D = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_BoxCollider2D.isTrigger = true;
-        m_BoxCollider2D.enabled = false;
-        m_ListTargets = new List<BaseSceneObject>();
         m_FsmMachine = FsmMachine.Create(this, this.GetType().Name);
     }
 
-    public override void UpdatePos(Vector2 pos, float posZ)
-    {
-        base.UpdatePos(pos, posZ);
-        UpdateBound();
-    }
-
-    public Vector2 GetCurrTriggerSize()
-    {
-        return m_BoxCollider2D.size;
-    }
 
     public Vector2 GetAnimTriggerSize(string animName)
     {
-        if (m_DragonBonesTrigger == null)
+        if (m_HitTrigger == null)
         {
             return Vector2.zero;
         }
 
-        TriggerData triggerData = m_DragonBonesTrigger.GetTriggerData(animName);
+        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
         {
@@ -89,11 +61,9 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Release()
     {
         m_FsmMachine.ShutDown();
-        m_ListTargets.Clear();
         m_Animator.animation.Reset();
 
         m_FsmMachine = null;
-        m_ListTargets = null;
         m_CurrAnimName = string.Empty;
 
         base.Release();
@@ -101,35 +71,17 @@ public abstract class BaseAvatar : BaseGravityObject
 
     protected void SetTrigger(string animName)
     {
-        if (m_DragonBonesTrigger == null)
+        if (m_HitTrigger == null)
         {
             return;
         }
 
-        TriggerData triggerData = m_DragonBonesTrigger.GetTriggerData(animName);
+        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
 
         if (triggerData != null)
         {
             SetCollider(triggerData.Offest, triggerData.Size);
         }
-    }
-
-    protected void UpdateBound()
-    {
-        m_Bound.width = m_BoxCollider2D.size.x;
-        m_Bound.height = m_BoxCollider2D.size.y;
-        m_Bound.xMin = m_Pos.x + m_BoxCollider2D.offset.x * m_Dir - m_BoxCollider2D.size.x / 2;
-        m_Bound.xMax = m_Pos.x + m_BoxCollider2D.offset.x * m_Dir + m_BoxCollider2D.size.x / 2;
-        m_Bound.yMin = m_Pos.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
-        m_Bound.yMax = m_Pos.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
-        m_Bound.center = new Vector2(m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
-    }
-
-    protected void SetCollider(Vector2 offest, Vector2 size)
-    {
-        m_BoxCollider2D.size = size;
-        m_BoxCollider2D.offset = offest;
-        UpdateBound();
     }
 
     protected override void OnUpdate()
@@ -142,9 +94,8 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
-        m_DragonBonesTrigger = m_ResGO.GetComponent<HitTrigger>();
-        m_BoxCollider2D.enabled = true;
-        UpdateBound();
+        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
@@ -268,15 +219,8 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.SetDefaultState<T>();
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision) { }
-    protected virtual void OnTriggerStay2D(Collider2D collision) { }
-    protected virtual void OnTriggerExit2D(Collider2D collision) { }
-
     protected string m_CurrAnimName = string.Empty;
-    protected Rect m_Bound = Rect.zero;
-    protected BoxCollider2D m_BoxCollider2D = null;
-    protected HitTrigger m_DragonBonesTrigger = null;
+    protected HitTrigger m_HitTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
-    protected List<BaseSceneObject> m_ListTargets = null;
 }

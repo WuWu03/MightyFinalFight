@@ -1,5 +1,6 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
+using GameFrameWork.Event;
 using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using GameFrameWork.Scene;
@@ -59,10 +60,19 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public void StageEnter(int stageId)
     {
-        StageConfigData configData = StaticConfig.StageConfig.GetData(stageId);
+        StageConfigData configData = null;// StaticConfig.StageConfig.GetData(stageId);
+        for (int i = 0; i < StaticConfig.StageConfig.Datas.Count; i++)
+        {
+            if (StaticConfig.StageConfig.Datas[i].Id == stageId)
+            {
+                m_StageIndex = i + 1;
+                configData = StaticConfig.StageConfig.Datas[i];
+                break;
+            }
+        }
+
         StageEnter(configData);
     }
-
 
     public void StageEnterNext()
     {
@@ -70,7 +80,6 @@ public class StageMgr : BaseMgr<StageMgr>
         StageEnter(configData);
         m_StageIndex++;
     }
-
 
     private void StageEnter(StageConfigData configData)
     {
@@ -93,6 +102,8 @@ public class StageMgr : BaseMgr<StageMgr>
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
+
+            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
         });
     }
 
@@ -132,24 +143,21 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public float GetRandomPosX()
     {
-        return GetRandomPos().x;
+        return GetRandomPos(Rect.zero).x;
     }
 
     public float GetRandomPosY()
     {
-        return GetRandomPos().y;
+        return GetRandomPos(Rect.zero).y;
     }
 
-    public Vector2 GetRandomPos()
+    public Vector2 GetRandomPos(Rect vision)
     {
-        Vector2Int[] pos = CommonUtil.PolygonRandomPoints(m_CurrStageData.MovePoints);
+        Vector2Int pos = CommonUtil.PolygonRandomPoints(m_CurrStageData.MovePoints, vision);
         Vector2 ret = Vector2.zero;
 
-        if(pos.Length >0)
-        {
-            ret.x = (float)pos[0].x / 100f;
-            ret.y = (float)pos[0].y / 100f;
-        }
+        ret.x = (float)pos.x / 100f;
+        ret.y = (float)pos.y / 100f;
 
         return ret;
     }
@@ -194,6 +202,8 @@ public class StageMgr : BaseMgr<StageMgr>
             {
                 TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
             }
+
+            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEventId));
         });
     }
 

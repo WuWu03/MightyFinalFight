@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SkillConfigData;
 
-public class BaseSceneItem : BaseAvatar
+public class BaseSceneItem : BaseGravityObject
 {
     public virtual bool canPickUp
     {

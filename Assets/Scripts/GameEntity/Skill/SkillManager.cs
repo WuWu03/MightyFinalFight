@@ -63,11 +63,21 @@ public class SkillManager
         {
             ExitSkill();
 
-            if (m_Owner.canChangeDefaultState && !m_Owner.isAddGroundForce)
+            if (m_Owner.canChangeDefaultState && !m_Owner.isAddGroundForce && !m_Owner.isDrop)
             {
                 m_Owner.ChangeDefaultState();
             }
         }
+    }
+
+    public bool IsInSkill()
+    {
+        if (m_CurrSkillDeployer == null)
+        {
+            return false;
+        }
+
+        return !m_CurrSkillDeployer.IsAllComplete();
     }
 
     public bool IsCurrSkill(int id)

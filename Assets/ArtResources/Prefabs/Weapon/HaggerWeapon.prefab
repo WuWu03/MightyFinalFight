@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2714662740501678189}
   - component: {fileID: 3301743035767542090}
   - component: {fileID: 8411249767869852099}
-  - component: {fileID: 7214282166192995707}
+  - component: {fileID: 6596338698341778610}
   m_Layer: 0
   m_Name: HaggerWeapon
   m_TagString: Untagged
@@ -26,13 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 243287423033442203}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1500042005798239529}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3301743035767542090
 MonoBehaviour:
@@ -74,7 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotNames: []
   dirty: 0
---- !u!114 &7214282166192995707
+--- !u!114 &6596338698341778610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,16 +84,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 243287423033442203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93f5dcab39beabe4e95f71435a81802b, type: 3}
+  m_Script: {fileID: 11500000, guid: ec2c4bcbc176fe142b7e1f553ce8536d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Drop
-    Offest: {x: 0.0028405264, y: 0.0072327554}
-    Size: {x: 0.13912179, y: 0.1177004}
+    Offest: {x: -0.002575308, y: -0.028328463}
+    Size: {x: 0.14499527, y: 0.16559777}
   - AnimName: Idle
-    Offest: {x: -0.0037412047, y: 0.086049706}
-    Size: {x: 0.16943324, y: 0.18439859}
+    Offest: {x: 0.0006093085, y: 0.07914165}
+    Size: {x: 0.14333934, y: 0.16418701}
 --- !u!1 &6789348053180585881
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,12 +119,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6789348053180585881}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.032, z: 0}
+  m_LocalPosition: {x: 0, y: -0.0293, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2714662740501678189}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &3280388477250826374
 MeshRenderer:
@@ -136,6 +138,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

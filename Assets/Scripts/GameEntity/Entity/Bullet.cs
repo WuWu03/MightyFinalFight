@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SkillConfigData;
 
-public class Bullet : BaseSceneItem
+public class Bullet : BaseAvatar
 {
     public override void SetData(BaseSceneObjectData data)
     {
@@ -13,9 +13,9 @@ public class Bullet : BaseSceneItem
         m_BulletData = data as BulletData;
     }
 
-    public override void SetOwner(BaseRole owner)
+    public void SetOwner(BaseRole owner)
     {
-        base.SetOwner(owner);
+        m_Owner = owner;
         SetDir(owner.dir);
         SetPos2(owner.pos + new Vector2(m_BulletData.pos.x * owner.dir, m_BulletData.pos.y));
     }
@@ -69,6 +69,7 @@ public class Bullet : BaseSceneItem
         {
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
             List<BaseSceneItem> sceneItemTargets = SceneEntityMgr.instance.GetSceneItems();
+            List<Barrel> barrelTargets = SceneEntityMgr.instance.GetBarrels();
 
             if (enemyTargets != null)
             {
@@ -85,6 +86,14 @@ public class Bullet : BaseSceneItem
                     CheckTarget(sceneItemTargets[i]);
                 }
             }
+
+            if (barrelTargets != null)
+            {
+                for (int i = 0; i < barrelTargets.Count; i++)
+                {
+                    CheckTarget(barrelTargets[i]);
+                }
+            }
         }
         else
         {
@@ -92,14 +101,14 @@ public class Bullet : BaseSceneItem
         }
     }
 
-    private void CheckTarget(BaseAvatar ba)
+    private void CheckTarget(BaseSceneObject bso)
     {
-        if (ba == null)
+        if (bso == null)
         {
             return;
         }
 
-        ICanBeHit hit = ba.GetComponent<ICanBeHit>();
+        ICanBeHit hit = bso.GetComponent<ICanBeHit>();
 
         if (hit == null || !hit.canBeHit)
         {
@@ -108,9 +117,9 @@ public class Bullet : BaseSceneItem
 
         bool isInRange = false;
 
-        if (Mathf.Abs(ba.pos.y - m_Pos.y) < m_BulletData.hitRange)
+        if (SkillUtil.IsRectangleCollide(bso.bound, m_Bound))
         {
-            isInRange = SkillUtil.IsRectangleCollide(ba.bound, m_Bound);
+            isInRange = Mathf.Abs(bso.pos.y - m_Pos.y) < m_BulletData.hitRange;
         }
 
         if(!isInRange)
@@ -140,7 +149,7 @@ public class Bullet : BaseSceneItem
     {
         base.OnResComplete(go, param);
 
-        PlayAnimation(m_BulletData.normalAnim, 1, m_BulletData.normalAnimSpeed);
+        PlayAnimation(m_BulletData.normalAnim, 0, m_BulletData.normalAnimSpeed);
         SetTrigger(m_BulletData.normalAnim);
         SetDrag(m_BulletData.drag);
         SetGravityScale(0f);
@@ -157,5 +166,6 @@ public class Bullet : BaseSceneItem
 
     private bool m_IsHit = false;
     private SkillBulletEffect m_SkillBulletEffect = null;
+    private BaseRole m_Owner = null;
     private BulletData m_BulletData = null;
 }

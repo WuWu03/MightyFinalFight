@@ -16,12 +16,14 @@ public static partial class ConfigDataHelper
 	public static RoleConfigData[] roleConfigDatas = null;
 	public static RoleSelectConfigData[] roleSelectConfigDatas = null;
 	public static SceneItemConfigData[] sceneItemConfigDatas = null;
+    public static TalkConfigData[] talkConfigDatas = null;
 
-	public static void Init(string filePath)
+    public static void Init(string filePath)
 	{
 		levelConfigDatas = LoadConfigData<LevelConfigData>(filePath, "LevelConfigData");
 		roleConfigDatas = LoadConfigData<RoleConfigData>(filePath, "RoleConfigData");
 		roleSelectConfigDatas = LoadConfigData<RoleSelectConfigData>(filePath, "RoleSelectConfigData");
 		sceneItemConfigDatas = LoadConfigData<SceneItemConfigData>(filePath, "SceneItemConfigData");
-	}
+        talkConfigDatas = LoadConfigData<TalkConfigData>(filePath, "TalkConfigData");
+    }
 }

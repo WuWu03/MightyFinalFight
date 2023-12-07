@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DoRoundMap : Action
 {
-    public DoRoundMap(string name, string args, object owner) : base(name, args, owner)
+    public DoRoundMap(string name, string args, object owner, int priority) : base(name, args, owner, priority)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
         m_ListPos = new List<Vector2>();
@@ -14,16 +14,19 @@ public class DoRoundMap : Action
 
     protected override void OnEnter()
     {
+        m_State = BehaviourTreeState.Running;
+
         m_ListPos.Clear();
         m_CurrIndex = 0;
-        m_MoveTime = Random.Range(4f, 8f);
         m_MoveTimer = -1;
+        m_MoveTime = Random.Range(4f, 8f);
+
+        float tirggerSize = m_Owner.owner.GetCurrTriggerSize().x / 2f;
 
         Vector2 pos = m_Owner.owner.pos;
         Rect vision = CameraMgr.instance.GetVision();
         Rect area = StageMgr.instance.GetMoveArea();
 
-        float tirggerSize = m_Owner.owner.GetCurrTriggerSize().x / 2f;
         Vector2 leftTop = new Vector2(vision.xMin + tirggerSize, area.yMax);
         Vector2 leftBottom = new Vector2(vision.xMin + tirggerSize, area.yMin);
         Vector2 rightTop = new Vector2(vision.xMax - tirggerSize, area.yMax);
@@ -48,42 +51,52 @@ public class DoRoundMap : Action
         }
     }
 
-    public override BehaviorTreeState Excute()
+    public override bool CanExcute()
     {
-        if(m_MoveTimer < 0)
+        return m_State != BehaviourTreeState.Success;
+    }
+
+    public override BehaviourTreeState Excute()
+    {
+        return m_State;
+    }
+
+    protected override void OnUpdate(float deltaTime)
+    {
+        base.OnUpdate(deltaTime);
+
+        if (m_MoveTimer < 0)
         {
             m_MoveTimer = Time.time;
         }
 
-        if(Time.time - m_MoveTimer >= m_MoveTime)
+        if (Time.time - m_MoveTimer >= m_MoveTime)
         {
-            return BehaviorTreeState.Success;
+            m_State = BehaviourTreeState.Success;
+            return;
         }
 
-        if (!m_IsArravied)
-        {
-            m_IsArravied = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.owner.pos) <= 0.05f;
-            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.owner.pos).normalized, false);
-            m_Owner.OppositePlayer();
-        }
-        else
+        bool isArrive = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.owner.pos) <= 0.02f;
+
+        if (isArrive)
         {
             m_CurrIndex++;
-            m_IsArravied = false;
 
-            if(m_CurrIndex >= m_ListPos.Count)
+            if (m_CurrIndex >= m_ListPos.Count)
             {
                 m_CurrIndex = 0;
             }
         }
-
-        return BehaviorTreeState.Running;
+        else
+        {
+            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.owner.pos).normalized, false);
+            m_Owner.OppositePlayer();
+        }
     }
 
-
-    public override void Reset()
+    protected override void OnReset()
     {
-        base.Reset();
+        base.OnReset();
         m_ListPos.Clear();
         m_CurrIndex = 0;
         m_MoveTime = 0;
@@ -98,10 +111,10 @@ public class DoRoundMap : Action
         m_ListPos.Add(pos4);
     }
 
-    private bool m_IsArravied = false;
     private float m_MoveTimer = -1;
     private float m_MoveTime = 0;
     private int m_CurrIndex = 0;
     private List<Vector2> m_ListPos = null;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
     protected new BaseEnemyCtrl m_Owner = null;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
-    public enum BehaviorTreeState
+    public enum BehaviourTreeState
     {
         None = 0,
         Success = 1,
@@ -22,15 +22,35 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public Node(string name, string args, object owner)
+        public int priority
+        {
+            get
+            {
+                return m_Priority;
+            }
+        }
+
+        public Node(string name, string args, object owner, int priority)
         {
             m_Name = name;
             m_Args = args;
             m_Owner = owner;
+            m_Priority = priority;
+        }
+
+        public void Start()
+        {
+            OnStart();
         }
 
         public void Enter()
         {
+            if (m_HasEnter)
+            {
+                return;
+            }
+
+            m_HasEnter = true;
             OnEnter();
         }
 
@@ -39,30 +59,43 @@ namespace GameFrameWork.BehaviourTree
             OnUpdate(deltaTime);
         }
 
+        public void LateUpdate(float deltaTime)
+        {
+            OnLateUpdate(deltaTime);
+        }
+
         public void Destroy()
         {
             OnDestroy();
-            m_State = BehaviorTreeState.None;
+
             m_Name = string.Empty;
             m_Args = string.Empty;
             m_Owner = null;
         }
 
-        public virtual void AddChild(Node node) { }
-        public virtual Node GetChild(int index) { return null; }
-        public virtual void AddPreCondition(Node node) { }
-        public virtual bool CheckPreCondition() { return true; }
-        public virtual void Reset() { m_State = BehaviorTreeState.Running; }
-        public virtual bool CanExcute() { return true; }
-        public virtual BehaviorTreeState Excute() { return m_State; }
+        public void Reset()
+        {
+            m_HasEnter = false;
+            OnReset();
+        }
 
-        protected abstract void OnEnter();
-        protected abstract void OnUpdate(float deltaTime);
-        protected abstract void OnDestroy();
+        public virtual bool CheckPreCondition() 
+        {
+            return true; 
+        }
 
-        protected BehaviorTreeState m_State = BehaviorTreeState.None;
+        protected virtual void OnStart() { }
+        protected virtual void OnEnter() { }
+        protected virtual void OnUpdate(float deltaTime) { }
+        protected virtual void OnLateUpdate(float deltaTime) { }
+        protected virtual void OnDestroy() { }
+        protected virtual void OnReset() { }
+
         protected string m_Name = string.Empty;
         protected string m_Args = string.Empty;
         protected object m_Owner = null;
+        protected int m_Priority = 0;
+
+        private bool m_HasEnter = false;
     }
 }

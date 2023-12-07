@@ -79,16 +79,16 @@ public class BaseHeroCtrl : BaseRoleCtrl
             {
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {
-                    hero.UseWeaponMsg();
                     DeploySkill(m_ThrowWeaponID);
+                    hero.UseWeaponMsg();
                 }
             }
             else
             {
                 if (!isWeaponAttack && m_Owner.IsPlayComplete())
                 {
-                    hero.UseWeaponMsg();
                     DeploySkill(m_WeaponAttackID);
+                    hero.UseWeaponMsg();
                 }
             }
 
@@ -115,7 +115,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
             BaseSceneItem item = list[i];
 
             bool isXNear = Mathf.Abs(item.pos.x - m_Owner.pos.x) <= item.bound.width / 2;
-            bool isYNear = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.2f;
+            bool isYNear = Mathf.Abs(item.bound.yMin - m_Owner.bound.yMin) <= 0.05f;
 
             if (isXNear && isYNear)
             {
