@@ -14,12 +14,7 @@ namespace GameFrameWork.Utilities
         /// <returns></returns>
         public static void WebRequest(string url, GameFrameWorkAction<UnityWebRequest> call, GameFrameWorkAction<string> error, GameFrameWorkAction<float> progressCall = null)
         {
-            if (m_MonoBehaviour == null)
-            {
-                return;
-            }
-
-            m_MonoBehaviour.StartCoroutine(StartUnityWebRequest(url, call, error, progressCall));
+            AppConfig.instance.StartCoroutine(StartUnityWebRequest(url, call, error, progressCall));
         }
 
         //uwrœ¬‘ÿ

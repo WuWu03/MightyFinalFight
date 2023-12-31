@@ -12,6 +12,7 @@ namespace GameFrameWork
             {
                 return;
             }
+
             go.gameObject.SetActive(value);
         }
 
@@ -22,26 +23,31 @@ namespace GameFrameWork
 
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
-            T ret = go.GetComponent<T>();
+            T result = go.GetComponent<T>();
 
-            if (ret == null)
+            if (result == null)
             {
-                ret = go.AddComponent<T>();
+                result = go.AddComponent<T>();
             }
 
-            return ret;
+            return result;
         }
 
-        public static T GetOrAddComponentInChildren<T>(this GameObject go) where T : Component
+        public static T GetOrAddComponentInChildren<T>(this GameObject go,string path) where T : Component
         {
-            T ret = go.GetComponentInChildren<T>(true);
+            T result = go.GetComponentInChildren<T>(true);
 
-            if (ret == null)
+            if (result == null)
             {
-                ret = go.AddComponent<T>();
+                Transform child = go.transform.Find(path);
+
+                if(child != null)
+                {
+                    result = child.gameObject.AddComponent<T>();
+                }
             }
 
-            return ret;
+            return result;
         }
 
         public static void SetLayer(this GameObject gameObject, string layer, bool isChild = true)
@@ -60,7 +66,10 @@ namespace GameFrameWork
 
         public static T FindComponentInParents<T>(this GameObject gameObject) where T : Component
         {
-            if (gameObject == null) return null;
+            if (gameObject == null)
+            {
+                return null;
+            }
 
             T comp = gameObject.GetComponent<T>();
 
@@ -166,22 +175,22 @@ namespace GameFrameWork
             }
 
             string[] valueStr = value.Split(partten);
-            int[] ret = new int[valueStr.Length];
+            int[] result = new int[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
                 if (int.TryParse(valueStr[i], out int result1))
                 {
-                    ret[i] = result1;
+                    result[i] = result1;
                 }
 
                 if (int.TryParse(valueStr[valueStr.Length - i - 1], out int result2))
                 {
-                    ret[valueStr.Length - i - 1] = result2;
+                    result[valueStr.Length - i - 1] = result2;
                 }
             }
 
-            return ret;
+            return result;
         }
 
         public static long[] ToLongArray(this string value, char partten = ',')
@@ -192,22 +201,22 @@ namespace GameFrameWork
             }
 
             string[] valueStr = value.Split(partten);
-            long[] ret = new long[valueStr.Length];
+            long[] result = new long[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
                 if (long.TryParse(valueStr[i], out long result1))
                 {
-                    ret[i] = result1;
+                    result[i] = result1;
                 }
 
                 if (long.TryParse(valueStr[valueStr.Length - i - 1], out long result2))
                 {
-                    ret[valueStr.Length - i - 1] = result2;
+                    result[valueStr.Length - i - 1] = result2;
                 }
             }
 
-            return ret;
+            return result;
         }
 
         public static float[] ToFloatArray(this string value, char partten = ',')
@@ -218,22 +227,22 @@ namespace GameFrameWork
             }
 
             string[] valueStr = value.Split(partten);
-            float[] ret = new float[valueStr.Length];
+            float[] result = new float[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
                 if (float.TryParse(valueStr[i], out float result1))
                 {
-                    ret[i] = result1;
+                    result[i] = result1;
                 }
 
                 if (float.TryParse(valueStr[valueStr.Length - i - 1], out float result2))
                 {
-                    ret[valueStr.Length - i - 1] = result2;
+                    result[valueStr.Length - i - 1] = result2;
                 }
             }
 
-            return ret;
+            return result;
         }
 
         public static double[] ToDoubleArray(this string value, char partten = ',')
@@ -244,22 +253,22 @@ namespace GameFrameWork
             }
 
             string[] valueStr = value.Split(partten);
-            double[] ret = new double[valueStr.Length];
+            double[] result = new double[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
                 if (double.TryParse(valueStr[i], out double result1))
                 {
-                    ret[i] = result1;
+                    result[i] = result1;
                 }
 
                 if (double.TryParse(valueStr[valueStr.Length - i - 1], out double result2))
                 {
-                    ret[valueStr.Length - i - 1] = result2;
+                    result[valueStr.Length - i - 1] = result2;
                 }
             }
 
-            return ret;
+            return result;
         }
 
         public static bool[] ToBoolArray(this string value, char partten = ',')
@@ -270,22 +279,22 @@ namespace GameFrameWork
             }
 
             string[] valueStr = value.Split(partten);
-            bool[] ret = new bool[valueStr.Length];
+            bool[] result = new bool[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
             {
                 if (bool.TryParse(valueStr[i], out bool result1))
                 {
-                    ret[i] = result1;
+                    result[i] = result1;
                 }
 
                 if (bool.TryParse(valueStr[valueStr.Length - i - 1], out bool result2))
                 {
-                    ret[valueStr.Length - i - 1] = result2;
+                    result[valueStr.Length - i - 1] = result2;
                 }
             }
 
-            return ret;
+            return result;
         }
 
         public static string[] ToStringArray(this string value, char partten = ',')
@@ -341,12 +350,21 @@ namespace GameFrameWork
         {
             int l;
             int k;
+
             if (n == 0)
+            {
                 l = 0;
+            }
             else
+            {
                 l = (int)System.Math.Floor(System.Math.Log10(n < 0 ? -n : n));
+            }
+
             if (len - 1 > l)
+            {
                 l = len - 1;
+            }
+
             k = (int)System.Math.Round(System.Math.Pow(10, l));
 
             do

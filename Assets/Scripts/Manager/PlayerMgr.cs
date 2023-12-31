@@ -19,6 +19,14 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
+    public BaseHeroCtrl playerCtrl
+    {
+        get
+        {
+            return m_PlayerCtrl;
+        }
+    }
+
     public RoleConfigData roleConfigData
     {
         get
@@ -131,7 +139,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_RoleConfigData.assetName));
         m_Player.SetLayer(LayerName.Unit);
-        m_CurrCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
+        m_PlayerCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
 
         BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
         BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
@@ -162,7 +170,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.SetAttribute(roleAttribute);
         m_Player.SetData(roleData);
         m_Player.SetObjectType(ObjectType.Player);
-        m_CurrCtrl.SetData(heroSkillData);
+        m_PlayerCtrl.SetData(heroSkillData);
 
         for (int i = 6; i < m_RoleConfigData.skillIds.Length; i++)
         {
@@ -195,7 +203,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
             m_Player.Release();
             m_Player = null;
-            m_CurrCtrl = null;
+            m_PlayerCtrl = null;
             return;
         }
 
@@ -205,7 +213,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     public void Jump(Vector2 dir,bool canChangeDir,bool isForceJump)
     {
-        m_CurrCtrl.Jump(dir, canChangeDir, isForceJump);
+        m_PlayerCtrl.Jump(dir, canChangeDir, isForceJump);
     }
 
     public void AddExp(int value)
@@ -267,38 +275,38 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void AfterTriggerAttack()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
 
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
-        m_CurrCtrl.Attack(asix);
+        m_PlayerCtrl.Attack(asix);
     }
 
     private void AfterTriggerJump()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
 
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
-        m_CurrCtrl.Jump(asix, m_RoleConfigData.id != 1002);
+        m_PlayerCtrl.Jump(asix, m_RoleConfigData.id != 1002);
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
 
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
 
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
         asix.y *= 0.8f;
-        m_CurrCtrl.Move(asix);
+        m_PlayerCtrl.Move(asix);
 
         //-0.05288422 0.1611486
         //0.2418677 0.3235909
@@ -317,7 +325,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_CurrCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return false;
         }
@@ -336,18 +344,18 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         bool result = asix.x != 0 || asix.y != 0;
 
         asix.y *= 0.8f;
-        m_CurrCtrl.Move(asix);
+        m_PlayerCtrl.Move(asix);
 
         if (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X))
         {
             UnityEngine.Debug.Log("出发普通攻击键=================================");
-            m_CurrCtrl.Attack(asix);
+            m_PlayerCtrl.Attack(asix);
             result = true;
         }
 
         if (InputMgr.instance.GetKeyDown(KeyType.B, true) || InputMgr.instance.GetKeyDown(KeyType.Y))
         {
-            m_CurrCtrl.Jump(asix, m_RoleConfigData.id != 1002);
+            m_PlayerCtrl.Jump(asix, m_RoleConfigData.id != 1002);
             result = true;
         }
 
@@ -363,10 +371,10 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void OnComboKeyEvent(int id, bool isTrigger)
     {
-        m_CurrCtrl.DeploySkill(id);
+        m_PlayerCtrl.DeploySkill(id);
     }
 
-    private BaseHeroCtrl m_CurrCtrl = null;
+    private BaseHeroCtrl m_PlayerCtrl = null;
     private RoleConfigData m_RoleConfigData = null;
     private BaseHero m_Player = null;
     private LevelConfigData m_LevelConfigData = null;

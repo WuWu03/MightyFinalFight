@@ -1,22 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.IO;
-using System.Text;
-using System;
-using System.Reflection;
-using UnityEngine.Networking;
-using UnityEditor;
-using UnityEngine.UIElements;
-/// <summary>
-/// 游戏里常用的实用工具
-/// </summary>
+﻿using System;
+using UnityEngine;
 
 namespace GameFrameWork.Utilities
 {
     public class CommonUtil
     {
+        /// <summary>
+        /// 六边形左边转世界坐标
+        /// </summary>
+        /// <returns></returns>
         public static Vector3 HexagonXToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
         {
             return new Vector3(hexagonPos.x * scaleX, hexagonPos.y * scaleY, 0);
@@ -113,7 +105,10 @@ namespace GameFrameWork.Utilities
                 }
             }
 
-            else go.tag = tag;
+            else
+            {
+                go.tag = tag;
+            }
         }
 
         public static void SetLayer(GameObject go, int layer, bool isSetChild = false)
@@ -127,7 +122,10 @@ namespace GameFrameWork.Utilities
                 }
             }
 
-            else go.layer = layer;
+            else
+            {
+                go.layer = layer;
+            }
         }
 
         public static bool CompareTo(double d1, double d2)
@@ -151,6 +149,11 @@ namespace GameFrameWork.Utilities
             return resultPos;
         }
 
+        /// <summary>
+        /// 根据权重随机一个元素
+        /// </summary>
+        /// <param name="weights"></param>
+        /// <returns></returns>
         public static int RandomByWeight(int[] weights)
         {
             if (weights == null || weights.Length < 1)
@@ -180,6 +183,11 @@ namespace GameFrameWork.Utilities
             return 0;
         }
 
+        /// <summary>
+        /// RGBA转16进制
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static string RGBToHex(Color color)
         {
             if (color == default(Color))
@@ -195,11 +203,15 @@ namespace GameFrameWork.Utilities
             return StringUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
         }
 
+        /// <summary>
+        /// 16进制转RGBA
+        /// </summary>
+        /// <param name="hex"></param>
+        /// <returns></returns>
         public static Color HexToRGB(string hex)
         {
-            hex = hex.TrimStart('#').PadRight(8, 'F');
+            int hexValue = Convert.ToInt32(hex.Trim().TrimStart('#').PadRight(8, 'F'), 16);
 
-            int hexValue = Convert.ToInt32(hex, 16);
             float r = (byte)((hexValue >> 24) & 0xFF) / 255f;
             float g = (byte)((hexValue >> 16) & 0xFF) / 255f;
             float b = (byte)((hexValue >> 8) & 0xFF) / 255f;
@@ -260,7 +272,9 @@ namespace GameFrameWork.Utilities
             return newArray;
         }
 
-        //某点是否在多边形内
+        /// <summary>
+        /// 某点是否在多边形内
+        /// </summary>
         public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int p)
         {
             var j = polyPoints.Length - 1;
@@ -275,6 +289,17 @@ namespace GameFrameWork.Utilities
             return inside;
         }
 
+        /// <summary>
+        /// 在多边形内随机一点
+        /// </summary>
+        public Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints)
+        {
+            return PolygonRandomPoints(polygonPoints, Rect.zero);
+        }
+
+        /// <summary>
+        /// 在多边形内随机一点
+        /// </summary>
         public static Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints, Rect vision)
         {
             int minX = polygonPoints[0].x, minY = polygonPoints[0].y;

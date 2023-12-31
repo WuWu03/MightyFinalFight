@@ -192,7 +192,7 @@ namespace GameFrameWork.Scene
 
             if (IsSceneLoaded(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.FormatDefault("Scene name:[", sceneName, "] is loaded."), null);
+                LoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is loaded."), null);
                 return;
             }
 
@@ -225,7 +225,7 @@ namespace GameFrameWork.Scene
 
             if (IsSceneLoaded(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.FormatDefault("Scene name:[", sceneName, "] is loaded."), args);
+                LoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is loaded."), args);
                 return;
             }
 
@@ -256,7 +256,7 @@ namespace GameFrameWork.Scene
 
             if (!IsSceneLoaded(sceneName))
             {
-                UnLoadSceneFailure(sceneName, StringUtil.FormatDefault("Scene name:[", sceneName, "] is not loaded."), args);
+                UnLoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is not loaded."), args);
                 return;
             }
 

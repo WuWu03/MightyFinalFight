@@ -1,10 +1,8 @@
-﻿using UnityEngine;
+﻿using GameFrameWork.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.IO;
-using GameFrameWork.Utilities;
-using GameFrameWork.Debug;
 
 namespace GameFrameWork.Resources
 {
@@ -39,7 +37,7 @@ namespace GameFrameWork.Resources
 
             string fileName = Path.GetFileName(assetPath);
             string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(assetPath));
-            string paName = StringUtil.FormatDefault(fileName, "*");
+            string paName = StringUtil.Format(fileName, "*");
             string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
 
             // 加载本地资源
@@ -50,14 +48,14 @@ namespace GameFrameWork.Resources
                     continue;
                 }
 
-                GameFrameworkLog.Debug(StringUtil.FormatDefault("开始编辑器加载资源：", files[i]));
+                Log.LogInfo(StringUtil.Format("开始编辑器加载资源：", files[i]));
                 obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
                 break;
             }
 
             if (obj == null)
             {
-                GameFrameworkLog.Debug(StringUtil.FormatDefault("无效的资源路径 => ", assetPath));
+                Log.LogInfo(StringUtil.Format("无效的资源路径 => ", assetPath));
                 return null;
             }
 
@@ -87,7 +85,6 @@ namespace GameFrameWork.Resources
         // 模拟异步加载的行为
         private IEnumerator InnerLoad(string assetPath, Type t = null)
         {
-            // 等待一帧
             UnityEngine.Object obj = Load(assetPath, t);
             // 等待一帧
             yield return null;

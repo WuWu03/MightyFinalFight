@@ -1,8 +1,7 @@
-﻿using GameFrameWork.Debug;
+﻿using GameFrameWork;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static SkillConfigData;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class SkillFactory
 {
@@ -13,7 +12,7 @@ public class SkillFactory
 
         if (data == null)
         {
-            GameFrameworkLog.DebugError("skill data is invalid skillId:", skillId);
+            Log.LogError("skill data is invalid skillId:", skillId);
             return null;
         }
 
@@ -245,7 +244,7 @@ public class SkillFactory
                      "\n[偏移: " + fluctuate + "]" +
                      "\n[是否暴击： " + isCri + "]";
 
-        GameFrameworkLog.Debug(str);
+        Log.LogInfo(str);
         isCritical = isCri;
         return Mathf.FloorToInt(damage);
     }

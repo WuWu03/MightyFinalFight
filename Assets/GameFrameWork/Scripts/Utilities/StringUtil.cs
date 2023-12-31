@@ -9,7 +9,12 @@ namespace GameFrameWork.Utilities
 {
     public static class StringUtil
     {
-        public static string FormatDefault(params object[] args)
+        public static string Format(params object[] args)
+        {
+            return Format(false, args);
+        }
+
+        public static string Format(bool isPath, params object[] args)
         {
             if (args == null)
             {
@@ -33,14 +38,17 @@ namespace GameFrameWork.Utilities
                 m_StringBuilder.Append("{");
                 m_StringBuilder.AppendFormat("{0}", i);
                 m_StringBuilder.Append("}");
+
+                if (isPath && i < args.Length - 1)
+                {
+                    m_StringBuilder.Append("/");
+                }
             }
-    
-            string format = m_StringBuilder.ToString();
-            m_StringBuilder.Clear();
-            return Format(format, args);
+
+            return FormatDefault(m_StringBuilder.ToString(), args);
         }
 
-        public static string Format(string format, params object[] args)
+        public static string FormatDefault(string format, params object[] args)
         {
             if (format == null)
             {
@@ -49,9 +57,8 @@ namespace GameFrameWork.Utilities
 
             m_StringBuilder.Clear();
             m_StringBuilder.AppendFormat(format, args);
-            string str = m_StringBuilder.ToString();
-            m_StringBuilder.Clear();
-            return str;
+
+            return m_StringBuilder.ToString();
         }
 
         /// <summary>
@@ -59,18 +66,26 @@ namespace GameFrameWork.Utilities
         /// </summary>
         public static string MD5(string source)
         {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(source);
-            byte[] md5Data = md5.ComputeHash(data, 0, data.Length);
-            md5.Clear();
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < md5Data.Length; i++)
+            try
             {
-                sb.Append(System.Convert.ToString(md5Data[i], 16).PadLeft(2, '0'));
-            }
+                using (MD5 md5 = new MD5CryptoServiceProvider())
+                {
+                    byte[] result = md5.ComputeHash(Encoding.UTF8.GetBytes(source));
 
-            return sb.ToString().PadLeft(32, '0');
+                    m_StringBuilder.Clear();
+
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        m_StringBuilder.Append(result[i].ToString("x2"));
+                    }
+
+                    return m_StringBuilder.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MD5 caculation error:" + ex.Message);
+            }
         }
 
         private static StringBuilder m_StringBuilder = new StringBuilder();

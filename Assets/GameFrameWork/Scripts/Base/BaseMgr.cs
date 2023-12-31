@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using GameFrameWork.Debug;
-using GameFrameWork.Utilities;
+﻿using GameFrameWork.Utilities;
+using UnityEngine;
 
 namespace GameFrameWork
 {
@@ -12,7 +11,7 @@ namespace GameFrameWork
             {
                 if (m_Instance == null)
                 {
-                    GameFrameworkLog.DebugError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name, " must be init"));
+                    Log.LogError(StringUtil.Format("The instance that Type of ", typeof(T).Name, " must be init"));
                     return null;
                 }
 
@@ -24,13 +23,13 @@ namespace GameFrameWork
         {
             if (m_Instance != null)
             {
-                GameFrameworkLog.DebugError(StringUtil.FormatDefault("The instance that Type of ", typeof(T).Name), " has already init");
+                Log.LogError(StringUtil.Format("The instance that Type of ", typeof(T).Name), " has already init");
                 return;
             }
 
             if (manager == null)
             {
-                GameFrameworkLog.DebugError("The manager is missing");
+                Log.LogError("The manager is missing");
                 return;
             }
 

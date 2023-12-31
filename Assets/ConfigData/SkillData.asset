@@ -46,7 +46,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 0.1
       AddSelfDrag: 0
       MoveDistance: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 5
       AddSelfDrag: 0
       MoveDistance: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 1, y: 5}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 5
       AddSelfDrag: 5
       MoveDistance: 0
@@ -230,7 +230,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
       AddSelfVelocity: {x: 0, y: 0}
       MoveTarget: {x: 0, y: 0}
       ScaleTarget: {x: 0, y: 0}
-      SelectorAngle: 20
+      SelectorAngle: 30
       SelectorRadius: 10
       AddSelfDrag: 0
       MoveDistance: 0

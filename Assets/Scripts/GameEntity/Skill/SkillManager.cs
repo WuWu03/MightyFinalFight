@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-
+﻿using GameFrameWork;
 public class SkillManager
 {
     public SkillManager(BaseRole owner, int[] skillIDs)
@@ -46,7 +45,7 @@ public class SkillManager
         }
         else
         {
-            GameFrameWork.Debug.GameFrameworkLog.DebugError("Skill not found id:", id);
+            Log.LogError("Skill not found id:", id);
         }
     }
 

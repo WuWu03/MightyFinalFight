@@ -32,7 +32,7 @@ namespace GameFrameWork.Resources
         {
             if (string.IsNullOrEmpty(assetPath))
             {
-                Debug.GameFrameworkLog.DebugError("Rescource param is invalid.");
+                Log.LogError("Rescource param is invalid.");
                 return;
             }
 
@@ -91,7 +91,7 @@ namespace GameFrameWork.Resources
         {
             if (!m_DicLoadCallback.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                Debug.GameFrameworkLog.DebugError(StringUtil.FormatDefault("Resource [", assetPath, "] load complete,but the callback is invalid."));
+                Log.LogError(StringUtil.Format("Resource [", assetPath, "] load complete,but the callback is invalid."));
                 return;
             }
 

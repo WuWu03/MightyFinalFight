@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.UI;
-using GameFrameWork.Debug;
 
 namespace GameFrameWork.UI
 {
@@ -19,7 +18,7 @@ namespace GameFrameWork.UI
             {
                 if (root != null)
                 {
-                    GameFrameworkLog.DebugError("The red point root [" + key + "] is already exist!");
+                    Log.LogError("The red point root [" + key + "] is already exist!");
                     return;
                 }
 
@@ -30,7 +29,7 @@ namespace GameFrameWork.UI
             {
                 if (root == null)
                 {
-                    GameFrameworkLog.DebugError("The red point root [" + key + "] is invalid,please add it first");
+                    Log.LogError("The red point root [" + key + "] is invalid,please add it first");
                     return;
                 }
 
@@ -72,7 +71,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                GameFrameworkLog.DebugError("The red point root [" + key + "] is invalid,please add it first");
+                Log.LogError("The red point root [" + key + "] is invalid,please add it first");
                 return;
             }
 
@@ -80,7 +79,7 @@ namespace GameFrameWork.UI
 
             if (node == null)
             {
-                GameFrameworkLog.DebugError("The red point node [" + subKey + "] is invalid,please add it first");
+                Log.LogError("The red point node [" + subKey + "] is invalid,please add it first");
                 return;
             }
 
@@ -93,7 +92,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                GameFrameworkLog.DebugError("The red point root [" + key + "] is invalid,please add it first");
+                Log.LogError("The red point root [" + key + "] is invalid,please add it first");
                 return;
             }
 

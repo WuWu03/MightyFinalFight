@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using UnityEngine;
 
 namespace GameFrameWork.Net
 {
@@ -43,12 +42,12 @@ namespace GameFrameWork.Net
                 m_IsConnected = true;
                 StartReceive();
                 onConnectSuccessEvent?.Invoke();
-                Debug.GameFrameworkLog.Debug("连接服务器:" + ip + "成功！");
+                Log.LogInfo("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
                 onConnectFailEvent?.Invoke();
-                Debug.GameFrameworkLog.Debug(e.ToString());
+                Log.LogInfo(e.ToString());
             }
         }
 
@@ -143,7 +142,7 @@ namespace GameFrameWork.Net
 
                 if (length < 1)
                 {
-                    Debug.GameFrameworkLog.Debug("服务器断开连接");
+                    Log.LogInfo("服务器断开连接");
                     Close();
                     return;
                 }
@@ -197,7 +196,7 @@ namespace GameFrameWork.Net
             }
             catch (Exception e)
             {
-                Debug.GameFrameworkLog.Debug("++服务器断开连接," + e.Message);
+                Log.LogInfo("++服务器断开连接," + e.Message);
                 Close();
                 return;
             }

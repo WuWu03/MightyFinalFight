@@ -14,7 +14,10 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
     {
         base.Enter();
         m_IsAutoMove = false;
- 
+
+        PlayerMgr.instance.player.SetDir(1);
+        PlayerMgr.instance.playerCtrl.Move(Vector2.zero);
+
         Timer.Register(1, () =>
         {
             SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").SetActive(false);

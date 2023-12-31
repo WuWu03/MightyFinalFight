@@ -43,9 +43,7 @@ namespace GameFrameWork.Pool
         /// <returns></returns>
         public GameObject Spawn(string tag, Transform parent, string layer, bool isActive = true)
         {
-            Pool pool = null;
-
-            if (m_DicPool.TryGetValue(tag, out pool))
+            if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
                 GameObject go = pool.Spawn(isActive);
                 go.transform.SetParent(parent, false);
@@ -62,9 +60,7 @@ namespace GameFrameWork.Pool
         /// <param name="tag">标签</param>
         public void UnSpawnAll(string tag)
         {
-            Pool pool = null;
-
-            if (m_DicPool.TryGetValue(tag, out pool))
+            if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
                 pool.UnSpawnAll();
             }
@@ -73,13 +69,9 @@ namespace GameFrameWork.Pool
         /// <summary>
         /// 隐藏预制物
         /// </summary>
-        /// <param name="tag">标签</param>
-        /// <param name="obj">预制物</param>
         public void UnSpawn(string tag, GameObject obj)
         {
-            Pool pool = null;
-
-            if (m_DicPool.TryGetValue(tag, out pool))
+            if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
                 pool.UnSpawn(obj);
             }
@@ -88,12 +80,9 @@ namespace GameFrameWork.Pool
         /// <summary>
         /// 删除一个池
         /// </summary>
-        /// <param name="tag">标签</param>
         public void RemovePool(string tag)
         {
-            Pool pool = null;
-
-            if (m_DicPool.TryGetValue(tag, out pool))
+            if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
                 pool.Clear();
                 m_DicPool.Remove(tag);
@@ -105,12 +94,12 @@ namespace GameFrameWork.Pool
         /// </summary>
         protected override void OnShutDown()
         {
-            List<string> poolNames = new List<string>(m_DicPool.Keys);
-            for (int i = poolNames.Count - 1; i > 0; i--)
+            var iter = m_DicPool.Keys.GetEnumerator();
+
+            while (iter.MoveNext())
             {
-                Pool pool = m_DicPool[poolNames[i]];
-                pool.Clear();
-                m_DicPool.Remove(tag);
+                string poolName = iter.Current;
+                m_DicPool[poolName].Clear();
             }
 
             m_DicPool.Clear();

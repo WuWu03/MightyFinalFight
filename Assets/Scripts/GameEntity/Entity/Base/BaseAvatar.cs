@@ -1,11 +1,8 @@
-﻿using System;
-using UnityEngine;
-using DragonBones;
-using GameFrameWork.Debug;
-using System.Collections.Generic;
+﻿using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Fsm;
-using System.Linq;
+using System;
+using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
@@ -102,7 +99,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            GameFrameworkLog.DebugError("Animator is invalid!");
+            Log.LogError("Animator is invalid!");
             return;
         }
 

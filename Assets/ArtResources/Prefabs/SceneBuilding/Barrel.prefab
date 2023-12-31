@@ -89,8 +89,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TriggerDatas:
   - AnimName: Move
-    Offest: {x: -0.000000029802322, y: 0.15181366}
-    Size: {x: 0.17691588, y: 0.20057482}
+    Offest: {x: -0.000000029802322, y: 0.12583521}
+    Size: {x: 0.17691588, y: 0.2525317}
   - AnimName: Dead
     Offest: {x: -0.0047121495, y: 0.19267642}
     Size: {x: 0.17137495, y: 0.39765215}

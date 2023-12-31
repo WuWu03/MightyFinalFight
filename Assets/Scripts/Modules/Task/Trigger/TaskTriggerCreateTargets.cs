@@ -28,7 +28,7 @@ public class TaskTriggerCreateTargets : BaseTaskTrigger
             {
                 int sourceId = m_TaskData.Targets[i].SourceID;
 
-                if (sourceId == 2002 )
+                if (sourceId == 2004)
                 {
                     int hp = 5000;// m_TaskData.Targets[i].Hp;
                     int attack = 1;//m_TaskData.Targets[i].AttackValue;

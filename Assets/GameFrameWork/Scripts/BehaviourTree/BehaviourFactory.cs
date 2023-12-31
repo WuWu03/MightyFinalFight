@@ -1,8 +1,5 @@
-﻿using DG.Tweening.Core;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
@@ -24,7 +21,7 @@ namespace GameFrameWork.BehaviourTree
 
             if (t == null)
             {
-                Debug.GameFrameworkLog.DebugError("Behaviour entity is invalid!" + (owner as BaseEnemyCtrl).owner.entityName);
+                Log.LogError("Behaviour entity is invalid!" + (owner as BaseEnemyCtrl).owner.entityName);
                 return null;
             }
 

@@ -1,11 +1,10 @@
+using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.Debug;
 using GameFrameWork.Resources;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using UnityEditor;
 using UnityEngine;
 
 public static partial class ConfigDataHelper
@@ -20,7 +19,7 @@ public static partial class ConfigDataHelper
 
         if (txt == null || txt.bytes == null)
         {
-            GameFrameworkLog.DebugError("Config data not found: ", path);
+            Log.LogError("Config data not found: ", path);
             return null;
         }
 

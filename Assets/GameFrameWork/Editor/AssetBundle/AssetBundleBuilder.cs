@@ -1,16 +1,12 @@
-﻿using UnityEditor;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
-using GameFrameWork.Utilities;
-using GameFrameWork.Serialize;
-using System;
-using Codice.Client.Common;
+using System.IO;
+using UnityEditor;
 using FileUtil = GameFrameWork.Utilities.FileUtil;
-using System.Text;
 
 namespace GameFrameWork.Editor
 {
-    public class AssetBundleBuilder:IDisposable
+    public class AssetBundleBuilder : IDisposable
     {
         public AssetBundleBuilder()
         {
@@ -25,7 +21,6 @@ namespace GameFrameWork.Editor
         public void Build(BuildTarget target, bool isShowNotify = true)
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-
 
             if (AppConfig.instance.useLua)
             {
@@ -48,8 +43,8 @@ namespace GameFrameWork.Editor
             {
                 if (m_BuildMaps.Count > 0)
                 {
-                    BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);  
- 
+                    BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
+
                     if (AppConfig.instance.useLua)
                     {
                         FileUtil.DeleteDirectory(EditorPathUtil.luaPath);
@@ -97,7 +92,7 @@ namespace GameFrameWork.Editor
             if (isShowNotify)
             {
                 Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.AssetBuildDir);
-                UnityEditor.EditorUtility.DisplayDialog("提示", "打包成功", "确定");
+                EditorUtility.DisplayDialog("提示", "打包成功", "确定");
             }
         }
 
@@ -133,7 +128,7 @@ namespace GameFrameWork.Editor
         {
             if (!Directory.Exists(path))
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
+                EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
                 return false;
             }
 
@@ -141,7 +136,7 @@ namespace GameFrameWork.Editor
 
             if (files.Length < 1)
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
+                EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
                 return false;
             }
 
@@ -165,11 +160,11 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        private bool AddBuildMapSingle( string abPath, string extend, string pattern, string path, int index)
+        private bool AddBuildMapSingle(string abPath, string extend, string pattern, string path, int index)
         {
             if (!Directory.Exists(path))
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
+                EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n资源路径不存在", "确定");
                 return false;
             }
 
@@ -177,13 +172,13 @@ namespace GameFrameWork.Editor
 
             if (files.Length < 1)
             {
-                UnityEditor.EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
+                EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
                 return false;
             }
 
 
             for (int i = 0; i < files.Length; i++)
-            {   
+            {
                 string bundleName = abPath + Path.GetFileNameWithoutExtension(files[i]);
                 string lowerBundleName = bundleName.ToLower();
 
@@ -222,7 +217,7 @@ namespace GameFrameWork.Editor
             return fileList.ToArray();
         }
 
-       
+
         /// <summary>
         /// 创建资源版本文件
         /// </summary>
@@ -230,22 +225,20 @@ namespace GameFrameWork.Editor
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
             string versionPath = config.AssetBuildFullDir + AppConfig.instance.versionFileName;
-            FileUtil.DeleteFile(versionPath);
 
             m_ListPaths.Clear();
             m_ListFiles.Clear();
 
             FileUtil.Recursive(config.AssetBuildFullDir, m_ListFiles, m_ListPaths);
 
-            FileStream fileStream = new FileStream(versionPath, FileMode.CreateNew);
-            StreamWriter streamWriter = new StreamWriter(fileStream);
+            string content = string.Empty;
 
             for (int i = 0; i < m_ListFiles.Count; i++)
             {
                 string md5 = FileUtil.MD5File(m_ListFiles[i]);
                 string value = m_ListFiles[i].Replace(config.AssetBuildFullDir, string.Empty);
                 string directory = Path.GetDirectoryName(value).Replace("\\", "/");
-                string fileName = Path.GetFileNameWithoutExtension(value);          
+                string fileName = Path.GetFileNameWithoutExtension(value);
                 string ext = Path.GetExtension(value);
 
                 if (!string.IsNullOrEmpty(directory))
@@ -253,11 +246,10 @@ namespace GameFrameWork.Editor
                     directory += "/";
                 }
 
-                streamWriter.Write(directory + fileName + "|" + ext + "|" + md5 + (i < m_ListFiles.Count - 1 ? "\n" : string.Empty));
+                content += directory + fileName + "|" + ext + "|" + md5 + (i < m_ListFiles.Count - 1 ? "\n" : string.Empty);
             }
 
-            streamWriter.Close();
-            fileStream.Close();
+            FileUtil.CreateTextFile(versionPath, content);
         }
 
         /// <summary>
@@ -265,25 +257,14 @@ namespace GameFrameWork.Editor
         /// </summary>
         private void CreateAssetBuildFile()
         {
-            FileUtil.DeleteFile(EditorPathUtil.assetBuildFileFullPath);
+            string content = string.Empty;
 
-            FileStream fileStream = new FileStream(EditorPathUtil.assetBuildFileFullPath, FileMode.CreateNew);
-            StreamWriter streamWriter = new StreamWriter(fileStream);
-
-            for (int i = 0;i < m_ListBundlePath.Count;i++) 
+            for (int i = 0; i < m_ListBundlePath.Count; i++)
             {
-                if(i < m_ListBundlePath.Count - 1)
-                {
-                    streamWriter.WriteLine(m_ListBundlePath[i]);
-                }
-                else
-                {
-                    streamWriter.Write(m_ListBundlePath[i]);
-                }
+                content += (i < m_ListBundlePath.Count - 1 ? "\n" : string.Empty);
             }
 
-            streamWriter.Close();
-            fileStream.Close();
+            FileUtil.CreateTextFile(EditorPathUtil.assetBuildFileFullPath, content);
         }
 
         #region Lua
@@ -445,7 +426,7 @@ namespace GameFrameWork.Editor
             m_ListBundlePath.Clear();
             m_ListPaths.Clear();
             m_ListFiles.Clear();
-  
+
             m_ListBundlePath = null;
             m_ListPaths = null;
             m_ListFiles = null;

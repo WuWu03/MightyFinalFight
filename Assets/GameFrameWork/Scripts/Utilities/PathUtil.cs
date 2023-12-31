@@ -22,23 +22,20 @@ namespace GameFrameWork.Utilities
             {
 
 #if UNITY_EDITOR
-                string resPath = streamingAssetsPath;
-#else
-                string resPath = streamingAssetsPath;
+                return streamingAssetsPath;
+#elif UNITY_STANDALONE_WIN
+                return streamingAssetsPath;
+#elif UNITY_ANDROID
+                return persistentDataPath;
+#elif UNITY_IOS
+                return persistentDataPath;
 #endif
-                return resPath;
             }
         }
 
-        public static string FormatPath(string path, string name)
+        public static string FormatPath(params string[] args)
         {
-            m_StringBuilder.Clear();
-            m_StringBuilder.AppendFormat("{0}/{1}", path, name);
-            string str = m_StringBuilder.ToString();
-            m_StringBuilder.Clear();
-            return str;
+            return StringUtil.Format(true, args);
         }
-
-        private static StringBuilder m_StringBuilder = new StringBuilder();
     }
 }

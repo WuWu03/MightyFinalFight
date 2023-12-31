@@ -183,7 +183,7 @@ MonoBehaviour:
   checkVersion: 0
   openUpdate: 1
   loadAB: 0
-  openLog: 1
+  openLog: 0
   useLua: 0
   loadLuaAB: 0
   luaByteMode: 0

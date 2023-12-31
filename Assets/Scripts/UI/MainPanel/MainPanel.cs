@@ -170,7 +170,7 @@ public class MainPanel : BasePanel
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.txtExp.text = StringUtil.Format("{0}/{1}", currExpStr, maxExpStr);
+		m_Component.txtExp.text = StringUtil.Format(true, currExpStr, maxExpStr);
 	}
 
 	public void SetPlayerLevel()
@@ -180,15 +180,7 @@ public class MainPanel : BasePanel
 
 	private string GetExpStr(int exp)
 	{
-		string expStr = exp.ToString();
-		if (expStr.Length >= 3) return expStr;
-		int diff = 3 - expStr.Length;
-		for (int i = 0; i < diff; i++)
-		{
-			expStr = "0" + expStr;
-		}
-
-		return expStr;
+		return exp.ToString().PadLeft(3, '0');
 	}
 
 	private void SetColor()

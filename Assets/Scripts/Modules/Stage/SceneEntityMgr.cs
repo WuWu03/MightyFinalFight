@@ -1,8 +1,6 @@
 ﻿using GameFrameWork;
-using GameFrameWork.Debug;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Utilities;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +53,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (enemy == null)
         {
-            GameFrameworkLog.DebugError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
+            Log.LogError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
             return null;
         }
 
@@ -71,7 +69,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (sceneItem == null)
         {
-            GameFrameworkLog.DebugError("create sceneItem failed id:" + id);
+            Log.LogError("create sceneItem failed id:" + id);
             return null;
         }
 
@@ -87,7 +85,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             if (sceneBuilding == null)
             {
-                GameFrameworkLog.DebugError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
+                Log.LogError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
                 continue;
             }
 
@@ -102,7 +100,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (barrel == null)
         {
-            GameFrameworkLog.DebugError("create barrel failed entityId:" + entityId);
+            Log.LogError("create barrel failed entityId:" + entityId);
             return null;
         }
 
@@ -110,8 +108,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_ListBarrels.Add(barrel);
         return barrel;
     }
-
-
 
     public List<BaseEnemy> GetEnemies()
     {
