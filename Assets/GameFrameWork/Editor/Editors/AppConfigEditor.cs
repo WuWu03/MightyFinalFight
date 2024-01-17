@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using GameFrameWork.Utilities;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
@@ -21,14 +23,27 @@ namespace GameFrameWork.Editor
             SerializedProperty loadLuaAB = serializedObject.FindProperty("loadLuaAB");
             SerializedProperty luaByteMode = serializedObject.FindProperty("luaByteMode");
             SerializedProperty luaDirectory = serializedObject.FindProperty("luaDirectory");
+            SerializedProperty uiDirectory = serializedObject.FindProperty("uiDirectory");
             SerializedProperty logColor = serializedObject.FindProperty("logColor");
+            SerializedProperty versionFileName = serializedObject.FindProperty("versionFileName");
 
             EditorGUILayout.PropertyField(checkVersion);
             EditorGUILayout.PropertyField(openUpdate);
             EditorGUILayout.PropertyField(loadAB);
             EditorGUILayout.PropertyField(openLog);
             EditorGUILayout.PropertyField(useLua);
+
+
+            if (m_AppConfig.useLua)
+            {
+                EditorGUILayout.PropertyField(loadLuaAB);
+                EditorGUILayout.PropertyField(luaByteMode);
+                EditorGUILayout.PropertyField(luaDirectory);
+            }
+
+            EditorGUILayout.PropertyField(uiDirectory);
             EditorGUILayout.PropertyField(logColor);
+
 
 #if UNITY_IOS
             SerializedProperty iOSBuildPath = serializedObject.FindProperty("iosBuildPath");
@@ -45,8 +60,6 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(androidBuildPath);
 #endif
 
-            SerializedProperty versionFileName = serializedObject.FindProperty("versionFileName");
-
             if (!string.IsNullOrEmpty(versionFileName.stringValue) && !versionFileName.stringValue.Contains(".txt"))
             {
                 versionFileName.stringValue += ".txt";
@@ -54,12 +67,6 @@ namespace GameFrameWork.Editor
 
             EditorGUILayout.PropertyField(versionFileName);
 
-            if (m_AppConfig.useLua)
-            {
-                EditorGUILayout.PropertyField(loadLuaAB);
-                EditorGUILayout.PropertyField(luaByteMode);
-                EditorGUILayout.PropertyField(luaDirectory);
-            }
 
             if (checkVersion.boolValue != m_AppConfig.checkVersion
              || openUpdate.boolValue != m_AppConfig.openUpdate
@@ -95,8 +102,14 @@ namespace GameFrameWork.Editor
             if (m_AppConfig.pcBuildPath != pcBuildPath.stringValue)
             {
                 UnityEditor.EditorUtility.SetDirty(target);
+
+                m_AppConfig.pcBuildPath = pcBuildPath.stringValue;
+
+                if (!m_AppConfig.pcBuildPath.EndsWith(".exe"))
+                {
+                    m_AppConfig.pcBuildPath += ".exe";
+                } 
             }
-            m_AppConfig.pcBuildPath = pcBuildPath.stringValue;
 #endif
 
 #if UNITY_ANDROID
@@ -118,6 +131,23 @@ namespace GameFrameWork.Editor
                 m_AppConfig.loadLuaAB = false;
                 m_AppConfig.luaByteMode = false;
                 m_AppConfig.luaDirectory = "Assets/Scripts/Lua";
+            }
+
+            if (m_AppConfig.uiDirectory != uiDirectory.stringValue)
+            {
+                m_AppConfig.uiDirectory = uiDirectory.stringValue;
+
+                if (m_AppConfig.uiDirectory.EndsWith("/"))
+                {
+                    m_AppConfig.uiDirectory = m_AppConfig.uiDirectory.Substring(0, m_AppConfig.uiDirectory.Length - 1);
+                }
+
+                string uiPath = PathUtil.GetAssetFullPath(m_AppConfig.uiDirectory);
+                string uiPrefabPath = PathUtil.FormatPath(uiPath, PathUtil.uiPrefabPath);
+                string uiSpritePath = PathUtil.FormatPath(uiPath, PathUtil.uiSpritePath);
+                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPath);
+                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPrefabPath);
+                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiSpritePath);
             }
         }
 

@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2522454881791856291}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.19, z: 0}
+  m_LocalPosition: {x: 0, y: 0.088, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2025265009914757111}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &7360466270794987810
 MeshRenderer:
@@ -109,6 +109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4496752906419317046}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -116,7 +117,6 @@ Transform:
   m_Children:
   - {fileID: 7353799082960323619}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5835540720341819373
 MonoBehaviour:
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 1
+  dirty: 0
 --- !u!114 &2435236015074734893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,30 +171,98 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerDatas:
-  - AnimName: Idle
-    Offest: {x: -0.007692851, y: 0.19160779}
-    Size: {x: 0.16782992, y: 0.38321558}
-  - AnimName: Move
-    Offest: {x: -0.00069934875, y: 0.19160782}
-    Size: {x: 0.20139869, y: 0.38321564}
-  - AnimName: Attack1
-    Offest: {x: -0.015253305, y: 0.18741168}
-    Size: {x: 0.3321954, y: 0.37482336}
-  - AnimName: Hurt
-    Offest: {x: -0.014168665, y: 0.19304764}
-    Size: {x: 0.22072521, y: 0.38720655}
-  - AnimName: SmoonUp
-    Offest: {x: 0.0035421103, y: 0.14877069}
-    Size: {x: 0.27031544, y: 0.30573678}
-  - AnimName: SmoonDown
-    Offest: {x: 0, y: 0.15794998}
-    Size: {x: 0.37303805, y: 0.2450416}
-  - AnimName: Awaken
-    Offest: {x: 0, y: 0.15926524}
-    Size: {x: 0.2, y: 0.31853047}
-  - AnimName: Defense
-    Offest: {x: -0.011325862, y: 0.18773434}
-    Size: {x: 0.17831016, y: 0.3694957}
-  - AnimName: Dead
-    Offest: {x: -0.0016317964, y: 0.10770005}
-    Size: {x: 0.35706347, y: 0.21019971}
+  - animName: Idle
+    offestList:
+    - {x: -0.0014922172, y: 0.19130799}
+    sizeList:
+    - {x: 0.18527332, y: 0.3816206}
+  - animName: Move
+    offestList:
+    - {x: 0.013630182, y: 0.1845486}
+    - {x: 0.035835385, y: 0.19016103}
+    - {x: 0.039663866, y: 0.18761139}
+    - {x: 0.035835385, y: 0.19016103}
+    - {x: 0.035835385, y: 0.19016103}
+    sizeList:
+    - {x: 0.21265537, y: 0.37433425}
+    - {x: 0.18355888, y: 0.3855591}
+    - {x: 0.18509027, y: 0.38045982}
+    - {x: 0.18355888, y: 0.3855591}
+    - {x: 0.18355888, y: 0.3855591}
+  - animName: Attack1
+    offestList:
+    - {x: 0.0104325265, y: 0.1843641}
+    - {x: 0.06846519, y: 0.18558739}
+    - {x: 0.06846519, y: 0.18558739}
+    - {x: 0.06846519, y: 0.18558739}
+    sizeList:
+    - {x: 0.21281776, y: 0.3756533}
+    - {x: 0.32265106, y: 0.37322184}
+    - {x: 0.32265106, y: 0.37322184}
+    - {x: 0.32265106, y: 0.37322184}
+  - animName: Hurt
+    offestList:
+    - {x: -0.008846998, y: 0.1920895}
+    - {x: -0.008846998, y: 0.1920895}
+    - {x: -0.008846998, y: 0.1920895}
+    - {x: -0.008846998, y: 0.1920895}
+    - {x: -0.008846998, y: 0.1920895}
+    - {x: -0.008846998, y: 0.1920895}
+    sizeList:
+    - {x: 0.21163487, y: 0.3838333}
+    - {x: 0.21163487, y: 0.3838333}
+    - {x: 0.21163487, y: 0.3838333}
+    - {x: 0.21163487, y: 0.3838333}
+    - {x: 0.21163487, y: 0.3838333}
+    - {x: 0.21163487, y: 0.3838333}
+  - animName: SmoonUp
+    offestList:
+    - {x: 0.0012885183, y: 0.14455722}
+    sizeList:
+    - {x: 0.26296517, y: 0.2856731}
+  - animName: SmoonDown
+    offestList:
+    - {x: 0, y: 0.114747226}
+    sizeList:
+    - {x: 0.35682845, y: 0.2325803}
+  - animName: Awaken
+    offestList:
+    - {x: 0.010755718, y: 0.15400577}
+    - {x: 0.010755718, y: 0.15400577}
+    - {x: 0.010755718, y: 0.15400577}
+    - {x: 0.010755718, y: 0.15400577}
+    - {x: 0.010755718, y: 0.15400577}
+    - {x: 0.010755718, y: 0.15400577}
+    sizeList:
+    - {x: 0.21483445, y: 0.30836868}
+    - {x: 0.21483445, y: 0.30836868}
+    - {x: 0.21483445, y: 0.30836868}
+    - {x: 0.21483445, y: 0.30836868}
+    - {x: 0.21483445, y: 0.30836868}
+    - {x: 0.21483445, y: 0.30836868}
+  - animName: Defense
+    offestList:
+    - {x: -0.01254499, y: 0.18612772}
+    sizeList:
+    - {x: 0.17588991, y: 0.36526453}
+  - animName: Dead
+    offestList:
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    - {x: 0, y: 0.10226618}
+    sizeList:
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}
+    - {x: 0.35483527, y: 0.2079558}

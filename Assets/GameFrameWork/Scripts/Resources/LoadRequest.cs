@@ -5,39 +5,35 @@ using UnityEngine;
 
 namespace GameFrameWork.Resources
 {
-    public class LoadRequest
+    public class LoadRequest : IReference
     {
-        public bool loadMainAsset { get; set; }
-        public Type assetType { get; set; }
+        public string assetPath { get; set; }
         public string assetName { get; set; }
-        public string assetPath 
+        public Type assetType { get; set; }
+        public GameFrameWorkAction<string, UnityEngine.Object, object[]> action { get; set; }
+        public object[] args { get; set; }
+
+        public static LoadRequest Create()
         {
-            get 
+            LoadRequest loadRequest = ReferencePool.Acquire<LoadRequest>();
+            return loadRequest;
+        }
+
+        public void Call(UnityEngine.Object go)
+        {
+            if (action != null)
             {
-                return m_AssetPath;
+                action?.Invoke(assetPath, go, args);
             }
         }
 
-        public LoadRequest(string assetPath,GameFrameWorkAction<string, UnityEngine.Object, object[]> callback, object[] args)
+        public void Clear()
         {
-            m_AssetPath = assetPath;
-            m_Callback = callback;
-            m_Args = args;
+            assetPath = null;
+            assetName = null;
+            assetType = null;
+            action = null;
+            args = null;
         }
-
-        public bool Call(UnityEngine.Object go)
-        {
-            if (m_Callback != null)
-            {
-                m_Callback?.Invoke(assetPath, go, m_Args);
-                return true;
-            }
-
-            return false;
-        }
-
-        private string m_AssetPath = string.Empty;
-        private GameFrameWorkAction<string, UnityEngine.Object, object[]> m_Callback;
-        private object[] m_Args = null;
     }
 }

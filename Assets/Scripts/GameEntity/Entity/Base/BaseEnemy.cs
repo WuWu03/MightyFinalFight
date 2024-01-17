@@ -35,7 +35,7 @@ public class BaseEnemy : BaseRole
                 return;
             }
 
-            bool isMapXCanMove = StageMgr.instance.CanMovePosX(m_MoveDir.x > 0 ? m_Bound.xMax : m_Bound.xMin);
+            bool isMapXCanMove = StageMgr.instance.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
             bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
 
             if (!isMapXCanMove) pos.x = m_Pos.x;
@@ -67,7 +67,7 @@ public class BaseEnemy : BaseRole
             if(isDrop)
             {
                 data.isSwoon = true;
-                data.attackForce = SkillFactory.GetSmoonForce(data.attackerDir);
+                data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
             }
 
             if(m_HurtAnim != null && m_HurtAnim.Length > 0)
@@ -108,7 +108,7 @@ public class BaseEnemy : BaseRole
 
         if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
         {
-            float x = m_Rigidbody2D.velocity.x > 0 ? m_Bound.xMax : m_Bound.xMin;
+            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
 
             if (!StageMgr.instance.CanMovePosX(x))
             {
@@ -132,7 +132,7 @@ public class BaseEnemy : BaseRole
         }
 
         Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
-        MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
 
         if (data.attackValue > 0)
         {
@@ -158,7 +158,7 @@ public class BaseEnemy : BaseRole
         BaseRole throwTarget = collision.gameObject.GetComponent<BaseRole>();
         ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
 
-        if (throwTarget == null || hit == null || throwTarget.objectType != ObjectType.Monster || !throwTarget.isBeThrow)
+        if (throwTarget == null || hit == null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
         {
             return;
         }
@@ -172,7 +172,7 @@ public class BaseEnemy : BaseRole
         hurtData.id = 0;
         hurtData.skillExp = 2;
         hurtData.attackerDir = -m_Dir;
-        hurtData.attackForce = SkillFactory.GetSmoonForce(-m_Dir);
+        hurtData.attackForce = SkillUtil.GetSmoonForce(-m_Dir);
         hurtData.attackerPos = m_Pos;
         hurtData.canBeDefense = false;
         hurtData.isSwoon = true;

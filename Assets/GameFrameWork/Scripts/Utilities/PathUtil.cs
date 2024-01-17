@@ -7,14 +7,18 @@ namespace GameFrameWork.Utilities
 {
     public class PathUtil
     {
-        public static string appDataPath = Application.dataPath + "/";
-        public static string streamingAssetsPath = Application.streamingAssetsPath + "/";
-        public static string persistentDataPath = Application.persistentDataPath + "/";
+        public static string appDataPath = Application.dataPath;
+        public static string streamingAssetsPath = Application.streamingAssetsPath;
+        public static string persistentDataPath = Application.persistentDataPath;
         public static string luaPath = "Lua";
-        public static string configDataPath = "ConfigData/";
-        public static string behaviourTreeConfigDataPath = configDataPath + "BehaviourTreeConfigData";
+        public static string configDataPath = "ConfigData";
+        public const string behaviourTreeConfigDataPath = "ConfigData/BehaviourTreeConfigData";
+        public const string uiPrefabPath = "Prefabs";
+        public const string uiSpritePath = "UISprites";
+        public const string uiAtlasPath = "UIAtlas";
         public const string assetBundleVersionName = "Version.txt";
         public const string maniFestName = "StreamingAssets";
+        public const string assetBundleExtension = ".assetbundle";
 
         public static string runTimeAssetPath
         {
@@ -36,6 +40,71 @@ namespace GameFrameWork.Utilities
         public static string FormatPath(params string[] args)
         {
             return StringUtil.Format(true, args);
+        }
+
+        public static string GetUIPrefabPath()
+        {
+            string uiDirectory = AppConfig.instance.uiDirectory;
+
+            if (string.IsNullOrEmpty(uiDirectory))
+            {
+                return null;
+            }
+
+            return FormatPath(uiDirectory, uiPrefabPath);
+        }
+
+        public static string GetUISpritePath()
+        {
+            string uiDirectory = AppConfig.instance.uiDirectory;
+
+            if (string.IsNullOrEmpty(uiDirectory))
+            {
+                return null;
+            }
+
+            return FormatPath(uiDirectory, uiSpritePath);
+        }
+
+        public static string GetUIAtlasPath()
+        {
+            string uiDirectory = AppConfig.instance.uiDirectory;
+
+            if (string.IsNullOrEmpty(uiDirectory))
+            {
+                return null;
+            }
+
+            return FormatPath(uiDirectory, uiAtlasPath);
+        }
+
+        public static string GetAssetPath(string fullPath)
+        {
+            int assetIndex = fullPath.IndexOf("Assets");
+
+            if (assetIndex < 0)
+            {
+                return FormatPath("Assets", fullPath);
+            }
+
+            return fullPath.Substring(assetIndex);
+        }
+
+        public static string GetAssetFullPath(string assetPath)
+        {
+            if (string.IsNullOrEmpty(assetPath))
+            {
+                return null;
+            }
+
+            int assetIndex = assetPath.IndexOf("Assets");
+
+            if (assetIndex > -1)
+            {
+                assetPath = assetPath.Substring(assetIndex + 6);
+            }
+
+            return FormatPath(appDataPath, assetPath);
         }
     }
 }

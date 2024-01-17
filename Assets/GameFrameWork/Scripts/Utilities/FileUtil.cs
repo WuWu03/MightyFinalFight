@@ -109,30 +109,70 @@ namespace GameFrameWork.Utilities
             }
         }
 
-        /// <summary>
-        /// 遍历目录及其子目录
-        /// </summary>
-        public static void Recursive(string path, List<string> listFiles, List<string> listPaths)
+        public static string[] GetFiles(string path, string searchParttern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-            string[] files = Directory.GetFiles(path);
-            string[] dirs = Directory.GetDirectories(path);
-
-            foreach (string filename in files)
+            if (!Directory.Exists(path))
             {
-                string ext = Path.GetExtension(filename);
+                return null;
+            }
+
+            List<string> results = new List<string>();
+            string[] files = Directory.GetFiles(path, searchParttern, searchOption);
+
+            foreach (string file in files)
+            {
+                string ext = Path.GetExtension(file);
 
                 if (ext.Equals(".meta") || ext.Equals(".DS_Store"))
                 {
                     continue;
                 }
 
-                listFiles.Add(filename.Replace('\\', '/'));
+                results.Add(file.Replace('\\', '/'));
             }
 
-            foreach (string dir in dirs)
+            return results.ToArray();
+        }
+
+        public static string[] GetDirectories(string path)
+        {
+            if (!Directory.Exists(path))
             {
-                listPaths.Add(dir.Replace('\\', '/'));
-                Recursive(dir, listFiles, listPaths);
+                return null;
+            }
+
+            List<string> results = new List<string>();
+            string[] directories = Directory.GetDirectories(path);
+
+            foreach (string directory in directories)
+            {
+                results.Add(directory.Replace('\\', '/'));
+            }
+
+            return results.ToArray();
+        }
+
+        /// <summary>
+        /// 遍历目录及其子目录
+        /// </summary>
+        public static void Recursive(string path, List<string> listFiles, List<string> listPaths)
+        {
+            string[] files = GetFiles(path);
+            string[] dirs = GetDirectories(path);
+
+            if(files != null  && files.Length > 0)
+            {
+                listFiles.AddRange(files);
+            }
+
+            if(dirs != null && dirs.Length > 0)
+            {
+                listPaths.AddRange(dirs);
+
+                foreach (string dir in dirs)
+                {
+                    Recursive(dir, listFiles, listPaths);
+                }
             }
         }
 

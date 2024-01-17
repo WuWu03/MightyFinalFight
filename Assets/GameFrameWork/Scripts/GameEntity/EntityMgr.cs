@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 
 namespace GameFrameWork.GameEntity
@@ -72,7 +73,10 @@ namespace GameFrameWork.GameEntity
 
             if (unUsedQueue.Count > 0)
             {
-                entity = unUsedQueue.Dequeue() as T;
+                lock (unUsedQueue)
+                {
+                    entity = unUsedQueue.Dequeue() as T;
+                }
             }
 
             if(entity == null)
@@ -118,16 +122,32 @@ namespace GameFrameWork.GameEntity
         {
             for (int i = 0; i < entities.Length; i++)
             {
-                PutEntity(entities[i]);
+                DestroyEntity(entities[i]);
             }
         }
 
         public void DestroyEntity(BaseEntity entity)
         {
-            entity.Release();
             GetUsingList(entity.GetType()).Remove(entity);
-            GameObject.DestroyImmediate(entity.gameObject);
+            GameObject.Destroy(entity.gameObject);
             m_DestroyCount++;
+        }
+
+        public void DestroyAll()
+        {
+            Dictionary < Type,Queue < BaseEntity >>.Enumerator enumerator = m_DicUnUsedEntity.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                Queue<BaseEntity> unUsedQueue = enumerator.Current.Value;
+
+                while(unUsedQueue.Count > 0)
+                {
+                    DestroyEntity(unUsedQueue.Dequeue());
+                }
+            }
+
+            m_DicUnUsedEntity.Clear();
         }
 
         public T[] FindEntities<T>(string name = null) where T : BaseEntity

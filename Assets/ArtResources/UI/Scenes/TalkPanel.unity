@@ -851,10 +851,10 @@ MonoBehaviour:
   m_PanelName: TalkPanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  panelType: 2
+  panelType: 3
   panelPreLoadType: 0
-  panelCloseMode: 1
-  panelLayer: 2
+  panelCloseMode: 2
+  panelLayer: 3
   isCustomLayer: 0
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/TalkPanel/TalkPanel.cs

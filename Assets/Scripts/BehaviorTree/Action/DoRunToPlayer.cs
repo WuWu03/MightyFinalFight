@@ -29,14 +29,14 @@ public class DoRunToPlayer : Action
     {
         base.OnUpdate(deltaTime);
 
-        if(m_RunTimer > 2f)
+        if(m_RunTimer > 0 && Time.time - m_RunTimer > 2f)
         {
             m_State = BehaviourTreeState.Failure;
             return;
         }
 
         Vector2 targetPos = PlayerMgr.instance.player.pos;
-        float distance = PlayerMgr.instance.player.GetCurrTriggerSize().x / 2 + m_ActionOwner.owner.GetCurrTriggerSize().x / 2 - 0.05f;
+        float distance = PlayerMgr.instance.player.bound.width / 2 + m_ActionOwner.owner.bound.width / 2 - 0.05f;
 
         targetPos.x += distance * (targetPos.x - m_ActionOwner.owner.pos.x > 0 ? -1f : 1f);
         bool isArravied = Vector2.Distance(targetPos, m_ActionOwner.owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
@@ -51,12 +51,9 @@ public class DoRunToPlayer : Action
         {
             m_ActionOwner.Move((targetPos - m_ActionOwner.owner.pos).normalized, false);
             m_ActionOwner.OppositePlayer();
-
-            if(m_RunTimer < 0)
-            {
-                m_RunTimer = Time.time;
-            }
         }
+
+        m_RunTimer = Time.time;
     }
 
     protected override void OnReset()

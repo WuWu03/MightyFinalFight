@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: StagePanel
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 2
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 0
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 21300000, guid: ed25480c4ecda714895acc8cd5e34fb3, type: 3}
+    - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
+    - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
+    - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
+    - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
+    - {fileID: 21300000, guid: daba056a013e86c4381eee94ccbeb066, type: 3}
+    - {fileID: 21300000, guid: fa578fc6f5983f142a94bdebd7861f8e, type: 3}
+    - {fileID: 21300000, guid: 91add3cdb9020974797e2645917605d1, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - ec6ef9920891c604fa96feb08d35401f: 21300000
+    - 6000a136d6261c142b60922bf3f14028: 21300000
+    - fa578fc6f5983f142a94bdebd7861f8e: 21300000
+    - 4f6966d87fab6684c84550a0a4b26a66: 21300000
+    - 63bba34ac51cf3c45bc85afe7374d90a: 21300000
+    - daba056a013e86c4381eee94ccbeb066: 21300000
+    - ed25480c4ecda714895acc8cd5e34fb3: 21300000
+    - 91add3cdb9020974797e2645917605d1: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
+  - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
+  - {fileID: 21300000, guid: fa578fc6f5983f142a94bdebd7861f8e, type: 3}
+  - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
+  - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
+  - {fileID: 21300000, guid: daba056a013e86c4381eee94ccbeb066, type: 3}
+  - {fileID: 21300000, guid: ed25480c4ecda714895acc8cd5e34fb3, type: 3}
+  - {fileID: 21300000, guid: 91add3cdb9020974797e2645917605d1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Map00_12
+  - Map00_18
+  - round_g
+  - Map00_5
+  - Map00_11
+  - round_b
+  - Map
+  - round_r
+  m_RenderDataMap: {}
+  m_Tag: StagePanel
+  m_IsVariant: 0

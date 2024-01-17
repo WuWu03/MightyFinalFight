@@ -674,7 +674,7 @@ namespace DragonBones
         /// - 从指定帧开始播放指定的动画。
         /// </summary>
         /// <param name="animationName">- 动画数据名称。</param>
-        /// <param name="frame">- 播放开始的帧数。</param>
+        /// <param name="frame">- 播放开始的帧数。</param>  
         /// <param name="playTimes">- 播放次数。 [-1: 使用动画数据默认值, 0: 无限循环播放, [1~N]: 循环播放 N 次] （默认: -1）</param>
         /// <returns>播放的动画状态。</returns>
         /// <version>DragonBones 4.5</version>

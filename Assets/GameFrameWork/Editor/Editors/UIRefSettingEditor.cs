@@ -71,33 +71,36 @@ namespace GameFrameWork.Editor
             if (panelType != UIRefSetting.Type.Root)
             {
                 EditorGUILayout.BeginHorizontal();
-                SerializedProperty isCustom = EditorUtil.DrawProperty(null, serializedObject, "isCustomLayer");
-                if (isCustom.boolValue)
-                {
-                    EditorUtil.DrawProperty("", serializedObject, "panelLayer");
-                    m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.panelLayer);
-                }
-                else
-                {
-                    if (panelType == UIRefSetting.Type.Normal) m_UIRefSetting.panelLayer = UIRefSetting.Layer.FirstLevel;
-                    if (panelType == UIRefSetting.Type.Pop) m_UIRefSetting.panelLayer = UIRefSetting.Layer.SecondLevel;
-                    m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.panelLayer);
-                }
-                EditorGUILayout.EndHorizontal();
+                bool isCustomLayer = EditorGUILayout.Toggle("Custom Layer", m_UIRefSetting.isCustomLayer);
 
-
-                if (panelType != UIRefSetting.Type.Pop)
+                if(m_UIRefSetting.isCustomLayer != isCustomLayer)
                 {
-                    UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.panelCloseMode);
-                    if (m_UIRefSetting.panelCloseMode != closeMode)
+                    m_UIRefSetting.isCustomLayer = isCustomLayer;
+                }
+
+                if(m_UIRefSetting.isCustomLayer)
+                {
+                    UIRefSetting.Layer panelLayer = (UIRefSetting.Layer)EditorGUILayout.EnumPopup(m_UIRefSetting.panelLayer);
+                    if (m_UIRefSetting.panelLayer != panelLayer)
                     {
-                        EditorUtil.RegisterUndo(target, "Change UIRefSetting Close Mode");
-                        m_UIRefSetting.panelCloseMode = closeMode;
+                        EditorUtil.RegisterUndo(target, "Change UIRefSetting Panel Type");
+                        m_UIRefSetting.panelLayer = panelLayer;
                     }
                 }
                 else
                 {
-                    m_UIRefSetting.panelCloseMode = UIRefSetting.CloseMode.Destroy;
+                    if (panelType == UIRefSetting.Type.Normal) m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer3;
+                    if (panelType == UIRefSetting.Type.Pop) m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer4;
+                }
+                EditorGUILayout.EndHorizontal();
+
+                m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.panelLayer);
+
+                UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.panelCloseMode);
+                if (m_UIRefSetting.panelCloseMode != closeMode)
+                {
+                    EditorUtil.RegisterUndo(target, "Change UIRefSetting Close Mode");
+                    m_UIRefSetting.panelCloseMode = closeMode;
                 }
 
                 EditorUtil.DrawProperty("PreLoad Type", serializedObject, "panelPreLoadType");
@@ -122,7 +125,7 @@ namespace GameFrameWork.Editor
                 m_SBHelp.AppendLine("Pre Load: True");
                 m_SBHelp.Append("Close Mode: Eternal");
                 m_UIRefSetting.panelCloseMode = UIRefSetting.CloseMode.Eternal;
-                m_UIRefSetting.panelLayer = UIRefSetting.Layer.MainPanel;
+                m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer2;
                 m_UIRefSetting.unLoadTime = 0f;
             }
 

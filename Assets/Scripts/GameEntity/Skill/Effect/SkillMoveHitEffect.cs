@@ -62,7 +62,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (SkillFactory.SkillHit(targets[i], m_Owner, m_SkillData, m_SkillEffect) && m_SkillEffect.HitOne)
+            if (SkillUtil.SkillHit(targets[i], m_Owner, m_SkillData, m_SkillEffect) && m_SkillEffect.HitOne)
             {
                 Complete();
                 return;

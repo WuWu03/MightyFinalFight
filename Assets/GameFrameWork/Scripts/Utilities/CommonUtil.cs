@@ -6,31 +6,6 @@ namespace GameFrameWork.Utilities
     public class CommonUtil
     {
         /// <summary>
-        /// 六边形左边转世界坐标
-        /// </summary>
-        /// <returns></returns>
-        public static Vector3 HexagonXToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
-        {
-            return new Vector3(hexagonPos.x * scaleX, hexagonPos.y * scaleY, 0);
-        }
-
-        /// <summary>
-        /// 四边形坐标转六边形坐标
-        /// </summary>
-        public static Vector2Int ToHexagonXPos(int x, int y)
-        {
-            return new Vector2Int(2 * x + y % 2, y);
-        }
-
-        /// <summary>
-        /// 六边形坐标转四边形坐标
-        /// </summary>>
-        public static Vector2Int To4Pos(int x, int y)
-        {
-            return new Vector2Int((x - y % 2) / 2, y);
-        }
-
-        /// <summary>
         /// 获取系统时间
         /// </summary>
         public static long GetSystemTime()
@@ -200,7 +175,7 @@ namespace GameFrameWork.Utilities
             byte b = (byte)(Mathf.Clamp01(color.b) * 255);
             byte a = (byte)(Mathf.Clamp01(color.a) * 255);
 
-            return StringUtil.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+            return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
         }
 
         /// <summary>
@@ -270,72 +245,6 @@ namespace GameFrameWork.Utilities
             }
 
             return newArray;
-        }
-
-        /// <summary>
-        /// 某点是否在多边形内
-        /// </summary>
-        public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int p)
-        {
-            var j = polyPoints.Length - 1;
-            var inside = false;
-            for (int i = 0; i < polyPoints.Length; j = i++)
-            {
-                var pi = polyPoints[i];
-                var pj = polyPoints[j];
-                if (((pi.y >= p.y && p.y > pj.y) || (pj.y >= p.y && p.y > pi.y)) && (p.x < (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x))
-                    inside = !inside;
-            }
-            return inside;
-        }
-
-        /// <summary>
-        /// 在多边形内随机一点
-        /// </summary>
-        public Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints)
-        {
-            return PolygonRandomPoints(polygonPoints, Rect.zero);
-        }
-
-        /// <summary>
-        /// 在多边形内随机一点
-        /// </summary>
-        public static Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints, Rect vision)
-        {
-            int minX = polygonPoints[0].x, minY = polygonPoints[0].y;
-            int maxX = polygonPoints[0].x, maxY = polygonPoints[0].y;
-
-            for (int i = 0; i < polygonPoints.Length; i++)
-            {
-                if(vision == Rect.zero)
-                {
-                    minX = Mathf.Min(minX, polygonPoints[i].x);
-                    minY = Mathf.Min(minY, polygonPoints[i].y);
-                    maxX = Mathf.Max(maxX, polygonPoints[i].x);
-                    maxY = Mathf.Max(maxY, polygonPoints[i].y);
-                }
-                else
-                {
-                    minX = Mathf.Min(minX, polygonPoints[i].x, (int)vision.xMin * 100);
-                    minY = Mathf.Min(minY, polygonPoints[i].y, (int)vision.yMin * 100);
-                    maxX = Mathf.Max(maxX, polygonPoints[i].x, (int)vision.xMax * 100);
-                    maxY = Mathf.Max(maxY, polygonPoints[i].y, (int)vision.yMax * 100);
-                }
-            }
-
-            Vector2Int randomPoint = Vector2Int.zero;
-            int maxCacTime = 100;
-            int currTime = 0;
-
-            do
-            {
-                randomPoint.x = UnityEngine.Random.Range(minX, maxX);
-                randomPoint.y = UnityEngine.Random.Range(minY, maxY);
-                currTime++;
-            }
-            while (!PolygonContainsPoint(polygonPoints, randomPoint) && currTime < maxCacTime);
-
-            return randomPoint;
         }
     }
 }

@@ -60,12 +60,12 @@ namespace GameFrameWork.Editor
             }
 
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
-
             UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootPath));
             root.name = "UIRoot";
 
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
             settings.panelName = Path.GetFileNameWithoutExtension(path);
+            settings.prefabFolder = PathUtil.GetUIPrefabPath();
             settings.transform.SetAsLastSibling();
 
             GameObject rootObj = root as GameObject;

@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
 {
+
     public ObjectType objectType
     {
         get
@@ -96,20 +97,6 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public Rect bound
-    {
-        get
-        {
-            if (!gameObject.activeSelf)
-            {
-                return Rect.zero;
-            }
-
-            UpdateBound();
-            return m_Bound;
-        }
-    }
-
     public event GameFrameWorkAction<int> onReleaseEvent
     {
         add
@@ -126,9 +113,6 @@ public class BaseSceneObject : BaseEntity
     {
         base.Init(id, name);
         m_Pos = transform.localPosition;
-        m_BoxCollider2D = gameObject.GetOrAddComponent<BoxCollider2D>();
-        m_BoxCollider2D.isTrigger = true;
-        m_BoxCollider2D.enabled = false;
     }
 
     public override void Release()
@@ -141,7 +125,6 @@ public class BaseSceneObject : BaseEntity
         if (m_ResGO != null)
         {
             ResourcesPool.instance.Put(m_ResPath, m_ResGO);
-            EntityMgr.instance.PutEntity(this);
             m_ResPath = null;
         }
 
@@ -151,19 +134,6 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        UpdateBound();
-        Vector2 leftTop = new Vector2(m_Bound.min.x, m_Bound.max.y);
-        Vector2 rightTop = new Vector2(m_Bound.max.x, m_Bound.max.y);
-        Vector2 leftBottom = new Vector2(m_Bound.min.x, m_Bound.min.y);
-        Vector2 rightBottom = new Vector2(m_Bound.max.x, m_Bound.min.y);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(leftTop, rightTop);
-        Gizmos.DrawLine(rightTop, rightBottom);
-        Gizmos.DrawLine(rightBottom, leftBottom);
-        Gizmos.DrawLine(leftBottom, leftTop);
-    }
     public virtual void SetData(BaseSceneObjectData data)
     {
         m_EntityId = data.entityId;
@@ -289,7 +259,6 @@ public class BaseSceneObject : BaseEntity
         m_MapPos.x = Mathf.CeilToInt(m_Pos.x * 100);
         m_MapPos.y = Mathf.CeilToInt(m_Pos.y * 100);
         m_MapPosZ = Mathf.CeilToInt(m_PosZ * 100);
-        UpdateBound();
     }
 
     public bool IsInRange2(Vector2 pos)
@@ -337,36 +306,12 @@ public class BaseSceneObject : BaseEntity
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
-    public Vector2 GetCurrTriggerSize()
-    {
-        return m_BoxCollider2D.size;
-    }
-
-    protected void SetCollider(Vector2 offest, Vector2 size)
-    {
-        m_BoxCollider2D.size = size;
-        m_BoxCollider2D.offset = offest;
-        UpdateBound();
-    }
-
-    protected void UpdateBound()
-    {
-        m_Bound.width = m_BoxCollider2D.size.x;
-        m_Bound.height = m_BoxCollider2D.size.y;
-        m_Bound.xMin = transform.localPosition.x + m_BoxCollider2D.offset.x * m_Dir - m_BoxCollider2D.size.x / 2;
-        m_Bound.xMax = transform.localPosition.x + m_BoxCollider2D.offset.x * m_Dir + m_BoxCollider2D.size.x / 2;
-        m_Bound.yMin = transform.localPosition.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
-        m_Bound.yMax = transform.localPosition.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
-        m_Bound.center = new Vector2(m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
-    }
-
     private void ResComplete(string resPath, UnityEngine.Object obj, object[] param)
     {
         m_ResGO = obj as GameObject;
         m_ResGO.transform.SetParent(transform, false);
         m_ResGO.transform.localPosition = Vector3.zero;
         m_ResGO.SetActive(true);
-        m_BoxCollider2D.enabled = true;
         SetLayer();
         OnResComplete(m_ResGO, param);
         m_IsResComplete = true;
@@ -409,12 +354,13 @@ public class BaseSceneObject : BaseEntity
     protected int m_MapPosZ = 0;
     protected int m_EntityId = 0;
     protected string m_ResPath = string.Empty;
-    protected GameObject m_ResGO;
-    protected BoxCollider2D m_BoxCollider2D = null;
+
     protected Vector2 m_Pos = Vector2.zero;
     protected Vector2Int m_MapPos = Vector2Int.zero;
-    protected Rect m_Bound = Rect.zero;
+
     protected ObjectType m_ObjectType = ObjectType.NONE;
+
+    protected GameObject m_ResGO;
     protected EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
 }

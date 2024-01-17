@@ -2,11 +2,9 @@
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
-using GameFrameWork.Resources;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
-using System;
 using UnityEngine;
 
 public class PlayerMgr : BaseMgr<PlayerMgr>
@@ -190,11 +188,10 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         InputMgr.instance.isRunning = true;
     }
 
- 
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        UIMgr.instance.GetPanel<MainPanel>().SetPlayerLife(life);
+        UIMgr.instance.Get<MainPanel>().SetPlayerLife(life);
 
         if (life < 1)
         {
@@ -219,7 +216,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
 
         if (m_EXP >= m_LevelConfigData.exp)
         {
@@ -239,7 +236,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddLife(int value)
     {
         m_Life += value;
-        UIMgr.instance.GetPanel<MainPanel>().SetPlayerLife(m_Life);
+        UIMgr.instance.Get<MainPanel>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)
@@ -308,13 +305,27 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         asix.y *= 0.8f;
         m_PlayerCtrl.Move(asix);
 
-        //-0.05288422 0.1611486
-        //0.2418677 0.3235909
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             //UIMgr.instance.Open<TalkPanel>(1001);// m_TaskData.TalkID);
-            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+
+            float dir = -1;
+            int groundY = -40;
+            int itemId = -1;
+            bool isFloat = false;
+            float moveSpeed = 0;
+            SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
+            //m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            UIMgr.instance.Open<RoleSelectPanel>();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            UIMgr.instance.Close<RoleSelectPanel>();
         }
 
         if (Input.GetKeyDown(KeyCode.N))
@@ -333,8 +344,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (Input.GetKeyDown(KeyCode.N))
         {
-            Debug.Log("音频数量++++++++++ ：" + ResourcesPool.instance.GetCount(PathUtil.FormatPath(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", "bgm01_Loop"))));
-            //StageMgr.instance.StageEnterNext();
+
             return false;
         }
 
@@ -348,7 +358,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X))
         {
-            UnityEngine.Debug.Log("出发普通攻击键=================================");
             m_PlayerCtrl.Attack(asix);
             result = true;
         }
@@ -365,7 +374,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     private bool GetPreCondition(int id)
     {    
         SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
-        bool a = SkillFactory.CheckStatus(skillData.SkillPrevConditions, m_Player);
+        bool a = SkillUtil.CheckStatus(skillData.SkillPrevConditions, m_Player);
         return a;
     }
 

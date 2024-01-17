@@ -8,13 +8,14 @@ using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Sound;
 using GameFrameWork.Input;
+using TMPro;
 
 public class TitlePanel : BasePanel
 {
 	public override string panelName { get { return "TitlePanel"; } }
 	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.FirstLevel; } }
+	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer3; } }
 	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
 
 	protected override void OnInit(object[] param)
@@ -29,15 +30,15 @@ public class TitlePanel : BasePanel
 
 	protected override void OnUpdate()
 	{
-		if(!m_CanStart)
-        {
+		if (!m_CanStart)
+		{
 			return;
-        }
+		}
 
-		if (InputMgr.instance.GetKeyDown(KeyType.Start, true))
+		if (InputMgr.instance.GetKeyDown(KeyType.Start, false))
 		{
 			m_CanStart = false;
-			StartGame();
+            StartGame();
 		}
 	}
 
@@ -52,13 +53,18 @@ public class TitlePanel : BasePanel
 
 	private void StartGame()
 	{
-		UIMgr.instance.Open<LoadPanel>().DOFade(0, 1, 0.3f, 0.2f, () =>
-		{
-			UIMgr.instance.Close<LoadPanel>();
-			UIMgr.instance.Open<RoleSelectPanel>();
-			InnerClose();
-		});
-	}
+        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+        loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
+        {
+            UIMgr.instance.Open<RoleSelectPanel>();
+            InnerClose();
+        });
+
+        loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
+        {
+            UIMgr.instance.Close<LoadPanel>();
+        });
+    }
 
 	private void TitleAnim()
     {

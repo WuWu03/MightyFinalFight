@@ -379,7 +379,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (m_EntityAttribute.health - hurtData.attackValue <= 0 && !hurtData.isSwoon)
         {
             hurtData.isSwoon = true;
-            hurtData.attackForce = SkillFactory.GetSmoonForce(hurtData.attackerDir);
+            hurtData.attackForce = SkillUtil.GetSmoonForce(hurtData.attackerDir);
         }
 
         m_IsSmoon = hurtData.isSwoon;

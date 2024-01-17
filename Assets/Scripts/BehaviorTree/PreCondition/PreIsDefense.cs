@@ -43,7 +43,7 @@ public class PreIsDefense : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
-        if(m_IsDefense)
+        if (m_IsDefense)
         {
             m_IsDefense = false;
             return true;

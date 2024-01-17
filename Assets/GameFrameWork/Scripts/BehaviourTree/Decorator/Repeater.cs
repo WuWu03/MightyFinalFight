@@ -25,9 +25,10 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
         {
             base.OnChildExcuteResult(childIndex, state);
+
             m_CurrExuteCount++;
 
-            if(m_CurrExuteCount >= GetChildCount())
+            if (m_CurrExuteCount >= GetChildCount())
             {
                 if (m_RepeatCount == 0)
                 {

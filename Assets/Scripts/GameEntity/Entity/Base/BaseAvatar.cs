@@ -6,14 +6,6 @@ using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    public BoxCollider2D boxCollider2D
-    {
-        get
-        {
-            return m_BoxCollider2D;
-        }
-    }
-
     public UnityArmatureComponent armatureAnimator
     {
         get
@@ -38,7 +30,7 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
 
-    public Vector2 GetAnimTriggerSize(string animName)
+    public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
     {
         if (m_HitTrigger == null)
         {
@@ -49,7 +41,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
         if (triggerData != null)
         {
-            return triggerData.Size;
+            return triggerData.sizeList[frame];
         }
 
         return Vector2.zero;
@@ -64,35 +56,6 @@ public abstract class BaseAvatar : BaseGravityObject
         m_CurrAnimName = string.Empty;
 
         base.Release();
-    }
-
-    protected void SetTrigger(string animName)
-    {
-        if (m_HitTrigger == null)
-        {
-            return;
-        }
-
-        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
-
-        if (triggerData != null)
-        {
-            SetCollider(triggerData.Offest, triggerData.Size);
-        }
-    }
-
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-        m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
-    }
-
-    protected override void OnResComplete(GameObject go,object[] param)
-    {
-        base.OnResComplete(go, param);
-        m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
-        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
-
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
@@ -114,7 +77,7 @@ public abstract class BaseAvatar : BaseGravityObject
         }
 
         SetTrigger(animName);
-        
+
         m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
         m_Animator.animation.Play(animName, playTimes);
@@ -216,8 +179,56 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.SetDefaultState<T>();
     }
 
+    protected void SetTrigger(string animName, int frameIndex = 0)
+    {
+        if (m_HitTrigger == null || frameIndex < 0)
+        {
+            return;
+        }
+
+        if(m_LastTriggerAnimName == animName && m_LastTriggerFrameIndex == frameIndex)
+        {
+            return;
+        }
+
+        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
+
+        if (triggerData != null)
+        {
+            SetCollider(triggerData.offestList[frameIndex], triggerData.sizeList[frameIndex]);
+        }
+
+        m_LastTriggerAnimName = animName;
+        m_LastTriggerFrameIndex = frameIndex;
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
+
+        if (m_Animator.animation.isPlaying)
+        {
+            int frameCount = (int)m_Animator.animation.animations[m_CurrAnimName].frameCount;
+            float duration = m_Animator.animation.animations[m_CurrAnimName].duration;
+            int frameIndex = (int)(m_Animator.animation.GetState(m_CurrAnimName).currentTime * frameCount / duration);
+
+            SetTrigger(m_CurrAnimName, frameIndex);
+        }
+    }
+
+    protected override void OnResComplete(GameObject go, object[] param)
+    {
+        base.OnResComplete(go, param);
+        m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
+        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+
+    }
+
     protected string m_CurrAnimName = string.Empty;
     protected HitTrigger m_HitTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
+    private string m_LastTriggerAnimName = string.Empty;
+    private int m_LastTriggerFrameIndex = -1;
 }

@@ -124,7 +124,7 @@ public class BaseHero : BaseRole
 
         if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(m_Rigidbody2D.velocity.x) > 0)
         {
-            float x = m_Rigidbody2D.velocity.x > 0 ? m_Bound.xMax : m_Bound.xMin;
+            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
 
             if (IsOutVersionX(x))
             {
@@ -185,7 +185,7 @@ public class BaseHero : BaseRole
             hurtData.attackerDir = m_Dir;
             hurtData.attackValue = 0;
             hurtData.isSwoon = true;
-            hurtData.attackForce = SkillFactory.GetSmoonForce(m_Dir);
+            hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
             hurtData.isNotPlayHurtSound = true;
             m_ListCatchTarget[0].OnHurtMsg(hurtData);
         }
@@ -265,7 +265,7 @@ public class BaseHero : BaseRole
 
             if (hitTime >= (data.isBoss ? 6 : 3) || m_EntityAttribute.health - data.attackValue <= 0)
             {
-                data.attackForce = SkillFactory.GetSmoonForce(data.attackerDir);
+                data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
                 data.isSwoon = true;
                 data.hurtSound = "Sound/OnBlow";
                 data.isGroundHurt = false;
@@ -295,7 +295,7 @@ public class BaseHero : BaseRole
                 return;
             }
 
-            float border = m_MoveDir.x > 0 ? m_Bound.xMax : m_Bound.xMin;
+            float border = m_MoveDir.x > 0 ? bound.xMax : bound.xMin;
             bool isMapXCanMove = StageMgr.instance.CanMovePosX(border) && !IsOutVersionX(border);
             bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
 
@@ -318,7 +318,7 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        UIMgr.instance.GetPanel<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+        UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
     }
 
     public void SetRebirthState()
@@ -386,7 +386,7 @@ public class BaseHero : BaseRole
     protected override void OnGroundHurtMsg(HurtData data)
     {
         base.OnGroundHurtMsg(data);
-        UIMgr.instance.GetPanel<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+        UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
     }
 
     protected override void OnGround()

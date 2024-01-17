@@ -15,14 +15,12 @@ public class Consume : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         base.SetOwner(owner);
-        if (m_ConsumeInfo.itemType == 2)
-            AddHP();
-        if (m_ConsumeInfo.itemType == 3)
-            AddExp();
-        if (m_ConsumeInfo.itemType == 4)
-            AddExp();
-        if (m_ConsumeInfo.itemType == 5)
-            AddMoney();
+
+        if (m_ConsumeInfo.itemType == 2) AddHP();
+        else if (m_ConsumeInfo.itemType == 3) AddExp();
+        else if (m_ConsumeInfo.itemType == 4) AddLife();
+        else if (m_ConsumeInfo.itemType == 5) AddMoney();
+
         Release();
     }
 
@@ -45,7 +43,7 @@ public class Consume : BaseSceneItem
         else
         {
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            UIMgr.instance.GetPanel<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
+            UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnEat");
     }

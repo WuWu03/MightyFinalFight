@@ -47,8 +47,12 @@ public class SkillTargetTransformEffect : SkillBaseEffect
                 List<ICanBeHit> targets = m_Owner.OnHitStart();
                 BaseRole target = targets[0] as BaseRole;
                 target.SetCatch(false);
+
                 if (!m_SkillEffect.IsSmoon)
+                {
                     target.PlayAnimation(AnimName.Idle);
+                }
+
                 owner.ResetCatch(false);
             }
         }

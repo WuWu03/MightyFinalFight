@@ -11,38 +11,38 @@ namespace GameFrameWork.UI
         [FormerlySerializedAs("m_Frame")]
         [SerializeField]
         private Sprite m_Sprite;
-        public Sprite sprite 
-        { 
-            get 
-            { 
-                return m_Sprite; 
-            } 
+        public Sprite sprite
+        {
+            get
+            {
+                return m_Sprite;
+            }
             set
-            { 
-                if(m_Sprite != value)
+            {
+                if (m_Sprite != value)
                 {
                     m_Sprite = value;
                     SetAllDirty();
                 }
-            } 
+            }
         }
 
         [NonSerialized]
         private Sprite m_OverrideSprite;
-        public Sprite overrideSprite 
-        { 
-            get 
-            { 
+        public Sprite overrideSprite
+        {
+            get
+            {
                 return m_OverrideSprite == null ? sprite : m_OverrideSprite;
-            } 
-            set 
-            { 
-                if(m_OverrideSprite != value)
+            }
+            set
+            {
+                if (m_OverrideSprite != value)
                 {
                     m_OverrideSprite = value;
                     SetAllDirty();
                 }
-            } 
+            }
         }
 
 
@@ -136,6 +136,5 @@ namespace GameFrameWork.UI
             return true;
         }
         #endregion
-
     }
 }

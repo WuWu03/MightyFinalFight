@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using GameFrameWork.Resources;
+using GameFrameWork.Utilities;
+using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFrameWork
 {
@@ -87,27 +90,31 @@ namespace GameFrameWork
             return comp;
         }
 
-        public static Object GetAsset(this AssetBundle ab, string assetName)
+        public static T GetAsset<T>(this AssetBundle ab, string assetName) where T : UnityEngine.Object
         {
             string[] allAssetNames = ab.GetAllAssetNames();
+
             for (int i = 0; i < allAssetNames.Length; i++)
             {
                 string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
+
                 if (assetNameTemp.Equals(assetName))
                 {
-                    return ab.LoadAsset(allAssetNames[i]);
+                    return ab.LoadAsset<T>(allAssetNames[i]);
                 }
             }
 
-            return null;
+            return default;
         }
 
         public static Object GetAsset(this AssetBundle ab, string assetName, System.Type type)
         {
             string[] allAssetNames = ab.GetAllAssetNames();
+
             for (int i = 0; i < allAssetNames.Length; i++)
             {
                 string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
+
                 if (assetNameTemp.Equals(assetName))
                 {
                     return ab.LoadAsset(allAssetNames[i], type);
@@ -115,6 +122,15 @@ namespace GameFrameWork
             }
 
             return null;
+        }
+
+        public static void SetSprite(this Image renderer, string name)
+        {
+            string realPath = PathUtil.FormatPath(PathUtil.GetUISpritePath(), name);
+            ResourcesPool.instance.Get<Sprite>(realPath, (string resPath, UnityEngine.Object obj, object[] param) =>
+            {
+                renderer.sprite = obj as Sprite;
+            });
         }
 
         public static int ToInt(this string value)

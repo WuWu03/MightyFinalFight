@@ -1027,10 +1027,10 @@ MonoBehaviour:
   m_PanelName: MainPanel
   m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
-  panelType: 2
+  panelType: 1
   panelPreLoadType: 0
-  panelCloseMode: 1
-  panelLayer: 2
+  panelCloseMode: 4
+  panelLayer: 1
   isCustomLayer: 0
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/MainPanel/MainPanel.cs

@@ -8,8 +8,8 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-    [InitializeOnLoad]
-    public static class EditorMgr
+	[InitializeOnLoad]
+	public static class EditorMgr
 	{
 		static EditorMgr()
 		{
@@ -19,31 +19,10 @@ namespace GameFrameWork.Editor
 			}
 		}
 
-        [MenuItem("GameFrameWork/UI/创建UI场景")]
+		[MenuItem("GameFrameWork/UI/创建UI场景")]
 		public static void NewUIScene()
 		{
 			UIEditorInit.NewUIScene();
-		}
-
-		[MenuItem("GameFrameWork/UI/EmojiText/CreateEmojiText")]
-		public static void CreateEmojiText()
-		{
-			GameObject go = new GameObject("EmojiText", typeof(GameFrameWork.UI.EmojiText));
-			go.transform.SetParent(Selection.activeTransform, false);
-			go.GetComponent<EmojiText>().material = AssetDatabase.LoadAssetAtPath<Material>("Assets/Material/UGUIEmoji.mat");
-		}
-
-		[MenuItem("GameFrameWork/UI/EmojiText/BuildEmoji")]
-		public static void BuildEmojiText()
-		{
-			EmojiBuilder.BuildEmoji();
-		}
-
-		[MenuItem("GameFrameWork/UI/AtlasMaker")]
-		public static void OpenAtlasMaker()
-		{
-			EditorWindow window = EditorWindow.GetWindow<UIAtlasMaker>();
-			window.Show();
 		}
 
 		[MenuItem("GameFrameWork/SpriteSpliter")]
@@ -64,7 +43,7 @@ namespace GameFrameWork.Editor
 
 		[MenuItem("GameFrameWork/BehaviourTreeEditor")]
 		public static void BehaviourTreeEditor()
-        {
+		{
 			EditorWindow window = EditorWindow.GetWindow<BehaviourTreeWindow>();
 			window.Show();
 		}
@@ -91,27 +70,34 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-		[MenuItem("Assets/CreateFont")]
+		[MenuItem("Assets/GameFrameWork/CreateFont", false, 0)]
 		public static void CreateFont()
-        {
+		{
 			FontMaker.CreateMyFontSprite();
 		}
 
-		[MenuItem("Assets/Add scene to Building Setting")]
+		[MenuItem("Assets/GameFrameWork/CreateSpriteAtlas", false, 1)]
+		public static void CreateSpriteAtlas()
+		{
+			SpriteAtlasPacker window = EditorWindow.GetWindow<SpriteAtlasPacker>();
+			window.Show();
+		}
+
+		[MenuItem("Assets/GameFrameWork/Add scene to Building Setting", false, 2)]
 		public static void AddScene()
-        {
+		{
 			if (Selection.objects.Length > 0)
 			{
 				List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
 				sceneList.AddRange(EditorBuildSettings.scenes);
 
-                for (int i = 0; i < Selection.objects.Length; i++)
-                {
+				for (int i = 0; i < Selection.objects.Length; i++)
+				{
 					string assetPath = AssetDatabase.GetAssetPath(Selection.objects[i]);
 					if (!Path.GetExtension(assetPath).Equals(".unity")) continue;
 					EditorBuildSettingsScene editorBuildSettings = new EditorBuildSettingsScene(assetPath, true);
 					sceneList.Add(editorBuildSettings);
-                }
+				}
 
 				EditorBuildSettings.scenes = sceneList.ToArray();
 				AssetDatabase.Refresh();

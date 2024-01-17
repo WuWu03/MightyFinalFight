@@ -35,7 +35,10 @@ namespace GameFrameWork.GameEntity
             gameObject.name = name;
         }
 
-        public virtual void Release() { }
+        public virtual void Release() 
+        {
+            EntityMgr.instance.PutEntity(this);
+        }
 
         public void SetName(string name)
         {

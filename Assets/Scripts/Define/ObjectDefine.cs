@@ -2,7 +2,7 @@
 {
     NONE = 0,
     Player = 1,//玩家
-    Monster = 2,//怪物
+    Enemy = 2,//敌人
     NPC = 3,//npc
     Barrel = 4,//油桶
     Weapon = 5,//武器

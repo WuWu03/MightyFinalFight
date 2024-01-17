@@ -28,6 +28,9 @@ namespace GameFrameWork
         [Header("* Lua脚本路径")]
         public string luaDirectory = "Assets/Scripts/Lua";
 
+        [Header("* UI路径")]
+        public string uiDirectory = string.Empty;
+
         [Header("* 日志文本颜色")]
         public Color logColor = Color.white;
 

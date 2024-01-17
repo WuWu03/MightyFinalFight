@@ -72,7 +72,7 @@ public class Weapon : BaseSceneItem
         m_Animator.animation.Play(animName);
     }
 
-    private void SetTrigger(string animName)
+    private void SetTrigger(string animName,int frameIndex = 0)
     {
         if (m_HitTrigger == null)
         {
@@ -83,7 +83,7 @@ public class Weapon : BaseSceneItem
 
         if (triggerData != null)
         {
-            SetCollider(triggerData.Offest, triggerData.Size);
+            SetCollider(triggerData.offestList[frameIndex], triggerData.sizeList[frameIndex]);
         }
     }
 

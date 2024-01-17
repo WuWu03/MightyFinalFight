@@ -242,22 +242,22 @@ MonoBehaviour:
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/Texture/SceneBuilding/
-    AssetBundlePath: Texture/SceneBuilding/
+    AssetPath: Assets/ArtResources/Textures/SceneBuilding/
+    AssetBundlePath: Textures/SceneBuilding/
   - Id: 34
     BundleType: 0
     BundleName: Texture/SceneItem
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/Texture/SceneItem/
-    AssetBundlePath: Texture/SceneItem/
+    AssetPath: Assets/ArtResources/Textures/SceneItem/
+    AssetBundlePath: Textures/SceneItem/
   - Id: 35
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/Texture/Stage/
-    AssetBundlePath: Texture/Stage/
+    AssetPath: Assets/ArtResources/Textures/Stage/
+    AssetBundlePath: Textures/Stage/
   - Id: 36
     BundleType: 0
     BundleName: 
@@ -266,46 +266,46 @@ MonoBehaviour:
     AssetPath: Assets/ArtResources/UI/Prefabs/
     AssetBundlePath: ArtResources/UI/Prefabs/
   - Id: 37
-    BundleType: 0
-    BundleName: 
+    BundleType: 1
+    BundleName: UISprites/Common
     BundleExtend: .assetbundle
     Pattern: '*.png'
-    AssetPath: Assets/ArtResources/UI/Sprite/Icon/Character/
-    AssetBundlePath: ArtResources/UI/Sprite/Icon/Character/
+    AssetPath: Assets/ArtResources/UI/UISprites/Common/
+    AssetBundlePath: 
   - Id: 38
-    BundleType: 1
-    BundleName: UIAtlas/CommonAtlas
+    BundleType: 0
+    BundleName: ArtResources/UI/UISprites/Icons
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UIAtlas/CommonAtlas/
-    AssetBundlePath: 
+    AssetPath: Assets/ArtResources/UI/UISprites/Icons/
+    AssetBundlePath: ArtResources/UI/UISprites/Icons/
   - Id: 39
     BundleType: 1
-    BundleName: UIAtlas/MainPanel
+    BundleName: UISprites/MainPanel
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UIAtlas/MainPanel/
+    AssetPath: Assets/ArtResources/UI/UISprites/MainPanel/
     AssetBundlePath: 
   - Id: 40
     BundleType: 1
-    BundleName: UIAtlas/SelectPlayerPanel
+    BundleName: UISprites/RoleSelectPanel
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UIAtlas/SelectPlayerPanel/
+    AssetPath: Assets/ArtResources/UI/UISprites/RoleSelectPanel/
     AssetBundlePath: 
   - Id: 41
     BundleType: 1
-    BundleName: UIAtlas/StagePanel
+    BundleName: UISprites/StagePanel
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UIAtlas/StagePanel/
+    AssetPath: Assets/ArtResources/UI/UISprites/StagePanel/
     AssetBundlePath: UIAtlas/StagePanel/
   - Id: 42
     BundleType: 1
-    BundleName: UIAtlas/TitlePanel
+    BundleName: UISprites/TitlePanel
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UIAtlas/TitlePanel/
+    AssetPath: Assets/ArtResources/UI/UISprites/TitlePanel/
     AssetBundlePath: 
   - Id: 43
     BundleType: 0

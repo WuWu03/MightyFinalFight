@@ -25,13 +25,19 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     {
         base.Trigger();
 
-        if(m_PlayTimer > 0 && Time.time - m_PlayTimer >= 3.76)
+        if (m_PlayTimer > 0 && Time.time - m_PlayTimer >= 3.76)
         {
-            UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0.5f, () =>
+            LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+
+            loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
             {
-                UIMgr.instance.Close<LoadPanel>();
                 UIMgr.instance.Close<RoundClearPanel>();
                 UIMgr.instance.Open<StagePanel>();
+            });
+
+            loadPanel.DOFade(1f, 0f, 0.3f, 0.5f, () =>
+            {
+                UIMgr.instance.Close<LoadPanel>();
             });
 
             Complete();

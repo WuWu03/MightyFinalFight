@@ -99,7 +99,7 @@ public static class SceneEntityFactory
         enemy.SetData(enemyData);
         enemy.SetAttribute(enemyAttribute);
         enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
-        enemy.SetObjectType(ObjectType.Monster);
+        enemy.SetObjectType(ObjectType.Enemy);
         enemy.SetMapPos(pos);
         enemy.SetLayer(LayerName.Unit);
         enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.assetName));
@@ -107,7 +107,7 @@ public static class SceneEntityFactory
         return enemy;
     }
 
-    public static SceneBuilding CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
+    public static BaseSceneObject CreateSceneBuilding(StageConfigData.SceneBuilding sceneObjData)
     {
         if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Trap)
         {
@@ -133,6 +133,8 @@ public static class SceneEntityFactory
 
         return null;
     }
+
+
 
     public static Barrel CreateBarrel(int entityId, float dir, int groundY, int itemId, bool isFloat, float moveSpeed, Vector2Int pos)
     {

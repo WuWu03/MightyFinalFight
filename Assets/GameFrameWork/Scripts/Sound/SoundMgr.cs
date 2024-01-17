@@ -94,7 +94,7 @@ namespace GameFrameWork.Sound
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
-                    ResourcesPool.instance.Get<AudioClip>(audioGroups[i].GetPath(), null);
+                    ResourcesPool.instance.Get<AudioClip>(audioGroups[i].GetPath());
                 }
             }
         }

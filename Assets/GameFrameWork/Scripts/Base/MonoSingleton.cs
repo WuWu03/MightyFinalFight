@@ -28,9 +28,14 @@ namespace GameFrameWork
                     else
                     {
                         m_Instance = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
-                        DontDestroyOnLoad(m_Instance.gameObject);
+
+                        if(Application.isPlaying)
+                        {
+                            DontDestroyOnLoad(m_Instance.gameObject);
+                        }
                     }
                 }
+
                 return m_Instance;
             }
         }

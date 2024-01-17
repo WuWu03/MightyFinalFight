@@ -78,6 +78,7 @@ namespace GameFrameWork.UI
         {
             m_IsOpen = true;
             gameObject.SetActive(true);
+            m_DelayTime = 0;
             OnOpen();
         }
 

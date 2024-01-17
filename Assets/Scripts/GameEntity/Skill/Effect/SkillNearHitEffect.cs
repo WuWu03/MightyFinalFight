@@ -24,7 +24,7 @@ public class SkillNearHitEffect : SkillBaseEffect
 
         for (int i = 0; i < targets.Count; i++)
         {
-            HurtData hurtData = SkillFactory.GetHurtData(targets[i], m_Owner, m_SkillData, m_SkillEffect);
+            HurtData hurtData = SkillUtil.GetHurtData(targets[i], m_Owner, m_SkillData, m_SkillEffect);
 
             if (hurtData == null) 
             {

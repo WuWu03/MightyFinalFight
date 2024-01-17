@@ -3,109 +3,110 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 namespace GameFrameWork.Resources
 {
     public class EditorResourcesMgr : Singleton<EditorResourcesMgr>
     {
 #if UNITY_EDITOR
-        //class LoadRequest 
-        //{
-        //    public GameFrameWorkAction<string, UnityEngine.Object, object[]> onLoadEvent;
-        //    public object[] args;
-        //}
-
         public EditorResourcesMgr()
         {
-            m_LoadedAssets = new Dictionary<string, UnityEngine.Object>();
-            m_DicLoadRequest = new Dictionary<string, List<LoadRequest>>();
+            m_DicLoadedAssets = new Dictionary<string, UnityEngine.Object>();
+            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
+        }
+
+
+        public UnityEngine.Object LoadAssetEditor(string assetPath, Type t = null)
+        {
+            Log.LogInfo("Start to load asset editor ：", assetPath);
+            return LoadAsset(assetPath, t);
+        }
+
+        public void LoadAssetEditorAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, params object[] args)
+        {
+            LoadRequest loadRequest = LoadRequest.Create();
+            loadRequest.assetPath = assetPath;
+            loadRequest.action = action;
+            loadRequest.args = args;
+
+            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> requests))
+            {
+                requests = new List<LoadRequest>() { loadRequest };
+                m_DicLoadRequests.Add(assetPath, requests);
+                ResourcesMgr.instance.StartCoroutine(LoadAssetAsync(assetPath, t));
+            }
+            else
+            {
+                requests.Add(loadRequest);
+            }
+        }
+
+        public void UnLoadAssetEditor(string assetPath)
+        {
+            Log.LogInfo("Start to unload asset : [<color=#FFFF00>", assetPath, "</color>]", m_DicLoadedAssets.Count, " asset(s) in memory before unloading ");
+
+            if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
+            {
+                m_DicLoadedAssets.Remove(assetPath);
+            }
+
+            Log.LogInfo("Unload asset : [<color=#FFFF00>", assetPath, "</color>] completed", m_DicLoadedAssets.Count, " asset(s) in memory after unloading ");
         }
 
         /// <summary>
         /// 加载资源
         /// </summary>
-        /// <param name="assetPath">资源路径</param>
-        /// <returns>资源对象</returns>
-        private UnityEngine.Object Load(string assetPath, Type t)
+        private UnityEngine.Object LoadAsset(string assetPath, Type t)
         {
-            UnityEngine.Object obj;
-
-            if (m_LoadedAssets.TryGetValue(assetPath, out obj))
+            if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
             {
                 return obj;
             }
 
-            string fileName = Path.GetFileName(assetPath);
-            string dir = PathUtil.FormatPath("Assets", Path.GetDirectoryName(assetPath));
-            string paName = StringUtil.Format(fileName, "*");
-            string[] files = Directory.GetFiles(dir, paName, SearchOption.TopDirectoryOnly);
+            string filePath = PathUtil.GetAssetPath(assetPath);
+            string fileName = Path.GetFileName(filePath);
+            string directoryName = Path.GetDirectoryName(filePath);
+            string searchParttern = StringUtil.Format(fileName, "*");
+            string[] files = FileUtil.GetFiles(directoryName, searchParttern);
 
-            // 加载本地资源
-            for (int i = 0, UPPER = files.Length; i < UPPER; i++)
-            {
-                if (Path.GetExtension(files[i]) == ".meta")
-                {
-                    continue;
-                }
-
-                Log.LogInfo(StringUtil.Format("开始编辑器加载资源：", files[i]));
-                obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[i], t);
-                break;
-            }
+            obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[0], t);
 
             if (obj == null)
             {
-                Log.LogInfo(StringUtil.Format("无效的资源路径 => ", assetPath));
+                Log.LogInfo("Can't find the asset : ", assetPath);
                 return null;
             }
 
-            m_LoadedAssets.Add(assetPath, obj);
+            m_DicLoadedAssets.Add(assetPath, obj);
             return obj;
         }
 
-        public void LoadForEditorAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, object[] param = null)
-        {
-            List<LoadRequest> list = null;
-
-            if (!m_DicLoadRequest.TryGetValue(assetPath, out list))
-            {
-                list = new List<LoadRequest>();
-                m_DicLoadRequest.Add(assetPath, list);
-            }
-
-            list.Add(new LoadRequest(assetPath, action, param));
-            ResourcesMgr.instance.StartCoroutine(InnerLoad(assetPath, t));
-        }
-
-        public UnityEngine.Object LoadForEditor(string assetPath, Type t = null)
-        {
-            return Load(assetPath, t);
-        }
-
         // 模拟异步加载的行为
-        private IEnumerator InnerLoad(string assetPath, Type t = null)
+        private IEnumerator LoadAssetAsync(string assetPath, Type t = null)
         {
-            UnityEngine.Object obj = Load(assetPath, t);
-            // 等待一帧
-            yield return null;
-            //// 等待一秒
-            //yield return new WaitForSeconds(0.1f);
-            // 返回资源
-            List<LoadRequest> list = null;
+            UnityEngine.Object obj = LoadAssetEditor(assetPath, t);
+            yield return new WaitForSeconds(0.1f);
 
-            if (m_DicLoadRequest.TryGetValue(assetPath, out list))
+            if (m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> list))
             {
-                for (int i = 0; i < list.Count; i++)
+                if (obj != null)
                 {
-                    list[i].Call(obj);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i].action != null)
+                        {
+                            list[i].Call(obj);
+                        }
+                    }
                 }
 
-                m_DicLoadRequest.Remove(assetPath);
+                m_DicLoadRequests.Remove(assetPath);
             }
         }
 
-        private Dictionary<string, UnityEngine.Object> m_LoadedAssets = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequest = null;
+        private Dictionary<string, UnityEngine.Object> m_DicLoadedAssets = null;
+        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
 #endif
     }
 }

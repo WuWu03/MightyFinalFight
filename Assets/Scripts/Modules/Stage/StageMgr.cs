@@ -1,14 +1,13 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
-using GameFrameWork.Pool;
-using GameFrameWork.Resources;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Map;
 using GameFrameWork.Scene;
 using GameFrameWork.Sound;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
@@ -101,8 +100,8 @@ public class StageMgr : BaseMgr<StageMgr>
 
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
+            EntityMgr.instance.DestroyAll();
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
-
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
         });
     }
@@ -126,19 +125,19 @@ public class StageMgr : BaseMgr<StageMgr>
     public bool CanMove(Vector2 pos)
     {
         Vector2Int posInt = new Vector2Int((int)(pos.x * 100), (int)(pos.y * 100));
-        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosX(float posX)
     {
         Vector2Int posInt = new Vector2Int((int)(posX * 100), m_CurrStageData.MovePoints[0].y);
-        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosY(float posY)
     {
         Vector2Int posInt = new Vector2Int(m_CurrStageData.MovePoints[0].x, (int)(posY * 100));
-        return CommonUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
+        return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public float GetRandomPosX()
@@ -153,7 +152,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public Vector2 GetRandomPos(Rect vision)
     {
-        Vector2Int pos = CommonUtil.PolygonRandomPoints(m_CurrStageData.MovePoints, vision);
+        Vector2Int pos = MapUtil.PolygonRandomPoints(m_CurrStageData.MovePoints, vision);
         Vector2 ret = Vector2.zero;
 
         ret.x = (float)pos.x / 100f;
@@ -180,7 +179,7 @@ public class StageMgr : BaseMgr<StageMgr>
             SoundMgr.instance.PlayBGMGroup(groups, true);
         }
 
-        if (!UIMgr.instance.IsPanelOpen<MainPanel>())
+        if (UIMgr.instance.Get<MainPanel>() == null)
         {
             UIMgr.instance.Open<MainPanel>();
         }
@@ -190,11 +189,12 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
 
-        UIMgr.instance.GetPanel<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
+        UIMgr.instance.Open<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
         {
             UIMgr.instance.Close<LoadPanel>();
             CameraMgr.instance.StartFollow();
             PlayerMgr.instance.canContrl = true;
+
             m_OnStageEndEnterEvent?.Invoke();
             m_OnStageEndEnterEvent = null;
 

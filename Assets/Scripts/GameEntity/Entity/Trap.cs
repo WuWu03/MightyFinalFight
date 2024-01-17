@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork;
 
-public class Trap : SceneBuilding
+public class Trap : BaseBoundObject
 {
     public override void Init(int id, string name)
     {
@@ -27,7 +27,11 @@ public class Trap : SceneBuilding
     protected override void OnTriggerStay2D(Collider2D collision)
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
-        if (target == null || target.isDropTrag) return;
+
+        if (target == null || target.isDropTrag)
+        {
+            return;
+        }
 
         float width = m_BoxCollider2D.size.x;
         float boundsLeft = target.pos.x - 0.1f;
@@ -37,12 +41,21 @@ public class Trap : SceneBuilding
 
         bool isEnter = boundsLeft >= selfLeft && boundsRight <= selfRight;
 
-        if (!isEnter) return;
+        if (!isEnter)
+        {
+            return;
+        }
+
         Vector2 rebirthPos = Vector2.zero;
+
         if (target.pos.x < m_Pos.x)
+        {
             rebirthPos = new Vector2(m_Pos.x - width - 0.1f, target.pos.y);
+        }
         else
+        {
             rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.pos.y);
+        }
 
         DropTrapData dropTrapData = ReferencePool.Acquire<DropTrapData>();
         dropTrapData.rebirthPos = rebirthPos;

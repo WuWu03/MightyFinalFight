@@ -26,6 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941560926392846615}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,7 +34,6 @@ Transform:
   m_Children:
   - {fileID: 7132675339394560361}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7431315401690921022
 MonoBehaviour:
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotNames: []
-  dirty: 1
+  dirty: 0
 --- !u!114 &2926195976057800644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,33 +88,103 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerDatas:
-  - AnimName: Idle
-    Offest: {x: 0.000799492, y: 0.20479707}
-    Size: {x: 0.24040928, y: 0.41450086}
-  - AnimName: Move
-    Offest: {x: 0, y: 0.20636746}
-    Size: {x: 0.23802751, y: 0.42398506}
-  - AnimName: Attack1
-    Offest: {x: 0.08163987, y: 0.21317083}
-    Size: {x: 0.39677188, y: 0.42398512}
-  - AnimName: Awaken
-    Offest: {x: 0.028347239, y: 0.16668144}
-    Size: {x: 0.29925737, y: 0.3355419}
-  - AnimName: Hurt
-    Offest: {x: 0.01700838, y: 0.17575261}
-    Size: {x: 0.3219351, y: 0.35368425}
-  - AnimName: Skill1
-    Offest: {x: 0.07483661, y: 0.19389477}
-    Size: {x: 0.3105963, y: 0.3854329}
-  - AnimName: SmoonUp
-    Offest: {x: -0.000000029802322, y: 0.1848236}
-    Size: {x: 0.42398518, y: 0.38089734}
-  - AnimName: SmoonDown
-    Offest: {x: 0.0011339486, y: 0.09071103}
-    Size: {x: 0.43985945, y: 0.18813652}
-  - AnimName: Dead
-    Offest: {x: 0.0011339486, y: 0.091845006}
-    Size: {x: 0.4398594, y: 0.19493991}
+  - animName: Idle
+    offestList:
+    - {x: -0.0015611649, y: 0.20607793}
+    sizeList:
+    - {x: 0.25374818, y: 0.4067453}
+  - animName: Move
+    offestList:
+    - {x: -0.001796931, y: 0.20642969}
+    - {x: -0.001796931, y: 0.20642969}
+    - {x: -0.001796931, y: 0.20642969}
+    - {x: -0.001796931, y: 0.20642969}
+    - {x: -0.001796931, y: 0.20642969}
+    sizeList:
+    - {x: 0.24170113, y: 0.41463655}
+    - {x: 0.24170113, y: 0.41463655}
+    - {x: 0.24170113, y: 0.41463655}
+    - {x: 0.24170113, y: 0.41463655}
+    - {x: 0.24170113, y: 0.41463655}
+  - animName: Attack1
+    offestList:
+    - {x: 0.022396728, y: 0.20751071}
+    - {x: 0.08678731, y: 0.20751071}
+    - {x: 0.08678731, y: 0.20751071}
+    sizeList:
+    - {x: 0.2609081, y: 0.42073584}
+    - {x: 0.38968927, y: 0.42073584}
+    - {x: 0.38968927, y: 0.42073584}
+  - animName: Awaken
+    offestList:
+    - {x: 0.026962712, y: 0.16682637}
+    - {x: 0, y: 0}
+    - {x: 0.026962712, y: 0.16682637}
+    - {x: 0.026962712, y: 0.16682637}
+    - {x: 0.026962712, y: 0.16682637}
+    - {x: 0.026962712, y: 0.16682637}
+    sizeList:
+    - {x: 0.29201153, y: 0.32887852}
+    - {x: 0, y: 0}
+    - {x: 0.29201153, y: 0.32887852}
+    - {x: 0.29201153, y: 0.32887852}
+    - {x: 0.29201153, y: 0.32887852}
+    - {x: 0.29201153, y: 0.32887852}
+  - animName: Hurt
+    offestList:
+    - {x: 0.013991922, y: 0.17251498}
+    - {x: 0.013991922, y: 0.17251498}
+    - {x: 0.013991922, y: 0.17251498}
+    - {x: 0.013991922, y: 0.17251498}
+    - {x: 0.013991922, y: 0.17251498}
+    - {x: 0.013991922, y: 0.17251498}
+    sizeList:
+    - {x: 0.31532937, y: 0.35274494}
+    - {x: 0.31532937, y: 0.35274494}
+    - {x: 0.31532937, y: 0.35274494}
+    - {x: 0.31532937, y: 0.35274494}
+    - {x: 0.31532937, y: 0.35274494}
+    - {x: 0.31532937, y: 0.35274494}
+  - animName: Skill1
+    offestList:
+    - {x: 0.07217038, y: 0.19106743}
+    - {x: 0.07217038, y: 0.19106743}
+    - {x: 0.07217038, y: 0.19106743}
+    sizeList:
+    - {x: 0.31160593, y: 0.3809983}
+    - {x: 0.31160593, y: 0.3809983}
+    - {x: 0.31160593, y: 0.3809983}
+  - animName: SmoonUp
+    offestList:
+    - {x: -0.0017215312, y: 0.18386908}
+    sizeList:
+    - {x: 0.4215631, y: 0.37058797}
+  - animName: SmoonDown
+    offestList:
+    - {x: 0.0013343096, y: 0.089395}
+    sizeList:
+    - {x: 0.44227523, y: 0.18076053}
+  - animName: Dead
+    offestList:
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    - {x: -0.0019813776, y: 0.08860107}
+    sizeList:
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
+    - {x: 0.44429177, y: 0.18033141}
 --- !u!1 &7915271631628798161
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,13 +210,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7915271631628798161}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.19999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1024599537856079222}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1635144751829090810
 MeshRenderer:

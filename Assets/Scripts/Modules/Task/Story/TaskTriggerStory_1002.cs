@@ -63,7 +63,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
     {
         SoundMgr.instance.PauseBGM();
         SoundMgr.instance.FadeBGM(1, 0, 0.1f);
-        UIMgr.instance.GetPanel<MainPanel>().Hide();
+        UIMgr.instance.Get<MainPanel>().Hide();
     }
 
     public override void Trigger()

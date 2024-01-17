@@ -24,8 +24,8 @@ public class DoRunToRandomPos : Action
     {
         m_State = BehaviourTreeState.Running;
 
-        Vector2 ownerSize = m_ActionOwner.owner.GetCurrTriggerSize();
-        Vector2 playerSize = PlayerMgr.instance.player.GetCurrTriggerSize();
+        Rect ownerBound = m_ActionOwner.owner.bound;
+        Rect playerBound = PlayerMgr.instance.player.bound;
         Rect visionRect = CameraMgr.instance.GetVision();
         Vector2 playerPos = PlayerMgr.instance.player.pos;
 
@@ -37,11 +37,11 @@ public class DoRunToRandomPos : Action
 
         if(m_RandomPos.x <= playerPos.x)
         {
-            m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + ownerSize.x / 2, playerPos.x - (playerSize.x + ownerSize.x) / 2);
+            m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, visionRect.xMin + ownerBound.width / 2, playerPos.x - (playerBound.width + ownerBound.width) / 2);
         }
         else
         {
-            m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, playerPos.x + (playerSize.x + ownerSize.x) / 2, visionRect.xMax - ownerSize.x / 2);
+            m_RandomPos.x = Mathf.Clamp(m_RandomPos.x, playerPos.x + (playerBound.width + ownerBound.width) / 2, visionRect.xMax - ownerBound.width / 2);
         }
     }
 

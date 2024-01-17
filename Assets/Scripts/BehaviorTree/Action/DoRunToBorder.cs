@@ -39,9 +39,8 @@ public class DoRunToBorder : Action
         base.OnUpdate(deltaTime);
 
         Rect ownerBound = m_ActionOwner.owner.bound;
-        Vector2 size = m_ActionOwner.owner.GetCurrTriggerSize();
         float distance = m_MoveDir > 0 ? Mathf.Abs(ownerBound.xMax - m_BorderPosX) : Mathf.Abs(ownerBound.xMin - m_BorderPosX);
-        bool isArrive = distance <= size.x;
+        bool isArrive = distance <= ownerBound.width;
 
         if (isArrive)
         {

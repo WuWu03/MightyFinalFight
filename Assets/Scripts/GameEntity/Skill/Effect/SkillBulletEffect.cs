@@ -37,6 +37,6 @@ public class SkillBulletEffect : SkillBaseEffect
 
     public void BulletEffect(ICanBeHit hit)
     {
-        SkillFactory.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect);
+        SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect);
     }
 }

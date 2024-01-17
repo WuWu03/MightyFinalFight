@@ -13,31 +13,31 @@ namespace GameFrameWork.Resources
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_Dependencies = new Dictionary<string, string[]>();
-            m_LoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
-            m_LoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_DicAssetVerson = new Dictionary<string, AssetVersion>();
+            m_DicLoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
+            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
+            m_DicAssetVersions = new Dictionary<string, AssetVersion>();
 
 #if UNITY_EDITOR
-            if (AppConfig.instance.loadAB)
-#endif
+            if (!AppConfig.instance.loadAB)
             {
-                string maniFesturl = PathUtil.runTimeAssetPath + PathUtil.maniFestName;
-                string versionUrl = PathUtil.runTimeAssetPath + PathUtil.assetBundleVersionName;
+                return;
+            }
+#endif
+            string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.maniFestName);
+            string versionUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.assetBundleVersionName);
 
-                byte[] stream = File.ReadAllBytes(maniFesturl);
-                AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
-                m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            byte[] stream = File.ReadAllBytes(maniFesturl);
+            AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
+            m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
-                string[] version = File.ReadAllText(versionUrl).Split('\n');
+            string[] version = File.ReadAllText(versionUrl).Split('\n');
 
-                for (int i = 0; i < version.Length; i++)
+            for (int i = 0; i < version.Length; i++)
+            {
+                string[] data = version[i].Split('|');
+                if (!data[1].Equals(".manifest"))
                 {
-                    string[] data = version[i].Split('|');
-                    if (!data[1].Equals(".manifest"))
-                    {
-                        m_DicAssetVerson.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
-                    }
+                    m_DicAssetVersions.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
                 }
             }
         }
@@ -45,9 +45,9 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载资源
         /// </summary>
-        public T LoadAsset<T>(string abName, bool loadMainAsset = true) where T : Object
+        public T LoadAsset<T>(string assetPath) where T : Object
         {
-            Object obj = LoadAsset(abName, loadMainAsset, typeof(T));
+            Object obj = LoadAsset(assetPath, null, typeof(T));
 
             if (obj == null)
             {
@@ -60,118 +60,179 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载资源
         /// </summary>
-        public Object LoadAsset(string abName, bool loadMainAsset = true, Type t = null)
+        public Object LoadAsset(string assetPath, Type t = null)
+        {
+            return LoadAsset(assetPath, null, t);
+        }
+
+        /// <summary>
+        /// 同步加载资源
+        /// </summary>
+        public T LoadAsset<T>(string assetPath, string assetName) where T : Object
+        {
+            Object obj = LoadAsset(assetPath, assetName, typeof(T));
+
+            if (obj == null)
+            {
+                return null;
+            }
+
+            return obj as T;
+        }
+
+        /// <summary>
+        /// 同步加载资源
+        /// </summary>
+        public Object LoadAsset(string assetPath, string assetName, Type t = null)
         {
             if (t == null)
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
-            if (!isLoadAb)
-                return EditorResourcesMgr.Instance.LoadForEditor(abName, t);
-            else
+            if (!AppConfig.instance.loadAB)
+            {
+                return EditorResourcesMgr.Instance.LoadAssetEditor(assetPath, t);
+            }
 #endif
-                return Load(abName, loadMainAsset, t);
+            return Load(assetPath, assetName, t);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync<T>(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = true, params object[] param)
+        public void LoadAssetAsync<T>(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args)
         {
-            LoadAssetAsync(abName, action, loadMainAsset, typeof(T), param);
+            LoadAssetAsync(assetPath, null, action, typeof(T), args);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = true, Type t = null, params object[] param)
+        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
+        {
+            LoadAssetAsync(assetPath, null, action, t, args);
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync<T>(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args)
+        {
+            LoadAssetAsync(assetPath, assetName, action, typeof(T), args);
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
         {
             if (t == null)
             {
                 t = typeof(Object);
             }
-            bool isLoadAb = AppConfig.instance.loadAB;
 #if UNITY_EDITOR
-            if (!isLoadAb)
-                EditorResourcesMgr.Instance.LoadForEditorAsync(abName, action, t, param);
-            else
+            if (!AppConfig.instance.loadAB)
+            {
+                EditorResourcesMgr.Instance.LoadAssetEditorAsync(assetPath, action, t, args);
+                return;
+            }
 #endif
-                LoadAsync(abName, action, loadMainAsset, t, param);
+            LoadAsync(assetPath, assetName, action, t, args);
         }
 
         /// <summary>
-        /// 此函数交给外部卸载专用，自己调整是否需要彻底清除AB
+        /// 卸载资源
         /// </summary>
-        public void UnloadAssetBundle(string abName, bool isThorough = false)
+        public void UnloadAsset(string assetPath, bool isThorough = false)
         {
-            abName = GetRealAssetPath(abName);
-            Log.LogInfo(m_LoadedAssetBundles.Count + " assetbundle(s) in memory before unloading " + abName);
-            UnloadAssetBundleInternal(abName, isThorough);
-            UnloadDependencies(abName, isThorough);
-            Log.LogInfo(m_LoadedAssetBundles.Count + " assetbundle(s) in memory after unloading " + abName);
+#if UNITY_EDITOR
+            if(!AppConfig.instance.loadAB)
+            {
+                EditorResourcesMgr.Instance.UnLoadAssetEditor(assetPath);
+                return;
+            }
+#endif
+            string assetBundleName = GetAssetBundleName(assetPath);
+            Log.LogInfo("Start to unload asset : [", assetBundleName, "]", m_DicLoadedAssetBundles.Count, " assetbundle(s) in memory before unloading ");
+            UnloadAssetBundle(assetBundleName, isThorough);
+            Log.LogInfo("Unload asset : [", assetBundleName, "] completed", m_DicLoadedAssetBundles.Count, " assetbundle(s) in memory after unloading ");
         }
 
         /// <summary>
         /// 同步加载
         /// </summary>
 
-        private Object Load(string abName, bool loadMainAsset = false, Type t = null)
+        private Object Load(string assetPath, string assetName, Type t = null)
         {
-            Log.LogInfo("LoadAsset：" + abName);
+            string assetBundleName = GetAssetBundleName(assetPath);
+            string[] dependencies = GetDependencies(assetBundleName);
 
-            abName = GetRealAssetPath(abName);
-            LoadDependencies(abName);
-
-            AssetBundleInfo bundleInfo = GetLoadedAssetBundle(abName);
-            if (bundleInfo == null)
+            if (dependencies != null && dependencies.Length > 0)
             {
-                OnLoadAssetBundle(abName);
-                bundleInfo = GetLoadedAssetBundle(abName);
-
-                if (bundleInfo == null)
+                for (int i = 0; i < dependencies.Length; i++)
                 {
-                    m_LoadRequests.Remove(abName);
-                    Log.LogError("OnLoadAsset--->>>" + abName);
+                    Load(dependencies[i], null, typeof(UnityEngine.Object));
+                }
+            }
+
+            AssetBundleInfo assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+
+            if (assetBundleInfo == null)
+            {
+                OnLoadAsset(assetBundleName);
+                assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+
+                if (assetBundleInfo == null)
+                {
+                    Log.LogError("Can't find the assetbundle : ", assetBundleName);
                     return null;
                 }
             }
 
-            AssetBundle ab = null;
-
-            if (m_Dependencies.TryGetValue(abName, out string[] dependencies))
+            if (string.IsNullOrEmpty(assetName))
             {
-                while (DependenciesLoaded(dependencies))
-                {
-                    ab = bundleInfo.assetBundle;
-                    return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
-                }
+                return assetBundleInfo.assetBundle.GetAsset(Path.GetFileNameWithoutExtension(assetBundleName).ToLower(), t);
             }
 
-            ab = bundleInfo.assetBundle;
-            return ab.GetAsset(Path.GetFileNameWithoutExtension(abName), t);
+            return assetBundleInfo.assetBundle.GetAsset(assetName.ToLower(), t);
         }
 
         /// <summary>
         /// 异步加载
         /// </summary>
-        private void LoadAsync(string abName, GameFrameWorkAction<string, Object, object[]> action = null, bool loadMainAsset = false, Type t = null, object[] param = null)
+        private void LoadAsync(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, object[] args = null)
         {
-            Log.LogInfo("LoadAsset：" + abName);
+            string assetBundleName = GetAssetBundleName(assetPath);
 
-            string realAssetPath = GetRealAssetPath(abName);
-            LoadRequest request = new LoadRequest(abName, action, param);
-            request.loadMainAsset = loadMainAsset;
-            request.assetType = t;
-            request.assetName = Path.GetFileNameWithoutExtension(realAssetPath);
-
-            if (!m_LoadRequests.TryGetValue(realAssetPath, out List<LoadRequest> requests))
+            if (string.IsNullOrEmpty(assetBundleName))
             {
+                return;
+            }
+
+            LoadRequest request = LoadRequest.Create();
+            request.assetPath = assetPath;
+            request.assetName = string.IsNullOrEmpty(assetName) ? Path.GetFileNameWithoutExtension(assetBundleName).ToLower() : assetName.ToLower();
+            request.assetType = t;
+            request.action = action;
+            request.args = args;
+
+            if (!m_DicLoadRequests.TryGetValue(assetBundleName, out List<LoadRequest> requests))
+            {
+                string[] dependencies = GetDependencies(assetBundleName);
+
+                if (dependencies != null && dependencies.Length > 0)
+                {
+                    for (int i = 0; i < dependencies.Length; i++)
+                    {
+                        LoadAsync(dependencies[i], null, null, typeof(UnityEngine.Object));
+                    }
+                }
+
                 requests = new List<LoadRequest>() { request };
-                m_LoadRequests.Add(realAssetPath, requests);
-                LoadDependencies(realAssetPath);
-                StartCoroutine(OnLoadAsset(realAssetPath));
+                m_DicLoadRequests.Add(assetBundleName, requests);
+
+                StartCoroutine(OnLoadAssetAsync(assetBundleName));
             }
             else
             {
@@ -179,210 +240,168 @@ namespace GameFrameWork.Resources
             }
         }
 
-        private IEnumerator OnLoadAsset(string realAssetPath)
+        private void OnLoadAsset(string assetBundleName)
         {
-            yield return new WaitForSeconds(0);
-            AssetBundleInfo bundleInfo = GetLoadedAssetBundle(realAssetPath);
+            string assetBunldePath = GetAssetBundlePath(assetBundleName);
+            Log.LogInfo("Start to load asset sync ：", assetBunldePath);
 
-            if (bundleInfo == null)
+            AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBunldePath);
+
+            if (assetBundle != null)
             {
-                yield return StartCoroutine(OnLoadAssetBundleAsync(realAssetPath));
+                m_DicLoadedAssetBundles.Add(assetBundleName, new AssetBundleInfo(assetBundle));
+            }
+        }
 
-                bundleInfo = GetLoadedAssetBundle(realAssetPath);
-                if (bundleInfo == null)
+        private IEnumerator OnLoadAssetAsync(string assetBundleName)
+        {
+            yield return null;
+            AssetBundleInfo assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+
+            if (assetBundleInfo == null)
+            {
+                string assetBundlePath = GetAssetBundlePath(assetBundleName);
+                Log.LogInfo("Start to load asset async：", assetBundlePath);
+                AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
+
+                while (!createRequest.isDone)
                 {
-                    m_LoadRequests.Remove(realAssetPath);
-                    Log.LogError("OnLoadAsset--->>>" + realAssetPath);
+                    yield return null;
+                }
+
+                AssetBundle assetBundle = createRequest.assetBundle;
+
+                if (assetBundle != null)
+                {
+                    m_DicLoadedAssetBundles.Add(assetBundleName, new AssetBundleInfo(assetBundle));
+                }
+
+                assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+
+                if (assetBundleInfo == null)
+                {
+                    m_DicLoadRequests.Remove(assetBundleName);
+                    Log.LogError("Can't find the assetbundle : ", assetBundleName);
                     yield break;
                 }
             }
 
-            if (!m_LoadRequests.TryGetValue(realAssetPath, out List<LoadRequest> list))
+            if (m_DicLoadRequests.TryGetValue(assetBundleName, out List<LoadRequest> list))
             {
-                m_LoadRequests.Remove(realAssetPath);
-                yield break;
-            }
-
-            if (m_Dependencies.TryGetValue(realAssetPath, out string[] dependencies))
-            {
-                while (!DependenciesLoaded(dependencies))
+                for (int i = 0; i < list.Count; i++)
                 {
-                    yield return null;
+                    if (list[i].action != null)
+                    {
+                        list[i].Call(assetBundleInfo.assetBundle.GetAsset(list[i].assetName, list[i].assetType));
+                    }
+
+                    assetBundleInfo.referencedCount++;
                 }
             }
 
-            AssetBundle ab = bundleInfo.assetBundle;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].loadMainAsset)
-                {
-                    list[i].Call(ab.GetAsset(list[i].assetName, list[i].assetType));
-                }
-
-                bundleInfo.referencedCount++;
-            }
-
-            m_LoadRequests.Remove(realAssetPath);
+            m_DicLoadRequests.Remove(assetBundleName);
         }
 
 
-        private void OnLoadAssetBundle(string abName)
+        private AssetBundleInfo GetLoadedAssetBundle(string assetBundleName)
         {
-            string path = GetAssetBundlePath(abName);
-            Log.LogInfo("开始同步加载资源：" + path);
-
-            AssetBundle assetObj = AssetBundle.LoadFromFile(path);
-            if (assetObj != null)
+            if (m_DicLoadedAssetBundles.TryGetValue(assetBundleName, out AssetBundleInfo bundle))
             {
-                m_LoadedAssetBundles.Add(abName, new AssetBundleInfo(assetObj));
-            }
-        }
-
-        private IEnumerator OnLoadAssetBundleAsync(string abName)
-        {
-            string path = GetAssetBundlePath(abName);
-            Log.LogInfo("开始异步加载资源：" + path);
-            AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(path);
-            yield return createRequest;
-
-            AssetBundle assetObj = createRequest.assetBundle;
-            if (assetObj != null)
-            {
-                m_LoadedAssetBundles.Add(abName, new AssetBundleInfo(assetObj));
-            }
-        }
-
-        private AssetBundleInfo GetLoadedAssetBundle(string abName)
-        {
-            m_LoadedAssetBundles.TryGetValue(abName, out AssetBundleInfo bundle);
-
-            if (bundle == null)
-            {
-                return null;
-            }
-            // No dependencies are recorded, only the bundle itself is required.
-            //string[] dependencies = null;
-            //if (!m_Dependencies.TryGetValue(abName, out dependencies))
-            //    return bundle;
-            return bundle;
-        }
-
-        private bool DependenciesLoaded(string[] dependencies)
-        {
-            // Make sure all dependencies are loaded
-            foreach (var dependency in dependencies)
-            {
-                if (!m_LoadedAssetBundles.ContainsKey(dependency))
-                {
-                    return false;
-                }
+                return bundle;
             }
 
-            return true;
-        }
-
-        private string GetRealAssetPath(string abName)
-        {
-            abName = abName.ToLower();
-
-            if (m_DicAssetVerson.TryGetValue(abName, out AssetVersion version))
-            {
-                if (!abName.EndsWith(version.extendName))
-                {
-                    abName += version.extendName;
-                }
-
-                return abName;
-            }
-
-            Log.LogError("Can't find the version of" + abName);
-            return string.Empty;
+            return null;
         }
 
         /// <summary>
-        /// 载入依赖
+        /// 获取所有依赖
         /// </summary>
-        /// <param name="name"></param>
-        private void LoadDependencies(string abName)
+        private string[] GetDependencies(string assetBundleName)
         {
             if (m_Manifest == null)
             {
-                Log.LogError("Please initialize AssetBundleManifest first.");
-                return;
+                Log.LogError("Please initialize assetbundle manifest first.");
+                return null;
             }
-            // Get dependecies from the AssetBundleManifest object..
 
-            if (!m_Dependencies.TryGetValue(abName, out string[] dependencies))
+            return m_Manifest.GetAllDependencies(assetBundleName);
+        }
+
+
+        private void UnloadAssetBundle(string assetBundleName, bool isThorough)
+        {
+            string[] dependencies = GetDependencies(assetBundleName);
+
+            if (dependencies != null && dependencies.Length > 0)
             {
-                dependencies = m_Manifest.GetAllDependencies(abName);
-                if (dependencies != null && dependencies.Length > 0)
+                for (int i = 0; i < dependencies.Length; i++)
                 {
-                    m_Dependencies.Add(abName, dependencies);
+                    UnloadAssetBundle(dependencies[i], isThorough);
                 }
             }
 
-            if (dependencies == null || dependencies.Length <= 0)
+            AssetBundleInfo assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+
+            if (assetBundleInfo == null)
             {
                 return;
             }
 
-            for (int i = 0; i < dependencies.Length; i++)
+            assetBundleInfo.referencedCount--;
+
+            if (assetBundleInfo.referencedCount <= 0)
             {
-                StartCoroutine(OnLoadAsset(dependencies[i]));
-            }
-        }
-
-        private void UnloadDependencies(string abName, bool isThorough)
-        {
-            if (!m_Dependencies.TryGetValue(abName, out string[] dependencies))
-            {
-                return;
-            }
-
-            // Loop dependencies.
-            foreach (var dependency in dependencies)
-            {
-                UnloadAssetBundleInternal(dependency, isThorough);
-            }
-
-            m_Dependencies.Remove(abName);
-        }
-
-        private void UnloadAssetBundleInternal(string abName, bool isThorough)
-        {
-            AssetBundleInfo bundle = GetLoadedAssetBundle(abName);
-            if (bundle == null) return;
-
-            if (--bundle.referencedCount <= 0)
-            {
-                if (m_LoadRequests.ContainsKey(abName))
+                if (m_DicLoadRequests.ContainsKey(assetBundleName))
                 {
-                    return;     //如果当前AB处于Async Loading过程中，卸载会崩溃，只减去引用计数即可
+                    return;//如果当前AB处于异步加载过程中，卸载会崩溃，只减去引用计数即可
                 }
-                bundle.assetBundle.Unload(isThorough);
-                m_LoadedAssetBundles.Remove(abName);
-                Log.LogInfo(StringUtil.Format(abName, " has been unloaded successfully"));
+
+                assetBundleInfo.assetBundle.Unload(isThorough);
+                m_DicLoadedAssetBundles.Remove(assetBundleName);
             }
         }
 
-        private string GetAssetBundlePath(string abName)
+        private string GetAssetBundleName(string assetPath)
         {
-            return PathUtil.FormatPath(PathUtil.runTimeAssetPath, abName);
+            string assetName = Path.GetFileNameWithoutExtension(assetPath);
+            string path = Path.GetDirectoryName(assetPath).Replace("\\", "/");
+            string assetBundleName = assetName;
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                assetBundleName = PathUtil.FormatPath(path, assetName).ToLower();
+            }
+
+            if (m_DicAssetVersions.TryGetValue(assetBundleName, out AssetVersion version))
+            {
+                return StringUtil.Format(assetBundleName, version.extendName);
+            }
+
+            Log.LogError("Can't find the version of ", assetPath);
+
+            if (!assetBundleName.EndsWith(PathUtil.assetBundleExtension))
+            {
+                return StringUtil.Format(assetBundleName, PathUtil.assetBundleExtension);
+            }
+
+            return assetBundleName;
+        }
+
+        private string GetAssetBundlePath(string assetBundleName)
+        {
+            return PathUtil.FormatPath(PathUtil.runTimeAssetPath, assetBundleName);
         }
 
         protected override void OnShutDown()
         {
-            m_Dependencies.Clear();
-            m_LoadedAssetBundles.Clear();
-            m_LoadRequests.Clear();
-            m_DicAssetVerson.Clear();
+            m_DicLoadedAssetBundles.Clear();
+            m_DicLoadRequests.Clear();
+            m_DicAssetVersions.Clear();
         }
 
         private AssetBundleManifest m_Manifest;
-        private Dictionary<string, string[]> m_Dependencies = null;
-        private Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles = null;
-        private Dictionary<string, List<LoadRequest>> m_LoadRequests = null;
-        private Dictionary<string, AssetVersion> m_DicAssetVerson = null;
+        private Dictionary<string, AssetBundleInfo> m_DicLoadedAssetBundles = null;
+        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
+        private Dictionary<string, AssetVersion> m_DicAssetVersions = null;
     }
 }

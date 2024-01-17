@@ -31,10 +31,10 @@ public class PreIsPlayerInRange : PreCondition
             return yDistance <= 0.01f && xDistance <= m_Range;
         }
 
-        Vector2 ownerTriggerSize = (m_Owner as BaseRoleCtrl).owner.GetCurrTriggerSize();
-        Vector2 playerTriggerSize = PlayerMgr.instance.player.GetCurrTriggerSize();
+        Rect ownerBound = (m_Owner as BaseRoleCtrl).owner.bound;
+        Rect playerBound = PlayerMgr.instance.player.bound;
 
-        return yDistance <= 0.01f && xDistance <= playerTriggerSize.x / 2 + ownerTriggerSize.x / 2 + 0.01f;
+        return yDistance <= 0.01f && xDistance <= playerBound.width / 2 + ownerBound.width / 2 + 0.01f;
     }
 
     private float m_Range = -1;

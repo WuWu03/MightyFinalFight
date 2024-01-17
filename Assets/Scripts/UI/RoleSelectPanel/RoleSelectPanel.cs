@@ -9,14 +9,15 @@ using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Sound;
 using GameFrameWork.Input;
+using GameFrameWork;
 
 public class RoleSelectPanel : BasePanel
 {
 	public override string panelName { get { return "RoleSelectPanel"; } }
 	public override float panelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.FirstLevel; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer3; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
 
     protected override void OnInit(object[] param)
 	{
@@ -24,7 +25,6 @@ public class RoleSelectPanel : BasePanel
 		m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
         m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
         m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
-
     }
 
     protected override void OnOpen()
@@ -59,8 +59,8 @@ public class RoleSelectPanel : BasePanel
 				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataHelper.roleSelectConfigDatas.Length - 1;
 			}
 
-           m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
+			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
+			SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -107,13 +107,18 @@ public class RoleSelectPanel : BasePanel
 		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
-		UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0.5f, () =>
+		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
 		{
-			UIMgr.instance.Close<LoadPanel>();
 			UIMgr.instance.Open<StagePanel>();
-			InnerClose();
 		});
-	}
+
+        loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
+        {
+            UIMgr.instance.Close<LoadPanel>();
+            InnerClose();
+        });
+    }
 
 	private bool m_HasSelect = false;
 	private int m_CurrSelectIndex = -1;

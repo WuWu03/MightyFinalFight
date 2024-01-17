@@ -15,7 +15,7 @@ public class BarrelMove : BaseFsmState
 
     public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        m_Owner.SetDir(-m_Owner.barrelData.dir);
+        m_Owner.SetDir(m_Owner.barrelData.dir);
         Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.barrelData.dir, 0, 0) * m_Owner.barrelData.moveSpeed * Time.deltaTime;
         m_Owner.SetPos2(ownerPos);
     }

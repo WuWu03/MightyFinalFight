@@ -20,11 +20,6 @@ public class GameEntry : GameFrameWorkEntry
         ConfigDataHelper.Init(PathUtil.configDataPath);
     }
 
-    protected override GameFrameWork.UI.UIResPath InitUIResPath()
-    {
-        return new UIResPath();
-    }
-
     protected override void OnStartGame()
     {
         CameraMgr.instance.SetFollowMode(FollowMode.Just);

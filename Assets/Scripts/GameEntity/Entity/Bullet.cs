@@ -101,14 +101,14 @@ public class Bullet : BaseAvatar
         }
     }
 
-    private void CheckTarget(BaseSceneObject bso)
+    private void CheckTarget(BaseGravityObject bgo)
     {
-        if (bso == null)
+        if (bgo == null)
         {
             return;
         }
 
-        ICanBeHit hit = bso.GetComponent<ICanBeHit>();
+        ICanBeHit hit = bgo.GetComponent<ICanBeHit>();
 
         if (hit == null || !hit.canBeHit)
         {
@@ -117,9 +117,9 @@ public class Bullet : BaseAvatar
 
         bool isInRange = false;
 
-        if (SkillUtil.IsRectangleCollide(bso.bound, m_Bound))
+        if (SkillUtil.IsRectangleCollide(bgo.bound, bound))
         {
-            isInRange = Mathf.Abs(bso.pos.y - m_Pos.y) < m_BulletData.hitRange;
+            isInRange = Mathf.Abs(bgo.pos.y - m_Pos.y) < m_BulletData.hitRange;
         }
 
         if(!isInRange)

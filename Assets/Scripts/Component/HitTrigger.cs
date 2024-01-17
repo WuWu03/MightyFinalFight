@@ -5,9 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class TriggerData
 {
-    public string AnimName;
-    public Vector2 Offest;
-    public Vector2 Size;
+    public string animName;
+    public Vector2[] offestList;
+    public Vector2[] sizeList;
 }
 
 public class HitTrigger : MonoBehaviour
@@ -17,7 +17,7 @@ public class HitTrigger : MonoBehaviour
         if (TriggerDatas == null) return null;
         for (int i = 0; i < TriggerDatas.Length; i++)
         {
-            if (TriggerDatas[i].AnimName.Equals(animName))
+            if (TriggerDatas[i].animName.Equals(animName))
             {
                 return TriggerDatas[i];
             }

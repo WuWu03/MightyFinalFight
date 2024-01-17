@@ -22,11 +22,14 @@ public class UIRefSetting : MonoBehaviour
 
     public enum Layer
     {
-        BG,
-        MainPanel,
-        FirstLevel,
-        SecondLevel,
-        ThirdLevel,
+        Layer1,
+        Layer2,
+        Layer3,
+        Layer4,
+        Layer5,
+        Layer6,
+        Layer7,
+        Layer8,
     }
 
     public enum PreLoadType
@@ -109,7 +112,7 @@ public class UIRefSetting : MonoBehaviour
     public Type panelType = Type.Normal;
     public PreLoadType panelPreLoadType = PreLoadType.None;
     public CloseMode panelCloseMode = CloseMode.Always;
-    public Layer panelLayer = Layer.FirstLevel;
+    public Layer panelLayer = Layer.Layer3;
     public bool isCustomLayer = false;
     public float unLoadTime = 10;
 

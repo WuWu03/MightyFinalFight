@@ -17,9 +17,9 @@ public class TalkPanel : BasePanel
 {
 	public override string panelName { get { return "TalkPanel"; } }
 	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.FirstLevel; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Always; } }
+	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
+	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer4; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
 
 	protected override void OnInit(object[] param)
 	{
@@ -35,7 +35,6 @@ public class TalkPanel : BasePanel
         m_Component.talkSelect.SetActive(false);
 		PlayTalk();
     }
-
 
     protected override void OnUpdate()
 	{

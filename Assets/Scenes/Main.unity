@@ -183,13 +183,14 @@ MonoBehaviour:
   checkVersion: 0
   openUpdate: 1
   loadAB: 0
-  openLog: 0
+  openLog: 1
   useLua: 0
   loadLuaAB: 0
   luaByteMode: 0
   luaDirectory: Assets/Scripts/Lua
-  logColor: {r: 0.78823537, g: 0.78823537, b: 0.78823537, a: 1}
-  pcBuildPath: 
+  uiDirectory: ArtResources/UI
+  logColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
+  pcBuildPath: C:\Users\42421\Desktop\s123\1.exe
   androidBuildPath: 
   iosBuildPath: 
   versionFileName: Version.txt

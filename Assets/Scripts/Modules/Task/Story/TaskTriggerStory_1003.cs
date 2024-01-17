@@ -22,7 +22,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.player.UpdatePosZ(0);
         SoundMgr.instance.PauseBGM();
         SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
-        UIMgr.instance.GetPanel<MainPanel>().Hide();
+        UIMgr.instance.Get<MainPanel>().Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
@@ -70,7 +70,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
-        MainPanel mainPanel = UIMgr.instance.GetPanel<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
         CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
         group.alpha = 0f;
         mainPanel.Show();

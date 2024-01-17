@@ -2,6 +2,7 @@
 using GameFrameWork.Fsm;
 using GameFrameWork.Sound;
 using UnityEngine;
+using static SkillConfigData;
 
 public class Barrel : BaseAvatar, ICanBeHit
 {
@@ -126,10 +127,10 @@ public class Barrel : BaseAvatar, ICanBeHit
         CheckStrike(collision.gameObject);
     }
 
-    protected override void OnTriggerExit2D(Collider2D collision)
-    {
-        CheckStrike(collision.gameObject);
-    }
+    //protected override void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    CheckStrike(collision.gameObject);
+    //}
 
     protected override void OnResComplete(GameObject go, object[] param)
     {
@@ -138,7 +139,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
         if (!m_BarrelData.isFloat)
         {
-            if (m_BarrelData.moveSpeed > 0)
+            if (m_BarrelData.moveSpeed >= 0)
             {
                 SetTrigger(AnimName.Move);
                 m_FsmMachine.Start<BarrelMove>();
@@ -173,22 +174,34 @@ public class Barrel : BaseAvatar, ICanBeHit
         BaseRole role = go.GetComponent<BaseRole>();
         ICanBeHit hit = go.GetComponent<ICanBeHit>();
 
-        if (role == null || hit == null || role.objectType != ObjectType.Player || role.IsAnyState(typeof(RoleAttack)))
+        if (role == null || hit == null || role.objectType != ObjectType.Player)
         {
             return;
         }
-        
+          
         bool isInRange = false;
 
-        if (SkillUtil.IsRectangleCollide(role.bound, m_Bound))
+        if (SkillUtil.IsRectangleCollide(role.bound, bound) && role.pos.y >= m_Pos.y)
         {
-            isInRange = Mathf.Abs(role.pos.y - m_Pos.y) < 0.1f;
+            Vector2 bsoLeftTop = new Vector2(bound.xMin, bound.yMax) - bound.center;
+            float selectorAngle = Vector2.Angle(Vector2.left, bsoLeftTop.normalized);
+
+            Vector2 target = (role.pos - m_Pos).normalized;
+            Vector2 normal = m_Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+            float angle = Vector2.Angle(target, normal);
+
+            if (angle <= selectorAngle / 2)
+            {
+                isInRange = true;
+            }
         }
 
-        if(isInRange)
+        if (isInRange)
         {
             HurtData hurtData = HurtData.Create();
-            hurtData.attackerDir = -role.dir;
+            hurtData.attackerDir = m_Dir;
+            hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
+            hurtData.isSwoon = true;
             hit.OnHurtMsg(hurtData);
         }
     }
@@ -203,7 +216,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         BaseRole role = go.GetComponent<BaseRole>();
         ICanBeHit hit = go.GetComponent<ICanBeHit>();
 
-        if (role == null || hit == null || role.objectType != ObjectType.Monster || !role.isBeThrow)
+        if (role == null || hit == null || role.objectType != ObjectType.Enemy || !role.isBeThrow)
         {
             return;
         }
@@ -215,7 +228,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
         HurtData hurtData = HurtData.Create();
         hurtData.attackerDir = -role.dir;
-        hurtData.attackForce = SkillFactory.GetSmoonForce();
+        hurtData.attackForce = SkillUtil.GetSmoonForce();
         hurtData.attackerPos = m_Pos;
         hurtData.isSwoon = true;
         hurtData.attackerId = id;
@@ -226,5 +239,6 @@ public class Barrel : BaseAvatar, ICanBeHit
         OnHurtMsg(hurtData);
     }
 
+    private bool m_IsHurt = false;
     private BarrelData m_BarrelData = null;
 }

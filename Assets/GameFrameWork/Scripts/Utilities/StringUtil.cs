@@ -66,17 +66,26 @@ namespace GameFrameWork.Utilities
         /// </summary>
         public static string MD5(string source)
         {
+            return MD5(Encoding.UTF8.GetBytes(source));
+        }
+
+        /// <summary>
+        /// 计算二进制的MD5
+        /// </summary>
+
+        public static string MD5(byte[] source)
+        {
             try
             {
                 using (MD5 md5 = new MD5CryptoServiceProvider())
                 {
-                    byte[] result = md5.ComputeHash(Encoding.UTF8.GetBytes(source));
+                    byte[] result = md5.ComputeHash(source); 
 
                     m_StringBuilder.Clear();
 
-                    for (int i = 0; i < result.Length; i++)
+                    for (int i = 0; i < source.Length; i++)
                     {
-                        m_StringBuilder.Append(result[i].ToString("x2"));
+                        m_StringBuilder.Append(source[i].ToString("x2"));
                     }
 
                     return m_StringBuilder.ToString();

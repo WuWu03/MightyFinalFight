@@ -61,7 +61,7 @@ public class RoleJump : BaseFsmState
                 }
             }
 
-            if (m_HasAddXForce && !m_IsCatch)
+            if (m_HasAddXForce && !m_IsCatch && m_Owner.objectType == ObjectType.Player)
             {
                 m_Owner.PlayAnimation(AnimName.JumpRoll, -1, 0.5f);
             }

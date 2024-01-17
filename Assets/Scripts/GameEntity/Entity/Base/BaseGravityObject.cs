@@ -3,8 +3,9 @@ using GameFrameWork.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BaseGravityObject : BaseSceneObject
+public class BaseGravityObject : BaseBoundObject
 {
+
     public bool isFloat
     {
         get
@@ -78,43 +79,6 @@ public class BaseGravityObject : BaseSceneObject
         m_Rigidbody2D.freezeRotation = true;
     }
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-
-        CheckGround();
-    }
-
-    protected virtual void CheckGround()
-    {
-        if (m_Rigidbody2D.bodyType != RigidbodyType2D.Dynamic)
-        {
-            return;
-        }
-
-        UpdatePosX(transform.localPosition.x);
-
-        if (isFloat)
-        {
-            return;
-        }
-
-        m_Rigidbody2D.drag = 0;
-        m_OnDropEvent.Invoke();
-        m_OnDropEvent.RemoveAllListeners();
-        OnDrop();
-
-        if (!isInGround)
-        {
-            return;
-        }
-
-        m_OnGroundEvent.Invoke();
-        m_OnGroundEvent.RemoveAllListeners();
-        ResetRigidbody();
-        OnGround();
-        m_IsAddGroundForce = false;
-    }
 
     public void AddForce(float x, float y, bool isGroundForce = false)
     {
@@ -153,11 +117,6 @@ public class BaseGravityObject : BaseSceneObject
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.velocity = velocity;
         m_IsAddGroundForce = isGroundForce;
-
-        if (isGroundForce)
-        {
-            Debug.Log("出发了额额撒旦飞洒地方");
-        }
     }
 
     public void SetGravityScale(float gravity)
@@ -198,9 +157,48 @@ public class BaseGravityObject : BaseSceneObject
     protected virtual void OnDrop() { }
     protected virtual void OnGround() { }
 
-    private UnityEvent m_OnDropEvent = new UnityEvent();
-    private UnityEvent m_OnGroundEvent = new UnityEvent();
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        CheckGround();
+    }
+
+    protected virtual void CheckGround()
+    {
+        if (m_Rigidbody2D.bodyType != RigidbodyType2D.Dynamic)
+        {
+            return;
+        }
+
+        UpdatePosX(transform.localPosition.x);
+
+        if (isFloat)
+        {
+            return;
+        }
+
+        m_Rigidbody2D.drag = 0;
+        m_OnDropEvent.Invoke();
+        m_OnDropEvent.RemoveAllListeners();
+        OnDrop();
+
+        if (!isInGround)
+        {
+            return;
+        }
+
+        m_OnGroundEvent.Invoke();
+        m_OnGroundEvent.RemoveAllListeners();
+        ResetRigidbody();
+        OnGround();
+        m_IsAddGroundForce = false;
+    }
+
+    private UnityEvent m_OnDropEvent = new UnityEvent();
+    private UnityEvent m_OnGroundEvent = new UnityEvent(); 
+    
     protected bool m_IsAddGroundForce = false;
     protected Rigidbody2D m_Rigidbody2D = null;
 }

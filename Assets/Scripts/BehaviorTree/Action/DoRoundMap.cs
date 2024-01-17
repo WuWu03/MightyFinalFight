@@ -21,7 +21,7 @@ public class DoRoundMap : Action
         m_MoveTimer = -1;
         m_MoveTime = Random.Range(4f, 8f);
 
-        float tirggerSize = m_Owner.owner.GetCurrTriggerSize().x / 2f;
+        float tirggerSize = m_Owner.owner.bound.width / 2f;
 
         Vector2 pos = m_Owner.owner.pos;
         Rect vision = CameraMgr.instance.GetVision();

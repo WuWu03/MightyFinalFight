@@ -58,9 +58,7 @@ public class DoRunAwayPlayer : Action
             }
         }
 
-        Vector2 ownerSize = m_Owner.owner.GetCurrTriggerSize();
-
-        if(Vector2.Distance(playerPos,ownerPos) < ownerSize.x * 3)
+        if(Vector2.Distance(playerPos,ownerPos) < m_Owner.owner.bound.width * 3)
         {
             m_Owner.Move((playerPos - ownerPos).normalized, false);
             m_Owner.OppositePlayer();

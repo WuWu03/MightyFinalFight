@@ -1,6 +1,7 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
 using GameFrameWork.Resources;
+using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,7 @@ public static partial class ConfigDataHelper
 {
     public static T[] LoadConfigData<T>(string filePath, string fileName) where T : BaseConfigData, new()
     {
-        string path = string.Format(filePath + "{0}", fileName);
+        string path = PathUtil.FormatPath(filePath, fileName);
 
         T[] t = null;
 

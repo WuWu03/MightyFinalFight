@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+using DragonBones;
 
 public class Test : MonoBehaviour
 {
@@ -38,33 +39,43 @@ public class Test : MonoBehaviour
 
     private void Awake()
     {
-        RedPointMgr.Init(gameObject);
+        //RedPointMgr.Init(gameObject);
 
-        //在实际开发中，整个游戏的红点树要在游戏初始化时全部构建出来
-        //声明mail1根节点，它的主key是mail1，无subKey，无父节点，红点类型是随着子节点变化
-        RedPointMgr.instance.Add(mail1, null, null, RedPointType.Enternal);
-        //声明mail2节点，它的主key是mail1，subKey是mail2，父节点是mail1，红点类型是随着子节点变化
-        RedPointMgr.instance.Add(mail1, mail2, mail1, RedPointType.Enternal);
-        //声明mail3节点，它的主key是mail1，subKey是mail3，父节点是mail2，红点类型是随着子节点变化
-        RedPointMgr.instance.Add(mail1, mail3, mail2, RedPointType.Enternal);
-        //声明mai4节点，它的主key是mail1，subKey是mail4，父节点是mail3，红点类型是点击即消失
-        RedPointMgr.instance.Add(mail1, mail4, mail3, RedPointType.Once);
-        //声明mai5节点，它的主key是mail1，subKey是mail5，父节点是mail3，红点类型是点击即消失
-        RedPointMgr.instance.Add(mail1, mail5, mail3, RedPointType.Once);
-        //声明mai5节点，它的主key是mail1，subKey是mail6，父节点是mail3，红点类型是点击即消失
-        RedPointMgr.instance.Add(mail1, mail6, mail3, RedPointType.Once);
+        ////在实际开发中，整个游戏的红点树要在游戏初始化时全部构建出来
+        ////声明mail1根节点，它的主key是mail1，无subKey，无父节点，红点类型是随着子节点变化
+        //RedPointMgr.instance.Add(mail1, null, null, RedPointType.Enternal);
+        ////声明mail2节点，它的主key是mail1，subKey是mail2，父节点是mail1，红点类型是随着子节点变化
+        //RedPointMgr.instance.Add(mail1, mail2, mail1, RedPointType.Enternal);
+        ////声明mail3节点，它的主key是mail1，subKey是mail3，父节点是mail2，红点类型是随着子节点变化
+        //RedPointMgr.instance.Add(mail1, mail3, mail2, RedPointType.Enternal);
+        ////声明mai4节点，它的主key是mail1，subKey是mail4，父节点是mail3，红点类型是点击即消失
+        //RedPointMgr.instance.Add(mail1, mail4, mail3, RedPointType.Once);
+        ////声明mai5节点，它的主key是mail1，subKey是mail5，父节点是mail3，红点类型是点击即消失
+        //RedPointMgr.instance.Add(mail1, mail5, mail3, RedPointType.Once);
+        ////声明mai5节点，它的主key是mail1，subKey是mail6，父节点是mail3，红点类型是点击即消失
+        //RedPointMgr.instance.Add(mail1, mail6, mail3, RedPointType.Once);
 
-        //在实际开发中，初始化代码要写在对应UI界面的初始化函数中
-        RedPointMgr.instance.Init(mail1, mail1, OnMail1Show);
-        RedPointMgr.instance.Init(mail1, mail2, OnMail2Show);
-        RedPointMgr.instance.Init(mail1, mail3, OnMail3Show);
-        RedPointMgr.instance.Init(mail1, mail4, OnMail4Show, mail4Btn);
-        RedPointMgr.instance.Init(mail1, mail5, OnMail5Show, mail5Btn);
-        RedPointMgr.instance.Init(mail1, mail6, OnMail6Show, mail6Btn);
+        ////在实际开发中，初始化代码要写在对应UI界面的初始化函数中
+        //RedPointMgr.instance.Init(mail1, mail1, OnMail1Show);
+        //RedPointMgr.instance.Init(mail1, mail2, OnMail2Show);
+        //RedPointMgr.instance.Init(mail1, mail3, OnMail3Show);
+        //RedPointMgr.instance.Init(mail1, mail4, OnMail4Show, mail4Btn);
+        //RedPointMgr.instance.Init(mail1, mail5, OnMail5Show, mail5Btn);
+        //RedPointMgr.instance.Init(mail1, mail6, OnMail6Show, mail6Btn);
 
-        btnSet1.onClick.AddListener(OnBtnSet1Click);
-        btnSet2.onClick.AddListener(OnBtnSet2Click);
-        btnSet3.onClick.AddListener(OnBtnSet3Click);
+        //btnSet1.onClick.AddListener(OnBtnSet1Click);
+        //btnSet2.onClick.AddListener(OnBtnSet2Click);
+        //btnSet3.onClick.AddListener(OnBtnSet3Click);
+
+
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            gameObject.GetComponent<UnityArmatureComponent>().animation.GotoAndStopByFrame("Attack1", 1);
+        }
     }
 
     private void OnMail1Show(RedPointState state, int data)

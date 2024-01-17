@@ -116,6 +116,5 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     }
 
     private bool m_CanEffect = false;
-    private bool m_isss = false;
     private bool m_IsOnGround = true;
 }
