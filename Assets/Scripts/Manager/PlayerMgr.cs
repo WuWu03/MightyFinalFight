@@ -307,15 +307,17 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            //UIMgr.instance.Open<TalkPanel>(1001);// m_TaskData.TalkID);
-
             float dir = -1;
             int groundY = -40;
             int itemId = -1;
             bool isFloat = false;
             float moveSpeed = 0;
             SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
-            //m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
         }
 
         if (Input.GetKeyDown(KeyCode.T))

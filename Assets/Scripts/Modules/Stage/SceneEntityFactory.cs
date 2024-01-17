@@ -27,14 +27,14 @@ public static class SceneEntityFactory
             return null;
         }
 
-        BaseSceneItem sceneItem = null;
-        ObjectType objectType = ObjectType.NONE;
+        ObjectType objectType;
+        BaseSceneItem sceneItem;
 
         if (sceneItemConfigData.type == 1)
         {
             EntityAttribute weaponAttribute = ReferencePool.Acquire<EntityAttribute>();
-            weaponAttribute.health = 1; //sceneItemConfigData.value;// hp;
-            weaponAttribute.maxHealth = 1;// sceneItemConfigData.value;
+            weaponAttribute.health = sceneItemConfigData.value;
+            weaponAttribute.maxHealth = sceneItemConfigData.value;
 
             sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;

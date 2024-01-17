@@ -85,6 +85,12 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsAnimation(string animName)
     {
+        if (m_Animator == null)
+        {
+            Log.LogError("Animator is invalid!");
+            return false;
+        }
+
         bool result = m_CurrAnimName.Equals(animName);
 
         if (m_Animator.animation.isCompleted)
@@ -97,6 +103,12 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void StopAnimation(string animName = null)
     {
+        if (m_Animator == null)
+        {
+            Log.LogError("Animator is invalid!");
+            return;
+        }
+
         if (string.IsNullOrEmpty(animName))
         {
             if (string.IsNullOrEmpty(m_CurrAnimName))
@@ -222,7 +234,6 @@ public abstract class BaseAvatar : BaseGravityObject
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
         m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
-
     }
 
     protected string m_CurrAnimName = string.Empty;

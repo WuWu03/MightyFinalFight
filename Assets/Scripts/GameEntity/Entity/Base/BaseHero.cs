@@ -375,11 +375,6 @@ public class BaseHero : BaseRole
         {
             m_Weapon.Release();
             m_Weapon = null;
-
-            //if (IsAnyState(typeof(RoleIdle)))
-            //{
-            //    PlayAnimation(AnimName.Idle);
-            //}
         }
     }
 
