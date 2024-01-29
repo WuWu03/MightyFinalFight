@@ -15,35 +15,35 @@ namespace GameFrameWork.Editor
             }
         }
 
-        protected int month
+        protected string month
         {
             get
             {
-                return DateTime.Now.Month;
+                return DateTime.Now.Month.ToString().PadLeft(2, '0');
             }
         }
 
-        protected int day
+        protected string day
         {
             get
             {
-                return DateTime.Now.Day;
+                return DateTime.Now.Day.ToString().PadLeft(2, '0');
             }
         }
 
-        protected int hour
+        protected string hour
         {
             get
             {
-                return DateTime.Now.Hour;
+                return DateTime.Now.Hour.ToString().PadLeft(2, '0');
             }
         }
 
-        protected int minute
+        protected string minute
         {
             get
             {
-                return DateTime.Now.Minute;
+                return DateTime.Now.Minute.ToString().PadLeft(2, '0');
             }
         }
 

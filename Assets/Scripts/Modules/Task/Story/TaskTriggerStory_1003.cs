@@ -2,7 +2,7 @@ using DG.Tweening;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
@@ -20,8 +20,8 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         m_BossState = false;
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.UpdatePosZ(0);
-        SoundMgr.instance.PauseBGM();
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
+        AudioMgr.instance.PauseBGM();
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/FallDownHigh");
         UIMgr.instance.Get<MainPanel>().Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;
@@ -66,7 +66,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
     private void MoveTo()
     {
-        SoundMgr.instance.StartBGM();
+        AudioMgr.instance.StartBGM();
         PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");

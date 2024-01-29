@@ -1,5 +1,6 @@
 ﻿using GameFrameWork.Pool;
 using GameFrameWork.Resources;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,7 @@ namespace GameFrameWork.UI
             }
 
             transform.SetParent(UIMgr.instance.GetUILayer(panelLayer), false);
+
             OnInit(param);
             m_IsInit = true;
             Open();
@@ -157,5 +159,6 @@ namespace GameFrameWork.UI
         private bool m_IsInit = false;
         private bool m_IsHide = false;
         private float m_DelayTime = 0f;
+
     }
 }

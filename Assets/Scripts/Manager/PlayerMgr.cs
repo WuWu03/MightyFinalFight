@@ -2,7 +2,7 @@
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
@@ -227,7 +227,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
             mainPanel.SetPlayerLevel();
-            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
+            AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
         }
 
         mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);

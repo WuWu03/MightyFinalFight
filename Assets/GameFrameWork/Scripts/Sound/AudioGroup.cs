@@ -1,7 +1,7 @@
 ﻿using GameFrameWork.Utilities;
 using UnityEngine;
 
-namespace GameFrameWork.Sound
+namespace GameFrameWork.Audio
 {
     public class AudioGroup :IReference
     {

@@ -136,14 +136,14 @@ public class TalkPanel : BasePanel
     private void OnItemUpdateEvent(TalkPanelComponent.TalkSelectItem item)
     {
         TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
-        item.txtSelect.text = talkConfigData.talkSelect[item.index].content;
+        item.txtSelect.text = talkConfigData.talkSelect[item.itemIndex].content;
     }
 
     private void OnItemSelectEvent(TalkPanelComponent.TalkSelectItem item, bool isSelect)
     {
 		if (isSelect)
 		{
-			m_SelectIndex = item.index;
+			m_SelectIndex = item.itemIndex;
         }
 
 		item.selectGO.SetActive(isSelect);

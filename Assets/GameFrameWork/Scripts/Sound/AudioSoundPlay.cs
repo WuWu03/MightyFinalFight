@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFrameWork.Sound
+namespace GameFrameWork.Audio
 {
     public class AudioSoundPlay
     {

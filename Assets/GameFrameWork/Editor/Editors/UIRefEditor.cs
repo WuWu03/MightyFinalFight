@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFrameWork.Editor
 {
@@ -130,21 +131,21 @@ namespace GameFrameWork.Editor
 
             if (m_UIRef.IsScrollRect())
             {
-                SerializedProperty isLoopLayout = EditorUtil.DrawProperty("循环列表", serializedObject, "m_IsLoopScroll", new GUILayoutOption[0]);
-                if (m_UIRef.isLoopScroll != isLoopLayout.boolValue)
+                SerializedProperty isLoopLayout = EditorUtil.DrawProperty("循环滚动", serializedObject, "m_IsScrollLayout", new GUILayoutOption[0]);
+                if (m_UIRef.isScrollLayout != isLoopLayout.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.isLoopScroll = isLoopLayout.boolValue;
+                    m_UIRef.isScrollLayout = isLoopLayout.boolValue;
                 }
 
-                if (m_UIRef.isLoopScroll && m_UIRef.GetComponent<EnhancedScroller>() == null)
+                if (m_UIRef.isScrollLayout && m_UIRef.GetComponent<ScrollLayoutGroupView>() == null)
                 {
-                    m_UIRef.gameObject.AddComponent<EnhancedScroller>();
+                    m_UIRef.gameObject.AddComponent<ScrollLayoutGroupView>();
                 }
             }
             else
             {
-                m_UIRef.isLoopScroll = false;
+                m_UIRef.isScrollLayout = false;
             }
 
             if (!m_UIRef.isLayoutItemVariable)

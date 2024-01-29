@@ -184,7 +184,7 @@ namespace GameFrameWork.Scene
                 return;
             }
 
-            if(isUnLoading)
+            if (isUnLoading)
             {
                 LoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
                 return;
@@ -380,15 +380,17 @@ namespace GameFrameWork.Scene
             m_LoadSceneSuccessEvent?.Invoke(successEventArgs);
             m_LoadSceneSuccessEvent = null;
             m_LoadSceneUpdateEvent = null;
+            m_LoadSceneFailureEvent = null;
             ReferencePool.Release(successEventArgs);
         }
 
         private void LoadSceneFailure(string sceneName, string errorMessage, object[] args)
         {
             LoadSceneFailureEventArgs failureEventArgs = LoadSceneFailureEventArgs.Create(sceneName, errorMessage, args);
+            m_LoadSceneSuccessEvent = null;
+            m_LoadSceneUpdateEvent = null;
             m_LoadSceneFailureEvent?.Invoke(failureEventArgs);
             m_LoadSceneFailureEvent = null;
-            m_LoadSceneUpdateEvent = null;
             ReferencePool.Release(failureEventArgs);
         }
 

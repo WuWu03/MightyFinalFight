@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork.UI;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using TMPro;
 
@@ -104,7 +104,7 @@ public class TitlePanel : BasePanel
 		sequence.Append(m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
 		sequence.InsertCallback(10.2f, () =>
 		{
-			SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/BicycleKick");
+			AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/BicycleKick");
 		});
 		sequence.AppendCallback(() =>
 		{
@@ -117,7 +117,7 @@ public class TitlePanel : BasePanel
 		sequence.AppendCallback(() =>
 		{
 			m_Component.imgStar.gameObject.SetActive(true);
-			SoundMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm13Title", false);
+			AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm13Title", false);
 		});
 		sequence.AppendInterval(0.1f);
 		sequence.Append(m_Component.imgStar.DOFade(1, 1f));

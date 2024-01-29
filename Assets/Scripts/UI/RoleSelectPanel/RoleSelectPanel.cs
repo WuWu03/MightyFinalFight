@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using GameFrameWork.UI;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using GameFrameWork;
 
@@ -27,15 +27,15 @@ public class RoleSelectPanel : BasePanel
         m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
     }
 
-    protected override void OnOpen()
-    {
+	protected override void OnOpen()
+	{
 		m_HasSelect = false;
 		m_Component.imgSelectRect.gameObject.SetActive(true);
 		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 
-		SoundMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm14Character", true);
-    }
+		AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm14Character", true);
+	}
 
     protected override void OnUpdate()
     {
@@ -60,7 +60,7 @@ public class RoleSelectPanel : BasePanel
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-			SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
+			AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -82,7 +82,7 @@ public class RoleSelectPanel : BasePanel
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{
-		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.index];
+		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.itemIndex];
 
 		item.txtDesc.text = roleSelectConfigData.desc;
 		item.txtName.text = roleSelectConfigData.name;
@@ -95,7 +95,7 @@ public class RoleSelectPanel : BasePanel
 		{
 			m_Component.imgSelectRect.SetParent(item.btnRoleIcon.transform, false);
 			m_Component.imgSelectRect.localPosition = Vector3.zero;
-			m_CurrSelectIndex = item.index;
+			m_CurrSelectIndex = item.itemIndex;
 		}
 	}
 
@@ -103,8 +103,8 @@ public class RoleSelectPanel : BasePanel
 	{
         m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
 
-        SoundMgr.instance.StopBGM();
-		SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
+        AudioMgr.instance.StopBGM();
+		AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();

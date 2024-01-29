@@ -1,6 +1,6 @@
 ﻿using DragonBones;
 using GameFrameWork;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using UnityEngine;
 
 public class Weapon : BaseSceneItem
@@ -29,7 +29,7 @@ public class Weapon : BaseSceneItem
     {
         m_Owner = owner;
         gameObject.SetActive(false);
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
     }
 
     protected override void OnUpdate()

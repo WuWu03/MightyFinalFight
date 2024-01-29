@@ -4,7 +4,7 @@ using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Map;
 using GameFrameWork.Scene;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
@@ -176,7 +176,7 @@ public class StageMgr : BaseMgr<StageMgr>
                 groups[i] = AudioGroup.Create(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
             }
 
-            SoundMgr.instance.PlayBGMGroup(groups, true);
+            AudioMgr.instance.PlayBGMGroup(groups, true);
         }
 
         if (UIMgr.instance.Get<MainPanel>() == null)

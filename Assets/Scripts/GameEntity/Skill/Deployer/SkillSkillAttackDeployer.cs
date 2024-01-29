@@ -1,5 +1,5 @@
 ﻿using DragonBones;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using UnityEngine;
 using static SkillConfigData;
 
@@ -55,7 +55,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
     }
 
     public override void OnExit()

@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using GameFrameWork.UI;
 using DragonBones;
+using GameFrameWork;
 
 public class Test : MonoBehaviour
 {
@@ -74,7 +75,8 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            gameObject.GetComponent<UnityArmatureComponent>().animation.GotoAndStopByFrame("Attack1", 1);
+            //Debug.Log(GetComponent<GridLayoutGroup>().constraintCount);
+            //gameObject.GetComponent<UnityArmatureComponent>().animation.GotoAndStopByFrame("Attack1", 1);
         }
     }
 

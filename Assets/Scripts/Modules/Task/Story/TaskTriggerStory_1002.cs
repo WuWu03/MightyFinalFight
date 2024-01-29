@@ -1,5 +1,5 @@
 using GameFrameWork.GameEntity;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.Utilities;
 using System;
@@ -50,7 +50,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         });
 
         PlayerMgr.instance.player.PlayAnimation(AnimName.JumpDown);
-        SoundMgr.instance.FadeBGM(0, 0.3f, 0.7f);
+        AudioMgr.instance.FadeBGM(0, 0.3f, 0.7f);
         PlayerMgr.instance.player.transform.DOLocalMoveY(-0.85f, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
             SceneMgr.instance.loadSceneSuccessEvent += OnSceneLoaded;
@@ -61,8 +61,8 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
 
     private void OnSceneLoaded(LoadSceneSuccessEventArgs t)
     {
-        SoundMgr.instance.PauseBGM();
-        SoundMgr.instance.FadeBGM(1, 0, 0.1f);
+        AudioMgr.instance.PauseBGM();
+        AudioMgr.instance.FadeBGM(1, 0, 0.1f);
         UIMgr.instance.Get<MainPanel>().Hide();
     }
 

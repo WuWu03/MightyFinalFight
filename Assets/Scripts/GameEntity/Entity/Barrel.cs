@@ -1,6 +1,6 @@
 ﻿using DragonBones;
 using GameFrameWork.Fsm;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using UnityEngine;
 using static SkillConfigData;
 
@@ -85,7 +85,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     public void OnHurtMsg(HurtData data)
     {
         m_EntityAttribute.SubHealth(data.attackValue);
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnHit");
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnHit");
 
         if (isDead)
         {
@@ -143,7 +143,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             {
                 SetTrigger(AnimName.Move);
                 m_FsmMachine.Start<BarrelMove>();
-                SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
+                AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
             }
             else
             {

@@ -1,4 +1,4 @@
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        SoundMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm15Clear", false);
+        AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm15Clear", false);
 
         PlayerMgr.instance.player.currCtrl.Move(Vector2.zero);
         UIMgr.instance.Open<RoundClearPanel>();

@@ -1,7 +1,7 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.Utilities;
 using System.Collections;
@@ -350,7 +350,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         roleJump.isCatch = data.isCatch;
 
         ChangeState<RoleJump>();
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
@@ -486,7 +486,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!data.isNotPlayHurtSound)
         {
             string hurtSound = string.IsNullOrEmpty(data.hurtSound) ? SoundName.DefaultHurt : data.hurtSound;
-            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
+            AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
         }
 
         m_EntityAttribute.SubHealth(data.attackValue);
@@ -573,7 +573,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (!m_EntityAttribute.IsDie())
             {
                 ChangeDefaultState();
-                SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultDrop);
+                AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultDrop);
             }
             else
             {

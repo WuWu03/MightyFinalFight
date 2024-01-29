@@ -135,13 +135,13 @@ namespace GameFrameWork.GameEntity
 
         public void DestroyAll()
         {
-            Dictionary < Type,Queue < BaseEntity >>.Enumerator enumerator = m_DicUnUsedEntity.GetEnumerator();
+            Dictionary<Type, Queue<BaseEntity>>.Enumerator enumerator = m_DicUnUsedEntity.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
                 Queue<BaseEntity> unUsedQueue = enumerator.Current.Value;
 
-                while(unUsedQueue.Count > 0)
+                while (unUsedQueue.Count > 0)
                 {
                     DestroyEntity(unUsedQueue.Dequeue());
                 }

@@ -7,7 +7,7 @@ using GameFrameWork.Input;
 using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using GameFrameWork.Scene;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
@@ -33,7 +33,7 @@ namespace GameFrameWork
             EntityMgr.Init(m_Manager);
             FsmMgr.Init(m_Manager);
             CameraMgr.Init(m_Manager);
-            SoundMgr.Init(m_Manager);
+            AudioMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
             ResourcesPool.Init(m_Manager);
@@ -55,7 +55,7 @@ namespace GameFrameWork
             EntityMgr.instance.ShutDown();
             FsmMgr.instance.ShutDown();
             CameraMgr.instance.ShutDown();
-            SoundMgr.instance.ShutDown();
+            AudioMgr.instance.ShutDown();
             EventMgr.instance.ShutDown();
             SceneMgr.instance.ShutDown();
             ReferencePool.ClearAll();

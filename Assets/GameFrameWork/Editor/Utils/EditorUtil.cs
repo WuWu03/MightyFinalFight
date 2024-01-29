@@ -59,7 +59,6 @@ namespace GameFrameWork.Editor
 			}
 		}
 
-
 		public static string GetHierarchy(GameObject obj)
 		{
 			if (obj == null) return "";
@@ -70,6 +69,7 @@ namespace GameFrameWork.Editor
 				obj = obj.transform.parent.gameObject;
 				path = obj.name + "\\" + path;
 			}
+
 			return path;
 		}
 

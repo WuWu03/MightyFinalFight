@@ -6,27 +6,33 @@ namespace GameFrameWork.UI
 {
     public abstract class LayoutGroupViewItem
     {
-        public int id
+        public virtual int id
         {
             get
             {
-                return m_Index + 1;
+                return m_ItemIndex + 1;
             }
         }
 
-        public int index 
+        public int itemIndex 
+        {
+            get;
+            set;
+        }
+
+        public bool isActive
         {
             get
             {
-                return m_Index;
+                return m_IsActive;
             }
         }
 
-        public virtual ButtonEx selectButton
+        public ButtonEx selectButton
         {
             get
             {
-                return m_MyButton;
+                return m_SelectButton;
             }
         }
 
@@ -54,26 +60,48 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void Create(GameObject go,int index)
+        public void Create(GameObject go)
         {
             m_GameObject = go;
             m_Transform = go.transform;
             m_RectTransform = go.GetComponent<RectTransform>();
-            m_Index = index;
+            m_GameObject.SetActive(m_IsActive);
             OnCreate(go);
         }
 
-        public void UpdateIndex(int index)
+        public void SetActive(bool isAcitve)
         {
-            m_Index = index;
+            m_IsActive = isAcitve;
+
+            if (m_GameObject != null)
+            {
+                m_GameObject.SetActive(isAcitve);
+            }
+        }
+
+        public virtual void ReleaseItem()
+        {
+            m_GameObject = null;
+            m_Transform = null;
+            m_RectTransform = null;
+            m_ItemIndex = 0;
+            m_IsActive = false;
+
+            if (m_SelectButton != null)
+            {
+                m_SelectButton.onClick.RemoveAllListeners();
+                m_SelectButton = null;
+            }
         }
 
         protected abstract void OnCreate(GameObject go);
 
-        private int m_Index = 0;
+        private int m_ItemIndex = 0;
+        private bool m_IsActive = false;
+
         private GameObject m_GameObject;
         private Transform m_Transform;
         private RectTransform m_RectTransform;
-        protected ButtonEx m_MyButton = null;
+        protected ButtonEx m_SelectButton = null;
     }
 }

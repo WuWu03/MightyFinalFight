@@ -4,7 +4,7 @@
 /*******************************************************/
 using DragonBones;
 using GameFrameWork.Resources;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
@@ -54,7 +54,7 @@ public class StagePanel : BasePanel
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
         m_Role.SetActive(true);
 
-        SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
+        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
 		Timer.Register(roleSelectConfig.showTime, OnTimer);
     }
 

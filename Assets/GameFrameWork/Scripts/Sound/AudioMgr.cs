@@ -5,9 +5,9 @@ using UnityEngine;
 using DG.Tweening;
 using GameFrameWork.Utilities;
 
-namespace GameFrameWork.Sound
+namespace GameFrameWork.Audio
 {
-    public class SoundMgr : BaseMgr<SoundMgr>
+    public class AudioMgr : BaseMgr<AudioMgr>
     {
         public event GameFrameWorkAction onBGMFadeCompleteEvent
         {

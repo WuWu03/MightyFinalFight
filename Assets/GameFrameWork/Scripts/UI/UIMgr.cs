@@ -128,9 +128,9 @@ namespace GameFrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-        public T Open<T>(params object[] param) where T : BasePanel, new()
+        public T Open<T>(params object[] args) where T : BasePanel, new()
         {
-            BasePanel panel = RealOpen(typeof(T).Name, param);
+            BasePanel panel = RealOpen(typeof(T).Name, args);
             if (panel == null)
             {
                 return default(T);
@@ -138,9 +138,9 @@ namespace GameFrameWork.UI
             return panel as T;
         }
 
-        public BasePanel Open(string panelName, params object[] param)
+        public BasePanel Open(string panelName, params object[] args)
         {
-            return RealOpen(panelName, param);
+            return RealOpen(panelName, args);
         }
 
         public T Get<T>() where T : BasePanel
@@ -199,7 +199,7 @@ namespace GameFrameWork.UI
             ClosePanel(panel.panelName, isForceDestroy);
         }
 
-        private BasePanel RealOpen(string panelName, object[] param)
+        private BasePanel RealOpen(string panelName, object[] args)
         {
             System.Type type = System.Type.GetType(panelName);
 
@@ -235,7 +235,7 @@ namespace GameFrameWork.UI
 
             if (!panel.isInit)
             {
-                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, param));
+                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, args));
             }
             else if (!panel.isOpen)
             {

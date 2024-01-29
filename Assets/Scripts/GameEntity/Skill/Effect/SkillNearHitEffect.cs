@@ -1,6 +1,6 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

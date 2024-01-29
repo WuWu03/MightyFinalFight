@@ -2,9 +2,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFrameWork.Editor
 {
@@ -13,7 +15,7 @@ namespace GameFrameWork.Editor
         public override void Export(UIRef[] uiRefs, UIRefSetting setting)
         {
             ExportComponent(uiRefs, setting);
-            ExportPanel(uiRefs, setting);
+            ExportPanel(setting);
         }
 
         public override string CopyRef(UIRef[] uiRefs)
@@ -34,8 +36,8 @@ namespace GameFrameWork.Editor
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}**************************************/\r\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By GQY****************************************/");
+            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}*************************************/\r\n", year, month, day, hour, minute);
+            sb.AppendLine("/**Create By WuWu***************************************/");
             sb.AppendLine("/**工具生成，请勿修改************************************/");
             sb.AppendLine("/*******************************************************/");
             sb.AppendLine("using System.Collections;");
@@ -70,7 +72,12 @@ namespace GameFrameWork.Editor
 
             for (int i = 0; i < layoutRefList.Count; i++)
             {
-                string layoutName = layoutRefList[i].isLoopScroll ? "LayoutGroupLoopView" : "LayoutGroupView";
+                if (IsScrollLayout(layoutRefList[i]))
+                {
+                    continue;
+                }
+
+                string layoutName = "LayoutGroupView";
                 string itemName = layoutRefList[i].GetName(true) + "Item";
                 string itemVarableName = layoutRefList[i].GetName() + "GroupView";
                 sb.AppendFormat("\tpublic {0}<{1}> {2}", layoutName, itemName, itemVarableName);
@@ -90,9 +97,14 @@ namespace GameFrameWork.Editor
             }
 
             for (int i = 0; i < layoutRefList.Count; i++)
-            {  
+            {
+                if (IsScrollLayout(layoutRefList[i]))
+                {
+                    continue;
+                }
+
                 string itemVarableName = layoutRefList[i].GetName() + "GroupView";
-                string layoutName = layoutRefList[i].isLoopScroll ? "LayoutGroupLoopView" : "LayoutGroupView";
+                string layoutName = "LayoutGroupView";
                 string itemName = layoutRefList[i].GetName(true) + "Item";
                 sb.AppendFormat("\t\t{0} = new {1}<{2}>();\r\n", itemVarableName, layoutName, itemName);
             }
@@ -109,7 +121,7 @@ namespace GameFrameWork.Editor
             FileUtil.CreateTextFile(setting.panelComponentPath, sb.ToString());
         }
 
-        private void ExportPanel(UIRef[] uiRefs, UIRefSetting setting)
+        private void ExportPanel(UIRefSetting setting)
         {
             if (File.Exists(setting.panelPath))
             {
@@ -168,18 +180,18 @@ namespace GameFrameWork.Editor
             FileUtil.CreateTextFile(setting.panelPath, sb.ToString());
         }
 
-        private static void GenCSharpLayout(UIRef uiRef, StringBuilder sb)
+        private void GenCSharpLayout(UIRef uiRef, StringBuilder sb)
         {
-            UIRef[] itemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
+            UIRef[] childrenItemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
             UIRef itemRef = null;
             string itemName = string.Empty;
 
-            for (int i = 0; i < itemRefs.Length; i++)
+            for (int i = 0; i < childrenItemRefs.Length; i++)
             {
-                if (itemRefs[i].isLayoutItem)
+                if (childrenItemRefs[i].isLayoutItem)
                 {
-                    itemRef = itemRefs[i];
-                    itemName = itemRefs[i].gameObject.name;
+                    itemRef = childrenItemRefs[i];
+                    itemName = childrenItemRefs[i].gameObject.name;
                     break;
                 }
             }
@@ -189,36 +201,55 @@ namespace GameFrameWork.Editor
                 return;
             }
 
+            string layoutViewItemClassName = IsScrollLayout(uiRef) ? "ScrollLayoutGroupViewItem" : "LayoutGroupViewItem";
             sb.AppendLine();
-            sb.AppendFormat("\tpublic class {0} : LayoutGroupViewItem\r\n", uiRef.GetName(true) + "Item");
+            sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", layoutViewItemClassName);
             sb.AppendLine("\t{");
 
-            for (int i = 0; i < itemRefs.Length; i++)
+            for (int i = 0; i < childrenItemRefs.Length; i++)
             {
-                if (!itemRefs[i].isLayoutItemVariable) continue;
-                sb.AppendFormat("\t\tpublic {0} {1} = null;\r\n", itemRefs[i].componentName, itemRefs[i].GetName());
+                if (!childrenItemRefs[i].isLayoutItemVariable) continue;
+                sb.AppendFormat("\t\tpublic {0} {1} = null;\r\n", childrenItemRefs[i].componentName, childrenItemRefs[i].GetName());
             }
 
             sb.AppendLine("\t\tprotected override void OnCreate(GameObject go)");
             sb.AppendLine("\t\t{");
 
-            for (int i = 0; i < itemRefs.Length; i++)
+            for (int i = 0; i < childrenItemRefs.Length; i++)
             {
-                if (!itemRefs[i].isLayoutItemVariable) continue;
-                string path = EditorUtil.GetHierarchy(itemRefs[i].gameObject);
+                if (!childrenItemRefs[i].isLayoutItemVariable) continue;
+                string path = EditorUtil.GetHierarchy(childrenItemRefs[i].gameObject);
                 path = path.Substring(path.LastIndexOf(itemName) + itemName.Length + 1).Replace(@"\", "/");
-                if (itemRefs[i].componentName.Equals("GameObject"))
+
+                if (childrenItemRefs[i].componentName.Equals("GameObject"))
                 {
-                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").gameObject;\r\n", itemRefs[i].GetName(), path);
+                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").gameObject;\r\n", childrenItemRefs[i].GetName(), path);
                 }
                 else
                 {
-                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\r\n", itemRefs[i].GetName(), path, itemRefs[i].componentName);
+                    sb.AppendFormat("\t\t\t{0} = transform.Find(\"{1}\").GetComponent<{2}>();\r\n", childrenItemRefs[i].GetName(), path, childrenItemRefs[i].componentName);
                 }
             }
 
             sb.AppendLine("\t\t}");
             sb.AppendLine("\t}");
+        }
+
+        private bool IsScrollLayout(UIRef uiRef)
+        {
+            ScrollRect parentScroll = uiRef.GetComponentInParent<ScrollRect>();
+
+            if (parentScroll != null)
+            {
+                UIRef parentUIRef = parentScroll.GetComponent<UIRef>();
+
+                if (parentUIRef != null && parentUIRef.isScrollLayout)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private string GetComment(UIRef uiRef)

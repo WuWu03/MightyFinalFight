@@ -1,5 +1,5 @@
 ﻿using GameFrameWork.GameEntity;
-using GameFrameWork.Sound;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.Utilities;
 using UnityEngine;
@@ -21,7 +21,7 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
         Timer.Register(1, () =>
         {
             SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").SetActive(false);
-            SoundMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Break");
+            AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Break");
         });
 
         Timer.Register(2, () => 
