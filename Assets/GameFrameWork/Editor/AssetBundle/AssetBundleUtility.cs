@@ -53,14 +53,12 @@ namespace GameFrameWork.Editor
 
         private static int IsAssetInBuildMap(string assetPath)
         {
-            int result = 0;
-
             if (m_AssetBundleConfig == null)
             {
-                return result;
+                return 0;
             }
 
-            if (!m_DicAssetContainer.TryGetValue(assetPath, out result))
+            if (!m_DicAssetContainer.TryGetValue(assetPath, out int result))
             {
                 for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
                 {

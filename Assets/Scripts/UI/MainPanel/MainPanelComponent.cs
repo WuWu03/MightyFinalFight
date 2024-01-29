@@ -1,6 +1,6 @@
 /*******************************************************/
-/**2023-11-30 15:14**************************************/
-/**Create By GQY****************************************/
+/**2024-01-29 16:32*************************************/
+/**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
@@ -10,17 +10,17 @@ using UnityEngine.UI;
 using GameFrameWork.UI;
 public class MainPanelComponent : BasePanelComponent
 {
-	//player/playerHpBar,Slider
+	//bg/top/player/playerHpBar,Slider
 	public Slider playerHpBar { get; private set; }
-	//player/playerHpBar/playerHpBarImage,Image
+	//bg/top/player/playerHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage { get; private set; }
-	//enemy/enemyHpBar,Slider
+	//bg/top/enemy/enemyHpBar,Slider
 	public Slider enemyHpBar { get; private set; }
-	//enemy/enemyHpBar/playerHpBarImage,Image
+	//bg/top/enemy/enemyHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage1 { get; private set; }
-	//state/txtStage,Text
+	//bg/top/state/txtStage,Text
 	public Text txtStage { get; private set; }
-	//playerLife/txtPlayerLife,Text
+	//bg/top/playerLife/txtPlayerLife,Text
 	public Text txtPlayerLife { get; private set; }
 	//level/levelList,GameObject
 	public GameObject levelList { get; private set; }

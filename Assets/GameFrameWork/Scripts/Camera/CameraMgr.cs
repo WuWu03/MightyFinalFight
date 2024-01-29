@@ -37,7 +37,9 @@ namespace GameFrameWork.Camera
             m_ListCamera.Add(InitCamera("MapCamera", CameraDepthDefine.MapCamera, "MainCamera", MaskName.Map));
             m_ListCamera.Add(InitCamera("RoleCamera", CameraDepthDefine.RoleCamera, maskName: MaskName.Unit));
 
-            m_CameraFollow.camera = UnityEngine.Camera.main;
+            m_CameraFollow.camera = m_ListCamera[0];
+
+            AllowAxisFollow(true, true);
             DontDestroyOnLoad(m_CameraRoot);
         }
 
@@ -52,6 +54,16 @@ namespace GameFrameWork.Camera
             }
 
             return null;
+        }
+
+        public void SetOrthographicSize(float orthographicSize)
+        {
+            for (int i = 0; i < m_ListCamera.Count; i++)
+            {
+                m_ListCamera[i].orthographicSize = orthographicSize;
+            }
+
+            m_CameraFollow.UpdateOrthographicSize();
         }
 
         public void SetTarget(Transform target)
@@ -105,6 +117,12 @@ namespace GameFrameWork.Camera
             return m_ListCamera[0].WorldToScreenPoint(worldPos);
         }
 
+        public void AllowAxisFollow(bool xFollow,bool yFollow)
+        {
+            m_CameraFollow.allowXAxisFollow = xFollow;
+            m_CameraFollow.allowYAxisFollow = yFollow;
+        }
+
         private void OnShakeComplete()
         {
             if (!m_IsForceEnd)
@@ -121,7 +139,7 @@ namespace GameFrameWork.Camera
 
             camera.tag = tag;
             camera.orthographic = true;
-            camera.orthographicSize = GetOrthgraphicSize();
+            camera.orthographicSize = Screen.height / 200f;
             camera.nearClipPlane = -500;
             camera.farClipPlane = 500;
             camera.depth = depth;
@@ -131,33 +149,13 @@ namespace GameFrameWork.Camera
             return camera;
         }
 
-        public float GetOrthgraphicSize()
-        {
-            float screenRate = (float)Screen.width / Screen.height;
-            float sizeRate = screenRate / NormalRate;
-
-            if (sizeRate < 1)
-            {
-                sizeRate = 1;
-            }
-
-            if (sizeRate > 1)
-            {
-                sizeRate = NormalRate / screenRate;
-            }
-
-            return 1;// sizeRate * NormalSize / 100;
-        }
-
         protected override void OnShutDown()
         {
             m_ListCamera.Clear();
         }
 
-        private const float NormalRate = 1280f / 720f;
-        private const float NormalWidth = 1280f;
-        private const float NormalHeight = 720f;
-        private const float NormalSize = 100;
+        private const float NormalWidth = 1920f;
+        private const float NormalHeight = 1080;
 
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;

@@ -22,6 +22,8 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnStartGame()
     {
+        CameraMgr.instance.SetOrthographicSize(1.0f);
+        CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
         UIMgr.instance.Open<RoleSelectPanel>();
     }

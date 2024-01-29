@@ -10,34 +10,43 @@ namespace GameFrameWork.Map
         private delegate float GetDistance(Vector2Int a, Vector2Int b);//获取h值(距离)
         private delegate Vector2Int[] GetNeighbors(Vector2Int pos);//获取周边的点
 
-        private class Node : IComparable
+        private class Node : IComparable<Node>
         {
             public Node parent;
             public Vector2Int pos;
             public float f;
-            public float h;
             public float g;
+            public float h;
             public bool open = true;
 
             public Node(Node parent, Vector2Int pos, float h, float g)
             {
                 this.parent = parent;
                 this.pos = pos;
-                this.h = h;
+                this.f = g + h;
                 this.g = g;
-                this.f = h + g;
+                this.h = h;
                 this.open = true;
             }
 
-            public int CompareTo(object obj)
+            public int CompareTo(Node target)
             {
-                if (obj == null)
+                if (target == null)
                 {
-                    return 1;
+                    return 0;
                 }
 
-                Node temp = obj as Node;
-                return this.f > temp.f ? 1 : -1;
+                if (this.f == target.f)
+                {
+                    if (this.g == target.g)
+                    {
+                        return 0;
+                    }
+
+                    return this.g > target.g ? -1 : 1;
+                }
+
+                return this.f < target.f ? -1 : 1;
             }
         }
 
@@ -103,6 +112,7 @@ namespace GameFrameWork.Map
 
             return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, getNeighbors);
         }
+
         /*六边形x轴排列astar
          * 00    20    40
          * 

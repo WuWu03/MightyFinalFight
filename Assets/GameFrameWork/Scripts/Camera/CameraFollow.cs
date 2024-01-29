@@ -11,12 +11,6 @@ namespace GameFrameWork.Camera
 
     public class CameraFollow : MonoBehaviour
     {
-        class MapBorder
-        {
-            public float left;
-            public float right;
-        }
-
         public float speed
         {
             get
@@ -65,6 +59,18 @@ namespace GameFrameWork.Camera
             }
         }
 
+        public bool allowXAxisFollow
+        {
+            get;
+            set;
+        }
+
+
+        public bool allowYAxisFollow
+        {
+            get;
+            set;
+        }
 
         public void SetTarget(Transform target)
         {
@@ -73,16 +79,24 @@ namespace GameFrameWork.Camera
 
         public Rect GetVision()//获取当前摄像机的视野范围 左 右 下 上
         {
-            m_VisionRect.width = Screen.width * m_CurrAspectRate;
-            m_VisionRect.height = Screen.height * m_CurrAspectRate;
-            m_VisionRect.xMin = transform.position.x - Screen.width * m_CurrAspectRate / 100 / 2;
-            m_VisionRect.xMax = transform.position.x + Screen.width * m_CurrAspectRate / 100 / 2;
-            m_VisionRect.yMin = transform.position.y - Screen.height * m_CurrAspectRate / 100 / 2;
-            m_VisionRect.yMax = transform.position.y + Screen.height * m_CurrAspectRate / 100 / 2;
+            float aspectRate = (float)Screen.width / Screen.height;
+            float orthographicSize = m_Camera.orthographicSize;
+
+            m_VisionRect.width = aspectRate * orthographicSize * 2;
+            m_VisionRect.height = orthographicSize * 2;
+            m_VisionRect.xMin = transform.position.x - aspectRate * orthographicSize;
+            m_VisionRect.xMax = transform.position.x + aspectRate * orthographicSize;
+            m_VisionRect.yMin = transform.position.y - orthographicSize;
+            m_VisionRect.yMax = transform.position.y + orthographicSize;
             return m_VisionRect;
         }
 
-        public void SetFollowSize(int width, int height, float orthographicSize = 0)
+        public void UpdateOrthographicSize()
+        {
+            SetFollowSize(m_MapWidth, m_MapHeight);
+        }
+
+        public void SetFollowSize(int width, int height)
         {
             if (m_Target == null)
             {
@@ -90,23 +104,21 @@ namespace GameFrameWork.Camera
                 return;
             }
 
-            if (orthographicSize <= 0)
+            if(width <= 0 || height <= 0)
             {
-                if (m_Camera)
-                {
-                    orthographicSize = m_Camera.orthographicSize;
-                }
+                return;
             }
 
-            m_CurrAspectRate = orthographicSize / (Screen.height / 2f / 100f);
-            m_XBorder.left = -(float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
-            m_XBorder.right = (float)(width - Screen.width * m_CurrAspectRate) / 100 / 2;
+            m_MapWidth = width;
+            m_MapHeight = height;
 
-            //float a = (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
-            //float b = -(float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
+            float aspectRate = (float)Screen.width / Screen.height;
+            float orthographicSize = m_Camera.orthographicSize;
 
-            m_YBorder.left = 0;// (float)(height - Screen.height * m_CurrAspectRate) / 100 / 2;
-            m_YBorder.right = 0;//(float)(-height + Screen.height * m_CurrAspectRate) / 100 / 2;
+            m_Border.xMin = -width / 200f + orthographicSize * aspectRate;
+            m_Border.xMax = width / 200f - orthographicSize * aspectRate;
+            m_Border.yMin = -height / 200f + orthographicSize;
+            m_Border.yMax = height / 200f - orthographicSize * aspectRate;
 
             if (m_Target != null)
             {
@@ -158,23 +170,38 @@ namespace GameFrameWork.Camera
 
         private Vector3 GetClampPos(Vector3 targetPos)
         {
-            m_CameraClamp.x = Mathf.Clamp(targetPos.x, m_XBorder.left > targetPos.x ? m_XBorder.left : targetPos.x, m_XBorder.right < targetPos.x ? m_XBorder.right : targetPos.x);
-            m_CameraClamp.y = Mathf.Clamp(targetPos.y, m_YBorder.left > targetPos.y ? m_YBorder.left : targetPos.y, m_YBorder.right < targetPos.y ? m_YBorder.right : targetPos.y);
-            m_CameraClamp.z = 0;
+            if (allowXAxisFollow)
+            {
+                m_CameraClamp.x = Mathf.Clamp(targetPos.x, m_Border.xMin > targetPos.x ? m_Border.xMin : targetPos.x, m_Border.xMax < targetPos.x ? m_Border.xMax : targetPos.x);
+            }
+            else
+            {
+                m_CameraClamp.x = 0;
+            }
 
+            if (allowYAxisFollow)
+            {
+                m_CameraClamp.y = Mathf.Clamp(targetPos.y, m_Border.yMin > targetPos.y ? m_Border.yMin : targetPos.y, m_Border.yMax < targetPos.y ? m_Border.yMax : targetPos.y);
+            }
+            else
+            {
+                m_CameraClamp.y = 0;
+            }
+
+            m_CameraClamp.z = 0;
             return m_CameraClamp;
         }
 
         private Rect m_VisionRect = Rect.zero;
         private Vector3 m_CameraClamp = Vector3.zero;
         private FollowMode m_FollowMode = FollowMode.Just;
-        private float m_CurrAspectRate = 0f;
         private float m_InitSpeed = 0.5f;
         private float m_Delta = 1f;
         private bool m_IsStart = false;
         private UnityEngine.Camera m_Camera = null;
         private Transform m_Target = null;
-        private MapBorder m_XBorder = new MapBorder();
-        private MapBorder m_YBorder = new MapBorder();
+        private int m_MapWidth = 0;
+        private int m_MapHeight = 0;
+        private Rect m_Border = Rect.zero;
     }
 }

@@ -26,13 +26,13 @@ public class TaskTriggerCreateTargets : BaseTaskTrigger
             }
             else
             {
-                int sourceId = 2003;// m_TaskData.Targets[i].SourceID;
+                int sourceId = m_TaskData.Targets[i].SourceID;
                 int hp = m_TaskData.Targets[i].Hp;
                 int attack = m_TaskData.Targets[i].AttackValue;
                 int defense = m_TaskData.Targets[i].DefenseValue;
                 int hpBarWidth = m_TaskData.Targets[i].HpBarWidth;
                 SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
-                break;
+                //break;
             }
         }
 
