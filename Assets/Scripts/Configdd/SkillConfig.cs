@@ -49,7 +49,6 @@ public class SkillConfigData : BaseConfigData
         GroundNotCatch,//着陆且没有抓人
         HPMoreThan,//hp大于
         HPLessThan,//hp小于
-
     }
 
     public enum SkillType

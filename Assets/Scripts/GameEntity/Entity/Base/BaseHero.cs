@@ -174,6 +174,7 @@ public class BaseHero : BaseRole
             {
                 ResetCatch(false);
             }
+
             return;
         }
 
@@ -284,7 +285,6 @@ public class BaseHero : BaseRole
         base.OnDropTragMsg(data);
         CameraMgr.instance.EndFollow();
     }
-
 
     public override void SetPos(Vector2 pos, float posZ, bool caculateZ = false)
     {

@@ -31,6 +31,8 @@ namespace GameFrameWork.Fsm
             }
         }
 
+
+
         public FsmMachine CreateFsm(System.Object owner, string name, params BaseFsmState[] fsmStates)
         {
             if (HasFsm(owner))

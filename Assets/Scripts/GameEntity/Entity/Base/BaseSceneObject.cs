@@ -128,15 +128,24 @@ public class BaseSceneObject : BaseEntity
             m_ResPath = null;
         }
 
+        if(m_Data != null)
+        {
+            ReferencePool.Release(m_Data);
+            m_Data = null;
+        }
+
         if (m_EntityAttribute != null)
         {
             ReferencePool.Release(m_EntityAttribute);
+            m_EntityAttribute = null;
         }
+
     }
 
     public virtual void SetData(BaseSceneObjectData data)
     {
         m_EntityId = data.entityId;
+        m_Data = data;
     }
 
     public void SetAttribute(EntityAttribute attribute)
@@ -340,8 +349,15 @@ public class BaseSceneObject : BaseEntity
         OnLateUpdate();
     }
 
+    protected override void FixedUpdate()
+    {
+        OnFixedUpdate();
+    }
+
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
+
+    protected virtual void OnFixedUpdate() { }
     protected virtual void OnResComplete(GameObject go, object[] param) { }
     protected virtual void OnTriggerEnter2D(Collider2D collision) { }
     protected virtual void OnTriggerStay2D(Collider2D collision) { }
@@ -363,4 +379,5 @@ public class BaseSceneObject : BaseEntity
     protected GameObject m_ResGO;
     protected EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
+    private IReference m_Data = null;
 }

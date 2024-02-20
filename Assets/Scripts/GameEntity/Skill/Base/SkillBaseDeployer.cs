@@ -27,7 +27,7 @@ public abstract class SkillBaseDeployer
         m_Owner = owner;
         m_SkillData = StaticConfig.SkillConfig.GetData(skillId);
         m_SkillSelectors = SkillFactory.CreateSelector(m_SkillData, owner);
-        m_SkillEffects = SkillFactory.CreateEffects(m_SkillData, owner);
+        m_SkillEffects = SkillFactory.CreateEffects(this, m_SkillData, owner);
         m_ListGroundEffect = new List<int>();
     }
 
@@ -118,7 +118,7 @@ public abstract class SkillBaseDeployer
         return result;
     }
 
-    public virtual void OnExit()
+    public virtual void Exit()
     {
         for (int i = 0; i < m_SkillEffects.Length; i++)
         {

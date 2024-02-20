@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class SkillTargetTransformEffect : SkillBaseEffect
 {
-    public SkillTargetTransformEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillTargetTransformEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
 
     public override void Effect(ISkillSelector selector)
     {
         List<ICanBeHit> targets = m_Owner.OnHitStart();
 
-        if (targets == null || targets.Count < 1)
+        if (targets == null || targets.Count < 1)   
         {
             Complete();
             return;

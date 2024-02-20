@@ -2,6 +2,7 @@
 using GameFrameWork;
 using GameFrameWork.Fsm;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
@@ -66,6 +67,11 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
+        if(!HasAnimation(animName))
+        {
+            return;
+        }
+
         if (IsAnimation(animName))
         {
             if (!m_Animator.animation.isCompleted)
@@ -99,6 +105,16 @@ public abstract class BaseAvatar : BaseGravityObject
         }
 
         return result;
+    }
+
+    public bool HasAnimation(string animName)
+    {
+        if(m_Animator != null && !string.IsNullOrEmpty(animName))
+        {
+            return m_Animator.animation.HasAnimation(animName);
+        }
+
+        return false;
     }
 
     public void StopAnimation(string animName = null)
@@ -227,6 +243,12 @@ public abstract class BaseAvatar : BaseGravityObject
 
             SetTrigger(m_CurrAnimName, frameIndex);
         }
+    }
+
+    protected override void OnFixedUpdate()
+    {
+        base.OnFixedUpdate();
+        m_FsmMachine.FixedUpdate(Time.deltaTime, Time.unscaledDeltaTime);
     }
 
     protected override void OnResComplete(GameObject go, object[] param)

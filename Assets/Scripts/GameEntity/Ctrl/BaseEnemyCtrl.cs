@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
-
     protected override void OnInit()
     {
         base.OnInit();

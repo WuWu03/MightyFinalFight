@@ -4,7 +4,10 @@ using UnityEngine;
 
 public abstract class SkillBaseEffect : SkillBase, ISkillEffect
 {
-    public SkillBaseEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBaseEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex)
+    {
+        m_Deployer = deployer;
+    }
 
     public bool isCompleted
     {
@@ -43,5 +46,6 @@ public abstract class SkillBaseEffect : SkillBase, ISkillEffect
     protected virtual void OnComplete() { }
     protected virtual void OnExit() { }
 
+    protected SkillBaseDeployer m_Deployer = null;
     private bool m_IsCompleted = false;
 }

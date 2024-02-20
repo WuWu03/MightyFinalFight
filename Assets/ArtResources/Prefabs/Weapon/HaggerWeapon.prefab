@@ -88,12 +88,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TriggerDatas:
-  - AnimName: Drop
-    Offest: {x: -0.002575308, y: -0.028328463}
-    Size: {x: 0.14499527, y: 0.16559777}
-  - AnimName: Idle
-    Offest: {x: 0.0006093085, y: 0.07914165}
-    Size: {x: 0.14333934, y: 0.16418701}
+  - animName: Drop
+    offestList:
+    - {x: 0, y: -0.031708837}
+    - {x: 0, y: -0.031708837}
+    - {x: 0, y: -0.0021104068}
+    - {x: -0.02656269, y: -0.0036282763}
+    - {x: -0.0022768006, y: 0.032041617}
+    - {x: 0, y: 0.0009253174}
+    - {x: 0.02732163, y: 0.0024431944}
+    - {x: 0.0016768575, y: 0.00004078448}
+    sizeList:
+    - {x: 0.16, y: 0.16922885}
+    - {x: 0.16, y: 0.16922885}
+    - {x: 0.16, y: 0.16771099}
+    - {x: 0.16758934, y: 0.14342509}
+    - {x: 0.14330344, y: 0.16619311}
+    - {x: 0.16303572, y: 0.16467524}
+    - {x: 0.16607146, y: 0.14646083}
+    - {x: 0.16492236, y: 0.16288042}
+  - animName: Idle
+    offestList:
+    - {x: -0.0022768006, y: 0.08067064}
+    sizeList:
+    - {x: 0.14330344, y: 0.1661931}
 --- !u!1 &6789348053180585881
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 6789348053180585881}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0293, z: 0}
+  m_LocalPosition: {x: 0, y: 0.082499996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

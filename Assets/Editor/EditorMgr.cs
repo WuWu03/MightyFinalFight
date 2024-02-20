@@ -23,6 +23,13 @@ public class EditorMgr : MonoBehaviour
         window.Show();
     }
 
+    [MenuItem("Tools/NewSkillEditor")]
+    public static void OpenNewSkillEditorWindow()
+    {
+        SkillNew.SkillEditorWindow window = EditorWindow.GetWindow<SkillNew.SkillEditorWindow>();
+        window.Show();
+    }
+
     [MenuItem("Tools/SkillEditor")]
     public static void OpenSkillEditorWindow()
     {

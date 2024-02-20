@@ -4,7 +4,7 @@ using GameFrameWork.Utilities;
 
 public class SkillBulletEffect : SkillBaseEffect
 {
-    public SkillBulletEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillBulletEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
 
     public override void Effect(ISkillSelector selector)
     {

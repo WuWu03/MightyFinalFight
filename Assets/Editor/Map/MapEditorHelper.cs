@@ -127,7 +127,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static List<StageConfigData.SceneBuilding> ListSceneBuilding
+    public static List<StageConfigData.SceneBuilding> listSceneBuilding
     {
         get
         {
@@ -135,7 +135,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static string MapPath
+    public static string mapPath
     {
         get
         {
@@ -143,7 +143,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static float Scale
+    public static float scale
     {
         get
         {
@@ -155,7 +155,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static float ScrollX
+    public static float scrollX
     {
         get
         {
@@ -167,7 +167,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static float NormalSize
+    public static float normalSize
     {
         get
         {
@@ -179,7 +179,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static float NormalSizeMinimum
+    public static float normalSizeMinimum
     {
         get
         {
@@ -187,7 +187,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static Vector2 CurrPos
+    public static Vector2 currPos
     {
         get
         {
@@ -195,7 +195,7 @@ public static class MapEditorHelper
         }
     }
 
-    public static Vector2 InitPos
+    public static Vector2 initPos
     {
         get
         {
@@ -207,7 +207,7 @@ public static class MapEditorHelper
     {
         string fileName = "MapEditorConfig";
         string ext = ".asset";
-        string path = Application.dataPath + "/Editor/Map/";
+        string path = Application.dataPath + "/Editor/Config/";
 
         if (!File.Exists(path + fileName + ext))
         {
@@ -216,8 +216,25 @@ public static class MapEditorHelper
 
         if (m_MapEditorConfig == null)
         {
-            m_MapEditorConfig = AssetDatabase.LoadAssetAtPath<MapEditorConfig>("Assets/Editor/Map/" + fileName + ext);
-            if (string.IsNullOrEmpty(m_MapEditorConfig.MapPath)) m_MapEditorConfig.MapPath = "Assets/ArtResources/Texture/Stage/";
+            m_MapEditorConfig = AssetDatabase.LoadAssetAtPath<MapEditorConfig>("Assets/Editor/Config/" + fileName + ext);
+
+            if (!Directory.Exists(m_MapEditorConfig.MapPath))
+            {
+                m_MapEditorConfig.MapPath = string.Empty;
+            }
+
+            m_MapEditorConfig.MapPath = "Assets/ArtResources/Textures/Stage/";
+        }
+
+        for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)
+        {
+            string mapTextureName = Path.GetFileName(m_MapEditorConfig.Datas[i].MapPath);
+            string mapTexturePath = Path.GetDirectoryName(m_MapEditorConfig.Datas[i].MapPath).Replace("\\", "/") + "/";
+
+            if(mapTexturePath != m_MapEditorConfig.MapPath)
+            {
+                m_MapEditorConfig.Datas[i].MapPath = mapTexturePath + mapTextureName;
+            }
         }
 
         m_SelectButtonOnStyle = new GUIStyle("flow node 1");
@@ -401,6 +418,15 @@ public static class MapEditorHelper
         return ret;
     }
 
+    public static bool HasData()
+    {
+        if(m_MapEditorConfig == null || m_MapEditorConfig.Datas == null || m_MapEditorConfig.Datas.Count < 1)
+        {
+            return false;
+        }
+
+        return true;
+    }
     public static void Export()
     {
         if (!File.Exists(EditorPathUtil.configDataFullPath + "StageData.asset"))
@@ -409,7 +435,16 @@ public static class MapEditorHelper
         }
 
         StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageData.asset");
-        stageConfig.Datas.Clear();
+
+        if(stageConfig.Datas == null)
+        {
+            stageConfig.Datas = new List<StageConfigData>();
+        }
+        else
+        {
+            stageConfig.Datas.Clear();
+        }
+
         m_MapEditorConfig.Datas.Sort();
 
         for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)

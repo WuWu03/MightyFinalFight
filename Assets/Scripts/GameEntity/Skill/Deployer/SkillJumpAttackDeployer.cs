@@ -100,9 +100,9 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_CanEffect = false;
     }
 
-    public override void OnExit()
+    public override void Exit()
     {
-        base.OnExit();
+        base.Exit();
         m_CanEffect = true;
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);

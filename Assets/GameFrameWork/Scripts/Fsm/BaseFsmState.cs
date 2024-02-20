@@ -2,12 +2,42 @@
 {
 	public abstract class BaseFsmState
 	{
-		public BaseFsmState(){}
-		public abstract void OnInit(BaseFsm fsm);
-		public abstract void OnEnter(BaseFsm fsm);
-		public abstract void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime);
-		public abstract void OnExit(BaseFsm fsm, bool isShutdown);
-		public abstract void OnDestroy(BaseFsm fsm);
+		public void Init(BaseFsm fsm)
+		{
+			OnInit(fsm);
+		}
+
+		public void Enter(BaseFsm fsm)
+		{
+			OnEnter(fsm);
+		}
+
+		public void Update(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+		{
+			OnUpdate(fsm, deltaTime, unscaleDeltaTime);
+		}
+
+        public void FixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+        {
+            OnFixedUpdate(fsm, deltaTime, unscaleDeltaTime);
+        }
+
+		public void Exit(BaseFsm fsm, bool isShutdown)
+		{
+			OnExit(fsm, isShutdown);
+		}
+
+		public void Destroy(BaseFsm fsm)
+		{
+			OnDestroy(fsm);
+		}
+
+        protected virtual void OnInit(BaseFsm fsm) { }
+		protected abstract void OnEnter(BaseFsm fsm);
+        protected virtual void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
+        protected virtual void OnFixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
+        protected abstract void OnExit(BaseFsm fsm, bool isShutdown);
+		protected virtual void OnDestroy(BaseFsm fsm) { }
 		protected void ChangeState<T>(BaseFsm fsm,bool isForce = false) where T : BaseFsmState
 		{
 			if(fsm != null)

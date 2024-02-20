@@ -58,9 +58,9 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
     }
 
-    public override void OnExit()
+    public override void Exit()
     {
-        base.OnExit();
+        base.Exit();
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         if (!m_SkillData.IsInEffectPlaySound)
         {

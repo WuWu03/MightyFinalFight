@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SkillMoveHitEffect : SkillBaseEffect
 {
-    public SkillMoveHitEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) { }
+    public SkillMoveHitEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
 
     public override void Effect(ISkillSelector selector)
     {

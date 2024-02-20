@@ -20,12 +20,12 @@ public class RoleMove : BaseFsmState
         }
     }
 
-    public override void OnInit(BaseFsm fsm)
+    protected override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    public override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(BaseFsm fsm)
     {
         if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
@@ -37,7 +37,7 @@ public class RoleMove : BaseFsmState
         }
     }
 
-    public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnFixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_CanChangeDir && !m_IsCatch)
         {
@@ -48,7 +48,7 @@ public class RoleMove : BaseFsmState
         m_Owner.SetPos2(ownerPos);
     }
 
-    public override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Move_Catch);
         m_Owner.StopAnimation(AnimName.Move);
@@ -56,12 +56,6 @@ public class RoleMove : BaseFsmState
         m_CanChangeDir = false;
         m_IsCatch = false;
     }
-
-    public override void OnDestroy(BaseFsm fsm)
-    {
-
-    }
-
 
     private bool m_CanChangeDir = false;
     private bool m_IsCatch = false;

@@ -70,9 +70,9 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         }
     }
 
-    public override void OnExit()
+    public override void Exit()
     {
-        base.OnExit();
+        base.Exit();
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }

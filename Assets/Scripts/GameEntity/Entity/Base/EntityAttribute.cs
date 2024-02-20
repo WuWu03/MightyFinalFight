@@ -39,7 +39,6 @@ public class EntityAttribute : IReference
     public Vector2 jumpForce { get; set; }
 
 
-
     public void AddHealth(int value)
     {
         health += value;

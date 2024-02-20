@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillNoneEffect : SkillBaseEffect
 {
-    public SkillNoneEffect(SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex) 
+    public SkillNoneEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) 
     { 
 
     }

@@ -75,19 +75,18 @@ namespace GameFrameWork.UI
                 return null;
             }
 
-            UIEventListener eventTrigger = go.GetComponent<UIEventListener>();
-            if (eventTrigger == null) eventTrigger = go.AddComponent<UIEventListener>();
-            return eventTrigger;
+            return go.GetOrAddComponent<UIEventListener>();
         }
 
         private void Update()
         {
             if (m_IsPointDown && Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)
             {
+                onPress.Invoke(gameObject, m_OnDownEventData);
                 m_IsPress = true;
                 m_IsPointDown = false;
                 m_CurrDonwTime = 0f;
-                onPress.Invoke(gameObject, null);
+                m_OnDownEventData = null;
             }
 
             if (m_ClickCount < 1)
@@ -95,20 +94,22 @@ namespace GameFrameWork.UI
                 return;
             }
 
+            if (m_ClickCount >= 2)
+            {
+                onUp.Invoke(gameObject, m_OnUpEventData);
+                onDoubleClick.Invoke(gameObject, m_OnUpEventData);
+                m_ClickCount = 0;
+                m_CurrDonwTime = 0f;
+                m_OnUpEventData = null;
+            }
+
             if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
             {
-                if (m_ClickCount < 2)
-                {
-                    onUp.Invoke(gameObject, m_OnUpEventData);
-                    onClick.Invoke(gameObject, m_OnUpEventData);
-                }
-                else
-                {
-                    onDoubleClick.Invoke(gameObject, m_OnUpEventData);
-                }
-
-                m_OnUpEventData = null;
+                onUp.Invoke(gameObject, m_OnUpEventData);
+                onClick.Invoke(gameObject, m_OnUpEventData);
                 m_ClickCount = 0;
+                m_CurrDonwTime = 0f;
+                m_OnUpEventData = null;
             }
         }
 
@@ -145,6 +146,7 @@ namespace GameFrameWork.UI
             m_IsPointDown = true;
             m_IsPress = false;
             m_CurrDonwTime = Time.unscaledTime;
+            m_OnDownEventData = eventData;
             onDown?.Invoke(gameObject, eventData);
         }
 
@@ -152,6 +154,7 @@ namespace GameFrameWork.UI
         {
             m_IsPointDown = false;
             m_OnUpEventData = eventData;
+
             if (!m_IsPress)
             {
                 m_ClickCount++;
@@ -178,5 +181,6 @@ namespace GameFrameWork.UI
         private bool m_IsPress = false;
         private int m_ClickCount = 0;
         private PointerEventData m_OnUpEventData = null;
+        private PointerEventData m_OnDownEventData = null;
     }
 }

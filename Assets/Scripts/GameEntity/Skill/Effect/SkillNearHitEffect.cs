@@ -1,17 +1,11 @@
-﻿using GameFrameWork;
-using GameFrameWork.Camera;
-using GameFrameWork.Audio;
+﻿using GameFrameWork.Camera;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static SkillConfigData;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class SkillNearHitEffect : SkillBaseEffect
 {
-    public SkillNearHitEffect(SkillConfigData m_SkillData, BaseRole owner, int effectIndex) : base(m_SkillData, owner, effectIndex)
-    {
-    }
+    public SkillNearHitEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
 
     public override void Effect(ISkillSelector skillSelector)
     { 
@@ -22,6 +16,8 @@ public class SkillNearHitEffect : SkillBaseEffect
             targets = skillSelector.GetTargets();
         }
 
+        bool isPause = m_SkillData.Id == 1001004;
+
         for (int i = 0; i < targets.Count; i++)
         {
             HurtData hurtData = SkillUtil.GetHurtData(targets[i], m_Owner, m_SkillData, m_SkillEffect);
@@ -30,8 +26,6 @@ public class SkillNearHitEffect : SkillBaseEffect
             {
                 continue;
             }
-
-            bool isPause = false;// (m_Owner is BaseHero);
 
             if (!m_IsPause)
             {
@@ -86,7 +80,7 @@ public class SkillNearHitEffect : SkillBaseEffect
     {
         yield return new WaitForSecondsRealtime(targetIndex * 0.2f);
         hit.OnHurtMsg(hurtData);
-        Time.timeScale = 0.1f;
+        Time.timeScale = 0f;
         yield return new WaitForSecondsRealtime((targetsCount > 1 ? targetsCount - 1 : 1) * duration);
         Time.timeScale = 1;
 

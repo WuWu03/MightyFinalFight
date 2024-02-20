@@ -98,13 +98,7 @@ namespace GameFrameWork.Camera
 
         public void SetFollowSize(int width, int height)
         {
-            if (m_Target == null)
-            {
-                Log.LogError("Don't have target to follow!");
-                return;
-            }
-
-            if(width <= 0 || height <= 0)
+            if (width <= 0 || height <= 0)
             {
                 return;
             }

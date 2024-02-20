@@ -5,33 +5,33 @@ using UnityEditor;
 using DragonBones;
 using System;
 using GameFrameWork;
+using Unity.VisualScripting;
 
 public class CharacterTriggerEditorWindow : EditorWindow
 {
     private void OnEnable()
     {
-        m_ListGO = new List<GameObject>();
-        
     }
 
     private void OnDisable()
     {
-        for(int i = m_ListGO.Count - 1; i > -1; i--)
+        if (m_CurrGo != null)
         {
-            GameObject.DestroyImmediate(m_ListGO[i]);
+            GameObject.DestroyImmediate(m_CurrGo);
+            m_CurrGo = null;
         }
-
-        m_ListGO.Clear();
     }
+
     private void OnGUI()
     {
         if(m_CurrGo != null)
         {
             Selection.activeObject = m_CurrGo;
+
         }
 
-        DrawScene();
         SetSelection();
+        DrawScene();
         SetTriggerData();
 
         this.Repaint();
@@ -39,7 +39,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
     private void DrawScene()
     {
-        
+
     }
 
     private void SetSelection()
@@ -51,9 +51,15 @@ public class CharacterTriggerEditorWindow : EditorWindow
             return;
         }
 
-        if(m_CurrGo == null || m_CurrGo.name != m_CurrSelectObj.name)
+        if(m_CurrGo == null || !m_CurrGo.name.Contains(m_CurrSelectObj.name))
         {
-            m_CurrGo = GetSelectObj(m_CurrSelectObj.name);
+            if(m_CurrGo != null)
+            {
+                GameObject.DestroyImmediate(m_CurrGo);
+                m_CurrGo = null;
+            }
+
+            m_CurrGo = GameObject.Instantiate((m_CurrSelectObj as UnityArmatureComponent).gameObject) as GameObject;
             m_CurrDB = m_CurrGo.GetOrAddComponent<UnityArmatureComponent>();
 
             if (m_CurrDB == null)
@@ -270,22 +276,6 @@ public class CharacterTriggerEditorWindow : EditorWindow
         m_CurrDB.animation.GotoAndStopByFrame(m_CurrAnimName, (uint)(m_CurrAnimFrame - 1));
     }
 
-    private GameObject GetSelectObj(string name)
-    {
-        for(int i = 0; i < m_ListGO.Count; i++)
-        {
-            if (m_ListGO[i].name.Equals(name))
-            {
-                return m_ListGO[i];
-            }
-        }
-
-        GameObject ret = GameObject.Instantiate((m_CurrSelectObj as UnityArmatureComponent).gameObject) as GameObject;
-        ret.name = m_CurrSelectObj.name;
-        m_ListGO.Add(ret);
-        return ret;
-    }
-
     private int GetFrameCount(string animName)
     {
         if(m_CurrDB == null)
@@ -300,7 +290,6 @@ public class CharacterTriggerEditorWindow : EditorWindow
     private int m_CurrAnimFrame = 1;
     private int m_PrevAnimFrame = -1;
 
-    private List<GameObject> m_ListGO = null;
     private GameObject m_CurrGo = null;
     private UnityEngine.Object m_CurrSelectObj = null;
     private UnityArmatureComponent m_CurrDB = null;

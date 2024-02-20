@@ -79,7 +79,6 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.freezeRotation = true;
     }
 
-
     public void AddForce(float x, float y, bool isGroundForce = false)
     {
         AddForce(new Vector2(x, y), isGroundForce);
@@ -157,12 +156,15 @@ public class BaseGravityObject : BaseBoundObject
     protected virtual void OnDrop() { }
     protected virtual void OnGround() { }
 
-
-    protected override void OnUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.OnUpdate();
-
+        base.OnFixedUpdate();
         CheckGround();
+    }
+
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
     }
 
     protected virtual void CheckGround()

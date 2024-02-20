@@ -11,12 +11,12 @@ public class RoleDead : BaseFsmState
         }
     }
 
-    public override void OnInit(BaseFsm fsm)
+    protected override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    public override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(BaseFsm fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4);
@@ -24,7 +24,7 @@ public class RoleDead : BaseFsmState
         m_Owner.SetThrow(false);
     }
 
-    public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.IsPlayComplete())
         {
@@ -38,12 +38,12 @@ public class RoleDead : BaseFsmState
         }
     }
 
-    public override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_ReBirthPos = Vector2.zero;
     }
 
-    public override void OnDestroy(BaseFsm fsm)
+    protected override void OnDestroy(BaseFsm fsm)
     {
 
     }

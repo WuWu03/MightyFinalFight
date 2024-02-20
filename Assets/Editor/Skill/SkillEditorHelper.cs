@@ -50,7 +50,7 @@ public static class SkillEditorHelper
     {
         get
         {
-            return m_ShowNames[m_CurrSelectIndex].Substring(m_ShowNames[m_CurrSelectIndex].IndexOf(".") + 1);
+            return m_ShowNames[m_CurrSelectIndex];
         }
     }
 
@@ -179,7 +179,7 @@ public static class SkillEditorHelper
         for (int i = 0; i < m_SkillConfig.Datas.Count; i++)
         {
             string name = string.IsNullOrEmpty(m_SkillConfig.Datas[i].Name) ? "未命名" : m_SkillConfig.Datas[i].Name;
-            temp.Add((i + 1).ToString() + "." + name);
+            temp.Add(name);
         }
 
         m_ShowNames = temp.ToArray();

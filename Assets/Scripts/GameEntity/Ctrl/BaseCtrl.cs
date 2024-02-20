@@ -19,6 +19,11 @@ public abstract class BaseCtrl
 
     public void Start()
     {
+        if(m_IsRunning)
+        {
+            return;
+        }
+
         m_IsRunning = true;
         OnStart();
     }

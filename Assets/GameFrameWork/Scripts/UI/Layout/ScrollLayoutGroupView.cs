@@ -9,6 +9,7 @@ using TweenType = GameFrameWork.Utilities.TweenUtil.TweenType;
 
 namespace GameFrameWork.UI
 {
+    [AddComponentMenu("UI/ScrollLayoutGroupView")]
     [RequireComponent(typeof(ScrollRect))]
     public class ScrollLayoutGroupView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {

@@ -246,7 +246,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         roleAttack.canChangeDir = data.canChangeDir;
         roleAttack.dir = data.dir;
         ChangeState<RoleAttack>();
-        PlayAnimation(data.animName, data.animTime, data.animSpeed);// + m_EntityAttribute.attackSpeed);
+        PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
     public virtual void OnSkillMsg(SkillConfigData data)
@@ -260,7 +260,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         skillState.canChangeDir = data.CanChangeDir;
         skillState.canMove = data.CanMove;
         ChangeState<RoleSkill>();
-        PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed);
+        PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
     public virtual void OnMoveMsg(MoveData data)
@@ -596,6 +596,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (m_ObjectType == ObjectType.Player)
             {
                 m_EntityAttribute.SubHealth(m_TrapData.attackValue);
+
                 if (m_EntityAttribute.IsDie())
                 {
                     GetState<RoleDead>().rebirthPos = m_TrapData.rebirthPos;

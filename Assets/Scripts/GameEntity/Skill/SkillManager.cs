@@ -117,7 +117,7 @@ public class SkillManager
         }
 
         m_CurrSkillDeployer.RemoveEvent();
-        m_CurrSkillDeployer.OnExit();
+        m_CurrSkillDeployer.Exit();
         m_CurrSkillDeployer = null;
     }
 

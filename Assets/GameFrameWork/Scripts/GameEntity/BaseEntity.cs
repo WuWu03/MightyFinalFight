@@ -79,6 +79,7 @@ namespace GameFrameWork.GameEntity
         protected virtual void Awake() { }
         protected virtual void Update() { }
         protected virtual void LateUpdate() { }
+        protected virtual void FixedUpdate() { }
         protected virtual void OnDestroy() { }
        
         private int m_Id = 0;

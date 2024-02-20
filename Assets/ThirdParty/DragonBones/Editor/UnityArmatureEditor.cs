@@ -34,7 +34,7 @@ namespace DragonBones
     {
         private long _nowTime = 0;
         private float _frameRate = 1.0f / 24.0f;
-
+        private int _frameIndex = 0;
         private int _armatureIndex = -1;
         private int _animationIndex = -1;
         private int _sortingModeIndex = -1;
@@ -338,6 +338,12 @@ namespace DragonBones
                     EditorGUILayout.BeginHorizontal();
                     _armatureComponent.zSpace = EditorGUILayout.Slider("Z Space", _armatureComponent.zSpace, 0.0f, 0.5f);
                     EditorGUILayout.EndHorizontal();
+
+                    _frameIndex = EditorGUILayout.IntSlider("Frame", _frameIndex, 0, (int)_armatureComponent.animation.animations[_animationNames[_animationIndex]].frameCount);
+                    if(_frameIndex > 0)
+                    {
+                        _armatureComponent.animation.GotoAndStopByFrame(_animationNames[_animationIndex], (uint)(_frameIndex & 0x7FFFFFFFF));
+                    }
                 }
 
                 EditorGUILayout.Space();

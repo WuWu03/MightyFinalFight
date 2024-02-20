@@ -20,16 +20,16 @@ public class RoleAttack : BaseFsmState
         }
     }
 
-    public override void OnInit(BaseFsm fsm)
+    protected override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    public override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(BaseFsm fsm)
     {
     }
 
-    public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_CanChangeDir)
         {
@@ -37,19 +37,14 @@ public class RoleAttack : BaseFsmState
         }
     }
 
-    public override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_CanChangeDir = false;
     }
 
-    public override void OnDestroy(BaseFsm fsm)
+    protected override void OnDestroy(BaseFsm fsm)
     {
-
-    }
-
-    public void SetCanChangeDir(bool value)
-    {
-        m_CanChangeDir = value;
+        m_Owner = null;
     }
 
     private bool m_CanChangeDir;

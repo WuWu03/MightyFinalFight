@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - Id: 1001
-    MapPath: Assets/ArtResources/Texture/Stage/1001_1.png
+    MapPath: Assets/ArtResources/Textures/Stage/1001_1.png
     SceneName: Stage1_1
     StageIndex: 1
     Level: 1
-    CurrPos: {x: -338, y: -46}
+    CurrPos: {x: -334, y: -47}
     InitPos: {x: -450, y: -50}
     Width: 1016
     Height: 152
@@ -59,7 +59,7 @@ MonoBehaviour:
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Cafe
   - Id: 1002
-    MapPath: Assets/ArtResources/Texture/Stage/1001_2.png
+    MapPath: Assets/ArtResources/Textures/Stage/1001_2.png
     SceneName: Stage1_2
     StageIndex: 1
     Level: 2
@@ -132,7 +132,7 @@ MonoBehaviour:
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Pit
   - Id: 1003
-    MapPath: Assets/ArtResources/Texture/Stage/1001_3.png
+    MapPath: Assets/ArtResources/Textures/Stage/1001_3.png
     SceneName: Stage1_3
     StageIndex: 1
     Level: 3
@@ -184,7 +184,7 @@ MonoBehaviour:
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBeltLast
   - Id: 2001
-    MapPath: Assets/ArtResources/Texture/Stage/2001_1.png
+    MapPath: Assets/ArtResources/Textures/Stage/2001_1.png
     SceneName: Stage2_1
     StageIndex: 2
     Level: 1
@@ -215,7 +215,7 @@ MonoBehaviour:
       LerpTime: 0
     ListSceneBuilding: []
   - Id: 2002
-    MapPath: Assets/ArtResources/Texture/Stage/2001_2.png
+    MapPath: Assets/ArtResources/Textures/Stage/2001_2.png
     SceneName: Stage2_2
     StageIndex: 2
     Level: 2
@@ -230,7 +230,7 @@ MonoBehaviour:
     ListBGM: []
     ListSceneBuilding: []
   - Id: 5001
-    MapPath: Assets/ArtResources/Texture/Stage/5001_2.png
+    MapPath: Assets/ArtResources/Textures/Stage/5001_2.png
     SceneName: 
     StageIndex: 0
     Level: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
     ListBGM: []
     ListSceneBuilding: []
   - Id: 0
-    MapPath: Assets/ArtResources/Texture/Stage/2001_3.png
+    MapPath: Assets/ArtResources/Textures/Stage/2001_3.png
     SceneName: 
     StageIndex: 0
     Level: 0
@@ -259,4 +259,4 @@ MonoBehaviour:
     ListTaskId: 
     ListBGM: []
     ListSceneBuilding: []
-  MapPath: Assets/ArtResources/Texture/Stage/
+  MapPath: Assets/ArtResources/Textures/Stage/

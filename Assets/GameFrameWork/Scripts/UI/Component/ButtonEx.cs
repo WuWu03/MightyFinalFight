@@ -22,23 +22,25 @@ namespace GameFrameWork.UI
                 }
             }
 
-            if (m_ClickCount > 0)
+            if (m_ClickCount < 1)
             {
-                if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
-                {
-                    if (m_ClickCount < 2)
-                    {
-                        onUp?.Invoke();
-                        onClick?.Invoke();
-                    }
-                    m_ClickCount = 0;
-                }
+                return;
+            }
 
-                if (m_ClickCount >= 2)
-                {
-                    onDoubleClick?.Invoke();
-                    m_ClickCount = 0;
-                }
+            if (m_ClickCount >= 2)
+            {
+                onUp?.Invoke();
+                onDoubleClick?.Invoke();
+                m_ClickCount = 0;
+                m_CurrDonwTime = 0f;
+            }
+
+            if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
+            {
+                onUp?.Invoke();
+                onClick?.Invoke();
+                m_ClickCount = 0;
+                m_CurrDonwTime = 0f;
             }
         }
 

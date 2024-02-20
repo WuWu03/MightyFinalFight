@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameFrameWork.Fsm
 {
@@ -61,7 +62,7 @@ namespace GameFrameWork.Fsm
         {
             get
             {
-                return m_CurrentStateTime;
+                return Mathf.Max(0, Time.time - m_CurrentStateTime);
             }
         }
         
@@ -85,7 +86,7 @@ namespace GameFrameWork.Fsm
                         throw new Exception("Fsm state is invalid.");
                     }
 
-                    states[i].OnInit(fsm);
+                    states[i].Init(fsm);
                     fsm.m_DicStates.Add(states[i].GetType(), states[i]);
                 }
             }
@@ -108,9 +109,9 @@ namespace GameFrameWork.Fsm
             }
 
             m_DefaultState = fsmState;
-            m_CurrentStateTime = 0;
+            m_CurrentStateTime = Time.time;
             m_CurrentState = fsmState;
-            fsmState.OnEnter(this);
+            fsmState.Enter(this);
         }
 
         public override void AddState<T>()
@@ -118,7 +119,7 @@ namespace GameFrameWork.Fsm
             if(!m_DicStates.ContainsKey(typeof(T)))
             {
                 T state = new T();
-                state.OnInit(this);
+                state.Init(this);
                 m_DicStates.Add(typeof(T), state);
             }
         }
@@ -150,10 +151,10 @@ namespace GameFrameWork.Fsm
                 throw new Exception("Fsm state is invalid.");
             }
 
-            m_CurrentStateTime = 0f;
-            m_CurrentState.OnExit(this, false);
+            m_CurrentStateTime = Time.time;
+            m_CurrentState.Exit(this, false);
             m_CurrentState = state;
-            m_CurrentState.OnEnter(this);
+            m_CurrentState.Enter(this);
         }
 
         public override void ChangeDefaultState()
@@ -169,26 +170,26 @@ namespace GameFrameWork.Fsm
             }
 
             m_CurrentStateTime = 0f;
-            m_CurrentState.OnExit(this, false);
+            m_CurrentState.Exit(this, false);
             m_CurrentState = m_DefaultState;
-            m_CurrentState.OnEnter(this);
+            m_CurrentState.Enter(this);
         }
 
         public override T GetState<T>()
         {
-            if (!m_DicStates.TryGetValue(typeof(T), out BaseFsmState ret))
+            if (!m_DicStates.TryGetValue(typeof(T), out BaseFsmState result))
             {
                 return null;
             }
 
-            return ret as T;
+            return result as T;
         }
 
         public override BaseFsmState[] GetAllStates()
         {
-            BaseFsmState[] ret = new BaseFsmState[m_DicStates.Count];
-            m_DicStates.Values.CopyTo(ret, 0);
-            return ret;
+            BaseFsmState[] results = new BaseFsmState[m_DicStates.Count];
+            m_DicStates.Values.CopyTo(results, 0);
+            return results;
         }
 
         public override bool HasState<T>()
@@ -203,8 +204,17 @@ namespace GameFrameWork.Fsm
                 return;
             }
 
-            m_CurrentStateTime += deltaTime;
-            m_CurrentState.OnUpdate(this, deltaTime, unscaleDeltaTime);
+            m_CurrentState.Update(this, deltaTime, unscaleDeltaTime);
+        }
+
+        public override void FixedUpdate(float deltaTime, float unscaleDeltaTime)
+        {
+            if (m_CurrentState == null)
+            {
+                return;
+            }
+
+            m_CurrentState.FixedUpdate(this, deltaTime, unscaleDeltaTime);
         }
 
         public override void ShutDown()
@@ -214,7 +224,7 @@ namespace GameFrameWork.Fsm
 
             foreach(KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
             {
-                kvp.Value.OnDestroy(this);
+                kvp.Value.Destroy(this);
             }
 
             m_DicStates.Clear();

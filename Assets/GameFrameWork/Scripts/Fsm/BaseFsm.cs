@@ -62,6 +62,7 @@ namespace GameFrameWork.Fsm
         public abstract void ChangeDefaultState();
         public abstract BaseFsmState[] GetAllStates();
         public abstract void Update(float deltaTime, float unscaleDeltaTime);
+        public abstract void FixedUpdate(float deltaTime, float unscaleDeltaTime);
         public abstract void ShutDown();
 
         private string m_Name;

@@ -90,10 +90,8 @@ public static class SkillUtil
             return null;
         }
 
-        if (hit is BaseEnemy)//boss攻击优先级更高;
+        if (hit is BaseEnemy baseEnemy)//boss攻击优先级更高;
         {
-            BaseEnemy baseEnemy = hit as BaseEnemy;
-
             if (baseEnemy.isBoss && baseEnemy.currCtrl.IsInSkill())
             {
                 return null;

@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17090eaeff3a3c641adf68f79f4af885, type: 3}
+  m_Script: {fileID: 11500000, guid: c65c759b485d79d4eae2bd2091f2947e, type: 3}
   m_Name: SkillData
   m_EditorClassIdentifier: 
   Datas:
   - Id: 1001001
     Level: 0
-    Name: CodyAttack1
+    Name: Cody/CodyAttack1
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001002
     Level: 0
-    Name: CodyAttack2
+    Name: Cody/CodyAttack2
     AnimationName: Attack2
     HurtSound: 
     Type: 1
@@ -107,7 +107,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001003
     Level: 0
-    Name: CodyAttack3
+    Name: Cody/CodyAttack3
     AnimationName: Attack3
     HurtSound: 
     Type: 1
@@ -153,7 +153,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001004
     Level: 0
-    Name: CodyAttack4
+    Name: Cody/CodyAttack4
     AnimationName: Attack4
     HurtSound: 
     Type: 1
@@ -199,7 +199,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001005
     Level: 0
-    Name: CodyJumpAttack1
+    Name: Cody/CodyJumpAttack1
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
@@ -245,7 +245,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001006
     Level: 0
-    Name: CodyJumpAttack2
+    Name: Cody/CodyJumpAttack2
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 1
@@ -291,7 +291,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001007
     Level: 0
-    Name: CodySkill1
+    Name: Cody/CodySkill1
     AnimationName: Skill1
     HurtSound: 
     Type: 2
@@ -352,7 +352,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001008
     Level: 0
-    Name: CodySkill2
+    Name: Cody/CodySkill2
     AnimationName: Attack4
     HurtSound: 
     Type: 2
@@ -398,7 +398,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001009
     Level: 0
-    Name: CodyKnee
+    Name: Cody/CodyKnee
     AnimationName: Knee
     HurtSound: 
     Type: 1
@@ -444,7 +444,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001010
     Level: 0
-    Name: CodyThrow
+    Name: Cody/CodyThrow
     AnimationName: Throw
     HurtSound: 
     Type: 1
@@ -513,7 +513,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001011
     Level: 0
-    Name: CodySkill3
+    Name: Cody/CodySkill3
     AnimationName: Skill2
     HurtSound: 
     Type: 2
@@ -585,7 +585,7 @@ MonoBehaviour:
       Args: SubHP:1
   - Id: 1001012
     Level: 0
-    Name: CodyAttack_Weapon
+    Name: Cody/CodyAttack_Weapon
     AnimationName: Attack_Weapon
     HurtSound: Sound/DaggerHit
     Type: 1
@@ -631,7 +631,7 @@ MonoBehaviour:
       Args: 
   - Id: 1001013
     Level: 0
-    Name: CodyThrowWeapon
+    Name: Cody/CodyThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: Sound/DaggerHit
     Type: 2
@@ -689,7 +689,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002001
     Level: 0
-    Name: GuyAttack1
+    Name: Guy/GuyAttack1
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -781,7 +781,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002002
     Level: 0
-    Name: GuyAttack2
+    Name: Guy/GuyAttack2
     AnimationName: Attack2
     HurtSound: 
     Type: 1
@@ -873,7 +873,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002003
     Level: 0
-    Name: GuyAttack3
+    Name: Guy/GuyAttack3
     AnimationName: Attack3
     HurtSound: 
     Type: 1
@@ -919,7 +919,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002004
     Level: 0
-    Name: GuyAttack4
+    Name: Guy/GuyAttack4
     AnimationName: Attack4
     HurtSound: 
     Type: 1
@@ -965,7 +965,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002005
     Level: 0
-    Name: GuyJumpAttack1
+    Name: Guy/GuyJumpAttack1
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
@@ -1011,7 +1011,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002006
     Level: 0
-    Name: GuyJumpAttack2
+    Name: Guy/GuyJumpAttack2
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 1
@@ -1057,7 +1057,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002007
     Level: 0
-    Name: GuySkill1
+    Name: Guy/GuySkill1
     AnimationName: Skill1
     HurtSound: 
     Type: 2
@@ -1126,7 +1126,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002008
     Level: 0
-    Name: GuySkill2
+    Name: Guy/GuySkill2
     AnimationName: Skill2
     HurtSound: 
     Type: 2
@@ -1195,7 +1195,7 @@ MonoBehaviour:
       Args: SubHP:1
   - Id: 1002009
     Level: 0
-    Name: GuyKnee
+    Name: Guy/GuyKnee
     AnimationName: Knee
     HurtSound: 
     Type: 1
@@ -1241,7 +1241,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002010
     Level: 0
-    Name: GuyThrow
+    Name: Guy/GuyThrow
     AnimationName: Throw
     HurtSound: 
     Type: 1
@@ -1379,7 +1379,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002011
     Level: 0
-    Name: GuySkill3
+    Name: Guy/GuySkill3
     AnimationName: Skill3
     HurtSound: 
     Type: 2
@@ -1448,7 +1448,7 @@ MonoBehaviour:
       Args: HeroAttackEnd
   - Id: 1002012
     Level: 0
-    Name: GuyAttack_Weapon
+    Name: Guy/GuyAttack_Weapon
     AnimationName: Attack_Weapon
     HurtSound: 
     Type: 1
@@ -1506,7 +1506,7 @@ MonoBehaviour:
       Args: 
   - Id: 1002013
     Level: 0
-    Name: GuyThrowWeapon
+    Name: Guy/GuyThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: 
     Type: 1
@@ -1564,7 +1564,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003001
     Level: 0
-    Name: HaggerAttack1
+    Name: Hagger/HaggerAttack1
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -1574,7 +1574,7 @@ MonoBehaviour:
     Key:
       Keys: 
       AddTrigger: 0
-    AnimSpeed: 0.6
+    AnimSpeed: 0.25
     AnimTime: 1
     EXP: 4
     IsInEffectPlaySound: 0
@@ -1610,7 +1610,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003002
     Level: 0
-    Name: HaggerAttack2
+    Name: Hagger/HaggerAttack2
     AnimationName: Attack2
     HurtSound: 
     Type: 1
@@ -1656,7 +1656,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003003
     Level: 0
-    Name: HaggerAttack3
+    Name: Hagger/HaggerAttack3
     AnimationName: Attack3
     HurtSound: 
     Type: 1
@@ -1702,7 +1702,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003004
     Level: 0
-    Name: HaggerAttack4
+    Name: Hagger/HaggerAttack4
     AnimationName: Attack4
     HurtSound: 
     Type: 1
@@ -1771,7 +1771,7 @@ MonoBehaviour:
       Args: HeroAttackEnd
   - Id: 1003005
     Level: 0
-    Name: HaggerJumpAttack1
+    Name: Hagger/HaggerJumpAttack1
     AnimationName: JumpAttack1
     HurtSound: 
     Type: 1
@@ -1820,7 +1820,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003006
     Level: 0
-    Name: HaggerJumpAttack2
+    Name: Hagger/HaggerJumpAttack2
     AnimationName: JumpAttack2
     HurtSound: 
     Type: 2
@@ -1938,7 +1938,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003007
     Level: 0
-    Name: HaggerSkill1
+    Name: Hagger/HaggerSkill1
     AnimationName: Skill1
     HurtSound: 
     Type: 2
@@ -1984,7 +1984,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003008
     Level: 0
-    Name: HaggerSkill2
+    Name: Hagger/HaggerSkill2
     AnimationName: Skill2
     HurtSound: 
     Type: 2
@@ -2030,7 +2030,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003009
     Level: 0
-    Name: HaggerKnee
+    Name: Hagger/HaggerKnee
     AnimationName: Knee
     HurtSound: 
     Type: 1
@@ -2079,7 +2079,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003010
     Level: 0
-    Name: HaggerThrow
+    Name: Hagger/HaggerThrow
     AnimationName: Throw
     HurtSound: 
     Type: 1
@@ -2171,7 +2171,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003011
     Level: 0
-    Name: HaggerAttack_Weapon
+    Name: Hagger/HaggerAttack_Weapon
     AnimationName: Attack_Weapon
     HurtSound: 
     Type: 1
@@ -2217,7 +2217,7 @@ MonoBehaviour:
       Args: 
   - Id: 1003012
     Level: 0
-    Name: HaggerThrowWeapon
+    Name: Hagger/HaggerThrowWeapon
     AnimationName: ThrowWeapon
     HurtSound: Sound/Impact
     Type: 2
@@ -2275,7 +2275,7 @@ MonoBehaviour:
       Args: 
   - Id: 2001001
     Level: 0
-    Name: BredAttack
+    Name: Bred/BredAttack
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -2321,7 +2321,7 @@ MonoBehaviour:
       Args: 
   - Id: 2002001
     Level: 0
-    Name: TwoPAttack
+    Name: TwoP/TwoPAttack
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -2367,7 +2367,7 @@ MonoBehaviour:
       Args: 
   - Id: 2003001
     Level: 0
-    Name: AxlAttack
+    Name: Axl/AxlAttack
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -2413,7 +2413,7 @@ MonoBehaviour:
       Args: 
   - Id: 2004001
     Level: 0
-    Name: AndoreAttack
+    Name: Andore/AndoreAttack
     AnimationName: Attack1
     HurtSound: 
     Type: 1
@@ -2459,7 +2459,7 @@ MonoBehaviour:
       Args: 
   - Id: 2004002
     Level: 0
-    Name: AndoreSkill1
+    Name: Andore/AndoreSkill1
     AnimationName: Skill1
     HurtSound: 
     Type: 2
@@ -2505,7 +2505,7 @@ MonoBehaviour:
       Args: 
   - Id: 2005001
     Level: 0
-    Name: DamndAttack
+    Name: Damnd/DamndAttack
     AnimationName: Attack
     HurtSound: 
     Type: 1
@@ -2551,7 +2551,7 @@ MonoBehaviour:
       Args: 
   - Id: 2005002
     Level: 0
-    Name: DamndJumpAttack
+    Name: Damnd/DamndJumpAttack
     AnimationName: JumpDown
     HurtSound: 
     Type: 1

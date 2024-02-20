@@ -99,7 +99,6 @@ namespace GameFrameWork.UI
             root.SetState(subKey, state, data);
         }
 
- 
         private RedPoint GetRoot(string key)
         {
             if (string.IsNullOrEmpty(key))

@@ -55,7 +55,7 @@ public class SkillFactory
         return selectors;
     }
 
-    public static ISkillEffect[] CreateEffects(SkillConfigData skillData, BaseRole owner)
+    public static ISkillEffect[] CreateEffects(SkillBaseDeployer deployer,SkillConfigData skillData, BaseRole owner)
     {
         ISkillEffect[] effects = new ISkillEffect[skillData.SkillEffects.Length];
 
@@ -64,28 +64,28 @@ public class SkillFactory
             switch (skillData.SkillEffects[i].EffectorType)
             {
                 case SkillEffectorType.None:
-                    effects[i] = new SkillNoneEffect(skillData, owner, i);
+                    effects[i] = new SkillNoneEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.NearHitEffect:
-                    effects[i] = new SkillNearHitEffect(skillData, owner, i);
+                    effects[i] = new SkillNearHitEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.BulletHitEffect:
-                    effects[i] = new SkillBulletEffect(skillData, owner, i);
+                    effects[i] = new SkillBulletEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.MoveHitEffect:
-                    effects[i] = new SkillMoveHitEffect(skillData, owner, i);
+                    effects[i] = new SkillMoveHitEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.TargetPositionEffect:
-                    effects[i] = new SkillTargetTransformEffect(skillData, owner, i);
+                    effects[i] = new SkillTargetTransformEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.TargetScaleEffect:
-                    effects[i] = new SkillTargetTransformEffect(skillData, owner, i);
+                    effects[i] = new SkillTargetTransformEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.SelfTransformEffect:
-                    effects[i] = new SkillSelfTransformEffect(skillData, owner, i);
+                    effects[i] = new SkillSelfTransformEffect(deployer, skillData, owner, i);
                     break;
                 case SkillEffectorType.SubHP:
-                    effects[i] = new SkillSubHPEffect(skillData, owner, i);
+                    effects[i] = new SkillSubHPEffect(deployer, skillData, owner, i);
                     break;
             }
         }

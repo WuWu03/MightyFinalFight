@@ -197,51 +197,50 @@ namespace GameFrameWork.Utilities
 
         public static T[] AddElement<T>(T[] array, T newElement)
         {
-            int length = array.Length;
-            T[] tempArray = new T[length];
-
-            for (int i = 0; i < length; i++)
-            {
-                tempArray[i] = array[i];
-            }
-
+            int length = array != null ? array.Length : 0;
             T[] newArray = new T[length + 1];
 
-            for (int i = 0; i < length; i++)
+            if (array != null)
             {
-                newArray[i] = tempArray[i];
+                for (int i = 0; i < length; i++)
+                {
+                    newArray[i] = array[i];
+                }
             }
 
             newArray[length] = newElement;
-            
             return newArray;
         }
 
         public static T[] DeleteElement<T>(T[] array, params int[] deletePos)
         {
-            int length = array.Length;
-            T[] tempArray = new T[length];
-
-            for (int i = 0; i < length; i++)
+            if(array == null)
             {
-                tempArray[i] = array[i];
+                return null;
             }
 
-            length -= deletePos.Length;
+            int length = array.Length - deletePos.Length;
+            int pos = 0;
             T[] newArray = new T[length];
 
-            int index = 0;
-            int currPos = deletePos[index];
+            for (int i = 0; i < array.Length; i++)
+            {
+                bool isDelete = false;
 
-            for (int i = 0; i < length; i++)
-            {   
-                if (i + index >= currPos)
+                for(int j = 0; j < deletePos.Length; j++)
                 {
-                    index += 1;
-                    currPos = deletePos[index];
+                    if(i == deletePos[j])
+                    {
+                        isDelete = true;
+                        break;
+                    }
                 }
 
-                newArray[i] = tempArray[i + index];
+                if (!isDelete)
+                {
+                    newArray[pos] = array[i];
+                    pos++;
+                }
             }
 
             return newArray;

@@ -28,12 +28,12 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    public override void OnInit(BaseFsm fsm)
+    protected override void OnInit(BaseFsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    public override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(BaseFsm fsm)
     {
         m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, m_Owner.entityAttribute.jumpForce.y);
         m_Owner.PlayAnimation(m_IsCatch ? AnimName.Catch : AnimName.JumpUp);
@@ -47,7 +47,7 @@ public class RoleJump : BaseFsmState
         m_Owner.onDropEvent.AddListener(OnDrop);
     }
 
-    public override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnFixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.isFloat)
         {
@@ -55,6 +55,7 @@ public class RoleJump : BaseFsmState
             {
                 m_HasAddXForce = true;
                 m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, 0f);
+
                 if (m_CanChangeDir)
                 {
                     m_Owner.SetDir(m_Dir);
@@ -68,17 +69,13 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    public override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(BaseFsm fsm, bool isShutdown)
     {
         m_Dir = 0;
         m_CanChangeDir = false;
         m_HasAddXForce = false;
     }
 
-    public override void OnDestroy(BaseFsm fsm)
-    {
-
-    }
 
     private void OnDrop()
     {
