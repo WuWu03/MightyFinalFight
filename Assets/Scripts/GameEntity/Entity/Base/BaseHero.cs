@@ -1,6 +1,7 @@
 ﻿using GameFrameWork.Camera;
 using GameFrameWork.UI;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BaseHero : BaseRole
@@ -156,6 +157,7 @@ public class BaseHero : BaseRole
         {
             return null;
         }
+
         return m_ListCatchTarget;
     }
 
@@ -386,11 +388,16 @@ public class BaseHero : BaseRole
 
     protected override void OnGround()
     {
-        m_IsDropInGround = IsCurrState<RoleSkill>();
-
-        if (HasCatch() && m_IsDropInGround)
+        if (HasCatch())
         {
-            ResetCatch();
+            if (IsCurrState<RoleIdle>())
+            {
+                ResetCatch();
+            }
+            else
+            {
+                m_ListCatchTarget[0].SetCatch(false);
+            }
         }
     }
 
@@ -404,18 +411,9 @@ public class BaseHero : BaseRole
 
         if (m_ListCatchTarget.Count < 1)
         {
-            bool isCheck = false;
-            if (IsAnyState(typeof(RoleIdle)))
-            {
-                isCheck = m_IsDropInGround;
-            }
-
-            isCheck = isCheck || IsAnyState(typeof(RoleMove));
-            m_IsDropInGround = false;
-
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
 
-            if (!isCheck || enemyTargets.Count < 1)
+            if (!IsAnyState(typeof(RoleMove)) || enemyTargets.Count < 1)
             {
                 return;
             }

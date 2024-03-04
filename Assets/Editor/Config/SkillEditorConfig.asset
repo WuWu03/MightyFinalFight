@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - Id: 0
-    skillName: dd/d
-    skillFrameCount: 10
+    skillName: tt/ff
+    skillFrameCount: 50
     deployerType: 0
     Key:
       keys: 

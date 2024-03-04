@@ -18,6 +18,7 @@ public class HurtData : BaseEventArgs
     public bool canBeDefense { get; set; }
     public bool isBoss { get; set; }
     public bool isDefense { get; set; }
+    public bool isPause { get; set; }
     public bool isNotPlayHurtSound { get; set; }
 
     public static HurtData Create()

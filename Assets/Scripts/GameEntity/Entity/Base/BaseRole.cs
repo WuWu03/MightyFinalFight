@@ -220,8 +220,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             m_CurrCtrl.Update();
         }
-
-        CheckAutoMove();
     }
 
     protected override void OnLateUpdate()
@@ -232,6 +230,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             m_CurrCtrl.LateUpdate();
         }
+    }
+
+    protected override void OnFixedUpdate()
+    {
+        base.OnFixedUpdate();
+
+        if (m_CurrCtrl != null)
+        {
+            m_CurrCtrl.FixedUpdate();
+        }
+
+        CheckAutoMove();
     }
 
     public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)
@@ -480,7 +490,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-
     protected virtual void OnGroundHurtMsg(HurtData data)
     {
         if (!data.isNotPlayHurtSound)
@@ -669,8 +678,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (!m_YArrived)
         {
-            float yOffest = m_MoveToPos.y - m_Pos.y;
-            m_YArrived = Mathf.Abs(yOffest)*1000f <= 10f;
+            float yOffest = Mathf.Abs(m_MoveToPos.y - m_Pos.y);
+            m_YArrived = Mathf.Approximately(yOffest, 0f);
             MoveData data = MoveData.Create();
             data.dir = (Vector2.up * yOffest).normalized;
             OnMoveMsg(data);
@@ -680,10 +689,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (!m_XArrived)
         {
-            float xOffest = m_MoveToPos.x - m_Pos.x;
-            m_XArrived = Mathf.Abs(xOffest) <= 0.05f;
+            float xOffset = Mathf.Abs(m_MoveToPos.x - m_Pos.x);
+            m_XArrived = Mathf.Approximately(xOffset, 0f);
             MoveData data = MoveData.Create();
-            data.dir = (Vector2.right * xOffest).normalized;
+            data.dir = (Vector2.right * xOffset).normalized;
             OnMoveMsg(data);
             ReferencePool.Release(data);
             return;

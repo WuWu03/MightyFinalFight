@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using DragonBones;
-using System;
+﻿using DragonBones;
 using GameFrameWork;
-using Unity.VisualScripting;
+using UnityEditor;
+using UnityEngine;
 
 public class CharacterTriggerEditorWindow : EditorWindow
 {

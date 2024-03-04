@@ -17,7 +17,7 @@ public class RoleHurt : BaseFsmState
 
     protected override void OnEnter(BaseFsm fsm)
     {
-        m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.isBeCatch ? 1f : m_Owner.objectType == ObjectType.Player ? 0.5f : 1.5f);
+        m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.isBeCatch ? 1f : m_Owner.objectType == ObjectType.Player ? 0.5f : 1f);
         m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
     }
 

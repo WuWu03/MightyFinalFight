@@ -132,19 +132,24 @@ namespace GameFrameWork.UI
             m_ShowEvent?.Invoke(m_State, m_Data);
         }
 
-        public void AddChild(RedPoint node, string parentKey)
+        public bool AddChild(RedPoint node, string parentKey)
         {
             if (m_SubKey.Equals(parentKey))
             {
                 node.SetParent(this);
                 m_Children.Add(node);
-                return;
+                return true;
             }
 
             for (int i = 0; i < m_Children.Count; i++)
             {
-                m_Children[i].AddChild(node, parentKey);
+                if (m_Children[i].AddChild(node, parentKey))
+                {
+                    break;
+                }
             }
+
+            return false;
         }
 
         public RedPoint GetChild(string subKey)
@@ -174,6 +179,11 @@ namespace GameFrameWork.UI
 
         public void RemoveChild(string subKey)
         {
+            if (string.IsNullOrEmpty(subKey))
+            {
+                return;
+            }
+
             if(m_SubKey.Equals(subKey))
             {
                 m_Parent.children.Remove(this);

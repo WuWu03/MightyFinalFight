@@ -50,7 +50,6 @@ public class ParallelSelector : Composite
                 m_State = BehaviourTreeState.Success;
                 return;
             }
-
             else if (m_ChildrenState[i] != BehaviourTreeState.Failure)
             {
                 isAllFailure = true;

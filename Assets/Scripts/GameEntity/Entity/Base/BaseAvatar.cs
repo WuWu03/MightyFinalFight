@@ -2,7 +2,6 @@
 using GameFrameWork;
 using GameFrameWork.Fsm;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject

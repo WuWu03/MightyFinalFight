@@ -207,7 +207,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 720}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 143870781}
   - component: {fileID: 143870784}
   - component: {fileID: 143870783}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 199984715}
   - component: {fileID: 199984714}
   - component: {fileID: 199984713}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: state
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 252952246}
   - component: {fileID: 252952245}
   - component: {fileID: 252952249}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: playerHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 305565308}
   - component: {fileID: 305565307}
   - component: {fileID: 305565306}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: txtExp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,7 +697,7 @@ GameObject:
   - component: {fileID: 322625190}
   - component: {fileID: 322625189}
   - component: {fileID: 322625192}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: txtPlayerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 504768932}
   - component: {fileID: 504768931}
   - component: {fileID: 504768933}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: playerHpBarImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -909,7 +909,7 @@ GameObject:
   - component: {fileID: 562871415}
   - component: {fileID: 562871414}
   - component: {fileID: 562871416}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgLevel3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,7 +1062,7 @@ GameObject:
   - component: {fileID: 674840360}
   - component: {fileID: 674840362}
   - component: {fileID: 674840361}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1139,7 +1139,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 693409553}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1245,8 +1245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 743783145}
   - component: {fileID: 743783146}
-  - component: {fileID: 743783147}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1301,18 +1300,6 @@ MonoBehaviour:
   - {fileID: 305565307}
   - {fileID: 1149134742}
   - {fileID: 1725198712}
---- !u!225 &743783147
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743783144}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &752769400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,8 +1346,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 720
-    height: 1280
+    width: 1920
+    height: 1080
   near clip plane: -1000
   far clip plane: 1000
   field of view: 60
@@ -1390,7 +1377,7 @@ Transform:
   m_GameObject: {fileID: 752769400}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -100}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1407,7 +1394,7 @@ GameObject:
   - component: {fileID: 873496742}
   - component: {fileID: 873496744}
   - component: {fileID: 873496743}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1487,7 +1474,7 @@ GameObject:
   - component: {fileID: 1007864716}
   - component: {fileID: 1007864715}
   - component: {fileID: 1007864717}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgLevel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1584,7 +1571,7 @@ GameObject:
   - component: {fileID: 1073889342}
   - component: {fileID: 1073889341}
   - component: {fileID: 1073889343}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgLevel5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1683,7 +1670,7 @@ GameObject:
   - component: {fileID: 1149134745}
   - component: {fileID: 1149134744}
   - component: {fileID: 1149134746}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: txtEnemyDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1812,7 +1799,7 @@ GameObject:
   - component: {fileID: 1182122093}
   - component: {fileID: 1182122095}
   - component: {fileID: 1182122094}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1887,7 +1874,7 @@ GameObject:
   - component: {fileID: 1186272848}
   - component: {fileID: 1186272850}
   - component: {fileID: 1186272849}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1967,7 +1954,7 @@ GameObject:
   - component: {fileID: 1363721682}
   - component: {fileID: 1363721681}
   - component: {fileID: 1363721680}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2061,7 +2048,7 @@ GameObject:
   - component: {fileID: 1416097193}
   - component: {fileID: 1416097192}
   - component: {fileID: 1416097191}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: playerLife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2153,7 +2140,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514623960}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2193,7 +2180,7 @@ GameObject:
   - component: {fileID: 1655960280}
   - component: {fileID: 1655960279}
   - component: {fileID: 1655960281}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgLevel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2290,7 +2277,7 @@ GameObject:
   - component: {fileID: 1682481263}
   - component: {fileID: 1682481262}
   - component: {fileID: 1682481261}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2385,7 +2372,7 @@ GameObject:
   - component: {fileID: 1725198712}
   - component: {fileID: 1725198711}
   - component: {fileID: 1725198710}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: txtPlayerDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2500,7 +2487,7 @@ GameObject:
   - component: {fileID: 1746242807}
   - component: {fileID: 1746242806}
   - component: {fileID: 1746242805}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: levelList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2601,7 +2588,7 @@ GameObject:
   - component: {fileID: 1826900177}
   - component: {fileID: 1826900176}
   - component: {fileID: 1826900179}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: txtStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2715,7 +2702,7 @@ GameObject:
   - component: {fileID: 1861697064}
   - component: {fileID: 1861697066}
   - component: {fileID: 1861697065}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2795,7 +2782,7 @@ GameObject:
   - component: {fileID: 1970342134}
   - component: {fileID: 1970342133}
   - component: {fileID: 1970342135}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2887,7 +2874,7 @@ GameObject:
   - component: {fileID: 2006755761}
   - component: {fileID: 2006755760}
   - component: {fileID: 2006755759}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2989,7 +2976,7 @@ GameObject:
   - component: {fileID: 2032371816}
   - component: {fileID: 2032371815}
   - component: {fileID: 2032371817}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: playerHpBarImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3122,7 +3109,7 @@ GameObject:
   - component: {fileID: 2072616668}
   - component: {fileID: 2072616667}
   - component: {fileID: 2072616671}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: enemyHpBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3291,7 +3278,7 @@ GameObject:
   - component: {fileID: 2115285215}
   - component: {fileID: 2115285214}
   - component: {fileID: 2115285216}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: imgLevel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

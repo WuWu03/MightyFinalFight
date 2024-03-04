@@ -17,6 +17,33 @@ public static class SkillUtil
         return xCheck && yCheck;
     }
 
+    public static bool IsPointInTriangle1(Vector3 point, Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        Vector3 pv1 = point - v1;
+        Vector3 pv2 = point - v2;
+        Vector3 pv3 = point - v3;
+
+        Vector3 v21 = v2 - v1;
+        Vector3 v32 = v3 - v2;
+        Vector3 v13 = v1 - v3;
+
+        var npab = Vector3.Cross(pv1, v21).y;
+        var npbc = Vector3.Cross(pv2, v32).y;
+        var npca = Vector3.Cross(pv3, v13).y;
+
+        return (npab * npbc) > 0 && (npab * npca) > 0;
+    }
+
+    public static bool IsPointInTriangle2(Vector3 point, Vector3 v1, Vector3 v2, Vector3 v3)
+    {
+        float area = Vector3.Cross(v2 - v1, v3 - v1).magnitude / 2f;
+        float area1 = Vector3.Cross(v2 - point, v3 - point).magnitude / 2f;
+        float area2 = Vector3.Cross(v3 - point, v1 - point).magnitude / 2f;
+        float area3 = Vector3.Cross(v1 - point, v2 - point).magnitude / 2f;
+        float sum = area1 + area2 + area3;
+        return Mathf.Approximately(sum, area);
+    }
+
     public static bool CheckStatus(SkillPrevCondition[] conditions, BaseRole owner)
     {
         bool ret = true;
@@ -83,7 +110,7 @@ public static class SkillUtil
         return ret;
     }
 
-    public static HurtData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
+    public static HurtData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
     {
         if (hit == null || !hit.canBeHit)
         {
@@ -125,14 +152,15 @@ public static class SkillUtil
         hurtData.hurtSound = data.HurtSound;
         hurtData.hurtAnim = string.Empty;
         hurtData.isGroundHurt = effect.IsOnGroundHurt;
+        hurtData.isPause = isPause;
         hurtData.isBoss = isBoss;
 
         return hurtData;
     }
 
-    public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect)
+    public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect , bool isPause = false)
     {
-        HurtData hurtData = GetHurtData(hit, owner, data, effect);
+        HurtData hurtData = GetHurtData(hit, owner, data, effect, isPause);
 
         if (hurtData != null)
         {

@@ -9,6 +9,7 @@ namespace GameFrameWork.UI
 {
     public class ButtonEx : Selectable, ISubmitHandler
     {
+
         private void Update()
         {
             if (m_IsPointDown)
@@ -46,7 +47,6 @@ namespace GameFrameWork.UI
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            base.OnPointerDown(eventData);
             m_IsPointDown = true;
             m_IsPress = false;
             m_CurrDonwTime = Time.unscaledTime;
@@ -55,7 +55,6 @@ namespace GameFrameWork.UI
 
         public override void OnPointerUp(PointerEventData eventData)
         {
-            base.OnPointerUp(eventData);
             m_IsPointDown = false;
 
             if (!m_IsPress)

@@ -40,7 +40,12 @@ namespace GameFrameWork.UI
 
         public void Remove(string key, string subKey)
         {
-            if(string.IsNullOrEmpty(subKey) || key.Equals(subKey))
+            if (string.IsNullOrEmpty(key))
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(subKey) || key.Equals(subKey))
             {
                 for (int i = m_ListRedPointTrees.Count - 1; i >= 0; i--)
                 {

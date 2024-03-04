@@ -79,9 +79,14 @@ namespace GameFrameWork.BehaviourTree
 
         private void ShuffChildren()
         {
+            // 1 2 3 4 5
+            //5 2 3 4 1
+            //5 4 3 2 1
+            //5 3 4 2 1
+
             for (int i = m_ChildrenIndexes.Length; i > 0; --i)
             {
-                int j = Random.Range(0, i);
+                int j = Random.Range(0, i - 1);
                 int childIndex = m_ChildrenIndexes[j];
                 m_ChildrenIndexes[j] = m_ChildrenIndexes[i - 1];
                 m_ChildrenIndexes[i - 1] = childIndex;

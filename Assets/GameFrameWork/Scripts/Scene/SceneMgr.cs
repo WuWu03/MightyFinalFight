@@ -171,12 +171,12 @@ namespace GameFrameWork.Scene
             m_UnLoadSceneFailureEvent = null;
         }
 
-        public void LoadSceneAsync(string sceneName,params object[] args)
+        public void LoadSceneAsync(string sceneName, params object[] args)
         {
             LoadSceneAsync(sceneName, LoadSceneMode.Single, true, args);
         }
 
-        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object[] args)
+        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, params object[] args)
         {
             if (isLoading)
             {
@@ -204,7 +204,7 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public void LoadScene(string sceneName,params object[] args)
+        public void LoadScene(string sceneName, params object[] args)
         {
             LoadScene(sceneName, LoadSceneMode.Single, args);
         }

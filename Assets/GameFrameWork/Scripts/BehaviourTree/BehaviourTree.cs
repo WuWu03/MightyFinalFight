@@ -67,9 +67,9 @@ namespace GameFrameWork.BehaviourTree
             {
                 for (int i = 0; i < data.preConditions.Length; i++)
                 {
-                    if(root is Task)
+                    if(root is BaseTask)
                     {
-                        (root as Task).AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner, 0));
+                        (root as BaseTask).AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner, 0));
                     }
                 }
             }
@@ -78,9 +78,9 @@ namespace GameFrameWork.BehaviourTree
             {
                 for (int i = 0; i < data.children.Length; i++)
                 {
-                    if(root is ParentTask)
+                    if(root is Task)
                     {
-                        (root as ParentTask).AddChild(Load(data.children[i], owner) as Task);
+                        (root as Task).AddChild(Load(data.children[i], owner) as BaseTask);
                     }
                 }
             }

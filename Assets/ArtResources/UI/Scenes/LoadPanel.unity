@@ -235,6 +235,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619928229}
   - component: {fileID: 619928230}
+  - component: {fileID: 619928231}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -276,6 +277,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - {fileID: 2056449681}
+--- !u!223 &619928231
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619928228}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &772694341
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,7 +612,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2056449681
 MonoBehaviour:

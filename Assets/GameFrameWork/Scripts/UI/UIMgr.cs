@@ -131,10 +131,12 @@ namespace GameFrameWork.UI
         public T Open<T>(params object[] args) where T : BasePanel, new()
         {
             BasePanel panel = RealOpen(typeof(T).Name, args);
+
             if (panel == null)
             {
                 return default(T);
             }
+
             return panel as T;
         }
 

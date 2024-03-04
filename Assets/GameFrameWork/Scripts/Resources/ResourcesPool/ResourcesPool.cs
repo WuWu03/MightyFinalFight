@@ -55,7 +55,6 @@ namespace GameFrameWork.Resources
                             resource.Clear();
                             ReferencePool.Release(resource);
                             UnityEngine.Resources.UnloadUnusedAssets();
-                            GC.Collect();
                         }
                         else
                         {

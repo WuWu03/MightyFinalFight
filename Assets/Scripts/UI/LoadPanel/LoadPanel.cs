@@ -2,14 +2,11 @@
 /**2021-7-23 10:03**************************************/
 /**Create By GQY****************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
-using GameFrameWork.UI;
 using GameFrameWork;
-using System;
+using GameFrameWork.UI;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEngine;
 
 public class LoadPanel : BasePanel
 {

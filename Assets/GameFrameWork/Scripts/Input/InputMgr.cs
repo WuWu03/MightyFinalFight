@@ -223,6 +223,7 @@ namespace GameFrameWork.Input
                 {
                     m_CurrKeyDown = i;
                     m_KeyDownTimer = Time.time;
+                    break;
                 }
             }
 

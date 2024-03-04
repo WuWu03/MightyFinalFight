@@ -3,6 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands.BranchExplorer;
 
 public class BuiltInDemo : EditorWindow
 {
@@ -73,8 +74,10 @@ public class BuiltInDemo : EditorWindow
 
             if (_showingStyles)
             {
+                int index = -1;
                 foreach (GUIStyle ss in GUI.skin.customStyles)
                 {
+                    index++;
                     if (lowerSearch != "" && !ss.name.ToLower().Contains(lowerSearch))
                         continue;
 
@@ -83,8 +86,8 @@ public class BuiltInDemo : EditorWindow
                     Drawing draw = new Drawing();
 
                     float width = Mathf.Max(
-                        100.0f,
-                        GUI.skin.button.CalcSize(new GUIContent(ss.name)).x,
+                    100.0f,
+                        GUI.skin.button.CalcSize(new GUIContent(index.ToString() + "," + ss.name)).x,
                         ss.CalcSize(inactiveText).x + ss.CalcSize(activeText).x
                                       ) + 16.0f;
 

@@ -53,7 +53,18 @@ public abstract class BaseCtrl
         {
             return;
         }
+
         OnLateUpdate();
+    }
+
+    public void FixedUpdate()
+    {
+        if (m_Owner == null || !m_IsRunning)
+        {
+            return;
+        }
+
+        OnFixedUpdate();
     }
 
     public void Release()
@@ -68,6 +79,7 @@ public abstract class BaseCtrl
     protected virtual void OnStart() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
+    protected virtual void OnFixedUpdate() { }
     protected virtual void OnRelease() { }
 
     protected BaseRole m_Owner = null;

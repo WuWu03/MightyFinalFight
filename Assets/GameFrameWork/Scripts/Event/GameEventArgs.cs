@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-
-namespace GameFrameWork.Event
+﻿namespace GameFrameWork.Event
 {
     public class GameEventArgs : BaseEventArgs
     {
