@@ -226,7 +226,7 @@ namespace GameFrameWork.UI
 
             if (m_CanPopPanel && panel.panelType != Type.Pop)
             {
-                if (m_CurrPopPanel != null)
+                if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
                 {
                     ClosePanel(m_CurrPopPanel, false);
                     m_ListPopPanel.Add(m_CurrPopPanel);
@@ -281,6 +281,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
+
             panel.Close();
 
             if (panel.panelCloseMode == CloseMode.Destroy || isForceDestroy)
@@ -289,6 +290,11 @@ namespace GameFrameWork.UI
                 ResourcesPool.instance.Put(panel.resPath, panel.gameObject, true);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
+
+                if (m_CurrPopPanel == panel)
+                {
+                    m_CurrPopPanel = null;
+                }
             }
             else if (panel.panelCloseMode == CloseMode.DelayDestroy)
             {
@@ -350,6 +356,11 @@ namespace GameFrameWork.UI
                         m_ListOpenPanel.Remove(panel);
                         m_ListDelayDestroy.Remove(panel);
                         m_ListPopPanel.Remove(panel);
+
+                        if(m_CurrPopPanel == panel)
+                        {
+                            m_CurrPopPanel = null;
+                        }
                     }
                 }
             }
@@ -362,6 +373,11 @@ namespace GameFrameWork.UI
                 m_ListAlways.Remove(panel);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
+
+                if (m_CurrPopPanel == panel)
+                {
+                    m_CurrPopPanel = null;
+                }
             }
 
             for (int i = 0; i < m_ListOpenPanel.Count; i++)

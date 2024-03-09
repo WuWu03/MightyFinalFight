@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Pool;
+﻿using GameFrameWork.Event;
+using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using System;
 using System.Collections;
@@ -56,6 +57,7 @@ namespace GameFrameWork.UI
             gameObject = go;
             transform = go.transform;
             m_UIRefRoot = go.GetComponent<UIRefRoot>();
+            m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
             this.resPath = resPath;
 
             if (m_UIRefRoot == null)
@@ -94,6 +96,16 @@ namespace GameFrameWork.UI
             m_IsOpen = false;
             gameObject.SetActive(false);
             m_DelayTime = Time.unscaledTime;
+
+            foreach (KeyValuePair<int, List<EventHandler<GameEventArgs>>> kvp in m_DicHandler)
+            {
+                foreach (EventHandler<GameEventArgs> handler in kvp.Value)
+                {
+                    EventMgr.instance.UnSubscribe(kvp.Key, handler);
+                }
+            }
+
+            m_DicHandler.Clear();
             OnClose();
         }
 
@@ -141,6 +153,7 @@ namespace GameFrameWork.UI
         {
             m_IsInit = false;
             m_DelayTime = 0f;
+            m_DicHandler = null;
             OnDestroy();
         }
 
@@ -149,6 +162,22 @@ namespace GameFrameWork.UI
         protected abstract void OnUpdate();
         protected abstract void OnClose();
         protected abstract void OnDestroy();
+
+        protected void AddEvent(int eventId, EventHandler<GameEventArgs> handler)
+        {
+            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArgs>> list))
+            {
+                list.Add(handler);
+            }
+            else
+            {
+                list = new List<EventHandler<GameEventArgs>>();
+                list.Add(handler);
+                m_DicHandler.Add(eventId, list);
+            }
+
+            EventMgr.instance.Subscribe(eventId, handler);
+        }
 
         protected void InnerClose()
         {
@@ -159,6 +188,6 @@ namespace GameFrameWork.UI
         private bool m_IsInit = false;
         private bool m_IsHide = false;
         private float m_DelayTime = 0f;
-
+        private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = null;
     }
 }

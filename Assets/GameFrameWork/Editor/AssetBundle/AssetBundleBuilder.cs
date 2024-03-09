@@ -132,6 +132,10 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
+            if (path.Contains("GuyWeapon"))
+            {
+
+            }
             string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
 
             if (files.Length < 1)

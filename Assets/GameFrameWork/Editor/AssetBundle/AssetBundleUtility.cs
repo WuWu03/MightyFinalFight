@@ -15,6 +15,12 @@ namespace GameFrameWork.Editor
             m_DicAssetContainer = new Dictionary<string, int>();
         }
 
+        public static void RefreshData()
+        {
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+            m_DicAssetContainer.Clear();
+        }
+
         private static void ProjectWindowItemGUI(string guid, Rect selectionRect)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
@@ -71,7 +77,16 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
                 {
-                    if (m_AssetBundleConfig.Datas[i].AssetPath.Equals(assetPath) || assetPath.Contains(m_AssetBundleConfig.Datas[i].AssetPath))
+                    if (i == 2)
+                    {
+
+                    }
+                    if (string.IsNullOrEmpty(m_AssetBundleConfig.Datas[i].AssetPath))
+                    {
+                        continue;
+                    }
+
+                    if (m_AssetBundleConfig.Datas[i].AssetPath.Equals(assetPath) || assetPath.StartsWith(m_AssetBundleConfig.Datas[i].AssetPath))
                     {
                         m_DicAssetContainer.Add(assetPath, i);
                         return i;

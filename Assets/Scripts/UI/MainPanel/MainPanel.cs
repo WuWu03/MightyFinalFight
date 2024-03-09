@@ -13,6 +13,8 @@ using GameFrameWork.Pool;
 using GameFrameWork.Camera;
 using System;
 using GameFrameWork.Event;
+using GameFrameWork.Resources;
+using System.Xml.Linq;
 
 public class MainPanel : BasePanel
 {
@@ -20,7 +22,7 @@ public class MainPanel : BasePanel
 	public override float panelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type panelType { get { return UIMgr.Type.Root; } }
 	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer2; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
 
     protected override void OnInit(object[] param)
 	{
@@ -28,7 +30,7 @@ public class MainPanel : BasePanel
 		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
-    protected override void OnOpen()
+	protected override void OnOpen()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
@@ -39,9 +41,9 @@ public class MainPanel : BasePanel
 		PoolMgr.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
 		PoolMgr.instance.AddPool("EmenyDamageText", m_Component.txtEnemyDamage.gameObject);
 
-		EventMgr.instance.Subscribe(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
-        SetColor();
-    }
+		AddEvent(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
+		SetColor();
+	}
 
     private void OnStageEnterStartEvent(object sender, GameEventArgs e)
     {
@@ -55,12 +57,11 @@ public class MainPanel : BasePanel
 			m_Component.enemyHpBar.gameObject.SetActive(false);
 			m_EnemyHpBarHideTimer = -1;
 		}
-    }
+	}
 
 	protected override void OnClose()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = null;
-        EventMgr.instance.UnSubscribe(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
     }
 
 	protected override void OnDestroy()
@@ -86,6 +87,7 @@ public class MainPanel : BasePanel
 			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
 		}
 
+		Debug.Log("sssssssssssssss");
 		m_Component.playerHpBar.maxValue = max;
 		m_Component.playerHpBar.value = value;
 	}

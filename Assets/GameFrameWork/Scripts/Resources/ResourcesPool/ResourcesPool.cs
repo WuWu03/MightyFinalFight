@@ -14,6 +14,7 @@ namespace GameFrameWork.Resources
             m_PoolRoot.localPosition = new Vector3(-9999f, -9999f, -9999f);
             m_DicPool = new Dictionary<string, Queue<ResourcePoolInfo>>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
+            m_ListMarkResource = new List<ResourceMark>();
             m_RemoveList = new List<string>();
         }
 
@@ -21,19 +22,24 @@ namespace GameFrameWork.Resources
         {
             base.OnUpdate();
 
-            if (m_CollectTimer != 0 && Time.time - m_CollectTimer < 1f)
+            //if (m_CollectTimer != 0 && Time.time - m_CollectTimer < 0.2f)
+            //{
+            //    return;
+            //}
+
+            //m_CollectTimer = Time.time;
+
+            if (m_DicPool == null || m_DicPool.Count < 1)
             {
                 return;
             }
 
-            m_CollectTimer = Time.time;
+            m_ListMarkResource.Clear();
             m_RemoveList.Clear();
-
-            Dictionary<string, Queue<ResourcePoolInfo>>.Enumerator it = m_DicPool.GetEnumerator();
-
-            while (it.MoveNext())
+            
+            foreach(KeyValuePair<string,Queue<ResourcePoolInfo>> kvp in m_DicPool)
             {
-                Queue<ResourcePoolInfo> pool = it.Current.Value;
+                Queue<ResourcePoolInfo> pool = kvp.Value;
                 int cout = pool.Count;
 
                 while (cout > 0)
@@ -47,12 +53,24 @@ namespace GameFrameWork.Resources
                         {
                             if (resource.poolObject is GameObject)
                             {
+                                ResourceMark[] resourceMarks = (resource.poolObject as GameObject).GetComponentsInChildren<ResourceMark>(true);
+
+                                if(resourceMarks != null && resourceMarks.Length > 0)
+                                {
+                                    for (int i = 0; i < resourceMarks.Length; i++)
+                                    {
+                                        if (resourceMarks[i].assetPath != resource.assetPath)
+                                        {
+                                            resourceMarks[i].transform.SetParent(m_PoolRoot, false);
+                                            m_ListMarkResource.Add(resourceMarks[i]);
+                                        }
+                                    }
+                                }
+              
                                 GameObject.Destroy(resource.poolObject);
                             }
 
                             ResourcesMgr.instance.UnloadAsset(resource.assetPath, false);
-
-                            resource.Clear();
                             ReferencePool.Release(resource);
                             UnityEngine.Resources.UnloadUnusedAssets();
                         }
@@ -65,13 +83,18 @@ namespace GameFrameWork.Resources
 
                 if (pool.Count <= 0)
                 {
-                    m_RemoveList.Add(it.Current.Key);
+                    m_RemoveList.Add(kvp.Key);
                 }
             }
 
             for (int i = 0; i < m_RemoveList.Count; i++)
             {
                 m_DicPool.Remove(m_RemoveList[i]);
+            }
+
+            for (int i = 0; i < m_ListMarkResource.Count; i++)
+            {
+                Put(m_ListMarkResource[i].assetPath, m_ListMarkResource[i].gameObject);
             }
         }
 
@@ -162,8 +185,20 @@ namespace GameFrameWork.Resources
 
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
-                UnityEngine.Object go = obj is GameObject ? UnityEngine.Object.Instantiate(obj) as GameObject : obj;
-                listLoadRequest[i].Call(go);
+                UnityEngine.Object result = null;
+
+                if (obj is GameObject) 
+                {
+                    GameObject go = UnityEngine.Object.Instantiate(obj) as GameObject;
+                    go.GetOrAddComponent<ResourceMark>().assetPath = assetPath;
+                    result = go;
+                }
+                else
+                {
+                    result = obj;
+                }
+
+                listLoadRequest[i].Call(result);
             }
 
             m_DicLoadRequests.Remove(assetPath);
@@ -189,11 +224,19 @@ namespace GameFrameWork.Resources
         {
             m_DicPool.Clear();
             m_DicLoadRequests.Clear();
+            m_ListMarkResource.Clear();
+            m_RemoveList.Clear();
+
+            m_DicPool = null;
+            m_DicLoadRequests = null;
+            m_ListMarkResource = null;
+            m_RemoveList = null;
         }
 
         public const int COLLECT_TIME = 15;
         private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
+        private List<ResourceMark> m_ListMarkResource = null;
         private List<string> m_RemoveList = null;
         private Dictionary<string, Queue<ResourcePoolInfo>> m_DicPool = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;

@@ -19,7 +19,7 @@ namespace GameFrameWork.Editor
 
         private void OnDisable()
         {
-            
+            AssetBundleUtility.RefreshData();
             //SaveConfig();
         }
 
@@ -138,6 +138,7 @@ namespace GameFrameWork.Editor
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
             UnityEditor.EditorUtility.SetDirty(m_AssetBundleConfig);
+            AssetBundleUtility.RefreshData();
         }
 
         private void ClearConfig()
@@ -457,6 +458,28 @@ namespace GameFrameWork.Editor
             if (GUILayout.Button("重新排序"))
             {
                 m_ListData.Sort();
+                m_ListPatternIndex.Clear();
+                m_ListBundleExtendIndex.Clear();
+
+                for (int i = 0; i < m_ListData.Count; i++)
+                {
+                    for (int j = 0; j < m_AssetBundleConfig.ListPattern.Count; j++)
+                    {
+                        if (m_ListData[i].Pattern.Equals(m_AssetBundleConfig.ListPattern[j]))
+                        {
+                            m_ListPatternIndex.Add(j);
+                        }
+                    }
+
+                    for (int j = 0; j < m_AssetBundleConfig.ListExtendName.Count; j++)
+                    {
+                        if (m_ListData[i].BundleExtend.Equals(m_AssetBundleConfig.ListExtendName[j]))
+                        {
+                            m_ListBundleExtendIndex.Add(j);
+                        }
+                    }
+                }
+
                 SaveConfig();
                 ShowNotification(new GUIContent("排序成功"));
             }

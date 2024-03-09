@@ -33,4 +33,9 @@ namespace GameFrameWork.Resources
             assetPath = null;
         }
     }
+
+    public class ResourceMark : MonoBehaviour
+    {
+        public string assetPath;
+    }
 }
