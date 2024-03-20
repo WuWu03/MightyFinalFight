@@ -13,11 +13,11 @@ public class RoleMove : BaseFsmState
     {
         if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
-            m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move_Weapon, 0, m_Owner.entityAttribute.moveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move_Weapon, -1, m_Owner.entityAttribute.moveSpeed * 0.2f);
         }
         else
         {
-            m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move, 0, m_Owner.entityAttribute.moveSpeed * 0.2f);
+            m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move, -1, m_Owner.entityAttribute.moveSpeed * 0.2f);
         }
     }
 

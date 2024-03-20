@@ -76,7 +76,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleAttack), typeof(RoleSkill), typeof(RoleJump));
+            return !m_IsAutoMove && !m_IsDropTrag && !m_IsBeCatch && IsAnyState(typeof(RoleIdle), typeof(RoleMove), typeof(RoleAttack), typeof(RoleSkill), typeof(RoleJump));
         }
     }
 
@@ -224,6 +224,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             m_CurrCtrl.Update();
         }
+
+
     }
 
     protected override void OnLateUpdate()
@@ -669,7 +671,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!m_YArrived)
         {
             float yOffset = Mathf.Abs(m_MoveToPos.y - m_Pos.y);
-            m_YArrived = Mathf.Approximately(yOffset, 0.02f);
+            m_YArrived = yOffset <= 0.02f;
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.up * yOffset).normalized;
             OnMoveMsg(data);
@@ -680,7 +682,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!m_XArrived)
         {
             float xOffset = Mathf.Abs(m_MoveToPos.x - m_Pos.x);
-            m_XArrived = Mathf.Approximately(xOffset, 0.02f);
+            m_XArrived = xOffset <= 0.02f;
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.right * xOffset).normalized;
             OnMoveMsg(data);

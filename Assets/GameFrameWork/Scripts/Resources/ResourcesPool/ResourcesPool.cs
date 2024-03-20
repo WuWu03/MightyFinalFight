@@ -22,12 +22,12 @@ namespace GameFrameWork.Resources
         {
             base.OnUpdate();
 
-            //if (m_CollectTimer != 0 && Time.time - m_CollectTimer < 0.2f)
-            //{
-            //    return;
-            //}
+            if (m_CollectTimer != 0 && Time.time - m_CollectTimer < 0.5f)
+            {
+                return;
+            }
 
-            //m_CollectTimer = Time.time;
+            m_CollectTimer = Time.time;
 
             if (m_DicPool == null || m_DicPool.Count < 1)
             {

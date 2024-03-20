@@ -301,9 +301,12 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
-        asix.y *= 0.8f;
-        m_PlayerCtrl.Move(asix);
+        if(m_Player.canMove)
+        {
+            Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
+            asix.y *= 0.8f;
+            m_PlayerCtrl.Move(asix);
+        }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -317,7 +320,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+           m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
         }
 
         if (Input.GetKeyDown(KeyCode.T))
