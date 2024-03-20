@@ -87,7 +87,6 @@ public class MainPanel : BasePanel
 			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
 		}
 
-		Debug.Log("sssssssssssssss");
 		m_Component.playerHpBar.maxValue = max;
 		m_Component.playerHpBar.value = value;
 	}

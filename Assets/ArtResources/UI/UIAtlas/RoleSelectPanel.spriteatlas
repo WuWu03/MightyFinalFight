@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SelectPlayerPanel
+  m_Name: RoleSelectPanel
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -34,6 +34,19 @@ SpriteAtlas:
       m_IgnorePlatformSupport: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 12
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
       padding: 4
@@ -52,7 +65,7 @@ SpriteAtlas:
     - {fileID: 21300000, guid: 71c49b7cbc6798b4faf0cc5a92a321c1, type: 3}
     - {fileID: 21300000, guid: be29cd68cac09584a8359eb7bfb06aa0, type: 3}
     - {fileID: 21300000, guid: 7e307d627ce72d9428d108a33694eb79, type: 3}
-    bindAsDefault: 1
+    bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
@@ -81,5 +94,5 @@ SpriteAtlas:
   - SelectFrameLightP1
   - SelectFrameP2
   m_RenderDataMap: {}
-  m_Tag: SelectPlayerPanel
+  m_Tag: RoleSelectPanel
   m_IsVariant: 0

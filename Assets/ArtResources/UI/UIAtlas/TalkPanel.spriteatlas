@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Icons
+  m_Name: TalkPanel
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -45,25 +45,17 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 21300000, guid: 458241d1de5fded4c909011520bc3459, type: 3}
-    - {fileID: 21300000, guid: 2dc83d084256ba743920f0f8f3f904cf, type: 3}
-    - {fileID: 21300000, guid: 4323423fa93da2445b11312caf232b83, type: 3}
+    - {fileID: 21300000, guid: 17f56cb49c9515c4794fd11317dad248, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
-    - 458241d1de5fded4c909011520bc3459: 21300000
-    - 2dc83d084256ba743920f0f8f3f904cf: 21300000
-    - 4323423fa93da2445b11312caf232b83: 21300000
+    - 17f56cb49c9515c4794fd11317dad248: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 458241d1de5fded4c909011520bc3459, type: 3}
-  - {fileID: 21300000, guid: 2dc83d084256ba743920f0f8f3f904cf, type: 3}
-  - {fileID: 21300000, guid: 4323423fa93da2445b11312caf232b83, type: 3}
+  - {fileID: 21300000, guid: 17f56cb49c9515c4794fd11317dad248, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Cody
-  - Guy
-  - Hagger
+  - select
   m_RenderDataMap: {}
-  m_Tag: Icons
+  m_Tag: TalkPanel
   m_IsVariant: 0

@@ -3,6 +3,7 @@ using GameFrameWork.Utilities;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 
 namespace GameFrameWork
@@ -124,12 +125,13 @@ namespace GameFrameWork
             return null;
         }
 
-        public static void SetSprite(this Image renderer, string name)
+        public static void SetSprite(this Image renderer,string spriteAtlasName, string spriteName)
         {
-            string realPath = PathUtil.FormatPath(PathUtil.GetUISpritePath(), name);
-            ResourcesPool.instance.Get<Sprite>(realPath, (string resPath, UnityEngine.Object obj, object[] param) =>
+            string realPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
+
+            ResourcesMgr.instance.LoadAssetAsync<SpriteAtlas>(realPath, (string resPath, UnityEngine.Object obj, object[] param) =>
             {
-                renderer.sprite = obj as Sprite;
+                renderer.sprite = (obj as SpriteAtlas).GetSprite(spriteName);
             });
         }
 

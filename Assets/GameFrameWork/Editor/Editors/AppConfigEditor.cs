@@ -144,10 +144,10 @@ namespace GameFrameWork.Editor
 
                 string uiPath = PathUtil.GetAssetFullPath(m_AppConfig.uiDirectory);
                 string uiPrefabPath = PathUtil.FormatPath(uiPath, PathUtil.uiPrefabPath);
-                string uiSpritePath = PathUtil.FormatPath(uiPath, PathUtil.uiSpritePath);
+                string uiAtlasPath = PathUtil.FormatPath(uiPath, PathUtil.uiAtlasPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPrefabPath);
-                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiSpritePath);
+                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiAtlasPath);
             }
         }
 

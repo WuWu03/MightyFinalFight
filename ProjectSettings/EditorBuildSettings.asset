@@ -9,15 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: f54c2639860c12949922d7b08ca196ac
   - enabled: 1
-    path: Assets/ArtResources/Scene/Stage1_1.unity
+    path: Assets/ArtResources/Scenes/Stage1_1.unity
     guid: 622b1a146c0e13d47a74fb4156541e31
   - enabled: 1
-    path: Assets/ArtResources/Scene/Stage1_2.unity
+    path: Assets/ArtResources/Scenes/Stage1_2.unity
     guid: 7a5da0b2451e1cd4eb57de46695ee864
   - enabled: 1
-    path: Assets/ArtResources/Scene/Stage1_3.unity
+    path: Assets/ArtResources/Scenes/Stage1_3.unity
     guid: ea151b9b7ba939a41bb06a974c165ff9
   - enabled: 1
-    path: Assets/ArtResources/Scene/Stage2_1.unity
+    path: Assets/ArtResources/Scenes/Stage2_1.unity
     guid: ff8a7cb28554c4d4cb2840aa23dcd6ed
   m_configObjects: {}

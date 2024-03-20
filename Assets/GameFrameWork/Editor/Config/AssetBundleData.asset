@@ -280,55 +280,13 @@ MonoBehaviour:
     AssetPath: Assets/ArtResources/UI/Prefabs/
     AssetBundlePath: ArtResources/UI/Prefabs/
   - Id: 39
-    BundleType: 1
+    BundleType: 0
     BundleName: UISprites/Common
     BundleExtend: .assetbundle
     Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/Common/
-    AssetBundlePath: 
+    AssetPath: Assets/ArtResources/UI/UIAtlas/
+    AssetBundlePath: ArtResources/UI/UIAtlas/
   - Id: 40
-    BundleType: 0
-    BundleName: ArtResources/UI/UISprites/Icons
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/Icons/
-    AssetBundlePath: ArtResources/UI/UISprites/Icons/
-  - Id: 41
-    BundleType: 1
-    BundleName: UISprites/MainPanel
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/MainPanel/
-    AssetBundlePath: 
-  - Id: 42
-    BundleType: 1
-    BundleName: UISprites/RoleSelectPanel
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/RoleSelectPanel/
-    AssetBundlePath: 
-  - Id: 43
-    BundleType: 1
-    BundleName: UISprites/StagePanel
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/StagePanel/
-    AssetBundlePath: UIAtlas/StagePanel/
-  - Id: 44
-    BundleType: 1
-    BundleName: UISprites/TalkPanel
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/TalkPanel/
-    AssetBundlePath: 
-  - Id: 45
-    BundleType: 1
-    BundleName: UISprites/TitlePanel
-    BundleExtend: .assetbundle
-    Pattern: '*'
-    AssetPath: Assets/ArtResources/UI/UISprites/TitlePanel/
-    AssetBundlePath: 
-  - Id: 46
     BundleType: 0
     BundleName: ConfigData
     BundleExtend: .assetbundle

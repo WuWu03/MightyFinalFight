@@ -14,7 +14,6 @@ namespace GameFrameWork.Utilities
         public static string configDataPath = "ConfigData";
         public const string behaviourTreeConfigDataPath = "ConfigData/BehaviourTreeConfigData";
         public const string uiPrefabPath = "Prefabs";
-        public const string uiSpritePath = "UISprites";
         public const string uiAtlasPath = "UIAtlas";
         public const string assetBundleVersionName = "Version.txt";
         public const string maniFestName = "StreamingAssets";
@@ -52,18 +51,6 @@ namespace GameFrameWork.Utilities
             }
 
             return FormatPath(uiDirectory, uiPrefabPath);
-        }
-
-        public static string GetUISpritePath()
-        {
-            string uiDirectory = AppConfig.instance.uiDirectory;
-
-            if (string.IsNullOrEmpty(uiDirectory))
-            {
-                return null;
-            }
-
-            return FormatPath(uiDirectory, uiSpritePath);
         }
 
         public static string GetUIAtlasPath()

@@ -141,6 +141,32 @@ namespace GameFrameWork.Editor
             AssetBundleUtility.RefreshData();
         }
 
+        private void SortConfig()
+        {
+            m_ListData.Sort();
+            m_ListPatternIndex.Clear();
+            m_ListBundleExtendIndex.Clear();
+
+            for (int i = 0; i < m_ListData.Count; i++)
+            {
+                for (int j = 0; j < m_AssetBundleConfig.ListPattern.Count; j++)
+                {
+                    if (m_ListData[i].Pattern.Equals(m_AssetBundleConfig.ListPattern[j]))
+                    {
+                        m_ListPatternIndex.Add(j);
+                    }
+                }
+
+                for (int j = 0; j < m_AssetBundleConfig.ListExtendName.Count; j++)
+                {
+                    if (m_ListData[i].BundleExtend.Equals(m_AssetBundleConfig.ListExtendName[j]))
+                    {
+                        m_ListBundleExtendIndex.Add(j);
+                    }
+                }
+            }
+        }
+
         private void ClearConfig()
         {
             m_ListData.Clear();
@@ -278,8 +304,8 @@ namespace GameFrameWork.Editor
                             Selection.activeObject = obj;
                         }
                     }
-                    GUI.enabled = !m_AssetBundleConfig.LockConfig;
 
+                    GUI.enabled = !m_AssetBundleConfig.LockConfig;
                     GUILayout.EndVertical();
                 });
             }
@@ -296,6 +322,7 @@ namespace GameFrameWork.Editor
                 m_AssetBundleConfig.LockConfig = GUILayout.Toggle(m_AssetBundleConfig.LockConfig, "锁定所有配置", GUI.skin.toggle);
             });
         }
+
         private void CopyAssetGUI()
         {
             GUI.enabled = !m_AssetBundleConfig.LockConfig;
@@ -457,38 +484,17 @@ namespace GameFrameWork.Editor
 
             if (GUILayout.Button("保存配置"))
             {
+                SortConfig();
                 SaveConfig();
                 ShowNotification(new GUIContent("保存成功"));
             }
 
-            if (GUILayout.Button("重新排序"))
-            {
-                m_ListData.Sort();
-                m_ListPatternIndex.Clear();
-                m_ListBundleExtendIndex.Clear();
-
-                for (int i = 0; i < m_ListData.Count; i++)
-                {
-                    for (int j = 0; j < m_AssetBundleConfig.ListPattern.Count; j++)
-                    {
-                        if (m_ListData[i].Pattern.Equals(m_AssetBundleConfig.ListPattern[j]))
-                        {
-                            m_ListPatternIndex.Add(j);
-                        }
-                    }
-
-                    for (int j = 0; j < m_AssetBundleConfig.ListExtendName.Count; j++)
-                    {
-                        if (m_ListData[i].BundleExtend.Equals(m_AssetBundleConfig.ListExtendName[j]))
-                        {
-                            m_ListBundleExtendIndex.Add(j);
-                        }
-                    }
-                }
-
-                SaveConfig();
-                ShowNotification(new GUIContent("排序成功"));
-            }
+            //if (GUILayout.Button("重新排序"))
+            //{
+            //    SortConfig();
+            //    SaveConfig();
+            //    ShowNotification(new GUIContent("排序成功"));
+            //}
             GUI.enabled = true;
         }
 
@@ -533,7 +539,7 @@ namespace GameFrameWork.Editor
         }
 
 
-        private string[] TARGET_PLATFORM = new string[]
+        private readonly string[] TARGET_PLATFORM = new string[3]
         {
             "PC",
             "Andriod",
