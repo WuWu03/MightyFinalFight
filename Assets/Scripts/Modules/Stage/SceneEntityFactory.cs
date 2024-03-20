@@ -53,8 +53,7 @@ public static class SceneEntityFactory
             return null;
         }
 
-        SceneItemData sceneItemData = ReferencePool.Acquire<SceneItemData>();
-
+        SceneItemData sceneItemData = SceneItemData.Create();
         sceneItemData.id = sceneItemConfigData.id;
         sceneItemData.itemType = sceneItemConfigData.type;
         sceneItemData.value = sceneItemConfigData.value;
@@ -72,7 +71,7 @@ public static class SceneEntityFactory
     public static BaseEnemy CreateEnemy(RoleConfigData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = EntityMgr.instance.GetEntity<BaseEnemy>(enemyConfigData.name);
-        BaseEnemyData enemyData = ReferencePool.Acquire<BaseEnemyData>();
+        BaseEnemyData enemyData = BaseEnemyData.Create();
         BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
         EntityAttribute enemyAttribute = ReferencePool.Acquire<EntityAttribute>();
 
@@ -111,7 +110,7 @@ public static class SceneEntityFactory
     {
         if(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Trap)
         {
-            TrapData trapData = ReferencePool.Acquire<TrapData>();
+            TrapData trapData = TrapData.Create();
             trapData.triggerSize = sceneObjData.TriggerSize;
             trapData.triggerOffest = sceneObjData.TriggerOffest;
 
@@ -139,8 +138,8 @@ public static class SceneEntityFactory
     public static Barrel CreateBarrel(int entityId, float dir, int groundY, int itemId, bool isFloat, float moveSpeed, Vector2Int pos)
     {
         Barrel barrel = EntityMgr.instance.GetEntity<Barrel>("Barrel");
-        BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
-        EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
+        BarrelData barrelData = BarrelData.Create();
+        EntityAttribute barrelAttribute = EntityAttribute.Create();
 
         barrelData.entityId = entityId;
         barrelData.value = 0;

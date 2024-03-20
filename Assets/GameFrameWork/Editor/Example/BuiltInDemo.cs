@@ -1,9 +1,7 @@
-﻿
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using Codice.Client.BaseCommands.BranchExplorer;
 
 public class BuiltInDemo : EditorWindow
 {

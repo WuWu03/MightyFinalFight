@@ -39,7 +39,6 @@ public class BaseHero : BaseRole
         }
     }
 
-
     public override bool canJump
     {
         get
@@ -72,7 +71,7 @@ public class BaseHero : BaseRole
         }
     }
 
-    public bool isCatch
+    public override bool isCatching
     {
         get
         {
@@ -183,7 +182,7 @@ public class BaseHero : BaseRole
 
         if (m_CatchAttackCount >= 3)
         {
-            HurtData hurtData = HurtData.Create();
+            HurtStateData hurtData = HurtStateData.Create();
             hurtData.attackerDir = m_Dir;
             hurtData.attackValue = 0;
             hurtData.isSwoon = true;
@@ -193,7 +192,7 @@ public class BaseHero : BaseRole
         }
     }
 
-    public override void OnAttackMsg(AttackData data,bool isForceJumpAttack = false)
+    public override void OnAttackMsg(AttackStateData data,bool isForceJumpAttack = false)
     {
         if(m_ListCatchTarget != null)
         {
@@ -208,13 +207,13 @@ public class BaseHero : BaseRole
         base.OnAttackMsg(data, isForceJumpAttack);
     }
 
-    public override void OnMoveMsg(MoveData data)
+    public override void OnMoveMsg(MoveStateData data)
     {
         data.isCatch = HasCatch() && m_IsCatchControl;
         base.OnMoveMsg(data);
     }
 
-    public override void OnJumpMsg(JumpData data)
+    public override void OnJumpMsg(JumpStateData data)
     {
         data.isCatch = false;
 
@@ -234,7 +233,7 @@ public class BaseHero : BaseRole
         base.OnJumpMsg(data);
     }
 
-    public override void OnHurtMsg(HurtData data)
+    public override void OnHurtMsg(HurtStateData data)
     {
         if (HasCatch())
         {
@@ -281,7 +280,7 @@ public class BaseHero : BaseRole
         m_HurtTimer = Time.time;
     }
 
-    public override void OnDropTragMsg(DropTrapData data)
+    public override void OnDropTragMsg(DropTrapStateData data)
     {
         base.OnDropTragMsg(data);
         CameraMgr.instance.EndFollow();
@@ -379,7 +378,7 @@ public class BaseHero : BaseRole
         }
     }
 
-    protected override void OnGroundHurtMsg(HurtData data)
+    protected override void OnGroundHurtMsg(HurtStateData data)
     {
         base.OnGroundHurtMsg(data);
         UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);

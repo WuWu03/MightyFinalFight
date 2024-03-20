@@ -13,7 +13,7 @@ public class PreIsDefense : PreCondition
         m_Owner.owner.onHurtEvent += OnHurtEvent;
     }
 
-    private void OnHurtEvent(HurtData data)
+    private void OnHurtEvent(HurtStateData data)
     {
         if (m_Owner.owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
         {

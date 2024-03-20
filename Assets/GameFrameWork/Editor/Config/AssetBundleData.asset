@@ -204,7 +204,7 @@ MonoBehaviour:
     AssetBundlePath: 
   - Id: 28
     BundleType: 1
-    BundleName: Models/Weapon/HaggerWeapon/
+    BundleName: Models/Weapon/HaggerWeapon
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Models/Weapon/HaggerWeapon/

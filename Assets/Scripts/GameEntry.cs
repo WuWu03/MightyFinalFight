@@ -25,42 +25,7 @@ public class GameEntry : GameFrameWorkEntry
         CameraMgr.instance.SetOrthographicSize(1.0f);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
-        UIMgr.instance.Open<TitlePanel>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-
-        }
-
+        UIMgr.instance.Open<RoleSelectPanel>();
     }
 
     protected override void OnExit()

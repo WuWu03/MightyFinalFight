@@ -59,7 +59,7 @@ namespace GameFrameWork
             AudioMgr.instance.ShutDown();
             EventMgr.instance.ShutDown();
             SceneMgr.instance.ShutDown();
-            ReferencePool.ClearAll();
+            ReferencePool.ReleaseAll();
             Destroy(m_Manager);
             OnExit();
         }

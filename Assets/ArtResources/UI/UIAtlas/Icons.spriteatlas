@@ -37,7 +37,7 @@ SpriteAtlas:
     packingSettings:
       serializedVersion: 2
       padding: 4
-      blockOffset: 1
+      blockOffset: 0
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 0
@@ -45,9 +45,9 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: 458241d1de5fded4c909011520bc3459, type: 3}
-    - {fileID: 2800000, guid: 2dc83d084256ba743920f0f8f3f904cf, type: 3}
-    - {fileID: 2800000, guid: 4323423fa93da2445b11312caf232b83, type: 3}
+    - {fileID: 21300000, guid: 458241d1de5fded4c909011520bc3459, type: 3}
+    - {fileID: 21300000, guid: 2dc83d084256ba743920f0f8f3f904cf, type: 3}
+    - {fileID: 21300000, guid: 4323423fa93da2445b11312caf232b83, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}

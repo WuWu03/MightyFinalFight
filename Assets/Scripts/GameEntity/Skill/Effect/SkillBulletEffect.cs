@@ -1,5 +1,4 @@
-﻿using GameFrameWork;
-using GameFrameWork.GameEntity;
+﻿using GameFrameWork.GameEntity;
 using GameFrameWork.Utilities;
 
 public class SkillBulletEffect : SkillBaseEffect
@@ -11,7 +10,7 @@ public class SkillBulletEffect : SkillBaseEffect
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
             Bullet bullet = EntityMgr.instance.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
-            BulletData bulletData = ReferencePool.Acquire<BulletData>();
+            BulletData bulletData = BulletData.Create();
             bulletData.bulletIndex = i;
             bulletData.normalAnim = m_SkillEffect.Bullets[i].NormalAnim;
             bulletData.hitAnim = m_SkillEffect.Bullets[i].HitAnim;
@@ -27,9 +26,9 @@ public class SkillBulletEffect : SkillBaseEffect
             bullet.SetSkillEffect(this);
             bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
+            bullet.SetLayer(LayerName.Unit);
             bullet.SetOwner(m_Owner);
             bullet.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, m_SkillEffect.Bullets[i].AssetName));
-            bullet.SetLayer(LayerName.Unit);
         }
 
         Complete();

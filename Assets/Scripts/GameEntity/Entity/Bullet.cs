@@ -1,15 +1,15 @@
-﻿using DragonBones;
-using GameFrameWork;
-using GameFrameWork.GameEntity;
+﻿using GameFrameWork;
 using System.Collections.Generic;
 using UnityEngine;
-using static SkillConfigData;
 
 public class Bullet : BaseAvatar
 {
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
+        Debug.Log("=============设置子弹数据============");
+        Debug.Log(data);
+
         m_BulletData = data as BulletData;
     }
 
@@ -25,9 +25,9 @@ public class Bullet : BaseAvatar
         m_SkillBulletEffect = skillBulletEffect;
     }
 
-    protected override void OnUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.OnUpdate();
+        base.OnFixedUpdate();
 
         if (m_BulletData.isPenatrate)
         {
@@ -145,7 +145,7 @@ public class Bullet : BaseAvatar
         m_IsHit = true;
     }
 
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
 

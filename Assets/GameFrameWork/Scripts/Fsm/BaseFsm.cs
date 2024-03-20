@@ -55,6 +55,7 @@ namespace GameFrameWork.Fsm
         public abstract void Start<T>() where T:BaseFsmState;
         public abstract void AddState<T>() where T : BaseFsmState, new();
         public abstract void RemoveState<T>() where T : BaseFsmState;
+        public abstract void SetFsmStateData<T>(BaseEventArgs stateData) where T : BaseFsmState;
         public abstract void ChangeState<T>(bool isForce) where T : BaseFsmState;
         public abstract bool HasState<T>() where T : BaseFsmState;
         public abstract T GetState<T>() where T : BaseFsmState;

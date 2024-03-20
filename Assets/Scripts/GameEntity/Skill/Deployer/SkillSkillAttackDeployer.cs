@@ -1,4 +1,5 @@
 ﻿using DragonBones;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using UnityEngine;
 using static SkillConfigData;
@@ -12,17 +13,27 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
+        SkillStateData skillData = SkillStateData.Create();
+        skillData.skillID = m_SkillData.Id;
+        skillData.animName = m_SkillData.AnimationName;
+        skillData.animTime = m_SkillData.AnimTime;
+        skillData.animSpeed = m_SkillData.AnimSpeed;
+        skillData.canChangeDir = m_SkillData.CanChangeDir;
+        skillData.canMove = m_SkillData.CanMove;
+
         if (m_SkillData.TriggerType != SkillTriggerType.Animtion)
         {
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-            m_Owner.OnSkillMsg(m_SkillData);
+            m_Owner.OnSkillMsg(skillData);
             base.DeploySkill();
+            ReferencePool.Release(skillData);
             return;
         }
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnSkillMsg(m_SkillData);
+        m_Owner.OnSkillMsg(skillData);
+        ReferencePool.Release(skillData);
     }
 
     public override bool IsAllComplete()

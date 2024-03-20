@@ -51,11 +51,11 @@ namespace GameFrameWork
             return referencePoolInfos;
         }
 
-        public static void ClearAll()
+        public static void ReleaseAll()
         {
-            lock(m_DicReferenceCollection)
+            lock (m_DicReferenceCollection)
             {
-                foreach (KeyValuePair<Type,ReferenceCollection> kvp in m_DicReferenceCollection)
+                foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
                 {
                     kvp.Value.RemoveAll();
                 }

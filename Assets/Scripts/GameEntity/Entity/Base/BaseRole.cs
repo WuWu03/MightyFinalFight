@@ -1,14 +1,10 @@
 ﻿using GameFrameWork;
-using GameFrameWork.Camera;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Audio;
+using GameFrameWork.Camera;
 using GameFrameWork.Timer;
-using GameFrameWork.Utilities;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static SkillConfigData;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
@@ -49,6 +45,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         get
         {
             return m_IsBeCatch;
+        }
+    }
+
+    public virtual bool isCatching
+    {
+        get
+        {
+            return false;
         }
     }
 
@@ -132,7 +136,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public event GameFrameWorkAction<HurtData> onHurtEvent
+    public event GameFrameWorkAction<HurtStateData> onHurtEvent
     {
         add
         {
@@ -244,7 +248,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         CheckAutoMove();
     }
 
-    public virtual void OnAttackMsg(AttackData data, bool forceJumpAttack = false)
+    public virtual void OnAttackMsg(AttackStateData data, bool forceJumpAttack = false)
     {
         if (data == null)
         {
@@ -252,28 +256,24 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
-        RoleAttack roleAttack = GetState<RoleAttack>();
-        roleAttack.canChangeDir = data.canChangeDir;
-        roleAttack.dir = data.dir;
+        SetStateData<RoleAttack>(data);
         ChangeState<RoleAttack>();
         PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
-    public virtual void OnSkillMsg(SkillConfigData data)
+    public virtual void OnSkillMsg(SkillStateData data)
     {
         if (data == null)
         {
             return;
         }
 
-        RoleSkill skillState = GetState<RoleSkill>();
-        skillState.canChangeDir = data.CanChangeDir;
-        skillState.canMove = data.CanMove;
+        SetStateData<RoleSkill>(data);
         ChangeState<RoleSkill>();
-        PlayAnimation(data.AnimationName, data.AnimTime, data.AnimSpeed * (1 + m_EntityAttribute.attackSpeed));
+        PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
-    public virtual void OnMoveMsg(MoveData data)
+    public virtual void OnMoveMsg(MoveStateData data)
     {
         if (data == null)
         {
@@ -282,19 +282,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (IsAnyState(typeof(RoleJump)))
         {
-            GetState<RoleJump>().dir = data.dir.x;
+            SetStateData<RoleJump>(data);
             return;
         }
 
         if (IsAnyState(typeof(RoleAttack)))
         {
-            GetState<RoleAttack>().dir = data.dir.x;
+            SetStateData<RoleAttack>(data);
             return;
         }
 
         if (IsAnyState(typeof(RoleSkill)))
         {
-            GetState<RoleSkill>().dir = data.dir;
+            SetStateData<RoleSkill>(data);
             return;
         }
 
@@ -311,6 +311,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             {
                 ChangeState<RoleIdle>();
             }
+
             return;
         }
 
@@ -320,9 +321,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_MoveDir = data.dir;
-        RoleMove roleMove = GetState<RoleMove>();
-        roleMove.canChangeDir = data.canChangeDir;
-        roleMove.isCatch = data.isCatch;
+        SetStateData<RoleMove>(data);
         ChangeState<RoleMove>();
     }
 
@@ -342,9 +341,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public virtual void OnJumpMsg(JumpData data)
+    public virtual void OnJumpMsg(JumpStateData jumpData)
     {
-        if (data == null)
+        if (jumpData == null)
         {
             return;
         }
@@ -354,72 +353,64 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_CurrCtrl.ExitSkill();
         }
 
-        RoleJump roleJump = GetState<RoleJump>();
-        roleJump.canChangeDir = !data.isCatch && data.canChangeDir;
-        roleJump.dir = data.dir.x;
-        roleJump.isCatch = data.isCatch;
-
+        SetStateData<RoleJump>(jumpData);
         ChangeState<RoleJump>();
         AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
     {
-        if(m_EntityAttribute.health == 1)
-        {
-
-        }
         return m_EntityAttribute.health - attackValue <= 0;
     }
 
-    public virtual void OnHurtMsg(HurtData hurtData)
+    public virtual void OnHurtMsg(HurtStateData hurtStateData)
     {
-        if (hurtData == null || !canBeHit)
+        if (hurtStateData == null || !canBeHit)
         {
             return;
         }
 
-        m_OnHurtEvent?.Invoke(hurtData);
+        m_OnHurtEvent?.Invoke(hurtStateData);
 
         if (m_CurrCtrl != null)
         {
             m_CurrCtrl.ExitSkill();
         }
 
-        if (m_EntityAttribute.health - hurtData.attackValue <= 0 && !hurtData.isSwoon)
+        if (m_EntityAttribute.health - hurtStateData.attackValue <= 0 && !hurtStateData.isSwoon)
         {
-            hurtData.isSwoon = true;
-            hurtData.attackForce = SkillUtil.GetSmoonForce(hurtData.attackerDir);
+            hurtStateData.isSwoon = true;
+            hurtStateData.attackForce = SkillUtil.GetSmoonForce(hurtStateData.attackerDir);
         }
 
-        m_IsSmoon = hurtData.isSwoon;
+        m_IsSmoon = hurtStateData.isSwoon;
 
-        if (string.IsNullOrEmpty(hurtData.hurtAnim))
+        if (string.IsNullOrEmpty(hurtStateData.hurtAnim))
         {
-            hurtData.hurtAnim = AnimName.Hurt;
+            hurtStateData.hurtAnim = AnimName.Hurt;
         }
 
-        if (!hurtData.isDefense)
+        if (!hurtStateData.isDefense)
         {
             if (m_IsSmoon)
             {
-                GetState<RoleSwoon>().force = hurtData.attackForce;
+                SetStateData<RoleSwoon>(hurtStateData);
                 ChangeState<RoleSwoon>();
             }
             else
             {
-                GetState<RoleHurt>().hurtAnim = hurtData.hurtAnim;
+                SetStateData<RoleHurt>(hurtStateData);
                 ChangeState<RoleHurt>();
             }
         }
 
-        if (hurtData.isGroundHurt && hurtData.attackForce.y > 0)
+        if (hurtStateData.isGroundHurt && hurtStateData.attackForce.y > 0)
         {
-            m_OnGroundHurtData = hurtData;
+            m_OnGroundHurtStateData = hurtStateData;
         }
         else
         {
-            OnGroundHurtMsg(hurtData);
+            OnGroundHurtMsg(hurtStateData);
         }
     }
 
@@ -430,9 +421,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleDefense>(true);
     }
 
-    public virtual void OnDropTragMsg(DropTrapData data)
+    public virtual void OnDropTragMsg(DropTrapStateData dropTrapStateData)
     {
-        if (data == null)
+        if (dropTrapStateData == null)
         {
             return;
         }
@@ -452,7 +443,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_CurrCtrl.ExitSkill();
         }
 
-        m_TrapData = data;
+        m_DropTrapStateData = dropTrapStateData;
         m_IsDropTrag = true;
         SetBodyType(RigidbodyType2D.Dynamic);
     }
@@ -490,23 +481,23 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    protected virtual void OnGroundHurtMsg(HurtData data)
+    protected virtual void OnGroundHurtMsg(HurtStateData hurtStatedata)
     {
-        if (!data.isNotPlayHurtSound)
+        if (!hurtStatedata.isNotPlayHurtSound)
         {
-            string hurtSound = string.IsNullOrEmpty(data.hurtSound) ? SoundName.DefaultHurt : data.hurtSound;
+            string hurtSound = string.IsNullOrEmpty(hurtStatedata.hurtSound) ? SoundName.DefaultHurt : hurtStatedata.hurtSound;
             AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
         }
 
-        m_EntityAttribute.SubHealth(data.attackValue);
+        m_EntityAttribute.SubHealth(hurtStatedata.attackValue);
 
         if (m_EntityAttribute.IsDie() && !m_IsSmoon)
         {
             ChangeState<RoleDead>();
         }
 
-        ReferencePool.Release(data);
-        m_OnGroundHurtData = null;
+        ReferencePool.Release(hurtStatedata);
+        m_OnGroundHurtStateData = null;
     }
 
     protected override void CheckGround()
@@ -604,16 +595,16 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (m_ObjectType == ObjectType.Player)
             {
-                m_EntityAttribute.SubHealth(m_TrapData.attackValue);
+                m_EntityAttribute.SubHealth(m_DropTrapStateData.attackValue);
 
                 if (m_EntityAttribute.IsDie())
                 {
-                    GetState<RoleDead>().rebirthPos = m_TrapData.rebirthPos;
+                    SetStateData<RoleDead>(m_DropTrapStateData);
                     ChangeState<RoleDead>();
                 }
                 else
                 {
-                    SetPos2(m_TrapData.rebirthPos);
+                    SetPos2(m_DropTrapStateData.rebirthPos);
                     ChangeState<RoleIdle>();
                     CameraMgr.instance.StartFollow();
                 }
@@ -623,25 +614,25 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            ReferencePool.Release(m_TrapData);
+            ReferencePool.Release(m_DropTrapStateData);
             m_IsDropTrag = false;
-            m_TrapData = null;
+            m_DropTrapStateData = null;
         }
     }
 
     private void CheckGroundHurt()
     {
-        if (m_OnGroundHurtData != null)
+        if (m_OnGroundHurtStateData != null)
         {
-            if (m_EntityAttribute.health - m_OnGroundHurtData.attackValue <= 0)
+            if (m_EntityAttribute.health - m_OnGroundHurtStateData.attackValue <= 0)
             {
                 m_IsSmoon = false;
-                OnGroundHurtMsg(m_OnGroundHurtData);
+                OnGroundHurtMsg(m_OnGroundHurtStateData);
                 return;
             }
             else
             {
-                Timer.Register(0.1f, () => { OnGroundHurtMsg(m_OnGroundHurtData); });
+                Timer.Register(0.1f, () => { OnGroundHurtMsg(m_OnGroundHurtStateData); });
             }
         }
 
@@ -658,7 +649,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
             if (m_EntityAttribute.health > 0)
                 ChangeState<RoleAwaken>();
-
             else
                 ChangeState<RoleDead>();
         });
@@ -678,10 +668,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (!m_YArrived)
         {
-            float yOffest = Mathf.Abs(m_MoveToPos.y - m_Pos.y);
-            m_YArrived = Mathf.Approximately(yOffest, 0f);
-            MoveData data = MoveData.Create();
-            data.dir = (Vector2.up * yOffest).normalized;
+            float yOffset = Mathf.Abs(m_MoveToPos.y - m_Pos.y);
+            m_YArrived = Mathf.Approximately(yOffset, 0f);
+            MoveStateData data = MoveStateData.Create();
+            data.dir = (Vector2.up * yOffset).normalized;
             OnMoveMsg(data);
             ReferencePool.Release(data);
             return;
@@ -691,7 +681,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             float xOffset = Mathf.Abs(m_MoveToPos.x - m_Pos.x);
             m_XArrived = Mathf.Approximately(xOffset, 0f);
-            MoveData data = MoveData.Create();
+            MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.right * xOffset).normalized;
             OnMoveMsg(data);
             ReferencePool.Release(data);
@@ -718,7 +708,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeThrow = false;
     protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
-    protected event GameFrameWorkAction<HurtData> m_OnHurtEvent = null;
+    protected event GameFrameWorkAction<HurtStateData> m_OnHurtEvent = null;
     protected List<Bullet> m_Bullets = null;
 
     private bool m_IsAutoMove = false;
@@ -726,7 +716,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private bool m_YArrived = false;
     private bool m_IsDropGround = false;
     private float m_DropGourndTime = 0f;
-    private HurtData m_OnGroundHurtData = null;
-    private DropTrapData m_TrapData = null;
+    private HurtStateData m_OnGroundHurtStateData = null;
+    private DropTrapStateData m_DropTrapStateData = null;
     private UnityEvent m_AutoMoveComplete = new UnityEvent();
 }

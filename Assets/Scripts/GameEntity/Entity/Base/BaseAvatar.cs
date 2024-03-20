@@ -180,10 +180,14 @@ public abstract class BaseAvatar : BaseGravityObject
         m_FsmMachine.AddState<T>();
     }
 
-
     public T GetState<T>() where T : BaseFsmState
     {
         return m_FsmMachine.GetState<T>();
+    }
+
+    public void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
+    {
+        m_FsmMachine.SetFsmStateData<T>(stateData);
     }
 
     public void ChangeState<T>(bool isForce = false) where T : BaseFsmState
@@ -247,7 +251,7 @@ public abstract class BaseAvatar : BaseGravityObject
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
-        m_FsmMachine.FixedUpdate(Time.deltaTime, Time.unscaledDeltaTime);
+        m_FsmMachine.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
     }
 
     protected override void OnResComplete(GameObject go, object[] param)

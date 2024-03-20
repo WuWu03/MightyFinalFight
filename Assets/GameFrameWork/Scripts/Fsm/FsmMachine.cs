@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 namespace GameFrameWork.Fsm
 {
@@ -65,7 +66,7 @@ namespace GameFrameWork.Fsm
                 return Mathf.Max(0, Time.time - m_CurrentStateTime);
             }
         }
-        
+
         public static FsmMachine Create(System.Object owner,string name,params BaseFsmState[] states)
         {
             if(owner == null)
@@ -130,6 +131,18 @@ namespace GameFrameWork.Fsm
             {
                 m_DicStates.Remove(typeof(T));
             }
+        }
+
+        public override void SetFsmStateData<T>(BaseEventArgs stateData)
+        {
+            T state = GetState<T>();
+
+            if (state == null)
+            {
+                return;
+            }
+
+            state.SetStateData(stateData);
         }
 
         public override void ChangeState<T>(bool isForce = false)
@@ -207,14 +220,14 @@ namespace GameFrameWork.Fsm
             m_CurrentState.Update(this, deltaTime, unscaleDeltaTime);
         }
 
-        public override void FixedUpdate(float deltaTime, float unscaleDeltaTime)
+        public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
         {
             if (m_CurrentState == null)
             {
                 return;
             }
 
-            m_CurrentState.FixedUpdate(this, deltaTime, unscaleDeltaTime);
+            m_CurrentState.FixedUpdate(this, fixedDeltaTime, fixedUnscaledDeltaTime);
         }
 
         public override void ShutDown()

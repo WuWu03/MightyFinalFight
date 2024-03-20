@@ -45,7 +45,7 @@ public class BaseEnemy : BaseRole
         base.SetPos(pos, posZ, caculateZ);
     }
 
-    public override void OnHurtMsg(HurtData data)
+    public override void OnHurtMsg(HurtStateData data)
     {
         if (data.isBoss)
         {
@@ -122,7 +122,7 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    protected override void OnGroundHurtMsg(HurtData data)
+    protected override void OnGroundHurtMsg(HurtStateData data)
     {
         if (!data.isGroundHurt)
         {
@@ -168,7 +168,7 @@ public class BaseEnemy : BaseRole
             return;
         }
 
-        HurtData hurtData = HurtData.Create();
+        HurtStateData hurtData = HurtStateData.Create();
         hurtData.id = 0;
         hurtData.skillExp = 2;
         hurtData.attackerDir = -m_Dir;

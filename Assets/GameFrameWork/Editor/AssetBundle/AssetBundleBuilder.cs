@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameFrameWork.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -21,6 +22,8 @@ namespace GameFrameWork.Editor
         public void Build(BuildTarget target, bool isShowNotify = true)
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+
+            FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(config.AssetBuildDir));
 
             if (AppConfig.instance.useLua)
             {
@@ -118,6 +121,10 @@ namespace GameFrameWork.Editor
                     }
                 }
             }
+
+            //框架资源
+            AddBuildMapSingle("ArtResources/Materials/", ".assetBundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
+            AddBuildMap("ArtResources/Shaders", ".assetBundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
 
             return true;
             //AddBuildMap("fonts.unity3d", "*.TTF", "Assets/AssetsLibrary/Font");

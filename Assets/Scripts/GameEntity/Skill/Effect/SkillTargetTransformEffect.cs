@@ -42,7 +42,7 @@ public class SkillTargetTransformEffect : SkillBaseEffect
         {
             BaseHero owner = m_Owner as BaseHero;
 
-            if (owner.isCatch)
+            if (owner.isCatching)
             {
                 List<ICanBeHit> targets = m_Owner.OnHitStart();
                 BaseRole target = targets[0] as BaseRole;

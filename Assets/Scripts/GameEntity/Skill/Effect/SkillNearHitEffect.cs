@@ -28,19 +28,10 @@ public class SkillNearHitEffect : SkillBaseEffect
         {
             for (int i = 0; i < m_Targets.Count; i++)
             {
-                HurtData hurtData = SkillUtil.GetHurtData(m_Targets[i], m_Owner, m_SkillData, m_SkillEffect,false);
-
-                if (hurtData == null)
+                if (SkillUtil.SkillHit(m_Targets[i], m_Owner, m_SkillData, m_SkillEffect) && !m_IsHurtTarget)
                 {
-                    continue;
+                    m_IsHurtTarget = true;
                 }
-
-                if (!m_IsHurtTarget)
-                {
-                    m_IsHurtTarget = !m_Targets[i].IsHurtWillDie(hurtData.attackValue);
-                }
-
-                m_Targets[i].OnHurtMsg(hurtData);
             }
 
             if (m_IsHurtTarget)
@@ -98,7 +89,7 @@ public class SkillNearHitEffect : SkillBaseEffect
                 {
                     if(m_PauseIndex < m_Targets.Count)
                     {
-                        HurtData hurtData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
+                        HurtStateData hurtData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
 
                         if (hurtData != null)
                         {

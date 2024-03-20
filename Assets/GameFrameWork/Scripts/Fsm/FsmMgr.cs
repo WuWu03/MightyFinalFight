@@ -31,7 +31,16 @@ namespace GameFrameWork.Fsm
             }
         }
 
-
+        private void FixedUpdate()
+        {
+            foreach (KeyValuePair<System.Object, BaseFsm> kvp in m_DicFsms)
+            {
+                if (kvp.Value.isRunning)
+                {
+                    kvp.Value.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
+                }
+            }
+        }
 
         public FsmMachine CreateFsm(System.Object owner, string name, params BaseFsmState[] fsmStates)
         {

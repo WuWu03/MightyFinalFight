@@ -26,7 +26,7 @@
     }
 
     bool IsHurtWillDie(int attackValue);
-    void OnHurtMsg(HurtData data);
+    void OnHurtMsg(HurtStateData data);
     void SetCatch(bool value);
     void SetThrow(bool value);
 }

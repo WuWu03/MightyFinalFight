@@ -1,8 +1,6 @@
-﻿using DragonBones;
+﻿using GameFrameWork.Audio;
 using GameFrameWork.Fsm;
-using GameFrameWork.Audio;
 using UnityEngine;
-using static SkillConfigData;
 
 public class Barrel : BaseAvatar, ICanBeHit
 {
@@ -82,7 +80,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         return m_EntityAttribute.health - attackValue <= 0;
     }
 
-    public void OnHurtMsg(HurtData data)
+    public void OnHurtMsg(HurtStateData data)
     {
         m_EntityAttribute.SubHealth(data.attackValue);
         AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnHit");
@@ -90,7 +88,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         if (isDead)
         {
             SetTrigger(AnimName.Dead);
-            GetState<BarrelDead>().attackerDir = data.attackerDir;
+            SetStateData<BarrelDead>(data);
             ChangeState<BarrelDead>();
             SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, m_MapPos);
         }
@@ -100,9 +98,9 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     public void SetThrow(bool value) { }
 
-    protected override void OnUpdate()
+    protected override void OnFixedUpdate()
     {
-        base.OnUpdate();
+        base.OnFixedUpdate();
 
         if (m_BarrelData != null)
         {
@@ -198,7 +196,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
         if (isInRange)
         {
-            HurtData hurtData = HurtData.Create();
+            HurtStateData hurtData = HurtStateData.Create();
             hurtData.attackerDir = m_Dir;
             hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
             hurtData.isSwoon = true;
@@ -226,7 +224,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             return;
         }
 
-        HurtData hurtData = HurtData.Create();
+        HurtStateData hurtData = HurtStateData.Create();
         hurtData.attackerDir = -role.dir;
         hurtData.attackForce = SkillUtil.GetSmoonForce();
         hurtData.attackerPos = m_Pos;

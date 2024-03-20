@@ -139,7 +139,6 @@ public class BaseSceneObject : BaseEntity
             ReferencePool.Release(m_EntityAttribute);
             m_EntityAttribute = null;
         }
-
     }
 
     public virtual void SetData(BaseSceneObjectData data)
@@ -330,14 +329,8 @@ public class BaseSceneObject : BaseEntity
     {
         base.Update();
 
-        if (!m_IsResComplete)
+        if (!IsResComplete())
         {
-            return;
-        }
-
-        if (m_ResGO == null)
-        {
-            Release();
             return;
         }
 
@@ -346,12 +339,38 @@ public class BaseSceneObject : BaseEntity
 
     protected override void LateUpdate()
     {
+        if (!IsResComplete())
+        {
+            return;
+        }
+
         OnLateUpdate();
     }
 
     protected override void FixedUpdate()
     {
+        if (!IsResComplete())
+        {
+            return;
+        }
+
         OnFixedUpdate();
+    }
+
+    private bool IsResComplete()
+    {
+        if (!m_IsResComplete)
+        {
+            return false;
+        }
+
+        if (m_ResGO == null)
+        {
+            Release();
+            return false;
+        }
+
+        return true;
     }
 
     protected virtual void OnUpdate() { }

@@ -57,7 +57,7 @@ public class Trap : BaseBoundObject
             rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.pos.y);
         }
 
-        DropTrapData dropTrapData = ReferencePool.Acquire<DropTrapData>();
+        DropTrapStateData dropTrapData = DropTrapStateData.Create();
         dropTrapData.rebirthPos = rebirthPos;
         dropTrapData.attackValue = 1;
 

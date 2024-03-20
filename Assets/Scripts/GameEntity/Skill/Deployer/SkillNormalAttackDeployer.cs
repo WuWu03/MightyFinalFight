@@ -16,7 +16,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
-        AttackData attackData = AttackData.Create();
+        AttackStateData attackData = AttackStateData.Create();
         attackData.dir = m_Owner.dir;
         attackData.skillID = m_SkillData.Id;
         attackData.animName = m_SkillData.AnimationName;

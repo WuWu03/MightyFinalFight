@@ -72,13 +72,13 @@ public static class SkillUtil
                     isCondition = owner.isFloat;
                     break;
                 case SkillPrevConditionType.Catch:
-                    isCondition = (owner as BaseHero).isCatch;
+                    isCondition = (owner as BaseHero).isCatching;
                     break;
                 case SkillPrevConditionType.GroundNotCatch:
                     isCondition = owner.isInGround;
 
                     if (owner is BaseHero)
-                        isCondition = isCondition && !(owner as BaseHero).isCatch;
+                        isCondition = isCondition && !(owner as BaseHero).isCatching;
                     else
                         isCondition = isCondition && !owner.isBeCatch;
 
@@ -110,7 +110,7 @@ public static class SkillUtil
         return ret;
     }
 
-    public static HurtData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
+    public static HurtStateData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
     {
         if (hit == null || !hit.canBeHit)
         {
@@ -138,7 +138,7 @@ public static class SkillUtil
             isBoss = (owner as BaseEnemy).isBoss;
         }
 
-        HurtData hurtData = HurtData.Create();
+        HurtStateData hurtData = HurtStateData.Create();
         hurtData.id = data.Id;
         hurtData.skillExp = data.EXP;
         hurtData.attackerDir = owner.dir;
@@ -160,15 +160,16 @@ public static class SkillUtil
 
     public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect , bool isPause = false)
     {
-        HurtData hurtData = GetHurtData(hit, owner, data, effect, isPause);
+        HurtStateData hurtData = GetHurtData(hit, owner, data, effect, isPause);
+        bool result = false;
 
         if (hurtData != null)
         {
             hit.OnHurtMsg(hurtData);
-            return !hit.IsHurtWillDie(hurtData.attackValue);
+            result = !hit.IsHurtWillDie(hurtData.attackValue);
         }
 
-        return false;
+        return result;
     }
 
     public static int CacDamage(int attack, int defense, int critical, float mulity, out bool isCritical)

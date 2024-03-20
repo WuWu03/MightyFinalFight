@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace GameFrameWork
@@ -103,13 +102,13 @@ namespace GameFrameWork
             return Activator.CreateInstance(m_ReferenceType, args) as IReference;
         }
 
-        public void Release(IReference reference,bool strictCheck)
+        public void Release(IReference reference, bool strictCheck)
         {
             reference.Clear();
 
-            lock(m_QueueReference)
+            lock (m_QueueReference)
             {
-                if(strictCheck && m_QueueReference.Contains(reference))
+                if (strictCheck && m_QueueReference.Contains(reference))
                 {
                     throw new Exception("The reference has been released.");
                 }
@@ -120,7 +119,7 @@ namespace GameFrameWork
             m_UsingReferenceCount--;
         }
 
-        public void Add<T>(int count) where T:class,IReference,new()
+        public void Add<T>(int count) where T : class, IReference, new()
         {
             if (!typeof(T).Equals(m_ReferenceType))
             {
@@ -141,6 +140,7 @@ namespace GameFrameWork
         public void Add(int count)
         {
             m_AddReferenceCount += count;
+
             lock (m_QueueReference)
             {
                 for (int i = 0; i < count; i++)
@@ -171,7 +171,8 @@ namespace GameFrameWork
         public void RemoveAll()
         {
             m_RemoveReferenceCount += m_QueueReference.Count;
-            lock(m_QueueReference)
+
+            lock (m_QueueReference)
             {
                 m_QueueReference.Clear();
             }

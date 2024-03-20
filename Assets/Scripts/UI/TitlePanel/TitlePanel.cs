@@ -8,7 +8,7 @@ using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
-using TMPro;
+//using TMPro;
 
 public class TitlePanel : BasePanel
 {

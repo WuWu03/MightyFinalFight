@@ -246,6 +246,11 @@ namespace GameFrameWork.Editor
                     else
                     {
                         m_ListData[i].BundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].BundleName);
+
+                        if (m_ListData[i].BundleName.EndsWith("/"))
+                        {
+                            m_ListData[i].BundleName = m_ListData[i].BundleName.Substring(0, m_ListData[i].BundleName.Length - 1);
+                        }
                     }
 
                     if (m_AssetBundleConfig.ListExtendName.Count > 0)

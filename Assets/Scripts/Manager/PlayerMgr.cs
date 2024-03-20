@@ -139,9 +139,9 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.SetLayer(LayerName.Unit);
         m_PlayerCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
 
-        BaseRoleData roleData = ReferencePool.Acquire<BaseRoleData>();
-        BaseHeroSkillData heroSkillData = ReferencePool.Acquire<BaseHeroSkillData>();
-        EntityAttribute roleAttribute = ReferencePool.Acquire<EntityAttribute>();
+        BaseRoleData roleData = BaseRoleData.Create();
+        BaseHeroSkillData heroSkillData = BaseHeroSkillData.Create();
+        EntityAttribute roleAttribute = EntityAttribute.Create();
 
         roleAttribute.health = m_LevelConfigData.hpValue;
         roleAttribute.maxHealth = m_LevelConfigData.hpValue;
@@ -317,7 +317,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            m_Player.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
         }
 
         if (Input.GetKeyDown(KeyCode.T))

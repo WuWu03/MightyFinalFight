@@ -25,7 +25,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
-        AttackData attackData = AttackData.Create();
+        AttackStateData attackData = AttackStateData.Create();
         attackData.skillID = m_SkillData.Id;
         attackData.animName = m_SkillData.AnimationName;
         attackData.animSpeed = m_SkillData.AnimSpeed;

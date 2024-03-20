@@ -178,9 +178,9 @@ namespace GameFrameWork.Utilities
 
                     m_StringBuilder.Clear();
 
-                    for (int i = 0; i < source.Length; i++)
+                    for (int i = 0; i < result.Length; i++)
                     {
-                        m_StringBuilder.Append(source[i].ToString("x2"));
+                        m_StringBuilder.Append(result[i].ToString("x2"));
                     }
 
                     return m_StringBuilder.ToString();

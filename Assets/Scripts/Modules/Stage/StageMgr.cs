@@ -1,10 +1,10 @@
 ﻿using GameFrameWork;
+using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Map;
 using GameFrameWork.Scene;
-using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
@@ -101,6 +101,7 @@ public class StageMgr : BaseMgr<StageMgr>
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
             EntityMgr.instance.DestroyAll();
+            ReferencePool.ReleaseAll();
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
         });

@@ -21,8 +21,8 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         for (int i = 0; i < 5; i++)
         {
             Barrel sceneItem = EntityMgr.instance.GetEntity<Barrel>("Barrel");
-            BarrelData barrelData = ReferencePool.Acquire<BarrelData>();
-            EntityAttribute barrelAttribute = ReferencePool.Acquire<EntityAttribute>();
+            BarrelData barrelData = BarrelData.Create();
+            EntityAttribute barrelAttribute = EntityAttribute.Create();
 
             barrelData.id = 1;
             barrelData.value = 0;

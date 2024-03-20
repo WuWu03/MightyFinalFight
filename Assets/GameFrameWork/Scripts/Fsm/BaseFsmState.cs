@@ -17,10 +17,10 @@
 			OnUpdate(fsm, deltaTime, unscaleDeltaTime);
 		}
 
-        public void FixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
-        {
-            OnFixedUpdate(fsm, deltaTime, unscaleDeltaTime);
-        }
+		public void FixedUpdate(BaseFsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
+		{
+			OnFixedUpdate(fsm, fixedDeltaTime, fixedUnscaledDeltaTime);
+		}
 
 		public void Exit(BaseFsm fsm, bool isShutdown)
 		{
@@ -32,15 +32,23 @@
 			OnDestroy(fsm);
 		}
 
-        protected virtual void OnInit(BaseFsm fsm) { }
-		protected abstract void OnEnter(BaseFsm fsm);
-        protected virtual void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
-        protected virtual void OnFixedUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
-        protected abstract void OnExit(BaseFsm fsm, bool isShutdown);
-		protected virtual void OnDestroy(BaseFsm fsm) { }
-		protected void ChangeState<T>(BaseFsm fsm,bool isForce = false) where T : BaseFsmState
+		public void SetStateData(BaseEventArgs stateData)
 		{
-			if(fsm != null)
+			OnSetStateData(stateData);
+        }
+
+		protected virtual void OnInit(BaseFsm fsm) { }
+		protected abstract void OnEnter(BaseFsm fsm);
+		protected virtual void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
+		protected virtual void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float unscaleDeltaTime) { }
+		protected abstract void OnExit(BaseFsm fsm, bool isShutdown);
+		protected virtual void OnDestroy(BaseFsm fsm) { }
+
+		protected virtual void OnSetStateData(BaseEventArgs stateData) { }
+
+		protected void ChangeState<T>(BaseFsm fsm, bool isForce = false) where T : BaseFsmState
+		{
+			if (fsm != null)
 			{
 				fsm.ChangeState<T>(isForce);
 			}
