@@ -316,12 +316,19 @@ MonoBehaviour:
     AssetBundlePath: UIAtlas/StagePanel/
   - Id: 44
     BundleType: 1
+    BundleName: UISprites/TalkPanel
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/UI/UISprites/TalkPanel/
+    AssetBundlePath: 
+  - Id: 45
+    BundleType: 1
     BundleName: UISprites/TitlePanel
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UISprites/TitlePanel/
     AssetBundlePath: 
-  - Id: 45
+  - Id: 46
     BundleType: 0
     BundleName: ConfigData
     BundleExtend: .assetbundle

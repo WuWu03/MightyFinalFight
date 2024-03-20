@@ -27,7 +27,7 @@ namespace GameFrameWork.Editor
         {
             if (IsConfigChanged())
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("警告", "配置未保存，是否保存？", "保存", "取消"))
+                if (EditorUtility.DisplayDialog("警告", "配置未保存，是否保存？", "保存", "取消"))
                 {
                     SaveConfig();
                 }
@@ -137,7 +137,7 @@ namespace GameFrameWork.Editor
             m_AssetBundleConfig.Datas = m_ListData;
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
-            UnityEditor.EditorUtility.SetDirty(m_AssetBundleConfig);
+            EditorUtility.SetDirty(m_AssetBundleConfig);
             AssetBundleUtility.RefreshData();
         }
 
@@ -183,6 +183,7 @@ namespace GameFrameWork.Editor
                 if (m_AssetBundleConfig.IsCopyAsset)
                 {
                     m_AssetBundleConfig.AssetCopyDir = EditorGUILayout.TextField("资源复制路径（绝对路径）", m_AssetBundleConfig.AssetCopyDir);
+
                     if (!string.IsNullOrEmpty(m_AssetBundleConfig.AssetCopyDir) && !m_AssetBundleConfig.AssetCopyDir.EndsWith("\\"))
                     {
                         m_AssetBundleConfig.AssetCopyDir += "\\";
@@ -219,7 +220,7 @@ namespace GameFrameWork.Editor
 
                     if (GUILayout.Button("×"))//删除本条数据
                     {
-                        if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
+                        if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                         {
                             m_ListDataHasRemove[i] = true;
                         }
@@ -247,7 +248,7 @@ namespace GameFrameWork.Editor
                     {
                         m_ListData[i].BundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].BundleName);
 
-                        if (m_ListData[i].BundleName.EndsWith("/"))
+                        if (!string.IsNullOrEmpty(m_ListData[i].BundleName) && m_ListData[i].BundleName.EndsWith("/"))
                         {
                             m_ListData[i].BundleName = m_ListData[i].BundleName.Substring(0, m_ListData[i].BundleName.Length - 1);
                         }
@@ -352,7 +353,7 @@ namespace GameFrameWork.Editor
                     ShowNotification(new GUIContent("没有扩展名，请先添加扩展名"));
                     return;
                 }
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
                 {
                     m_AssetBundleConfig.ListExtendName.RemoveAt(removeExtendIndex);
                 }
@@ -410,7 +411,7 @@ namespace GameFrameWork.Editor
                     return;
                 }
 
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
+                if (EditorUtility.DisplayDialog("提示", "确认移除吗？", "确认", "取消"))
                 {
                     m_AssetBundleConfig.ListPattern.RemoveAt(removePatternIndex);
                 }
@@ -448,7 +449,7 @@ namespace GameFrameWork.Editor
 
             if (GUILayout.Button("清空配置"))
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认清空全部配置吗？", "确认", "取消"))
+                if (EditorUtility.DisplayDialog("提示", "确认清空全部配置吗？", "确认", "取消"))
                 {
                     ClearConfig();
                 }
@@ -496,7 +497,7 @@ namespace GameFrameWork.Editor
         {
             if (GUILayout.Button("打        包"))
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
+                if (EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
                 {
                     SaveConfig();
 
