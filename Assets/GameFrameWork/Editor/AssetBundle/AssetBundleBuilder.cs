@@ -88,7 +88,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            CreateAssetBuildFile();
+            //CreateAssetBuildFile();
             CreateVersionFile();
             AssetDatabase.Refresh();
 
