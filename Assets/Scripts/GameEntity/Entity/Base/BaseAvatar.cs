@@ -22,13 +22,11 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_FsmMachine = FsmMachine.Create(this, this.GetType().Name);
+        m_FsmMachine = FsmMgr.instance.Create(this, this.GetType().Name);
     }
-
 
     public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
     {
@@ -49,8 +47,8 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public override void Release()
     {
-        m_FsmMachine.ShutDown();
         m_Animator.animation.Reset();
+        FsmMgr.instance.DestoryFsm(this);
 
         m_FsmMachine = null;
         m_CurrAnimName = string.Empty;
@@ -187,12 +185,12 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
     {
-        m_FsmMachine.SetFsmStateData<T>(stateData);
+        m_FsmMachine.SetStateData<T>(stateData);
     }
 
-    public void ChangeState<T>(bool isForce = false) where T : BaseFsmState
+    public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
     {
-        m_FsmMachine.ChangeState<T>(isForce);
+        m_FsmMachine.ChangeState<T>(stateData);
     }
 
     public void ChangeDefaultState()
@@ -236,7 +234,6 @@ public abstract class BaseAvatar : BaseGravityObject
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        m_FsmMachine.Update(Time.deltaTime, Time.unscaledDeltaTime);
 
         if (m_Animator.animation.isPlaying)
         {
@@ -251,7 +248,6 @@ public abstract class BaseAvatar : BaseGravityObject
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
-        m_FsmMachine.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
     }
 
     protected override void OnResComplete(GameObject go, object[] param)

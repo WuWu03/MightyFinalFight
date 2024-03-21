@@ -1,7 +1,6 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace GameFrameWork.Fsm
 {
@@ -11,91 +10,99 @@ namespace GameFrameWork.Fsm
         {
             get
             {
-                return m_DicFsms.Count;
+                return m_ListFsms.Count;
             }
         }
 
-        private void Awake()
-        {
-            m_DicFsms = new Dictionary<object, BaseFsm>();
-        }
-
-        private void Update()
-        {
-            foreach (KeyValuePair<System.Object, BaseFsm> kvp in m_DicFsms)
-            {
-                if (kvp.Value.isRunning)
-                {
-                    kvp.Value.Update(Time.deltaTime, Time.unscaledDeltaTime);
-                }
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            foreach (KeyValuePair<System.Object, BaseFsm> kvp in m_DicFsms)
-            {
-                if (kvp.Value.isRunning)
-                {
-                    kvp.Value.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
-                }
-            }
-        }
-
-        public FsmMachine CreateFsm(System.Object owner, string name, params BaseFsmState[] fsmStates)
+        public FsmMachine Create(System.Object owner, string name, params BaseFsmState[] fsmStates)
         {
             if (HasFsm(owner))
             {
-                throw new Exception("The FSM mathine has exist.");
+                throw new Exception("The fsm mathine has exist.");
             }
 
-            FsmMachine fsm = FsmMachine.Create(owner, name, fsmStates);
-            m_DicFsms.Add(owner, fsm);
+            FsmMachine fsm = new FsmMachine(owner, name, fsmStates);
+            m_ListFsms.Add(fsm);
             return fsm;
         }
 
-        public BaseFsm GetFsm(System.Object owner)
+        public FsmMachine GetFsm(System.Object owner)
         {
-            BaseFsm fsm = null;
-
-            if (!m_DicFsms.TryGetValue(owner, out fsm))
+            for (int i = 0; i < m_ListFsms.Count; i++)
             {
-                return null;
+                if (m_ListFsms[i].owner == owner)
+                {
+                    return m_ListFsms[i];
+                }
             }
 
-            return fsm;
+            return null;
         }
 
-        public BaseFsm[] GetAllFsms()
+        public FsmMachine[] GetAllFsms()
         {
-            BaseFsm[] fsmBases = new BaseFsm[m_DicFsms.Count];
-            m_DicFsms.Values.CopyTo(fsmBases, 0);
-            return fsmBases;
+            return m_ListFsms.ToArray() ;
         }
 
         public bool HasFsm(System.Object owner)
         {
-            return m_DicFsms.ContainsKey(owner);
-        }
-
-        public bool DestoryFsm(System.Object owner)
-        {
-            BaseFsm fsmBase = null;
-
-            if (m_DicFsms.TryGetValue(owner, out fsmBase))
+            for (int i = 0; i < m_ListFsms.Count; i++)
             {
-                fsmBase.ShutDown();
-                return m_DicFsms.Remove(owner);
+                if (m_ListFsms[i].owner == owner)
+                {
+                    return true;
+                }
             }
 
             return false;
         }
 
-        protected override void OnShutDown()
+        public bool DestoryFsm(System.Object owner)
         {
-            m_DicFsms.Clear();
+            for (int i = m_ListFsms.Count - 1; i >= 0 ; i--)
+            {
+                if (m_ListFsms[i].owner == owner)
+                {
+                    m_ListFsms[i].ShutDown();
+                    m_ListFsms.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        private Dictionary<System.Object, BaseFsm> m_DicFsms = null;
+        protected override void OnAwake()
+        {
+            m_ListFsms = new List<FsmMachine>();
+        }
+
+        protected override void OnUpdate()
+        {
+            for (int i = 0; i < m_ListFsms.Count; i++)
+            {
+                m_ListFsms[i].Update(Time.deltaTime, Time.unscaledDeltaTime);
+            }
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            for (int i = 0; i < m_ListFsms.Count; i++)
+            {
+                m_ListFsms[i].FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
+            }
+        }
+
+        protected override void OnShutDown()
+        {
+            for (int i = 0; i < m_ListFsms.Count; i++)
+            {
+                m_ListFsms[i].ShutDown();
+            }
+
+            m_ListFsms.Clear();
+        }
+
+        private List<FsmMachine> m_ListFsms = null;
     }
 }

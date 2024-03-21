@@ -88,8 +88,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         if (isDead)
         {
             SetTrigger(AnimName.Dead);
-            SetStateData<BarrelDead>(data);
-            ChangeState<BarrelDead>();
+            ChangeState<BarrelDead>(data);
             SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, m_MapPos);
         }
     }

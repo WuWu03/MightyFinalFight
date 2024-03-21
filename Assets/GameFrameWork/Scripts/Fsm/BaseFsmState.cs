@@ -1,6 +1,6 @@
 ﻿namespace GameFrameWork.Fsm
 {
-	public abstract class BaseFsmState
+    public abstract class BaseFsmState
 	{
 		public void Init(BaseFsm fsm)
 		{
@@ -46,11 +46,11 @@
 
 		protected virtual void OnSetStateData(BaseEventArgs stateData) { }
 
-		protected void ChangeState<T>(BaseFsm fsm, bool isForce = false) where T : BaseFsmState
+		protected void ChangeState<T>(BaseFsm fsm, BaseEventArgs stateData = null) where T : BaseFsmState
 		{
 			if (fsm != null)
 			{
-				fsm.ChangeState<T>(isForce);
+				fsm.ChangeState<T>(stateData);
 			}
 		}
 	}

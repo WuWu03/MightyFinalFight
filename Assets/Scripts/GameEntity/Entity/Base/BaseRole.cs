@@ -258,8 +258,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
-        SetStateData<RoleAttack>(data);
-        ChangeState<RoleAttack>();
+        ChangeState<RoleAttack>(data);
         PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
@@ -270,8 +269,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        SetStateData<RoleSkill>(data);
-        ChangeState<RoleSkill>();
+        ChangeState<RoleSkill>(data);
         PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + m_EntityAttribute.attackSpeed));
     }
 
@@ -420,7 +418,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         SetDir(-attackerDir);
         SetPosX(m_Pos.x + attackerDir * 0.04f);
-        ChangeState<RoleDefense>(true);
+        ChangeState<RoleDefense>();
     }
 
     public virtual void OnDropTragMsg(DropTrapStateData dropTrapStateData)

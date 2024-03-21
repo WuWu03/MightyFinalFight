@@ -37,12 +37,6 @@ namespace GameFrameWork
             m_Instance.m_Running = true;
         }
 
-        public virtual void Run()
-        {
-            m_Running = true;
-            OnRun();
-        }
-
         public void ShutDown()
         {
             m_Running = false;
@@ -71,9 +65,11 @@ namespace GameFrameWork
                 OnLateUpdate();
         }
 
-        protected virtual void OnRun() { }
-
-        protected virtual void OnShutDown() { }
+        private void FixedUpdate()
+        {
+            if (m_Running)
+                OnFixedUpdate();
+        }
 
         protected virtual void OnAwake() { }
 
@@ -82,6 +78,10 @@ namespace GameFrameWork
         protected virtual void OnUpdate() { }
 
         protected virtual void OnLateUpdate() { }
+
+        protected virtual void OnFixedUpdate() { }
+
+        protected virtual void OnShutDown() { }
 
         private void OnDestroy()
         {

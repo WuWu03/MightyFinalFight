@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFrameWork.Fsm
 {
     public abstract class BaseFsm
     {
-        public BaseFsm(System.Object owner,string name) 
+        public BaseFsm(System.Object owner, string name, params BaseFsmState[] states)
         {
-            this.m_Owner = owner;
-            this.m_Name = name;
+            m_Owner = owner;
+            m_Name = name;
         }
 
         public string name
@@ -19,10 +16,6 @@ namespace GameFrameWork.Fsm
             { 
                 return m_Name;
             }
-            protected set 
-            {
-                this.m_Name = value;
-            }
         }
 
         public System.Object owner
@@ -30,10 +23,6 @@ namespace GameFrameWork.Fsm
             get 
             { 
                 return m_Owner;
-            }
-            protected set 
-            { 
-                this.m_Owner = value;
             }
         }
 
@@ -45,7 +34,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public abstract int fsmStateCount { get; }
+        public abstract int stateCount { get; }
         public abstract bool isRunning { get; }
         public abstract bool isDestroy { get; }
         public abstract Type currStateType { get; }
@@ -55,15 +44,15 @@ namespace GameFrameWork.Fsm
         public abstract void Start<T>() where T:BaseFsmState;
         public abstract void AddState<T>() where T : BaseFsmState, new();
         public abstract void RemoveState<T>() where T : BaseFsmState;
-        public abstract void SetFsmStateData<T>(BaseEventArgs stateData) where T : BaseFsmState;
-        public abstract void ChangeState<T>(bool isForce) where T : BaseFsmState;
+        public abstract void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState;
+        public abstract void ChangeState<T>(BaseEventArgs stateData) where T : BaseFsmState;
         public abstract bool HasState<T>() where T : BaseFsmState;
         public abstract T GetState<T>() where T : BaseFsmState;
         public abstract void SetDefaultState<T>() where T : BaseFsmState;
         public abstract void ChangeDefaultState();
         public abstract BaseFsmState[] GetAllStates();
         public abstract void Update(float deltaTime, float unscaleDeltaTime);
-        public abstract void FixedUpdate(float deltaTime, float unscaleDeltaTime);
+        public abstract void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime);
         public abstract void ShutDown();
 
         private string m_Name;

@@ -1,20 +1,40 @@
-﻿using System;
+﻿using GameFrameWork.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 namespace GameFrameWork.Fsm
 {
     public class FsmMachine : BaseFsm
     {
-        public FsmMachine(System.Object owner,string name):base(owner,name)
+        public FsmMachine(System.Object owner, string name, params BaseFsmState[] states) : base(owner, name, states)
         {
             m_CurrentState = null;
             m_CurrentStateTime = 0;
             m_DicStates = new Dictionary<Type, BaseFsmState>();
-            m_IsDestroyed = true;
+            m_IsDestroyed = false;
+
+            if (owner == null)
+            {
+                throw new Exception("Fsm owner (type [" + owner.GetType().Name + "] is invalid!");
+            }
+
+            if (states != null && states.Length > 0)
+            {
+                for (int i = 0; i < states.Length; i++)
+                {
+                    if (states[i] == null)
+                    {
+                        throw new Exception("Fsm state is invalid.");
+                    }
+
+                    states[i].Init(this);
+                    m_DicStates.Add(states[i].GetType(), states[i]);
+                }
+            }
         }
-        public override int fsmStateCount
+
+        public override int stateCount
         {
             get
             {
@@ -67,34 +87,6 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public static FsmMachine Create(System.Object owner,string name,params BaseFsmState[] states)
-        {
-            if(owner == null)
-            {
-                throw new Exception("Fsm owner (type [" + owner.GetType().Name + "] is invalid!");
-            }
-
-            FsmMachine fsm = new FsmMachine(owner, name);
-            fsm.name = name;
-            fsm.m_IsDestroyed = false;
-
-            if (states != null)
-            {
-                for (int i = 0; i < states.Length; i++)
-                {
-                    if (states[i] == null)
-                    {
-                        throw new Exception("Fsm state is invalid.");
-                    }
-
-                    states[i].Init(fsm);
-                    fsm.m_DicStates.Add(states[i].GetType(), states[i]);
-                }
-            }
-
-            return fsm;
-        }
-
         public override void Start<T>()
         {
             if (isRunning)
@@ -133,27 +125,37 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override void SetFsmStateData<T>(BaseEventArgs stateData)
+        public override void SetStateData<T>(BaseEventArgs stateData)
         {
-            T state = GetState<T>();
+            BaseFsmState state = GetState<T>();
 
             if (state == null)
             {
-                return;
+                throw new Exception(StringUtil.Format("Fsm [", typeof(T).Name, "] state is invalid or destroyed."));
             }
 
             state.SetStateData(stateData);
         }
 
-        public override void ChangeState<T>(bool isForce = false)
+        public override void ChangeState<T>(BaseEventArgs stateData)
         {
+            if (!isRunning)
+            {
+                throw new Exception("Fsm is not in running please use Start() to run it first.");
+            }
+
             if (m_CurrentState == null)
             {
                 throw new Exception("Fsm current state is invalid or destroyed.");
             }
 
-            if (!isForce && m_CurrentState.GetType().Equals(typeof(T)))
+            if (m_CurrentState.GetType().Equals(typeof(T)))
             {
+                if(stateData != null)
+                {
+                    m_CurrentState.SetStateData(stateData);
+                }
+
                 return;
             }
 
@@ -161,7 +163,12 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception("Fsm state is invalid.");
+                throw new Exception(StringUtil.Format("Fsm [", typeof(T).Name, "] state is invalid or destroyed."));
+            }
+
+            if(stateData != null)
+            {
+                state.SetStateData(stateData);
             }
 
             m_CurrentStateTime = Time.time;
@@ -172,14 +179,24 @@ namespace GameFrameWork.Fsm
 
         public override void ChangeDefaultState()
         {
+            if (!isRunning)
+            {
+                throw new Exception("Fsm is not in running please use Start() to run it first.");
+            }
+
             if (m_CurrentState == null)
             {
-                throw new Exception("Fsm is invalid or destroyed.");
+                throw new Exception("Fsm current state is invalid or destroyed.");
             }
 
             if (m_DefaultState == null)
             {
-                throw new Exception("Fsm is invalid or destroyed.");
+                throw new Exception("Fsm default state is invalid or destroyed.");
+            }
+
+            if (m_CurrentState == m_DefaultState)
+            {
+                return;
             }
 
             m_CurrentStateTime = 0f;
@@ -232,15 +249,15 @@ namespace GameFrameWork.Fsm
 
         public override void ShutDown()
         {
-            m_CurrentState = null;
-            m_CurrentStateTime = 0f;
-
             foreach(KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
             {
                 kvp.Value.Destroy(this);
             }
 
             m_DicStates.Clear();
+            m_DicStates = null;
+            m_CurrentState = null;
+            m_CurrentStateTime = 0f;
             m_IsDestroyed = true;
         }
 
@@ -256,7 +273,7 @@ namespace GameFrameWork.Fsm
             m_DefaultState = state;
         }
 
-        private readonly Dictionary<Type, BaseFsmState> m_DicStates;
+        private Dictionary<Type, BaseFsmState> m_DicStates;
         private BaseFsmState m_CurrentState;
         private BaseFsmState m_DefaultState;
         private float m_CurrentStateTime;
