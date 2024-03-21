@@ -123,8 +123,8 @@ namespace GameFrameWork.Editor
             }
 
             //框架资源
-            AddBuildMapSingle("ArtResources/Materials/", ".assetBundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
-            AddBuildMap("ArtResources/Shaders", ".assetBundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
+            AddBuildMapSingle("ArtResources/Materials/", ".assetbundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
+            AddBuildMap("Shaders", ".assetbundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
 
             return true;
             //AddBuildMap("fonts.unity3d", "*.TTF", "Assets/AssetsLibrary/Font");
@@ -139,10 +139,6 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            if (path.Contains("GuyWeapon"))
-            {
-
-            }
             string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
 
             if (files.Length < 1)
@@ -154,6 +150,25 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = files[i].Replace('\\', '/');
+            }
+
+            if (m_BuildMaps != null && m_BuildMaps.Count > 0)
+            {
+                for (int i = 0; i < m_BuildMaps.Count; i++)
+                {
+                    if (Path.GetFileNameWithoutExtension(m_BuildMaps[i].assetBundleName) == bundleName)
+                    {
+                        List<string> maps = new List<string>();
+                        maps.AddRange(m_BuildMaps[i].assetNames);
+                        maps.AddRange(files);
+                        AssetBundleBuild temp = new AssetBundleBuild();
+                        temp.assetBundleName = m_BuildMaps[i].assetBundleName;
+                        temp.assetNames = maps.ToArray();
+                        m_BuildMaps[i] = temp;
+
+                        return true;
+                    }
+                }
             }
 
             string lowerBundleName = bundleName.ToLower();

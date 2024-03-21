@@ -252,41 +252,48 @@ MonoBehaviour:
     AssetPath: Assets/ArtResources/Prefabs/Weapon/
     AssetBundlePath: ArtResources/Prefabs/Weapon/
   - Id: 35
+    BundleType: 1
+    BundleName: Shaders
+    BundleExtend: .assetbundle
+    Pattern: '*'
+    AssetPath: Assets/ArtResources/Shaders/
+    AssetBundlePath: 
+  - Id: 36
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Textures/SceneBuilding/
     AssetBundlePath: Textures/SceneBuilding/
-  - Id: 36
+  - Id: 37
     BundleType: 0
     BundleName: Texture/SceneItem
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Textures/SceneItem/
     AssetBundlePath: Textures/SceneItem/
-  - Id: 37
+  - Id: 38
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/Textures/Stage/
     AssetBundlePath: Textures/Stage/
-  - Id: 38
+  - Id: 39
     BundleType: 0
     BundleName: 
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/UI/Prefabs/
     AssetBundlePath: ArtResources/UI/Prefabs/
-  - Id: 39
+  - Id: 40
     BundleType: 0
     BundleName: UISprites/Common
     BundleExtend: .assetbundle
     Pattern: '*'
     AssetPath: Assets/ArtResources/UI/UIAtlas/
     AssetBundlePath: ArtResources/UI/UIAtlas/
-  - Id: 40
+  - Id: 41
     BundleType: 0
     BundleName: ConfigData
     BundleExtend: .assetbundle
