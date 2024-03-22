@@ -72,6 +72,18 @@ namespace GameFrameWork.Fsm
             return false;
         }
 
+        public bool DestoryFsm(FsmMachine fsm)
+        {
+            if(fsm == null)
+            {
+                return false;
+            }
+
+            fsm.ShutDown();
+            m_ListFsms.Remove(fsm);
+            return true;
+        }
+
         protected override void OnAwake()
         {
             m_ListFsms = new List<FsmMachine>();

@@ -80,7 +80,11 @@ namespace GameFrameWork.GameEntity
         protected virtual void Update() { }
         protected virtual void LateUpdate() { }
         protected virtual void FixedUpdate() { }
-        protected virtual void OnDestroy() { }
+        protected virtual void OnDestroy() 
+        {
+            m_EntityName = string.Empty;
+            m_Layer = string.Empty;
+        }
        
         private int m_Id = 0;
         private string m_EntityName = string.Empty;

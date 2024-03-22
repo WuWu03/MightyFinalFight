@@ -1,6 +1,4 @@
 using GameFrameWork;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseBoundObject : BaseSceneObject
@@ -39,6 +37,14 @@ public class BaseBoundObject : BaseSceneObject
     {
         base.UpdatePos(pos, posZ);
         UpdateBound();
+    }
+
+    public override void Release()
+    {
+        m_Bound = Rect.zero;
+        m_BoxCollider2D = null;
+
+        base.Release();
     }
 
     protected override void OnResComplete(GameObject go, object[] param)

@@ -23,3 +23,8 @@ public struct LayerName
     public const string Map = "Map";
     public const string Unit = "Unit";
 }
+
+public struct ConstField
+{
+    public const float CatchTime = 2f;
+}

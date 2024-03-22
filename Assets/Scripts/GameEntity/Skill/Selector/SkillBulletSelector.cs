@@ -47,32 +47,32 @@ public class SkillBulletSelector : SkillBaseSelector
 
     private void CheckTarget(BaseBoundObject bbo)
     {
-        if (bbo == null)
-        {
-            return;
-        }
+        //if (bbo == null)
+        //{
+        //    return;
+        //}
 
-        ICanBeHit hit = bbo.GetComponent<ICanBeHit>();
+        //ICanBeHit hit = bbo.GetComponent<ICanBeHit>();
 
-        if (hit == null)
-        {
-            return;
-        }
+        //if (hit == null)
+        //{
+        //    return;
+        //}
 
-        for (int i = 0; i < m_Owner.bullets.Count; i++)
-        {
-            bool isInRange = false;
+        //for (int i = 0; i < m_Owner.bullets.Count; i++)
+        //{
+        //    bool isInRange = false;
 
-            if( Mathf.Abs(bbo.pos.y - m_Owner.bullets[i].pos.y) < m_SkillEffect.Bullets[i].HitRange)
-            {
-                isInRange = SkillUtil.IsRectangleCollide(bbo.bound, m_Owner.bound);
-            }
+        //    if( Mathf.Abs(bbo.pos.y - m_Owner.bullets[i].pos.y) < m_SkillEffect.Bullets[i].HitRange)
+        //    {
+        //        isInRange = SkillUtil.IsRectangleCollide(bbo.bound, m_Owner.bound);
+        //    }
 
-            if (isInRange && hit.canBeHit)
-            {
-                m_ListTargets.Add(hit);
-            }
-        }
+        //    if (isInRange && hit.canBeHit)
+        //    {
+        //        m_ListTargets.Add(hit);
+        //    }
+        //}
     }
 
     public override void Reset()

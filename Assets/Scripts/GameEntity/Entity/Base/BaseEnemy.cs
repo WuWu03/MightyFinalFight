@@ -97,8 +97,12 @@ public class BaseEnemy : BaseRole
     public override void Release()
     {
         PlayerMgr.instance.AddExp(m_SkillExp);
+
         m_SkillExp = 0;
+        m_HpBarWidth = 0;
+        m_IsBoss = false;
         m_HurtAnim = null;
+
         base.Release();
     }
 

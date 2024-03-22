@@ -25,7 +25,11 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_FsmMachine = FsmMgr.instance.Create(this, this.GetType().Name);
+
+        if (m_FsmMachine == null)
+        {
+            m_FsmMachine = FsmMgr.instance.Create(this, this.GetType().Name);
+        }
     }
 
     public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
@@ -48,10 +52,12 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Release()
     {
         m_Animator.animation.Reset();
-        FsmMgr.instance.DestoryFsm(this);
-
-        m_FsmMachine = null;
+        m_FsmMachine.ShutDown();
+        
+        m_HitTrigger = null;
+        m_Animator = null;
         m_CurrAnimName = string.Empty;
+        m_LastTriggerAnimName = string.Empty;
 
         base.Release();
     }
@@ -255,6 +261,14 @@ public abstract class BaseAvatar : BaseGravityObject
         base.OnResComplete(go, param);
         m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
         m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+    }
+
+    protected override void OnDestroy()
+    {
+        FsmMgr.instance.DestoryFsm(m_FsmMachine);
+        m_FsmMachine = null;
+
+        base.OnDestroy();
     }
 
     protected string m_CurrAnimName = string.Empty;

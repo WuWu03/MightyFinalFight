@@ -148,17 +148,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public List<Bullet> bullets
-    {
-        get
-        {
-            return m_Bullets;
-        }
-    }
-
     public override void Init(int id, string name)
     {
         base.Init(id, name);
+
         AddState<RoleIdle>();
         AddState<RoleMove>();
         AddState<RoleJump>();
@@ -170,7 +163,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleSkill>();
         AddState<RoleDefense>();
 
-        m_Bullets = new List<Bullet>();
+        if (m_AutoMoveComplete == null)
+        {
+            m_AutoMoveComplete = new UnityEvent();
+        }
     }
 
     public override void SetData(BaseSceneObjectData data)
@@ -193,18 +189,43 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public override void Release()
     {
         m_AutoMoveComplete.RemoveAllListeners();
-        m_OnHurtEvent = null;
+
 
         if (m_CurrCtrl != null)
         {
             m_CurrCtrl.Release();
-            m_CurrCtrl = null;
         }
+
+        if(m_OnGroundHurtStateData != null)
+        {
+            ReferencePool.Release(m_OnGroundHurtStateData);
+        }
+
+        if(m_DropTrapStateData != null)
+        {
+            ReferencePool.Release(m_DropTrapStateData);
+        }
+
+        m_IsSmoon = false;
+        m_IsJumpAttack = false;
+        m_IsDropTrag = false;
+        m_IsBeCatch = false;
+        m_IsBeThrow = false;
+        m_IsCatchControl = false;
+        m_IsAutoMove = false;
+        m_XArrived = false;
+        m_YArrived = false;
+        m_IsDropGround = false;
+        m_DropGourndTime = 0f;
+        m_OnGroundHurtStateData = null;
+        m_DropTrapStateData = null;
+        m_CurrCtrl = null;
+        m_OnHurtEvent = null;
 
         base.Release();
     }
 
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
         m_MoveDir = Vector2.right;
@@ -224,8 +245,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             m_CurrCtrl.Update();
         }
-
-
     }
 
     protected override void OnLateUpdate()
@@ -248,6 +267,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         CheckAutoMove();
+    }
+
+    protected override void OnDestroy()
+    {
+        m_AutoMoveComplete = null;
+        base.OnDestroy();
     }
 
     public virtual void OnAttackMsg(AttackStateData data, bool forceJumpAttack = false)
@@ -278,7 +303,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (data == null)
         {
             return;
-        } 
+        }
 
         if (IsAnyState(typeof(RoleJump)))
         {
@@ -636,14 +661,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
             }
         }
 
-        if(m_EntityAttribute.health <= 0)
+        if (m_EntityAttribute.health <= 0)
         {
             m_IsSmoon = false;
             ChangeState<RoleDead>();
             return;
         }
 
-        Timer.Register(1f, ()=> 
+        Timer.Register(1f, () =>
         {
             m_IsSmoon = false;
 
@@ -709,7 +734,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsCatchControl = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected event GameFrameWorkAction<HurtStateData> m_OnHurtEvent = null;
-    protected List<Bullet> m_Bullets = null;
 
     private bool m_IsAutoMove = false;
     private bool m_XArrived = false;
@@ -718,5 +742,5 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private float m_DropGourndTime = 0f;
     private HurtStateData m_OnGroundHurtStateData = null;
     private DropTrapStateData m_DropTrapStateData = null;
-    private UnityEvent m_AutoMoveComplete = new UnityEvent();
+    private UnityEvent m_AutoMoveComplete = null;
 }

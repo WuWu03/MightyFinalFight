@@ -2,8 +2,6 @@
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Resources;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
@@ -117,28 +115,31 @@ public class BaseSceneObject : BaseEntity
 
     public override void Release()
     {
-        base.Release();
         m_OnReleaseEventHandler?.Invoke(m_EntityId);
-        m_IsResComplete = false;
-        m_OnReleaseEventHandler = null;
-
+   
         if (m_ResGO != null)
         {
             ResourcesPool.instance.Put(m_ResPath, m_ResGO);
-            m_ResPath = null;
         }
 
         if(m_Data != null)
         {
             ReferencePool.Release(m_Data);
-            m_Data = null;
         }
 
         if (m_EntityAttribute != null)
         {
             ReferencePool.Release(m_EntityAttribute);
-            m_EntityAttribute = null;
         }
+
+        m_IsResComplete = false;
+        m_OnReleaseEventHandler = null;
+        m_ResPath = null;
+        m_Data = null;
+        m_EntityAttribute = null;
+        m_ResGO = null;
+
+        base.Release();
     }
 
     public virtual void SetData(BaseSceneObjectData data)
@@ -375,7 +376,6 @@ public class BaseSceneObject : BaseEntity
 
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
-
     protected virtual void OnFixedUpdate() { }
     protected virtual void OnResComplete(GameObject go, object[] param) { }
     protected virtual void OnTriggerEnter2D(Collider2D collision) { }

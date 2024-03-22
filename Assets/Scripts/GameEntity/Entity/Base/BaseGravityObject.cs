@@ -1,5 +1,4 @@
 ﻿using GameFrameWork;
-using GameFrameWork.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -77,6 +76,16 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
         m_Rigidbody2D.freezeRotation = true;
+
+        if (m_OnDropEvent == null)
+        {
+            m_OnDropEvent = new UnityEvent();
+        }
+
+        if (m_OnGroundEvent == null)
+        {
+            m_OnGroundEvent = new UnityEvent();
+        }
     }
 
     public void AddForce(float x, float y, bool isGroundForce = false)
@@ -150,8 +159,16 @@ public class BaseGravityObject : BaseBoundObject
     public override void Release()
     {
         ResetRigidbody();
+
+        m_OnDropEvent.RemoveAllListeners();
+        m_OnGroundEvent.RemoveAllListeners();
+
+        m_IsAddGroundForce = false;
+        m_Rigidbody2D = null;
+
         base.Release();
     }
+
 
     protected virtual void OnDrop() { }
     protected virtual void OnGround() { }
@@ -198,9 +215,17 @@ public class BaseGravityObject : BaseBoundObject
         m_IsAddGroundForce = false;
     }
 
-    private UnityEvent m_OnDropEvent = new UnityEvent();
-    private UnityEvent m_OnGroundEvent = new UnityEvent(); 
-    
+    protected override void OnDestroy()
+    {
+        m_OnDropEvent = null;
+        m_OnGroundEvent = null;
+
+        base.OnDestroy();
+    }
+
+    private UnityEvent m_OnDropEvent = null;
+    private UnityEvent m_OnGroundEvent = null;
+
     protected bool m_IsAddGroundForce = false;
     protected Rigidbody2D m_Rigidbody2D = null;
 }

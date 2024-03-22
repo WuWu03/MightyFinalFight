@@ -137,7 +137,7 @@ namespace GameFrameWork.Fsm
             state.SetStateData(stateData);
         }
 
-        public override void ChangeState<T>(BaseEventArgs stateData)
+        public override void ChangeState<T>(BaseEventArgs stateData = null)
         {
             if (!isRunning)
             {

@@ -102,16 +102,36 @@ public class BaseHero : BaseRole
         AddState<HeroCatch>();
         AddState<HeroPickUp>();
         AddState<HeroAttackEnd>();
-        m_DicAttacker = new Dictionary<int, int>();
-        m_ListCatchTarget = new List<ICanBeHit>();
+
+        if (m_DicAttacker == null)
+        {
+            m_DicAttacker = new Dictionary<int, int>();
+        }
+
+        if (m_ListCatchTarget == null)
+        {
+            m_ListCatchTarget = new List<ICanBeHit>();
+        }
     }
 
     public override void Release()
     {
         m_DicAttacker.Clear();
         m_ListCatchTarget.Clear();
-        m_ListCatchTarget = null;
-        m_DicAttacker = null;
+        m_RebirthStateTimer = 0;
+        m_RebirthStateTime = 3.0f;
+        m_RebirthLightTimer = 0;
+        m_RebirthLightTime = 1f / 30f;
+        m_CatchStamp = 0f;
+        m_HitTime = -1f;
+        m_HurtTimer = 0f;
+        m_IsDropInGround = false;
+        m_CatchAttackCount = 0;
+        m_Slot1Renderer = null;
+        m_Slot2Renderer = null;
+        m_IsRebirthState = false;
+        m_Weapon = null;
+
         base.Release();
     }
 
@@ -147,6 +167,14 @@ public class BaseHero : BaseRole
         m_Slot2Renderer = go.transform.Find("slot2").GetComponent<Renderer>();
         m_Slot1Renderer.enabled = true;
         m_Slot2Renderer.enabled = false;
+    }
+
+    protected override void OnDestroy()
+    {
+        m_ListCatchTarget = null;
+        m_DicAttacker = null;
+
+        base.OnDestroy();
     }
 
     public override List<ICanBeHit> OnHitStart()
@@ -459,7 +487,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        bool isOutCatchTime = Time.time - m_CatchStamp >= m_CatchTime;
+        bool isOutCatchTime = Time.time - m_CatchStamp >= ConstField.CatchTime;
 
         if ((isOutCatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsPlayComplete()))
         {
@@ -565,7 +593,6 @@ public class BaseHero : BaseRole
         return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0 && m_CatchAttackCount < 3;
     }
 
-    protected float m_CatchTime = 2;
     protected bool m_IsRebirthState = false;
     protected Weapon m_Weapon = null;
 
