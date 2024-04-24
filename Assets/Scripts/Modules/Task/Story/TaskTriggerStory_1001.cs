@@ -1,7 +1,5 @@
-﻿using GameFrameWork.GameEntity;
-using GameFrameWork.Audio;
+﻿using GameFrameWork.Audio;
 using GameFrameWork.Timer;
-using GameFrameWork.Utilities;
 using UnityEngine;
 public class TaskTriggerStory_1001 : BaseTaskTrigger
 {

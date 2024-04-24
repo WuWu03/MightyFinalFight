@@ -207,7 +207,7 @@ namespace GameFrameWork.UI
 
             if (type == null)
             {
-                Log.LogError("Panel is invalid!");
+                Log.LogError(panelName, "不存在");
                 return null;
             }
 

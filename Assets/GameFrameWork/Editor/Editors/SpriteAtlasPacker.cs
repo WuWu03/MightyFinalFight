@@ -179,7 +179,7 @@ namespace GameFrameWork.Editor
         {
             m_ListSpriteStatus.Clear();
 
-            if (m_CurrAtlasIndex > 0)
+            if (m_CurrAtlasIndex > -1)
             {
                 UnityEngine.Object[] atlasSprites = SpriteAtlasExtensions.GetPackables(m_ListAtlas[m_CurrAtlasIndex]);
 

@@ -1,21 +1,13 @@
-using GameFrameWork.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Reflection;
-using UnityEditor;
-using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
     public class BehaviourTreeUtil
     {
-        // Start is called before the first frame update
-
-        public static string[] GetNodePathList(params string[] paths)
+        public static string[] GetNodePathList(bool isRoot, params string[] paths)
         {
             List<string> list = new List<string>();
-            string[][] nodePaths = GetNodePaths(paths);
+            string[][] nodePaths = GetNodePaths(isRoot, paths);
 
             for (int i = 0; i < nodePaths.Length; i++)
             {
@@ -38,10 +30,10 @@ namespace GameFrameWork.Editor
             return list.ToArray();
         }
 
-        public static string[][] GetNodePaths(params string[] paths)
+        public static string[][] GetNodePaths(bool isRoot,params string[] paths)
         {
             string[][] nodeNames = GetNodeNames();
-            string[][] nodePaths = new string[nodeNames.Length][];
+            List<string[]> nodePaths = new List<string[]>();// new string[nodeNames.Length][];
             string[] classList = new string[3]
             {
                 "Composites",
@@ -51,7 +43,7 @@ namespace GameFrameWork.Editor
 
             string str = string.Empty;
 
-            if(paths.Length > 0)
+            if (paths.Length > 0)
             {
                 for (int i = 0; i < paths.Length; i++)
                 {
@@ -62,7 +54,7 @@ namespace GameFrameWork.Editor
 
                 str = string.Format(str, paths);
             }
-      
+
             for (int i = 0; i < 2; i++)
             {
                 str += "{";
@@ -77,15 +69,20 @@ namespace GameFrameWork.Editor
 
             for (int i = 0; i < nodeNames.Length; i++)
             {
-                nodePaths[i] = new string[nodeNames[i].Length];
+                if(isRoot && i == 1)
+                {
+                    continue;
+                }
+
+                nodePaths.Add(new string[nodeNames[i].Length]);
 
                 for (int j = 0; j < nodeNames[i].Length; j++)
                 {
-                    nodePaths[i][j] = string.Format(str, classList[i], nodeNames[i][j]);
+                    nodePaths[nodePaths.Count - 1][j] = string.Format(str, classList[i], nodeNames[i][j]);
                 }
             }
 
-            return nodePaths;
+            return nodePaths.ToArray();
         }
 
         public static string[][] GetNodeNames()
@@ -93,9 +90,9 @@ namespace GameFrameWork.Editor
             if (s_NodeNames == null)
             {
                 s_NodeNames = new string[3][];
-                s_NodeNames[0] = GetAssembly("GameFrameWork.BehaviourTree.Composite", "Composite","Entry");
-                s_NodeNames[1] = GetAssembly("GameFrameWork.BehaviourTree.Action", "Action");
-                s_NodeNames[2] = GetAssembly("GameFrameWork.BehaviourTree.Decorator", "Decorator");
+                s_NodeNames[0] = EditorUtil.GetAssemblyTypeNames("GameFrameWork.BehaviourTree.Composite", false, "Composite", "Entry");
+                s_NodeNames[1] = EditorUtil.GetAssemblyTypeNames("GameFrameWork.BehaviourTree.Action", false, "Action");
+                s_NodeNames[2] = EditorUtil.GetAssemblyTypeNames("GameFrameWork.BehaviourTree.Decorator", false, "Decorator");
             }
 
             return s_NodeNames;
@@ -103,51 +100,12 @@ namespace GameFrameWork.Editor
 
         public static string[] GetPreConditionNames()
         {
-            if(m_PreConditionNames == null)
+            if (m_PreConditionNames == null)
             {
-                m_PreConditionNames = GetAssembly("GameFrameWork.BehaviourTree.PreCondition", "PreCondition");
+                m_PreConditionNames = EditorUtil.GetAssemblyTypeNames("GameFrameWork.BehaviourTree.PreCondition", false, "PreCondition");
             }
 
             return m_PreConditionNames;
-        }
-
-        private static string[] GetAssembly(string typeName, params string[] parttern)
-        {
-            Assembly assembly = Assembly.Load("Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
-            Type baseType = assembly.GetType(typeName);
-            List<string> list = new List<string>();
-            Type[] allTypes = assembly.GetTypes();
-
-            foreach (Type type in allTypes)
-            {
-                Type temp = type;
-                while (temp.BaseType != null)
-                {
-                    if (temp.Name.Equals(baseType.Name))
-                    {
-                        bool isParttern = false;
-
-                        for (int i = 0; i < parttern.Length; i++)
-                        {
-                            if (parttern[i].Equals(type.Name))
-                            {
-                                isParttern = true;
-                                break;
-                            }
-                        }
-
-                        if (!isParttern)
-                        {
-                            list.Add(type.Name);
-                            break;
-                        }
-                    }
-
-                    temp = temp.BaseType;
-                }
-            }
-            list.Sort();
-            return list.ToArray();
         }
 
         private static string[][] s_NodeNames = null;

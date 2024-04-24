@@ -154,9 +154,9 @@ namespace GameFrameWork.Resources
             }
 #endif
             string assetBundleName = GetAssetBundleName(assetPath);
-            Log.LogInfo("Start to unload asset : [", assetBundleName, "]", m_DicLoadedAssetBundles.Count, " assetbundle(s) in memory before unloading ");
+            Log.LogInfo("开始卸载资源 : [", assetBundleName, "] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
             UnloadAssetBundle(assetBundleName, isThorough);
-            Log.LogInfo("Unload asset : [", assetBundleName, "] completed", m_DicLoadedAssetBundles.Count, " assetbundle(s) in memory after unloading ");
+            Log.LogInfo("卸载资源 : [", assetBundleName, "] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace GameFrameWork.Resources
 
                 if (assetBundleInfo == null)
                 {
-                    Log.LogError("Can't find the assetbundle : ", assetBundleName);
+                    Log.LogError("加载失败 , AB包不存在 : ", assetBundleName);
                     return null;
                 }
             }
@@ -243,7 +243,7 @@ namespace GameFrameWork.Resources
         private void OnLoadAsset(string assetBundleName)
         {
             string assetBunldePath = GetAssetBundlePath(assetBundleName);
-            Log.LogInfo("Start to load asset sync ：", assetBunldePath);
+            Log.LogInfo("开始异步加载资源 ：", assetBunldePath);
 
             AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBunldePath);
 
@@ -261,7 +261,7 @@ namespace GameFrameWork.Resources
             if (assetBundleInfo == null)
             {
                 string assetBundlePath = GetAssetBundlePath(assetBundleName);
-                Log.LogInfo("Start to load asset async：", assetBundlePath);
+                Log.LogInfo("异步加载中 ：", assetBundlePath);
                 AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
 
                 while (!createRequest.isDone)
@@ -281,7 +281,7 @@ namespace GameFrameWork.Resources
                 if (assetBundleInfo == null)
                 {
                     m_DicLoadRequests.Remove(assetBundleName);
-                    Log.LogError("Can't find the assetbundle : ", assetBundleName);
+                    Log.LogError("加载失败 , AB包不存在 : ", assetBundleName);
                     yield break;
                 }
             }
@@ -320,7 +320,7 @@ namespace GameFrameWork.Resources
         {
             if (m_Manifest == null)
             {
-                Log.LogError("Please initialize assetbundle manifest first.");
+                Log.LogError("获取依赖失败 , 请先初始化 assetbundle manifest");
                 return null;
             }
 
@@ -377,7 +377,7 @@ namespace GameFrameWork.Resources
                 return StringUtil.Format(assetBundleName, version.extendName);
             }
 
-            Log.LogError("Can't find the version of ", assetPath);
+            Log.LogError("获取资源版本失败 : ", assetPath);
 
             if (!assetBundleName.EndsWith(PathUtil.assetBundleExtension))
             {

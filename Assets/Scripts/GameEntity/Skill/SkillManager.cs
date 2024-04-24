@@ -45,7 +45,7 @@ public class SkillManager
         }
         else
         {
-            Log.LogError("Skill not found id:", id);
+            Log.LogError("技能Id无效 : ", id);
         }
     }
 

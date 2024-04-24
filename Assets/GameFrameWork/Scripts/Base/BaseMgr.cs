@@ -11,7 +11,7 @@ namespace GameFrameWork
             {
                 if (m_Instance == null)
                 {
-                    Log.LogError(StringUtil.Format("The instance that Type of ", typeof(T).Name, " must be init"));
+                    Log.LogError(StringUtil.Format(typeof(T).Name, "没有实例，请先初始化该实例"));
                     return null;
                 }
 
@@ -23,13 +23,13 @@ namespace GameFrameWork
         {
             if (m_Instance != null)
             {
-                Log.LogError(StringUtil.Format("The instance that Type of ", typeof(T).Name), " has already init");
+                Log.LogError(StringUtil.Format(typeof(T).Name), "实例已经存在，请不要重复实例化");
                 return;
             }
 
             if (manager == null)
             {
-                Log.LogError("The manager is missing");
+                Log.LogError("管理器为空");
                 return;
             }
 

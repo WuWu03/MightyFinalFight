@@ -1,11 +1,8 @@
-﻿using GameFrameWork.Serialize;
-using System;
+﻿using GameFrameWork.Editor.Config;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using GameFrameWork.Editor.Config;
 
 namespace GameFrameWork.Editor
 {
@@ -48,8 +45,8 @@ namespace GameFrameWork.Editor
             }
         }
 
-        
-        public BehaviourTreeWindowNode(BehaviourTreeWindowData data,bool isParent,BehaviourTreeWindowNode parent = null)
+
+        public BehaviourTreeWindowNode(BehaviourTreeWindowData data, bool isParent, BehaviourTreeWindowNode parent = null)
         {
             UpdateData(data, isParent, parent);
 
@@ -59,14 +56,14 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_Data.preConditions.Count; i++)
                 {
-                    if(string.IsNullOrEmpty(m_Data.preConditions[i].classType))
+                    if (string.IsNullOrEmpty(m_Data.preConditions[i].classType))
                     {
                         continue;
                     }
 
                     for (int j = 0; j < preConditionNames.Length; j++)
                     {
-                        if(m_Data.preConditions[i].classType == preConditionNames[j])
+                        if (m_Data.preConditions[i].classType == preConditionNames[j])
                         {
                             m_Data.preConditions[i].selectIndex = j;
                             break;
@@ -77,9 +74,9 @@ namespace GameFrameWork.Editor
 
             m_PreConditionList.elementHeight = 50;
             m_PreConditionList.drawHeaderCallback = (Rect rect) =>
-             {
-                 GUI.Label(rect, "PreConditions");
-             };
+            {
+                GUI.Label(rect, "PreConditions");
+            };
 
             m_PreConditionList.onAddCallback = (ReorderableList list) =>
             {
@@ -121,7 +118,6 @@ namespace GameFrameWork.Editor
             m_Data = data;
             m_Parent = parent;
             m_IsParent = isParent;
-            m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
 
             if (m_Data != null)
             {
@@ -147,6 +143,8 @@ namespace GameFrameWork.Editor
                 {
                     m_Children.Add(new BehaviourTreeWindowNode(m_Data.children[i],false, this));
                 }
+
+                m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
             }
             else
             {

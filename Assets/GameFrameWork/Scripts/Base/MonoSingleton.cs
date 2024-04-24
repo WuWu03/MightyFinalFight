@@ -17,7 +17,7 @@ namespace GameFrameWork
                     {
                         if (instances.Length > 1)
                         {
-                            Log.LogError("The instance that Type of ", typeof(T).Name, " is more than one");
+                            Log.LogError(typeof(T).Name, "实例超过一个 , 请不要重复实例化");
                             return null;
                         }
                         else

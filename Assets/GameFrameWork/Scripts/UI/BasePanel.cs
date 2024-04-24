@@ -62,7 +62,7 @@ namespace GameFrameWork.UI
 
             if (m_UIRefRoot == null)
             {
-                Log.LogError("UIRefRoot is null!");
+                Log.LogError("[UIRefRoot] 组件为空");
                 return;
             }
 

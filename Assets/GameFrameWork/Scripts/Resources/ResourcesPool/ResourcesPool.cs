@@ -49,7 +49,7 @@ namespace GameFrameWork.Resources
                     {
                         ResourcePoolInfo resource = pool.Dequeue();
 
-                        if (resource.isReleaseImmediate || Time.time - resource.releaseTime >= COLLECT_TIME)
+                        if (resource.isReleaseImmediate || Time.time - resource.releaseTime >= ConstField.CollectTime)
                         {
                             if (resource.poolObject is GameObject)
                             {
@@ -107,7 +107,7 @@ namespace GameFrameWork.Resources
         {
             if (string.IsNullOrEmpty(assetPath))
             {
-                Log.LogError("Asset path  is invalid.");
+                Log.LogError("资源路径无效");
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace GameFrameWork.Resources
         {
             if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                Log.LogError(StringUtil.Format("Resource [", assetPath, "] load complete,but the callback is invalid."));
+                Log.LogError(StringUtil.Format("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
                 return;
             }
 
@@ -233,7 +233,6 @@ namespace GameFrameWork.Resources
             m_RemoveList = null;
         }
 
-        public const int COLLECT_TIME = 15;
         private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
         private List<ResourceMark> m_ListMarkResource = null;

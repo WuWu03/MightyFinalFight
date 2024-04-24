@@ -15,7 +15,6 @@ namespace GameFrameWork.UI
         [Min(0f)] public float autoFlipTime = 0f;
         [Range(0f, 0.4f)] public float additiveSensitivity;//∑≠“≥¡È√Ù∂»–ﬁ’˝
         [Min(0.1f)] public float moveSpeed;
-        public float fff;
         private void Awake()
         {
             m_ScrollRect = GetComponent<ScrollRect>();
@@ -59,13 +58,11 @@ namespace GameFrameWork.UI
 
         private void Update()
         {
-            fff = m_ScrollRect.verticalNormalizedPosition;
-
             if (m_CanMove)
             {
                 float currMoveSpeed = moveSpeed;
-                float position = 0;
-                float distance = 0f;
+                float position;
+                float distance;
 
                 if (m_ScrollRect.vertical)
                 {
@@ -107,7 +104,7 @@ namespace GameFrameWork.UI
 
                     if(canAutoFlip && m_PageIndex >= pageCount - 1)
                     {
-                        m_ScrollRect.content.GetChild(0).SetAsLastSibling();
+                        //m_ScrollRect.content.GetChild(0).SetAsLastSibling();
 
                         if (m_ScrollRect.vertical)
                         {
@@ -167,7 +164,7 @@ namespace GameFrameWork.UI
 
         private void OnEndDrag(GameObject go, PointerEventData eventData, object arg)
         {
-            float posAdditive = 0f;
+            float posAdditive;
             if (m_ScrollRect.vertical)
             {
                 float position = m_ScrollRect.verticalNormalizedPosition;

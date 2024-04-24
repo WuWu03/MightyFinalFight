@@ -27,4 +27,7 @@ public struct LayerName
 public struct ConstField
 {
     public const float CatchTime = 2f;
+    public const float CatchAttackTime = 0.3f;
+    public const float EnemyHPBarHideTime = 4f;
+    public const float CollectTime = 15f;
 }

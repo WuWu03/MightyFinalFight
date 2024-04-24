@@ -74,7 +74,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError("Animator is invalid!");
+            Log.LogError(name, "[Animator] 组件不存在");
             return;
         }
 
@@ -98,7 +98,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError("Animator is invalid!");
+            Log.LogError(name, "[Animator] 组件不存在");
             return false;
         }
 

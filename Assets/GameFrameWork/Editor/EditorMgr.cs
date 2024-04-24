@@ -1,14 +1,13 @@
-﻿using GameFrameWork.BehaviourTree;
-using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-	[InitializeOnLoad]
+    [InitializeOnLoad]
 	public static class EditorMgr
 	{
 		static EditorMgr()
@@ -19,7 +18,87 @@ namespace GameFrameWork.Editor
 			}
 		}
 
-		[MenuItem("GameFrameWork/UI/创建UI场景")]
+		[MenuItem("GameFrameWork/Start Up", false, 0)]
+		public static void GameFrameWorkStartUp()
+		{
+			if (UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消"))
+			{
+				CreateEntry();
+			}
+		}
+
+		static bool isCreateEntry = false;
+		private static void CreateEntry()
+		{
+			PlayerPrefs.SetInt("create_entry_script", 1);
+            string[] entryScript = EditorUtil.GetAssemblyTypeNames("GameFrameWork.GameFrameWorkEntry", true, "GameFrameWorkEntry");
+
+            if (entryScript == null || entryScript.Length < 1)
+            {
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("using GameFrameWork;");
+                sb.AppendLine("using UnityEngine;");
+                sb.AppendLine();
+                sb.AppendLine("public class GameEntry : GameFrameWorkEntry");
+                sb.AppendLine("{");
+                sb.AppendLine("\tprotected override void OnInit(GameObject manager)");
+                sb.AppendLine("\t{");
+                sb.AppendLine();
+                sb.AppendLine("\t}");
+                sb.AppendLine();
+                sb.AppendLine("\tprotected override void OnStartGame()");
+                sb.AppendLine("\t{");
+                sb.AppendLine();
+                sb.AppendLine("\t}");
+                sb.AppendLine();
+                sb.AppendLine("\tprotected override void OnExit()");
+                sb.AppendLine("\t{");
+                sb.AppendLine();
+                sb.AppendLine("\t}");
+                sb.AppendLine();
+                sb.Append("}");
+
+				Utilities.FileUtil.VerifyDirectory(Application.dataPath + "/Scripts/");
+				File.WriteAllText(Application.dataPath + "/Scripts/GameEntry.cs", sb.ToString());
+				AssetDatabase.Refresh();
+            }
+			else
+			{
+				OnScriptReload();
+			}
+        }
+
+		[UnityEditor.Callbacks.DidReloadScripts(0)]
+		private static void OnScriptReload()
+		{
+			if(PlayerPrefs.GetInt("create_entry_script",0) == 0)
+			{
+				return;
+			}
+
+            Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
+
+			if (entryTypes == null || entryTypes.Length < 1)
+			{
+				return;
+			}
+
+            GameObject go = GameObject.Find("GameEntry");
+
+            if (go == null)
+            {
+                go = new GameObject("GameEntry");
+            }
+
+            if (go.GetComponent(entryTypes[0]) == null)
+            {
+                go.AddComponent(entryTypes[0]);
+            }
+
+            PlayerPrefs.SetInt("create_entry_script", 0);
+        }
+
+        [MenuItem("GameFrameWork/UI/创建UI场景")]
 		public static void NewUIScene()
 		{
 			UIEditorInit.NewUIScene();

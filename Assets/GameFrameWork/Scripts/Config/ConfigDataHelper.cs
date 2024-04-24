@@ -20,7 +20,7 @@ public static partial class ConfigDataHelper
 
         if (txt == null || txt.bytes == null)
         {
-            Log.LogError("Config data not found: ", path);
+            Log.LogError("∂¡»°≈‰÷√Œƒº˛ ß∞‹ : ", path);
             return null;
         }
 

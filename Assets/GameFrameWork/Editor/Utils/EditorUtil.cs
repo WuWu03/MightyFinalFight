@@ -1,5 +1,6 @@
 ﻿using GameFrameWork.Serialize;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -7,9 +8,68 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-	public static class EditorUtil
+    public static class EditorUtil
 	{
-		public static void CreateConfigData<T,P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
+        public static string[] GetAssemblyTypeNames(string typeName,bool isFullName, params string[] parttern)
+        {
+			Type[] types = GetAssemblyTypes(typeName, parttern);
+
+			string[] typeNames = new string[types.Length];
+
+			for (int i = 0; i < types.Length; i++)
+			{
+				typeNames[i] = isFullName ? types[i].FullName : types[i].Name;
+			}
+
+			return typeNames;
+        }
+
+		public static Type[] GetAssemblyTypes(string typeName, params string[] parttern)
+		{
+			Assembly assembly = Assembly.Load("Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+			Type[] allTypes = assembly.GetTypes();
+
+			List<Type> list = new List<Type>();
+			Type baseType = assembly.GetType(typeName);
+
+			foreach (Type type in allTypes)
+			{
+				Type temp = type;
+				while (temp.BaseType != null)
+				{
+					if (temp.Name.Equals(baseType.Name))
+					{
+						bool isParttern = false;
+
+						for (int i = 0; i < parttern.Length; i++)
+						{
+							if (parttern[i].Equals(type.Name))
+							{
+								isParttern = true;
+								break;
+							}
+						}
+
+						if (!isParttern)
+						{
+							list.Add(type);
+							break;
+						}
+					}
+
+					temp = temp.BaseType;
+				}
+			}
+
+			list.Sort((a, b) =>
+			{
+				return a.Name.CompareTo(b.Name);
+			});
+
+			return list.ToArray();
+		}
+
+        public static void CreateConfigData<T,P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
                                                                                              where P : BaseConfigData
         {
 			CreateScriptableObject(typeof(T), name, ext, dir);

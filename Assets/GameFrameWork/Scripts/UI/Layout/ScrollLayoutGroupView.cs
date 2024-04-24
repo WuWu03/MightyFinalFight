@@ -455,19 +455,19 @@ namespace GameFrameWork.UI
 
             if (m_ScrollRect == null)
             {
-                Log.LogError(name, "scroll rect is invalid!");
+                Log.LogError(name, "[Scroll Rect] 组件不存在");
                 return;
             }
 
             if (m_ScrollRect.content == null)
             {
-                Log.LogError(name, "scroll rect don't have a content,add it first!");
+                Log.LogError(name, "[Scroll Rect] 组件没有content");
                 return;
             }
 
             if (m_ScrollRect.viewport == null)
             {
-                Log.LogError(name, "scroll rect don't have a viewport,add it first!");
+                Log.LogError(name, "[Scroll Rect] 组件没有viewport");
                 return;
             }
 
@@ -1411,7 +1411,7 @@ namespace GameFrameWork.UI
         {
             if (m_ScrollRect == null)
             {
-                Log.LogError(name, "scroll rect is invalid!");
+                Log.LogError(name, "[Scroll Rect] 组件不存在");
                 return;
             }
 
@@ -1422,7 +1422,7 @@ namespace GameFrameWork.UI
         {
             if (m_ScrollRect == null)
             {
-                Log.LogError(name, "scroll rect is invalid!");
+                Log.LogError(name, "[Scroll Rect] 组件不存在");
                 return;
             }
 

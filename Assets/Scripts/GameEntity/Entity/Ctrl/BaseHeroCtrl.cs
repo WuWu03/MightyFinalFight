@@ -33,7 +33,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < CATCH_ATTACK_TIME))//正在捕捉攻击
+            if (isCatchAttack && (!isCatchAttackComplete || Time.time - m_CatchAttackTimer < ConstField.CatchAttackTime))//正在捕捉攻击
             {
                 return;
             }
@@ -55,7 +55,7 @@ public class BaseHeroCtrl : BaseRoleCtrl
                 return;
             }
 
-            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= CATCH_ATTACK_TIME)
+            if(m_CatchAttackTimer == 0 || Time.time - m_CatchAttackTimer >= ConstField.CatchAttackTime)
             {
                 m_CatchAttackTimer = Time.time;
                 DeploySkill(m_CatchAttackID);
@@ -141,6 +141,4 @@ public class BaseHeroCtrl : BaseRoleCtrl
     private int m_WeaponAttackID;
     private int m_JumpAttackID;
     private float m_CatchAttackTimer = 0f;
-
-    private const float CATCH_ATTACK_TIME = 0.3f;
 }

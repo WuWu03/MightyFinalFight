@@ -18,7 +18,7 @@ namespace GameFrameWork.UI
             {
                 if (root != null)
                 {
-                    Log.LogError("The red point root [" + key + "] is already exist!");
+                    Log.LogError("根节点 [" + key + "] 已经存在 , 请不要重复添加");
                     return;
                 }
 
@@ -29,7 +29,7 @@ namespace GameFrameWork.UI
             {
                 if (root == null)
                 {
-                    Log.LogError("The red point root [" + key + "] is invalid,please add it first");
+                    Log.LogError("根节点  [" + key + "] 不存在 , 请先添加根节点");
                     return;
                 }
 
@@ -76,7 +76,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                Log.LogError("The red point root [" + key + "] is invalid,please add it first");
+                Log.LogError("根节点  [" + key + "] 不存在 , 请先添加根节点");
                 return;
             }
 
@@ -84,7 +84,7 @@ namespace GameFrameWork.UI
 
             if (node == null)
             {
-                Log.LogError("The red point node [" + subKey + "] is invalid,please add it first");
+                Log.LogError("节点 [" + subKey + "] 不存在 , 请先添加对应节点");
                 return;
             }
 
@@ -97,7 +97,7 @@ namespace GameFrameWork.UI
 
             if (root == null)
             {
-                Log.LogError("The red point root [" + key + "] is invalid,please add it first");
+                Log.LogError("根节点  [" + key + "] 不存在 , 请先添加根节点");
                 return;
             }
 

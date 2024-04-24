@@ -19,7 +19,7 @@ namespace GameFrameWork.Resources
 
         public UnityEngine.Object LoadAssetEditor(string assetPath, Type t = null)
         {
-            Log.LogInfo("Start to load asset editor ：", assetPath);
+            Log.LogInfo("开始加载编辑器资源 : ", assetPath);
             return LoadAsset(assetPath, t);
         }
 
@@ -44,14 +44,14 @@ namespace GameFrameWork.Resources
 
         public void UnLoadAssetEditor(string assetPath)
         {
-            Log.LogInfo("Start to unload asset : [<color=#FFFF00>", assetPath, "</color>]", m_DicLoadedAssets.Count, " asset(s) in memory before unloading ");
+            Log.LogInfo("开始卸载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>] , ", "卸载前资源数为 : ",m_DicLoadedAssets.Count);
 
             if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
             {
                 m_DicLoadedAssets.Remove(assetPath);
             }
 
-            Log.LogInfo("Unload asset : [<color=#FFFF00>", assetPath, "</color>] completed", m_DicLoadedAssets.Count, " asset(s) in memory after unloading ");
+            Log.LogInfo("卸载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssets.Count);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GameFrameWork.Resources
 
             if (obj == null)
             {
-                Log.LogInfo("Can't find the asset : ", assetPath);
+                Log.LogInfo("加载失败 , 资源路径不存在 : ", assetPath);
                 return null;
             }
 

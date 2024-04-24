@@ -53,7 +53,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (enemy == null)
         {
-            Log.LogError("create enemy failed sourceId:" + sourceId + ",entityId:" + entityId);
+            Log.LogError("创建 Enemy 失败 , sourceId : " + sourceId + " , entityId : " + entityId);
             return null;
         }
 
@@ -69,7 +69,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (sceneItem == null)
         {
-            Log.LogError("create sceneItem failed id:" + id);
+            Log.LogError("创建 SceneItem 失败 sceneItemId : " + id);
             return null;
         }
 
@@ -85,7 +85,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             if (sceneBuilding == null)
             {
-                Log.LogError("create sceneItem stageId:" + data.Id + ",buildId:" + data.SceneBuildings[i].Id);
+                Log.LogError("创建 SceneItem 失败 , stageId : " + data.Id + " , buildingId : " + data.SceneBuildings[i].Id);
                 continue;
             }
 
@@ -100,7 +100,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
         if (barrel == null)
         {
-            Log.LogError("create barrel failed entityId:" + entityId);
+            Log.LogError("创建 Barrel 失败 , entityId : " + entityId);
             return null;
         }
 

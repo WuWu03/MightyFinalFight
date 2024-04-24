@@ -314,25 +314,25 @@ namespace GameFrameWork.Editor
 
                     if (m_CurrWindowNode != null)
                     {
-                        ShowRightMenu(true);
+                        ShowRightMenu(true, false);
                     }
                     else
                     {
                         m_CurrWindowNode = GetWindowNode(m_RightWindowNode, e.mousePosition);
-                        ShowRightMenu(false);
+                        ShowRightMenu(false, m_CurrWindowNode != null && m_CurrWindowNode.parent == null);
                     }
                 }
             }
         }
 
-        private void ShowRightMenu(bool isFree)
+        private void ShowRightMenu(bool isFree, bool isRoot)
         {
             GenericMenu menu = new GenericMenu();
             menu.AddSeparator("");
 
             if (m_CurrWindowNode == null)
             {
-                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths("增加节点");
+                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths(false, "增加节点");
 
                 for (int i = 0; i < nodePaths.Length; i++)
                 {
@@ -345,23 +345,22 @@ namespace GameFrameWork.Editor
             else
             {
                 menu.AddItem(new GUIContent("更改名称"), false, RightMenuContextCallback, 3);
-                menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
+
+                if (!isRoot)
+                {
+                    menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
+                }
+  
                 if (isFree)
                 {
-                   
                     menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 5);
                 }
                 else
                 {
-                    //if (m_CurrWindowNode.parent == null && !m_CurrWindowNode.isParent)
-                    //{
-                    //  menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
-                    //}
-
-                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, m_CurrWindowNode.parent == null ? 6 : 7);
+                    menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, isRoot ? 6 : 7);
                 }
 
-                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths("替换节点");
+                string[][] nodePaths = BehaviourTreeUtil.GetNodePaths(isRoot, "替换节点");
 
                 for (int i = 0; i < nodePaths.Length; i++)
                 {
@@ -534,7 +533,7 @@ namespace GameFrameWork.Editor
 
         private void SaveConfigGUI()
         {
-            if (GUILayout.Button("保存配置"))
+            if (GUILayout.Button("导出配置"))
             {
                 BehaviourTreeConfig config = new BehaviourTreeConfig();
                 config.datas = new BehaviourTreeData[m_BehaviourTreeWindowConfig.dataList.Count];
@@ -556,7 +555,7 @@ namespace GameFrameWork.Editor
                 jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
                 File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
 
-                ShowNotification(new GUIContent("保存成功"));
+                ShowNotification(new GUIContent("导出成功"));
             }
         }
 

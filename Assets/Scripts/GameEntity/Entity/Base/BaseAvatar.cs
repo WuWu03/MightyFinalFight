@@ -66,7 +66,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError("Animator is invalid!");
+            Log.LogError(name, "[Animator] 组件不存在");
             return;
         }
 
@@ -96,7 +96,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError("Animator is invalid!");
+            Log.LogError(name, "[Animator] 组件不存在");
             return false;
         }
 
@@ -124,7 +124,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError("Animator is invalid!");
+            Log.LogError(name, "[Animator] 组件不存在");
             return;
         }
 

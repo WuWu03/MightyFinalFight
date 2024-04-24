@@ -52,7 +52,7 @@ public class MainPanel : BasePanel
 
     protected override void OnUpdate()
     {
-		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= EnemyHPBarHideTime)
+		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ConstField.EnemyHPBarHideTime)
 		{
 			m_Component.enemyHpBar.gameObject.SetActive(false);
 			m_EnemyHpBarHideTimer = -1;
@@ -192,6 +192,5 @@ public class MainPanel : BasePanel
 
 	private bool m_IsEnemyHpBarAnim = false;
 	private float m_EnemyHpBarHideTimer = -1;
-	private const float EnemyHPBarHideTime = 4f;
 	private MainPanelComponent m_Component = null;
 }

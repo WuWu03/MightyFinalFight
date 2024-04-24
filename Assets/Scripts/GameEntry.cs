@@ -20,7 +20,6 @@ public class GameEntry : GameFrameWorkEntry
         ConfigDataHelper.Init(PathUtil.configDataPath);
 
         SpriteAtlasManager.atlasRequested += AtlasRequested;
-
     }
 
     protected override void OnStartGame()
