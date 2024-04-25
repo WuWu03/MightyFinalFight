@@ -1,10 +1,9 @@
 using GameFrameWork.Serialize;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static SkillConfigData;
 
+[Serializable]
 public class SkillEditorConfig : BaseScriptableObject<SkillEditorConfigData>
 {
 
@@ -32,9 +31,9 @@ public class SkillEditorConfigData : BaseConfigData
     {
         None,
         AnimEvent,
-        SoundEvent,
+        AudioEvent,
         TransformEvent,
-        ForceEvent,
+        PhysicsEvent,
         BulletEvent,
         HitEvent,
         EffectEvent,
@@ -81,7 +80,19 @@ public class SkillEditorConfigData : BaseConfigData
     public class SkillEvent
     {
         public SkillEventType eventType;
-        public Vector2 selectorOffest;//选择器偏移
+
+        //动画事件
+        public string animName;
+        public float animSpeed;
+        public float animPlayTimes;
+
+        //声音事件
+        public string audioClipName;
+        public float audioPlaySpeed;
+        public bool audioPlayLoop;
+        public float audioPlayVolume;
+
+        //物理事件
         public Vector2 addTargetForce;//对目标施加力
         public Vector2 addSelfForce;//对自身施加力
         public Vector2 addTargetVelocity;//目标速度
@@ -92,19 +103,26 @@ public class SkillEditorConfigData : BaseConfigData
         public float selfGravity;//自身重力大小
         public float moveDistance;//施加力后的移动距离
 
+        //位移事件
         public Vector2 targetPosition;//目标位置
         public Vector2 selfPosition;//自身位置
         public Vector2 targetScale;//目标缩放
         public Vector2 selfScale;//自身缩放
 
+
+        //子弹事件
         public Bullet[] bullets;//发射子弹
 
+        //伤害事件
         public bool isSmoon;//是否击昏
         public bool isShakeCamera;//击中敌人是否震屏
         public bool isOnGroundHurt;//是否落地才触发伤害
         public bool isOnGroundEffect;//落地才触发效果
         public bool canBeDefense;//能否被防御
         public bool hitFinish;//攻击到任何敌人就结束技能
+
+        //特效事件
+        //Buff事件
 
         public string args;//各种数值效果的参数 每种类型效果自行解析
     }
@@ -116,7 +134,8 @@ public class SkillEditorConfigData : BaseConfigData
         public float selectorAngle;//选择器角度
         public float selectorRadius;//选择器半径
         public float selectorWidth;//选择器宽
-        public float selectHeight;//选择器高
+        public float selectorHeight;//选择器高
+        public Vector2 selectorOffest;//选择器偏移
 
     }
 
@@ -128,11 +147,11 @@ public class SkillEditorConfigData : BaseConfigData
         public string args;
     }
 
-    public string skillName;
+    public string skillName; 
     public int skillFrameCount;
     public SkillDeployerType deployerType;//释放器类型
-    public Dictionary<int, SkillSelector> dicSkillSelectors = null;
-    public Dictionary<int, List<SkillEvent>> dicSkillEvents = null;
-    public SkillKey Key;
-    public SkillPrevCondition[] SkillPrevConditions;//释放技能的前置条件
+    public SerializableDictionary<int, SkillSelector> dicSkillSelectors = null;
+    public SerializableDictionary<int, SerializableList<SkillEvent>> dicSkillEvents = null;
+    public SkillKey skillKey;
+    public SkillPrevCondition[] skillPrevConditions;//释放技能的前置条件
 }

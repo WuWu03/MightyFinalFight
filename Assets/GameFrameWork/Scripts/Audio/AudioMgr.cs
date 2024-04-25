@@ -32,23 +32,23 @@ namespace GameFrameWork.Audio
             m_SoundStack = new Stack<AudioSoundPlay>();
         }
 
-        public void PlaySound(string path, string name, float volume = 1)
+        public void PlaySE(string path, string name, float volume = 1)
         {
             for (int i = 0; i < m_PlayingList.Count; i++)
             {
-                string soundPath = m_PlayingList[i].path;
-                string soundName = m_PlayingList[i].name;
+                string sePath = m_PlayingList[i].path;
+                string seName = m_PlayingList[i].name;
                 float process = Time.time - m_PlayingList[i].playTime;
-                if (soundPath.Equals(path) && soundName.Equals(name) && process <= 0.05f)
+                if (sePath.Equals(path) && seName.Equals(name) && process <= 0.05f)
                 {
                     return;
                 }
             }
 
-            InnerPlaySound(path, name, volume);
+            InnerPlaySE(path, name, volume);
         }
 
-        public void SetSoundSpeed(float speed)
+        public void SetSEPlaySpeed(float speed)
         {
             if(m_PlayingList != null && m_PlayingList.Count > 0)
             {
@@ -189,7 +189,7 @@ namespace GameFrameWork.Audio
             m_OnBGMFadeCompleteEvent = null;
         }
 
-        private void InnerPlaySound(string path, string name, float volume)
+        private void InnerPlaySE(string path, string name, float volume)
         {
             ResourcesPool.instance.Get<AudioClip>(PathUtil.FormatPath(path, name), OnSoundLoaded, path, name, volume);
         }

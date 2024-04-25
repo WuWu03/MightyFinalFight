@@ -60,7 +60,7 @@ public class RoleSelectPanel : BasePanel
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-			AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelect");
+			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnSelect");
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -106,7 +106,7 @@ public class RoleSelectPanel : BasePanel
         m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
 
         AudioMgr.instance.StopBGM();
-		AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnSelected");
+		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();

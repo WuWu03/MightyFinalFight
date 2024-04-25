@@ -1,7 +1,4 @@
 ﻿using GameFrameWork.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,19 +8,15 @@ namespace SkillNew
     {
         private void OnEnable()
         {
-            SkillEditorHelper.InitConfig();
-            //SkillEditorHelper2.InitConfig();
+            SkillEditorHelper.InitConfig(this);
             m_CurrPage = 0;
             m_SkillGUIs = new SkillGUI[3];
             m_SkillGUIs[0] = new SkillBaseGUI(this);
             m_SkillGUIs[1] = new SkillPrevConditionGUI(this);
-            //m_SkillGUIs[2] = new SkillEffectGUI(this);
 
             m_SkillGUIs[0].UpdateData();
             m_SkillGUIs[1].UpdateData();
             UpdateData();
-
-            //m_SkillGUIs[2].UpdateData();
         }
 
         public void OnDisable()
@@ -49,7 +42,6 @@ namespace SkillNew
                 m_SkillGUIs[m_CurrPage].UpdateData();
                 UpdateData();
             }
-            EditorGUILayout.EndVertical();
 
             if (GUILayout.Button("删除当前项"))
             {
@@ -57,6 +49,8 @@ namespace SkillNew
                 m_SkillGUIs[m_CurrPage].UpdateData();
                 UpdateData();
             }
+
+            EditorGUILayout.EndVertical();
 
             if (!SkillEditorHelper.HasData())
             {
@@ -84,6 +78,7 @@ namespace SkillNew
                 {
                     SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
                     SkillEditorHelper.SetShowNames();
+                    m_CurrType = SkillEditorHelper.currShowType;
                     this.ShowNotification("更改成功");
                 }
                 EditorGUILayout.EndHorizontal();
@@ -99,6 +94,22 @@ namespace SkillNew
                 {
                     SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
                     SkillEditorHelper.SetShowNames();
+                    m_CurrName = SkillEditorHelper.currShowName;
+                    this.ShowNotification("更改成功");
+                }
+
+                EditorGUILayout.EndHorizontal();
+            });
+
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            {
+                EditorGUILayout.BeginHorizontal();
+                bool isModify = m_CurrId != SkillEditorHelper.currConfigData.Id;
+                m_CurrId = EditorGUILayout.IntField("Id", m_CurrId, SkillEditorHelper.GetTextFieldStyle(isModify));
+
+                if (GUILayout.Button("更改", GUILayout.Width(100)))
+                {
+                    SkillEditorHelper.currConfigData.Id = m_CurrId;
                     this.ShowNotification("更改成功");
                 }
 
@@ -131,6 +142,12 @@ namespace SkillNew
 
             m_CurrName = SkillEditorHelper.currShowName;
             m_CurrType = SkillEditorHelper.currShowType;
+            m_CurrId = SkillEditorHelper.currConfigData.Id;
+        }
+
+        private string GetTypeOrNameStr(string str)
+        {
+            return string.IsNullOrEmpty(str) ? null : str;
         }
 
         private int m_CurrPage = 0;
@@ -138,6 +155,7 @@ namespace SkillNew
         private string m_AddName = string.Empty;
         private string m_CurrType = string.Empty;
         private string m_CurrName = string.Empty;
+        private int m_CurrId = -1;
         private SkillGUI[] m_SkillGUIs = null;
 
         private string[] m_TabNames = new string[] { "SkillBaseConfig", "SkillPrevConditionConfig" };

@@ -13,11 +13,134 @@ MonoBehaviour:
   m_Name: SkillEditorConfig
   m_EditorClassIdentifier: 
   Datas:
-  - Id: 0
-    skillName: tt/ff
-    skillFrameCount: 50
+  - Id: 1001001
+    skillName: "ddd/\u672A\u547D\u540D"
+    skillFrameCount: 30
     deployerType: 0
-    Key:
+    dicSkillSelectors:
+      m_ListValuePair: []
+    dicSkillEvents:
+      m_ListValuePair:
+      - Key: 1
+        Value:
+          target:
+          - eventType: 1
+            animName: sdfdff
+            animSpeed: 5
+            animPlayTimes: 5
+            audioClipName: 
+            audioPlaySpeed: 0
+            audioPlayLoop: 0
+            audioPlayVolume: 0
+            addTargetForce: {x: 0, y: 0}
+            addSelfForce: {x: 0, y: 0}
+            addTargetVelocity: {x: 0, y: 0}
+            addSelfVelocity: {x: 0, y: 0}
+            addTargetDrag: 0
+            addSelfDrag: 0
+            targetGravity: 0
+            selfGravity: 0
+            moveDistance: 0
+            targetPosition: {x: 0, y: 0}
+            selfPosition: {x: 0, y: 0}
+            targetScale: {x: 0, y: 0}
+            selfScale: {x: 0, y: 0}
+            bullets: []
+            isSmoon: 0
+            isShakeCamera: 0
+            isOnGroundHurt: 0
+            isOnGroundEffect: 0
+            canBeDefense: 0
+            hitFinish: 0
+            args: 
+          - eventType: 2
+            animName: 
+            animSpeed: 0
+            animPlayTimes: 0
+            audioClipName: 
+            audioPlaySpeed: 1
+            audioPlayLoop: 0
+            audioPlayVolume: 0
+            addTargetForce: {x: 0, y: 0}
+            addSelfForce: {x: 0, y: 0}
+            addTargetVelocity: {x: 0, y: 0}
+            addSelfVelocity: {x: 0, y: 0}
+            addTargetDrag: 0
+            addSelfDrag: 0
+            targetGravity: 0
+            selfGravity: 0
+            moveDistance: 0
+            targetPosition: {x: 0, y: 0}
+            selfPosition: {x: 0, y: 0}
+            targetScale: {x: 0, y: 0}
+            selfScale: {x: 0, y: 0}
+            bullets: []
+            isSmoon: 0
+            isShakeCamera: 0
+            isOnGroundHurt: 0
+            isOnGroundEffect: 0
+            canBeDefense: 0
+            hitFinish: 0
+            args: 
+          - eventType: 3
+            animName: 
+            animSpeed: 0
+            animPlayTimes: 0
+            audioClipName: 
+            audioPlaySpeed: 0
+            audioPlayLoop: 0
+            audioPlayVolume: 0
+            addTargetForce: {x: 0, y: 0}
+            addSelfForce: {x: 0, y: 0}
+            addTargetVelocity: {x: 0, y: 0}
+            addSelfVelocity: {x: 0, y: 0}
+            addTargetDrag: 0
+            addSelfDrag: 0
+            targetGravity: 0
+            selfGravity: 0
+            moveDistance: 0
+            targetPosition: {x: 0, y: 0}
+            selfPosition: {x: 0, y: 0}
+            targetScale: {x: 0, y: 0}
+            selfScale: {x: 0, y: 0}
+            bullets: []
+            isSmoon: 0
+            isShakeCamera: 0
+            isOnGroundHurt: 0
+            isOnGroundEffect: 0
+            canBeDefense: 0
+            hitFinish: 0
+            args: 
+          - eventType: 0
+            animName: 
+            animSpeed: 0
+            animPlayTimes: 0
+            audioClipName: 
+            audioPlaySpeed: 0
+            audioPlayLoop: 0
+            audioPlayVolume: 0
+            addTargetForce: {x: 0, y: 0}
+            addSelfForce: {x: 0, y: 0}
+            addTargetVelocity: {x: 0, y: 0}
+            addSelfVelocity: {x: 0, y: 0}
+            addTargetDrag: 0
+            addSelfDrag: 0
+            targetGravity: 0
+            selfGravity: 0
+            moveDistance: 0
+            targetPosition: {x: 0, y: 0}
+            selfPosition: {x: 0, y: 0}
+            targetScale: {x: 0, y: 0}
+            selfScale: {x: 0, y: 0}
+            bullets: []
+            isSmoon: 0
+            isShakeCamera: 0
+            isOnGroundHurt: 0
+            isOnGroundEffect: 0
+            canBeDefense: 0
+            hitFinish: 0
+            args: 
+    skillKey:
       keys: 
       addTrigger: 0
-    SkillPrevConditions: []
+    skillPrevConditions: []

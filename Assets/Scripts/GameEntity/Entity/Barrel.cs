@@ -83,7 +83,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     public void OnHurtMsg(HurtStateData data)
     {
         m_EntityAttribute.SubHealth(data.attackValue);
-        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/OnHit");
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnHit");
 
         if (isDead)
         {
@@ -140,7 +140,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             {
                 SetTrigger(AnimName.Move);
                 m_FsmMachine.Start<BarrelMove>();
-                AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Barrel");
+                AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/Barrel");
             }
             else
             {

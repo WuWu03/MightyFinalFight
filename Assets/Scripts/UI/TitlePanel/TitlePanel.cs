@@ -104,7 +104,7 @@ public class TitlePanel : BasePanel
 		sequence.Append(m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
 		sequence.InsertCallback(10.2f, () =>
 		{
-			AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/BicycleKick");
+			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/BicycleKick");
 		});
 		sequence.AppendCallback(() =>
 		{

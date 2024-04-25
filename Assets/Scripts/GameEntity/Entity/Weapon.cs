@@ -29,7 +29,7 @@ public class Weapon : BaseSceneItem
     {
         m_Owner = owner;
         gameObject.SetActive(false);
-        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/Bonus");
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/Bonus");
     }
 
     protected override void OnUpdate()

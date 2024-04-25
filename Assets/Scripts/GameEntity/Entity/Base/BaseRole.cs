@@ -380,7 +380,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         SetStateData<RoleJump>(jumpData);
         ChangeState<RoleJump>();
-        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultJump);
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.DefaultJump);
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
@@ -511,7 +511,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!hurtStatedata.isNotPlayHurtSound)
         {
             string hurtSound = string.IsNullOrEmpty(hurtStatedata.hurtSound) ? SoundName.DefaultHurt : hurtStatedata.hurtSound;
-            AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, hurtSound);
+            AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, hurtSound);
         }
 
         m_EntityAttribute.SubHealth(hurtStatedata.attackValue);
@@ -598,7 +598,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (!m_EntityAttribute.IsDie())
             {
                 ChangeDefaultState();
-                AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, SoundName.DefaultDrop);
+                AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.DefaultDrop);
             }
             else
             {

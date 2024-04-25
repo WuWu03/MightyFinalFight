@@ -429,12 +429,12 @@ public static class MapEditorHelper
     }
     public static void Export()
     {
-        if (!File.Exists(EditorPathUtil.configDataFullPath + "StageData.asset"))
+        if (!File.Exists(EditorPathUtil.configDataFullPath + "StageConfigData.asset"))
         {
-            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset", EditorPathUtil.configDataPath);
+            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfigData", ".asset", EditorPathUtil.configDataPath);
         }
 
-        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageData.asset");
+        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageConfigData.asset");
 
         if(stageConfig.Datas == null)
         {

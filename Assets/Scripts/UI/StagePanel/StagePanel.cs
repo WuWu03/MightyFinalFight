@@ -54,7 +54,7 @@ public class StagePanel : BasePanel
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
         m_Role.SetActive(true);
 
-        AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
 		Timer.Register(roleSelectConfig.showTime, OnTimer);
     }
 

@@ -171,7 +171,7 @@ public class MainPanel : BasePanel
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.txtExp.text = StringUtil.Format(true, currExpStr, maxExpStr);
+		m_Component.txtExp.text = PathUtil.FormatPath(currExpStr, maxExpStr);
 	}
 
 	public void SetPlayerLevel()

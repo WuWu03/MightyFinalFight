@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using UnityEngine;
 
 namespace GameFrameWork.Utilities
 {
     public static class StringUtil
     {
-
         public static string Format(params object[] args)
         {
             return Format(false, args);
@@ -42,7 +38,17 @@ namespace GameFrameWork.Utilities
 
                 if (isPath && i < args.Length - 1)
                 {
-                    m_StringBuilder.Append("/");
+                    bool conditon = args[i] != null;
+
+                    if (args[i] is string)
+                    {
+                        conditon = !string.IsNullOrEmpty(args[i] as string);
+                    }
+
+                    if(conditon)
+                    {
+                        m_StringBuilder.Append("/");
+                    }
                 }
             }
 

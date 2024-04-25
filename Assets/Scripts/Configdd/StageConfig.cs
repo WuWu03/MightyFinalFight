@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using GameFrameWork.Serialize;
+using System;
 using UnityEngine;
-using GameFrameWork.Serialize;
 
 public class StageConfig : BaseScriptableObject<StageConfigData>
 {

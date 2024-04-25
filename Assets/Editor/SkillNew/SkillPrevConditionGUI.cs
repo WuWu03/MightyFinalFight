@@ -22,13 +22,13 @@ namespace SkillNew
         {
             base.OnGUI();
 
-            if (SkillEditorHelper.currConfigData.SkillPrevConditions != null)
+            if (SkillEditorHelper.currConfigData.skillPrevConditions != null)
             {
                 EditorGUILayout.Space(10f);
                 m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
                 int removeIndex = -1;
 
-                for (int i = 0; i < SkillEditorHelper.currConfigData.SkillPrevConditions.Length; i++)
+                for (int i = 0; i < SkillEditorHelper.currConfigData.skillPrevConditions.Length; i++)
                 {
                     GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
                     {
@@ -44,16 +44,16 @@ namespace SkillNew
 
                         EditorGUILayout.EndHorizontal();
 
-                        SkillEditorConfigData.SkillPrevConditionType prevConditionType = SkillEditorHelper.currConfigData.SkillPrevConditions[i].prevConditionType;
+                        SkillEditorConfigData.SkillPrevConditionType prevConditionType = SkillEditorHelper.currConfigData.skillPrevConditions[i].prevConditionType;
                         SkillEditorConfigData.SkillPrevConditionType conditionType = (SkillEditorConfigData.SkillPrevConditionType)EditorGUILayout.EnumPopup("ConditionType", prevConditionType);
-                        SkillEditorHelper.currConfigData.SkillPrevConditions[i].prevConditionType = conditionType;
-                        SkillEditorHelper.currConfigData.SkillPrevConditions[i].isRevert = EditorGUILayout.Toggle("IsRevert", SkillEditorHelper.currConfigData.SkillPrevConditions[i].isRevert);
+                        SkillEditorHelper.currConfigData.skillPrevConditions[i].prevConditionType = conditionType;
+                        SkillEditorHelper.currConfigData.skillPrevConditions[i].isRevert = EditorGUILayout.Toggle("IsRevert", SkillEditorHelper.currConfigData.skillPrevConditions[i].isRevert);
 
                         EditorGUILayout.BeginHorizontal();
                         m_ListPrevCondition[i].args = EditorGUILayout.TextField("Args", m_ListPrevCondition[i].args);
                         if (GUILayout.Button("更改", GUILayout.Width(100)))
                         {
-                            SkillEditorHelper.currConfigData.SkillPrevConditions[i].args = m_ListPrevCondition[i].args;
+                            SkillEditorHelper.currConfigData.skillPrevConditions[i].args = m_ListPrevCondition[i].args;
                             m_EditorWindow.ShowNotification("更改成功");
                         }
                         EditorGUILayout.EndHorizontal();
@@ -65,7 +65,7 @@ namespace SkillNew
                 if (removeIndex >= 0)
                 {
                     m_ListPrevCondition.RemoveAt(removeIndex);
-                    SkillEditorHelper.currConfigData.SkillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.currConfigData.SkillPrevConditions, removeIndex);
+                    SkillEditorHelper.currConfigData.skillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.currConfigData.skillPrevConditions, removeIndex);
                 }
 
                 EditorGUILayout.EndScrollView();
@@ -76,22 +76,22 @@ namespace SkillNew
             if (GUILayout.Button("增加前置条件"))
             {
                 m_ListPrevCondition.Add(new SkillEditorConfigData.SkillPrevCondition());
-                SkillEditorHelper.currConfigData.SkillPrevConditions = CommonUtil.AddElement(SkillEditorHelper.currConfigData.SkillPrevConditions, new SkillEditorConfigData.SkillPrevCondition());
+                SkillEditorHelper.currConfigData.skillPrevConditions = CommonUtil.AddElement(SkillEditorHelper.currConfigData.skillPrevConditions, new SkillEditorConfigData.SkillPrevCondition());
             }
         }
 
         private void CloneConditions()
         {
-            if (SkillEditorHelper.currConfigData == null || SkillEditorHelper.currConfigData.SkillPrevConditions == null)
+            if (SkillEditorHelper.currConfigData == null || SkillEditorHelper.currConfigData.skillPrevConditions == null)
             {
                 return;
             }
 
             m_ListPrevCondition.Clear();
 
-            for (int i = 0; i < SkillEditorHelper.currConfigData.SkillPrevConditions.Length; i++)
+            for (int i = 0; i < SkillEditorHelper.currConfigData.skillPrevConditions.Length; i++)
             {
-                m_ListPrevCondition.Add(Clone(SkillEditorHelper.currConfigData.SkillPrevConditions[i]));
+                m_ListPrevCondition.Add(Clone(SkillEditorHelper.currConfigData.skillPrevConditions[i]));
             }
         }
 

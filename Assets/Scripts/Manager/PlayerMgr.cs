@@ -227,7 +227,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
             mainPanel.SetPlayerLevel();
-            AudioMgr.instance.PlaySound(ResDefine.AudioClipPath, "Sound/LevelUp");
+            AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/LevelUp");
         }
 
         mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);

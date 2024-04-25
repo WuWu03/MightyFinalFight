@@ -1,5 +1,4 @@
-using GameFrameWork.Editor;
-using System.Collections;
+using GameFrameWork.Serialize;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -111,7 +110,7 @@ namespace SkillNew
             }
         }
 
-        public static void InitConfig()
+        public static void InitConfig(EditorWindow window)
         {
             string fileName = "SkillEditorConfig";
             string ext = ".asset";
@@ -127,6 +126,13 @@ namespace SkillNew
                 m_SkillEditorConfig = AssetDatabase.LoadAssetAtPath<SkillEditorConfig>("Assets/Editor/Config/" + fileName + ext);
             }
 
+            m_DicSkillEventGUI = new Dictionary<SkillEditorConfigData.SkillEventType, SkillEventGUI>()
+            {
+                {SkillEditorConfigData.SkillEventType.AnimEvent,new SkillAnimEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.AudioEvent,new SkillAudioEventGUI(window) },
+            };
+
+            m_CurrSelectIndex = 0;
             SetShowNames();
         }
 
@@ -143,8 +149,7 @@ namespace SkillNew
             m_IndexLabelStyle.fontSize = 18;
             m_IndexLabelStyle.fontStyle = FontStyle.Bold;
             m_IndexLabelStyle.fixedHeight = 20;
-            m_CurrSelectIndex = 0;
-
+ 
             m_SelectButtonOnStyle = new GUIStyle("flow node 1");
             m_SelectButtonOnStyle.stretchWidth = true;
             m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
@@ -179,12 +184,11 @@ namespace SkillNew
         {
             SkillEditorConfigData skillConfigData = new SkillEditorConfigData();
             skillConfigData.skillName = name;
-            skillConfigData.Key = new SkillEditorConfigData.SkillKey();
-            skillConfigData.Key.keys = new GameFrameWork.Input.KeyType[0];
-            skillConfigData.dicSkillSelectors = new Dictionary<int, SkillEditorConfigData.SkillSelector>();
-            skillConfigData.dicSkillEvents = new Dictionary<int, List<SkillEditorConfigData.SkillEvent>>();
-            skillConfigData.SkillPrevConditions = new SkillEditorConfigData.SkillPrevCondition[0];
-            //skillConfigData.SkillEffects = new SkillEditorConfigData.SkillEffect[0];
+            skillConfigData.skillKey = new SkillEditorConfigData.SkillKey();
+            skillConfigData.skillKey.keys = new GameFrameWork.Input.KeyType[0];
+            skillConfigData.dicSkillSelectors = new SerializableDictionary<int, SkillEditorConfigData.SkillSelector>();
+            skillConfigData.dicSkillEvents = new SerializableDictionary<int, SerializableList<SkillEditorConfigData.SkillEvent>>();
+            skillConfigData.skillPrevConditions = new SkillEditorConfigData.SkillPrevCondition[0];
             m_SkillEditorConfig.AddData(skillConfigData);
             m_CurrSelectIndex = m_SkillEditorConfig.Datas.Count - 1;
             SetShowNames();
@@ -226,13 +230,30 @@ namespace SkillNew
 
             for (int i = 0; i < m_SkillEditorConfig.Datas.Count; i++)
             {
-                string name = string.IsNullOrEmpty(m_SkillEditorConfig.Datas[i].skillName) ? "Î´ÃüÃû" : m_SkillEditorConfig.Datas[i].skillName;
-                temp.Add(name);
+                bool hasName = !string.IsNullOrEmpty(m_SkillEditorConfig.Datas[i].skillName);
+
+                if (!hasName)
+                {
+                    m_SkillEditorConfig.Datas[i].skillName = "Î´ÃüÃû";
+                }
+
+                temp.Add(m_SkillEditorConfig.Datas[i].skillName);
             }
 
             m_ShowNames = temp.ToArray();
         }
 
+        public static SkillEventGUI GetSKillGUI(SkillEditorConfigData.SkillEventType skillEventType)
+        {
+            if (m_DicSkillEventGUI.TryGetValue(skillEventType, out SkillEventGUI skillGUI))
+            {
+                return skillGUI;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public static void ShowNotification(this EditorWindow window, string content)
         {
@@ -246,6 +267,7 @@ namespace SkillNew
 
         private static string[] m_ShowNames = null;
         private static int m_CurrSelectIndex = -1;
+        private static Dictionary<SkillEditorConfigData.SkillEventType, SkillEventGUI> m_DicSkillEventGUI = null;
         private static SkillEditorConfig m_SkillEditorConfig = null;
         private static GUIStyle m_IndexLabelStyle = null;
         private static GUIStyle m_SelectButtonOnStyle = null;
