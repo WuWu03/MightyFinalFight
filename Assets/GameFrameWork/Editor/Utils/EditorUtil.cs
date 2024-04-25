@@ -69,9 +69,44 @@ namespace GameFrameWork.Editor
 			return list.ToArray();
 		}
 
-        public static void CreateConfigData<T,P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P>
-                                                                                             where P : BaseConfigData
-        {
+		public static string GetNodePath(Transform current, params string[] endParttern)
+		{
+			return GetNodePath(current, string.Empty, endParttern);
+		}
+
+		private static string GetNodePath(Transform current, string path,  params string[] endParttern)
+		{
+			if (current == null)
+			{
+				return path;
+			}
+
+            if (string.IsNullOrEmpty(path))
+            {
+                path = current.name;
+            }
+            else
+            {
+                path = current.name + "/" + path;
+            }
+
+            if (current.parent != null && endParttern != null)
+			{
+				for (int i = 0; i < endParttern.Length; i++)
+				{
+					if (current.parent.name.Contains(endParttern[i]))
+					{
+						return path;
+					}
+				}
+			}
+
+
+			return GetNodePath(current.parent, path, endParttern);
+		}
+
+        public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
+		{
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
 
@@ -135,13 +170,12 @@ namespace GameFrameWork.Editor
 
 		public static void RegisterUndo(UnityEngine.Object obj, string name)
 		{
-#if UNITY_EDITOR
 			UnityEditor.Undo.RecordObject(obj, name);
-			if (obj)
+
+			if (obj != null)
 			{
 				UnityEditor.EditorUtility.SetDirty(obj);
 			}
-#endif
 		}
 
 		public static SerializedProperty DrawProperty(string label, SerializedObject serializedObject, string property, params GUILayoutOption[] options)

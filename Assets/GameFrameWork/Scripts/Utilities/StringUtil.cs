@@ -9,6 +9,7 @@ namespace GameFrameWork.Utilities
 {
     public static class StringUtil
     {
+
         public static string Format(params object[] args)
         {
             return Format(false, args);

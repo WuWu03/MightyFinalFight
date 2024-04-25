@@ -27,7 +27,6 @@ namespace GameFrameWork.Editor
 			}
 		}
 
-		static bool isCreateEntry = false;
 		private static void CreateEntry()
 		{
 			PlayerPrefs.SetInt("create_entry_script", 1);
@@ -155,7 +154,7 @@ namespace GameFrameWork.Editor
 			FontMaker.CreateMyFontSprite();
 		}
 
-		[MenuItem("Assets/GameFrameWork/CreateSpriteAtlas", false, 1)]
+		[MenuItem("Assets/GameFrameWork/CreateUISpriteAtlas", false, 1)]
 		public static void CreateSpriteAtlas()
 		{
 			SpriteAtlasPacker window = EditorWindow.GetWindow<SpriteAtlasPacker>();
@@ -182,5 +181,56 @@ namespace GameFrameWork.Editor
 				AssetDatabase.Refresh();
 			}
 		}
-	}
+
+
+        [MenuItem("Assets/GameFrameWork/CopyPath", false, 3)]
+        private static void CopyAssetsPath()
+        {
+            if (Selection.activeObject == null)
+            {
+                UnityEditor.EditorUtility.DisplayDialog("提示", "没有选中任何物体", "确定");
+                return;
+            }
+
+            CopyTextEditor(AssetDatabase.GetAssetPath(Selection.activeObject));
+        }
+
+        [MenuItem("GameObject/CopyPath", false, 0)]
+        private static void CopyGameObjectPath()
+        {
+            if (Selection.activeGameObject == null)
+            {
+                UnityEditor.EditorUtility.DisplayDialog("提示", "没有选中任何物体", "确定");
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < Selection.gameObjects.Length; i++)
+			{
+				string nodePath = EditorUtil.GetNodePath(Selection.gameObjects[i].transform);
+
+				sb.Append("\"");
+				sb.Append(nodePath);
+				sb.Append("\"");
+
+				if (i < Selection.gameObjects.Length - 1)
+				{
+					sb.Append("\n");
+				}
+			}
+
+            CopyTextEditor(sb.ToString());
+        }
+
+        public static void CopyTextEditor(string content)
+        {
+			Debug.Log("复制===============");
+            TextEditor editor = new TextEditor();
+            editor.text = content;
+            editor.SelectAll();
+            editor.Copy();
+            UnityEditor.EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
+        }
+    }
 }

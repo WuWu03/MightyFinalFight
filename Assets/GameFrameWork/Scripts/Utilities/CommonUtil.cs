@@ -29,6 +29,8 @@ namespace GameFrameWork.Utilities
             return null;
         }
 
+
+
         public static T FindChildComponent<T>(GameObject parent, string strName) where T : Component
         {
             Transform[] allChildren = parent.GetComponentsInChildren<Transform>(true);

@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
-using UnityEditor;
-using UnityEditor.SceneManagement;
-using GameFrameWork;
+﻿using GameFrameWork;
 using GameFrameWork.Editor;
+using UnityEditor;
 using UnityEditor.Build.Reporting;
+using UnityEditor.SceneManagement;
+using UnityEngine;
 
 public class EditorMgr : MonoBehaviour
 {
@@ -108,7 +105,6 @@ public class EditorMgr : MonoBehaviour
     {
         GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
     }
-
 
     [MenuItem("Assets/Config/CreateTaskData")]
     public static void CreateTaskData()

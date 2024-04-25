@@ -19,7 +19,7 @@ namespace GameFrameWork.Editor
         public const string behaviourTreeWindowDataExtend = ".json";
         public const string behaviourTreeWindowDataFullPath = ediorConfigPath + behaviourTreeWindowDataName + behaviourTreeWindowDataExtend;
 
-        public const string behaviourTreeConfigDataName = "{0}";
+        public const string behaviourTreeConfigDataName = "BehaviourTreeConfigData";
         public const string behaviourTreeConfigDataExtend = ".json";
         public static string behaviourTreeConfigDataFullPath = appDataPath + "ConfigData/" + behaviourTreeConfigDataName + behaviourTreeConfigDataExtend;
 
