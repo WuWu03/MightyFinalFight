@@ -94,22 +94,6 @@ namespace SkillNew
             }
         }
 
-        public static GUIStyle textFiledNormalStyle
-        {
-            get
-            {
-                return m_TextFiledNormalStyle;
-            }
-        }
-
-        public static GUIStyle textFieldModifyStyle
-        {
-            get
-            {
-                return m_TextFiledModifyStyle;
-            }
-        }
-
         public static void InitConfig(EditorWindow window)
         {
             string fileName = "SkillEditorConfig";
@@ -130,6 +114,8 @@ namespace SkillNew
             {
                 {SkillEditorConfigData.SkillEventType.AnimEvent,new SkillAnimEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.AudioEvent,new SkillAudioEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.TargetTransformEvent,new SkillTransformEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.SelfTransformEvent,new SkillTransformEventGUI(window) },
             };
 
             m_CurrSelectIndex = 0;
@@ -161,23 +147,6 @@ namespace SkillNew
             m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
             m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
             m_SelectButtonStyle.fixedHeight = 15f;
-
-            m_TextFiledNormalStyle = new GUIStyle(EditorStyles.textField);
-            m_TextFiledModifyStyle = new GUIStyle(EditorStyles.textField);
-            m_TextFiledModifyStyle.normal.textColor = Color.red;
-            m_TextFiledModifyStyle.active.textColor = Color.red;
-            m_TextFiledModifyStyle.hover.textColor = Color.red;
-            m_TextFiledModifyStyle.focused.textColor = Color.red;
-        }
-
-        public static GUIStyle GetTextFieldStyle(bool isModify = false)
-        {
-            if (isModify)
-            {
-                return m_TextFiledModifyStyle;
-            }
-
-            return m_TextFiledNormalStyle;
         }
 
         public static void AddData(string name)
@@ -272,7 +241,5 @@ namespace SkillNew
         private static GUIStyle m_IndexLabelStyle = null;
         private static GUIStyle m_SelectButtonOnStyle = null;
         private static GUIStyle m_SelectButtonStyle = null;
-        private static GUIStyle m_TextFiledNormalStyle = null;
-        private static GUIStyle m_TextFiledModifyStyle = null;
     }
 }

@@ -1,6 +1,6 @@
 using GameFrameWork.Serialize;
 using System;
-using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 
 [Serializable]
@@ -32,7 +32,8 @@ public class SkillEditorConfigData : BaseConfigData
         None,
         AnimEvent,
         AudioEvent,
-        TransformEvent,
+        TargetTransformEvent,
+        SelfTransformEvent,
         PhysicsEvent,
         BulletEvent,
         HitEvent,
@@ -60,26 +61,9 @@ public class SkillEditorConfigData : BaseConfigData
     }
 
     [Serializable]
-    public class Bullet
-    {
-        public string bulletName;
-        public string assetName;
-        public string normalAnim;
-        public string hitAnim;
-        public float normalAnimSpeed;
-        public float hitAnimSpeed;
-        public Vector2 dir;
-        public Vector2 pos;
-        public Vector2 velocity;
-        public float hitRange;
-        public float drag;
-        public bool isPenatrate;//是否穿透
-    }
-
-    [Serializable]
     public class SkillEvent
     {
-        public SkillEventType eventType;
+        public SkillEventType skillEventType;
 
         //动画事件
         public string animName;
@@ -92,38 +76,77 @@ public class SkillEditorConfigData : BaseConfigData
         public bool audioPlayLoop;
         public float audioPlayVolume;
 
-        //物理事件
-        public Vector2 addTargetForce;//对目标施加力
-        public Vector2 addSelfForce;//对自身施加力
-        public Vector2 addTargetVelocity;//目标速度
-        public Vector2 addSelfVelocity;//自身速度
-        public float addTargetDrag;//目标空气阻力
-        public float addSelfDrag;//自身空气阻力
-        public float targetGravity;//目标重力大小
-        public float selfGravity;//自身重力大小
-        public float moveDistance;//施加力后的移动距离
+        [Serializable]//位移事件
+        public class AnimInfo
+        {
+            public float duration;
+            public float delay;
+            public DG.Tweening.Ease ease;
+        }
 
-        //位移事件
-        public Vector2 targetPosition;//目标位置
-        public Vector2 selfPosition;//自身位置
-        public Vector2 targetScale;//目标缩放
-        public Vector2 selfScale;//自身缩放
+        [Serializable]//位移事件
+        public class TransformEventInfo
+        {
+            public Vector2 position;//目标位置变化 
+            public Vector3 rotation;//目标旋转变化
+            public Vector3 scale;//目标缩放变化
+            public bool isPositionBasedOnSelf;//位置变化是否在自身基础上变化
+            public bool isRotationBasedOnSelf;//旋转变化是否在自身基础上变化
+            public bool isPositionAnim;//动画补间
+            public AnimInfo positionAnimInfo = new AnimInfo();
+            public bool isRotationAnim;//动画补间
+            public AnimInfo rotationAnimInfo = new AnimInfo();
+            public DG.Tweening.RotateMode rotateMode;
+            public bool isScaleAnim;//动画补间
+            public AnimInfo scaleAnimInfo = new AnimInfo();
+        }
 
+        public TransformEventInfo targetTransformEventInfo = null;
+        public TransformEventInfo selfTransformEventInfo = null;
 
-        //子弹事件
-        public Bullet[] bullets;//发射子弹
+        [Serializable]//
+        public class PhysicsEventInfo
+        {
+            public Vector2 force;
+            public Vector2 velocity;
+            public Vector2 drag;
+            public float gravity;
+            public float distanceLimit;
+        }
 
-        //伤害事件
-        public bool isSmoon;//是否击昏
-        public bool isShakeCamera;//击中敌人是否震屏
-        public bool isOnGroundHurt;//是否落地才触发伤害
-        public bool isOnGroundEffect;//落地才触发效果
-        public bool canBeDefense;//能否被防御
-        public bool hitFinish;//攻击到任何敌人就结束技能
+        public PhysicsEventInfo targetPhysicsEventInfo = null;
+        public PhysicsEventInfo selfPhysicsEventInfo = null;
+
+        ////子弹事件
+        //[Serializable]
+        //public class Bullet
+        //{
+        //    public string bulletName;
+        //    public string assetName;
+        //    public string normalAnim;
+        //    public string hitAnim;
+        //    public float normalAnimSpeed;
+        //    public float hitAnimSpeed;
+        //    public Vector2 dir;
+        //    public Vector2 pos;
+        //    public Vector2 velocity;
+        //    public float hitRange;
+        //    public float drag;
+        //    public bool isPenatrate;//是否穿透
+        //}
+
+        //public Bullet[] bullets;//发射子弹
+
+        ////伤害事件
+        //public bool isSmoon;//是否击昏
+        //public bool isShakeCamera;//击中敌人是否震屏
+        //public bool isOnGroundHurt;//是否落地才触发伤害
+        //public bool isOnGroundEffect;//落地才触发效果
+        //public bool canBeDefense;//能否被防御
+        //public bool hitFinish;//攻击到任何敌人就结束技能
 
         //特效事件
         //Buff事件
-
         public string args;//各种数值效果的参数 每种类型效果自行解析
     }
 

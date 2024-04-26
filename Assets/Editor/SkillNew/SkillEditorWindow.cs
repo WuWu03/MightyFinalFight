@@ -1,4 +1,5 @@
 ﻿using GameFrameWork.Utilities;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +23,30 @@ namespace SkillNew
         public void OnDisable()
         {
             SkillEditorHelper.SaveConfig();
+        }
+
+        public void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight,bool showMsg = true)
+        {
+            EditorGUILayout.BeginHorizontal();
+            bool isModify = modify.Invoke();
+            Color oriColor = GUI.color;
+            if (isModify)
+            {
+                GUI.color = Color.red;
+            }
+            draw?.Invoke();
+            GUI.color = oriColor;
+            if (GUILayout.Button("更改", GUILayout.Width(100), GUILayout.Height(changeBtnHeight)))
+            {
+                change?.Invoke();
+
+                if (showMsg)
+                {
+                    this.ShowNotification("更改成功");
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
         }
 
         private void OnGUI()
@@ -70,50 +95,32 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                EditorGUILayout.BeginHorizontal();
-                bool isModify = m_CurrType != SkillEditorHelper.currShowType;
-                m_CurrType = EditorGUILayout.TextField("类别", m_CurrType, SkillEditorHelper.GetTextFieldStyle(isModify));
-
-                if (GUILayout.Button("更改", GUILayout.Width(100)))
-                {
-                    SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
-                    SkillEditorHelper.SetShowNames();
-                    m_CurrType = SkillEditorHelper.currShowType;
-                    this.ShowNotification("更改成功");
-                }
-                EditorGUILayout.EndHorizontal();
+                DrawField(() => { return m_CurrType != SkillEditorHelper.currShowType; },
+                    () => { m_CurrType = EditorGUILayout.TextField("类别", m_CurrType); },
+                    () => {
+                        SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                        SkillEditorHelper.SetShowNames();
+                        m_CurrType = SkillEditorHelper.currShowType;
+                    }, 20);
             });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                EditorGUILayout.BeginHorizontal();
-                bool isModify = m_CurrName != SkillEditorHelper.currShowName;
-                m_CurrName = EditorGUILayout.TextField("名称", m_CurrName, SkillEditorHelper.GetTextFieldStyle(isModify));
-               
-                if (GUILayout.Button("更改", GUILayout.Width(100)))
-                {
-                    SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
-                    SkillEditorHelper.SetShowNames();
-                    m_CurrName = SkillEditorHelper.currShowName;
-                    this.ShowNotification("更改成功");
-                }
-
-                EditorGUILayout.EndHorizontal();
+                DrawField(() => { return m_CurrName != SkillEditorHelper.currShowName; },
+                    () => { m_CurrName = EditorGUILayout.TextField("名称", m_CurrName); },
+                    () => {
+                        SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                        SkillEditorHelper.SetShowNames();
+                        m_CurrName = SkillEditorHelper.currShowName;
+                    }, 20);
             });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                EditorGUILayout.BeginHorizontal();
-                bool isModify = m_CurrId != SkillEditorHelper.currConfigData.Id;
-                m_CurrId = EditorGUILayout.IntField("Id", m_CurrId, SkillEditorHelper.GetTextFieldStyle(isModify));
+                DrawField(() => { return m_CurrId != SkillEditorHelper.currConfigData.Id; },
+                    () => { m_CurrId = EditorGUILayout.IntField("Id", m_CurrId); },
+                    () => {SkillEditorHelper.currConfigData.Id = m_CurrId;}, 20);
 
-                if (GUILayout.Button("更改", GUILayout.Width(100)))
-                {
-                    SkillEditorHelper.currConfigData.Id = m_CurrId;
-                    this.ShowNotification("更改成功");
-                }
-
-                EditorGUILayout.EndHorizontal();
             });
 
             EditorGUILayout.BeginHorizontal();

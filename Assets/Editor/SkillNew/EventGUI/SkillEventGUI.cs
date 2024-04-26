@@ -14,6 +14,11 @@ namespace SkillNew
             OnUpdateSkillEvent();
         }
 
+        public virtual void ResetEvent()
+        {
+
+        }
+
         protected abstract void OnUpdateSkillEvent();
 
         protected SkillEditorConfigData.SkillEvent m_CurrEvent = null;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,11 @@ namespace SkillNew
         public void Draw()
         {
             OnGUI();
+        }
+
+        protected void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight, bool showMsg = true)
+        {
+            (m_EditorWindow as SkillEditorWindow).DrawField(modify, draw, change, changeBtnHeight, showMsg);
         }
 
         protected virtual void OnUpdateData() { }

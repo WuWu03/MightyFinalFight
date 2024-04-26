@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class SerializableList<T>
 {
-    T this[int index]
+    public T this[int index]
     {
         get
         {

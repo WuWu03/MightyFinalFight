@@ -12,19 +12,21 @@ namespace SkillNew
         public SkillBaseGUI(EditorWindow window) : base(window)
         {
             m_ListKey = new List<GameFrameWork.Input.KeyType>();
-            m_ListSillEventGUI = new List<SkillGUI>();
             m_ListDeleteSkillEvent = new List<int>();
+            m_ListSkillEventType = new List<SkillEventType>();
         }
 
         protected override void OnUpdateData()
         {
-            if(!SkillEditorHelper.HasData())
+            if (!SkillEditorHelper.HasData())
             {
                 return;
             }
 
             m_SkillFrameCount = SkillEditorHelper.currConfigData.skillFrameCount;
             m_CurrFrame = Mathf.Min(1, m_SkillFrameCount);
+
+            m_ListSkillEvent = null;
 
             if (m_CurrFrame > 0)
             {
@@ -39,17 +41,22 @@ namespace SkillNew
 
                 if (m_ListSkillEvent != null && m_ListSkillEvent.Count > 0)
                 {
-                    m_ListSillEventGUI.Clear();
+                    m_ListSkillEventType.Clear();
 
                     for (int i = 0; i < m_ListSkillEvent.Count; i++)
                     {
-                        SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].eventType);
+                        m_ListSkillEventType.Add(m_ListSkillEvent[i].skillEventType);
+                        SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].skillEventType);
 
-                        if(gui != null)
+                        if (gui != null)
                         {
                             gui.UpdateSkillEvent(m_ListSkillEvent[i]);
                         }
                     }
+                }
+                else
+                {
+
                 }
             }
 
@@ -63,34 +70,27 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                EditorGUILayout.BeginHorizontal();
-                bool isModify = SkillEditorHelper.currConfigData.skillFrameCount != m_SkillFrameCount;
-                m_SkillFrameCount = EditorGUILayout.IntField("技能帧数", m_SkillFrameCount, SkillEditorHelper.GetTextFieldStyle(isModify));
+                DrawField(() => { return m_SkillFrameCount != SkillEditorHelper.currConfigData.skillFrameCount; },
+                    () => { m_SkillFrameCount = EditorGUILayout.IntField("技能帧数", m_SkillFrameCount); },
+                    () => {
+                        SkillEditorHelper.currConfigData.skillFrameCount = m_SkillFrameCount;
+                        SkillEditorHelper.SetShowNames();
+                        int[] deletes = SkillEditorHelper.currConfigData.dicSkillEvents.Keys.Where(x => x > m_SkillFrameCount).ToArray();
 
-                if (GUILayout.Button("更改", GUILayout.Width(100)))
-                {
-                    SkillEditorHelper.currConfigData.skillFrameCount = m_SkillFrameCount;
-                    SkillEditorHelper.SetShowNames();
-                    m_EditorWindow.ShowNotification("更改成功");
+                        foreach (int delete in deletes)
+                        {
+                            SkillEditorHelper.currConfigData.dicSkillEvents.Remove(delete);
+                        }
 
-                    int[] deletes = SkillEditorHelper.currConfigData.dicSkillEvents.Keys.Where(x => x > m_SkillFrameCount).ToArray();
-
-                    foreach (int delete in deletes)
-                    {
-                        SkillEditorHelper.currConfigData.dicSkillEvents.Remove(delete);
-                    }
-
-                    if (SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
-                    {
-                        m_ListSkillEvent = list.ToList();
-                    }
-                    else
-                    {
-                        m_ListSkillEvent = null;
-                    }
-                }
-
-                EditorGUILayout.EndHorizontal();
+                        if (SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
+                        {
+                            m_ListSkillEvent = list.ToList();
+                        }
+                        else
+                        {
+                            m_ListSkillEvent = null;
+                        }
+                    }, 20);
             });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
@@ -111,7 +111,7 @@ namespace SkillNew
                     {
                         for (int i = 0; i < m_ListSkillEvent.Count; i++)
                         {
-                            SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].eventType);
+                            SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].skillEventType);
 
                             if (gui != null)
                             {
@@ -126,108 +126,124 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                EditorGUILayout.BeginVertical();
                 EditorGUILayout.LabelField("技能事件列表");
-                if (m_ListSkillEvent != null)
-                {
-                    m_ListDeleteSkillEvent.Clear();
-
-                    for (int i = 0; i < m_ListSkillEvent.Count; i++)
-                    {
-                        GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
-                        {
-                            EditorGUILayout.BeginVertical();
-
-                            EditorGUILayout.BeginHorizontal();
-                            EditorGUILayout.LabelField((i + 1).ToString());
-                            if (GUILayout.Button("x", GUILayout.Width(20)))
-                            {
-                                if(UnityEditor.EditorUtility.DisplayDialog("提示", "确定删除该事件？", "确定","取消"))
-                                {
-                                    m_ListDeleteSkillEvent.Add(i);
-                                }
-                            }
-                            EditorGUILayout.EndHorizontal();
-
-                            Enum eventTypeValue = EditorGUILayout.EnumPopup("事件类型", m_ListSkillEvent[i].eventType);
-
-                            SkillEditorConfigData.SkillEventType skillEventType = (SkillEditorConfigData.SkillEventType)eventTypeValue;
-                            SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].eventType);
-
-                            if (skillEventType != m_ListSkillEvent[i].eventType)
-                            {
-                                bool hasSameEvent = false;
-
-                                for (int j = 0; j < m_ListSkillEvent.Count; j++)
-                                {
-                                    if (m_ListSkillEvent[j].eventType != SkillEditorConfigData.SkillEventType.None &&
-                                        skillEventType != SkillEditorConfigData.SkillEventType.None &&
-                                        m_ListSkillEvent[j].eventType == skillEventType)
-                                    {
-                                        hasSameEvent = true;
-                                        break;
-                                    }
-                                }
-
-                                if (hasSameEvent)
-                                {
-                                    this.m_EditorWindow.ShowNotification("每种事件类型在同一帧只能出现一次");
-                                }
-                                else
-                                {
-                                    m_ListSkillEvent[i].eventType = skillEventType;
-
-                                    gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].eventType);
-
-                                    if (gui != null)
-                                    {
-                                        gui.UpdateSkillEvent(m_ListSkillEvent[i]);
-                                    }
-                                }
-                            }
-
-                            if (gui != null)
-                            {
-                                gui.Draw();
-                            }
-
-                            EditorGUILayout.EndVertical();
-                        });
-                    }
-
-                    if (m_ListDeleteSkillEvent.Count > 0)
-                    {
-                        for (int i = 0; i < m_ListDeleteSkillEvent.Count; i++)
-                        {
-                            m_ListSkillEvent.RemoveAt(m_ListDeleteSkillEvent[i]);
-                        }
-                    }
-                }
-
-
-                if (GUILayout.Button("增加技能事件"))
-                {
-                    if (m_CurrFrame > 0)
-                    {
-                        if (!SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
-                        {
-                            list = new SerializableList<SkillEditorConfigData.SkillEvent>();
-                            m_ListSkillEvent = list.ToList();
-                            SkillEditorHelper.currConfigData.dicSkillEvents.Add(m_CurrFrame, list);
-                        }
-
-                        m_ListSkillEvent.Add(new SkillEditorConfigData.SkillEvent());
-                    }
-                    else
-                    {
-                        m_EditorWindow.ShowNotification("帧索引异常");
-                    }
-                }
-
-                EditorGUILayout.EndVertical();
             });
 
-      
+            EditorGUILayout.BeginVertical();
+
+            if (m_ListSkillEvent != null)
+            {
+                m_ListDeleteSkillEvent.Clear();
+
+                for (int i = 0; i < m_ListSkillEvent.Count; i++)
+                {
+                    GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                    {
+                        EditorGUILayout.BeginVertical();
+
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField((i + 1).ToString());
+                        if (GUILayout.Button("x", GUILayout.Width(20)))
+                        {
+                            if (UnityEditor.EditorUtility.DisplayDialog("提示", "确定删除该事件？", "确定", "取消"))
+                            {
+                                m_ListDeleteSkillEvent.Add(i);
+                            }
+                        }
+                        EditorGUILayout.EndHorizontal();
+
+                        SkillEventGUI gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEvent[i].skillEventType);
+
+                        DrawField(() => { return m_ListSkillEventType[i] != m_ListSkillEvent[i].skillEventType; },
+                              () => { m_ListSkillEventType[i] = (SkillEditorConfigData.SkillEventType)EditorGUILayout.EnumPopup("事件类型", m_ListSkillEventType[i]); },
+                              () =>
+                              {
+                                  if (m_ListSkillEventType[i] != m_ListSkillEvent[i].skillEventType)
+                                  {
+                                      bool hasSameEvent = false;
+
+                                      for (int j = 0; j < m_ListSkillEvent.Count; j++)
+                                      {
+                                          if (m_ListSkillEvent[j].skillEventType != SkillEditorConfigData.SkillEventType.None &&
+                                              m_ListSkillEventType[i] != SkillEditorConfigData.SkillEventType.None &&
+                                              m_ListSkillEvent[j].skillEventType == m_ListSkillEventType[i])
+                                          {
+                                              hasSameEvent = true;
+                                              break;
+                                          }
+                                      }
+
+                                      if (hasSameEvent)
+                                      {
+                                          this.m_EditorWindow.ShowNotification("每种事件类型在同一帧只能出现一次");
+                                      }
+                                      else
+                                      {
+                                          m_ListSkillEvent[i].skillEventType = m_ListSkillEventType[i];
+
+                                          if (gui != null)
+                                          {
+                                              gui.ResetEvent();
+                                          }
+
+                                          gui = SkillEditorHelper.GetSKillGUI(m_ListSkillEventType[i]);
+
+                                          if (gui != null)
+                                          {
+                                              gui.UpdateSkillEvent(m_ListSkillEvent[i]);
+                                          }
+
+                                          this.m_EditorWindow.ShowNotification("更改成功");
+                                      }
+                                  }
+                              }, 20, false);
+    
+                        if (gui != null)
+                        {
+                            gui.Draw();
+                        }
+
+                        EditorGUILayout.EndVertical();
+                    });
+                }
+
+                if (m_ListDeleteSkillEvent.Count > 0)
+                {
+                    for (int i = 0; i < m_ListDeleteSkillEvent.Count; i++)
+                    {
+                        m_ListSkillEvent.RemoveAt(m_ListDeleteSkillEvent[i]);
+                        m_ListSkillEventType.RemoveAt(m_ListDeleteSkillEvent[i]);
+                    }
+
+                    if (m_ListSkillEvent.Count < 1)
+                    {
+                        SkillEditorHelper.currConfigData.dicSkillEvents.Remove(m_CurrFrame);
+                        m_ListSkillEvent = null;
+                    }
+                }
+            }
+
+            if (GUILayout.Button("增加技能事件"))
+            {
+                if (m_CurrFrame > 0)
+                {
+                    if (!SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
+                    {
+                        list = new SerializableList<SkillEditorConfigData.SkillEvent>();
+                        m_ListSkillEvent = list.ToList();
+                        SkillEditorHelper.currConfigData.dicSkillEvents.Add(m_CurrFrame, list);
+                    }
+
+                    m_ListSkillEvent.Add(new SkillEditorConfigData.SkillEvent());
+                    m_ListSkillEventType.Add(SkillEventType.None);
+                }
+                else
+                {
+                    m_EditorWindow.ShowNotification("帧索引异常");
+                }
+            }
+
+            EditorGUILayout.EndVertical();
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
@@ -273,8 +289,8 @@ namespace SkillNew
         }
 
         private List<SkillEditorConfigData.SkillEvent> m_ListSkillEvent = null;
+        private List<SkillEventType> m_ListSkillEventType = null;
         private List<int> m_ListDeleteSkillEvent = null;
-        private List<SkillGUI> m_ListSillEventGUI = null;
         private int m_SkillFrameCount = 0;
         private int m_CurrFrame = 0;
         private List<GameFrameWork.Input.KeyType> m_ListKey = null;

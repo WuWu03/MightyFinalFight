@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using static SkillEditorConfigData;
 
 namespace SkillNew
 {
@@ -28,40 +29,30 @@ namespace SkillNew
 
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.BeginHorizontal();
-            bool isModify = m_CurrAnimName != m_CurrEvent.animName;
-            m_CurrAnimName = EditorGUILayout.TextField("动画名称", m_CurrAnimName, SkillEditorHelper.GetTextFieldStyle(isModify));
+            DrawField(() => { return m_CurrAnimName != m_CurrEvent.animName; },
+                () => { m_CurrAnimName = EditorGUILayout.TextField("动画名称", m_CurrAnimName); },
+                () => { m_CurrEvent.animName = m_CurrAnimName; }, 20);
 
-            if (GUILayout.Button("更改", GUILayout.Width(100)))
-            {
-                m_CurrEvent.animName = m_CurrAnimName;
-                this.m_EditorWindow.ShowNotification("更改成功");
-            }
-            EditorGUILayout.EndHorizontal();
+            DrawField(() => { return m_CurrAnimSpeed != m_CurrEvent.animSpeed; },
+                () => { m_CurrAnimSpeed = EditorGUILayout.FloatField("动画速度", m_CurrAnimSpeed); },
+                () => { m_CurrEvent.animSpeed = m_CurrAnimSpeed; }, 20);
 
-            EditorGUILayout.BeginHorizontal();
-            isModify = m_CurrAnimSpeed != m_CurrEvent.animSpeed;
-            m_CurrAnimSpeed = EditorGUILayout.FloatField("动画速度", m_CurrAnimSpeed, SkillEditorHelper.GetTextFieldStyle(isModify));
-
-            if (GUILayout.Button("更改", GUILayout.Width(100)))
-            {
-                m_CurrEvent.animSpeed = m_CurrAnimSpeed;
-                this.m_EditorWindow.ShowNotification("更改成功");
-            }
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            isModify = m_CurrAnimPlayTimes != m_CurrEvent.animPlayTimes;
-            m_CurrAnimPlayTimes = EditorGUILayout.FloatField("播放次数", m_CurrAnimPlayTimes, SkillEditorHelper.GetTextFieldStyle(isModify));
-
-            if (GUILayout.Button("更改", GUILayout.Width(100)))
-            {
-                m_CurrEvent.animPlayTimes = m_CurrAnimPlayTimes;
-                this.m_EditorWindow.ShowNotification("更改成功");
-            }
-            EditorGUILayout.EndHorizontal();
+            DrawField(() => { return m_CurrAnimPlayTimes != m_CurrEvent.animPlayTimes; },
+                () => { m_CurrAnimPlayTimes = EditorGUILayout.FloatField("播放次数", m_CurrAnimPlayTimes); },
+                () => { m_CurrEvent.animPlayTimes = m_CurrAnimPlayTimes; }, 20);
 
             EditorGUILayout.EndVertical();
+        }
+
+        public override void ResetEvent()
+        {
+            base.ResetEvent();
+            m_CurrAnimName = string.Empty;
+            m_CurrAnimSpeed = 0f;
+            m_CurrAnimPlayTimes = 0f;
+            m_CurrEvent.animName = string.Empty;
+            m_CurrEvent.animSpeed = 0f;
+            m_CurrEvent.animPlayTimes = 0f;
         }
 
         private string m_CurrAnimName;
