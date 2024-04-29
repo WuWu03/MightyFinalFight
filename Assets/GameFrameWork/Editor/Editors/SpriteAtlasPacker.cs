@@ -174,7 +174,6 @@ namespace GameFrameWork.Editor
             EditorGUILayout.EndScrollView();
         }
 
-
         private void UpdateSpriteStatus()
         {
             m_ListSpriteStatus.Clear();

@@ -87,7 +87,6 @@ public class RoleSelectPanel : BasePanel
 		item.txtDesc.text = roleSelectConfigData.desc;
 		item.txtName.text = roleSelectConfigData.name;
 		string iconName = roleSelectConfigData.headIcon.Substring(roleSelectConfigData.headIcon.IndexOf("/") + 1);
-
 		item.btnRoleIcon.image.SetSprite("Common", iconName);
 	}
 

@@ -1,11 +1,8 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
-using GameFrameWork.Resources;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
-using System;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class GameEntry : GameFrameWorkEntry
 {
@@ -18,8 +15,6 @@ public class GameEntry : GameFrameWorkEntry
         PlayerMgr.Init(manager);
         StaticConfig.InitConfig();
         ConfigDataHelper.Init(PathUtil.configDataPath);
-
-        SpriteAtlasManager.atlasRequested += AtlasRequested;
     }
 
     protected override void OnStartGame()
@@ -36,14 +31,5 @@ public class GameEntry : GameFrameWorkEntry
         TaskMgr.instance.ShutDown();
         StageMgr.instance.ShutDown();
         SceneEntityMgr.instance.ShutDown();
-    }
-
-    private void AtlasRequested(string tag, Action<SpriteAtlas> action)
-    {
-        string atlasPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), tag);
-        ResourcesMgr.instance.LoadAssetAsync(atlasPath, (string assetPath, UnityEngine.Object obj, object[] args) =>
-        {
-            action(obj as SpriteAtlas);
-        });
     }
 }

@@ -128,6 +128,11 @@ namespace GameFrameWork.Resources
         /// </summary>
         public void LoadAssetAsync(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
         {
+            if (assetPath.Contains("UIAtlas/Common"))
+            {
+                Debug.Log("加载公共图集======================");
+            }
+
             if (t == null)
             {
                 t = typeof(Object);
@@ -155,15 +160,14 @@ namespace GameFrameWork.Resources
             }
 #endif
             string assetBundleName = GetAssetBundleName(assetPath);
-            Log.LogInfo("开始卸载资源 : [", assetBundleName, "] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
+            Log.LogInfo("开始卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
             UnloadAssetBundle(assetBundleName, isThorough);
-            Log.LogInfo("卸载资源 : [", assetBundleName, "] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
+            Log.LogInfo("卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
         }
 
         /// <summary>
         /// 同步加载
         /// </summary>
-
         private Object Load(string assetPath, string assetName, Type t = null)
         {
             string assetBundleName = GetAssetBundleName(assetPath);
@@ -244,7 +248,7 @@ namespace GameFrameWork.Resources
         private void OnLoadAsset(string assetBundleName)
         {
             string assetBunldePath = GetAssetBundlePath(assetBundleName);
-            Log.LogInfo("开始同步加载资源 ：", assetBunldePath);
+            Log.LogInfo("开始同步加载资源 ：[<color=#FFFF00>", assetBunldePath, "</color>]");
 
             AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBunldePath);
 
@@ -262,7 +266,7 @@ namespace GameFrameWork.Resources
             if (assetBundleInfo == null)
             {
                 string assetBundlePath = GetAssetBundlePath(assetBundleName);
-                Log.LogInfo("开始异步加载资源 ：", assetBundlePath);
+                Log.LogInfo("开始异步加载资源 ：<color=#FFFF00>", assetBundlePath, "</color>]");
                 AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
 
                 while (!createRequest.isDone)
@@ -291,14 +295,20 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    assetBundleInfo.assetBundle.LoadAssetAsync(list[i]);
+                    AssetBundleRequest request = assetBundleInfo.assetBundle.LoadAssetAsync(list[i].assetName, list[i].assetType);
+
+                    while (!request.isDone)
+                    {
+                        yield return null;
+                    }
+
+                    list[i].Call(request.asset);
                     assetBundleInfo.referencedCount++;
                 }
             }
 
             m_DicLoadRequests.Remove(assetBundleName);
         }
-
 
         private AssetBundleInfo GetLoadedAssetBundle(string assetBundleName)
         {
@@ -323,7 +333,6 @@ namespace GameFrameWork.Resources
 
             return m_Manifest.GetAllDependencies(assetBundleName);
         }
-
 
         private void UnloadAssetBundle(string assetBundleName, bool isThorough)
         {
@@ -405,7 +414,8 @@ namespace GameFrameWork.Resources
 
             for (int i = 0; i < list.Count; i++)
             {
-                UnloadAsset(list[i], true);
+                m_DicLoadedAssetBundles[list[i]].referencedCount = 0;
+                UnloadAsset(list[i]);
             }
 
             list.Clear();
