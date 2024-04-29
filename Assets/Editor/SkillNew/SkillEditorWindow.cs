@@ -11,8 +11,8 @@ namespace SkillNew
         {
             SkillEditorHelper.InitConfig(this);
             m_CurrPage = 0;
-            m_SkillGUIs = new SkillGUI[3];
-            m_SkillGUIs[0] = new SkillBaseGUI(this);
+            m_SkillGUIs = new SkillBaseGUI[3];
+            m_SkillGUIs[0] = new SkillInfoGUI(this);
             m_SkillGUIs[1] = new SkillPrevConditionGUI(this);
 
             m_SkillGUIs[0].UpdateData();
@@ -163,7 +163,7 @@ namespace SkillNew
         private string m_CurrType = string.Empty;
         private string m_CurrName = string.Empty;
         private int m_CurrId = -1;
-        private SkillGUI[] m_SkillGUIs = null;
+        private SkillBaseGUI[] m_SkillGUIs = null;
 
         private string[] m_TabNames = new string[] { "SkillBaseConfig", "SkillPrevConditionConfig" };
     }

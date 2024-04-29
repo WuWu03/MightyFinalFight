@@ -1,6 +1,4 @@
-using NUnit.Framework.Interfaces;
 using UnityEditor;
-using UnityEngine;
 using static SkillEditorConfigData.SkillEvent;
 
 namespace SkillNew
@@ -15,8 +13,8 @@ namespace SkillNew
 
         protected override void OnUpdateSkillEvent()
         {
-            TransformEventInfo transformInfo = null;
-            TransformEventInfo eventTransformInfo = null;
+            TransformEventInfo currTransformEventInfo = null;
+            TransformEventInfo transformEventInfo = null;
 
             if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
             {
@@ -25,8 +23,8 @@ namespace SkillNew
                     m_CurrEvent.targetTransformEventInfo = new TransformEventInfo();
                 }
 
-                transformInfo = m_TargetTransformInfo;
-                eventTransformInfo = m_CurrEvent.targetTransformEventInfo;
+                currTransformEventInfo = m_TargetTransformInfo;
+                transformEventInfo = m_CurrEvent.targetTransformEventInfo;
             }
             else if(m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
             {
@@ -35,34 +33,34 @@ namespace SkillNew
                     m_CurrEvent.selfTransformEventInfo = new TransformEventInfo();
                 }
 
-                transformInfo = m_SelfTransformInfo;
-                eventTransformInfo = m_CurrEvent.selfTransformEventInfo;
+                currTransformEventInfo = m_SelfTransformInfo;
+                transformEventInfo = m_CurrEvent.selfTransformEventInfo;
             }
 
-            transformInfo.position = eventTransformInfo.position;
-            transformInfo.rotation = eventTransformInfo.rotation;
-            transformInfo.scale = eventTransformInfo.scale;
-            transformInfo.isPositionBasedOnSelf = eventTransformInfo.isPositionBasedOnSelf;
-            transformInfo.isRotationBasedOnSelf = eventTransformInfo.isRotationBasedOnSelf;
+            currTransformEventInfo.position = transformEventInfo.position;
+            currTransformEventInfo.rotation = transformEventInfo.rotation;
+            currTransformEventInfo.scale = transformEventInfo.scale;
+            currTransformEventInfo.isPositionBasedOnSelf = transformEventInfo.isPositionBasedOnSelf;
+            currTransformEventInfo.isRotationBasedOnSelf = transformEventInfo.isRotationBasedOnSelf;
 
-            transformInfo.isPositionAnim = eventTransformInfo.isPositionAnim;
-            transformInfo.positionAnimInfo.duration = eventTransformInfo.positionAnimInfo.duration;
-            transformInfo.positionAnimInfo.delay = eventTransformInfo.positionAnimInfo.delay;
-            transformInfo.positionAnimInfo.ease = eventTransformInfo.positionAnimInfo.ease;
+            currTransformEventInfo.isPositionAnim = transformEventInfo.isPositionAnim;
+            currTransformEventInfo.positionAnimInfo.duration = transformEventInfo.positionAnimInfo.duration;
+            currTransformEventInfo.positionAnimInfo.delay = transformEventInfo.positionAnimInfo.delay;
+            currTransformEventInfo.positionAnimInfo.ease = transformEventInfo.positionAnimInfo.ease;
 
-            transformInfo.isRotationAnim = eventTransformInfo.isRotationAnim;
-            transformInfo.rotationAnimInfo.duration = eventTransformInfo.rotationAnimInfo.duration;
-            transformInfo.rotationAnimInfo.delay = eventTransformInfo.rotationAnimInfo.delay;
-            transformInfo.rotationAnimInfo.ease = eventTransformInfo.rotationAnimInfo.ease;
-            transformInfo.rotateMode = eventTransformInfo.rotateMode;
+            currTransformEventInfo.isRotationAnim = transformEventInfo.isRotationAnim;
+            currTransformEventInfo.rotationAnimInfo.duration = transformEventInfo.rotationAnimInfo.duration;
+            currTransformEventInfo.rotationAnimInfo.delay = transformEventInfo.rotationAnimInfo.delay;
+            currTransformEventInfo.rotationAnimInfo.ease = transformEventInfo.rotationAnimInfo.ease;
+            currTransformEventInfo.rotateMode = transformEventInfo.rotateMode;
 
-            transformInfo.isScaleAnim = eventTransformInfo.isScaleAnim;
-            transformInfo.scaleAnimInfo.duration = eventTransformInfo.scaleAnimInfo.duration;
-            transformInfo.scaleAnimInfo.delay = eventTransformInfo.scaleAnimInfo.delay;
-            transformInfo.scaleAnimInfo.ease = eventTransformInfo.scaleAnimInfo.ease;
+            currTransformEventInfo.isScaleAnim = transformEventInfo.isScaleAnim;
+            currTransformEventInfo.scaleAnimInfo.duration = transformEventInfo.scaleAnimInfo.duration;
+            currTransformEventInfo.scaleAnimInfo.delay = transformEventInfo.scaleAnimInfo.delay;
+            currTransformEventInfo.scaleAnimInfo.ease = transformEventInfo.scaleAnimInfo.ease;
         }
 
-        public override void ResetEvent()
+        protected override void OnResetEvent()
         {
             base.ResetEvent();
 
@@ -80,98 +78,93 @@ namespace SkillNew
         {
             base.OnGUI();
 
-            if (m_CurrEvent == null)
-            {
-                return;
-            }
-
-            TransformEventInfo transformInfo = null;
-            TransformEventInfo eventTransformInfo = null;
+            TransformEventInfo currTransformInfo = null;
+            TransformEventInfo transformEventInfo = null;
 
             if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
             {
-                transformInfo = m_TargetTransformInfo;
-                eventTransformInfo = m_CurrEvent.targetTransformEventInfo;
+                currTransformInfo = m_TargetTransformInfo;
+                transformEventInfo = m_CurrEvent.targetTransformEventInfo;
             }
             else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
             {
-                transformInfo = m_SelfTransformInfo;
-                eventTransformInfo = m_CurrEvent.selfTransformEventInfo;
+                currTransformInfo = m_SelfTransformInfo;
+                transformEventInfo = m_CurrEvent.selfTransformEventInfo;
             }
 
-            if (transformInfo == null || eventTransformInfo == null)
+            if (currTransformInfo == null || transformEventInfo == null)
             {
                 return;
             }
 
             EditorGUILayout.BeginVertical();
 
-            DrawField(() => { return transformInfo.position != eventTransformInfo.position; },
-                      () => { transformInfo.position = EditorGUILayout.Vector2Field("目标位置", transformInfo.position); },
-                      () => { eventTransformInfo.position = transformInfo.position; }, 40);
+            DrawField(() => { return currTransformInfo.position != transformEventInfo.position; },
+                      () => { currTransformInfo.position = EditorGUILayout.Vector2Field("目标位置", currTransformInfo.position); },
+                      () => { transformEventInfo.position = currTransformInfo.position; }, 40);
 
-            DrawField(() => { return transformInfo.rotation != eventTransformInfo.rotation; },
-                      () => { transformInfo.rotation = EditorGUILayout.Vector3Field("目标旋转", transformInfo.rotation); },
-                      () => { eventTransformInfo.rotation = transformInfo.rotation; }, 40);
+            DrawField(() => { return currTransformInfo.rotation != transformEventInfo.rotation; },
+                      () => { currTransformInfo.rotation = EditorGUILayout.Vector3Field("目标旋转", currTransformInfo.rotation); },
+                      () => { transformEventInfo.rotation = currTransformInfo.rotation; }, 40);
 
-            DrawField(() => { return transformInfo.scale != eventTransformInfo.scale; },
-                      () => { transformInfo.scale = EditorGUILayout.Vector3Field("目标缩放", transformInfo.scale); },
-                      () => { eventTransformInfo.scale = transformInfo.scale; }, 40);
+            DrawField(() => { return currTransformInfo.scale != transformEventInfo.scale; },
+                      () => { currTransformInfo.scale = EditorGUILayout.Vector3Field("目标缩放", currTransformInfo.scale); },
+                      () => { transformEventInfo.scale = currTransformInfo.scale; }, 40);
 
-            DrawField(() => { return transformInfo.isPositionBasedOnSelf != eventTransformInfo.isPositionBasedOnSelf; },
-                      () => { transformInfo.isPositionBasedOnSelf = EditorGUILayout.Toggle("基于自身位置", transformInfo.isPositionBasedOnSelf); },
-                      () => { eventTransformInfo.isPositionBasedOnSelf = transformInfo.isPositionBasedOnSelf; }, 20);
+            DrawField(() => { return currTransformInfo.isPositionBasedOnSelf != transformEventInfo.isPositionBasedOnSelf; },
+                      () => { currTransformInfo.isPositionBasedOnSelf = EditorGUILayout.Toggle("基于自身位置", currTransformInfo.isPositionBasedOnSelf); },
+                      () => { transformEventInfo.isPositionBasedOnSelf = currTransformInfo.isPositionBasedOnSelf; }, 20);
 
-            DrawField(() => { return transformInfo.isRotationBasedOnSelf != eventTransformInfo.isRotationBasedOnSelf; },
-                      () => { transformInfo.isRotationBasedOnSelf = EditorGUILayout.Toggle("基于自身旋转", transformInfo.isRotationBasedOnSelf); },
-                      () => { eventTransformInfo.isRotationBasedOnSelf = transformInfo.isRotationBasedOnSelf; }, 20);
+            DrawField(() => { return currTransformInfo.isRotationBasedOnSelf != transformEventInfo.isRotationBasedOnSelf; },
+                      () => { currTransformInfo.isRotationBasedOnSelf = EditorGUILayout.Toggle("基于自身旋转", currTransformInfo.isRotationBasedOnSelf); },
+                      () => { transformEventInfo.isRotationBasedOnSelf = currTransformInfo.isRotationBasedOnSelf; }, 20);
 
-            DrawAnimInfo(transformInfo, eventTransformInfo, 1);
-            DrawAnimInfo(transformInfo, eventTransformInfo, 2);
-            DrawAnimInfo(transformInfo, eventTransformInfo, 3);
+            DrawAnimInfo(currTransformInfo, transformEventInfo, 1);
+            DrawAnimInfo(currTransformInfo, transformEventInfo, 2);
+            DrawAnimInfo(currTransformInfo, transformEventInfo, 3);
 
             EditorGUILayout.EndVertical();
         }
 
-        private void DrawAnimInfo(TransformEventInfo transformInfo, TransformEventInfo eventTransformInfo,int type)
+        private void DrawAnimInfo(TransformEventInfo currTransformEventInfo, TransformEventInfo transformEventInfo, int type)
         {
             bool condition = false;
             bool eventCondition = false;
             AnimInfo animInfo = null;
             AnimInfo eventAnimInfo = null;
 
-            if(type == 1)
+            if (type == 1)
             {
-                animInfo = transformInfo.positionAnimInfo;
-                eventAnimInfo = eventTransformInfo.positionAnimInfo;
-                condition = transformInfo.isPositionAnim;
-                eventCondition = eventTransformInfo.isPositionAnim;
+                animInfo = currTransformEventInfo.positionAnimInfo;
+                eventAnimInfo = transformEventInfo.positionAnimInfo;
+                condition = currTransformEventInfo.isPositionAnim;
+                eventCondition = transformEventInfo.isPositionAnim;
 
-                DrawField(() => { return transformInfo.isPositionAnim != eventTransformInfo.isPositionAnim; },
-                     () => { transformInfo.isPositionAnim = EditorGUILayout.Toggle("启用坐标动画补间", transformInfo.isPositionAnim); },
-                     () => { eventTransformInfo.isPositionAnim = transformInfo.isPositionAnim; }, 20);
+                DrawField(() => { return currTransformEventInfo.isPositionAnim != transformEventInfo.isPositionAnim; },
+                     () => { currTransformEventInfo.isPositionAnim = EditorGUILayout.Toggle("启用坐标动画补间", currTransformEventInfo.isPositionAnim); },
+                     () => { transformEventInfo.isPositionAnim = currTransformEventInfo.isPositionAnim; }, 20);
             }
-            else if(type == 2)
+            else if (type == 2)
             {
-                animInfo = transformInfo.rotationAnimInfo;
-                eventAnimInfo = eventTransformInfo.rotationAnimInfo;
-                condition = transformInfo.isRotationAnim;
-                eventCondition = eventTransformInfo.isRotationAnim;
+                animInfo = currTransformEventInfo.rotationAnimInfo;
+                eventAnimInfo = transformEventInfo.rotationAnimInfo;
+                condition = currTransformEventInfo.isRotationAnim;
+                eventCondition = transformEventInfo.isRotationAnim;
 
-                DrawField(() => { return transformInfo.isRotationAnim != eventTransformInfo.isRotationAnim; },
-                     () => { transformInfo.isRotationAnim = EditorGUILayout.Toggle("启用旋转动画补间", transformInfo.isRotationAnim); },
-                     () => { eventTransformInfo.isRotationAnim = transformInfo.isRotationAnim; }, 20);
+                DrawField(() => { return currTransformEventInfo.isRotationAnim != transformEventInfo.isRotationAnim; },
+                     () => { currTransformEventInfo.isRotationAnim = EditorGUILayout.Toggle("启用旋转动画补间", currTransformEventInfo.isRotationAnim); },
+                     () => { transformEventInfo.isRotationAnim = currTransformEventInfo.isRotationAnim; }, 20);
             }
-            else if(type == 3)
+            else if (type == 3)
             {
-                animInfo = transformInfo.scaleAnimInfo;
-                eventAnimInfo = eventTransformInfo.scaleAnimInfo;
-                condition = transformInfo.isScaleAnim;
-                eventCondition = eventTransformInfo.isScaleAnim;
+                animInfo = currTransformEventInfo.scaleAnimInfo;
+                eventAnimInfo = transformEventInfo.scaleAnimInfo;
+                condition = currTransformEventInfo.isScaleAnim;
+                eventCondition = transformEventInfo.isScaleAnim;
 
-                DrawField(() => { return transformInfo.isScaleAnim != eventTransformInfo.isScaleAnim; },
-                     () => { transformInfo.isScaleAnim = EditorGUILayout.Toggle("启用缩放动画补间", transformInfo.isScaleAnim); },
-                     () => { eventTransformInfo.isScaleAnim = transformInfo.isScaleAnim; }, 20);
+                DrawField(() => { return currTransformEventInfo.isScaleAnim != transformEventInfo.isScaleAnim; },
+                     () => { currTransformEventInfo.isScaleAnim = EditorGUILayout.Toggle("启用缩放动画补间", currTransformEventInfo.isScaleAnim); },
+                     () => { transformEventInfo.isScaleAnim = currTransformEventInfo.isScaleAnim; }, 20);
             }
 
             if (eventCondition)
@@ -183,7 +176,7 @@ namespace SkillNew
                        () => { animInfo.duration = EditorGUILayout.FloatField("动画时长", animInfo.duration); },
                        () => { eventAnimInfo.duration = animInfo.duration; }, 20);
 
-                    DrawField(() => { return animInfo.delay != eventTransformInfo.positionAnimInfo.delay; },
+                    DrawField(() => { return animInfo.delay != transformEventInfo.positionAnimInfo.delay; },
                        () => { animInfo.delay = EditorGUILayout.FloatField("动画延迟", animInfo.delay); },
                        () => { eventAnimInfo.delay = animInfo.delay; }, 20);
 
@@ -193,9 +186,9 @@ namespace SkillNew
 
                     if (type == 2)
                     {
-                        DrawField(() => { return transformInfo.rotateMode != eventTransformInfo.rotateMode; },
-                         () => { transformInfo.rotateMode = (DG.Tweening.RotateMode)EditorGUILayout.EnumPopup("动画曲线", transformInfo.rotateMode); },
-                         () => { eventTransformInfo.rotateMode = transformInfo.rotateMode; }, 20);
+                        DrawField(() => { return currTransformEventInfo.rotateMode != transformEventInfo.rotateMode; },
+                         () => { currTransformEventInfo.rotateMode = (DG.Tweening.RotateMode)EditorGUILayout.EnumPopup("动画曲线", currTransformEventInfo.rotateMode); },
+                         () => { transformEventInfo.rotateMode = currTransformEventInfo.rotateMode; }, 20);
                     }
                     EditorGUILayout.EndVertical();
                 });

@@ -10,6 +10,7 @@ using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using GameFrameWork.Pool;
 
 public class StagePanel : BasePanel
 {
@@ -33,7 +34,7 @@ public class StagePanel : BasePanel
         RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
 		GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
-		ResourcesPool.instance.Get<GameObject>(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
+		GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
 		{
@@ -72,8 +73,8 @@ public class StagePanel : BasePanel
 	protected override void OnClose()
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
-		ResourcesPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
+		RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
+		GameObjectPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
 		m_Role = null;
 	}
 

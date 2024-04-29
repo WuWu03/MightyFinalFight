@@ -30,7 +30,7 @@ namespace GameFrameWork
             InputMgr.Init(m_Manager);
             ResourcesMgr.Init(m_Manager);
             BehaviourTreeMgr.Init(PathUtil.behaviourTreeConfigDataPath);
-            PoolMgr.Init(m_Manager);
+            GameObjectPool.Init(m_Manager);
             EntityMgr.Init(m_Manager);
             FsmMgr.Init(m_Manager);
             CameraMgr.Init(m_Manager);
@@ -48,21 +48,24 @@ namespace GameFrameWork
 
         private void OnApplicationQuit()
         {
+            OnExit();
+            EntityMgr.instance.ShutDown();
             UIMgr.instance.ShutDown();
             RedPointMgr.instance.ShutDown();
-            InputMgr.instance.ShutDown();
-            ResourcesMgr.instance.ShutDown();
-            ResourcesPool.instance.ShutDown();
-            EntityMgr.instance.ShutDown();
-            FsmMgr.instance.ShutDown();
+            InputMgr.instance.ShutDown();   
             CameraMgr.instance.ShutDown();
             AudioMgr.instance.ShutDown();
             EventMgr.instance.ShutDown();
             SceneMgr.instance.ShutDown();
+            FsmMgr.instance.ShutDown();
+            GameObjectPool.instance.ShutDown();
+            ResourcesPool.instance.ShutDown();
+            ResourcesMgr.instance.ShutDown();
             ReferencePool.ReleaseAll();
+
             Destroy(m_Manager);
-            OnExit();
         }
+
         protected abstract void OnInit(GameObject manager);
         protected abstract void OnStartGame();
         protected abstract void OnExit();

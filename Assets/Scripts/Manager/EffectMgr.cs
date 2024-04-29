@@ -50,10 +50,4 @@ public class EffectMgr : BaseMgr<EffectMgr>
 
         return effect;
     }
-
-    public void PutEffect(BaseEffect effect)
-    {
-        effect.Release();
-        EntityMgr.instance.PutEntity(effect);
-    }
 }

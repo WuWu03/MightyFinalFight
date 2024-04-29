@@ -71,6 +71,11 @@ namespace GameFrameWork.GameEntity
             gameObject.SetActive(active);
         }
 
+        public void BeforeDestroy()
+        {
+            OnBeforeDestroy();
+        }
+
         protected void SetLayer(bool isChild = true)
         {
             SetLayer(m_Layer, isChild);
@@ -80,7 +85,7 @@ namespace GameFrameWork.GameEntity
         protected virtual void Update() { }
         protected virtual void LateUpdate() { }
         protected virtual void FixedUpdate() { }
-        protected virtual void OnDestroy() 
+        protected virtual void OnBeforeDestroy() 
         {
             m_EntityName = string.Empty;
             m_Layer = string.Empty;

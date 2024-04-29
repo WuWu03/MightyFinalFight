@@ -8,6 +8,7 @@ using DG.Tweening;
 using GameFrameWork.UI;
 using System;
 using GameFrameWork.Resources;
+using GameFrameWork.Pool;
 
 public class TestPanel : BasePanel
 {
@@ -39,13 +40,13 @@ public class TestPanel : BasePanel
     }
 
 	UnityEngine.Object m_Object = null;
-    protected override void OnOpen()
+	protected override void OnOpen()
 	{
 		m_Component.testScroll.RefreshData();
-        m_Component.txtLeftBottom.text = "×óÏÂ½Ç²âÊÔ";
-        
-        ResourcesPool.instance.Get<GameObject>("ArtResources/Prefabs/CharacterUI/CodyUI", OnLoad);
-    }
+		m_Component.txtLeftBottom.text = "×óÏÂ½Ç²âÊÔ";
+
+		GameObjectPool.instance.GetFromAsset("ArtResources/Prefabs/CharacterUI/CodyUI", OnLoad);
+	}
 
     private void OnLoad(string t1, UnityEngine.Object t2, object[] t3)
     {

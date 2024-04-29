@@ -263,12 +263,12 @@ public abstract class BaseAvatar : BaseGravityObject
         m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
     }
 
-    protected override void OnDestroy()
+    protected override void OnBeforeDestroy()
     {
-        FsmMgr.instance.DestoryFsm(m_FsmMachine);
+        FsmMgr.instance.ReleaseFsm(m_FsmMachine);
         m_FsmMachine = null;
 
-        base.OnDestroy();
+        base.OnBeforeDestroy();
     }
 
     protected string m_CurrAnimName = string.Empty;

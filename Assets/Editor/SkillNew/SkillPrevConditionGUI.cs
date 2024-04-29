@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SkillNew
 {
-    public class SkillPrevConditionGUI : SkillGUI
+    public class SkillPrevConditionGUI : SkillBaseGUI
     {
         public SkillPrevConditionGUI(EditorWindow window) : base(window)
         {

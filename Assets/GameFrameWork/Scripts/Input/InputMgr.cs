@@ -404,6 +404,8 @@ namespace GameFrameWork.Input
 
         protected override void OnShutDown()
         {
+            base.OnShutDown();
+
             InputHelper.Dispose();
             m_DicIsKeyDown.Clear();
             m_ListComboKey.Clear();

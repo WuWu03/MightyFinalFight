@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace GameFrameWork.Resources
@@ -15,7 +16,6 @@ namespace GameFrameWork.Resources
             m_DicLoadedAssets = new Dictionary<string, UnityEngine.Object>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
         }
-
 
         public UnityEngine.Object LoadAssetEditor(string assetPath, Type t = null)
         {
@@ -46,12 +46,25 @@ namespace GameFrameWork.Resources
         {
             Log.LogInfo("开始卸载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>] , ", "卸载前资源数为 : ",m_DicLoadedAssets.Count);
 
-            if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
+            if (m_DicLoadedAssets.ContainsKey(assetPath))
             {
                 m_DicLoadedAssets.Remove(assetPath);
             }
 
             Log.LogInfo("卸载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssets.Count);
+        }
+
+        public void UnLoadAll()
+        {
+            List<string> list = m_DicLoadedAssets.Keys.ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                UnLoadAssetEditor(list[i]);
+            }
+
+            m_DicLoadedAssets.Clear();
+            m_DicLoadedAssets.Clear();
         }
 
         /// <summary>
@@ -85,6 +98,7 @@ namespace GameFrameWork.Resources
         // 模拟异步加载的行为
         private IEnumerator LoadAssetAsync(string assetPath, Type t = null)
         {
+            yield return null;
             UnityEngine.Object obj = LoadAssetEditor(assetPath, t);
             yield return new WaitForSeconds(0.1f);
 

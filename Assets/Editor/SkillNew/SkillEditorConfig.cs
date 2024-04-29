@@ -34,7 +34,8 @@ public class SkillEditorConfigData : BaseConfigData
         AudioEvent,
         TargetTransformEvent,
         SelfTransformEvent,
-        PhysicsEvent,
+        TargetPhysicsEvent,
+        SelfPhysicsEvent,
         BulletEvent,
         HitEvent,
         EffectEvent,
@@ -109,7 +110,7 @@ public class SkillEditorConfigData : BaseConfigData
         {
             public Vector2 force;
             public Vector2 velocity;
-            public Vector2 drag;
+            public float drag;
             public float gravity;
             public float distanceLimit;
         }

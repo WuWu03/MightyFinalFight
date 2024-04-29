@@ -61,7 +61,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.StopAnimation(AnimName.SwoonDown);
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

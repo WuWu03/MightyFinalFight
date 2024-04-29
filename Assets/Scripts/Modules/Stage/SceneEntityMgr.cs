@@ -272,6 +272,12 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
     }
 
+    protected override void OnShutDown()
+    {
+        ReleaseAll();
+        base.OnShutDown();
+    }
+
     private List<BaseSceneObject> m_ListSceneBuildings = null;
     private List<BaseEnemy> m_ListEnemies;
     private List<BaseSceneItem> m_ListSceneItems = null;

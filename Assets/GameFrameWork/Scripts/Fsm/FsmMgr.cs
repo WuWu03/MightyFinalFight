@@ -57,7 +57,7 @@ namespace GameFrameWork.Fsm
             return false;
         }
 
-        public bool DestoryFsm(System.Object owner)
+        public bool ReleaseFsm(System.Object owner)
         {
             for (int i = m_ListFsms.Count - 1; i >= 0 ; i--)
             {
@@ -72,7 +72,7 @@ namespace GameFrameWork.Fsm
             return false;
         }
 
-        public bool DestoryFsm(FsmMachine fsm)
+        public bool ReleaseFsm(FsmMachine fsm)
         {
             if(fsm == null)
             {

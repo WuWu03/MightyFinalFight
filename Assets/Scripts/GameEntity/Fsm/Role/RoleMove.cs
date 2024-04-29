@@ -47,9 +47,9 @@ public class RoleMove : BaseFsmState
         m_CanChangeDir = false;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
-        base.OnDestroy(fsm);
+        base.OnRelease(fsm);
         m_Owner = null;
     }
 

@@ -45,7 +45,7 @@ public class RoleAttack : BaseFsmState
         m_Dir = 0;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

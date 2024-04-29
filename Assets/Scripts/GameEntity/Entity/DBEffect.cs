@@ -1,7 +1,5 @@
 using DragonBones;
 using GameFrameWork.Audio;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DBEffect : BaseEffect
@@ -33,10 +31,10 @@ public class DBEffect : BaseEffect
 
     public override void Release()
     {
-        base.Release();
         m_ArmatureAnimator.animation.Stop();
         m_ArmatureAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_ArmatureAnimator = null;
+        base.Release();
     }
 
     private void SoundEvent(string type, EventObject eventObject)

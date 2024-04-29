@@ -21,11 +21,6 @@ namespace SkillNew
         {
             base.OnGUI();
 
-            if (m_CurrEvent == null)
-            {
-                return;
-            }
-
             EditorGUILayout.BeginVertical();
 
             DrawField(() => { return m_CurrAudioClipName != m_CurrEvent.audioClipName; },
@@ -47,9 +42,10 @@ namespace SkillNew
             EditorGUILayout.EndVertical();
         }
 
-        public override void ResetEvent()
+        protected override void OnResetEvent()
         {
-            base.ResetEvent();
+            base.OnResetEvent();
+
             m_CurrAudioClipName = string.Empty;
             m_CurrAudioPlaySpeed = 0f;
             m_CurrAudioPlayLoop = false;

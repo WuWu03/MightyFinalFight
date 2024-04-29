@@ -269,10 +269,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         CheckAutoMove();
     }
 
-    protected override void OnDestroy()
+    protected override void OnBeforeDestroy()
     {
         m_AutoMoveComplete = null;
-        base.OnDestroy();
+        base.OnBeforeDestroy();
     }
 
     public virtual void OnAttackMsg(AttackStateData data, bool forceJumpAttack = false)

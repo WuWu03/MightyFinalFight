@@ -38,8 +38,8 @@ public class MainPanel : BasePanel
 		SetPlayerLife(PlayerMgr.instance.life);
 		SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
 
-		PoolMgr.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
-		PoolMgr.instance.AddPool("EmenyDamageText", m_Component.txtEnemyDamage.gameObject);
+		GameObjectPool.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
+		GameObjectPool.instance.AddPool("EnemyDamageText", m_Component.txtEnemyDamage.gameObject);
 
 		AddEvent(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
 		SetColor();
@@ -129,7 +129,7 @@ public class MainPanel : BasePanel
 
 	public void ShowEnemyDamage(int value,Vector3 pos)
     {
-		ShowDamageText("EmenyDamageText", value, pos);
+		ShowDamageText("EnemyDamageText", value, pos);
 	}
 
 	public void ShowPlayerDamage(int value, Vector3 pos)
@@ -139,7 +139,9 @@ public class MainPanel : BasePanel
 
 	private void ShowDamageText(string textName, int value, Vector3 pos)
 	{
-		GameObject go = PoolMgr.instance.Spawn(textName, transform, "UI", true);
+		Debug.Log("ÏÔÊ¾ÉËº¦ÎÄ±¾¿ò : " + textName);
+
+		GameObject go = GameObjectPool.instance.Get(textName, transform, "UI", true);
 		Text text = go.GetComponent<Text>();
 		RectTransform textRect = text.GetComponent<RectTransform>();
 
@@ -153,7 +155,7 @@ public class MainPanel : BasePanel
 		textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
 		text.DOFade(0, 2f).OnComplete(() =>
 		{
-			PoolMgr.instance.UnSpawn("EmenyDamageText", go);
+			GameObjectPool.instance.Put(textName, go);
 		});
 	}
 

@@ -34,7 +34,7 @@ public class RoleDefense : BaseFsmState
         m_Owner.StopAnimation(AnimName.Defense);
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

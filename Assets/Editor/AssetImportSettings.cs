@@ -21,40 +21,20 @@ public class AssetImportSettings : AssetPostprocessor
 
 	private void SetUITexture(TextureImporter textureImporter)
 	{
+        textureImporter.textureType = TextureImporterType.Sprite;
         textureImporter.spriteImportMode = SpriteImportMode.Single;
-        textureImporter.textureCompression = TextureImporterCompression.Compressed;
+        textureImporter.textureCompression = TextureImporterCompression.Uncompressed;
+        textureImporter.isReadable = false;
+        textureImporter.mipmapEnabled = false;
+        textureImporter.compressionQuality = 0;
+        textureImporter.wrapMode = TextureWrapMode.Clamp;
+        textureImporter.filterMode = FilterMode.Bilinear;
+        textureImporter.maxTextureSize = 2048;
 
-        textureImporter.SetPlatformTextureSettings(new TextureImporterPlatformSettings() 
+        textureImporter.SetPlatformTextureSettings(new TextureImporterPlatformSettings()
         {
-            name = "Standalone",
-            compressionQuality = 50,
-            crunchedCompression = false,
-            format = TextureImporterFormat.DXT5,
-            textureCompression = TextureImporterCompression.Compressed,
-            maxTextureSize = 2048,
-            allowsAlphaSplitting = false,
-            overridden = true,
-            
-        });
-
-        textureImporter.SetTextureSettings(new TextureImporterSettings()
-        {
-            alphaIsTransparency = true,
-            alphaSource = TextureImporterAlphaSource.FromInput,
-            borderMipmap = false,
-            filterMode = FilterMode.Bilinear,
-            mipmapEnabled = false,
-            readable = false,
-            spriteGenerateFallbackPhysicsShape = false,
-            spriteMeshType = SpriteMeshType.Tight,
-            spriteMode = 1,//None = 0、Single = 1、Manual = 2。
-            spritePivot = Vector2.one * 0.5f,
-            spritePixelsPerUnit = 100f,
-            sRGBTexture = true,
-            textureShape = TextureImporterShape.Texture2D,
-            textureType = TextureImporterType.Sprite,
-            wrapMode = TextureWrapMode.Clamp,
-            
+           name = "Standalone",
+           overridden = false,
         });
 
         textureImporter.SaveAndReimport();

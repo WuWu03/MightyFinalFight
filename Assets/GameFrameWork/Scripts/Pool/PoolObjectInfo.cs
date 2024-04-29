@@ -1,27 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Pool
 {
-    public class ResourcePoolInfo : IReference
+    public class PoolObjectInfo : IReference
     {
         public UnityEngine.Object poolObject;
         public float releaseTime;
         public bool isReleaseImmediate;
         public string assetPath;
+        public int referenceCount;
 
-        public static ResourcePoolInfo Create(UnityEngine.Object poolObject, float releaseTime, bool isReleaseImmediate, string assetPath)
+        public static PoolObjectInfo Create(UnityEngine.Object poolObject, float releaseTime, bool isReleaseImmediate, string assetPath)
         {
-            ResourcePoolInfo resourcePoolInfo = ReferencePool.Acquire<ResourcePoolInfo>();
+            PoolObjectInfo resourcePoolInfo = ReferencePool.Acquire<PoolObjectInfo>();
             resourcePoolInfo.poolObject = poolObject;
             resourcePoolInfo.releaseTime = releaseTime;
             resourcePoolInfo.isReleaseImmediate = isReleaseImmediate;
             resourcePoolInfo.assetPath = assetPath;
+            resourcePoolInfo.referenceCount = 0;
             return resourcePoolInfo;
         }
 
-        public ResourcePoolInfo()
+        public PoolObjectInfo()
         {
 
         }

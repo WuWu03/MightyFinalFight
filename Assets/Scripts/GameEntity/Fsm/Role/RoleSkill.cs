@@ -55,7 +55,7 @@ public class RoleSkill : BaseFsmState
         m_Dir = Vector2.zero;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

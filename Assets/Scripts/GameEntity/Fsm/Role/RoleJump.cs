@@ -69,9 +69,9 @@ public class RoleJump : BaseFsmState
         m_HasAddXForce = false;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
-        base.OnDestroy(fsm);
+        base.OnRelease(fsm);
         m_Owner = null;
     }
 

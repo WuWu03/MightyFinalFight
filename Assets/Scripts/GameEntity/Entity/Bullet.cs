@@ -7,9 +7,6 @@ public class Bullet : BaseAvatar
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
-        Debug.Log("=============设置子弹数据============");
-        Debug.Log(data);
-
         m_BulletData = data as BulletData;
     }
 
@@ -35,17 +32,26 @@ public class Bullet : BaseAvatar
             if (isOutVersion || m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
             {
                 Release();
+                return;
             }
         }
         else
         {
             if (m_IsHit)
             {
-                if (m_Animator.animation.isCompleted) Release();
+                if (m_Animator.animation.isCompleted)
+                {
+                    Release();
+                    return;
+                }
             }
             else
             {
-                if(m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1) Release();
+                if (m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
+                {
+                    Release();
+                    return;
+                }
             }
         }
 

@@ -22,11 +22,6 @@ namespace SkillNew
         {
             base.OnGUI();
 
-            if (m_CurrEvent == null)
-            {
-                return;
-            }
-
             EditorGUILayout.BeginVertical();
 
             DrawField(() => { return m_CurrAnimName != m_CurrEvent.animName; },
@@ -44,15 +39,18 @@ namespace SkillNew
             EditorGUILayout.EndVertical();
         }
 
-        public override void ResetEvent()
+        protected override void OnResetEvent()
         {
             base.ResetEvent();
-            m_CurrAnimName = string.Empty;
-            m_CurrAnimSpeed = 0f;
-            m_CurrAnimPlayTimes = 0f;
+
             m_CurrEvent.animName = string.Empty;
             m_CurrEvent.animSpeed = 0f;
             m_CurrEvent.animPlayTimes = 0f;
+
+            m_CurrAnimName = string.Empty;
+            m_CurrAnimSpeed = 0f;
+            m_CurrAnimPlayTimes = 0f;
+
         }
 
         private string m_CurrAnimName;

@@ -42,7 +42,7 @@ public class RoleHurt : BaseFsmState
         m_HurtAnim = string.Empty;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

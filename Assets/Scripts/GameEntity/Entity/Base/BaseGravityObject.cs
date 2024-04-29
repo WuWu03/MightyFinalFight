@@ -169,7 +169,6 @@ public class BaseGravityObject : BaseBoundObject
         base.Release();
     }
 
-
     protected virtual void OnDrop() { }
     protected virtual void OnGround() { }
 
@@ -215,12 +214,12 @@ public class BaseGravityObject : BaseBoundObject
         m_IsAddGroundForce = false;
     }
 
-    protected override void OnDestroy()
+    protected override void OnBeforeDestroy()
     {
         m_OnDropEvent = null;
         m_OnGroundEvent = null;
 
-        base.OnDestroy();
+        base.OnBeforeDestroy();
     }
 
     private UnityEvent m_OnDropEvent = null;

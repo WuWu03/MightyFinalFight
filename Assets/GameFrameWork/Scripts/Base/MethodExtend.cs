@@ -1,5 +1,6 @@
 ﻿using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
+using System.Collections;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -91,24 +92,12 @@ namespace GameFrameWork
             return comp;
         }
 
-        public static T GetAsset<T>(this AssetBundle ab, string assetName) where T : UnityEngine.Object
+        public static T LoadAsset<T>(this AssetBundle ab, string assetName) where T : UnityEngine.Object
         {
-            string[] allAssetNames = ab.GetAllAssetNames();
-
-            for (int i = 0; i < allAssetNames.Length; i++)
-            {
-                string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
-
-                if (assetNameTemp.Equals(assetName))
-                {
-                    return ab.LoadAsset<T>(allAssetNames[i]);
-                }
-            }
-
-            return default;
+            return ab.LoadAsset(assetName, typeof(T)) as T;
         }
 
-        public static Object GetAsset(this AssetBundle ab, string assetName, System.Type type)
+        public static Object LoadAsset(this AssetBundle ab, string assetName, System.Type type)
         {
             string[] allAssetNames = ab.GetAllAssetNames();
 
@@ -125,7 +114,46 @@ namespace GameFrameWork
             return null;
         }
 
-        public static void SetSprite(this Image renderer,string spriteAtlasName, string spriteName)
+        public static IEnumerator LoadAssetAsync(this AssetBundle ab, LoadRequest request)
+        {
+            yield return null;
+
+            if(request == null || request.action == null)
+            {
+                yield break;
+            }
+
+            string[] allAssetNames = ab.GetAllAssetNames();
+            string assetName = string.Empty;
+
+            for (int i = 0; i < allAssetNames.Length; i++)
+            {
+                string assetNameTemp = Path.GetFileNameWithoutExtension(allAssetNames[i]);
+
+                if (assetNameTemp.Equals(request.assetName))
+                {
+                    assetName = allAssetNames[i];
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(assetName))
+            {
+                yield break;
+            }
+
+            AssetBundleRequest createRequese = ab.LoadAssetAsync(assetName, request.assetType);
+
+            while (!createRequese.isDone)
+            {
+                yield return null;
+            }
+
+            request.Call(createRequese.asset);
+        }
+
+
+        public static void SetSprite(this Image renderer, string spriteAtlasName, string spriteName)
         {
             string realPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
 

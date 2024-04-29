@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Resources;
+﻿using GameFrameWork.Pool;
+using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
@@ -287,7 +288,7 @@ namespace GameFrameWork.UI
             if (panel.panelCloseMode == CloseMode.Destroy || isForceDestroy)
             {
                 panel.Destroy();
-                ResourcesPool.instance.Put(panel.resPath, panel.gameObject, true);
+                GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
 
@@ -339,7 +340,7 @@ namespace GameFrameWork.UI
                 lock (queue)
                 {
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
-                    ResourcesPool.instance.Get<GameObject>(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnResComplete, waitLoadPanel);
+                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnResComplete, waitLoadPanel);
                 }
             }
 
@@ -352,7 +353,7 @@ namespace GameFrameWork.UI
                     if (panel.isDelayTimeOut)
                     {
                         panel.Destroy();
-                        ResourcesPool.instance.Put(panel.resPath, panel.gameObject, true);
+                        GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
                         m_ListOpenPanel.Remove(panel);
                         m_ListDelayDestroy.Remove(panel);
                         m_ListPopPanel.Remove(panel);
@@ -369,7 +370,7 @@ namespace GameFrameWork.UI
             {
                 BasePanel panel = m_ListAlways[0];
                 panel.Destroy();
-                ResourcesPool.instance.Put(panel.resPath, panel.gameObject, true);
+                GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
                 m_ListAlways.Remove(panel);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
@@ -389,6 +390,28 @@ namespace GameFrameWork.UI
 
         protected override void OnShutDown()
         {
+            base.OnShutDown();
+
+            for (int i = 0;i < m_ListPopPanel.Count; i++)
+            {
+                GameObjectPool.instance.Put(m_ListPopPanel[i].resPath, m_ListPopPanel[i].gameObject);
+            }
+
+            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            {
+                GameObjectPool.instance.Put(m_ListOpenPanel[i].resPath, m_ListOpenPanel[i].gameObject);
+            }
+
+            for (int i = 0; i < m_ListDelayDestroy.Count; i++)
+            {
+                GameObjectPool.instance.Put(m_ListDelayDestroy[i].resPath, m_ListDelayDestroy[i].gameObject);
+            }
+
+            for (int i = 0; i < m_ListAlways.Count; i++)
+            {
+                GameObjectPool.instance.Put(m_ListAlways[i].resPath, m_ListAlways[i].gameObject);
+            }
+
             m_ListPopPanel.Clear();
             m_ListOpenPanel.Clear();
             m_ListDelayDestroy.Clear();

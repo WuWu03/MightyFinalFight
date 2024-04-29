@@ -249,9 +249,14 @@ namespace GameFrameWork.Fsm
 
         public override void ShutDown()
         {
+            if(m_IsDestroyed)
+            {
+                return;
+            }
+
             foreach(KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
             {
-                kvp.Value.Destroy(this);
+                kvp.Value.Release(this);
             }
 
             m_DicStates.Clear();

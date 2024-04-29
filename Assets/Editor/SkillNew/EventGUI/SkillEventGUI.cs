@@ -1,11 +1,27 @@
 using UnityEditor;
 namespace SkillNew
 {
-    public abstract class SkillEventGUI : SkillGUI
+    public abstract class SkillEventGUI : SkillBaseGUI
     {
+        public SkillEditorConfigData.SkillEvent currEvent
+        {
+            get
+            {
+                return m_CurrEvent;
+            }
+        }
+
         public SkillEventGUI(EditorWindow window) : base(window)
         {
 
+        }
+
+        public override void Draw()
+        {
+            if(m_CurrEvent != null)
+            {
+                OnGUI();
+            }
         }
 
         public void UpdateSkillEvent(SkillEditorConfigData.SkillEvent skillEvent)
@@ -14,7 +30,16 @@ namespace SkillNew
             OnUpdateSkillEvent();
         }
 
-        public virtual void ResetEvent()
+        public void ResetEvent()
+        {
+            if(m_CurrEvent != null)
+            {
+                OnResetEvent();
+                m_CurrEvent = null;
+            }
+        }
+
+        protected virtual void OnResetEvent()
         {
 
         }

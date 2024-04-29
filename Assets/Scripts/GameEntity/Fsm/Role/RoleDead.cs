@@ -43,7 +43,7 @@ public class RoleDead : BaseFsmState
         m_ReBirthPos = Vector2.zero;
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

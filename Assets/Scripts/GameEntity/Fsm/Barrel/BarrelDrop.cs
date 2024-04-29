@@ -36,7 +36,7 @@ public class BarrelDrop : BaseFsmState
 
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

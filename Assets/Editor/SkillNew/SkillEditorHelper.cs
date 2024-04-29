@@ -116,6 +116,8 @@ namespace SkillNew
                 {SkillEditorConfigData.SkillEventType.AudioEvent,new SkillAudioEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.TargetTransformEvent,new SkillTransformEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.SelfTransformEvent,new SkillTransformEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.TargetPhysicsEvent,new SkillPhysicsEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.SelfPhysicsEvent,new SkillPhysicsEventGUI(window) },
             };
 
             m_CurrSelectIndex = 0;
@@ -212,15 +214,20 @@ namespace SkillNew
             m_ShowNames = temp.ToArray();
         }
 
-        public static SkillEventGUI GetSKillGUI(SkillEditorConfigData.SkillEventType skillEventType)
+        public static void UpdateSKilEventGUI(SkillEditorConfigData.SkillEvent skillEvent)
         {
-            if (m_DicSkillEventGUI.TryGetValue(skillEventType, out SkillEventGUI skillGUI))
+            if (m_DicSkillEventGUI.TryGetValue(skillEvent.skillEventType, out SkillEventGUI skillGUI))
             {
-                return skillGUI;
+                skillGUI.ResetEvent();
+                skillGUI.UpdateSkillEvent(skillEvent);
             }
-            else
+        }
+
+        public static void DrawSKilEventlGUI(SkillEditorConfigData.SkillEvent skillEvent)
+        {
+            if (m_DicSkillEventGUI.TryGetValue(skillEvent.skillEventType, out SkillEventGUI skillGUI))
             {
-                return null;
+                skillGUI.Draw();
             }
         }
 

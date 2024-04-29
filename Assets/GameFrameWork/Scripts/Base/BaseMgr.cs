@@ -56,19 +56,25 @@ namespace GameFrameWork
         private void Update()
         {
             if (m_Running)
+            {
                 OnUpdate();
+            }
         }
 
         private void LateUpdate()
         {
             if (m_Running)
+            {
                 OnLateUpdate();
+            }
         }
 
         private void FixedUpdate()
         {
             if (m_Running)
+            {
                 OnFixedUpdate();
+            }
         }
 
         protected virtual void OnAwake() { }

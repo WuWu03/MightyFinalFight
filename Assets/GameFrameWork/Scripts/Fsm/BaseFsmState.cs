@@ -27,9 +27,9 @@
 			OnExit(fsm, isShutdown);
 		}
 
-		public void Destroy(BaseFsm fsm)
+		public void Release(BaseFsm fsm)
 		{
-			OnDestroy(fsm);
+			OnRelease(fsm);
 		}
 
 		public void SetStateData(BaseEventArgs stateData)
@@ -42,7 +42,7 @@
 		protected virtual void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
 		protected virtual void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float unscaleDeltaTime) { }
 		protected abstract void OnExit(BaseFsm fsm, bool isShutdown);
-		protected virtual void OnDestroy(BaseFsm fsm) { }
+		protected virtual void OnRelease(BaseFsm fsm) { }
 
 		protected virtual void OnSetStateData(BaseEventArgs stateData) { }
 

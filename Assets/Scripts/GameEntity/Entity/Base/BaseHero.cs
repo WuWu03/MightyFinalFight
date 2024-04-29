@@ -169,12 +169,12 @@ public class BaseHero : BaseRole
         m_Slot2Renderer.enabled = false;
     }
 
-    protected override void OnDestroy()
+    protected override void OnBeforeDestroy()
     {
         m_ListCatchTarget = null;
         m_DicAttacker = null;
 
-        base.OnDestroy();
+        base.OnBeforeDestroy();
     }
 
     public override List<ICanBeHit> OnHitStart()

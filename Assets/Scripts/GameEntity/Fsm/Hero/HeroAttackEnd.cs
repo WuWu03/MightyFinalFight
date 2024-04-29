@@ -29,7 +29,7 @@ public class HeroAttackEnd : BaseFsmState
         m_Owner.StopAnimation(AnimName.Catch);
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

@@ -17,7 +17,7 @@ public class BarrelIdle : BaseFsmState
         m_Owner.StopAnimation(AnimName.Idle);
     }
 
-    protected override void OnDestroy(BaseFsm fsm)
+    protected override void OnRelease(BaseFsm fsm)
     {
         m_Owner = null;
     }

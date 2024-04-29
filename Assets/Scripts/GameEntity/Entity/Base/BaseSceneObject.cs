@@ -1,6 +1,7 @@
 ﻿using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using UnityEngine;
 
@@ -110,6 +111,7 @@ public class BaseSceneObject : BaseEntity
     public override void Init(int id, string name)
     {
         base.Init(id, name);
+        m_IsResComplete = false;
         m_Pos = transform.localPosition;
     }
 
@@ -119,7 +121,7 @@ public class BaseSceneObject : BaseEntity
    
         if (m_ResGO != null)
         {
-            ResourcesPool.instance.Put(m_ResPath, m_ResGO);
+            GameObjectPool.instance.Put(m_ResPath, m_ResGO);
         }
 
         if(m_Data != null)
@@ -288,7 +290,8 @@ public class BaseSceneObject : BaseEntity
         }
 
         m_ResPath = resPath;
-        ResourcesPool.instance.Get<GameObject>(resPath, ResComplete);
+        m_IsResComplete = false;
+        GameObjectPool.instance.GetFromAsset(resPath, ResComplete);
     }
 
     public bool IsOutVersionX(float posX)

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -192,10 +193,10 @@ namespace GameFrameWork.Resources
 
             if (string.IsNullOrEmpty(assetName))
             {
-                return assetBundleInfo.assetBundle.GetAsset(Path.GetFileNameWithoutExtension(assetBundleName).ToLower(), t);
+                return assetBundleInfo.assetBundle.LoadAsset(Path.GetFileNameWithoutExtension(assetBundleName).ToLower(), t);
             }
 
-            return assetBundleInfo.assetBundle.GetAsset(assetName.ToLower(), t);
+            return assetBundleInfo.assetBundle.LoadAsset(assetName.ToLower(), t);
         }
 
         /// <summary>
@@ -243,7 +244,7 @@ namespace GameFrameWork.Resources
         private void OnLoadAsset(string assetBundleName)
         {
             string assetBunldePath = GetAssetBundlePath(assetBundleName);
-            Log.LogInfo("开始异步加载资源 ：", assetBunldePath);
+            Log.LogInfo("开始同步加载资源 ：", assetBunldePath);
 
             AssetBundle assetBundle = AssetBundle.LoadFromFile(assetBunldePath);
 
@@ -261,7 +262,7 @@ namespace GameFrameWork.Resources
             if (assetBundleInfo == null)
             {
                 string assetBundlePath = GetAssetBundlePath(assetBundleName);
-                Log.LogInfo("异步加载中 ：", assetBundlePath);
+                Log.LogInfo("开始异步加载资源 ：", assetBundlePath);
                 AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
 
                 while (!createRequest.isDone)
@@ -290,11 +291,7 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < list.Count; i++)
                 {
-                    if (list[i].action != null)
-                    {
-                        list[i].Call(assetBundleInfo.assetBundle.GetAsset(list[i].assetName, list[i].assetType));
-                    }
-
+                    assetBundleInfo.assetBundle.LoadAssetAsync(list[i]);
                     assetBundleInfo.referencedCount++;
                 }
             }
@@ -394,6 +391,24 @@ namespace GameFrameWork.Resources
 
         protected override void OnShutDown()
         {
+            base.OnShutDown();
+
+#if UNITY_EDITOR
+            if (!AppConfig.instance.loadAB)
+            {
+                EditorResourcesMgr.Instance.UnLoadAll();
+                return;
+            }
+#endif
+
+            List<string> list = m_DicLoadedAssetBundles.Keys.ToList();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                UnloadAsset(list[i], true);
+            }
+
+            list.Clear();
             m_DicLoadedAssetBundles.Clear();
             m_DicLoadRequests.Clear();
             m_DicAssetVersions.Clear();

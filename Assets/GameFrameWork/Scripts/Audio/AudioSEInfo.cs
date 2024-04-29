@@ -1,18 +1,16 @@
 ﻿using GameFrameWork.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Audio
 {
-    public class AudioSoundPlay
+    public class AudioSEInfo
     {
         public AudioSource audioSource { get; set; }
         public string path { get; set; }
         public string name { get; set; }
         public float playTime { get; set; }
 
-        public AudioSoundPlay()
+        public AudioSEInfo()
         {
             audioSource = new GameObject().GetOrAddComponent<AudioSource>();
         }
@@ -22,9 +20,9 @@ namespace GameFrameWork.Audio
             return PathUtil.FormatPath(path, name);
         }
 
-        public static AudioSoundPlay Create()
+        public static AudioSEInfo Create()
         {
-            return new AudioSoundPlay();
+            return new AudioSEInfo();
         }
 
         public void Clear()

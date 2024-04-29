@@ -113,7 +113,7 @@ public class BaseEffect : BaseSceneObject
 
         if (isAutoRelease)
         {
-            EffectMgr.instance.PutEffect(this);
+            Release();
         }
     }
 
