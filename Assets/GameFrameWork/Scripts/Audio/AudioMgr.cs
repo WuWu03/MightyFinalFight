@@ -326,7 +326,7 @@ namespace GameFrameWork.Audio
             if (m_BGMAudioGroup != null)
             {
                 ResourcesPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
-                ReferencePool.Release(m_BGMAudioGroup);
+                ReferencePool.ReleaseReference(m_BGMAudioGroup);
                 m_BGMAudioSource.Stop();
                 m_BGMAudioGroup = null;
                 m_BGMAudioSource.clip = null;

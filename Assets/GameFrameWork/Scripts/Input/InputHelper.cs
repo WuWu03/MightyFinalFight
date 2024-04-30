@@ -76,7 +76,7 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
-                ReferencePool.Release(m_Axis[i]);
+                ReferencePool.ReleaseReference(m_Axis[i]);
             }
 
             for (int i = 0; i < m_Keys.Length; i++)
@@ -86,7 +86,7 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
-                ReferencePool.Release(m_Keys[i]);
+                ReferencePool.ReleaseReference(m_Keys[i]);
             }
 
             m_Axis = null;

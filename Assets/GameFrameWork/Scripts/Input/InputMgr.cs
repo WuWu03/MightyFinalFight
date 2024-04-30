@@ -67,7 +67,7 @@ namespace GameFrameWork.Input
             {
                 if (m_ListComboKeyEvent[i].eventId.Equals(eventID))
                 {
-                    ReferencePool.Release(m_ListComboKeyEvent[i]);
+                    ReferencePool.ReleaseReference(m_ListComboKeyEvent[i]);
                     m_ListComboKeyEvent.RemoveAt(i);
                     break;
                 }

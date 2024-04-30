@@ -33,9 +33,4 @@ namespace GameFrameWork.Pool
             assetPath = null;
         }
     }
-
-    public class ResourceMark : MonoBehaviour
-    {
-        public string assetPath;
-    }
 }

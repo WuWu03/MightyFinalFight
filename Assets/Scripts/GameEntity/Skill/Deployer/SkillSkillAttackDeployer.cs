@@ -26,14 +26,14 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.OnSkillMsg(skillData);
             base.DeploySkill();
-            ReferencePool.Release(skillData);
+            ReferencePool.ReleaseReference(skillData);
             return;
         }
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnSkillMsg(skillData);
-        ReferencePool.Release(skillData);
+        ReferencePool.ReleaseReference(skillData);
     }
 
     public override bool IsAllComplete()

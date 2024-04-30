@@ -61,7 +61,7 @@ namespace GameFrameWork
             GameObjectPool.instance.ShutDown();
             ResourcesPool.instance.ShutDown();
             ResourcesMgr.instance.ShutDown();
-            ReferencePool.ReleaseAll();
+            ReferencePool.ShutDown();
 
             Destroy(m_Manager);
         }

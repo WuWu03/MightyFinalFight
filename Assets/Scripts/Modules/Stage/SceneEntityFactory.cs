@@ -87,7 +87,7 @@ public static class SceneEntityFactory
         enemySkillData.attackNextTime = enemyConfigData.attackNextTime;
         enemySkillData.behaviourTreeIds = enemyConfigData.behaviourTreeIds;
 
-        enemyAttribute.health = hp;
+        enemyAttribute.health = 1;//hp;
         enemyAttribute.maxHealth = hp;
         enemyAttribute.jumpForce = enemyConfigData.jumpForce;
         enemyAttribute.attackSpeed = enemyConfigData.attackSpeed;

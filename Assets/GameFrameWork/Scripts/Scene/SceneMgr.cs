@@ -154,7 +154,7 @@ namespace GameFrameWork.Scene
 
             while (m_LoadQueue.Count > 0)
             {
-                ReferencePool.Release(m_LoadQueue.Dequeue());
+                ReferencePool.ReleaseReference(m_LoadQueue.Dequeue());
             }
 
             m_LoadQueue.Clear();
@@ -307,7 +307,7 @@ namespace GameFrameWork.Scene
             catch(Exception e)
             {
                 LoadSceneFailure(request.sceneName, e.Message, request.args);
-                ReferencePool.Release(request);
+                ReferencePool.ReleaseReference(request);
                 yield break;
             }
 
@@ -336,8 +336,8 @@ namespace GameFrameWork.Scene
                 yield return null;
             }
 
-            ReferencePool.Release(updateEventArgs);
-            ReferencePool.Release(request);
+            ReferencePool.ReleaseReference(updateEventArgs);
+            ReferencePool.ReleaseReference(request);
         }
 
         private IEnumerator InnerUnLoadSceneAsync(LoadSceneRequest request)
@@ -351,7 +351,7 @@ namespace GameFrameWork.Scene
             catch (Exception e)
             {
                 UnLoadSceneFailure(request.sceneName, e.Message, request.args);
-                ReferencePool.Release(request);
+                ReferencePool.ReleaseReference(request);
                 yield break;
             }
 
@@ -361,7 +361,7 @@ namespace GameFrameWork.Scene
             }
 
             UnLoadSceneSuccess(request.sceneName, request.args);
-            ReferencePool.Release(request);
+            ReferencePool.ReleaseReference(request);
         }
 
         private void LoadSceneSuccess(string sceneName, object[] args)
@@ -381,7 +381,7 @@ namespace GameFrameWork.Scene
             m_LoadSceneSuccessEvent = null;
             m_LoadSceneUpdateEvent = null;
             m_LoadSceneFailureEvent = null;
-            ReferencePool.Release(successEventArgs);
+            ReferencePool.ReleaseReference(successEventArgs);
         }
 
         private void LoadSceneFailure(string sceneName, string errorMessage, object[] args)
@@ -391,7 +391,7 @@ namespace GameFrameWork.Scene
             m_LoadSceneUpdateEvent = null;
             m_LoadSceneFailureEvent?.Invoke(failureEventArgs);
             m_LoadSceneFailureEvent = null;
-            ReferencePool.Release(failureEventArgs);
+            ReferencePool.ReleaseReference(failureEventArgs);
         }
 
         private void UnLoadSceneSuccess(string sceneName, object[] args)
@@ -402,7 +402,7 @@ namespace GameFrameWork.Scene
             UnLoadSceneSuccessEventArgs successEventArgs = UnLoadSceneSuccessEventArgs.Create(sceneName, args);
             m_UnLoadSceneSuccessEvent?.Invoke(successEventArgs);
             m_UnLoadSceneSuccessEvent = null;
-            ReferencePool.Release(successEventArgs);
+            ReferencePool.ReleaseReference(successEventArgs);
         }
 
         private void UnLoadSceneFailure(string sceneName, string errorMessage, object[] args)
@@ -410,7 +410,7 @@ namespace GameFrameWork.Scene
             UnLoadSceneFailureEventArgs failureEventArgs = UnLoadSceneFailureEventArgs.Create(sceneName, errorMessage, args);
             m_UnLoadSceneFailureEvent?.Invoke(failureEventArgs);
             m_UnLoadSceneFailureEvent = null;
-            ReferencePool.Release(failureEventArgs);
+            ReferencePool.ReleaseReference(failureEventArgs);
         }
 
         private string m_CurrSceneName = string.Empty;

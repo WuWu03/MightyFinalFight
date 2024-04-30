@@ -28,7 +28,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(attackData);
 
-        ReferencePool.Release(attackData);
+        ReferencePool.ReleaseReference(attackData);
     }
 
     private void SkillEvent(string type, EventObject eventObject)

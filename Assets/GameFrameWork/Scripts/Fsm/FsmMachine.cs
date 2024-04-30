@@ -247,6 +247,19 @@ namespace GameFrameWork.Fsm
             m_CurrentState.FixedUpdate(this, fixedDeltaTime, fixedUnscaledDeltaTime);
         }
 
+        public override void Release()
+        {
+            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
+            {
+                kvp.Value.Release(this);
+            }
+
+            m_DicStates.Clear();
+            m_CurrentState = null;
+            m_DefaultState = null;
+            m_CurrentStateTime = 0f;
+        }
+
         public override void ShutDown()
         {
             if(m_IsDestroyed)
@@ -262,6 +275,7 @@ namespace GameFrameWork.Fsm
             m_DicStates.Clear();
             m_DicStates = null;
             m_CurrentState = null;
+            m_DefaultState = null;
             m_CurrentStateTime = 0f;
             m_IsDestroyed = true;
         }

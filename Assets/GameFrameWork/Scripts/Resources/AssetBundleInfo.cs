@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Resources
@@ -16,13 +14,13 @@ namespace GameFrameWork.Resources
         }
     }
 
-    public class AssetVersion
+    public class AssetBundleVersion
     {
         public string filePath;
         public string extendName;
         public string md5Value;
 
-        public AssetVersion(string filePath, string extendName, string md5Value)
+        public AssetBundleVersion(string filePath, string extendName, string md5Value)
         {
             this.filePath = filePath;
             this.extendName = extendName;

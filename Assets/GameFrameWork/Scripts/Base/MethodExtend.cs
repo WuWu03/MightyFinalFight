@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Resources;
+﻿using GameFrameWork.Pool;
+using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
 using System.Text;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace GameFrameWork
     {
         public static void SetActive(this UnityEngine.Component go, bool value)
         {
-            if (go == null)
+            if (go == null || go.gameObject == null || go.gameObject.activeSelf == value)
             {
                 return;
             }
@@ -93,9 +94,25 @@ namespace GameFrameWork
 
         public static void SetSprite(this Image renderer, string spriteAtlasName, string spriteName)
         {
-            string realPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
+            if (renderer == null || string.IsNullOrEmpty(spriteAtlasName) || string.IsNullOrEmpty(spriteName))
+            {
+                return;
+            }
 
-            ResourcesMgr.instance.LoadAssetAsync<SpriteAtlas>(realPath, (string resPath, UnityEngine.Object obj, object[] param) =>
+            ResourceUnLoader resourceUnLoader = renderer.gameObject.GetOrAddComponent<ResourceUnLoader>();
+
+            string spriteAtlasPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
+
+            if (resourceUnLoader.spriteAtlas == spriteAtlasPath && resourceUnLoader.spriteName == spriteName)
+            {
+                return;
+            }
+
+            resourceUnLoader.ResetAssetInfo();
+            resourceUnLoader.spriteAtlas = spriteAtlasPath;
+            resourceUnLoader.spriteName = spriteName;
+
+            ResourcesMgr.instance.LoadAssetAsync<SpriteAtlas>(spriteAtlasPath, (string resPath, UnityEngine.Object obj, object[] param) =>
             {
                 renderer.sprite = (obj as SpriteAtlas).GetSprite(spriteName);
             });

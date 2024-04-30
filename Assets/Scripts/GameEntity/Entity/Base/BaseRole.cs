@@ -198,12 +198,12 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if(m_OnGroundHurtStateData != null)
         {
-            ReferencePool.Release(m_OnGroundHurtStateData);
+            ReferencePool.ReleaseReference(m_OnGroundHurtStateData);
         }
 
         if(m_DropTrapStateData != null)
         {
-            ReferencePool.Release(m_DropTrapStateData);
+            ReferencePool.ReleaseReference(m_DropTrapStateData);
         }
 
         m_IsSmoon = false;
@@ -521,7 +521,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             ChangeState<RoleDead>();
         }
 
-        ReferencePool.Release(hurtStatedata);
+        ReferencePool.ReleaseReference(hurtStatedata);
         m_OnGroundHurtStateData = null;
     }
 
@@ -639,7 +639,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            ReferencePool.Release(m_DropTrapStateData);
+            ReferencePool.ReleaseReference(m_DropTrapStateData);
             m_IsDropTrag = false;
             m_DropTrapStateData = null;
         }
@@ -698,7 +698,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.up * yOffset).normalized;
             OnMoveMsg(data);
-            ReferencePool.Release(data);
+            ReferencePool.ReleaseReference(data);
             return;
         }
 
@@ -709,7 +709,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.right * xOffset).normalized;
             OnMoveMsg(data);
-            ReferencePool.Release(data);
+            ReferencePool.ReleaseReference(data);
             return;
         }
 

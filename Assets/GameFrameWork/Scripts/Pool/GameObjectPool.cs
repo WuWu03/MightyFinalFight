@@ -54,7 +54,7 @@ namespace GameFrameWork.Pool
                     {
                         PoolObjectInfo info = m_QueuePool.Dequeue();
                         go = info.poolObject as GameObject;
-                        ReferencePool.Release(info);
+                        ReferencePool.ReleaseReference(info);
                     }
                 }
 
@@ -65,7 +65,9 @@ namespace GameFrameWork.Pool
 
                 if (m_IsFromAsset)
                 {
-                    go.GetOrAddComponent<ResourceMark>().assetPath = m_Tag;
+                    ResourceUnLoader resourceUnLoader = go.GetOrAddComponent<ResourceUnLoader>();
+                    resourceUnLoader.ResetAssetInfo();
+                    resourceUnLoader.assetPath = m_Tag;
                 }
 
                 m_UsingCount++;
@@ -84,7 +86,9 @@ namespace GameFrameWork.Pool
 
                 if (m_IsFromAsset)
                 {
-                    go.GetOrAddComponent<ResourceMark>();
+                    ResourceUnLoader resourceUnLoader = go.GetOrAddComponent<ResourceUnLoader>();
+                    resourceUnLoader.ResetAssetInfo();
+                    resourceUnLoader.assetPath = m_Tag;
                 }
 
                 go.SetActive(false);
@@ -116,7 +120,7 @@ namespace GameFrameWork.Pool
                     if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime > ConstField.CollectTime))
                     {
                         GameObject.Destroy(info.poolObject);
-                        ReferencePool.Release(info);
+                        ReferencePool.ReleaseReference(info);
                     }
                     else
                     {
@@ -133,13 +137,15 @@ namespace GameFrameWork.Pool
 
                     if (info != null)
                     {
+                        ResourceUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<ResourceUnLoader>(true);
+
+                        for (int i = 0; i < resourceUnLoaders.Length; i++)
+                        {
+                            resourceUnLoaders[i].BeforeOnDestroy();
+                        }
+
                         GameObject.Destroy(info.poolObject);
                     }
-                }
-
-                if (m_IsFromAsset)
-                {
-                    ResourcesMgr.instance.UnloadAsset(m_Tag);
                 }
 
                 m_QueuePool.Clear();

@@ -100,8 +100,8 @@ public class StageMgr : BaseMgr<StageMgr>
 
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
-            EntityMgr.instance.DestroyAll();
-            ReferencePool.ReleaseAll();
+            EntityMgr.instance.DestoryAllUnUsedEntities();
+            ReferencePool.Release();
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
         });

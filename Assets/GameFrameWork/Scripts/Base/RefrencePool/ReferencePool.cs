@@ -51,7 +51,29 @@ namespace GameFrameWork
             return referencePoolInfos;
         }
 
-        public static void ReleaseAll()
+        public static void Release()
+        {
+            lock (m_DicReferenceCollection)
+            {
+                m_ListRleaseCollection.Clear();
+
+                foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
+                {
+                    if (kvp.Value.usingReferenceCount < 1)
+                    {
+                        kvp.Value.RemoveAll();
+                        m_ListRleaseCollection.Add(kvp.Key);
+                    }
+                }
+
+                for (int i = 0; i < m_ListRleaseCollection.Count; i++)
+                {
+                    m_DicReferenceCollection.Remove(m_ListRleaseCollection[i]);
+                }
+            }
+        }
+
+        public static void ShutDown()
         {
             lock (m_DicReferenceCollection)
             {
@@ -75,7 +97,7 @@ namespace GameFrameWork
             return GetReferenceCollection(referenceType).Acquire(args);
         }
 
-        public static void Release(IReference reference)
+        public static void ReleaseReference(IReference reference)
         {
             if(reference == null)
             {
@@ -163,6 +185,7 @@ namespace GameFrameWork
             return referenceCollection;
         }
 
+        private static List<Type> m_ListRleaseCollection = new List<Type>();
         private static bool m_EnableStrickCheck = false;
         private static Dictionary<Type, ReferenceCollection> m_DicReferenceCollection = new Dictionary<Type, ReferenceCollection>();
     }

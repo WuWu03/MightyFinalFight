@@ -44,7 +44,7 @@ namespace GameFrameWork.Pool
                 if (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime)
                 {
                     ResourcesMgr.instance.UnloadAsset(info.assetPath, false);
-                    ReferencePool.Release(info);
+                    ReferencePool.ReleaseReference(info);
                     UnityEngine.Resources.UnloadUnusedAssets();
                     m_RemoveList.Add(kvp.Key);
                 }

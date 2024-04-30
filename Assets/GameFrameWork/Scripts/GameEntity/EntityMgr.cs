@@ -156,6 +156,22 @@ namespace GameFrameWork.GameEntity
             m_DestroyCount++;
         }
 
+        public void DestoryAllUnUsedEntities()
+        {
+            foreach (KeyValuePair<Type, List<BaseEntity>> kvp in m_DicUnUsedEntity)
+            {
+                for (int i = 0; i < kvp.Value.Count; i++)
+                {
+                    kvp.Value[i].BeforeDestroy();
+                    GameObject.Destroy(kvp.Value[i].gameObject);
+                    m_ReleaseCount++;
+                    m_DestroyCount++;
+                }
+            }
+
+            m_DicUnUsedEntity.Clear();
+        }
+
         public void DestroyAll()
         {
             List<BaseEntity> releaseList = new List<BaseEntity>();
@@ -174,25 +190,13 @@ namespace GameFrameWork.GameEntity
             }
 
             releaseList.Clear();
-            m_DicUsingEntity.Clear();
+            DestoryAllUnUsedEntities();
 
+            m_DicUsingEntity.Clear();
             m_AcquireCount = 0;
             m_CreateCount = 0;
             m_ReleaseCount = 0;
             m_DestroyCount = 0;
-
-            foreach (KeyValuePair<Type, List<BaseEntity>> kvp in m_DicUnUsedEntity)
-            {
-                for (int i = 0; i < kvp.Value.Count; i++)
-                {
-                    kvp.Value[i].BeforeDestroy();
-                    GameObject.Destroy(kvp.Value[i].gameObject);
-                    m_ReleaseCount++;
-                    m_DestroyCount++;
-                }
-            }
-
-            m_DicUnUsedEntity.Clear();
         }
 
         public T[] FindEntities<T>(string name = null) where T : BaseEntity

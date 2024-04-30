@@ -1,11 +1,9 @@
 using DG.Tweening;
+using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
-using GameFrameWork.GameEntity;
-using GameFrameWork.Audio;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
 using UnityEngine;
 public class TaskTriggerStory_1003 : BaseTaskTrigger
 {
@@ -71,10 +69,10 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
         MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
-        CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
-        group.alpha = 0f;
+        //CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
+        //group.alpha = 0f;
         mainPanel.Show();
-        group.DOFade(1, 1);
+        //group.DOFade(1, 1);
 
         black.GetComponent<SpriteRenderer>().DOFade(0, 1).OnComplete(() =>
         {

@@ -16,7 +16,7 @@ namespace GameFrameWork.Resources
             base.OnAwake();
             m_DicLoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_DicAssetVersions = new Dictionary<string, AssetVersion>();
+            m_DicAssetBundleVersions = new Dictionary<string, AssetBundleVersion>();
 
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
@@ -25,7 +25,7 @@ namespace GameFrameWork.Resources
             }
 #endif
             string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.maniFestName);
-            string versionUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.assetBundleVersionName);
+            string versionUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, AppConfig.instance.versionFileName);
 
             byte[] stream = File.ReadAllBytes(maniFesturl);
             AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
@@ -38,7 +38,7 @@ namespace GameFrameWork.Resources
                 string[] data = version[i].Split('|');
                 if (!data[1].Equals(".manifest"))
                 {
-                    m_DicAssetVersions.Add(data[0], new AssetVersion(data[0], data[1], data[2]));
+                    m_DicAssetBundleVersions.Add(data[0], new AssetBundleVersion(data[0], data[1], data[2]));
                 }
             }
         }
@@ -378,7 +378,7 @@ namespace GameFrameWork.Resources
                 assetBundleName = PathUtil.FormatPath(path, assetName).ToLower();
             }
 
-            if (m_DicAssetVersions.TryGetValue(assetBundleName, out AssetVersion version))
+            if (m_DicAssetBundleVersions.TryGetValue(assetBundleName, out AssetBundleVersion version))
             {
                 return StringUtil.Format(assetBundleName, version.extendName);
             }
@@ -414,19 +414,18 @@ namespace GameFrameWork.Resources
 
             for (int i = 0; i < list.Count; i++)
             {
-                m_DicLoadedAssetBundles[list[i]].referencedCount = 0;
                 UnloadAsset(list[i]);
             }
 
             list.Clear();
             m_DicLoadedAssetBundles.Clear();
             m_DicLoadRequests.Clear();
-            m_DicAssetVersions.Clear();
+            m_DicAssetBundleVersions.Clear();
         }
 
         private AssetBundleManifest m_Manifest;
         private Dictionary<string, AssetBundleInfo> m_DicLoadedAssetBundles = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
-        private Dictionary<string, AssetVersion> m_DicAssetVersions = null;
+        private Dictionary<string, AssetBundleVersion> m_DicAssetBundleVersions = null;
     }
 }

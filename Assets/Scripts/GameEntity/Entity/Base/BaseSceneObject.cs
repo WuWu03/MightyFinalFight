@@ -39,7 +39,7 @@ public class BaseSceneObject : BaseEntity
             return m_PosZ;
         }
     }
-
+    
     public float currPosZ
     {
         get
@@ -126,12 +126,12 @@ public class BaseSceneObject : BaseEntity
 
         if(m_Data != null)
         {
-            ReferencePool.Release(m_Data);
+            ReferencePool.ReleaseReference(m_Data);
         }
 
         if (m_EntityAttribute != null)
         {
-            ReferencePool.Release(m_EntityAttribute);
+            ReferencePool.ReleaseReference(m_EntityAttribute);
         }
 
         m_IsResComplete = false;

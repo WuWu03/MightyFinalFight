@@ -52,7 +52,7 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Release()
     {
         m_Animator.animation.Reset();
-        m_FsmMachine.ShutDown();
+        m_FsmMachine.Release();
         
         m_HitTrigger = null;
         m_Animator = null;

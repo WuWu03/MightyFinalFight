@@ -40,7 +40,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.SetCatch(false);
         m_Owner.OnAttackMsg(attackData, true);
 
-        ReferencePool.Release(attackData);
+        ReferencePool.ReleaseReference(attackData);
     }
 
 

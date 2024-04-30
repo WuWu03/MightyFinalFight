@@ -29,7 +29,7 @@ public class BaseRoleCtrl : BaseCtrl
         moveData.canChangeDir = canChangeDir;
         m_Owner.OnMoveMsg(moveData);
 
-        ReferencePool.Release(moveData);
+        ReferencePool.ReleaseReference(moveData);
     }
 
     public void Attack(Vector2 dir)
@@ -125,11 +125,15 @@ public class BaseRoleCtrl : BaseCtrl
         jumpData.canChangeDir = canChangeDir;
         m_Owner.OnJumpMsg(jumpData);
 
-        ReferencePool.Release(jumpData);
+        ReferencePool.ReleaseReference(jumpData);
     }
 
     protected override void OnUpdate()
     {
+        if(m_Owner is BaseHero)
+        {
+
+        }
         if (m_IsAttack)
         {
             if (m_Owner.IsPlayComplete() )
@@ -175,7 +179,7 @@ public class BaseRoleCtrl : BaseCtrl
     {
         if(m_RoleData != null)
         {
-            ReferencePool.Release(m_RoleData);
+            ReferencePool.ReleaseReference(m_RoleData);
             m_RoleData = null;
         }
 
