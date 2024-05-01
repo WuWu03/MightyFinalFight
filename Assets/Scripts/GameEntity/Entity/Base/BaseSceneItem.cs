@@ -33,6 +33,7 @@ public class BaseSceneItem : BaseGravityObject
     public override void Release()
     {
         m_Owner = null;
+        SceneEntityMgr.instance.ReleaseSceneItem(this);
         base.Release();
     }
 

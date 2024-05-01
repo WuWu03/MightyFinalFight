@@ -11,7 +11,7 @@ namespace GameFrameWork.BehaviourTree
         {
             if (m_Config == null)
             {
-                string jsonStr = ResourcesMgr.instance.LoadAsset<TextAsset>(configPath).text;
+                string jsonStr = ResourcesMgr.instance.LoadAssetSync<TextAsset>(configPath).text;
                 m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
             }
         }

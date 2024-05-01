@@ -83,7 +83,7 @@ namespace GameFrameWork
                 }
             }
 
-            return Activator.CreateInstance(typeof(T), args) as T;
+            return Activator.CreateInstance(typeof(T), args, null) as T;
         }
 
         public IReference Acquire(object[] args)

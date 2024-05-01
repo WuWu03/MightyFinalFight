@@ -1,29 +1,32 @@
-using GameFrameWork.Resources;
+using GameFrameWork.Pool;
 using UnityEngine;
 
 public class ResourceUnLoader : MonoBehaviour
 {
-    public string assetPath;
-    public string spriteAtlas;
+    public string gameObjectPath;
+    public string spriteAtlasPath;
     public string spriteName;
-
+    public GameObject go;
+    public UnityEngine.Object spriteAtlas;
 
     public void ResetAssetInfo()
     {
-        assetPath = string.Empty;
-        spriteAtlas = string.Empty;
+        gameObjectPath = string.Empty;
+        spriteAtlasPath = string.Empty;
         spriteName = string.Empty;
+        go = null;
+        spriteAtlas = null;
     }
 
     public void BeforeOnDestroy()
     {
-        if (!string.IsNullOrEmpty(assetPath))
+        if (!string.IsNullOrEmpty(gameObjectPath))
         {
-            ResourcesMgr.instance.UnloadAsset(assetPath);
+            GameObjectPool.instance.Put(gameObjectPath, go);
         }
-        else if (!string.IsNullOrEmpty(spriteAtlas))
+        else if (!string.IsNullOrEmpty(spriteAtlasPath))
         {
-            ResourcesMgr.instance.UnloadAsset(spriteAtlas);
+            ResourcesPool.instance.Put(spriteAtlasPath, spriteAtlas);
         }
 
         ResetAssetInfo();

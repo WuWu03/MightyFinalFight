@@ -229,8 +229,8 @@ namespace GameFrameWork.UI
             {
                 if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
                 {
-                    ClosePanel(m_CurrPopPanel, false);
                     m_ListPopPanel.Add(m_CurrPopPanel);
+                    ClosePanel(m_CurrPopPanel, false);
                 }
 
                 m_CurrPopPanel = panel;
@@ -281,7 +281,6 @@ namespace GameFrameWork.UI
             {
                 return;
             }
-
 
             panel.Close();
 
@@ -338,7 +337,7 @@ namespace GameFrameWork.UI
                 Queue<WaitLoadPanel> queue = m_QueueWaitLoadPanel;
 
                 lock (queue)
-                {
+                { 
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
                     GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnResComplete, waitLoadPanel);
                 }
@@ -384,7 +383,9 @@ namespace GameFrameWork.UI
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
                 if (m_ListOpenPanel[i].isOpen)
+                {
                     m_ListOpenPanel[i].Update();
+                }
             }
         }
 
@@ -392,7 +393,7 @@ namespace GameFrameWork.UI
         {
             base.OnShutDown();
 
-            for (int i = 0;i < m_ListPopPanel.Count; i++)
+            for (int i = 0; i < m_ListPopPanel.Count; i++)
             {
                 GameObjectPool.instance.Put(m_ListPopPanel[i].resPath, m_ListPopPanel[i].gameObject);
             }

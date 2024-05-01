@@ -9,9 +9,9 @@ public static class StaticConfig
 
     public static void InitConfig()
     {
-        SkillConfig = ResourcesMgr.instance.LoadAsset<SkillConfig>("ConfigData/SkillData");
-        StageConfig = ResourcesMgr.instance.LoadAsset<StageConfig>("ConfigData/StageConfigData");
-        TaskConfig = ResourcesMgr.instance.LoadAsset<TaskConfig>("ConfigData/TaskData");
+        SkillConfig = ResourcesMgr.instance.LoadAssetSync<SkillConfig>("ConfigData/SkillData");
+        StageConfig = ResourcesMgr.instance.LoadAssetSync<StageConfig>("ConfigData/StageConfigData");
+        TaskConfig = ResourcesMgr.instance.LoadAssetSync<TaskConfig>("ConfigData/TaskData");
     }
 
     public static void Clear()

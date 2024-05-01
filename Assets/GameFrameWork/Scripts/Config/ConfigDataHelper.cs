@@ -16,7 +16,7 @@ public static partial class ConfigDataHelper
 
         T[] t = null;
 
-        TextAsset txt = ResourcesMgr.instance.LoadAsset<TextAsset>(path);
+        TextAsset txt = ResourcesMgr.instance.LoadAssetSync<TextAsset>(path);
 
         if (txt == null || txt.bytes == null)
         {

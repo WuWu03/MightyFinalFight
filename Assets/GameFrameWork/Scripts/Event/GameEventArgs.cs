@@ -4,7 +4,7 @@
     {
         public static GameEventArgs Create(int id)
         {
-            GameEventArgs args = new GameEventArgs();
+            GameEventArgs args = ReferencePool.Acquire<GameEventArgs>();
             args.id = id;
             return args;
         }

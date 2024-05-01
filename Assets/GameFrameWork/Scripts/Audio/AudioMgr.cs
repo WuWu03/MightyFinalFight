@@ -23,7 +23,7 @@ namespace GameFrameWork.Audio
 
         protected override void OnAwake()
         {
-            m_Root = new GameObject("SoundMgr");
+            m_Root = new GameObject("AudioMgr");
             m_BGMAudioSource = m_Root.GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();
             m_Root.transform.SetParent(transform, false);
@@ -94,7 +94,6 @@ namespace GameFrameWork.Audio
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
-                    //ResourcesMgr.instance.LoadAssetAsync
                     ResourcesPool.instance.Cache<AudioClip>(audioGroups[i].GetPath());
                 }
             }
@@ -108,14 +107,24 @@ namespace GameFrameWork.Audio
             }
 
             StopBGM(isForcePlay);
-
-            m_QueueBGMAudioGroup.Clear();
             m_QueueBGMAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
         }
 
-        public void StopBGM()
+        public void StopBGM(bool isForceStop = false)
         {
-            StopBGM(true);
+            if (m_BGMAudioGroup != null)
+            {
+                ResourcesPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
+                ReferencePool.ReleaseReference(m_BGMAudioGroup);
+                m_BGMAudioSource.Stop();
+                m_BGMAudioGroup = null;
+                m_BGMAudioSource.clip = null;
+            }
+
+            if (isForceStop)
+            {
+                m_QueueBGMAudioGroup.Clear();
+            }
         }
 
         public void StartBGM()
@@ -321,22 +330,6 @@ namespace GameFrameWork.Audio
             }
         }
 
-        private void StopBGM(bool isForceStop = false)
-        {
-            if (m_BGMAudioGroup != null)
-            {
-                ResourcesPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
-                ReferencePool.ReleaseReference(m_BGMAudioGroup);
-                m_BGMAudioSource.Stop();
-                m_BGMAudioGroup = null;
-                m_BGMAudioSource.clip = null;
-            }
-
-            if(isForceStop)
-            {
-                m_QueueBGMAudioGroup.Clear();
-            }
-        }
 
         protected override void OnShutDown()
         {

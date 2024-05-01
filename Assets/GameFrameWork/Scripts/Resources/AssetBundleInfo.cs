@@ -2,14 +2,22 @@ using UnityEngine;
 
 namespace GameFrameWork.Resources
 {
-    public class AssetBundleInfo
+    public class AssetBundleInfo :IReference
     {
         public AssetBundle assetBundle;
         public int referencedCount;
 
-        public AssetBundleInfo(AssetBundle assetBundle)
+        public static AssetBundleInfo Create(AssetBundle assetBundle)
         {
-            this.assetBundle = assetBundle;
+            AssetBundleInfo assetBundleInfo = ReferencePool.Acquire<AssetBundleInfo>();
+            assetBundleInfo.assetBundle = assetBundle;
+            assetBundleInfo.referencedCount = 0;
+            return assetBundleInfo;
+        }
+
+        public void Clear()
+        {
+            assetBundle = null;
             referencedCount = 0;
         }
     }

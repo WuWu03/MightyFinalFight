@@ -104,7 +104,7 @@ public class RoleSelectPanel : BasePanel
 	{
         m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
 
-        AudioMgr.instance.StopBGM();
+		AudioMgr.instance.StopBGM(true);
 		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnSelected");
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 

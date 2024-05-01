@@ -37,6 +37,7 @@ namespace GameFrameWork.Pool
             {
                 GameObject root = new GameObject(tag);
                 root.transform.SetParent(poolRoot, false);
+                root.SetActive(false);
                 m_GORoot = root.transform;
                 m_Prefab = prefab;
                 m_Tag = tag;
@@ -67,7 +68,8 @@ namespace GameFrameWork.Pool
                 {
                     ResourceUnLoader resourceUnLoader = go.GetOrAddComponent<ResourceUnLoader>();
                     resourceUnLoader.ResetAssetInfo();
-                    resourceUnLoader.assetPath = m_Tag;
+                    resourceUnLoader.gameObjectPath = m_Tag;
+                    resourceUnLoader.go = go;
                 }
 
                 m_UsingCount++;
@@ -83,14 +85,6 @@ namespace GameFrameWork.Pool
                 }
 
                 GameObject go = GameObject.Instantiate(m_Prefab, m_GORoot, false);
-
-                if (m_IsFromAsset)
-                {
-                    ResourceUnLoader resourceUnLoader = go.GetOrAddComponent<ResourceUnLoader>();
-                    resourceUnLoader.ResetAssetInfo();
-                    resourceUnLoader.assetPath = m_Tag;
-                }
-
                 go.SetActive(false);
                 m_QueuePool.Enqueue(PoolObjectInfo.Create(go, -1, false, string.Empty));
             }
@@ -104,6 +98,11 @@ namespace GameFrameWork.Pool
                     go.transform.localPosition = Vector3.zero;
                     m_UsingCount--;
                     m_QueuePool.Enqueue(PoolObjectInfo.Create(go, Time.time, isReleaseImmdiately, string.Empty));
+
+                    if (isReleaseImmdiately)
+                    {
+                        CheckRelease();
+                    }
                 }
             }
 
@@ -119,7 +118,7 @@ namespace GameFrameWork.Pool
 
                     if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime > ConstField.CollectTime))
                     {
-                        GameObject.Destroy(info.poolObject);
+                        DestoryPoolObject(info);
                         ReferencePool.ReleaseReference(info);
                     }
                     else
@@ -137,15 +136,14 @@ namespace GameFrameWork.Pool
 
                     if (info != null)
                     {
-                        ResourceUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<ResourceUnLoader>(true);
-
-                        for (int i = 0; i < resourceUnLoaders.Length; i++)
-                        {
-                            resourceUnLoaders[i].BeforeOnDestroy();
-                        }
-
-                        GameObject.Destroy(info.poolObject);
+                        DestoryPoolObject(info);
+                        ReferencePool.ReleaseReference(info);
                     }
+                }
+
+                if (m_IsFromAsset)
+                {
+                    ResourcesPool.instance.Put(m_Tag, m_Prefab);
                 }
 
                 m_QueuePool.Clear();
@@ -153,6 +151,21 @@ namespace GameFrameWork.Pool
                 m_Tag = string.Empty;
                 m_IsFromAsset = false;
                 GameObject.Destroy(m_GORoot.gameObject);
+            }
+
+            private void DestoryPoolObject(PoolObjectInfo info)
+            {
+                ResourceUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<ResourceUnLoader>(true);
+
+                for (int i = 0; i < resourceUnLoaders.Length; i++)
+                {
+                    if (resourceUnLoaders[i].go != info.poolObject)
+                    {
+                        resourceUnLoaders[i].BeforeOnDestroy();
+                    }
+                }
+
+                GameObject.Destroy(info.poolObject);
             }
 
             private GameObject m_Prefab = null;
@@ -204,7 +217,6 @@ namespace GameFrameWork.Pool
         /// </summary>
         public GameObject Get(string tag, Transform parent, string layer, bool isActive = true)
         {
-
             if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
                 GameObject go = pool.Get(isActive);
@@ -239,7 +251,7 @@ namespace GameFrameWork.Pool
                 {
                     listLoadRequest = new List<LoadRequest>() { request };
                     m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                    ResourcesMgr.instance.LoadAssetAsync<GameObject>(assetPath, OnLoaded);
+                    ResourcesPool.instance.Get<GameObject>(assetPath, OnLoaded);
                 }
                 else
                 {
@@ -255,7 +267,40 @@ namespace GameFrameWork.Pool
         {
             if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
+                ResourceUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<ResourceUnLoader>(true);
+
+                for (int i = 0; i < resourceUnLoaders.Length; i++)
+                {
+                    if (resourceUnLoaders[i].gameObject != go)
+                    {
+                        Put(resourceUnLoaders[i].gameObjectPath, resourceUnLoaders[i].go, false);
+                    }
+                }
+
                 pool.Put(go, isReleaseImmdiately);
+            }
+        }
+
+        public void CheckRelease()
+        {
+            base.OnUpdate();
+
+            m_ListReleasePoolKey.Clear();
+
+            foreach (KeyValuePair<string, Pool> kvp in m_DicPool)
+            {
+                kvp.Value.CheckRelease();
+
+                if (kvp.Value.count < 1 && kvp.Value.isFromAsset && kvp.Value.usingCount < 1)
+                {
+                    m_ListReleasePoolKey.Add(kvp.Key);
+                }
+            }
+
+            for (int i = 0; i < m_ListReleasePoolKey.Count; i++)
+            {
+                m_DicPool[m_ListReleasePoolKey[i]].Clear();
+                m_DicPool.Remove(m_ListReleasePoolKey[i]);
             }
         }
 
@@ -287,32 +332,10 @@ namespace GameFrameWork.Pool
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
                 listLoadRequest[i].Call(Get(assetPath, null, string.Empty));
+                ReferencePool.ReleaseReference(listLoadRequest[i]);
             }
 
             m_DicLoadRequests.Remove(assetPath);
-        }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            m_ListReleasePoolKey.Clear();
-
-            foreach (KeyValuePair<string, Pool> kvp in m_DicPool)
-            {
-                kvp.Value.CheckRelease();
-
-                if (kvp.Value.count < 1 && kvp.Value.isFromAsset && kvp.Value.usingCount < 1)
-                {
-                    m_ListReleasePoolKey.Add(kvp.Key);
-                }
-            }
-
-            for (int i = 0; i < m_ListReleasePoolKey.Count; i++)
-            {
-                m_DicPool[m_ListReleasePoolKey[i]].Clear();
-                m_DicPool.Remove(m_ListReleasePoolKey[i]);
-            }
         }
 
         /// <summary>
@@ -332,8 +355,8 @@ namespace GameFrameWork.Pool
         }
 
         private List<string> m_ListReleasePoolKey = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
         private Transform m_PoolRoot = null;
         private Dictionary<string, Pool> m_DicPool = null;
+        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Audio;
+﻿using GameFrameWork;
+using GameFrameWork.Audio;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
@@ -91,6 +92,8 @@ public class Barrel : BaseAvatar, ICanBeHit
             ChangeState<BarrelDead>(data);
             SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, m_MapPos);
         }
+
+        ReferencePool.ReleaseReference(data);
     }
 
     public void SetCatch(bool value) { }

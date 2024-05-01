@@ -4,6 +4,7 @@ using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Map;
+using GameFrameWork.Pool;
 using GameFrameWork.Scene;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
@@ -100,10 +101,12 @@ public class StageMgr : BaseMgr<StageMgr>
 
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
-            EntityMgr.instance.DestoryAllUnUsedEntities();
-            ReferencePool.Release();
-            SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
+            EntityMgr.instance.DestoryAllUnUsedEntities();      
+            GameObjectPool.instance.CheckRelease();
+            ResourcesPool.instance.CheckRelease();   
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
+            SceneMgr.instance.LoadSceneAsync(m_CurrStageData.SceneName);
+            ReferencePool.Release();
         });
     }
 

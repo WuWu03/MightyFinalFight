@@ -22,7 +22,7 @@ public class MainPanel : BasePanel
 	public override float panelUnLoadTime { get { return 0f; } }
 	public override UIMgr.Type panelType { get { return UIMgr.Type.Root; } }
 	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer2; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
+	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
 
     protected override void OnInit(object[] param)
 	{

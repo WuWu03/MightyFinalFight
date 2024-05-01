@@ -103,19 +103,19 @@ namespace GameFrameWork
 
             string spriteAtlasPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
 
-            if (resourceUnLoader.spriteAtlas == spriteAtlasPath && resourceUnLoader.spriteName == spriteName)
+            if (resourceUnLoader.spriteAtlasPath == spriteAtlasPath && resourceUnLoader.spriteName == spriteName)
             {
                 return;
             }
 
             resourceUnLoader.ResetAssetInfo();
-            resourceUnLoader.spriteAtlas = spriteAtlasPath;
+            resourceUnLoader.spriteAtlasPath = spriteAtlasPath;
             resourceUnLoader.spriteName = spriteName;
-
-            ResourcesMgr.instance.LoadAssetAsync<SpriteAtlas>(spriteAtlasPath, (string resPath, UnityEngine.Object obj, object[] param) =>
+            ResourcesPool.instance.Get<SpriteAtlas>(spriteAtlasPath, (GameFrameWorkAction<string, Object, object[]>)((string resPath, UnityEngine.Object obj, object[] param) =>
             {
+                resourceUnLoader.spriteAtlas = obj;
                 renderer.sprite = (obj as SpriteAtlas).GetSprite(spriteName);
-            });
+            }));
         }
 
         public static int ToInt(this string value)

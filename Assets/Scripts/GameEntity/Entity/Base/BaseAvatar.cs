@@ -156,6 +156,22 @@ public abstract class BaseAvatar : BaseGravityObject
         m_Animator.RemoveEventListener(eventName, listener);
     }
 
+    public bool IsAnyState(Type stateType1, Type stateType2 = null, Type stateType3 = null, Type stateType4 = null, Type stateType5 = null, Type stateType6 = null)
+    {
+        if (m_FsmMachine == null || !m_FsmMachine.isRunning)
+        {
+            return false;
+        }
+
+        bool condition1 = stateType1 != null && m_FsmMachine.currStateType.Equals(stateType1);
+        bool condition2 = stateType2 != null && m_FsmMachine.currStateType.Equals(stateType2);
+        bool condition3 = stateType3 != null && m_FsmMachine.currStateType.Equals(stateType3);
+        bool condition4 = stateType4 != null && m_FsmMachine.currStateType.Equals(stateType4);
+        bool condition5 = stateType5 != null && m_FsmMachine.currStateType.Equals(stateType5);
+        bool condition6 = stateType6 != null && m_FsmMachine.currStateType.Equals(stateType6);
+        return condition1 || condition2 || condition3 || condition4 || condition5 || condition6;
+    }
+
     public bool IsAnyState(params Type[] stateTypes)
     {
         if (m_FsmMachine == null || !m_FsmMachine.isRunning || stateTypes == null || stateTypes.Length < 1)

@@ -4,7 +4,7 @@ namespace GameFrameWork
 {
     public abstract class GameFrameWorkEventArgs : EventArgs, IReference
     {
-        public GameFrameWorkEventArgs() 
+        public GameFrameWorkEventArgs()
         {
 
         }

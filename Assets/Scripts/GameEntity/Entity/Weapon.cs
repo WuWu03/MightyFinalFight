@@ -29,6 +29,7 @@ public class Weapon : BaseSceneItem
     {
         m_Owner = owner;
         gameObject.SetActive(false);
+        SceneEntityMgr.instance.ReleaseSceneItem(this);
         AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/Bonus");
     }
 
@@ -46,7 +47,7 @@ public class Weapon : BaseSceneItem
         }
     }
 
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnResComplete(GameObject go, object[] param)
     {
         base.OnResComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();

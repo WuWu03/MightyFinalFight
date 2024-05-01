@@ -210,13 +210,13 @@ public class BaseHero : BaseRole
 
         if (m_CatchAttackCount >= 3)
         {
-            HurtStateData hurtData = HurtStateData.Create();
-            hurtData.attackerDir = m_Dir;
-            hurtData.attackValue = 0;
-            hurtData.isSwoon = true;
-            hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
-            hurtData.isNotPlayHurtSound = true;
-            m_ListCatchTarget[0].OnHurtMsg(hurtData);
+            HurtStateData hurtStateData = HurtStateData.Create();
+            hurtStateData.attackerDir = m_Dir;
+            hurtStateData.attackValue = 0;
+            hurtStateData.isSwoon = true;
+            hurtStateData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
+            hurtStateData.isNotPlayHurtSound = true;
+            m_ListCatchTarget[0].OnHurtMsg(hurtStateData);
         }
     }
 

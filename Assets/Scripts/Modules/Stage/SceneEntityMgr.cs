@@ -93,7 +93,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
     }
 
-
     public Barrel CreateBarrel(int entityId, float dir, int groundY, int itemId, bool isFloat, float moveSpeed, Vector2Int pos)
     {
         Barrel barrel = SceneEntityFactory.CreateBarrel(entityId, dir, groundY, itemId, isFloat, moveSpeed, pos);
@@ -153,6 +152,11 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
 
         m_ListEnemies.Clear();
+    }
+
+    public void ReleaseSceneItem(BaseSceneItem item)
+    {
+        m_ListSceneItems.Remove(item);
     }
 
     public void ReleaseSceneItems()

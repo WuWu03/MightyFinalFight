@@ -89,16 +89,16 @@ public class SkillNearHitEffect : SkillBaseEffect
                 {
                     if(m_PauseIndex < m_Targets.Count)
                     {
-                        HurtStateData hurtData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
+                        HurtStateData hurtStateData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
 
-                        if (hurtData != null)
+                        if (hurtStateData != null)
                         {
                             if (!m_IsHurtTarget)
                             {
-                                m_IsHurtTarget = !m_Targets[m_PauseIndex].IsHurtWillDie(hurtData.attackValue);
+                                m_IsHurtTarget = !m_Targets[m_PauseIndex].IsHurtWillDie(hurtStateData.attackValue);
                             }
 
-                            m_Targets[m_PauseIndex].OnHurtMsg(hurtData);
+                            m_Targets[m_PauseIndex].OnHurtMsg(hurtStateData);
                             m_OffsetTime = 0.05f;
                             Time.timeScale = 1f;
                             m_PauseTimer = Time.unscaledTime;

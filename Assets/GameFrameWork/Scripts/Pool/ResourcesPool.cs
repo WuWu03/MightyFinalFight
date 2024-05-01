@@ -19,17 +19,8 @@ namespace GameFrameWork.Pool
             m_RemoveList = new List<string>();
         }
 
-        protected override void OnUpdate()
+        public void CheckRelease()
         {
-            base.OnUpdate();
-
-            if (m_CollectTimer != 0 && Time.time - m_CollectTimer < 0.5f)
-            {
-                return;
-            }
-
-            m_CollectTimer = Time.time;
-
             if (m_DicLoadedAssets == null || m_DicLoadedAssets.Count < 1)
             {
                 return;
@@ -138,6 +129,7 @@ namespace GameFrameWork.Pool
                 }
 
                 listLoadRequest[i].Call(obj);
+                ReferencePool.ReleaseReference(listLoadRequest[i]);
             }
 
             m_DicLoadRequests.Remove(assetPath);
@@ -163,7 +155,6 @@ namespace GameFrameWork.Pool
             m_RemoveList = null;
         }
 
-        private float m_CollectTimer = 0;
         protected Transform m_PoolRoot = null;
         private List<string> m_RemoveList = null;
         private Dictionary<string, PoolObjectInfo> m_DicLoadedAssets = null;

@@ -77,10 +77,6 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
                 {
-                    if (i == 2)
-                    {
-
-                    }
                     if (string.IsNullOrEmpty(m_AssetBundleConfig.Datas[i].AssetPath))
                     {
                         continue;

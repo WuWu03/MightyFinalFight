@@ -1,29 +1,28 @@
-﻿using GameFrameWork.Utilities;
+﻿#if UNITY_EDITOR
+using GameFrameWork.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace GameFrameWork.Resources
 {
     public class EditorResourcesMgr : Singleton<EditorResourcesMgr>
     {
-#if UNITY_EDITOR
         public EditorResourcesMgr()
         {
             m_DicLoadedAssets = new Dictionary<string, UnityEngine.Object>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
         }
 
-        public UnityEngine.Object LoadAssetEditor(string assetPath, Type t = null)
+        public UnityEngine.Object LoadAssetSync(string assetPath, Type t = null)
         {
             Log.LogInfo("开始加载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>]");
-            return LoadAsset(assetPath, t);
+            return OnLoadAssetSync(assetPath, t);
         }
 
-        public void LoadAssetEditorAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, params object[] args)
+        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, params object[] args)
         {
             LoadRequest loadRequest = LoadRequest.Create();
             loadRequest.assetPath = assetPath;
@@ -34,7 +33,7 @@ namespace GameFrameWork.Resources
             {
                 requests = new List<LoadRequest>() { loadRequest };
                 m_DicLoadRequests.Add(assetPath, requests);
-                ResourcesMgr.instance.StartCoroutine(LoadAssetAsync(assetPath, t));
+                ResourcesMgr.instance.StartCoroutine(OnLoadAssetAsync(assetPath, t));
             }
             else
             {
@@ -70,7 +69,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 加载资源
         /// </summary>
-        private UnityEngine.Object LoadAsset(string assetPath, Type t)
+        private UnityEngine.Object OnLoadAssetSync(string assetPath, Type t)
         {
             if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
             {
@@ -96,11 +95,11 @@ namespace GameFrameWork.Resources
         }
 
         // 模拟异步加载的行为
-        private IEnumerator LoadAssetAsync(string assetPath, Type t = null)
+        private IEnumerator OnLoadAssetAsync(string assetPath, Type t = null)
         {
             yield return null;
-            UnityEngine.Object obj = LoadAssetEditor(assetPath, t);
-            yield return new WaitForSeconds(0.1f);
+            UnityEngine.Object obj = LoadAssetSync(assetPath, t);
+            yield return null;
 
             if (m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> list))
             {
@@ -112,6 +111,8 @@ namespace GameFrameWork.Resources
                         {
                             list[i].Call(obj);
                         }
+
+                        ReferencePool.ReleaseReference(list[i]);
                     }
                 }
 
@@ -121,6 +122,6 @@ namespace GameFrameWork.Resources
 
         private Dictionary<string, UnityEngine.Object> m_DicLoadedAssets = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
-#endif
     }
 }
+#endif
