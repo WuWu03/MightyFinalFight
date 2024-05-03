@@ -30,11 +30,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            if(!string.IsNullOrEmpty(Path.GetExtension(assetPath)))
-            {
-                assetPath = assetPath.Substring(0, assetPath.LastIndexOf("/") + 1);
-            }
-            else if(!assetPath.EndsWith("/"))
+            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)) && !assetPath.EndsWith("/"))
             {
                 assetPath = assetPath + "/";
             }

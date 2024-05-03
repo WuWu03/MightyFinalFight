@@ -17,6 +17,7 @@ namespace GameFrameWork.Resources
             m_DicLoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
             m_DicAssetBundleVersions = new Dictionary<string, AssetBundleVersion>();
+            m_DicAssetMap = new Dictionary<string, string>();
 
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
@@ -26,6 +27,7 @@ namespace GameFrameWork.Resources
 #endif
             string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.maniFestName);
             string versionUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, AppConfig.instance.versionFileName);
+            string assetMapUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.assetMapName);
 
             byte[] stream = File.ReadAllBytes(maniFesturl);
             AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
@@ -41,6 +43,14 @@ namespace GameFrameWork.Resources
                     m_DicAssetBundleVersions.Add(data[0], new AssetBundleVersion(data[0], data[1], data[2]));
                 }
             }
+
+            string[] assetMap = File.ReadAllText(assetMapUrl).Split('\n');
+
+            for (int i = 0; i < assetMap.Length; i++)
+            {
+                string[] data = assetMap[i].Split('|');
+                m_DicAssetMap.Add(data[0], data[1]);
+            }
         }
 
         /// <summary>
@@ -48,7 +58,7 @@ namespace GameFrameWork.Resources
         /// </summary>
         public T LoadAssetSync<T>(string assetPath) where T : Object
         {
-            Object obj = LoadAssetSync(assetPath, null, typeof(T));
+            Object obj = LoadAssetSync(assetPath, typeof(T));
 
             if (obj == null)
             {
@@ -63,29 +73,6 @@ namespace GameFrameWork.Resources
         /// </summary>
         public Object LoadAssetSync(string assetPath, Type t = null)
         {
-            return LoadAssetSync(assetPath, null, t);
-        }
-
-        /// <summary>
-        /// 同步加载资源
-        /// </summary>
-        public T LoadAssetSync<T>(string assetPath, string assetName) where T : Object
-        {
-            Object obj = LoadAssetSync(assetPath, assetName, typeof(T));
-
-            if (obj == null)
-            {
-                return null;
-            }
-
-            return obj as T;
-        }
-
-        /// <summary>
-        /// 同步加载资源
-        /// </summary>
-        public Object LoadAssetSync(string assetPath, string assetName, Type t = null)
-        {
             if (t == null)
             {
                 t = typeof(Object);
@@ -96,7 +83,7 @@ namespace GameFrameWork.Resources
                 return EditorResourcesMgr.Instance.LoadAssetSync(assetPath, t);
             }
 #endif
-            return LoadSync(assetPath, assetName, t);
+            return LoadSync(assetPath, t);
         }
 
         /// <summary>
@@ -104,29 +91,13 @@ namespace GameFrameWork.Resources
         /// </summary>
         public void LoadAssetAsync<T>(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args)
         {
-            LoadAssetAsync(assetPath, null, action, typeof(T), args);
+            LoadAssetAsync(assetPath, action, typeof(T), args);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
         public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
-        {
-            LoadAssetAsync(assetPath, null, action, t, args);
-        }
-
-        /// <summary>
-        /// 异步加载资源
-        /// </summary>
-        public void LoadAssetAsync<T>(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args)
-        {
-            LoadAssetAsync(assetPath, assetName, action, typeof(T), args);
-        }
-
-        /// <summary>
-        /// 异步加载资源
-        /// </summary>
-        public void LoadAssetAsync(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
         {
             if (t == null)
             {
@@ -139,22 +110,31 @@ namespace GameFrameWork.Resources
                 return;
             }
 #endif
-            LoadAsync(assetPath, assetName, action, t, args);
+            LoadAsync(assetPath, false, action, t, args);
         }
 
         /// <summary>
         /// 卸载资源
         /// </summary>
+        /// 
         public void UnloadAsset(string assetPath, bool isThorough = false)
         {
+            UnloadAsset(assetPath, false, isThorough);
+        }
+
+        /// <summary>
+        /// 卸载资源
+        /// </summary>
+        public void UnloadAsset(string assetPath, bool isBundle, bool isThorough)
+        {
 #if UNITY_EDITOR
-            if(!AppConfig.instance.loadAB)
+            if (!AppConfig.instance.loadAB)
             {
                 EditorResourcesMgr.Instance.UnLoadAssetEditor(assetPath);
                 return;
             }
 #endif
-            string assetBundleName = GetAssetBundleName(assetPath);
+            string assetBundleName = isBundle ? assetPath : GetAssetBundleName(assetPath);
             Log.LogInfo("开始卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
             Unload(assetBundleName, isThorough);
             Log.LogInfo("卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
@@ -163,7 +143,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载
         /// </summary>
-        private Object LoadSync(string assetPath, string assetName, Type t = null)
+        private Object LoadSync(string assetPath, Type t = null)
         {
             string assetBundleName = GetAssetBundleName(assetPath);
             string[] dependencies = GetDependencies(assetBundleName);
@@ -172,7 +152,7 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < dependencies.Length; i++)
                 {
-                    LoadSync(dependencies[i], null, typeof(UnityEngine.Object));
+                    LoadSync(dependencies[i], typeof(UnityEngine.Object));
                 }
             }
 
@@ -190,20 +170,15 @@ namespace GameFrameWork.Resources
                 }
             }
 
-            if (string.IsNullOrEmpty(assetName))
-            {
-                return assetBundleInfo.assetBundle.LoadAsset(Path.GetFileNameWithoutExtension(assetBundleName).ToLower(), t);
-            }
-
-            return assetBundleInfo.assetBundle.LoadAsset(assetName.ToLower(), t);
+            return assetBundleInfo.assetBundle.LoadAsset(Path.GetFileNameWithoutExtension(assetPath).ToLower(), t);
         }
 
         /// <summary>
         /// 异步加载
         /// </summary>
-        private void LoadAsync(string assetPath, string assetName, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, object[] args = null)
+        private void LoadAsync(string assetPath, bool isDependence, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, object[] args = null)
         {
-            string assetBundleName = GetAssetBundleName(assetPath);
+            string assetBundleName = isDependence ? assetPath : GetAssetBundleName(assetPath);
 
             if (string.IsNullOrEmpty(assetBundleName))
             {
@@ -212,7 +187,6 @@ namespace GameFrameWork.Resources
 
             LoadRequest request = LoadRequest.Create();
             request.assetPath = assetPath;
-            request.assetName = string.IsNullOrEmpty(assetName) ? Path.GetFileNameWithoutExtension(assetBundleName).ToLower() : assetName.ToLower();
             request.assetType = t;
             request.action = action;
             request.args = args;
@@ -225,7 +199,7 @@ namespace GameFrameWork.Resources
                 {
                     for (int i = 0; i < dependencies.Length; i++)
                     {
-                        LoadAsync(dependencies[i], null, null, typeof(UnityEngine.Object));
+                        LoadAsync(dependencies[i], true, null, typeof(UnityEngine.Object), args);
                     }
                 }
 
@@ -288,7 +262,8 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < listRequests.Count; i++)
                 {
-                    AssetBundleRequest request = assetBundleInfo.assetBundle.LoadAssetAsync(listRequests[i].assetName, listRequests[i].assetType);
+                    string assetName = Path.GetFileNameWithoutExtension(listRequests[i].assetPath);
+                    AssetBundleRequest request = assetBundleInfo.assetBundle.LoadAssetAsync(assetName, listRequests[i].assetType);
 
                     while (!request.isDone)
                     {
@@ -366,18 +341,24 @@ namespace GameFrameWork.Resources
             return m_Manifest.GetAllDependencies(assetBundleName);
         }
 
-
-
         private string GetAssetBundleName(string assetPath)
         {
-            string assetName = Path.GetFileNameWithoutExtension(assetPath);
-            string path = Path.GetDirectoryName(assetPath).Replace("\\", "/");
-            string assetBundleName = assetName;
-
-            if (!string.IsNullOrEmpty(path))
+            if (m_DicAssetMap == null && m_DicAssetMap.Count < 1)
             {
-                assetBundleName = PathUtil.FormatPath(path, assetName).ToLower();
+                Log.LogError("获取资源映射失败 : ", assetPath);
             }
+
+            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)))
+            {
+                assetPath = StringUtil.Format(assetPath, ".prefab");
+            }
+
+            if (!m_DicAssetMap.TryGetValue(assetPath, out string assetBundleName))
+            {
+                Log.LogError("获取资源映射失败 : ", assetPath);
+            }
+
+            assetBundleName = assetBundleName.ToLower();
 
             if (m_DicAssetBundleVersions.TryGetValue(assetBundleName, out AssetBundleVersion version))
             {
@@ -410,23 +391,24 @@ namespace GameFrameWork.Resources
                 return;
             }
 #endif
-
             List<string> list = m_DicLoadedAssetBundles.Keys.ToList();
 
             for (int i = 0; i < list.Count; i++)
             {
-                UnloadAsset(list[i]);
+                UnloadAsset(list[i], true, false);
             }
 
             list.Clear();
             m_DicLoadedAssetBundles.Clear();
             m_DicLoadRequests.Clear();
             m_DicAssetBundleVersions.Clear();
+            m_DicAssetMap.Clear();
         }
 
         private AssetBundleManifest m_Manifest;
         private Dictionary<string, AssetBundleInfo> m_DicLoadedAssetBundles = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
         private Dictionary<string, AssetBundleVersion> m_DicAssetBundleVersions = null;
+        private Dictionary<string, string> m_DicAssetMap = null;
     }
 }

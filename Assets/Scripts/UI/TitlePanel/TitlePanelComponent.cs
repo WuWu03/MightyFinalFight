@@ -1,6 +1,6 @@
 /*******************************************************/
-/**2024-1-17 11:6**************************************/
-/**Create By GQY****************************************/
+/**2024-05-02 23:05*************************************/
+/**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
@@ -12,10 +12,10 @@ public class TitlePanelComponent : BasePanelComponent
 {
 	//imgLogoBG,Image
 	public Image imgLogoBG { get; private set; }
-	//imgRetro,Image
-	public Image imgRetro { get; private set; }
 	//imgStar,Image
 	public Image imgStar { get; private set; }
+	//imgRetro,Image
+	public Image imgRetro { get; private set; }
 	//imgLogo,Image
 	public Image imgLogo { get; private set; }
 	//txtStart,Text
@@ -30,8 +30,8 @@ public class TitlePanelComponent : BasePanelComponent
 	protected override void InitComponent(UIRefRoot root)
 	{
 		imgLogoBG = root.objects[0] as Image;
-		imgRetro = root.objects[1] as Image;
-		imgStar = root.objects[2] as Image;
+		imgStar = root.objects[1] as Image;
+		imgRetro = root.objects[2] as Image;
 		imgLogo = root.objects[3] as Image;
 		txtStart = root.objects[4] as Text;
 		txtDeveloper = root.objects[5] as Text;

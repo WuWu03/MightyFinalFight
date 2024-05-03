@@ -139,8 +139,6 @@ public class MainPanel : BasePanel
 
 	private void ShowDamageText(string textName, int value, Vector3 pos)
 	{
-		Debug.Log("отй╬ик╨╕нд╠╬©Р : " + textName);
-
 		GameObject go = GameObjectPool.instance.Get(textName, transform, "UI", true);
 		Text text = go.GetComponent<Text>();
 		RectTransform textRect = text.GetComponent<RectTransform>();

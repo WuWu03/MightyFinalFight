@@ -40,11 +40,11 @@ MonoBehaviour:
       AssetName: SceneBuilding/Cafe
     TaskIDs: e9030000
     BGMs:
-    - ClipName: bgm01_Start
+    - ClipName: BGM/bgm01_Start.ogg
       IsLoop: 0
       Volume: 1
       LerpTime: 0
-    - ClipName: bgm01_Loop
+    - ClipName: BGM/bgm01_Loop.ogg
       IsLoop: 1
       Volume: 1
       LerpTime: 0
@@ -151,11 +151,11 @@ MonoBehaviour:
       AssetName: SceneBuilding/ConveyorBeltLast
     TaskIDs: f5030000
     BGMs:
-    - ClipName: bgm06Boss_Start
+    - ClipName: BGM/bgm06Boss_Start.ogg
       IsLoop: 0
       Volume: 1
       LerpTime: 0
-    - ClipName: bgm06Boss_Loop
+    - ClipName: BGM/bgm06Boss_Loop.ogg
       IsLoop: 1
       Volume: 1
       LerpTime: 0
@@ -177,11 +177,11 @@ MonoBehaviour:
     SceneBuildings: []
     TaskIDs: 
     BGMs:
-    - ClipName: bgm02_Start
+    - ClipName: BGM/bgm02_Start.ogg
       IsLoop: 0
       Volume: 1
       LerpTime: 0
-    - ClipName: bgm02_Loop
+    - ClipName: BGM/bgm02_Loop.ogg
       IsLoop: 1
       Volume: 1
       LerpTime: 0

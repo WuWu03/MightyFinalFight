@@ -217,9 +217,9 @@ namespace GameFrameWork.Audio
             m_ListPlayingSE.Add(audioSEInfo);
         }
 
-        private void InnerPlayBGM(string path, float volum, float fadeTime, bool isLoop)
+        private void InnerPlayBGM(string assetPath, float volum, float fadeTime, bool isLoop)
         {
-            ResourcesPool.instance.Get<AudioClip>(path, OnBGMLoaded, volum, fadeTime, isLoop);
+            ResourcesPool.instance.Get<AudioClip>(assetPath, OnBGMLoaded, volum, fadeTime, isLoop);
         }
 
         private void OnBGMLoaded(string assetPath, UnityEngine.Object obj, object[] param)

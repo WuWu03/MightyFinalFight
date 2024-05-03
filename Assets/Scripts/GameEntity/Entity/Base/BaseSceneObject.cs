@@ -2,7 +2,7 @@
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Pool;
-using GameFrameWork.Resources;
+using GameFrameWork.Utilities;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
@@ -121,7 +121,7 @@ public class BaseSceneObject : BaseEntity
    
         if (m_ResGO != null)
         {
-            GameObjectPool.instance.Put(m_ResPath, m_ResGO);
+            GameObjectPool.instance.Put(m_AssetPath, m_ResGO);
         }
 
         if(m_Data != null)
@@ -136,7 +136,7 @@ public class BaseSceneObject : BaseEntity
 
         m_IsResComplete = false;
         m_OnReleaseEventHandler = null;
-        m_ResPath = null;
+        m_AssetPath = null;
         m_Data = null;
         m_EntityAttribute = null;
         m_ResGO = null;
@@ -282,16 +282,21 @@ public class BaseSceneObject : BaseEntity
         return Vector2.Distance(new Vector2(x, y), m_Pos) < 0.03f;
     }
 
-    public void SetRes(string resPath)
+    public void SetAsset(string assetPath)
     {
-        if (!string.IsNullOrEmpty(m_ResPath) && m_ResPath.Equals(resPath))
+        if (string.IsNullOrEmpty(assetPath))
         {
             return;
         }
 
-        m_ResPath = resPath;
+        if (m_AssetPath == assetPath)
+        {
+            return;
+        }
+
+        m_AssetPath = assetPath;
         m_IsResComplete = false;
-        GameObjectPool.instance.GetFromAsset(resPath, ResComplete);
+        GameObjectPool.instance.GetFromAsset(assetPath, ResComplete);
     }
 
     public bool IsOutVersionX(float posX)
@@ -318,7 +323,7 @@ public class BaseSceneObject : BaseEntity
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
-    private void ResComplete(string resPath, UnityEngine.Object obj, object[] param)
+    private void ResComplete(string assetPath, UnityEngine.Object obj, object[] param)
     {
         m_ResGO = obj as GameObject;
         m_ResGO.transform.SetParent(transform, false);
@@ -391,7 +396,7 @@ public class BaseSceneObject : BaseEntity
     protected float m_PosZ = 0f;
     protected int m_MapPosZ = 0;
     protected int m_EntityId = 0;
-    protected string m_ResPath = string.Empty;
+
 
     protected Vector2 m_Pos = Vector2.zero;
     protected Vector2Int m_MapPos = Vector2Int.zero;
@@ -402,4 +407,5 @@ public class BaseSceneObject : BaseEntity
     protected EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
     private IReference m_Data = null;
+    private string m_AssetPath = string.Empty;
 }

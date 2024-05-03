@@ -1,6 +1,7 @@
 ﻿using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.IO;
 using UnityEditor;
 using FileUtil = GameFrameWork.Utilities.FileUtil;
@@ -14,6 +15,7 @@ namespace GameFrameWork.Editor
             m_ListBundlePath = new List<string>();
             m_ListPaths = new List<string>();
             m_ListFiles = new List<string>();
+            m_AssetMap = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -88,8 +90,8 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            //CreateAssetBuildFile();
             CreateVersionFile();
+            CreateAssetMapFile();
             AssetDatabase.Refresh();
 
             if (isShowNotify)
@@ -158,13 +160,18 @@ namespace GameFrameWork.Editor
                 {
                     if (Path.GetFileNameWithoutExtension(m_BuildMaps[i].assetBundleName) == bundleName)
                     {
-                        List<string> maps = new List<string>();
-                        maps.AddRange(m_BuildMaps[i].assetNames);
-                        maps.AddRange(files);
+                        List<string> assetList = new List<string>();
+                        assetList.AddRange(m_BuildMaps[i].assetNames);
+                        assetList.AddRange(files);
                         AssetBundleBuild temp = new AssetBundleBuild();
                         temp.assetBundleName = m_BuildMaps[i].assetBundleName;
-                        temp.assetNames = maps.ToArray();
+                        temp.assetNames = assetList.ToArray();
                         m_BuildMaps[i] = temp;
+
+                        for (int j = 0; j < files.Length; j++)
+                        {
+                            m_AssetMap.Add(files[j].Substring(7), bundleName);
+                        }
 
                         return true;
                     }
@@ -176,6 +183,11 @@ namespace GameFrameWork.Editor
             if (!m_ListBundlePath.Contains(lowerBundleName))
             {
                 m_ListBundlePath.Add(lowerBundleName);
+            }
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                m_AssetMap.Add(files[i].Substring(7), bundleName);
             }
 
             AssetBundleBuild build = new AssetBundleBuild();
@@ -218,6 +230,7 @@ namespace GameFrameWork.Editor
                 build.assetBundleName = bundleName + extend;
                 build.assetNames = new string[] { files[i] };
                 m_BuildMaps.Add(build);
+                m_AssetMap.Add(files[i].Substring(7), bundleName);
             }
 
             return true;
@@ -279,18 +292,29 @@ namespace GameFrameWork.Editor
         }
 
         /// <summary>
-        /// 创建已打包资源列表文件
+        /// 创建资源和ab映射文件
         /// </summary>
-        private void CreateAssetBuildFile()
+        private void CreateAssetMapFile()
         {
-            string content = string.Empty;
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+            string mapFile = config.AssetBuildFullDir + "AssetMap.txt";
 
-            for (int i = 0; i < m_ListBundlePath.Count; i++)
+            string content = string.Empty;
+            int index = 0;
+
+            foreach (KeyValuePair<string, string> keyValuePair in m_AssetMap)
             {
-                content += (i < m_ListBundlePath.Count - 1 ? "\n" : string.Empty);
+                content += keyValuePair.Key + "|" + keyValuePair.Value;
+
+                if (index < m_AssetMap.Count - 1)
+                {
+                    content += "\n";
+                }
+
+                index++;
             }
 
-            FileUtil.CreateTextFile(EditorPathUtil.assetBuildFileFullPath, content);
+            FileUtil.CreateTextFile(mapFile, content);
         }
 
         #region Lua
@@ -452,15 +476,18 @@ namespace GameFrameWork.Editor
             m_ListBundlePath.Clear();
             m_ListPaths.Clear();
             m_ListFiles.Clear();
+            m_AssetMap.Clear();
 
             m_ListBundlePath = null;
             m_ListPaths = null;
             m_ListFiles = null;
+            m_AssetMap = null;
         }
 
         private List<string> m_ListBundlePath = null;
         private List<string> m_ListPaths = null;
         private List<string> m_ListFiles = null;
+        private Dictionary<string, string> m_AssetMap = null;
         private List<AssetBundleBuild> m_BuildMaps = new List<AssetBundleBuild>();
     }
 }

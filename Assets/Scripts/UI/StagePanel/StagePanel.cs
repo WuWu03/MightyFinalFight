@@ -44,20 +44,20 @@ public class StagePanel : BasePanel
 		m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActive(true);
 	}
 
-    private void OnLoaded(string resPath, UnityEngine.Object obj, object[] args)
-    {
+	private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
+	{
 		int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
+		RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
-		m_Role = obj as GameObject; 
+		m_Role = obj as GameObject;
 		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
 		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
-        m_Role.SetActive(true);
+		m_Role.SetActive(true);
 
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, roleSelectConfig.soundName); 
+		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, roleSelectConfig.soundName);
 		Timer.Register(roleSelectConfig.showTime, OnTimer);
-    }
+	}
 
 	private void OnTimer()
 	{

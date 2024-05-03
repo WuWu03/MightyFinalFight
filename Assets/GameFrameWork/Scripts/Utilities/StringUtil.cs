@@ -32,11 +32,7 @@ namespace GameFrameWork.Utilities
 
             for (int i = 0; i < args.Length; i++)
             {
-                m_StringBuilder.Append("{");
-                m_StringBuilder.AppendFormat("{0}", i);
-                m_StringBuilder.Append("}");
-
-                if (isPath && i < args.Length - 1)
+                if (isPath && i > 0)
                 {
                     bool conditon = args[i] != null;
 
@@ -45,11 +41,15 @@ namespace GameFrameWork.Utilities
                         conditon = !string.IsNullOrEmpty(args[i] as string);
                     }
 
-                    if(conditon)
+                    if (conditon)
                     {
                         m_StringBuilder.Append("/");
                     }
                 }
+
+                m_StringBuilder.Append("{");
+                m_StringBuilder.AppendFormat("{0}", i);
+                m_StringBuilder.Append("}");
             }
 
             return FormatDefault(m_StringBuilder.ToString(), args);

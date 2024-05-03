@@ -16,15 +16,6 @@ namespace GameFrameWork.Audio
 
         }
 
-        public AudioGroup(string path, string name, bool isLoop, float volume, float lerpTime)
-        {
-            this.path = path;
-            this.name = name;
-            this.isLoop = isLoop;
-            this.volume = volume;
-            this.lerpTime = lerpTime;
-        }
-
         public static AudioGroup Create(string path, string name, bool isLoop, float volume, float lerpTime)
         {
             AudioGroup group = ReferencePool.Acquire<AudioGroup>();

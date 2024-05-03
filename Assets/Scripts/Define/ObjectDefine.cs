@@ -13,9 +13,25 @@
 
 public struct SoundName
 {
-    public const string DefaultHurt = "Sound/OnHit02";
-    public const string DefaultDrop = "Sound/OnDrop";
-    public const string DefaultJump = "Sound/Jump";
+    public const string DefaultHurt = "Sound/OnHit02.ogg";
+    public const string DefaultDrop = "Sound/OnDrop.ogg";
+    public const string DefaultJump = "Sound/Jump.ogg";
+    public const string Hurt = "Sound/OnHit.ogg";
+    public const string Barrel = "Sound/Barrel.ogg";
+    public const string Eat = "Sound/OnEat.ogg";
+    public const string GetRobot = "Sound/GetRobot.ogg";
+    public const string FallDown = "Sound/OnFallDown.ogg";
+    public const string LevelUp = "Sound/LevelUp.ogg";
+    public const string Break = "Sound/Break.ogg";
+    public const string FallDownHigh = "Sound/FallDownHigh.ogg";
+    public const string OnSelect = "Sound/OnSelect.ogg";
+    public const string OnSelected = "Sound/OnSelected.ogg";
+    public const string BicycleKick = "Sound/BicycleKick.ogg";
+    public const string Bonus = "Sound/Bonus.ogg";
+    public const string OnBlow = "Sound/OnBlow.ogg";
+    public const string Bgm13Title = "BGM/bgm13Title.ogg";
+    public const string Bgm14Character = "BGM/bgm14Character.wav";
+    public const string Bgm15Clear = "BGM/bgm15Clear.wav";
 }
 
 public struct LayerName

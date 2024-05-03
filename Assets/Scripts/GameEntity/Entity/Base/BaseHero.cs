@@ -270,7 +270,7 @@ public class BaseHero : BaseRole
 
         if (data.isSwoon)
         {
-            data.hurtSound = "Sound/OnBlow";
+            data.hurtSound = SoundName.OnBlow;
             m_DicAttacker.Clear();
             m_HitTime = -1f;
         }
@@ -296,7 +296,7 @@ public class BaseHero : BaseRole
             {
                 data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
                 data.isSwoon = true;
-                data.hurtSound = "Sound/OnBlow";
+                data.hurtSound = SoundName.OnBlow;
                 data.isGroundHurt = false;
                 m_DicAttacker.Clear();
             }

@@ -48,11 +48,11 @@ public class TestPanel : BasePanel
 		GameObjectPool.instance.GetFromAsset("ArtResources/Prefabs/CharacterUI/CodyUI", OnLoad);
 	}
 
-    private void OnLoad(string t1, UnityEngine.Object t2, object[] t3)
-    {
+	private void OnLoad(string t1, UnityEngine.Object t2, object[] t3)
+	{
 		(t2 as GameObject).transform.SetParent(transform, false);
 		m_Object = t2;
-    }
+	}
 
     private int GetDataCountEvent()
     {

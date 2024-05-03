@@ -2,6 +2,7 @@
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -36,7 +37,6 @@ namespace GameFrameWork.Pool
                 {
                     ResourcesMgr.instance.UnloadAsset(info.assetPath, false);
                     ReferencePool.ReleaseReference(info);
-                    UnityEngine.Resources.UnloadUnusedAssets();
                     m_RemoveList.Add(kvp.Key);
                 }
             }
@@ -45,11 +45,18 @@ namespace GameFrameWork.Pool
             {
                 m_DicLoadedAssets.Remove(m_RemoveList[i]);
             }
+
+            UnityEngine.Resources.UnloadUnusedAssets();
         }
 
         public void Cache<T>(string assetPath) where T : UnityEngine.Object
         {
-            Get(assetPath, null, typeof(T), null);
+            Get(assetPath, null, typeof(T));
+        }
+
+        public void Cache(string assetPath, Type t)
+        {
+            Get(assetPath, null, t);
         }
 
         public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args) where T : UnityEngine.Object
@@ -67,9 +74,9 @@ namespace GameFrameWork.Pool
 
             if (m_DicLoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
             {
-                UnityEngine.Object go = info.poolObject;
+                UnityEngine.Object obj = info.poolObject;
                 info.referenceCount++;
-                call?.Invoke(assetPath, go, args);
+                call?.Invoke(assetPath, obj, args);
                 return;
             }
 
@@ -83,12 +90,13 @@ namespace GameFrameWork.Pool
                 listLoadRequest = new List<LoadRequest>() { request };
                 m_DicLoadRequests.Add(assetPath, listLoadRequest);
                 ResourcesMgr.instance.LoadAssetAsync(assetPath, OnLoaded, t);
-            }
+            }   
             else
             {
                 listLoadRequest.Add(request);
             }
         }
+
 
         public void Put(string assetPath, UnityEngine.Object obj)
         {

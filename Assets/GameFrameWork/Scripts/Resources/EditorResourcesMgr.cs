@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using GameFrameWork.Utilities;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace GameFrameWork.Resources
             loadRequest.assetPath = assetPath;
             loadRequest.action = action;
             loadRequest.args = args;
+
 
             if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> requests))
             {
@@ -77,8 +79,8 @@ namespace GameFrameWork.Resources
             }
 
             string filePath = PathUtil.GetAssetPath(assetPath);
-            string fileName = Path.GetFileName(filePath);
-            string directoryName = Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileName(assetPath);
+            string directoryName = Path.GetDirectoryName(filePath).Replace("\\", "/");
             string searchParttern = StringUtil.Format(fileName, "*");
             string[] files = FileUtil.GetFiles(directoryName, searchParttern);
 

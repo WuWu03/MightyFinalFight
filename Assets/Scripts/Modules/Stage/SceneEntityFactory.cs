@@ -13,7 +13,7 @@ public static class SceneEntityFactory
         attribute.moveSpeed = moveSpeed;
 
         role.SetAttribute(attribute);
-        role.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, asset));
+        role.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, asset));
         role.SetLayer(LayerName.Unit);
         role.SetPos2(pos);
 
@@ -60,7 +60,7 @@ public static class SceneEntityFactory
         sceneItemData.canDrop = sceneItemConfigData.canDrop;
 
         sceneItem.SetData(sceneItemData);
-        sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, sceneItemConfigData.assetName));
+        sceneItem.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, sceneItemConfigData.assetName));
         sceneItem.SetObjectType(objectType);
         sceneItem.SetMapPos(pos);
         sceneItem.SetLayer(LayerName.Unit);
@@ -101,7 +101,7 @@ public static class SceneEntityFactory
         enemy.SetObjectType(ObjectType.Enemy);
         enemy.SetMapPos(pos);
         enemy.SetLayer(LayerName.Unit);
-        enemy.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.assetName));
+        enemy.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, enemyConfigData.assetName));
 
         return enemy;
     }
@@ -124,7 +124,7 @@ public static class SceneEntityFactory
                 sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit)
         {
             SceneBuilding sceneBuilding = EntityMgr.instance.GetEntity<SceneBuilding>(sceneObjData.Name);
-            sceneBuilding.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, sceneObjData.AssetName));
+            sceneBuilding.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, sceneObjData.AssetName));
             sceneBuilding.SetMapPos(sceneObjData.Pos);
             sceneBuilding.SetLayer(sceneObjData.SceneObjType == StageConfigData.SceneObjType.Unit ? LayerName.Unit : LayerName.Map);
             return sceneBuilding;
@@ -157,7 +157,7 @@ public static class SceneEntityFactory
         barrel.SetAttribute(barrelAttribute);
         barrel.SetObjectType(ObjectType.Barrel);
         barrel.SetLayer(LayerName.Unit);
-        barrel.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
+        barrel.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
 
         return barrel;
     }

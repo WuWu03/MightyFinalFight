@@ -1,4 +1,5 @@
-﻿using GameFrameWork.BehaviourTree;
+﻿using GameFrameWork.Audio;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.Fsm;
@@ -7,11 +8,9 @@ using GameFrameWork.Input;
 using GameFrameWork.Pool;
 using GameFrameWork.Resources;
 using GameFrameWork.Scene;
-using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace GameFrameWork
 {
@@ -38,6 +37,7 @@ namespace GameFrameWork
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
             ResourcesPool.Init(m_Manager);
+
             OnInit(m_Manager);
         }
 

@@ -1,6 +1,7 @@
 ﻿using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Audio;
+using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -61,12 +62,12 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         {
             if (m_SkillData.IsInEffectPlaySound)
             {
-                AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/" + soundName);
+                AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, PathUtil.FormatPath("Sound", soundName) + ".ogg");
             }
         }
         else
         {
-            AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/" + soundName);
+            AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, PathUtil.FormatPath("Sound", soundName) + ".ogg");
         }
     }
 

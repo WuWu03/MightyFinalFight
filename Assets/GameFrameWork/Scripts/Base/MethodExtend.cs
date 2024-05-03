@@ -92,30 +92,29 @@ namespace GameFrameWork
         }
 
 
-        public static void SetSprite(this Image renderer, string spriteAtlasName, string spriteName)
+        public static void SetSprite(this Image renderer, string spriteName)
         {
-            if (renderer == null || string.IsNullOrEmpty(spriteAtlasName) || string.IsNullOrEmpty(spriteName))
+            if (renderer == null || string.IsNullOrEmpty(spriteName))
             {
                 return;
             }
 
+            string sritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
             ResourceUnLoader resourceUnLoader = renderer.gameObject.GetOrAddComponent<ResourceUnLoader>();
 
-            string spriteAtlasPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteAtlasName);
-
-            if (resourceUnLoader.spriteAtlasPath == spriteAtlasPath && resourceUnLoader.spriteName == spriteName)
+            if (resourceUnLoader.spritePath == sritePath)
             {
                 return;
             }
 
             resourceUnLoader.ResetAssetInfo();
-            resourceUnLoader.spriteAtlasPath = spriteAtlasPath;
-            resourceUnLoader.spriteName = spriteName;
-            ResourcesPool.instance.Get<SpriteAtlas>(spriteAtlasPath, (GameFrameWorkAction<string, Object, object[]>)((string resPath, UnityEngine.Object obj, object[] param) =>
+            resourceUnLoader.spritePath = sritePath;
+
+            ResourcesPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
             {
-                resourceUnLoader.spriteAtlas = obj;
-                renderer.sprite = (obj as SpriteAtlas).GetSprite(spriteName);
-            }));
+                resourceUnLoader.sprite = obj;
+                renderer.sprite = obj as Sprite;
+            });
         }
 
         public static int ToInt(this string value)

@@ -14,7 +14,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm15Clear", false, 1, 0.3f, true);
+        AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, SoundName.Bgm15Clear, false, 1, 0.3f, true);
 
         PlayerMgr.instance.player.currCtrl.Move(Vector2.zero);
         UIMgr.instance.Open<RoundClearPanel>();

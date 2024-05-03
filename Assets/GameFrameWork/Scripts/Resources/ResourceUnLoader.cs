@@ -1,34 +1,35 @@
 using GameFrameWork.Pool;
 using UnityEngine;
 
-public class ResourceUnLoader : MonoBehaviour
+namespace GameFrameWork.Resources
 {
-    public string gameObjectPath;
-    public string spriteAtlasPath;
-    public string spriteName;
-    public GameObject go;
-    public UnityEngine.Object spriteAtlas;
-
-    public void ResetAssetInfo()
+    public class ResourceUnLoader : MonoBehaviour
     {
-        gameObjectPath = string.Empty;
-        spriteAtlasPath = string.Empty;
-        spriteName = string.Empty;
-        go = null;
-        spriteAtlas = null;
-    }
+        public string gameObjectPath;
+        public string spritePath;
+        public GameObject go;
+        public UnityEngine.Object sprite;
 
-    public void BeforeOnDestroy()
-    {
-        if (!string.IsNullOrEmpty(gameObjectPath))
+        public void ResetAssetInfo()
         {
-            GameObjectPool.instance.Put(gameObjectPath, go);
-        }
-        else if (!string.IsNullOrEmpty(spriteAtlasPath))
-        {
-            ResourcesPool.instance.Put(spriteAtlasPath, spriteAtlas);
+            gameObjectPath = string.Empty;
+            spritePath = string.Empty;
+            go = null;
+            sprite = null;
         }
 
-        ResetAssetInfo();
+        public void BeforeOnDestroy()
+        {
+            if (!string.IsNullOrEmpty(gameObjectPath))
+            {
+                GameObjectPool.instance.Put(gameObjectPath, go);
+            }
+            else if (!string.IsNullOrEmpty(spritePath))
+            {
+                ResourcesPool.instance.Put(spritePath, sprite);
+            }
+
+            ResetAssetInfo();
+        }
     }
 }

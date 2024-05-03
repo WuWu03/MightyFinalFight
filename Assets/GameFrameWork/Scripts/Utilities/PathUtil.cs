@@ -9,10 +9,11 @@ namespace GameFrameWork.Utilities
         public static string persistentDataPath = Application.persistentDataPath;
         public static string luaPath = "Lua";
         public static string configDataPath = "ConfigData";
-        public const string behaviourTreeConfigDataPath = "ConfigData/BehaviourTreeConfigData";
+        public const string behaviourTreeConfigDataPath = "ConfigData/BehaviourTreeConfigData.json";
         public const string uiPrefabPath = "Prefabs";
         public const string uiAtlasPath = "UIAtlas";
         public const string assetBundleVersionName = "Version.txt";
+        public const string assetMapName = "AssetMap.txt";
         public const string maniFestName = "StreamingAssets";
         public const string assetBundleExtension = ".assetbundle";
 

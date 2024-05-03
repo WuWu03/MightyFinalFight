@@ -10,6 +10,7 @@ using GameFrameWork.UI;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using GameFrameWork;
+using GameFrameWork.Utilities;
 
 public class RoleSelectPanel : BasePanel
 {
@@ -34,7 +35,7 @@ public class RoleSelectPanel : BasePanel
 		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 
-		AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm14Character", true);
+		AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, SoundName.Bgm14Character, true);
 	}
 
     protected override void OnUpdate()
@@ -60,7 +61,7 @@ public class RoleSelectPanel : BasePanel
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnSelect");
+			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.OnSelect);
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -86,8 +87,7 @@ public class RoleSelectPanel : BasePanel
 
 		item.txtDesc.text = roleSelectConfigData.desc;
 		item.txtName.text = roleSelectConfigData.name;
-		string iconName = roleSelectConfigData.headIcon.Substring(roleSelectConfigData.headIcon.IndexOf("/") + 1);
-		item.btnRoleIcon.image.SetSprite("Common", iconName);
+		item.btnRoleIcon.image.SetSprite(roleSelectConfigData.headIcon);
 	}
 
 	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)
@@ -105,7 +105,7 @@ public class RoleSelectPanel : BasePanel
         m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
 
 		AudioMgr.instance.StopBGM(true);
-		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/OnSelected");
+		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.OnSelected);
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();

@@ -1,5 +1,6 @@
 using DragonBones;
 using GameFrameWork.Audio;
+using GameFrameWork.Utilities;
 using UnityEngine;
 
 public class DBEffect : BaseEffect
@@ -39,7 +40,7 @@ public class DBEffect : BaseEffect
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, PathUtil.FormatPath("Sound", eventObject.name) + ".ogg");
     }
 
     private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;

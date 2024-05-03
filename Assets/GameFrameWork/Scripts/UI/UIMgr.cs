@@ -323,7 +323,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        private void OnResComplete(string resPath, UnityEngine.Object obj, object[] param)
+        private void OnLoadComplete(string assetPath, UnityEngine.Object obj, object[] param)
         {
             WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
             waitLoadPanel.panel.Init(obj as GameObject, PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), waitLoadPanel.param);
@@ -339,7 +339,7 @@ namespace GameFrameWork.UI
                 lock (queue)
                 { 
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
-                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnResComplete, waitLoadPanel);
+                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnLoadComplete, waitLoadPanel);
                 }
             }
 

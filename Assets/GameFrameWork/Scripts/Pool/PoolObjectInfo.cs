@@ -10,6 +10,7 @@ namespace GameFrameWork.Pool
         public string assetPath;
         public int referenceCount;
 
+
         public static PoolObjectInfo Create(UnityEngine.Object poolObject, float releaseTime, bool isReleaseImmediate, string assetPath)
         {
             PoolObjectInfo resourcePoolInfo = ReferencePool.Acquire<PoolObjectInfo>();
@@ -30,7 +31,9 @@ namespace GameFrameWork.Pool
         {
             poolObject = null;
             releaseTime = 0;
+            isReleaseImmediate = false;
             assetPath = null;
+            referenceCount = 0;
         }
     }
 }

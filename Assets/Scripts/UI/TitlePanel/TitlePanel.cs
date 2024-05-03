@@ -104,7 +104,7 @@ public class TitlePanel : BasePanel
 		sequence.Append(m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
 		sequence.InsertCallback(10.2f, () =>
 		{
-			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/BicycleKick");
+			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.BicycleKick);
 		});
 		sequence.AppendCallback(() =>
 		{
@@ -117,7 +117,7 @@ public class TitlePanel : BasePanel
 		sequence.AppendCallback(() =>
 		{
 			m_Component.imgStar.gameObject.SetActive(true);
-			AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, "BGM/bgm13Title", false);
+			AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, SoundName.Bgm13Title, false);
 		});
 		sequence.AppendInterval(0.1f);
 		sequence.Append(m_Component.imgStar.DOFade(1, 1f));

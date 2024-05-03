@@ -1,3 +1,4 @@
+using GameFrameWork.Utilities;
 using System;
 
 namespace GameFrameWork.Resources
@@ -5,7 +6,6 @@ namespace GameFrameWork.Resources
     public class LoadRequest : IReference
     {
         public string assetPath { get; set; }
-        public string assetName { get; set; }
         public Type assetType { get; set; }
         public GameFrameWorkAction<string, UnityEngine.Object, object[]> action { get; set; }
         public object[] args { get; set; }
@@ -27,7 +27,6 @@ namespace GameFrameWork.Resources
         public void Clear()
         {
             assetPath = null;
-            assetName = null;
             assetType = null;
             action = null;
             args = null;

@@ -20,10 +20,10 @@ public static partial class ConfigDataHelper
 
     public static void Init(string filePath)
 	{
-		levelConfigDatas = LoadConfigData<LevelConfigData>(filePath, "LevelConfigData");
-		roleConfigDatas = LoadConfigData<RoleConfigData>(filePath, "RoleConfigData");
-		roleSelectConfigDatas = LoadConfigData<RoleSelectConfigData>(filePath, "RoleSelectConfigData");
-		sceneItemConfigDatas = LoadConfigData<SceneItemConfigData>(filePath, "SceneItemConfigData");
-        talkConfigDatas = LoadConfigData<TalkConfigData>(filePath, "TalkConfigData");
+		levelConfigDatas = LoadConfigData<LevelConfigData>(filePath, "LevelConfigData.bytes");
+		roleConfigDatas = LoadConfigData<RoleConfigData>(filePath, "RoleConfigData.bytes");
+		roleSelectConfigDatas = LoadConfigData<RoleSelectConfigData>(filePath, "RoleSelectConfigData.bytes");
+		sceneItemConfigDatas = LoadConfigData<SceneItemConfigData>(filePath, "SceneItemConfigData.bytes");
+        talkConfigDatas = LoadConfigData<TalkConfigData>(filePath, "TalkConfigData.bytes");
     }
 }

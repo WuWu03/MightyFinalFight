@@ -177,7 +177,7 @@ public class StageMgr : BaseMgr<StageMgr>
                 bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
                 float volume = m_CurrStageData.BGMs[i].Volume;
                 float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
-                groups[i] = AudioGroup.Create(ResDefine.AudioClipPath, PathUtil.FormatPath("BGM", clipName), isLoop, volume, lerpTime);
+                groups[i] = AudioGroup.Create(ResDefine.AudioClipPath, clipName, isLoop, volume, lerpTime);
             }
 
             AudioMgr.instance.PlayBGMGroup(groups, true);

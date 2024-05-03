@@ -38,7 +38,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             sceneItem.SetAttribute(barrelAttribute);
             sceneItem.SetData(barrelData);
-            sceneItem.SetRes(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
+            sceneItem.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
             sceneItem.SetLayer(LayerName.Unit);
