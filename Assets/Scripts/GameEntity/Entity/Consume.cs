@@ -24,9 +24,9 @@ public class Consume : BaseSceneItem
         Release();
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         ResetRigidbody();
         
         BoxCollider2D bc2 = go.GetComponent<BoxCollider2D>();

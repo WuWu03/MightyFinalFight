@@ -36,7 +36,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !IsAnyState(typeof(RoleSwoon), typeof(RoleDead), typeof(RoleAwaken)) && !m_EntityAttribute.IsDie() && m_IsResComplete && !isFloat;
+            return !IsAnyState(typeof(RoleSwoon), typeof(RoleDead), typeof(RoleAwaken)) && !m_EntityAttribute.IsDie() && m_IsAssetLoadComplete && !isFloat;
         }
     }
 
@@ -225,9 +225,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.Release();
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         m_MoveDir = Vector2.right;
         m_FsmMachine.Start<RoleIdle>();
 
@@ -686,7 +686,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckAutoMove()
     {
-        if (!m_IsResComplete || !isInGround || !m_IsAutoMove)
+        if (!m_IsAssetLoadComplete || !isInGround || !m_IsAutoMove)
         {
             return;
         }

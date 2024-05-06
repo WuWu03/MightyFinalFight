@@ -66,10 +66,10 @@ public class BaseEffect : BaseSceneObject
     {
         m_IsPlaying = true;
 
-        if (m_IsResComplete)
+        if (m_IsAssetLoadComplete)
         {
             m_Timer = Time.time;
-            m_ResGO.SetActive(true);
+            m_Asset.SetActive(true);
         }
     }
 
@@ -83,13 +83,13 @@ public class BaseEffect : BaseSceneObject
         m_PlayEndCallback = null;
     }
 
-    protected override void OnResComplete(GameObject go,object[] param)
+    protected override void OnLoadAssetComplete(GameObject go,object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         if (m_IsPlaying)
         {
             m_Timer = Time.time;
-            m_ResGO.SetActive(true);
+            m_Asset.SetActive(true);
         }
     }
 
@@ -97,7 +97,7 @@ public class BaseEffect : BaseSceneObject
     {
         base.OnUpdate();
 
-        if (!m_IsPlaying || m_PlayTime <= 0 || m_Timer < 0 || !m_IsResComplete)
+        if (!m_IsPlaying || m_PlayTime <= 0 || m_Timer < 0 || !m_IsAssetLoadComplete)
         {
             return;
         }

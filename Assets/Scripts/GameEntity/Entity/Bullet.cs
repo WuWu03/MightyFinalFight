@@ -61,7 +61,7 @@ public class Bullet : BaseAvatar
 
     private void CheckHit()
     {
-        if (!m_IsResComplete)
+        if (!m_IsAssetLoadComplete)
         {
             return;
         }
@@ -151,9 +151,9 @@ public class Bullet : BaseAvatar
         m_IsHit = true;
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
 
         PlayAnimation(m_BulletData.normalAnim, 0, m_BulletData.normalAnimSpeed);
         SetTrigger(m_BulletData.normalAnim);

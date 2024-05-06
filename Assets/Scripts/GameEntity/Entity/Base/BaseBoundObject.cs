@@ -47,9 +47,9 @@ public class BaseBoundObject : BaseSceneObject
         base.Release();
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         m_BoxCollider2D.enabled = true;
     }
 

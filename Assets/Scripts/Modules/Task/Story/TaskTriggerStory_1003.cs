@@ -37,7 +37,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
     public override void Trigger()
     {
-        if (m_Boss.isResComplete && !m_BossState)
+        if (m_Boss.isAssetLoadComplete && !m_BossState)
         {
             m_BossState = true;
             m_Boss.currCtrl.Stop();
@@ -45,7 +45,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
             m_Boss.SetDir(-1);
         }
 
-        if (PlayerMgr.instance.player.isResComplete && !m_IsSwoon)
+        if (PlayerMgr.instance.player.isAssetLoadComplete && !m_IsSwoon)
         {
             m_IsSwoon = true;
             Rect vision = CameraMgr.instance.GetVision();

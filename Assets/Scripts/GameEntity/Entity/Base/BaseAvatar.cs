@@ -272,11 +272,11 @@ public abstract class BaseAvatar : BaseGravityObject
         base.OnFixedUpdate();
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
-        m_Animator = m_ResGO.GetComponent<UnityArmatureComponent>();
-        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+        base.OnLoadAssetComplete(go, param);
+        m_Animator = m_Asset.GetComponent<UnityArmatureComponent>();
+        m_HitTrigger = m_Asset.GetComponent<HitTrigger>();
     }
 
     protected override void OnBeforeDestroy()

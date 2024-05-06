@@ -47,11 +47,11 @@ public class Weapon : BaseSceneItem
         }
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_HitTrigger = m_ResGO.GetComponent<HitTrigger>();
+        m_HitTrigger = m_Asset.GetComponent<HitTrigger>();
         PlayAnimation(AnimName.Idle);
         SetPos2(m_Pos);
         ResetRigidbody();

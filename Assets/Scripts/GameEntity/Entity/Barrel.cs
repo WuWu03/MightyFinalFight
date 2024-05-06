@@ -9,7 +9,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !isDead && m_IsResComplete;
+            return !isDead && m_IsAssetLoadComplete;
         }
     }
 
@@ -132,9 +132,9 @@ public class Barrel : BaseAvatar, ICanBeHit
     //    CheckStrike(collision.gameObject);
     //}
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         PlayAnimation(AnimName.Idle, 0);
 
         if (!m_BarrelData.isFloat)
@@ -166,7 +166,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     private void CheckStrike(GameObject go)
     {
-        if (!m_IsResComplete || m_BarrelData.moveSpeed <= 0 || isDead)
+        if (!m_IsAssetLoadComplete || m_BarrelData.moveSpeed <= 0 || isDead)
         {
             return;
         }
@@ -208,7 +208,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     private void CheckThrow(GameObject go)
     {
-        if (!m_IsResComplete || isDead)
+        if (!m_IsAssetLoadComplete || isDead)
         {
             return;
         }

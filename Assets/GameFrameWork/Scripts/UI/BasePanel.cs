@@ -1,8 +1,5 @@
 ﻿using GameFrameWork.Event;
-using GameFrameWork.Pool;
-using GameFrameWork.Resources;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

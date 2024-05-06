@@ -272,7 +272,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void AfterTriggerAttack()
     {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
@@ -283,7 +283,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void AfterTriggerJump()
     {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
@@ -296,7 +296,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         base.OnUpdate();
 
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
@@ -341,7 +341,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private bool AfterTrigger()
     {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isResComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return false;
         }

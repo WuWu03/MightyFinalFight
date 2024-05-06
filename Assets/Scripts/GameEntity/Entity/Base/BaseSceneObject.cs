@@ -2,7 +2,6 @@
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
@@ -16,11 +15,11 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public GameObject resGO
+    public GameObject asset
     {
         get
         {
-            return m_ResGO;
+            return m_Asset;
         }
     }
 
@@ -80,11 +79,11 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public bool isResComplete
+    public bool isAssetLoadComplete
     {
         get
         {
-            return m_IsResComplete;
+            return m_IsAssetLoadComplete;
         }
     }
 
@@ -111,7 +110,7 @@ public class BaseSceneObject : BaseEntity
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-        m_IsResComplete = false;
+        m_IsAssetLoadComplete = false;
         m_Pos = transform.localPosition;
     }
 
@@ -119,9 +118,9 @@ public class BaseSceneObject : BaseEntity
     {
         m_OnReleaseEventHandler?.Invoke(m_EntityId);
    
-        if (m_ResGO != null)
+        if (m_Asset != null)
         {
-            GameObjectPool.instance.Put(m_AssetPath, m_ResGO);
+            GameObjectPool.instance.Put(m_AssetPath, m_Asset);
         }
 
         if(m_Data != null)
@@ -134,12 +133,12 @@ public class BaseSceneObject : BaseEntity
             ReferencePool.ReleaseReference(m_EntityAttribute);
         }
 
-        m_IsResComplete = false;
+        m_IsAssetLoadComplete = false;
         m_OnReleaseEventHandler = null;
         m_AssetPath = null;
         m_Data = null;
         m_EntityAttribute = null;
-        m_ResGO = null;
+        m_Asset = null;
 
         base.Release();
     }
@@ -295,8 +294,8 @@ public class BaseSceneObject : BaseEntity
         }
 
         m_AssetPath = assetPath;
-        m_IsResComplete = false;
-        GameObjectPool.instance.GetFromAsset(assetPath, ResComplete);
+        m_IsAssetLoadComplete = false;
+        GameObjectPool.instance.GetFromAsset(assetPath, OnLoadAssetComplete);
     }
 
     public bool IsOutVersionX(float posX)
@@ -323,15 +322,15 @@ public class BaseSceneObject : BaseEntity
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
-    private void ResComplete(string assetPath, UnityEngine.Object obj, object[] param)
+    private void OnLoadAssetComplete(string assetPath, UnityEngine.Object obj, object[] param)
     {
-        m_ResGO = obj as GameObject;
-        m_ResGO.transform.SetParent(transform, false);
-        m_ResGO.transform.localPosition = Vector3.zero;
-        m_ResGO.SetActive(true);
+        m_Asset = obj as GameObject;
+        m_Asset.transform.SetParent(transform, false);
+        m_Asset.transform.localPosition = Vector3.zero;
+        m_Asset.SetActive(true);
         SetLayer();
-        OnResComplete(m_ResGO, param);
-        m_IsResComplete = true;
+        OnLoadAssetComplete(m_Asset, param);
+        m_IsAssetLoadComplete = true;
     }
 
     protected override void Update()
@@ -368,12 +367,12 @@ public class BaseSceneObject : BaseEntity
 
     private bool IsResComplete()
     {
-        if (!m_IsResComplete)
+        if (!m_IsAssetLoadComplete)
         {
             return false;
         }
 
-        if (m_ResGO == null)
+        if (m_Asset == null)
         {
             Release();
             return false;
@@ -385,12 +384,12 @@ public class BaseSceneObject : BaseEntity
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
     protected virtual void OnFixedUpdate() { }
-    protected virtual void OnResComplete(GameObject go, object[] param) { }
+    protected virtual void OnLoadAssetComplete(GameObject go, object[] param) { }
     protected virtual void OnTriggerEnter2D(Collider2D collision) { }
     protected virtual void OnTriggerStay2D(Collider2D collision) { }
     protected virtual void OnTriggerExit2D(Collider2D collision) { }
 
-    protected bool m_IsResComplete = false;
+    protected bool m_IsAssetLoadComplete = false;
     protected float m_Dir = 1f;
     protected float m_Depth = 0f;
     protected float m_PosZ = 0f;
@@ -403,7 +402,7 @@ public class BaseSceneObject : BaseEntity
 
     protected ObjectType m_ObjectType = ObjectType.NONE;
 
-    protected GameObject m_ResGO;
+    protected GameObject m_Asset;
     protected EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
     private IReference m_Data = null;

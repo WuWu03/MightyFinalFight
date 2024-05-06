@@ -348,11 +348,6 @@ namespace GameFrameWork.Resources
                 Log.LogError("获取资源映射失败 : ", assetPath);
             }
 
-            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)))
-            {
-                assetPath = StringUtil.Format(assetPath, ".prefab");
-            }
-
             if (!m_DicAssetMap.TryGetValue(assetPath, out string assetBundleName))
             {
                 Log.LogError("获取资源映射失败 : ", assetPath);

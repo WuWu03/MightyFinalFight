@@ -1,6 +1,7 @@
 ﻿using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace GameFrameWork.Pool
@@ -235,6 +236,11 @@ namespace GameFrameWork.Pool
         /// </summary>
         public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
         {
+            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)))
+            {
+                assetPath = StringUtil.Format(assetPath, ".prefab");
+            }
+
             GameObject go = Get(assetPath, null, string.Empty);
 
             if (go != null)

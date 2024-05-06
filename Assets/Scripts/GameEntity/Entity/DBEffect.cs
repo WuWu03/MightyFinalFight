@@ -9,16 +9,16 @@ public class DBEffect : BaseEffect
     {
         base.Play();
 
-        if (m_IsResComplete)
+        if (m_IsAssetLoadComplete)
         {
             m_ArmatureAnimator.animation.timeScale = m_Speed;
             m_ArmatureAnimator.animation.Play();
         }
     }
 
-    protected override void OnResComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
-        base.OnResComplete(go, param);
+        base.OnLoadAssetComplete(go, param);
         m_ArmatureAnimator = go.GetComponent<UnityArmatureComponent>();
         m_ArmatureAnimator.animation.Stop();
         m_ArmatureAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
