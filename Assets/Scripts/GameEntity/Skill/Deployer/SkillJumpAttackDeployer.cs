@@ -1,9 +1,11 @@
 ﻿using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Audio;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 public class SkillJumpAttackDeployer : SkillBaseDeployer
@@ -84,7 +86,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, "Sound/" + eventObject.name);
+        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, StringUtil.Format("Sound/", eventObject.name, ".ogg"));
     }
 
     private void OnDropEvent()

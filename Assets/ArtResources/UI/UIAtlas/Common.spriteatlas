@@ -80,10 +80,28 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
+    packedSpriteRenderDataKeys:
+    - d24d8a01191944443be2c1d36316d194: 21300000
+    - 458241d1de5fded4c909011520bc3459: 21300000
+    - 2dc83d084256ba743920f0f8f3f904cf: 21300000
+    - b7b3e79a39720b849942883eab9d7e50: 21300000
+    - bf37195d1f2ab28429ad9e943fbeb535: 21300000
+    - 4323423fa93da2445b11312caf232b83: 21300000
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d24d8a01191944443be2c1d36316d194, type: 3}
+  - {fileID: 21300000, guid: 458241d1de5fded4c909011520bc3459, type: 3}
+  - {fileID: 21300000, guid: 2dc83d084256ba743920f0f8f3f904cf, type: 3}
+  - {fileID: 21300000, guid: b7b3e79a39720b849942883eab9d7e50, type: 3}
+  - {fileID: 21300000, guid: bf37195d1f2ab28429ad9e943fbeb535, type: 3}
+  - {fileID: 21300000, guid: 4323423fa93da2445b11312caf232b83, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Frame
+  - Cody
+  - Guy
+  - bg_white
+  - Title00
+  - Hagger
   m_RenderDataMap: {}
   m_Tag: Common
   m_IsVariant: 0

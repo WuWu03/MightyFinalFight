@@ -81,10 +81,31 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
+    packedSpriteRenderDataKeys:
+    - 4dbb00021f7cd7c46b38ce212b60dd1b: 21300000
+    - 7e307d627ce72d9428d108a33694eb79: 21300000
+    - e86919d2a5e3d7340bafdb2c565813b7: 21300000
+    - a65be806e16edd340a3aab36bca169b7: 21300000
+    - be29cd68cac09584a8359eb7bfb06aa0: 21300000
+    - 0aea1f6bb1d47004abdd904da288424d: 21300000
+    - 71c49b7cbc6798b4faf0cc5a92a321c1: 21300000
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 4dbb00021f7cd7c46b38ce212b60dd1b, type: 3}
+  - {fileID: 21300000, guid: 7e307d627ce72d9428d108a33694eb79, type: 3}
+  - {fileID: 21300000, guid: e86919d2a5e3d7340bafdb2c565813b7, type: 3}
+  - {fileID: 21300000, guid: a65be806e16edd340a3aab36bca169b7, type: 3}
+  - {fileID: 21300000, guid: be29cd68cac09584a8359eb7bfb06aa0, type: 3}
+  - {fileID: 21300000, guid: 0aea1f6bb1d47004abdd904da288424d, type: 3}
+  - {fileID: 21300000, guid: 71c49b7cbc6798b4faf0cc5a92a321c1, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SelectFrameP1
+  - SelectPlayer
+  - SelectFrameLightP2
+  - SelectFrameLightP3
+  - SelectFrameP3
+  - SelectFrameLightP1
+  - SelectFrameP2
   m_RenderDataMap: {}
   m_Tag: RoleSelectPanel
   m_IsVariant: 0
