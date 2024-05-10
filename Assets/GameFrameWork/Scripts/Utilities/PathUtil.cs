@@ -34,6 +34,41 @@ namespace GameFrameWork.Utilities
             }
         }
 
+        public static string FormatPath(string arg1)
+        {
+            return StringUtil.Format(true, arg1);
+        }
+
+        public static string FormatPath(string arg1, string arg2)
+        {
+            return StringUtil.Format(true, arg1, arg2);
+        }
+
+        public static string FormatPath(string arg1, string arg2, string arg3)
+        {
+            return StringUtil.Format(true, arg1, arg2, arg3);
+        }
+
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4)
+        {
+            return StringUtil.Format(true, arg1, arg2, arg3, arg4);
+        }
+
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5)
+        {
+            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5);
+        }
+
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
+        {
+            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5, arg6);
+        }
+
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
+        {
+            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        }
+
         public static string FormatPath(params string[] args)
         {
             return StringUtil.Format(true, args);

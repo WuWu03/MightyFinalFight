@@ -75,12 +75,12 @@ public class BaseEffect : BaseSceneObject
 
     public override void Release()
     {
-        base.Release();
         m_PlayTime = 0;
         m_Timer = -1;
         m_IsAutoRelease = false;
         m_IsPlaying = false;
         m_PlayEndCallback = null;
+        base.Release();
     }
 
     protected override void OnLoadAssetComplete(GameObject go,object[] param)

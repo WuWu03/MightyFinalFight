@@ -49,6 +49,7 @@ namespace GameFrameWork
         private void OnApplicationQuit()
         {
             OnExit();
+
             EntityMgr.instance.ShutDown();
             UIMgr.instance.ShutDown();
             RedPointMgr.instance.ShutDown();

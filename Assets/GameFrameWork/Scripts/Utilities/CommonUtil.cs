@@ -29,8 +29,6 @@ namespace GameFrameWork.Utilities
             return null;
         }
 
-
-
         public static T FindChildComponent<T>(GameObject parent, string strName) where T : Component
         {
             Transform[] allChildren = parent.GetComponentsInChildren<Transform>(true);
@@ -163,28 +161,20 @@ namespace GameFrameWork.Utilities
         /// <summary>
         /// RGBA转16进制
         /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
         public static string RGBToHex(Color color)
         {
-            if (color == default(Color))
-            {
-                color = Color.black;
-            }
+            byte r = (byte)(Mathf.Clamp01(color.r) * byte.MaxValue);
+            byte g = (byte)(Mathf.Clamp01(color.g) * byte.MaxValue);
+            byte b = (byte)(Mathf.Clamp01(color.b) * byte.MaxValue);
+            //byte a = (byte)(Mathf.Clamp01(color.a) * 255);
 
-            byte r = (byte)(Mathf.Clamp01(color.r) * 255);
-            byte g = (byte)(Mathf.Clamp01(color.g) * 255);
-            byte b = (byte)(Mathf.Clamp01(color.b) * 255);
-            byte a = (byte)(Mathf.Clamp01(color.a) * 255);
-
-            return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+            //return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
+            return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}", r, g, b);
         }
 
         /// <summary>
         /// 16进制转RGBA
         /// </summary>
-        /// <param name="hex"></param>
-        /// <returns></returns>
         public static Color HexToRGB(string hex)
         {
             int hexValue = Convert.ToInt32(hex.Trim().TrimStart('#').PadRight(8, 'F'), 16);

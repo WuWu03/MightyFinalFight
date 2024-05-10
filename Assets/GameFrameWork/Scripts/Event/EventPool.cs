@@ -82,7 +82,7 @@ namespace GameFrameWork.Event
 
             if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
-                throw new Exception(StringUtil.Format("Dont't have event ID:", id, "."));
+                throw new Exception(StringUtil.Format("Dont't have event ID:", id.ToString(), "."));
             }
 
             if (eventList.Contains(handler))

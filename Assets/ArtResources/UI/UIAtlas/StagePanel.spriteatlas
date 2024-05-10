@@ -43,7 +43,20 @@ SpriteAtlas:
       m_CompressionQuality: 100
       m_CrunchedCompression: 1
       m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
       m_IgnorePlatformSupport: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
@@ -59,44 +72,20 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 21300000, guid: ed25480c4ecda714895acc8cd5e34fb3, type: 3}
+    - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
     - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
     - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
     - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-    - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
     - {fileID: 21300000, guid: daba056a013e86c4381eee94ccbeb066, type: 3}
     - {fileID: 21300000, guid: fa578fc6f5983f142a94bdebd7861f8e, type: 3}
     - {fileID: 21300000, guid: 91add3cdb9020974797e2645917605d1, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - ec6ef9920891c604fa96feb08d35401f: 21300000
-    - 6000a136d6261c142b60922bf3f14028: 21300000
-    - fa578fc6f5983f142a94bdebd7861f8e: 21300000
-    - 4f6966d87fab6684c84550a0a4b26a66: 21300000
-    - 63bba34ac51cf3c45bc85afe7374d90a: 21300000
-    - daba056a013e86c4381eee94ccbeb066: 21300000
-    - ed25480c4ecda714895acc8cd5e34fb3: 21300000
-    - 91add3cdb9020974797e2645917605d1: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: ec6ef9920891c604fa96feb08d35401f, type: 3}
-  - {fileID: 21300000, guid: 6000a136d6261c142b60922bf3f14028, type: 3}
-  - {fileID: 21300000, guid: fa578fc6f5983f142a94bdebd7861f8e, type: 3}
-  - {fileID: 21300000, guid: 4f6966d87fab6684c84550a0a4b26a66, type: 3}
-  - {fileID: 21300000, guid: 63bba34ac51cf3c45bc85afe7374d90a, type: 3}
-  - {fileID: 21300000, guid: daba056a013e86c4381eee94ccbeb066, type: 3}
-  - {fileID: 21300000, guid: ed25480c4ecda714895acc8cd5e34fb3, type: 3}
-  - {fileID: 21300000, guid: 91add3cdb9020974797e2645917605d1, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - Map00_12
-  - Map00_18
-  - round_g
-  - Map00_5
-  - Map00_11
-  - round_b
-  - Map
-  - round_r
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: StagePanel
   m_IsVariant: 0

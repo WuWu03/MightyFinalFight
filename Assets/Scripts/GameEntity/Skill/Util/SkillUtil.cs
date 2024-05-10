@@ -188,13 +188,13 @@ public static class SkillUtil
         }
 
         string str = "[»ù´¡ÉËº¦: " + baseDamage + "]" +
-                     "\n[×îÖÕÉËº¦£º " + damage + "]" +
-                     "\n[¹¥»÷: " + attack + "]" +
-                     "\n[·ÀÓù: " + defense + "]" +
-                     "\n[±©»÷ÂÊ: " + critical + "]" +
-                     "\n[±¶ÂÊ: " + (mulity > 0 ? mulity : 1) + "]" +
-                     "\n[Æ«ÒÆ: " + fluctuate + "]" +
-                     "\n[ÊÇ·ñ±©»÷£º " + isCri + "]";
+                     "  [×îÖÕÉËº¦£º " + damage + "]" +
+                     "  [¹¥»÷: " + attack + "]" +
+                     "  [·ÀÓù: " + defense + "]" +
+                     "  [±©»÷ÂÊ: " + critical + "]" +
+                     "  [±¶ÂÊ: " + (mulity > 0 ? mulity : 1) + "]" +
+                     "  [Æ«ÒÆ: " + fluctuate + "]" +
+                     "  [ÊÇ·ñ±©»÷£º " + isCri + "]";
 
         Log.LogInfo(Color.red, str);
         isCritical = isCri;

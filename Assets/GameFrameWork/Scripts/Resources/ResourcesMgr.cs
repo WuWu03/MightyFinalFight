@@ -235,7 +235,7 @@ namespace GameFrameWork.Resources
             if (assetBundleInfo == null)
             {
                 string assetBundlePath = GetAssetBundlePath(assetBundleName);
-                Log.LogInfo("开始异步加载资源 ：<color=#FFFF00>", assetBundlePath, "</color>]");
+                Log.LogInfo("开始异步加载资源 ：<color=#FFFF00>[", assetBundlePath, "</color>]");
                 AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
 
                 while (!createRequest.isDone)
@@ -346,6 +346,11 @@ namespace GameFrameWork.Resources
             if (m_DicAssetMap == null && m_DicAssetMap.Count < 1)
             {
                 Log.LogError("获取资源映射失败 : ", assetPath);
+            }
+
+            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)))
+            {
+                assetPath = StringUtil.Format(assetPath, ".prefab");
             }
 
             if (!m_DicAssetMap.TryGetValue(assetPath, out string assetBundleName))

@@ -43,7 +43,20 @@ SpriteAtlas:
       m_CompressionQuality: 100
       m_CrunchedCompression: 1
       m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
+      m_Overridden: 1
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 100
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
       m_IgnorePlatformSupport: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
@@ -66,25 +79,10 @@ SpriteAtlas:
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys:
-    - d3292020f7953714f8b9b2e44d126e8b: 21300000
-    - 8f5abea35bc88a0499938b930e109e81: 21300000
-    - 9bfafae77a6195943be87b2952549d44: 21300000
-    - 3f24e0de2333e0741840710a51243f19: 21300000
-    - 99caa04f32409b74ea497f096bb6908c: 21300000
+    packedSpriteRenderDataKeys: []
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: d3292020f7953714f8b9b2e44d126e8b, type: 3}
-  - {fileID: 21300000, guid: 8f5abea35bc88a0499938b930e109e81, type: 3}
-  - {fileID: 21300000, guid: 9bfafae77a6195943be87b2952549d44, type: 3}
-  - {fileID: 21300000, guid: 3f24e0de2333e0741840710a51243f19, type: 3}
-  - {fileID: 21300000, guid: 99caa04f32409b74ea497f096bb6908c, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - retro
-  - star
-  - Title00
-  - MightyFinalFight
-  - Capcom
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_RenderDataMap: {}
   m_Tag: TitlePanel
   m_IsVariant: 0

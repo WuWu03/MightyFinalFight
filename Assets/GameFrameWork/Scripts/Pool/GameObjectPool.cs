@@ -1,7 +1,6 @@
 ﻿using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace GameFrameWork.Pool
@@ -193,9 +192,6 @@ namespace GameFrameWork.Pool
         /// <summary>
         /// 添加一个池
         /// </summary>
-        /// <param name="tag">标签</param>
-        /// <param name="obj">预制对象</param>
-        /// <param name="count">预制数量</param>
         public void AddPool(string tag, GameObject obj, int count = 1)
         {
             AddPool(tag, obj, count, false);
@@ -236,11 +232,6 @@ namespace GameFrameWork.Pool
         /// </summary>
         public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
         {
-            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)))
-            {
-                assetPath = StringUtil.Format(assetPath, ".prefab");
-            }
-
             GameObject go = Get(assetPath, null, string.Empty);
 
             if (go != null)

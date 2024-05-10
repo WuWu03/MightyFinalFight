@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -6,39 +7,177 @@ namespace GameFrameWork.Utilities
 {
     public static class StringUtil
     {
-        public static string Format(params object[] args)
+        public static string Format(bool isPath, object arg1)
         {
-            return Format(false, args);
+            return Format(isPath, arg1, null, null, null, null, null, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2)
+        {
+            return Format(isPath, arg1, arg2, null, null, null, null, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2, object arg3)
+        {
+            return Format(isPath, arg1, arg2, arg3, null, null, null, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4)
+        {
+            return Format(isPath, arg1, arg2, arg3, arg4, null, null, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5)
+        {
+            return Format(isPath, arg1, arg2, arg3, arg4, arg5, null, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
+        {
+            return Format(isPath, arg1, arg2, arg3, arg4, arg5, arg6, null);
+        }
+
+        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
+        {
+            m_ListArgs.Clear();
+
+            AddArg(arg1);
+            AddArg(arg2);
+            AddArg(arg3);
+            AddArg(arg4);
+            AddArg(arg5);
+            AddArg(arg6);
+            AddArg(arg7);
+
+            return Format(isPath);
         }
 
         public static string Format(bool isPath, params object[] args)
         {
-            if (args == null)
-            {
-                throw new Exception("Args is invalid.");
-            }
+            m_ListArgs.Clear();
+            m_ListArgs.AddRange(args);
 
-            if (args.Length < 1)
+            return Format(isPath);
+        }
+
+        public static string Format(object arg1)
+        {
+            return Format(false, arg1, null, null, null, null, null, null);
+        }
+
+        public static string Format(object arg1, object arg2)
+        {
+            return Format(false, arg1, arg2, null, null, null, null, null);
+        }
+
+        public static string Format(object arg1, object arg2, object arg3)
+        {
+            return Format(false, arg1, arg2, arg3, null, null, null, null);
+        }
+
+        public static string Format(object arg1, object arg2, object arg3, object arg4)
+        {
+            return Format(false, arg1, arg2, arg3, arg4, null, null, null);
+        }
+
+        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5)
+        {
+            return Format(false, arg1, arg2, arg3, arg4, arg5, null, null);
+        }
+
+        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
+        {
+            return Format(false, arg1, arg2, arg3, arg4, arg5, arg6, null);
+        }
+
+        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
+        {
+            return Format(false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        }
+
+        public static string Format(params object[] args)
+        {
+            m_ListArgs.Clear();
+            m_ListArgs.AddRange(args);
+
+            return Format(false);
+        }
+
+        public static string FormatDefault(string format, object arg1)
+        {
+            return FormatDefault(format, arg1, null, null, null, null, null, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2)
+        {
+            return FormatDefault(format, arg1, arg2, null, null, null, null, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2, object arg3)
+        {
+            return FormatDefault(format, arg1, arg2, arg3, null, null, null, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4)
+        {
+            return FormatDefault(format, arg1, arg2, arg3, arg4, null, null, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5)
+        {
+            return FormatDefault(format, arg1, arg2, arg3, arg4, arg5, null, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
+        {
+            return FormatDefault(format, arg1, arg2, arg3, arg4, arg5, arg6, null);
+        }
+
+        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
+        {
+            m_ListArgs.Clear();
+
+            AddArg(arg1);
+            AddArg(arg2);
+            AddArg(arg3);
+            AddArg(arg4);
+            AddArg(arg5);
+            AddArg(arg6);
+            AddArg(arg7);
+
+            return FormatDefault(format);
+        }
+
+        public static string FormatDefault(string format, params object[] args)
+        {
+            m_ListArgs.Clear();
+            m_ListArgs.AddRange(args);
+            return FormatDefault(format);
+        }
+
+        private static string Format(bool isPath)
+        {
+            if (m_ListArgs == null || m_ListArgs.Count < 1)
             {
                 return string.Empty;
             }
 
-            if (args.Length < 2)
+            if (m_ListArgs.Count < 2)
             {
-                return args[0].ToString();
+                return m_ListArgs[0].ToString();
             }
 
             m_StringBuilder.Clear();
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < m_ListArgs.Count; i++)
             {
                 if (isPath && i > 0)
                 {
-                    bool conditon = args[i] != null;
+                    bool conditon = m_ListArgs[i] != null;
 
-                    if (args[i] is string)
+                    if (m_ListArgs[i] is string argStr)
                     {
-                        conditon = !string.IsNullOrEmpty(args[i] as string);
+                        conditon = !string.IsNullOrEmpty(argStr);
                     }
 
                     if (conditon)
@@ -47,15 +186,13 @@ namespace GameFrameWork.Utilities
                     }
                 }
 
-                m_StringBuilder.Append("{");
-                m_StringBuilder.AppendFormat("{0}", i);
-                m_StringBuilder.Append("}");
+                m_StringBuilder.Append(m_ListArgs[i]);
             }
 
-            return FormatDefault(m_StringBuilder.ToString(), args);
+            return m_StringBuilder.ToString();
         }
 
-        public static string FormatDefault(string format, params object[] args)
+        private static string FormatDefault(string format)
         {
             if (format == null)
             {
@@ -63,9 +200,17 @@ namespace GameFrameWork.Utilities
             }
 
             m_StringBuilder.Clear();
-            m_StringBuilder.AppendFormat(format, args);
+            m_StringBuilder.AppendFormat(format, m_ListArgs.ToArray());
 
             return m_StringBuilder.ToString();
+        }
+
+        private static void AddArg(object arg)
+        {
+            if (arg != null || (arg is string argStr && !string.IsNullOrEmpty(argStr)))
+            {
+                m_ListArgs.Add(arg);
+            }
         }
 
         /// <summary>
@@ -199,6 +344,7 @@ namespace GameFrameWork.Utilities
             }
         }
 
+        private static List<object> m_ListArgs = new List<object>();
         private static StringBuilder m_StringBuilder = new StringBuilder();
     }
 }
