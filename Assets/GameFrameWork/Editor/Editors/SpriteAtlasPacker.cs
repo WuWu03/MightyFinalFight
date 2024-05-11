@@ -187,9 +187,13 @@ namespace GameFrameWork.Editor
                     Sprite tempSprite = atlasSprites[i] as Sprite;
                     Sprite findSprite = null;
 
+                    string tempGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(tempSprite));
+
                     for (int j = 0; j < m_ListSprites.Count; j++)
                     {
-                        if (tempSprite.name.Contains(m_ListSprites[j].name))
+                        string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(m_ListSprites[j]));
+
+                        if (tempGuid.Equals(guid))
                         {
                             findSprite = m_ListSprites[j];
                             break;
