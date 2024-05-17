@@ -8,54 +8,54 @@ namespace GameFrameWork.Editor
     public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
     {
         [SerializeField]
-        public bool LockConfig = false;
+        public bool lockConfig = false;
         [SerializeField]
-        public int PlatFormIndex = 0;
+        public int platFormIndex = 0;
         [SerializeField]
-        public string AssetBuildDir = string.Empty;
+        public string assetBuildDir = string.Empty;
         [SerializeField]
-        public string AssetCopyDir = string.Empty;
+        public string assetCopyDir = string.Empty;
         [SerializeField]
-        public bool IsCopyAsset = false;
+        public bool isCopyAsset = false;
         [SerializeField]
-        public List<string> ListExtendName = null;
+        public List<string> listExtendName = null;
         [SerializeField]
-        public List<string> ListPattern = null;
+        public List<string> listPattern = null;
 
-        public string AssetBuildFullDir => Application.dataPath + AssetBuildDir.Substring(6);
+        public string assetBuildFullDir => Application.dataPath + assetBuildDir.Substring(6);
     }
 
     [Serializable]
     public class AssetBundleData : BaseConfigData
     {
-        public enum AssetType
+        public enum BundleBuildType
         {
-            MapSingle,//路径下每个资源单独打ab
-            Map,//路径下所有资源打成一个ab
+            Mulity,//路径下每个资源单独打ab
+            Single,//路径下所有资源打成一个ab
         }
 
-        public AssetType BundleType;
-        public string BundleName;
-        public string BundleExtend;
-        public string Pattern;
-        public string AssetPath;
-        public string AssetBundlePath;
+        public BundleBuildType bundleBuildType;
+        public string bundleName;
+        public string bundleExtend;
+        public string pattern;
+        public string assetPath;
+        public string bundlePath;
 
         public override int CompareTo(object obj)
         {
             AssetBundleData data = obj as AssetBundleData;
-            return string.Compare(this.AssetPath, data.AssetPath);
+            return string.Compare(this.assetPath, data.assetPath);
         }
 
         public AssetBundleData Clone()
         {
             AssetBundleData data = new AssetBundleData();
-            data.BundleType = this.BundleType;
-            data.BundleName = this.BundleName;
-            data.BundleExtend = this.BundleExtend;
-            data.Pattern = this.Pattern;
-            data.AssetPath = this.AssetPath;
-            data.AssetBundlePath = this.AssetBundlePath;
+            data.bundleBuildType = this.bundleBuildType;
+            data.bundleName = this.bundleName;
+            data.bundleExtend = this.bundleExtend;
+            data.pattern = this.pattern;
+            data.assetPath = this.assetPath;
+            data.bundlePath = this.bundlePath;
 
             return data;
         }

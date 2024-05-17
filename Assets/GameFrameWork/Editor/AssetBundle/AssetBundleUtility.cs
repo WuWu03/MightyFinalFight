@@ -73,17 +73,17 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(m_AssetBundleConfig.Datas[i].AssetPath))
+                    if (string.IsNullOrEmpty(m_AssetBundleConfig.Datas[i].assetPath))
                     {
                         continue;
                     }
 
-                    if (m_AssetBundleConfig.Datas[i].AssetPath.Equals(assetPath) || assetPath.StartsWith(m_AssetBundleConfig.Datas[i].AssetPath))
+                    if (m_AssetBundleConfig.Datas[i].assetPath.Equals(assetPath) || assetPath.StartsWith(m_AssetBundleConfig.Datas[i].assetPath))
                     {
                         m_DicAssetContainer.Add(assetPath, i);
                         return i;
                     }
-                    else if (m_AssetBundleConfig.Datas[i].AssetPath.Contains(assetPath))
+                    else if (m_AssetBundleConfig.Datas[i].assetPath.Contains(assetPath))
                     {
                         m_DicAssetContainer.Add(assetPath, -2);
                         return -2;

@@ -487,10 +487,10 @@ public static class MapEditorHelper
             return m_GameViewSize;
         }
 
-        System.Type T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
-        System.Reflection.MethodInfo GetSizeOfMainGameView = T.GetMethod("GetSizeOfMainGameView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-        System.Object Res = GetSizeOfMainGameView.Invoke(null, null);
-        m_GameViewSize = (Vector2)Res;
+        System.Type t = System.Type.GetType("UnityEditor.GameView,UnityEditor");
+        System.Reflection.MethodInfo GetSizeOfMainGameView = t.GetMethod("GetSizeOfMainGameView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+        System.Object pos = GetSizeOfMainGameView.Invoke(null, null);
+        m_GameViewSize = (Vector2)pos;
         return m_GameViewSize;
     }
 

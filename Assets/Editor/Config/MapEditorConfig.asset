@@ -18,7 +18,7 @@ MonoBehaviour:
     SceneName: Stage1_1
     StageIndex: 1
     Level: 1
-    CurrPos: {x: -334, y: -47}
+    CurrPos: {x: -349, y: -33}
     InitPos: {x: -450, y: -50}
     Width: 1016
     Height: 152
@@ -136,7 +136,7 @@ MonoBehaviour:
     SceneName: Stage1_3
     StageIndex: 1
     Level: 3
-    CurrPos: {x: 82, y: -59}
+    CurrPos: {x: 233, y: 34}
     InitPos: {x: -215, y: -53}
     Width: 504
     Height: 152

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,11 @@ namespace GameFrameWork.Serialize
 {
     public abstract class BaseScriptableObject<T> : ScriptableObject where T : BaseConfigData
     {
+        public BaseScriptableObject()
+        {
+            Datas = new List<T>();
+        }
+
         public List<T> Datas = null;
         public virtual T GetData(int id)
         {

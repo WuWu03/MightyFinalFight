@@ -25,7 +25,7 @@ namespace GameFrameWork.Editor
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
 
-            FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(config.AssetBuildDir));
+            FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(config.assetBuildDir));
 
             if (AppConfig.instance.useLua)
             {
@@ -48,7 +48,7 @@ namespace GameFrameWork.Editor
             {
                 if (m_BuildMaps.Count > 0)
                 {
-                    BuildPipeline.BuildAssetBundles(config.AssetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
+                    BuildPipeline.BuildAssetBundles(config.assetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
 
                     if (AppConfig.instance.useLua)
                     {
@@ -57,10 +57,10 @@ namespace GameFrameWork.Editor
 
                     AssetDatabase.Refresh();
 
-                    if (config.IsCopyAsset)
+                    if (config.isCopyAsset)
                     {
-                        FileUtil.DeleteDirectory(config.AssetCopyDir);
-                        FileUtil.CopyDirectory(config.AssetBuildFullDir, config.AssetCopyDir);
+                        FileUtil.DeleteDirectory(config.assetCopyDir);
+                        FileUtil.CopyDirectory(config.assetBuildFullDir, config.assetCopyDir);
                     }
                 }
 
@@ -68,21 +68,21 @@ namespace GameFrameWork.Editor
             }
 
             //删除无用ab包
-            FileUtil.VerifyDirectory(config.AssetBuildFullDir);
-            FileUtil.Recursive(config.AssetBuildFullDir, m_ListFiles, m_ListPaths);
+            FileUtil.VerifyDirectory(config.assetBuildFullDir);
+            FileUtil.Recursive(config.assetBuildFullDir, m_ListFiles, m_ListPaths);
 
             for (int i = 0; i < m_ListFiles.Count; i++)
             {
                 string directoryName = Path.GetDirectoryName(m_ListFiles[i]).Replace("\\", "/") + "/";
-                directoryName = directoryName.Substring(directoryName.IndexOf(config.AssetBuildDir));
+                directoryName = directoryName.Substring(directoryName.IndexOf(config.assetBuildDir));
 
-                if (directoryName.Equals(config.AssetBuildDir))
+                if (directoryName.Equals(config.assetBuildDir))
                 {
                     continue;
                 }
 
-                string filePath = m_ListFiles[i].Substring(m_ListFiles[i].IndexOf(config.AssetBuildDir));
-                filePath = filePath.Substring(0, filePath.IndexOf(".")).Replace(config.AssetBuildDir, string.Empty);
+                string filePath = m_ListFiles[i].Substring(m_ListFiles[i].IndexOf(config.assetBuildDir));
+                filePath = filePath.Substring(0, filePath.IndexOf(".")).Replace(config.assetBuildDir, string.Empty);
 
                 if (!m_ListBundlePath.Contains(filePath))
                 {
@@ -96,7 +96,7 @@ namespace GameFrameWork.Editor
 
             if (isShowNotify)
             {
-                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.AssetBuildDir);
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(config.assetBuildDir);
                 EditorUtility.DisplayDialog("提示", "打包成功", "确定");
             }
         }
@@ -108,16 +108,16 @@ namespace GameFrameWork.Editor
         {
             for (int i = 0; i < config.Datas.Count; i++)
             {
-                if (config.Datas[i].BundleType == AssetBundleData.AssetType.MapSingle)
+                if (config.Datas[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
                 {
-                    if (!AddBuildMapSingle(config.Datas[i].AssetBundlePath, config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath, i))
+                    if (!AddMulityBuildMap(config.Datas[i].bundlePath, config.Datas[i].bundleExtend, config.Datas[i].pattern, config.Datas[i].assetPath, i))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (!AddBuildMap(config.Datas[i].BundleName, config.Datas[i].BundleExtend, config.Datas[i].Pattern, config.Datas[i].AssetPath, i))
+                    if (!AddSingleBuildMap(config.Datas[i].bundleName, config.Datas[i].bundleExtend, config.Datas[i].pattern, config.Datas[i].assetPath, i))
                     {
                         return false;
                     }
@@ -125,15 +125,15 @@ namespace GameFrameWork.Editor
             }
 
             //框架资源
-            AddBuildMapSingle("ArtResources/Materials/", ".assetbundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
-            AddBuildMap("Shaders", ".assetbundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
+            AddMulityBuildMap("ArtResources/Materials/", ".assetbundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
+            AddSingleBuildMap("Shaders", ".assetbundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
 
             return true;
             //AddBuildMap("fonts.unity3d", "*.TTF", "Assets/AssetsLibrary/Font");
             //AddBuildMapSingle("*.prefab", "Assets/AssetsLibrary/UI/Prefabs", "UI/Prefabs/");
         }
 
-        private bool AddBuildMap(string bundleName, string extend, string pattern, string path, int index)
+        private bool AddSingleBuildMap(string bundleName, string extend, string pattern, string path, int index)
         {
             if (!Directory.Exists(path))
             {
@@ -141,17 +141,19 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
+            List<string> listFiles = new List<string>();
+            List<string> listPaths = new List<string>();
+            FileUtil.Recursive(path, listFiles, listPaths);
 
-            if (files.Length < 1)
+            if (listFiles.Count < 1)
             {
                 EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
                 return false;
             }
 
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < listFiles.Count; i++)
             {
-                files[i] = files[i].Replace('\\', '/');
+                listFiles[i] = listFiles[i].Replace('\\', '/');
             }
 
             if (m_BuildMaps != null && m_BuildMaps.Count > 0)
@@ -162,15 +164,15 @@ namespace GameFrameWork.Editor
                     {
                         List<string> assetList = new List<string>();
                         assetList.AddRange(m_BuildMaps[i].assetNames);
-                        assetList.AddRange(files);
+                        assetList.AddRange(listFiles);
                         AssetBundleBuild temp = new AssetBundleBuild();
                         temp.assetBundleName = m_BuildMaps[i].assetBundleName;
                         temp.assetNames = assetList.ToArray();
                         m_BuildMaps[i] = temp;
 
-                        for (int j = 0; j < files.Length; j++)
+                        for (int j = 0; j < listFiles.Count; j++)
                         {
-                            m_AssetMap.Add(files[j].Substring(7), bundleName);
+                            m_AssetMap.Add(listFiles[j].Substring(7), bundleName);
                         }
 
                         return true;
@@ -185,20 +187,20 @@ namespace GameFrameWork.Editor
                 m_ListBundlePath.Add(lowerBundleName);
             }
 
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < listFiles.Count; i++)
             {
-                m_AssetMap.Add(files[i].Substring(7), bundleName);
+                m_AssetMap.Add(listFiles[i].Substring(7), bundleName);
             }
 
             AssetBundleBuild build = new AssetBundleBuild();
             build.assetBundleName = bundleName + extend;
-            build.assetNames = files;
+            build.assetNames = listFiles.ToArray();
             m_BuildMaps.Add(build);
 
             return true;
         }
 
-        private bool AddBuildMapSingle(string abPath, string extend, string pattern, string path, int index)
+        private bool AddMulityBuildMap(string abPath, string extend, string pattern, string path, int index)
         {
             if (!Directory.Exists(path))
             {
@@ -206,18 +208,19 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            string[] files = GetFilesWithoutMetaFile(Directory.GetFiles(path, pattern));
+            List<string> listFiles = new List<string>();
+            List<string> listPaths = new List<string>();
+            FileUtil.Recursive(path, listFiles, listPaths);
 
-            if (files.Length < 1)
+            if (listFiles.Count < 1)
             {
                 EditorUtility.DisplayDialog("错误", "编号：" + (index + 1).ToString() + "\n" + path + "\n该路径下无任何文件", "确定");
                 return false;
             }
 
-
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < listFiles.Count; i++)
             {
-                string bundleName = abPath + Path.GetFileNameWithoutExtension(files[i]);
+                string bundleName = abPath + Path.GetFileNameWithoutExtension(listFiles[i]);
                 string lowerBundleName = bundleName.ToLower();
 
                 if (!m_ListBundlePath.Contains(lowerBundleName))
@@ -225,37 +228,16 @@ namespace GameFrameWork.Editor
                     m_ListBundlePath.Add(lowerBundleName);
                 }
 
-                files[i] = files[i].Replace('\\', '/');
+                listFiles[i] = listFiles[i].Replace('\\', '/');
                 AssetBundleBuild build = new AssetBundleBuild();
                 build.assetBundleName = bundleName + extend;
-                build.assetNames = new string[] { files[i] };
+                build.assetNames = new string[] { listFiles[i] };
                 m_BuildMaps.Add(build);
-                m_AssetMap.Add(files[i].Substring(7), bundleName);
+                m_AssetMap.Add(listFiles[i].Substring(7), bundleName);
             }
 
             return true;
         }
-
-        private string[] GetFilesWithoutMetaFile(string[] files)
-        {
-            List<string> fileList = new List<string>();
-
-            if (files != null && files.Length > 0)
-            {
-                for (int i = 0; i < files.Length; i++)
-                {
-                    if (Path.GetExtension(files[i]).ToLower() == ".meta")
-                    {
-                        continue;
-                    }
-
-                    fileList.Add(files[i]);
-                }
-            }
-
-            return fileList.ToArray();
-        }
-
 
         /// <summary>
         /// 创建资源版本文件
@@ -263,19 +245,19 @@ namespace GameFrameWork.Editor
         private void CreateVersionFile()
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-            string versionPath = config.AssetBuildFullDir + AppConfig.instance.versionFileName;
+            string versionPath = config.assetBuildFullDir + AppConfig.instance.versionFileName;
 
             m_ListPaths.Clear();
             m_ListFiles.Clear();
 
-            FileUtil.Recursive(config.AssetBuildFullDir, m_ListFiles, m_ListPaths);
+            FileUtil.Recursive(config.assetBuildFullDir, m_ListFiles, m_ListPaths);
 
             string content = string.Empty;
 
             for (int i = 0; i < m_ListFiles.Count; i++)
             {
                 string md5 = FileUtil.MD5File(m_ListFiles[i]);
-                string value = m_ListFiles[i].Replace(config.AssetBuildFullDir, string.Empty);
+                string value = m_ListFiles[i].Replace(config.assetBuildFullDir, string.Empty);
                 string directory = Path.GetDirectoryName(value).Replace("\\", "/");
                 string fileName = Path.GetFileNameWithoutExtension(value);
                 string ext = Path.GetExtension(value);
@@ -297,7 +279,7 @@ namespace GameFrameWork.Editor
         private void CreateAssetMapFile()
         {
             AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-            string mapFile = config.AssetBuildFullDir + "AssetMap.txt";
+            string mapFile = config.assetBuildFullDir + "AssetMap.txt";
 
             string content = string.Empty;
             int index = 0;

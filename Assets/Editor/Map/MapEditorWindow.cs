@@ -103,12 +103,14 @@ public class MapEditorWindow : EditorWindow
         Handles.DrawLine(m_ViewAreaPoints[3], m_ViewAreaPoints[0]);
     }
 
+    Vector2 scroll = Vector2.zero;
     private void MainGUI()
     {
         Vector2 texSize = MapEditorHelper.GetTextureSize();
         Vector2 screenSize = MapEditorHelper.GetScreenSize();
 
-        GUILayout.FlexibleSpace();
+        //GUILayout.FlexibleSpace();
+        GUILayout.Space(screenSize.y);
         int select = EditorGUILayout.Popup("当前地图", m_CurrMap, m_MapNames);
 
         if(select != m_CurrMap)
@@ -123,6 +125,7 @@ public class MapEditorWindow : EditorWindow
             SetMapNames();
         }
 
+        scroll = EditorGUILayout.BeginScrollView(scroll);
         MapEditorHelper.Id = EditorGUILayout.IntField("地图Id", MapEditorHelper.Id);
         MapEditorHelper.StageIndex = EditorGUILayout.IntField("关卡索引", MapEditorHelper.StageIndex);
         MapEditorHelper.Level = EditorGUILayout.IntField("小节", MapEditorHelper.Level);
@@ -170,7 +173,6 @@ public class MapEditorWindow : EditorWindow
                 if (MapEditorHelper.MoveAreas.Count < 1)
                 {
                     m_CurrMoveArea = 0;
-                    return;
                 }
 
                 if (m_CurrMoveArea >= MapEditorHelper.MoveAreas.Count)
@@ -214,6 +216,8 @@ public class MapEditorWindow : EditorWindow
         {
             Export();
         }
+
+        EditorGUILayout.EndScrollView();
     }
 
     private void TaskConfigGUI()
@@ -221,7 +225,6 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景任务配置");
-        m_ScollPosTask = GUILayout.BeginScrollView(m_ScollPosTask, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.ListTaskId.Count; i++)
         {
@@ -248,8 +251,6 @@ public class MapEditorWindow : EditorWindow
             });
         }
 
-        GUILayout.EndScrollView();
-
         if (GUILayout.Button("增加任务"))
         {
             MapEditorHelper.ListTaskId.Add(0);
@@ -263,7 +264,6 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景BGM配置");
-        m_ScollPosBGM = GUILayout.BeginScrollView(m_ScollPosBGM, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.ListBGM.Count; i++)
         {
@@ -291,8 +291,6 @@ public class MapEditorWindow : EditorWindow
             });
         }
 
-        GUILayout.EndScrollView();
-
         if (GUILayout.Button("增加BGM"))
         {
             MapEditorHelper.ListBGM.Add(new StageConfigData.BGM());
@@ -306,7 +304,6 @@ public class MapEditorWindow : EditorWindow
         GUILayout.BeginVertical();
         GUILayout.Space(5);
         GUILayout.Label("场景物体配置");
-        m_ScollPosSceneObject = GUILayout.BeginScrollView(m_ScollPosSceneObject, GUILayout.Width(position.width), GUILayout.Height(200));
 
         for (int i = 0; i < MapEditorHelper.listSceneBuilding.Count; i++)
         {
@@ -345,8 +342,6 @@ public class MapEditorWindow : EditorWindow
                 GUILayout.EndVertical();
             });
         }
-
-        GUILayout.EndScrollView();
 
         if (GUILayout.Button("增加场景物体配置"))
         {
@@ -432,13 +427,13 @@ public class MapEditorWindow : EditorWindow
     private void SetWindowSize()
     {
         Vector2 texSize = MapEditorHelper.GetTextureSize(true);
-        Vector2 screenSize = MapEditorHelper.GetScreenSize();
+        Vector2 screenSize = MapEditorHelper.GetScreenSize(true);
 
         float width = Mathf.Max(screenSize.x, texSize.x);
         float height = Mathf.Max(screenSize.y, texSize.y) + 660;
-
+        
         minSize = new Vector2(width, height);
-        maxSize = minSize;  
+        //maxSize = minSize;
     }
 
     private void Export()
@@ -446,9 +441,6 @@ public class MapEditorWindow : EditorWindow
         MapEditorHelper.Export();
     }
 
-    private Vector2 m_ScollPosTask = Vector2.zero;
-    private Vector2 m_ScollPosBGM = Vector2.zero;
-    private Vector2 m_ScollPosSceneObject = Vector2.zero;
     private Vector2 m_Mouse1Pos = Vector2.zero;
     private int m_CurrMap = 0;
     private int m_CurrMoveArea = 0;
