@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Serialize;
+﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,10 +9,10 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-    public static class EditorUtil
+	public static class EditorUtil
 	{
-        public static string[] GetAssemblyTypeNames(string typeName,bool isFullName, params string[] parttern)
-        {
+		public static string[] GetAssemblyTypeNames(string typeName, bool isFullName, params string[] parttern)
+		{
 			Type[] types = GetAssemblyTypes(typeName, parttern);
 
 			string[] typeNames = new string[types.Length];
@@ -22,7 +23,7 @@ namespace GameFrameWork.Editor
 			}
 
 			return typeNames;
-        }
+		}
 
 		public static Type[] GetAssemblyTypes(string typeName, params string[] parttern)
 		{
@@ -74,23 +75,23 @@ namespace GameFrameWork.Editor
 			return GetNodePath(current, string.Empty, endParttern);
 		}
 
-		private static string GetNodePath(Transform current, string path,  params string[] endParttern)
+		private static string GetNodePath(Transform current, string path, params string[] endParttern)
 		{
 			if (current == null)
 			{
 				return path;
 			}
 
-            if (string.IsNullOrEmpty(path))
-            {
-                path = current.name;
-            }
-            else
-            {
-                path = current.name + "/" + path;
-            }
+			if (string.IsNullOrEmpty(path))
+			{
+				path = current.name;
+			}
+			else
+			{
+				path = current.name + "/" + path;
+			}
 
-            if (current.parent != null && endParttern != null)
+			if (current.parent != null && endParttern != null)
 			{
 				for (int i = 0; i < endParttern.Length; i++)
 				{
@@ -101,11 +102,10 @@ namespace GameFrameWork.Editor
 				}
 			}
 
-
 			return GetNodePath(current.parent, path, endParttern);
 		}
 
-        public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
+		public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
 		{
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
@@ -115,8 +115,8 @@ namespace GameFrameWork.Editor
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
 
-		private static void CreateScriptableObject(Type type,string name, string ext, string dir = null)
-        {
+		private static void CreateScriptableObject(Type type, string name, string ext, string dir = null)
+		{
 			string directory = EditorPathUtil.configDataFullPath;
 			if (!string.IsNullOrEmpty(dir)) directory = dir;
 
@@ -311,6 +311,29 @@ namespace GameFrameWork.Editor
 			Handles.DrawBezier(startPos, endPos, startTan, endTan, color, null, 4);
 		}
 
+		public static void CopyTextEditor(string content)
+		{
+			TextEditor editor = new TextEditor();
+			editor.text = content;
+			editor.SelectAll();
+			editor.Copy();
+			UnityEditor.EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
+		}
+
+		public static void AddMenuItem(string menuItem, System.Action callback, int priority = -1)
+		{
+			typeof(Menu).GetMethod("AddMenuItem", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { menuItem, null, null, priority, callback, null });
+		}
+
+		public static void RemoveMenuItem(string menuItem)
+		{
+			typeof(Menu).GetMethod("RemoveMenuItem", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { menuItem });
+		}
+
+		public static void RemoveAllMenuItem()
+		{
+			typeof(Menu).GetMethod("RebuildAllMenus", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
+        }
 
 		private static bool m_EndHorizontal = false;
 	}

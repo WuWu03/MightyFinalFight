@@ -24,13 +24,13 @@ namespace GameFrameWork.Editor
         {
             get
             {
-                if (m_UIRefSetting == null)
+                if (s_UIRefSetting == null)
                 {
                     GameObject gameObject = GameObject.Find("UI Scene Setting");
-                    m_UIRefSetting = gameObject.GetComponent<UIRefSetting>();
+                    s_UIRefSetting = gameObject.GetComponent<UIRefSetting>();
                 }
 
-                return m_UIRefSetting;
+                return s_UIRefSetting;
             }
         }
 
@@ -41,13 +41,13 @@ namespace GameFrameWork.Editor
             EditorApplication.hierarchyWindowItemOnGUI = null;
             EditorApplication.hierarchyWindowItemOnGUI = HierarchyWindowItemOnGUI;
 
-            m_CSharpExporter = new CSharpExporter();
-            m_LuaExporter = new LuaExporter();
+            s_CSharpExporter = new CSharpExporter();
+            s_LuaExporter = new LuaExporter();
         }
 
         public static void NewUIScene()
         {
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...");
+            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...", EditorPathUtil.GetUIScenesPath());
 
             if (string.IsNullOrEmpty(path))
             {
@@ -58,7 +58,7 @@ namespace GameFrameWork.Editor
             {
                 return;
             }
-
+      
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
             UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootPath));
             root.name = "UIRoot";
@@ -83,6 +83,7 @@ namespace GameFrameWork.Editor
 
             EditorSceneManager.SaveScene(scene, path);
             Selection.activeGameObject = settings.gameObject;
+            EditorMgr.RefreshUIMenuItem();
         }
 
         private static void DuringSceneGUI(SceneView scnView)
@@ -181,7 +182,6 @@ namespace GameFrameWork.Editor
             GUI.Label(new Rect(x, y, width, height), "*", component.isCopyRefStr ? labelStyle2 : labelStyle);
         }
 
-
         private static void AddUIRef()
         {
             GameObject[] gameObjects = Selection.gameObjects;
@@ -273,11 +273,11 @@ namespace GameFrameWork.Editor
 
             if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
             {
-                m_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
+                s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
             }
             else
             {
-                m_LuaExporter.Export(retList.ToArray(), uiRefSetting);
+                s_LuaExporter.Export(retList.ToArray(), uiRefSetting);
             }
 
             return true;
@@ -328,11 +328,11 @@ namespace GameFrameWork.Editor
 
             if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
             {
-                value = m_CSharpExporter.CopyRef(listRef.ToArray());
+                value = s_CSharpExporter.CopyRef(listRef.ToArray());
             }
             else if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.Lua)
             {
-                value = m_LuaExporter.CopyRef(listRef.ToArray());
+                value = s_LuaExporter.CopyRef(listRef.ToArray());
             }
 
             if (string.IsNullOrEmpty(value))
@@ -411,8 +411,8 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        private static UIRefSetting m_UIRefSetting;
-        private static IExporter m_CSharpExporter = null;
-        private static IExporter m_LuaExporter = null;
+        private static UIRefSetting s_UIRefSetting;
+        private static IExporter s_CSharpExporter = null;
+        private static IExporter s_LuaExporter = null;
     }
 }

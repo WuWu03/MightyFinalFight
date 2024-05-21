@@ -1,8 +1,10 @@
-﻿using System;
+﻿using GameFrameWork.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
@@ -16,12 +18,24 @@ namespace GameFrameWork.Editor
 			{
 				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
 			}
-		}
 
-		[MenuItem("GameFrameWork/Start Up", false, 0)]
+			EditorApplication.update += delegate ()
+			{
+                RefreshScenesPath();
+                RefreshUIMenuItem();
+                EditorApplication.update -= EditorApplication.update;
+            };
+
+            EditorApplication.projectChanged += delegate ()
+            {
+				RefreshUIMenuItem();
+            };
+        }
+
+        [MenuItem("GameFrameWork/Start Up", false, 0)]
 		public static void GameFrameWorkStartUp()
 		{
-			if (UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消"))
+            if (UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消"))
 			{
 				CreateEntry();
 			}
@@ -94,12 +108,32 @@ namespace GameFrameWork.Editor
                 go.AddComponent(entryTypes[0]);
             }
 
+			PlayerPrefs.SetString("entry_scene", EditorSceneManager.GetActiveScene().path);
             PlayerPrefs.SetInt("create_entry_script", 0);
         }
 
-        [MenuItem("GameFrameWork/UI/创建UI场景")]
+		[MenuItem("GameFrameWork/UI/创建UI场景", false, 1)]
 		public static void NewUIScene()
 		{
+			string entryScene = PlayerPrefs.GetString("entry_scene",string.Empty);
+
+			if (string.IsNullOrEmpty(entryScene))
+			{
+                UnityEditor.EditorUtility.DisplayDialog("提示", "未设置[框架启动场景]\n通过[GameFrameWord/StartUp]选项设置", "确定");
+                return;
+			}
+
+            if (EditorSceneManager.GetActiveScene().path != entryScene)
+            {
+                EditorSceneManager.OpenScene(entryScene);
+            }
+
+			if (string.IsNullOrEmpty(AppConfig.instance.uiDirectory))
+			{
+                UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI路径\n在[框架启动场景]选中[GameEntry]并设置[uiDirectory]字段", "确定");
+                return;
+            }
+
 			UIEditorInit.NewUIScene();
 		}
 
@@ -182,7 +216,6 @@ namespace GameFrameWork.Editor
 			}
 		}
 
-
         [MenuItem("Assets/GameFrameWork/CopyPath", false, 3)]
         private static void CopyAssetsPath()
         {
@@ -192,7 +225,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            CopyTextEditor(AssetDatabase.GetAssetPath(Selection.activeObject));
+            EditorUtil.CopyTextEditor(AssetDatabase.GetAssetPath(Selection.activeObject));
         }
 
         [MenuItem("GameObject/CopyPath", false, 0)]
@@ -220,17 +253,48 @@ namespace GameFrameWork.Editor
 				}
 			}
 
-            CopyTextEditor(sb.ToString());
+            EditorUtil.CopyTextEditor(sb.ToString());
         }
 
-        public static void CopyTextEditor(string content)
-        {
-			Debug.Log("复制===============");
-            TextEditor editor = new TextEditor();
-            editor.text = content;
-            editor.SelectAll();
-            editor.Copy();
-            UnityEditor.EditorUtility.DisplayDialog("提示", "路径已复制到剪切板", "确定");
+		public static void RefreshScenesPath()
+		{
+            string entryScene = PlayerPrefs.GetString("entry_scene", string.Empty);
+
+            if (!string.IsNullOrEmpty(entryScene))
+            {
+                if (EditorSceneManager.GetActiveScene().path != entryScene)
+                {
+                    EditorSceneManager.OpenScene(entryScene);
+                }
+
+                s_UIScenesPath = PathUtil.GetAssetPath(EditorPathUtil.GetUIScenesPath());
+            }
         }
+
+        [UnityEditor.Callbacks.DidReloadScripts(1)]
+        public static void RefreshUIMenuItem()
+        {
+            if (string.IsNullOrEmpty(s_UIScenesPath))
+			{
+				return;
+			}
+
+			EditorUtil.RemoveAllMenuItem();
+
+            string[] files = GameFrameWork.Utilities.FileUtil.GetFiles(s_UIScenesPath, "*.unity");
+
+			for (int i = 0; i < files.Length; i++)
+			{
+				string filePath = files[i];
+				string menuItemPath = string.Format("GameFrameWork/UI/{0}", Path.GetFileNameWithoutExtension(filePath));
+
+				EditorUtil.AddMenuItem(menuItemPath, () =>
+				{
+					EditorSceneManager.OpenScene(filePath);
+				}, 100 + i + 1);
+			}
+        }
+
+        private static string s_UIScenesPath = string.Empty;
     }
 }

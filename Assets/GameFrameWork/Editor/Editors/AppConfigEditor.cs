@@ -142,12 +142,22 @@ namespace GameFrameWork.Editor
                     m_AppConfig.uiDirectory = m_AppConfig.uiDirectory.Substring(0, m_AppConfig.uiDirectory.Length - 1);
                 }
 
-                string uiPath = PathUtil.GetAssetFullPath(m_AppConfig.uiDirectory);
+                if (string.IsNullOrEmpty(m_AppConfig.uiDirectory))
+                {
+                    return;
+                }
+
+                string uiPath = PathUtil.GetAssetFullPath(m_AppConfig.uiDirectory);    
                 string uiPrefabPath = PathUtil.FormatPath(uiPath, PathUtil.uiPrefabPath);
                 string uiAtlasPath = PathUtil.FormatPath(uiPath, PathUtil.uiAtlasPath);
+                string uiScenePath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiScenePath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPrefabPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiAtlasPath);
+                GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiScenePath);
+
+                EditorMgr.RefreshScenesPath();
+                EditorMgr.RefreshUIMenuItem();
             }
         }
 

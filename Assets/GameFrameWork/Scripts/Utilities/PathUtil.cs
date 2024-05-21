@@ -80,7 +80,7 @@ namespace GameFrameWork.Utilities
 
             if (string.IsNullOrEmpty(uiDirectory))
             {
-                return null;
+                return string.Empty;
             }
 
             return FormatPath(uiDirectory, uiPrefabPath);
@@ -92,29 +92,34 @@ namespace GameFrameWork.Utilities
 
             if (string.IsNullOrEmpty(uiDirectory))
             {
-                return null;
+                return string.Empty;
             }
 
             return FormatPath(uiDirectory, uiAtlasPath);
         }
 
-        public static string GetAssetPath(string fullPath)
+        public static string GetAssetPath(string path)
         {
-            int assetIndex = fullPath.IndexOf("Assets");
+            if(string.IsNullOrEmpty(path))
+            {
+                return string.Empty;
+            }
+
+            int assetIndex = path.IndexOf("Assets");
 
             if (assetIndex < 0)
             {
-                return FormatPath("Assets", fullPath);
+                return FormatPath("Assets", path);
             }
 
-            return fullPath.Substring(assetIndex);
+            return path.Substring(assetIndex);
         }
 
         public static string GetAssetFullPath(string assetPath)
         {
             if (string.IsNullOrEmpty(assetPath))
             {
-                return null;
+                return string.Empty;
             }
 
             int assetIndex = assetPath.IndexOf("Assets");

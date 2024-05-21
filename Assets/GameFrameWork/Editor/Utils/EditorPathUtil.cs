@@ -1,7 +1,6 @@
-using System.CodeDom;
-using System.Collections;
-using System.Collections.Generic;
+using GameFrameWork.Utilities;
 using UnityEngine;
+
 namespace GameFrameWork.Editor
 {
     public class EditorPathUtil
@@ -34,5 +33,18 @@ namespace GameFrameWork.Editor
         public static string assetBuildFileFullPath = assetBuildFilePath + assetBuildFileExtend;
 
         public static string luaPath = appDataPath + "Lua";
+        public const string uiScenePath = "Scenes";
+
+        public static string GetUIScenesPath()
+        {
+            string uiDirectory = AppConfig.instance.uiDirectory;
+
+            if (string.IsNullOrEmpty(uiDirectory))
+            {
+                return null;
+            }
+
+            return PathUtil.FormatPath("Assets", uiDirectory, uiScenePath);
+        }
     }
 }
