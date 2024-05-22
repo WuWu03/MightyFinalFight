@@ -206,13 +206,21 @@ namespace GameFrameWork.Editor
 				for (int i = 0; i < Selection.objects.Length; i++)
 				{
 					string assetPath = AssetDatabase.GetAssetPath(Selection.objects[i]);
-					if (!Path.GetExtension(assetPath).Equals(".unity")) continue;
+
+					if (!Path.GetExtension(assetPath).Equals(".unity")) 
+					{
+						continue; 
+					}
+
 					EditorBuildSettingsScene editorBuildSettings = new EditorBuildSettingsScene(assetPath, true);
 					sceneList.Add(editorBuildSettings);
 				}
 
-				EditorBuildSettings.scenes = sceneList.ToArray();
-				AssetDatabase.Refresh();
+				if (sceneList.Count > 0)
+				{
+					EditorBuildSettings.scenes = sceneList.ToArray();
+					AssetDatabase.Refresh();
+				}
 			}
 		}
 

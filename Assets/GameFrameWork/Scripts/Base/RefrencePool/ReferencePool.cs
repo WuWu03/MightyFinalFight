@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFrameWork
 {
@@ -32,9 +30,9 @@ namespace GameFrameWork
             int index = 0;
             ReferencePoolInfo[] referencePoolInfos = new ReferencePoolInfo[m_DicReferenceCollection.Count];
 
-            lock(m_DicReferenceCollection)
+            lock (m_DicReferenceCollection)
             {
-                foreach (KeyValuePair<Type,ReferenceCollection> kvp in m_DicReferenceCollection)
+                foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
                 {
                     Type type = kvp.Value.referenceType;
                     int usingCount = kvp.Value.usingReferenceCount;
@@ -86,6 +84,11 @@ namespace GameFrameWork
             }
         }
 
+        public static T Acquire<T>() where T : class, IReference, new()
+        {
+            return GetReferenceCollection(typeof(T)).Acquire<T>(null);
+        }
+
         public static T Acquire<T>(params object[] args) where T : class, IReference, new()
         {
             return GetReferenceCollection(typeof(T)).Acquire<T>(args);
@@ -99,9 +102,9 @@ namespace GameFrameWork
 
         public static void ReleaseReference(IReference reference)
         {
-            if(reference == null)
+            if (reference == null)
             {
-                throw new Exception("Reference is invalid");
+                throw new Exception("对象为空");
             }
 
             Type referenceType = reference.GetType();
@@ -125,7 +128,7 @@ namespace GameFrameWork
             GetReferenceCollection(typeof(T)).Remove(count);
         }
 
-        public static void Remove(Type referenceType,int count)
+        public static void Remove(Type referenceType, int count)
         {
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).Remove(count);
@@ -144,38 +147,38 @@ namespace GameFrameWork
 
         private static void InternalCheckReferenceType(Type referenceType)
         {
-            if(!m_EnableStrickCheck)
+            if (!m_EnableStrickCheck)
             {
                 return;
             }
 
-            if(referenceType == null)
+            if (referenceType == null)
             {
-                throw new Exception("Reference type is invalid.");
+                throw new Exception("引用类型为空");
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                throw new Exception("Reference type is not a non-abstract class type.");
+                throw new Exception("引用类型错误");
             }
 
-            if(!referenceType.IsAssignableFrom(typeof(IReference)))
+            if (!referenceType.IsAssignableFrom(typeof(IReference)))
             {
-                throw new Exception("Reference type is invalid.");
+                throw new Exception("未实现[IRefenece]接口");
             }
         }
 
         private static ReferenceCollection GetReferenceCollection(Type type)
         {
-            if(type == null)
+            if (type == null)
             {
-                throw new Exception("Reference type is invalid.");
+                throw new Exception("引用类型为空.");
             }
 
             ReferenceCollection referenceCollection = null;
-            lock(m_DicReferenceCollection)
+            lock (m_DicReferenceCollection)
             {
-                if(!m_DicReferenceCollection.TryGetValue(type,out referenceCollection))
+                if (!m_DicReferenceCollection.TryGetValue(type, out referenceCollection))
                 {
                     referenceCollection = new ReferenceCollection(type);
                     m_DicReferenceCollection.Add(type, referenceCollection);

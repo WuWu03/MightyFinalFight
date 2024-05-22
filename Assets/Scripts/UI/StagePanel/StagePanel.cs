@@ -61,7 +61,7 @@ public class StagePanel : BasePanel
 
 	private void OnTimer()
 	{
-		StageMgr.instance.onStageStartEnterEvent += InnerClose;
+		StageMgr.instance.onStageStartEnterEvent += CloseSelf;
 		StageMgr.instance.StageEnterNext();
 	}
 

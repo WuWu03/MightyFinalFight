@@ -117,7 +117,7 @@ public class RoleSelectPanel : BasePanel
         loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
         {
             UIMgr.instance.Close<LoadPanel>();
-            InnerClose();
+            CloseSelf();
         });
     }
 

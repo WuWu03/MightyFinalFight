@@ -36,7 +36,7 @@ public class TestPanel : BasePanel
 
     private void OnClick()
     {
-		InnerClose();
+		CloseSelf();
     }
 
 	UnityEngine.Object m_Object = null;

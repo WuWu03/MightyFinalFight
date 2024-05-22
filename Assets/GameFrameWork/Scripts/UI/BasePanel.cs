@@ -150,6 +150,8 @@ namespace GameFrameWork.UI
         {
             m_IsInit = false;
             m_DelayTime = 0f;
+
+            m_DicHandler.Clear();
             m_DicHandler = null;
             OnDestroy();
         }
@@ -168,15 +170,17 @@ namespace GameFrameWork.UI
             }
             else
             {
-                list = new List<EventHandler<GameEventArgs>>();
-                list.Add(handler);
+                list = new List<EventHandler<GameEventArgs>>
+                {
+                    handler
+                };
                 m_DicHandler.Add(eventId, list);
             }
 
             EventMgr.instance.Subscribe(eventId, handler);
         }
 
-        protected void InnerClose()
+        protected void CloseSelf()
         {
             UIMgr.instance.Close(panelName);
         }

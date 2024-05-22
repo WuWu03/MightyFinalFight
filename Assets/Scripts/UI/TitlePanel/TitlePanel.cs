@@ -35,7 +35,7 @@ public class TitlePanel : BasePanel
 			return;
 		}
 
-		if (InputMgr.instance.GetKeyDown(KeyType.Start, false))
+		if (InputMgr.instance.GetKeyDown(KeyType.Start))
 		{
 			m_CanStart = false;
             StartGame();
@@ -57,7 +57,7 @@ public class TitlePanel : BasePanel
         loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
         {
             UIMgr.instance.Open<RoleSelectPanel>();
-            InnerClose();
+            CloseSelf();
         });
 
         loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>

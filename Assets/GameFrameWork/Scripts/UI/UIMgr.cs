@@ -40,15 +40,27 @@ namespace GameFrameWork.UI
             Eternal = 4,        // 总是存于场景中, 除非主动销毁
         }
 
-        private class WaitLoadPanel
+        private class WaitLoadPanel : IReference
         {
             public BasePanel panel;
             public object[] param;
 
-            public WaitLoadPanel(BasePanel panel, object[] param)
+            public static WaitLoadPanel Create(BasePanel panel, object[] param)
             {
-                this.panel = panel;
-                this.param = param;
+                WaitLoadPanel waitLoadPanel = ReferencePool.Acquire<WaitLoadPanel>();
+                waitLoadPanel.panel = panel;
+                waitLoadPanel.param = param;
+                return waitLoadPanel;
+            }
+
+            public WaitLoadPanel()
+            {
+            }
+
+            public void Clear()
+            {
+                panel = null;
+                param = null;
             }
         }
 
@@ -238,7 +250,7 @@ namespace GameFrameWork.UI
 
             if (!panel.isInit)
             {
-                m_QueueWaitLoadPanel.Enqueue(new WaitLoadPanel(panel, args));
+                m_QueueWaitLoadPanel.Enqueue(WaitLoadPanel.Create(panel, args));
             }
             else if (!panel.isOpen)
             {
@@ -327,6 +339,7 @@ namespace GameFrameWork.UI
         {
             WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
             waitLoadPanel.panel.Init(obj as GameObject, PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), waitLoadPanel.param);
+            ReferencePool.ReleaseReference(waitLoadPanel);
         }
 
         protected override void OnUpdate()
