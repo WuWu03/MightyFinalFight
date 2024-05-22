@@ -299,7 +299,7 @@ namespace GameFrameWork.UI
             if (panel.panelCloseMode == CloseMode.Destroy || isForceDestroy)
             {
                 panel.Destroy();
-                GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
+                GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
 
@@ -352,7 +352,8 @@ namespace GameFrameWork.UI
                 lock (queue)
                 { 
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
-                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), OnLoadComplete, waitLoadPanel);
+                    string prefabName = StringUtil.Format(waitLoadPanel.panel.panelName, ".prefab");
+                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), prefabName), OnLoadComplete, waitLoadPanel);
                 }
             }
 
@@ -365,7 +366,7 @@ namespace GameFrameWork.UI
                     if (panel.isDelayTimeOut)
                     {
                         panel.Destroy();
-                        GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
+                        GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
                         m_ListOpenPanel.Remove(panel);
                         m_ListDelayDestroy.Remove(panel);
                         m_ListPopPanel.Remove(panel);
@@ -382,7 +383,7 @@ namespace GameFrameWork.UI
             {
                 BasePanel panel = m_ListAlways[0];
                 panel.Destroy();
-                GameObjectPool.instance.Put(panel.resPath, panel.gameObject, true);
+                GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
                 m_ListAlways.Remove(panel);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
@@ -408,22 +409,22 @@ namespace GameFrameWork.UI
 
             for (int i = 0; i < m_ListPopPanel.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListPopPanel[i].resPath, m_ListPopPanel[i].gameObject);
+                GameObjectPool.instance.Put(m_ListPopPanel[i].assetPath, m_ListPopPanel[i].gameObject);
             }
 
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListOpenPanel[i].resPath, m_ListOpenPanel[i].gameObject);
+                GameObjectPool.instance.Put(m_ListOpenPanel[i].assetPath, m_ListOpenPanel[i].gameObject);
             }
 
             for (int i = 0; i < m_ListDelayDestroy.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListDelayDestroy[i].resPath, m_ListDelayDestroy[i].gameObject);
+                GameObjectPool.instance.Put(m_ListDelayDestroy[i].assetPath, m_ListDelayDestroy[i].gameObject);
             }
 
             for (int i = 0; i < m_ListAlways.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListAlways[i].resPath, m_ListAlways[i].gameObject);
+                GameObjectPool.instance.Put(m_ListAlways[i].assetPath, m_ListAlways[i].gameObject);
             }
 
             m_ListPopPanel.Clear();

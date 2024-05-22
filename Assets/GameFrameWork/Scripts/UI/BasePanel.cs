@@ -21,7 +21,7 @@ namespace GameFrameWork.UI
 
         public Transform transform { get; private set; }
 
-        public string resPath { get; private set; }
+        public string assetPath { get; private set; }
 
         public bool isOpen
         {
@@ -49,13 +49,13 @@ namespace GameFrameWork.UI
 
         protected UIRefRoot m_UIRefRoot { get; private set; }
 
-        public void Init(GameObject go, string resPath, object[] param)
+        public void Init(GameObject go, string assetPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
             m_UIRefRoot = go.GetComponent<UIRefRoot>();
             m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
-            this.resPath = resPath;
+            this.assetPath = assetPath;
 
             if (m_UIRefRoot == null)
             {
