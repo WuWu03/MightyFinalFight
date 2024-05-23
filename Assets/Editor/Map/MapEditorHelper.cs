@@ -64,6 +64,18 @@ public static class MapEditorHelper
         }
     }
 
+    public static string assetPath
+    {
+        get
+        {
+            return m_CurrData.assetPath;
+        }
+        set
+        {
+            m_CurrData.assetPath = value;
+        }
+    }
+
     public static int StageIndex
     {
         get
@@ -454,6 +466,7 @@ public static class MapEditorHelper
             data.Id = configData.Id;
             data.Name = configData.SceneName;
             data.SceneName = configData.SceneName;
+            data.assetPath = configData.assetPath;
             data.StageIndex = configData.StageIndex;
             data.Level = configData.Level;
             data.Width = configData.Width;

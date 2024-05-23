@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Resources;
+﻿using GameFrameWork.Assets;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +66,7 @@ namespace GameFrameWork.Pool
 
                 if (m_IsFromAsset)
                 {
-                    ResourceUnLoader resourceUnLoader = go.GetOrAddComponent<ResourceUnLoader>();
+                    AssetUnLoader resourceUnLoader = go.GetOrAddComponent<AssetUnLoader>();
                     resourceUnLoader.ResetAssetInfo();
                     resourceUnLoader.gameObjectPath = m_Tag;
                     resourceUnLoader.go = go;
@@ -143,7 +143,7 @@ namespace GameFrameWork.Pool
 
                 if (m_IsFromAsset)
                 {
-                    ResourcesPool.instance.Put(m_Tag, m_Prefab);
+                    AssetsPool.instance.Put(m_Tag, m_Prefab);
                 }
 
                 m_QueuePool.Clear();
@@ -155,7 +155,7 @@ namespace GameFrameWork.Pool
 
             private void DestoryPoolObject(PoolObjectInfo info)
             {
-                ResourceUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<ResourceUnLoader>(true);
+                AssetUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<AssetUnLoader>(true);
 
                 for (int i = 0; i < resourceUnLoaders.Length; i++)
                 {
@@ -249,7 +249,7 @@ namespace GameFrameWork.Pool
                 {
                     listLoadRequest = new List<LoadRequest>() { request };
                     m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                    ResourcesPool.instance.Get<GameObject>(assetPath, OnLoaded);
+                    AssetsPool.instance.Get<GameObject>(assetPath, OnLoaded);
                 }
                 else
                 {
@@ -265,7 +265,7 @@ namespace GameFrameWork.Pool
         {
             if (m_DicPool.TryGetValue(tag, out Pool pool))
             {
-                ResourceUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<ResourceUnLoader>(true);
+                AssetUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<AssetUnLoader>(true);
 
                 for (int i = 0; i < resourceUnLoaders.Length; i++)
                 {

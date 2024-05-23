@@ -1,7 +1,6 @@
-using GameFrameWork.Utilities;
 using System;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Assets
 {
     public class LoadRequest : IReference
     {

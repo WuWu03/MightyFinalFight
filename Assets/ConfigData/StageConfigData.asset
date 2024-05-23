@@ -16,6 +16,7 @@ MonoBehaviour:
   - Id: 1001
     Name: Stage1_1
     SceneName: Stage1_1
+    assetPath: ArtResources/Scenes/Stage1_1.unity
     StageIndex: 1
     Level: 1
     Width: 1016
@@ -30,14 +31,14 @@ MonoBehaviour:
       Pos: {x: -500, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Cafe
+      AssetName: SceneBuilding/Cafe.prefab
     - SceneObjType: 2
       Id: 2
       Name: Cafe2
       Pos: {x: 188, y: 58}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Cafe
+      AssetName: SceneBuilding/Cafe.prefab
     TaskIDs: e9030000
     BGMs:
     - ClipName: BGM/bgm01_Start.ogg
@@ -56,6 +57,7 @@ MonoBehaviour:
   - Id: 1002
     Name: Stage1_2
     SceneName: Stage1_2
+    assetPath: ArtResources/Scenes/Stage1_2.unity
     StageIndex: 1
     Level: 2
     Width: 1016
@@ -70,42 +72,42 @@ MonoBehaviour:
       Pos: {x: -492, y: -6}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/WoodDoorOpen
+      AssetName: SceneBuilding/WoodDoorOpen.prefab
     - SceneObjType: 1
       Id: 2
       Name: WoodDoorClose
       Pos: {x: -492, y: -6}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/WoodDoorClose
+      AssetName: SceneBuilding/WoodDoorClose.prefab
     - SceneObjType: 2
       Id: 3
       Name: Movie1
       Pos: {x: -324, y: 30}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Movie
+      AssetName: SceneBuilding/Movie.prefab
     - SceneObjType: 2
       Id: 4
       Name: Movie2
       Pos: {x: 172, y: 30}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Movie
+      AssetName: SceneBuilding/Movie.prefab
     - SceneObjType: 2
       Id: 5
       Name: Movie3
       Pos: {x: 284, y: 30}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Movie
+      AssetName: SceneBuilding/Movie.prefab
     - SceneObjType: 1
       Id: 6
       Name: Pit
       Pos: {x: 444, y: -40}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/Pit
+      AssetName: SceneBuilding/Pit.prefab
     TaskIDs: f0030000
     BGMs: []
     MovePoints:
@@ -120,6 +122,7 @@ MonoBehaviour:
   - Id: 1003
     Name: Stage1_3
     SceneName: Stage1_3
+    assetPath: ArtResources/Scenes/Stage1_3.unity
     StageIndex: 1
     Level: 3
     Width: 504
@@ -134,21 +137,21 @@ MonoBehaviour:
       Pos: {x: 121, y: 64}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/ConveyorBelt
+      AssetName: SceneBuilding/ConveyorBelt.prefab
     - SceneObjType: 2
       Id: 2
       Name: ConveyorBelt2
       Pos: {x: 145, y: 40}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/ConveyorBelt
+      AssetName: SceneBuilding/ConveyorBelt.prefab
     - SceneObjType: 2
       Id: 3
       Name: ConveyorBelt3
       Pos: {x: 157, y: 17}
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
-      AssetName: SceneBuilding/ConveyorBeltLast
+      AssetName: SceneBuilding/ConveyorBeltLast.prefab
     TaskIDs: f5030000
     BGMs:
     - ClipName: BGM/bgm06Boss_Start.ogg
@@ -167,6 +170,7 @@ MonoBehaviour:
   - Id: 2001
     Name: Stage2_1
     SceneName: Stage2_1
+    assetPath: ArtResources/Scenes/Stage2_1.unity
     StageIndex: 2
     Level: 1
     Width: 1016
@@ -193,6 +197,7 @@ MonoBehaviour:
   - Id: 2002
     Name: Stage2_2
     SceneName: Stage2_2
+    assetPath: 
     StageIndex: 2
     Level: 2
     Width: 1275
@@ -207,6 +212,7 @@ MonoBehaviour:
   - Id: 5001
     Name: 
     SceneName: 
+    assetPath: 
     StageIndex: 0
     Level: 0
     Width: 1016
@@ -221,6 +227,7 @@ MonoBehaviour:
   - Id: 0
     Name: 
     SceneName: 
+    assetPath: 
     StageIndex: 0
     Level: 0
     Width: 504

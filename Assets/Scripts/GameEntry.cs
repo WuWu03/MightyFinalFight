@@ -22,7 +22,7 @@ public class GameEntry : GameFrameWorkEntry
         CameraMgr.instance.SetOrthographicSize(1.0f);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
-        UIMgr.instance.Open<TitlePanel>();
+        UIMgr.instance.Open<RoleSelectPanel>();
     }
 
     protected override void OnExit()

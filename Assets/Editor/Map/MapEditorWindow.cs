@@ -130,6 +130,7 @@ public class MapEditorWindow : EditorWindow
         MapEditorHelper.StageIndex = EditorGUILayout.IntField("关卡索引", MapEditorHelper.StageIndex);
         MapEditorHelper.Level = EditorGUILayout.IntField("小节", MapEditorHelper.Level);
         MapEditorHelper.SceneName = EditorGUILayout.TextField("地图名称", MapEditorHelper.SceneName);
+        MapEditorHelper.assetPath = EditorGUILayout.TextField("资源路径", MapEditorHelper.assetPath);
         EditorGUILayout.FloatField("地图宽", MapEditorHelper.Texture.width);
         EditorGUILayout.FloatField("地图高", MapEditorHelper.Texture.height);
 

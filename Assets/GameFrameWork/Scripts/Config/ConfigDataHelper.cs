@@ -1,6 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.Resources;
+using GameFrameWork.Assets;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ public static partial class ConfigDataHelper
 
         T[] t = null;
 
-        TextAsset txt = ResourcesMgr.instance.LoadAssetSync<TextAsset>(path);
+        TextAsset txt = AssetsMgr.instance.LoadAssetSync<TextAsset>(path);
 
         if (txt == null || txt.bytes == null)
         {

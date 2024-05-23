@@ -2,13 +2,9 @@
 /**2024-02-25 09:24*************************************/
 /**Create By WuWu***************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using GameFrameWork.UI;
-using System;
-using GameFrameWork.Resources;
 using GameFrameWork.Pool;
+using GameFrameWork.UI;
+using UnityEngine;
 
 public class TestPanel : BasePanel
 {

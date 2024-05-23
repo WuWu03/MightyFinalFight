@@ -1,13 +1,10 @@
 ﻿using GameFrameWork.Pool;
-using GameFrameWork.Resources;
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.Application;
 
 namespace GameFrameWork.UI
 {

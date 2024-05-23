@@ -1,9 +1,9 @@
 using GameFrameWork.Pool;
 using UnityEngine;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Assets
 {
-    public class ResourceUnLoader : MonoBehaviour
+    public class AssetUnLoader : MonoBehaviour
     {
         public string gameObjectPath;
         public string spritePath;
@@ -26,7 +26,7 @@ namespace GameFrameWork.Resources
             }
             else if (!string.IsNullOrEmpty(spritePath))
             {
-                ResourcesPool.instance.Put(spritePath, sprite);
+                AssetsPool.instance.Put(spritePath, sprite);
             }
 
             ResetAssetInfo();

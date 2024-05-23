@@ -1,9 +1,8 @@
-﻿using GameFrameWork.Pool;
-using GameFrameWork.Resources;
+﻿using DG.Tweening;
+using GameFrameWork.Pool;
+using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using GameFrameWork.Utilities;
 
 namespace GameFrameWork.Audio
 {
@@ -94,7 +93,7 @@ namespace GameFrameWork.Audio
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
-                    ResourcesPool.instance.Cache<AudioClip>(audioGroups[i].GetPath());
+                    AssetsPool.instance.Cache<AudioClip>(audioGroups[i].GetPath());
                 }
             }
         }
@@ -114,7 +113,7 @@ namespace GameFrameWork.Audio
         {
             if (m_BGMAudioGroup != null)
             {
-                ResourcesPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
+                AssetsPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
                 ReferencePool.ReleaseReference(m_BGMAudioGroup);
                 m_BGMAudioSource.Stop();
                 m_BGMAudioGroup = null;
@@ -201,7 +200,7 @@ namespace GameFrameWork.Audio
 
         private void InnerPlaySE(string path, string name, float volume)
         {
-            ResourcesPool.instance.Get<AudioClip>(PathUtil.FormatPath(path, name), OnSELoaded, path, name, volume);
+            AssetsPool.instance.Get<AudioClip>(PathUtil.FormatPath(path, name), OnSELoaded, path, name, volume);
         }
 
         private void OnSELoaded(string assetPath, UnityEngine.Object obj, object[] param)
@@ -219,7 +218,7 @@ namespace GameFrameWork.Audio
 
         private void InnerPlayBGM(string assetPath, float volum, float fadeTime, bool isLoop)
         {
-            ResourcesPool.instance.Get<AudioClip>(assetPath, OnBGMLoaded, volum, fadeTime, isLoop);
+            AssetsPool.instance.Get<AudioClip>(assetPath, OnBGMLoaded, volum, fadeTime, isLoop);
         }
 
         private void OnBGMLoaded(string assetPath, UnityEngine.Object obj, object[] param)
@@ -276,7 +275,7 @@ namespace GameFrameWork.Audio
 
         private void PutSE(AudioSEInfo audioSEInfo)
         {
-            ResourcesPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
+            AssetsPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
             audioSEInfo.Clear();
             audioSEInfo.audioSource.clip = null;
             audioSEInfo.audioSource.Stop();
@@ -343,7 +342,7 @@ namespace GameFrameWork.Audio
             while(m_StackSE.Count > 0)
             {
                 AudioSEInfo audioSEInfo = m_StackSE.Pop();
-                ResourcesPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
+                AssetsPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
                 GameObject.Destroy(audioSEInfo.audioSource.gameObject);
             }
 

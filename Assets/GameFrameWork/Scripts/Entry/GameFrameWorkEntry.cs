@@ -6,7 +6,7 @@ using GameFrameWork.Fsm;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
 using GameFrameWork.Pool;
-using GameFrameWork.Resources;
+using GameFrameWork.Assets;
 using GameFrameWork.Scene;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
@@ -27,7 +27,7 @@ namespace GameFrameWork
             UIMgr.Init(m_Manager);
             RedPointMgr.Init(m_Manager);
             InputMgr.Init(m_Manager);
-            ResourcesMgr.Init(m_Manager);
+            AssetsMgr.Init(m_Manager);
             BehaviourTreeMgr.Init(PathUtil.behaviourTreeConfigDataPath);
             GameObjectPool.Init(m_Manager);
             EntityMgr.Init(m_Manager);
@@ -36,7 +36,7 @@ namespace GameFrameWork
             AudioMgr.Init(m_Manager);
             EventMgr.Init(m_Manager);
             SceneMgr.Init(m_Manager);
-            ResourcesPool.Init(m_Manager);
+            AssetsPool.Init(m_Manager);
 
             OnInit(m_Manager);
         }
@@ -60,8 +60,8 @@ namespace GameFrameWork
             SceneMgr.instance.ShutDown();
             FsmMgr.instance.ShutDown();
             GameObjectPool.instance.ShutDown();
-            ResourcesPool.instance.ShutDown();
-            ResourcesMgr.instance.ShutDown();
+            AssetsPool.instance.ShutDown();
+            AssetsMgr.instance.ShutDown();
             ReferencePool.ShutDown();
 
             Destroy(m_Manager);

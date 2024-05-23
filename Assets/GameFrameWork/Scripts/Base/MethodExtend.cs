@@ -1,5 +1,5 @@
 ﻿using GameFrameWork.Pool;
-using GameFrameWork.Resources;
+using GameFrameWork.Assets;
 using GameFrameWork.Utilities;
 using System.Text;
 using UnityEngine;
@@ -100,7 +100,7 @@ namespace GameFrameWork
             }
 
             string sritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
-            ResourceUnLoader resourceUnLoader = renderer.gameObject.GetOrAddComponent<ResourceUnLoader>();
+            AssetUnLoader resourceUnLoader = renderer.gameObject.GetOrAddComponent<AssetUnLoader>();
 
             if (resourceUnLoader.spritePath == sritePath)
             {
@@ -110,7 +110,7 @@ namespace GameFrameWork
             resourceUnLoader.ResetAssetInfo();
             resourceUnLoader.spritePath = sritePath;
 
-            ResourcesPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
+            AssetsPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
             {
                 resourceUnLoader.sprite = obj;
                 renderer.sprite = obj as Sprite;

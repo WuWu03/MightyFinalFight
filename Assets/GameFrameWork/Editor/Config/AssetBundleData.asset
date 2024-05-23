@@ -252,83 +252,90 @@ MonoBehaviour:
     assetPath: Assets/ArtResources/Prefabs/Weapon/
     bundlePath: ArtResources/Prefabs/Weapon/
   - Id: 35
+    bundleBuildType: 0
+    bundleName: 
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Scenes/
+    bundlePath: ArtResources/Scenes/
+  - Id: 36
     bundleBuildType: 1
     bundleName: ArtResources/Shaders
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Shaders/
     bundlePath: 
-  - Id: 36
+  - Id: 37
     bundleBuildType: 1
     bundleName: ArtResources/Textures/SceneBuilding
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Textures/SceneBuilding/
     bundlePath: 
-  - Id: 37
+  - Id: 38
     bundleBuildType: 1
     bundleName: ArtResources/Textures/SceneItem
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Textures/SceneItem/
     bundlePath: 
-  - Id: 38
+  - Id: 39
     bundleBuildType: 1
     bundleName: ArtResources/Textures/Stage
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Textures/Stage/
     bundlePath: 
-  - Id: 39
+  - Id: 40
     bundleBuildType: 0
     bundleName: 
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/Prefabs/
     bundlePath: ArtResources/UI/Prefabs/
-  - Id: 40
+  - Id: 41
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/Common
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/Common/
     bundlePath: 
-  - Id: 41
+  - Id: 42
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/MainPanel
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/MainPanel/
     bundlePath: 
-  - Id: 42
+  - Id: 43
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/RoleSelectPanel
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/RoleSelectPanel/
     bundlePath: 
-  - Id: 43
+  - Id: 44
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/StagePanel
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/StagePanel/
     bundlePath: 
-  - Id: 44
+  - Id: 45
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/TalkPanel
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/TalkPanel/
     bundlePath: 
-  - Id: 45
+  - Id: 46
     bundleBuildType: 1
     bundleName: ArtResources/UI/UIAtlas/TitlePanel
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/UIAtlas/TitlePanel/
     bundlePath: 
-  - Id: 46
+  - Id: 47
     bundleBuildType: 0
     bundleName: 
     bundleExtend: .assetbundle

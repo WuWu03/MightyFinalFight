@@ -1,18 +1,17 @@
-﻿using GameFrameWork.Resources;
+﻿using GameFrameWork.Assets;
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
 
 namespace GameFrameWork.Pool
 {
-    public class ResourcesPool : BaseMgr<ResourcesPool>
+    public class AssetsPool : BaseMgr<AssetsPool>
     {
         protected override void OnAwake()
         {
-            m_PoolRoot = new GameObject("ResPool").transform;
+            m_PoolRoot = new GameObject("AssetsPool").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
             m_DicLoadedAssets = new Dictionary<string, PoolObjectInfo>();
@@ -35,7 +34,7 @@ namespace GameFrameWork.Pool
 
                 if (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime)
                 {
-                    ResourcesMgr.instance.UnloadAsset(info.assetPath, false);
+                    AssetsMgr.instance.UnloadAsset(info.assetPath, false);
                     ReferencePool.ReleaseReference(info);
                     m_RemoveList.Add(kvp.Key);
                 }
@@ -59,7 +58,7 @@ namespace GameFrameWork.Pool
             Get(assetPath, null, t);
         }
 
-        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args) where T : UnityEngine.Object
+        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
         {
             Get(assetPath, call, typeof(T), args);
         }
@@ -89,7 +88,7 @@ namespace GameFrameWork.Pool
             {
                 listLoadRequest = new List<LoadRequest>() { request };
                 m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                ResourcesMgr.instance.LoadAssetAsync(assetPath, OnLoaded, t);
+                AssetsMgr.instance.LoadAssetAsync(assetPath, OnLoaded, t);
             }   
             else
             {
@@ -150,7 +149,7 @@ namespace GameFrameWork.Pool
 
             for (int i = 0; i < list.Count; i++)
             {
-                ResourcesMgr.instance.UnloadAsset(m_DicLoadedAssets[list[i]].assetPath);
+                AssetsMgr.instance.UnloadAsset(m_DicLoadedAssets[list[i]].assetPath);
             }
 
             list.Clear();

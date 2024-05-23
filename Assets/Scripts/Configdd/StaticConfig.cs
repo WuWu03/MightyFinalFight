@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Resources;
+﻿using GameFrameWork.Assets;
 
 public static class StaticConfig
 {
@@ -8,9 +8,9 @@ public static class StaticConfig
 
     public static void InitConfig()
     {
-        SkillConfig = ResourcesMgr.instance.LoadAssetSync<SkillConfig>("ConfigData/SkillData.asset");
-        StageConfig = ResourcesMgr.instance.LoadAssetSync<StageConfig>("ConfigData/StageConfigData.asset");
-        TaskConfig = ResourcesMgr.instance.LoadAssetSync<TaskConfig>("ConfigData/TaskData.asset");
+        SkillConfig = AssetsMgr.instance.LoadAssetSync<SkillConfig>("ConfigData/SkillData.asset");
+        StageConfig = AssetsMgr.instance.LoadAssetSync<StageConfig>("ConfigData/StageConfigData.asset");
+        TaskConfig = AssetsMgr.instance.LoadAssetSync<TaskConfig>("ConfigData/TaskData.asset");
     }
 
     public static void Clear()

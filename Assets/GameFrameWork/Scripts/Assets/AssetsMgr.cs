@@ -7,9 +7,9 @@ using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Assets
 {
-    public class ResourcesMgr : BaseMgr<ResourcesMgr>
+    public class AssetsMgr : BaseMgr<AssetsMgr>
     {
         protected override void OnAwake()
         {
@@ -80,16 +80,24 @@ namespace GameFrameWork.Resources
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
             {
-                return EditorResourcesMgr.Instance.LoadAssetSync(assetPath, t);
+                return EditorAssetsMgr.Instance.LoadAssetSync(assetPath, t);
             }
 #endif
-            return LoadSync(assetPath, t);
+            return InnerLoadAssetSync(assetPath, t);
         }
 
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync<T>(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args)
+        public void LoadAssetAsync<T>(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null) where T : Object
+        {
+            LoadAssetAsync(assetPath, action, typeof(T));
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync<T>(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, params object[] args) where T : Object
         {
             LoadAssetAsync(assetPath, action, typeof(T), args);
         }
@@ -97,7 +105,15 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载资源
         /// </summary>
-        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, params object[] args)
+        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null)
+        {
+            LoadAssetAsync(assetPath, action, t, null);
+        }
+
+        /// <summary>
+        /// 异步加载资源
+        /// </summary>
+        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, Object, object[]> action, Type t, params object[] args)
         {
             if (t == null)
             {
@@ -106,35 +122,34 @@ namespace GameFrameWork.Resources
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
             {
-                EditorResourcesMgr.Instance.LoadAssetAsync(assetPath, action, t, args);
+                EditorAssetsMgr.Instance.LoadAssetAsync(assetPath, action, t, args);
                 return;
             }
 #endif
-            LoadAsync(assetPath, false, action, t, args);
+            InnerLoadAssetAsync(assetPath, false, action, t, args);
         }
 
         /// <summary>
         /// 卸载资源
         /// </summary>
-        /// 
         public void UnloadAsset(string assetPath, bool isThorough = false)
-        {
-            UnloadAsset(assetPath, false, isThorough);
-        }
-
-        /// <summary>
-        /// 卸载资源
-        /// </summary>
-        public void UnloadAsset(string assetPath, bool isBundle, bool isThorough)
         {
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
             {
-                EditorResourcesMgr.Instance.UnLoadAssetEditor(assetPath);
+                EditorAssetsMgr.Instance.UnLoadAssetEditor(assetPath);
                 return;
             }
 #endif
-            string assetBundleName = isBundle ? assetPath : GetAssetBundleName(assetPath);
+            string assetBundleName = GetAssetBundleName(assetPath);
+            UnloadAssetBundle(assetBundleName, isThorough);
+        }
+
+        /// <summary>
+        /// 卸载AB包
+        /// </summary>
+        public void UnloadAssetBundle(string assetBundleName, bool isThorough)
+        {
             Log.LogInfo("开始卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
             Unload(assetBundleName, isThorough);
             Log.LogInfo("卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
@@ -143,7 +158,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 同步加载
         /// </summary>
-        private Object LoadSync(string assetPath, Type t = null)
+        private Object InnerLoadAssetSync(string assetPath, Type t = null)
         {
             string assetBundleName = GetAssetBundleName(assetPath);
             string[] dependencies = GetDependencies(assetBundleName);
@@ -152,7 +167,7 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < dependencies.Length; i++)
                 {
-                    LoadSync(dependencies[i], typeof(UnityEngine.Object));
+                    InnerLoadAssetSync(dependencies[i], typeof(UnityEngine.Object));
                 }
             }
 
@@ -176,7 +191,7 @@ namespace GameFrameWork.Resources
         /// <summary>
         /// 异步加载
         /// </summary>
-        private void LoadAsync(string assetPath, bool isDependence, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, object[] args = null)
+        private void InnerLoadAssetAsync(string assetPath, bool isDependence, GameFrameWorkAction<string, Object, object[]> action = null, Type t = null, object[] args = null)
         {
             string assetBundleName = isDependence ? assetPath : GetAssetBundleName(assetPath);
 
@@ -199,7 +214,7 @@ namespace GameFrameWork.Resources
                 {
                     for (int i = 0; i < dependencies.Length; i++)
                     {
-                        LoadAsync(dependencies[i], true, null, typeof(UnityEngine.Object), args);
+                        InnerLoadAssetAsync(dependencies[i], true, null, typeof(UnityEngine.Object), args);
                     }
                 }
 
@@ -262,15 +277,23 @@ namespace GameFrameWork.Resources
             {
                 for (int i = 0; i < listRequests.Count; i++)
                 {
-                    string assetName = Path.GetFileNameWithoutExtension(listRequests[i].assetPath);
-                    AssetBundleRequest request = assetBundleInfo.assetBundle.LoadAssetAsync(assetName, listRequests[i].assetType);
-
-                    while (!request.isDone)
+                    if (!assetBundleInfo.assetBundle.isStreamedSceneAssetBundle)
                     {
-                        yield return null;
+                        string assetName = Path.GetFileNameWithoutExtension(listRequests[i].assetPath);
+                        AssetBundleRequest request = assetBundleInfo.assetBundle.LoadAssetAsync(assetName, listRequests[i].assetType);
+
+                        while (!request.isDone)
+                        {
+                            yield return null;
+                        }
+
+                        listRequests[i].Call(request.asset);
+                    }
+                    else
+                    {
+                        listRequests[i].Call(null);
                     }
 
-                    listRequests[i].Call(request.asset);
                     assetBundleInfo.referencedCount++;
                 }
             }
@@ -382,7 +405,7 @@ namespace GameFrameWork.Resources
 #if UNITY_EDITOR
             if (!AppConfig.instance.loadAB)
             {
-                EditorResourcesMgr.Instance.UnLoadAll();
+                EditorAssetsMgr.Instance.UnLoadAll();
                 return;
             }
 #endif
@@ -390,7 +413,7 @@ namespace GameFrameWork.Resources
 
             for (int i = 0; i < list.Count; i++)
             {
-                UnloadAsset(list[i], true, false);
+                UnloadAssetBundle(list[i], false);
             }
 
             list.Clear();

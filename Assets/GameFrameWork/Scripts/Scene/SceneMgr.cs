@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Utilities;
+﻿using GameFrameWork.Assets;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -141,9 +142,9 @@ namespace GameFrameWork.Scene
                     LoadSceneRequest request = m_LoadQueue.Dequeue();
 
                     if (request.isUnLoad)
-                        StartCoroutine(InnerUnLoadSceneAsync(request));
+                        InnerUnLoadSceneAsync(request);
                     else
-                        StartCoroutine(InnerLoadSceneAsync(request));
+                        InnerLoadSceneAsync(request);
                 }
             }
         }
@@ -171,28 +172,38 @@ namespace GameFrameWork.Scene
             m_UnLoadSceneFailureEvent = null;
         }
 
+        public void LoadSceneAsync(string sceneName)
+        {
+            LoadSceneAsync(sceneName, LoadSceneMode.Single, true);
+        }
+
         public void LoadSceneAsync(string sceneName, params object[] args)
         {
             LoadSceneAsync(sceneName, LoadSceneMode.Single, true, args);
         }
 
-        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, params object[] args)
+        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene)
+        {
+            LoadSceneAsync(sceneName, mode, isAutoAllowScene, null);
+        }
+
+        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object[] args)
         {
             if (isLoading)
             {
-                LoadSceneFailure(sceneName, "SceneMgr is in loading.", null);
+                LoadSceneFailure(sceneName, "加载失败，正在加载中，无法进行加载", null);
                 return;
             }
 
             if (isUnLoading)
             {
-                LoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
+                LoadSceneFailure(sceneName, "加载失败，正在卸载中，无法进行加载", null);
                 return;
             }
 
             if (IsSceneLoaded(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is loaded."), null);
+                LoadSceneFailure(sceneName, StringUtil.Format("加载失败，场景 : [", sceneName, "] 已加载"), null);
                 return;
             }
 
@@ -204,35 +215,56 @@ namespace GameFrameWork.Scene
             }
         }
 
+        public void LoadScene(string sceneName)
+        {
+            LoadScene(sceneName, LoadSceneMode.Single);
+        }
+
         public void LoadScene(string sceneName, params object[] args)
         {
             LoadScene(sceneName, LoadSceneMode.Single, args);
+        }
+
+        public void LoadScene(string sceneName, LoadSceneMode mode)
+        {
+            LoadScene(sceneName, mode, null);
         }
 
         public void LoadScene(string sceneName, LoadSceneMode mode, object[] args)
         {
             if (isLoading)
             {
-                LoadSceneFailure(sceneName, "SceneMgr is in loading.", args);
+                LoadSceneFailure(sceneName, "加载失败，正在加载中，无法进行加载", args);
                 return;
             }
 
             if (isUnLoading)
             {
-                LoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
+                LoadSceneFailure(sceneName, "加载失败，正在卸载中，无法进行加载", null);
                 return;
             }
 
             if (IsSceneLoaded(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is loaded."), args);
+                LoadSceneFailure(sceneName, StringUtil.Format("加载失败，场景 : [", sceneName, "] 已加载"), args);
                 return;
             }
 
             try
             {
-                SceneManager.LoadScene(sceneName, mode);
-                LoadSceneSuccess(sceneName, null);
+                LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = mode };
+#if UNITY_EDITOR
+                if (!AppConfig.instance.loadAB)
+                {
+                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetFullPath(sceneName), parameters);
+                }
+                else
+#endif
+                {
+                    AssetsMgr.instance.LoadAssetSync(sceneName, typeof(UnityEngine.SceneManagement.Scene));
+                }
+                    SceneManager.LoadScene(sceneName, mode);
+                LoadSceneSuccess(sceneName, args);
             }
             catch (Exception e)
             {
@@ -244,19 +276,19 @@ namespace GameFrameWork.Scene
         {
             if (isLoading)
             {
-                UnLoadSceneFailure(sceneName, "SceneMgr is in loading.", args);
+                UnLoadSceneFailure(sceneName, "卸载失败，正在加载中，无法进行卸载", args);
                 return;
             }
 
             if (isUnLoading)
             {
-                UnLoadSceneFailure(sceneName, "SceneMgr is in unloading.", null);
+                UnLoadSceneFailure(sceneName, "卸载失败，正在卸载中，无法进行卸载", null);
                 return;
             }
 
             if (!IsSceneLoaded(sceneName))
             {
-                UnLoadSceneFailure(sceneName, StringUtil.Format("Scene name:[", sceneName, "] is not loaded."), args);
+                UnLoadSceneFailure(sceneName, StringUtil.Format("卸载失败，场景 : [", sceneName, "] 未加载"), args);
                 return;
             }
 
@@ -296,13 +328,46 @@ namespace GameFrameWork.Scene
             }
         }
 
-        private IEnumerator InnerLoadSceneAsync(LoadSceneRequest request)
+        private void InnerLoadSceneAsync(LoadSceneRequest request)
+        {
+            m_ListLoadingScene.Add(request.sceneName);
+
+#if UNITY_EDITOR
+            if (!AppConfig.instance.loadAB)
+            {
+                StartCoroutine(OnLoadSceneAsync(request));
+            }
+            else
+#endif
+            {
+                AssetsMgr.instance.LoadAssetAsync(request.sceneName, OnLoadAssetComplete, typeof(UnityEngine.SceneManagement.Scene), request);
+            }
+        }
+
+        private void OnLoadAssetComplete(string assetPath, UnityEngine.Object asset, object[] args)
+        {
+            LoadSceneRequest request = args[0] as LoadSceneRequest;
+            StartCoroutine(OnLoadSceneAsync(request));
+        }
+
+        private IEnumerator OnLoadSceneAsync(LoadSceneRequest request)
         {
             try
             {
-                m_ListLoadingScene.Add(request.sceneName);
-                m_AsyncOperation = SceneManager.LoadSceneAsync(request.sceneName, request.mode);
-                m_AsyncOperation.allowSceneActivation = false;          
+                LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = request.mode };
+
+#if UNITY_EDITOR
+                if(!AppConfig.instance.loadAB)
+                {
+                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(PathUtil.GetAssetFullPath(request.sceneName), parameters);
+                }
+                else
+#endif
+                {
+                    m_AsyncOperation = SceneManager.LoadSceneAsync(Path.GetFileNameWithoutExtension(request.sceneName), parameters);
+                }
+
+                m_AsyncOperation.allowSceneActivation = false;
             }
             catch(Exception e)
             {
@@ -340,13 +405,37 @@ namespace GameFrameWork.Scene
             ReferencePool.ReleaseReference(request);
         }
 
-        private IEnumerator InnerUnLoadSceneAsync(LoadSceneRequest request)
+        private void InnerUnLoadSceneAsync(LoadSceneRequest request)
         {
-            AsyncOperation ao = null;
+#if UNITY_EDITOR
+            if (!AppConfig.instance.loadAB)
+            {
+                StartCoroutine(OnUnLoadSceneAsync(request));
+            }
+            else
+#endif
+            {
+                AssetsMgr.instance.UnloadAsset(request.sceneName);
+                StartCoroutine(OnUnLoadSceneAsync(request));
+            }
+        }
+
+        private IEnumerator OnUnLoadSceneAsync(LoadSceneRequest request)
+        {
             try
             {
                 m_ListUnLoadingScene.Add(request.sceneName);
-                ao = SceneManager.UnloadSceneAsync(request.sceneName);
+
+#if UNITY_EDITOR
+                if (!AppConfig.instance.loadAB)
+                {
+                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.UnloadSceneAsync(PathUtil.GetAssetFullPath(request.sceneName));
+                }
+                else
+#endif
+                {
+                    m_AsyncOperation = SceneManager.UnloadSceneAsync(Path.GetFileNameWithoutExtension(request.sceneName));
+                }
             }
             catch (Exception e)
             {
@@ -355,7 +444,7 @@ namespace GameFrameWork.Scene
                 yield break;
             }
 
-            while(!ao.isDone)
+            while (!m_AsyncOperation.isDone)
             {
                 yield return null;
             }

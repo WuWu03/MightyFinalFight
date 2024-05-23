@@ -167,21 +167,11 @@ namespace GameFrameWork
 
         public static void LogError(Color color, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
         {
-            if (!AppConfig.instance.openLog)
-            {
-                return;
-            }
-
             Debug.LogError(GetLogInfo(color, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
         }
 
         public static void LogError(Color color, params object[] args)
         {
-            if (!AppConfig.instance.openLog)
-            {
-                return;
-            }
-
             Debug.LogError(GetLogInfo(color, args));
         }
 

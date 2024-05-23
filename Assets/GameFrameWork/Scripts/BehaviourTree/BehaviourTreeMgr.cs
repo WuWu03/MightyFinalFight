@@ -1,5 +1,5 @@
 ﻿using DG.Tweening.Core;
-using GameFrameWork.Resources;
+using GameFrameWork.Assets;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ namespace GameFrameWork.BehaviourTree
         {
             if (m_Config == null)
             {
-                string jsonStr = ResourcesMgr.instance.LoadAssetSync<TextAsset>(configPath).text;
+                string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(configPath).text;
                 m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
             }
         }

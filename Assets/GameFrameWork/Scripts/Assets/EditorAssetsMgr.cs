@@ -1,17 +1,16 @@
 ﻿#if UNITY_EDITOR
 using GameFrameWork.Utilities;
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Assets
 {
-    public class EditorResourcesMgr : Singleton<EditorResourcesMgr>
+    public class EditorAssetsMgr : Singleton<EditorAssetsMgr>
     {
-        public EditorResourcesMgr()
+        public EditorAssetsMgr()
         {
             m_DicLoadedAssets = new Dictionary<string, UnityEngine.Object>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
@@ -30,12 +29,11 @@ namespace GameFrameWork.Resources
             loadRequest.action = action;
             loadRequest.args = args;
 
-
             if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> requests))
             {
                 requests = new List<LoadRequest>() { loadRequest };
                 m_DicLoadRequests.Add(assetPath, requests);
-                ResourcesMgr.instance.StartCoroutine(OnLoadAssetAsync(assetPath, t));
+                AssetsMgr.instance.StartCoroutine(OnLoadAssetAsync(assetPath, t));
             }
             else
             {
@@ -84,6 +82,10 @@ namespace GameFrameWork.Resources
             string searchParttern = StringUtil.Format(fileName, "*");
             string[] files = FileUtil.GetFiles(directoryName, searchParttern);
 
+            if (t == typeof(UnityEngine.SceneManagement.Scene))
+            {
+
+            }
             obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[0], t);
 
             if (obj == null)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameFrameWork.Resources
+namespace GameFrameWork.Assets
 {
     public class AssetBundleInfo :IReference
     {

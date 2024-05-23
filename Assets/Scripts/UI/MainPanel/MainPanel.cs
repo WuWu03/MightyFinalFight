@@ -3,18 +3,14 @@
 /**Create By WuWu***************************************/
 /*******************************************************/
 
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
-using GameFrameWork;
+using GameFrameWork.Camera;
+using GameFrameWork.Event;
+using GameFrameWork.Pool;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
-using GameFrameWork.Pool;
-using GameFrameWork.Camera;
-using System;
-using GameFrameWork.Event;
-using GameFrameWork.Resources;
-using System.Xml.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class MainPanel : BasePanel
 {

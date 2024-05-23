@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using GameFrameWork.Serialize;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork.Serialize;
-using System;
 
 public class MapEditorConfig : BaseScriptableObject<MapEditorConfigData>
 {
@@ -34,6 +33,7 @@ public class MapEditorConfigData : BaseConfigData
 
     public string MapPath;
     public string SceneName;
+    public string assetPath;
     public int StageIndex;
     public int Level;
     public Vector2 CurrPos = Vector2Int.zero;
