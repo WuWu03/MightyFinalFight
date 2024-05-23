@@ -318,6 +318,11 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
         }
 
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SceneEntityMgr.instance.CreateSceneItem(1001, m_Player.mapPos);
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });

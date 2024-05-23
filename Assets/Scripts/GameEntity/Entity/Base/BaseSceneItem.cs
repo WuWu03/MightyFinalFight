@@ -1,12 +1,15 @@
-﻿using GameFrameWork;
-using GameFrameWork.Camera;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static SkillConfigData;
+﻿using UnityEngine;
 
 public class BaseSceneItem : BaseGravityObject
 {
+    public BaseRole owner
+    {
+        get
+        {
+            return m_Owner;
+        }
+    }
+
     public virtual bool canPickUp
     {
         get

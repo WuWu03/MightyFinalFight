@@ -23,7 +23,7 @@ namespace GameFrameWork.Editor
 			{
                 RefreshScenesPath();
                 RefreshUIMenuItem();
-                EditorApplication.update -= EditorApplication.update;
+				EditorApplication.update = null;
             };
 
             EditorApplication.projectChanged += delegate ()

@@ -38,7 +38,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             sceneItem.SetAttribute(barrelAttribute);
             sceneItem.SetData(barrelData);
-            sceneItem.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
+            sceneItem.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel.prefab"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
             sceneItem.SetLayer(LayerName.Unit);
@@ -156,17 +156,25 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void ReleaseSceneItem(BaseSceneItem item)
     {
+        if (item == null)
+        {
+            return;
+        }
+
         m_ListSceneItems.Remove(item);
     }
 
     public void ReleaseSceneItems()
     {
-        for (int i = 0; i < m_ListSceneItems.Count; i++)
+        for (int i = m_ListSceneItems.Count - 1; i > -1; i--)
         {
-            m_ListSceneItems[i].Release();
-        }
+            if (m_ListSceneItems[i] != null && m_ListSceneItems[i].owner == null)
+            {
+                m_ListSceneItems[i].Release();
+            }
 
-        m_ListSceneItems.Clear();
+            m_ListSceneItems.RemoveAt(i);
+        }
     }
 
     public void ReleaseSceneBuildings()

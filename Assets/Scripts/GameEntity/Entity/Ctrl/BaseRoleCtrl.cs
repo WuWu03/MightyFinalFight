@@ -63,7 +63,7 @@ public class BaseRoleCtrl : BaseCtrl
             return;
         }
 
-        if(m_SkillManager.IsCurrSkill(skillID) && !m_SkillManager.IsSkillComplete(skillID))
+        if (m_SkillManager.IsCurrSkill(skillID) && !m_SkillManager.IsSkillComplete(skillID))
         {
             return;
         }
@@ -130,13 +130,9 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected override void OnUpdate()
     {
-        if(m_Owner is BaseHero)
-        {
-
-        }
         if (m_IsAttack)
         {
-            if (m_Owner.IsPlayComplete() )
+            if (m_Owner.IsPlayComplete())
             {
                 m_AttackTimer = Time.time;
                 m_IsAttack = false;
@@ -177,7 +173,7 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected override void OnRelease()
     {
-        if(m_RoleData != null)
+        if (m_RoleData != null)
         {
             ReferencePool.ReleaseReference(m_RoleData);
             m_RoleData = null;
@@ -190,12 +186,12 @@ public class BaseRoleCtrl : BaseCtrl
 
     protected virtual void NormalAttack(Vector2 dir)
     {
-        if(!m_CanAttack)
+        if (!m_CanAttack)
         {
             return;
         }
 
-        if(m_IsHitSuccess)
+        if (m_IsHitSuccess)
         {
             if (m_AttackIndex < m_RoleData.attackIds.Length - 1)
             {
@@ -218,7 +214,7 @@ public class BaseRoleCtrl : BaseCtrl
     {
         m_IsHitSuccess = false;
 
-        if(dir.y < 0 && m_RoleData.jumpAttackIds.Length > 1)
+        if (dir.y < 0 && m_RoleData.jumpAttackIds.Length > 1)
         {
             m_CurrSkillID = m_RoleData.jumpAttackIds[1];
         }

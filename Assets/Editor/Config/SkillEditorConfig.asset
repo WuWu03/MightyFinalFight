@@ -24,7 +24,7 @@ MonoBehaviour:
       - Key: 1
         Value:
           target:
-          - skillEventType: 5
+          - skillEventType: 7
             animName: 
             animSpeed: 0
             animPlayTimes: 0
@@ -92,4 +92,8 @@ MonoBehaviour:
     skillKey:
       keys: 
       addTrigger: 0
-    skillPrevConditions: []
+    skillPrevConditions:
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+      args: 

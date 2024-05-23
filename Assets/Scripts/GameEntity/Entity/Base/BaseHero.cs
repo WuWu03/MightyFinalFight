@@ -382,7 +382,10 @@ public class BaseHero : BaseRole
                 weapon.Release();
             }
         }
-        else item.SetOwner(this);
+        else
+        {
+            item.SetOwner(this);
+        }
     }
 
     public virtual void DropWeaponMsg(float dir)

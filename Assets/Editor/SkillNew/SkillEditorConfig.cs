@@ -168,6 +168,7 @@ public class SkillEditorConfigData : BaseConfigData
     {
         public SkillPrevConditionType prevConditionType;
         public bool isRevert;
+        public int hpLimit;
         public string args;
     }
 

@@ -157,7 +157,7 @@ public static class SceneEntityFactory
         barrel.SetAttribute(barrelAttribute);
         barrel.SetObjectType(ObjectType.Barrel);
         barrel.SetLayer(LayerName.Unit);
-        barrel.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel"));
+        barrel.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, "SceneBuilding/Barrel.prefab"));
 
         return barrel;
     }

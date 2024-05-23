@@ -28,8 +28,7 @@ public class Weapon : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         m_Owner = owner;
-        gameObject.SetActive(false);
-        SceneEntityMgr.instance.ReleaseSceneItem(this);
+        SetActive(false);
         AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.Bonus);
     }
 
