@@ -10,6 +10,14 @@ public class BaseSceneItem : BaseGravityObject
         }
     }
 
+    public virtual bool canReleaseInSceneChange
+    {
+        get
+        {
+            return true;
+        }
+    }
+
     public virtual bool canPickUp
     {
         get

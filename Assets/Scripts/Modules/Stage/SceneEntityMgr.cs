@@ -168,11 +168,18 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         for (int i = m_ListSceneItems.Count - 1; i > -1; i--)
         {
-            if (m_ListSceneItems[i] != null && m_ListSceneItems[i].owner == null)
+            if (m_ListSceneItems[i] == null)
             {
-                m_ListSceneItems[i].Release();
+                m_ListSceneItems.RemoveAt(i);
+                continue;
             }
 
+            if (!m_ListSceneItems[i].canReleaseInSceneChange)
+            {
+                continue;
+            }
+
+            m_ListSceneItems[i].Release();
             m_ListSceneItems.RemoveAt(i);
         }
     }

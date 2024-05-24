@@ -18,7 +18,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
     public override void Enter()
     {
         m_Pit = SceneEntityMgr.instance.GetSceneBuildingByName("Pit");
-        m_Danmd = SceneEntityFactory.CreateRole("Damnd", "Character/Damnd", 1f, new Vector2(4.7f, -0.08f));
+        m_Danmd = SceneEntityFactory.CreateRole("Damnd", "Character/Damnd.prefab", 1f, new Vector2(4.7f, -0.08f));
         m_Danmd.SetDir(-1);
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.AutoMoveToPos(new Vector2(3.2f, -0.27f), OnAutoMove1);

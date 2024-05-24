@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class Weapon : BaseSceneItem
 {
+    public override bool canReleaseInSceneChange
+    {
+        get
+        {
+            return m_Owner == null;
+        }
+    }
+
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
