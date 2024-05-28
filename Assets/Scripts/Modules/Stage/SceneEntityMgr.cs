@@ -85,7 +85,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
             if (sceneBuilding == null)
             {
-                Log.LogError("创建 SceneItem 失败 , stageId : " + data.Id + " , buildingId : " + data.SceneBuildings[i].Id);
+                Log.LogError("创建 SceneItem 失败 , stageId : " + data.id + " , buildingId : " + data.SceneBuildings[i].Id);
                 continue;
             }
 

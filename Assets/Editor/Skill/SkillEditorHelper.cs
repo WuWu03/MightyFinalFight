@@ -17,7 +17,7 @@ public static class SkillEditorHelper
                 return null;
             }
 
-            return m_SkillConfig.Datas[m_CurrSelectIndex];
+            return m_SkillConfig.listDatas[m_CurrSelectIndex];
         }
     }
 
@@ -30,7 +30,7 @@ public static class SkillEditorHelper
                 return null;
             }
 
-            return m_SkillConfig.Datas;
+            return m_SkillConfig.listDatas;
         }
     }
 
@@ -138,28 +138,28 @@ public static class SkillEditorHelper
         skillConfigData.SkillPrevConditions = new SkillConfigData.SkillPrevCondition[0];
         skillConfigData.SkillEffects = new SkillConfigData.SkillEffect[0];
         m_SkillConfig.AddData(skillConfigData);
-        m_CurrSelectIndex = m_SkillConfig.Datas.Count - 1;
+        m_CurrSelectIndex = m_SkillConfig.listDatas.Count - 1;
         SetShowNames();
     }
 
     public static void RemoveData()
     {
-        if (!HasData() || m_CurrSelectIndex < 0 || m_CurrSelectIndex >= m_SkillConfig.Datas.Count)
+        if (!HasData() || m_CurrSelectIndex < 0 || m_CurrSelectIndex >= m_SkillConfig.listDatas.Count)
         {
             return;
         }
 
-        m_SkillConfig.Datas.RemoveAt(m_CurrSelectIndex);
+        m_SkillConfig.listDatas.RemoveAt(m_CurrSelectIndex);
 
-        if(m_CurrSelectIndex >= m_SkillConfig.Datas.Count)
+        if(m_CurrSelectIndex >= m_SkillConfig.listDatas.Count)
         {
-            m_CurrSelectIndex = m_SkillConfig.Datas.Count - 1;
+            m_CurrSelectIndex = m_SkillConfig.listDatas.Count - 1;
         }
     }
 
     public static bool HasData()
     {
-        if (m_SkillConfig == null || m_SkillConfig.Datas == null || m_SkillConfig.Datas.Count < 1)
+        if (m_SkillConfig == null || m_SkillConfig.listDatas == null || m_SkillConfig.listDatas.Count < 1)
         {
             return false;
         }
@@ -176,9 +176,9 @@ public static class SkillEditorHelper
 
         List<string> temp = new List<string>();
 
-        for (int i = 0; i < m_SkillConfig.Datas.Count; i++)
+        for (int i = 0; i < m_SkillConfig.listDatas.Count; i++)
         {
-            string name = string.IsNullOrEmpty(m_SkillConfig.Datas[i].Name) ? "未命名" : m_SkillConfig.Datas[i].Name;
+            string name = string.IsNullOrEmpty(m_SkillConfig.listDatas[i].Name) ? "未命名" : m_SkillConfig.listDatas[i].Name;
             temp.Add(name);
         }
 

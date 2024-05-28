@@ -57,26 +57,6 @@ namespace SkillNew
 
         private void MainGUI()
         {
-            EditorGUILayout.BeginVertical();
-            m_AddType = EditorGUILayout.TextField("技能类别", m_AddType);
-            m_AddName = EditorGUILayout.TextField("技能名字", m_AddName);
-
-            if (GUILayout.Button("增加"))
-            {
-                SkillEditorHelper.AddData(PathUtil.FormatPath(m_AddType, m_AddName));
-                m_SkillGUIs[m_CurrPage].UpdateData();
-                UpdateData();
-            }
-
-            if (GUILayout.Button("删除当前项"))
-            {
-                SkillEditorHelper.RemoveData();
-                m_SkillGUIs[m_CurrPage].UpdateData();
-                UpdateData();
-            }
-
-            EditorGUILayout.EndVertical();
-
             if (!SkillEditorHelper.HasData())
             {
                 return;
@@ -117,9 +97,9 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                DrawField(() => { return m_CurrId != SkillEditorHelper.currConfigData.Id; },
+                DrawField(() => { return m_CurrId != SkillEditorHelper.currConfigData.id; },
                     () => { m_CurrId = EditorGUILayout.IntField("Id", m_CurrId); },
-                    () => {SkillEditorHelper.currConfigData.Id = m_CurrId;}, 20);
+                    () => {SkillEditorHelper.currConfigData.id = m_CurrId;}, 20);
 
             });
 
@@ -138,6 +118,31 @@ namespace SkillNew
             EditorGUILayout.EndHorizontal();
 
             m_SkillGUIs[m_CurrPage].Draw();
+
+            GUILayout.FlexibleSpace();
+
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            {
+                EditorGUILayout.BeginVertical();
+                m_AddType = EditorGUILayout.TextField("技能类别", m_AddType);
+                m_AddName = EditorGUILayout.TextField("技能名字", m_AddName);
+
+                if (GUILayout.Button("增加"))
+                {
+                    SkillEditorHelper.AddData(PathUtil.FormatPath(m_AddType, m_AddName));
+                    m_SkillGUIs[m_CurrPage].UpdateData();
+                    UpdateData();
+                }
+
+                if (GUILayout.Button("删除当前项"))
+                {
+                    SkillEditorHelper.RemoveData();
+                    m_SkillGUIs[m_CurrPage].UpdateData();
+                    UpdateData();
+                }
+
+                EditorGUILayout.EndVertical();
+            });
         }
 
         private void UpdateData()
@@ -149,7 +154,7 @@ namespace SkillNew
 
             m_CurrName = SkillEditorHelper.currShowName;
             m_CurrType = SkillEditorHelper.currShowType;
-            m_CurrId = SkillEditorHelper.currConfigData.Id;
+            m_CurrId = SkillEditorHelper.currConfigData.id;
         }
 
         private string GetTypeOrNameStr(string str)

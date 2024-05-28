@@ -19,7 +19,8 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnStartGame()
     {
-        CameraMgr.instance.SetOrthographicSize(1.0f);
+        CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
+        CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
         UIMgr.instance.Open<RoleSelectPanel>();

@@ -36,8 +36,28 @@ public struct SoundName
 
 public struct LayerName
 {
+    public const string UI = "UI";
     public const string Map = "Map";
     public const string Unit = "Unit";
+    public const string Bullet = "Bullet";
+}
+
+public struct CameraName
+{
+    public const string MainCamera = "MainCamera";
+    public const string RoleCamera = "RoleCamera";
+}
+
+public struct CameraTag
+{
+    public const string MainCamera = "MainCamera";
+    public const string Untagged = "Untagged";
+}
+
+public struct CameraDepth
+{
+    public const int MainCamera = 0;
+    public const int RoleCamera = 1;
 }
 
 public struct ConstField

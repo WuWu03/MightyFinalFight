@@ -41,7 +41,7 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            if(m_ListData.Count != m_AssetBundleConfig.Datas.Count)
+            if(m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
             {
                 return true;
             }
@@ -55,7 +55,7 @@ namespace GameFrameWork.Editor
 
             for (int i = 0; i < m_ListData.Count; i++)
             {
-                if (!equals(m_ListData[i], m_AssetBundleConfig.Datas[i]))
+                if (!equals(m_ListData[i], m_AssetBundleConfig.listDatas[i]))
                 {
                     return true;
                 }
@@ -96,9 +96,9 @@ namespace GameFrameWork.Editor
 
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
 
-            for (int i = 0; i < m_AssetBundleConfig.Datas.Count; i++)
+            for (int i = 0; i < m_AssetBundleConfig.listDatas.Count; i++)
             {
-                AssetBundleData data = m_AssetBundleConfig.Datas[i].Clone();
+                AssetBundleData data = m_AssetBundleConfig.listDatas[i].Clone();
 
                 m_ListData.Add(data);
 
@@ -144,7 +144,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            m_AssetBundleConfig.Datas = m_ListData;
+            m_AssetBundleConfig.listDatas = m_ListData;
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
             EditorUtility.SetDirty(m_AssetBundleConfig);
@@ -183,7 +183,7 @@ namespace GameFrameWork.Editor
             m_ListPatternIndex.Clear();
             m_ListDataHasRemove.Clear();
             m_ListBundleExtendIndex.Clear();
-            m_AssetBundleConfig.Datas = m_ListData;
+            m_AssetBundleConfig.listDatas = m_ListData;
         }
 
         Vector2 scrollPosition = Vector2.zero;
@@ -241,7 +241,7 @@ namespace GameFrameWork.Editor
                 }
 
                 index++;
-                m_ListData[i].Id = index;
+                m_ListData[i].id = index;
 
                 EditorUtil.GUIBoxScope((Action)(() => 
                 {

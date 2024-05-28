@@ -13,7 +13,7 @@ public class SkillBaseGUI : SkillGUI
     protected override void OnUpdateData()
     {
         m_ListKey.Clear();
-        m_CurrId = SkillEditorHelper.currConfigData.Id;
+        m_CurrId = SkillEditorHelper.currConfigData.id;
         m_CurrName = SkillEditorHelper.currShowName;
         m_CurrLevel = SkillEditorHelper.currConfigData.Level;
         m_CurrAnimName = SkillEditorHelper.currConfigData.AnimationName;
@@ -57,7 +57,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.Id = m_CurrId;
+                SkillEditorHelper.currConfigData.id = m_CurrId;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();

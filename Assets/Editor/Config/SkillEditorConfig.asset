@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b475f3b0a4377641813550adcb4dab1, type: 3}
   m_Name: SkillEditorConfig
   m_EditorClassIdentifier: 
-  Datas:
-  - Id: 0
+  listDatas:
+  - id: 0
     skillName: "\u672A\u547D\u540D"
     skillFrameCount: 5
     deployerType: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
       - Key: 1
         Value:
           target:
-          - skillEventType: 7
+          - skillEventType: 0
             animName: 
             animSpeed: 0
             animPlayTimes: 0
@@ -88,6 +88,7 @@ MonoBehaviour:
               drag: 0
               gravity: 0
               distanceLimit: 0
+            bulletEventInfos: []
             args: 
     skillKey:
       keys: 

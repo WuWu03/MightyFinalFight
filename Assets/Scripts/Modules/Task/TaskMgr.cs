@@ -33,7 +33,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         for (int i = 0; i < m_CurrTaskList.Count; i++)
         {
-            if (m_CurrTaskList[i].taskData.Id.Equals(id))
+            if (m_CurrTaskList[i].taskData.id.Equals(id))
             {
                 return true;
             }
@@ -46,7 +46,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
     {
         for (int i = 0; i < m_CompleteTask.Count; i++)
         {
-            if (m_CompleteTask[i].taskData.Id.Equals(id))
+            if (m_CompleteTask[i].taskData.id.Equals(id))
             {
                 return true;
             }
@@ -137,7 +137,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
 
             for (int i = 0; i < m_CurrTaskList.Count; i++)
             {
-                if(m_CurrTaskList[i].taskData.Id.Equals(failureId))
+                if(m_CurrTaskList[i].taskData.id.Equals(failureId))
                 {
                     hasFailure = true;
                     m_CompleteTask.Add(m_CurrTaskList[i]);

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65c759b485d79d4eae2bd2091f2947e, type: 3}
   m_Name: SkillData
   m_EditorClassIdentifier: 
-  Datas:
-  - Id: 1001001
+  listDatas:
+  - id: 1001001
     Level: 0
     Name: Cody/CodyAttack1
     AnimationName: Attack1
@@ -59,7 +59,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001002
+  - id: 1001002
     Level: 0
     Name: Cody/CodyAttack2
     AnimationName: Attack2
@@ -105,7 +105,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001003
+  - id: 1001003
     Level: 0
     Name: Cody/CodyAttack3
     AnimationName: Attack3
@@ -151,7 +151,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001004
+  - id: 1001004
     Level: 0
     Name: Cody/CodyAttack4
     AnimationName: Attack4
@@ -197,7 +197,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001005
+  - id: 1001005
     Level: 0
     Name: Cody/CodyJumpAttack1
     AnimationName: JumpAttack1
@@ -243,7 +243,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001006
+  - id: 1001006
     Level: 0
     Name: Cody/CodyJumpAttack2
     AnimationName: JumpAttack2
@@ -289,7 +289,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1001007
+  - id: 1001007
     Level: 0
     Name: Cody/CodySkill1
     AnimationName: Skill1
@@ -350,7 +350,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1001008
+  - id: 1001008
     Level: 0
     Name: Cody/CodySkill2
     AnimationName: Attack4
@@ -396,7 +396,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1001009
+  - id: 1001009
     Level: 0
     Name: Cody/CodyKnee
     AnimationName: Knee
@@ -442,7 +442,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1001010
+  - id: 1001010
     Level: 0
     Name: Cody/CodyThrow
     AnimationName: Throw
@@ -511,7 +511,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1001011
+  - id: 1001011
     Level: 0
     Name: Cody/CodySkill3
     AnimationName: Skill2
@@ -583,7 +583,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
-  - Id: 1001012
+  - id: 1001012
     Level: 0
     Name: Cody/CodyAttack_Weapon
     AnimationName: Attack_Weapon
@@ -629,7 +629,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1001013
+  - id: 1001013
     Level: 0
     Name: Cody/CodyThrowWeapon
     AnimationName: ThrowWeapon
@@ -687,7 +687,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1002001
+  - id: 1002001
     Level: 0
     Name: Guy/GuyAttack1
     AnimationName: Attack1
@@ -779,7 +779,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002002
+  - id: 1002002
     Level: 0
     Name: Guy/GuyAttack2
     AnimationName: Attack2
@@ -871,7 +871,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002003
+  - id: 1002003
     Level: 0
     Name: Guy/GuyAttack3
     AnimationName: Attack3
@@ -917,7 +917,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002004
+  - id: 1002004
     Level: 0
     Name: Guy/GuyAttack4
     AnimationName: Attack4
@@ -963,7 +963,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002005
+  - id: 1002005
     Level: 0
     Name: Guy/GuyJumpAttack1
     AnimationName: JumpAttack1
@@ -1009,7 +1009,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002006
+  - id: 1002006
     Level: 0
     Name: Guy/GuyJumpAttack2
     AnimationName: JumpAttack2
@@ -1055,7 +1055,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002007
+  - id: 1002007
     Level: 0
     Name: Guy/GuySkill1
     AnimationName: Skill1
@@ -1124,7 +1124,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1002008
+  - id: 1002008
     Level: 0
     Name: Guy/GuySkill2
     AnimationName: Skill2
@@ -1193,7 +1193,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: SubHP:1
-  - Id: 1002009
+  - id: 1002009
     Level: 0
     Name: Guy/GuyKnee
     AnimationName: Knee
@@ -1239,7 +1239,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1002010
+  - id: 1002010
     Level: 0
     Name: Guy/GuyThrow
     AnimationName: Throw
@@ -1377,7 +1377,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1002011
+  - id: 1002011
     Level: 0
     Name: Guy/GuySkill3
     AnimationName: Skill3
@@ -1446,7 +1446,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: HeroAttackEnd
-  - Id: 1002012
+  - id: 1002012
     Level: 0
     Name: Guy/GuyAttack_Weapon
     AnimationName: Attack_Weapon
@@ -1504,7 +1504,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1002013
+  - id: 1002013
     Level: 0
     Name: Guy/GuyThrowWeapon
     AnimationName: ThrowWeapon
@@ -1562,7 +1562,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003001
+  - id: 1003001
     Level: 0
     Name: Hagger/HaggerAttack1
     AnimationName: Attack1
@@ -1608,7 +1608,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1003002
+  - id: 1003002
     Level: 0
     Name: Hagger/HaggerAttack2
     AnimationName: Attack2
@@ -1654,7 +1654,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1003003
+  - id: 1003003
     Level: 0
     Name: Hagger/HaggerAttack3
     AnimationName: Attack3
@@ -1700,7 +1700,7 @@ MonoBehaviour:
       CanBeDefense: 1
       HitOne: 0
       Args: 
-  - Id: 1003004
+  - id: 1003004
     Level: 0
     Name: Hagger/HaggerAttack4
     AnimationName: Attack4
@@ -1769,7 +1769,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: HeroAttackEnd
-  - Id: 1003005
+  - id: 1003005
     Level: 0
     Name: Hagger/HaggerJumpAttack1
     AnimationName: JumpAttack1
@@ -1818,7 +1818,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003006
+  - id: 1003006
     Level: 0
     Name: Hagger/HaggerJumpAttack2
     AnimationName: JumpAttack2
@@ -1936,7 +1936,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003007
+  - id: 1003007
     Level: 0
     Name: Hagger/HaggerSkill1
     AnimationName: Skill1
@@ -1982,7 +1982,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 1
       Args: 
-  - Id: 1003008
+  - id: 1003008
     Level: 0
     Name: Hagger/HaggerSkill2
     AnimationName: Skill2
@@ -2028,7 +2028,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003009
+  - id: 1003009
     Level: 0
     Name: Hagger/HaggerKnee
     AnimationName: Knee
@@ -2077,7 +2077,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003010
+  - id: 1003010
     Level: 0
     Name: Hagger/HaggerThrow
     AnimationName: Throw
@@ -2169,7 +2169,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003011
+  - id: 1003011
     Level: 0
     Name: Hagger/HaggerAttack_Weapon
     AnimationName: Attack_Weapon
@@ -2215,7 +2215,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 1003012
+  - id: 1003012
     Level: 0
     Name: Hagger/HaggerThrowWeapon
     AnimationName: ThrowWeapon
@@ -2273,7 +2273,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2001001
+  - id: 2001001
     Level: 0
     Name: Bred/BredAttack
     AnimationName: Attack1
@@ -2319,7 +2319,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2002001
+  - id: 2002001
     Level: 0
     Name: TwoP/TwoPAttack
     AnimationName: Attack1
@@ -2365,7 +2365,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2003001
+  - id: 2003001
     Level: 0
     Name: Axl/AxlAttack
     AnimationName: Attack1
@@ -2411,7 +2411,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2004001
+  - id: 2004001
     Level: 0
     Name: Andore/AndoreAttack
     AnimationName: Attack1
@@ -2457,7 +2457,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2004002
+  - id: 2004002
     Level: 0
     Name: Andore/AndoreSkill1
     AnimationName: Skill1
@@ -2503,7 +2503,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2005001
+  - id: 2005001
     Level: 0
     Name: Damnd/DamndAttack
     AnimationName: Attack
@@ -2549,7 +2549,7 @@ MonoBehaviour:
       CanBeDefense: 0
       HitOne: 0
       Args: 
-  - Id: 2005002
+  - id: 2005002
     Level: 0
     Name: Damnd/DamndJumpAttack
     AnimationName: JumpDown

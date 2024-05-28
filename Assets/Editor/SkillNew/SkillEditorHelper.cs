@@ -17,7 +17,7 @@ namespace SkillNew
                     return null;
                 }
 
-                return m_SkillEditorConfig.Datas[m_CurrSelectIndex];
+                return m_SkillEditorConfig.listDatas[m_CurrSelectIndex];
             }
         }
 
@@ -30,7 +30,7 @@ namespace SkillNew
                     return null;
                 }
 
-                return m_SkillEditorConfig.Datas;
+                return m_SkillEditorConfig.listDatas;
             }
         }
 
@@ -161,28 +161,28 @@ namespace SkillNew
             skillConfigData.dicSkillEvents = new SerializableDictionary<int, SerializableList<SkillEditorConfigData.SkillEvent>>();
             skillConfigData.skillPrevConditions = new SkillEditorConfigData.SkillPrevCondition[0];
             m_SkillEditorConfig.AddData(skillConfigData);
-            m_CurrSelectIndex = m_SkillEditorConfig.Datas.Count - 1;
+            m_CurrSelectIndex = m_SkillEditorConfig.listDatas.Count - 1;
             SetShowNames();
         }
 
         public static void RemoveData()
         {
-            if (!HasData() || m_CurrSelectIndex < 0 || m_CurrSelectIndex >= m_SkillEditorConfig.Datas.Count)
+            if (!HasData() || m_CurrSelectIndex < 0 || m_CurrSelectIndex >= m_SkillEditorConfig.listDatas.Count)
             {
                 return;
             }
 
-            m_SkillEditorConfig.Datas.RemoveAt(m_CurrSelectIndex);
+            m_SkillEditorConfig.listDatas.RemoveAt(m_CurrSelectIndex);
 
-            if (m_CurrSelectIndex >= m_SkillEditorConfig.Datas.Count)
+            if (m_CurrSelectIndex >= m_SkillEditorConfig.listDatas.Count)
             {
-                m_CurrSelectIndex = m_SkillEditorConfig.Datas.Count - 1;
+                m_CurrSelectIndex = m_SkillEditorConfig.listDatas.Count - 1;
             }
         }
 
         public static bool HasData()
         {
-            if (m_SkillEditorConfig == null || m_SkillEditorConfig.Datas == null || m_SkillEditorConfig.Datas.Count < 1)
+            if (m_SkillEditorConfig == null || m_SkillEditorConfig.listDatas == null || m_SkillEditorConfig.listDatas.Count < 1)
             {
                 return false;
             }
@@ -199,16 +199,16 @@ namespace SkillNew
 
             List<string> temp = new List<string>();
 
-            for (int i = 0; i < m_SkillEditorConfig.Datas.Count; i++)
+            for (int i = 0; i < m_SkillEditorConfig.listDatas.Count; i++)
             {
-                bool hasName = !string.IsNullOrEmpty(m_SkillEditorConfig.Datas[i].skillName);
+                bool hasName = !string.IsNullOrEmpty(m_SkillEditorConfig.listDatas[i].skillName);
 
                 if (!hasName)
                 {
-                    m_SkillEditorConfig.Datas[i].skillName = "Î´ÃüÃû";
+                    m_SkillEditorConfig.listDatas[i].skillName = "Î´ÃüÃû";
                 }
 
-                temp.Add(m_SkillEditorConfig.Datas[i].skillName);
+                temp.Add(m_SkillEditorConfig.listDatas[i].skillName);
             }
 
             m_ShowNames = temp.ToArray();

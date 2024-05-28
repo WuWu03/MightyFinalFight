@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEditor.U2D.Sprites;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -59,7 +59,6 @@ namespace GameFrameWork.Editor
             m_OutPutExtName = EditorGUILayout.TextField("导出图片格式:", m_OutPutExtName);
             m_OutPutType = (TextureImporterType)EditorGUILayout.EnumPopup("导出图片类型:", m_OutPutType);
             m_OutPutPath = EditorGUILayout.TextField("导出图片路径:", m_OutPutPath);
-            m_OutPutPackTag = EditorGUILayout.TextField("导出图片图集名称:", m_OutPutPackTag);
             m_OutPutGenMipmaps = EditorGUILayout.Toggle("导出图片生成小图:", m_OutPutGenMipmaps);
 
             if(m_SelectObject != null)
@@ -141,7 +140,6 @@ namespace GameFrameWork.Editor
             m_OutPutExtName = ".png";
             m_OutPutPath = Application.dataPath + "/SplitSprite/";
             m_OutPutType = TextureImporterType.Sprite;
-            m_OutPutPackTag = string.Empty;
             m_OutPutGenMipmaps = false;
         }
 
@@ -177,8 +175,11 @@ namespace GameFrameWork.Editor
                 if (Path.GetExtension(files[i]).Equals(".meta")) continue;
                 string objectPath = files[i].Substring(files[i].IndexOf("Assets"));
                 UnityEngine.Object @object = AssetDatabase.LoadAssetAtPath(objectPath, typeof(Texture2D));
+
                 if (@object != null && CanSplit(@object as Texture2D))
+                {
                     SplitSprite(@object as Texture2D);
+                }
             }
         }
 
@@ -243,22 +244,19 @@ namespace GameFrameWork.Editor
             if (texture == null) return;
 
             string selectionPath = AssetDatabase.GetAssetPath(texture);
-            string selectionExt = System.IO.Path.GetExtension(selectionPath);
-            string loadPath = selectionPath.Remove(selectionPath.Length - selectionExt.Length);
-
-            SpriteMetaData[] blocks = null;
+            SpriteRect[] spriteRects = null;
 
             if (!m_IsUseAuto)
             {
                 int row = Mathf.CeilToInt((float)texture.height / m_SpriteHeight);
                 int column = Mathf.CeilToInt((float)texture.width / m_SpriteWidth);
-                blocks = new SpriteMetaData[row * column];
+                spriteRects = new SpriteRect[row * column];
 
                 for (int i = 0; i < row; i++)
                 {
                     for (int j = 0; j < column; j++)
                     {
-                        SpriteMetaData tmp = new SpriteMetaData();
+                        SpriteRect tmp = new SpriteRect();
                         int id = i * column + j;
                         float x = j * m_SpriteWidth;
                         float y = i * m_SpriteHeight;
@@ -269,7 +267,7 @@ namespace GameFrameWork.Editor
                         tmp.name = m_SelectObject.name + "_" + i * m_SpriteWidth + "_" + j * m_SpriteHeight;
                         tmp.pivot = new Vector2(0.5f, 0.5f);
                         tmp.rect = new Rect(x, y, width, height);
-                        blocks[id] = tmp;
+                        spriteRects[id] = tmp;
                     }
                 }
             }
@@ -277,14 +275,15 @@ namespace GameFrameWork.Editor
             {
                 List<Rect> frames = new List<Rect>(InternalSpriteUtility.GenerateAutomaticSpriteRectangles((Texture2D)m_SelectObject, 1, 0));
                 frames = SortRects(frames, (m_SelectObject as Texture2D).width);
-                blocks = new SpriteMetaData[frames.Count];
+                spriteRects = new SpriteRect[frames.Count];
+
                 for (int i = 0; i < frames.Count; i++)
                 {
-                    SpriteMetaData tmp = new SpriteMetaData();
+                    SpriteRect tmp = new SpriteRect();
                     tmp.name = (i + 1).ToString();
                     tmp.pivot = new Vector2(0.5f, 0.5f);
                     tmp.rect = frames[i];
-                    blocks[i] = tmp;
+                    spriteRects[i] = tmp;
                 }
             }
 
@@ -293,13 +292,20 @@ namespace GameFrameWork.Editor
             textureImporter.spriteImportMode = SpriteImportMode.Multiple;
             textureImporter.isReadable = true;
             textureImporter.fadeout = false;
-            textureImporter.spritesheet = blocks;
+
+            SpriteDataProviderFactories factories = new SpriteDataProviderFactories();
+            factories.Init();
+            ISpriteEditorDataProvider dataProvider = factories.GetSpriteEditorDataProviderFromObject(textureImporter);
+            dataProvider.InitSpriteEditorDataProvider();
+            dataProvider.SetSpriteRects(spriteRects);
+            dataProvider.Apply();
+
             textureImporter.SaveAndReimport();
-            AssetDatabase.ImportAsset(loadPath);
+            AssetDatabase.ImportAsset(selectionPath);
             AssetDatabase.Refresh();
 
             // 加载此文件下的所有资源
-            UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(loadPath + selectionExt);
+            UnityEngine.Object[] objects = AssetDatabase.LoadAllAssetsAtPath(selectionPath);
             List<Sprite> sprites = new List<Sprite>();
 
             for (int i = 0; i < objects.Length; i++)
@@ -333,8 +339,14 @@ namespace GameFrameWork.Editor
                     // 写入成各种格式文件
                     byte[] bytes = null;
 
-                    if (m_OutPutExtName.Equals(".png")) bytes = tex.EncodeToPNG();
-                    else if (m_OutPutExtName.Equals(".jpb")) bytes = tex.EncodeToJPG();
+                    if (m_OutPutExtName.Equals(".png"))
+                    {
+                        bytes = tex.EncodeToPNG();
+                    }
+                    else if (m_OutPutExtName.Equals(".jpb"))
+                    {
+                        bytes = tex.EncodeToJPG();
+                    }
 
                     File.WriteAllBytes(realOutPutPath + sprite.name + m_OutPutExtName, bytes);
                 }
@@ -351,7 +363,6 @@ namespace GameFrameWork.Editor
                     textureImporter.spriteImportMode = SpriteImportMode.Single;
                     textureImporter.fadeout = false;
                     textureImporter.mipmapEnabled = m_OutPutGenMipmaps;
-                    textureImporter.spritePackingTag = m_OutPutPackTag;
                     textureImporter.SaveAndReimport();
                 }
             }
@@ -418,7 +429,6 @@ namespace GameFrameWork.Editor
         private string m_SelectFolder = string.Empty;
         private string[] m_ExtNames = new string[] { ".png", ".jpg" };
         private string m_OutPutPath = string.Empty;
-        private string m_OutPutPackTag = string.Empty;
         private bool m_OutPutGenMipmaps = false;
         //private bool m_FoldOut = false;
         private bool m_IsUseAuto = false;

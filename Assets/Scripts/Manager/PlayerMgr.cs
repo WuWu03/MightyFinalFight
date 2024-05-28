@@ -176,13 +176,13 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                InputMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.Id, OnComboKeyEvent);
+                InputMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.id, OnComboKeyEvent);
             }
         }
 
         m_CanCtrl = true;
 
-        CameraMgr.instance.SetTarget(m_Player.transform);
+        CameraMgr.instance.SetFollowTarget(m_Player.transform);
         InputMgr.instance.getDirectionEvent = GetDirction;
         InputMgr.instance.getPreconditonEvent = GetPreCondition;
         InputMgr.instance.isRunning = true;

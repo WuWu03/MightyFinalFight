@@ -284,7 +284,6 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
     private int m_CurrAnimIndex = 0;
     private int m_CurrAnimFrame = 1;
-    private int m_PrevAnimFrame = -1;
 
     private GameObject m_CurrGo = null;
     private UnityEngine.Object m_CurrSelectObj = null;

@@ -106,18 +106,18 @@ namespace GameFrameWork.Editor
         /// </summary>
         private bool GenerateBuildMap(AssetBundleConfig config)
         {
-            for (int i = 0; i < config.Datas.Count; i++)
+            for (int i = 0; i < config.listDatas.Count; i++)
             {
-                if (config.Datas[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
+                if (config.listDatas[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
                 {
-                    if (!AddMulityBuildMap(config.Datas[i].bundlePath, config.Datas[i].bundleExtend, config.Datas[i].pattern, config.Datas[i].assetPath, i))
+                    if (!AddMulityBuildMap(config.listDatas[i].bundlePath, config.listDatas[i].bundleExtend, config.listDatas[i].pattern, config.listDatas[i].assetPath, i))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (!AddSingleBuildMap(config.Datas[i].bundleName, config.Datas[i].bundleExtend, config.Datas[i].pattern, config.Datas[i].assetPath, i))
+                    if (!AddSingleBuildMap(config.listDatas[i].bundleName, config.listDatas[i].bundleExtend, config.listDatas[i].pattern, config.listDatas[i].assetPath, i))
                     {
                         return false;
                     }
@@ -125,8 +125,8 @@ namespace GameFrameWork.Editor
             }
 
             //框架资源
-            AddMulityBuildMap("ArtResources/Materials/", ".assetbundle", "*", "Assets/GameFrameWork/Materials/", config.Datas.Count);
-            AddSingleBuildMap("Shaders", ".assetbundle", "*", "Assets/GameFrameWork/Shaders/", config.Datas.Count + 1);
+            AddMulityBuildMap("ArtResources/Materials/", ".assetbundle", "*", "Assets/GameFrameWork/Materials/", config.listDatas.Count);
+            AddSingleBuildMap("Shaders", ".assetbundle", "*", "Assets/GameFrameWork/Shaders/", config.listDatas.Count + 1);
 
             return true;
             //AddBuildMap("fonts.unity3d", "*.TTF", "Assets/AssetsLibrary/Font");

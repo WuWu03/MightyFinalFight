@@ -26,7 +26,7 @@ public class SkillBulletEffect : SkillBaseEffect
             bullet.SetSkillEffect(this);
             bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
-            bullet.SetLayer(LayerName.Unit);
+            bullet.SetLayer(LayerName.Bullet);
             bullet.SetOwner(m_Owner);
             bullet.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, m_SkillEffect.Bullets[i].AssetName));
         }

@@ -118,25 +118,26 @@ public class SkillEditorConfigData : BaseConfigData
         public PhysicsEventInfo targetPhysicsEventInfo = null;
         public PhysicsEventInfo selfPhysicsEventInfo = null;
 
-        ////子弹事件
-        //[Serializable]
-        //public class Bullet
-        //{
-        //    public string bulletName;
-        //    public string assetName;
-        //    public string normalAnim;
-        //    public string hitAnim;
-        //    public float normalAnimSpeed;
-        //    public float hitAnimSpeed;
-        //    public Vector2 dir;
-        //    public Vector2 pos;
-        //    public Vector2 velocity;
-        //    public float hitRange;
-        //    public float drag;
-        //    public bool isPenatrate;//是否穿透
-        //}
+        //子弹事件
+        [Serializable]
+        public class BulletEventInfo
+        {
+            public string bulletName;
+            public string assetName;
+            public string normalAnim;
+            public string hitAnim;
+            public float normalAnimSpeed;
+            public float hitAnimSpeed;
+            public Vector2 dir;
+            public Vector2 pos;
+            public Vector2 velocity;
+            public float hitRange;
+            public float drag;
+            public bool isPenatrate;//是否穿透
 
-        //public Bullet[] bullets;//发射子弹
+        }
+
+        public BulletEventInfo[] bulletEventInfos;//发射子弹
 
         ////伤害事件
         //public bool isSmoon;//是否击昏
@@ -160,7 +161,6 @@ public class SkillEditorConfigData : BaseConfigData
         public float selectorWidth;//选择器宽
         public float selectorHeight;//选择器高
         public Vector2 selectorOffest;//选择器偏移
-
     }
 
     [Serializable]

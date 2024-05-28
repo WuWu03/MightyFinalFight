@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc131a33a5cafce4ea8939c98f67b721, type: 3}
   m_Name: StageConfigData
   m_EditorClassIdentifier: 
-  Datas:
-  - Id: 1001
+  listDatas:
+  - id: 1001
     Name: Stage1_1
     SceneName: Stage1_1
     assetPath: ArtResources/Scenes/Stage1_1.unity
@@ -54,7 +54,7 @@ MonoBehaviour:
     - {x: 508, y: -34}
     - {x: 508, y: -76}
     - {x: -508, y: -76}
-  - Id: 1002
+  - id: 1002
     Name: Stage1_2
     SceneName: Stage1_2
     assetPath: ArtResources/Scenes/Stage1_2.unity
@@ -119,7 +119,7 @@ MonoBehaviour:
     - {x: 317, y: -44}
     - {x: 317, y: -58}
     - {x: -514, y: -58}
-  - Id: 1003
+  - id: 1003
     Name: Stage1_3
     SceneName: Stage1_3
     assetPath: ArtResources/Scenes/Stage1_3.unity
@@ -167,7 +167,7 @@ MonoBehaviour:
     - {x: 252, y: -31}
     - {x: 252, y: -76}
     - {x: -252, y: -76}
-  - Id: 2001
+  - id: 2001
     Name: Stage2_1
     SceneName: Stage2_1
     assetPath: ArtResources/Scenes/Stage2_1.unity
@@ -194,7 +194,7 @@ MonoBehaviour:
     - {x: 506, y: -30}
     - {x: 506, y: -75}
     - {x: -506, y: -75}
-  - Id: 2002
+  - id: 2002
     Name: Stage2_2
     SceneName: Stage2_2
     assetPath: 
@@ -209,7 +209,7 @@ MonoBehaviour:
     TaskIDs: 
     BGMs: []
     MovePoints: []
-  - Id: 5001
+  - id: 5001
     Name: 
     SceneName: 
     assetPath: 
@@ -224,7 +224,7 @@ MonoBehaviour:
     TaskIDs: 
     BGMs: []
     MovePoints: []
-  - Id: 0
+  - id: 0
     Name: 
     SceneName: 
     assetPath: 

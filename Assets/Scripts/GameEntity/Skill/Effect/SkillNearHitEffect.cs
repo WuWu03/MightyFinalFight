@@ -22,7 +22,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             return;
         }
 
-        m_IsPause = m_SkillData.Id == 1003006;
+        m_IsPause = m_SkillData.id == 1003006;
 
         if (!m_IsPause)
         {

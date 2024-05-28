@@ -14,7 +14,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public FsmMachine Create(System.Object owner, string name, params BaseFsmState[] fsmStates)
+        public FsmMachine Create(object owner, string name, params BaseFsmState[] fsmStates)
         {
             if (HasFsm(owner))
             {
@@ -26,7 +26,7 @@ namespace GameFrameWork.Fsm
             return fsm;
         }
 
-        public FsmMachine GetFsm(System.Object owner)
+        public FsmMachine GetFsm(object owner)
         {
             for (int i = 0; i < m_ListFsms.Count; i++)
             {
@@ -44,7 +44,7 @@ namespace GameFrameWork.Fsm
             return m_ListFsms.ToArray() ;
         }
 
-        public bool HasFsm(System.Object owner)
+        public bool HasFsm(object owner)
         {
             for (int i = 0; i < m_ListFsms.Count; i++)
             {
@@ -57,7 +57,7 @@ namespace GameFrameWork.Fsm
             return false;
         }
 
-        public bool ReleaseFsm(System.Object owner)
+        public bool ReleaseFsm(object owner)
         {
             for (int i = m_ListFsms.Count - 1; i >= 0 ; i--)
             {
@@ -74,7 +74,7 @@ namespace GameFrameWork.Fsm
 
         public bool ReleaseFsm(FsmMachine fsm)
         {
-            if(fsm == null)
+            if (fsm == null)
             {
                 return false;
             }

@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class MapEditorConfig : BaseScriptableObject<MapEditorConfigData>
 {
-    public string MapPath = string.Empty;
+    public string mapTexturesPath = string.Empty;
 
     public MapEditorConfigData GetData(string path)
     {
-        for (int i = 0; i < Datas.Count; i++)
+        for (int i = 0; i < listDatas.Count; i++)
         {
-            if(Datas[i].MapPath.Equals(path))
+            if(listDatas[i].mapPath.Equals(path))
             {
-                return Datas[i];
+                return listDatas[i];
             }
         }
 
@@ -27,41 +27,41 @@ public class MapEditorConfigData : BaseConfigData
     [Serializable]
     public class MoveArea 
     {
-        public Color Color;
-        public Vector2 Point;
+        public Color color;
+        public Vector2 point;
     }
 
-    public string MapPath;
-    public string SceneName;
+    public string mapPath;
+    public string sceneName;
     public string assetPath;
-    public int StageIndex;
-    public int Level;
-    public Vector2 CurrPos = Vector2Int.zero;
-    public Vector2 InitPos = Vector2Int.zero;
-    public int Width;
-    public int Height;
-    public string StageColor;
-    public int StageShowColor;
-    public List<MoveArea> ListMovePoints;
-    public List<int> ListTaskId;
-    public List<StageConfigData.BGM> ListBGM;
-    public List<StageConfigData.SceneBuilding> ListSceneBuilding;
+    public int stageIndex;
+    public int level;
+    public Vector2 currPos = Vector2Int.zero;
+    public Vector2 initPos = Vector2Int.zero;
+    public int width;
+    public int height;
+    public string stageColor;
+    public int stageShowColor;
+    public List<MoveArea> listMovePoints;
+    public List<int> listTaskIds;
+    public List<StageConfigData.BGM> listBGMs;
+    public List<StageConfigData.SceneBuilding> listSceneBuildings;
 
     public override int CompareTo(object obj)
     {
         MapEditorConfigData data = obj as MapEditorConfigData;
 
-        if (data.Id == this.Id)
+        if (data.id == this.id)
         {
             return 0;
         }
 
-        if (data.Id == 0)
+        if (data.id == 0)
         {
             return -1;
         }
 
-        if (data.Id < this.Id)
+        if (data.id < this.id)
         {
             return 1;
         }

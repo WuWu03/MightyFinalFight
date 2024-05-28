@@ -109,7 +109,7 @@ namespace GameFrameWork.Fsm
 
         public override void AddState<T>()
         {
-            if(!m_DicStates.ContainsKey(typeof(T)))
+            if (!m_DicStates.ContainsKey(typeof(T)))
             {
                 T state = new T();
                 state.Init(this);
@@ -151,7 +151,7 @@ namespace GameFrameWork.Fsm
 
             if (m_CurrentState.GetType().Equals(typeof(T)))
             {
-                if(stateData != null)
+                if (stateData != null)
                 {
                     m_CurrentState.SetStateData(stateData);
                 }
@@ -166,7 +166,7 @@ namespace GameFrameWork.Fsm
                 throw new Exception(StringUtil.Format("Fsm [", typeof(T).Name, "] state is invalid or destroyed."));
             }
 
-            if(stateData != null)
+            if (stateData != null)
             {
                 state.SetStateData(stateData);
             }
@@ -229,7 +229,7 @@ namespace GameFrameWork.Fsm
 
         public override void Update(float deltaTime, float unscaleDeltaTime)
         {
-            if (m_CurrentState == null) 
+            if (m_CurrentState == null)
             {
                 return;
             }
@@ -262,12 +262,12 @@ namespace GameFrameWork.Fsm
 
         public override void ShutDown()
         {
-            if(m_IsDestroyed)
+            if (m_IsDestroyed)
             {
                 return;
             }
 
-            foreach(KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
+            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
             {
                 kvp.Value.Release(this);
             }

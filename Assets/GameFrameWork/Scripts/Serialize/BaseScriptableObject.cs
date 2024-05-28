@@ -8,22 +8,22 @@ namespace GameFrameWork.Serialize
     {
         public BaseScriptableObject()
         {
-            Datas = new List<T>();
+            listDatas = new List<T>();
         }
 
-        public List<T> Datas = null;
+        public List<T> listDatas = null;
         public virtual T GetData(int id)
         {
-            if (Datas == null)
+            if (listDatas == null)
             {
                 return null;
             }
 
-            for (int i = 0; i < Datas.Count; i++)
+            for (int i = 0; i < listDatas.Count; i++)
             {
-                if (Datas[i].Id.Equals(id))
+                if (listDatas[i].id.Equals(id))
                 {
-                    return Datas[i];
+                    return listDatas[i];
                 }
             }
 
@@ -32,27 +32,27 @@ namespace GameFrameWork.Serialize
 
         public virtual T GetDataByIndex(int index)
         {
-            if (Datas == null)
+            if (listDatas == null)
             {
                 return null;
             }
 
-            if(index < 0 || index >= Datas.Count)
+            if(index < 0 || index >= listDatas.Count)
             {
                 return null;
             }
 
-            return Datas[index];
+            return listDatas[index];
         }
 
         public virtual void AddData(T data)
         {
-            if(Datas == null)
+            if(listDatas == null)
             {
-                Datas = new List<T>();
+                listDatas = new List<T>();
             }
 
-            Datas.Add(data);
+            listDatas.Add(data);
         }
 
         public T Clone()
@@ -64,12 +64,12 @@ namespace GameFrameWork.Serialize
     [Serializable]
     public abstract class BaseConfigData : IComparable
     {
-        public int Id;
+        public int id;
 
         public virtual int CompareTo(object obj)
         {
             BaseConfigData data = obj as BaseConfigData;
-            if (data.Id < this.Id)
+            if (data.id < this.id)
                 return 1;
             else
                 return -1;

@@ -56,13 +56,7 @@ namespace GameFrameWork.UI
             m_UIRefRoot = go.GetComponent<UIRefRoot>();
             m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
             this.assetPath = assetPath;
-
-            if (m_UIRefRoot == null)
-            {
-                Log.LogError("[UIRefRoot] 组件为空");
-                return;
-            }
-
+            gameObject.SetLayer(LayerName.UI);
             transform.SetParent(UIMgr.instance.GetUILayer(panelLayer), false);
 
             OnInit(param);

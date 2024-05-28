@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class SkillBase
+﻿public abstract class SkillBase
 {
     public SkillBase(SkillConfigData skillData, BaseRole owner, int effectIndex)
     {

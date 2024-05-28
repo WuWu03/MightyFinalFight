@@ -12,30 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4630a46703c70445b4b4a4911b774cc, type: 3}
   m_Name: MapEditorConfig
   m_EditorClassIdentifier: 
-  Datas:
-  - Id: 1001
-    MapPath: Assets/ArtResources/Textures/Stage/1001_1.png
-    SceneName: Stage1_1
+  listDatas:
+  - id: 1001
+    mapPath: Assets/ArtResources/Textures/Stage/1001_1.png
+    sceneName: Stage1_1
     assetPath: ArtResources/Scenes/Stage1_1.unity
-    StageIndex: 1
-    Level: 1
-    CurrPos: {x: -349, y: -33}
-    InitPos: {x: -450, y: -50}
-    Width: 1016
-    Height: 152
-    StageColor: 9C9797
-    StageShowColor: 1
-    ListMovePoints:
-    - Color: {r: 0.13420546, g: 0.7370769, b: 0.44556683, a: 1}
-      Point: {x: -508, y: -34}
-    - Color: {r: 0.6504011, g: 0.20462346, b: 0.57561857, a: 1}
-      Point: {x: 508, y: -34}
-    - Color: {r: 0.15580237, g: 0.7449875, b: 0.36452204, a: 1}
-      Point: {x: 508, y: -76}
-    - Color: {r: 0.49458998, g: 0.77749324, b: 0.7238487, a: 1}
-      Point: {x: -508, y: -76}
-    ListTaskId: e9030000
-    ListBGM:
+    stageIndex: 1
+    level: 1
+    currPos: {x: -387, y: -51}
+    initPos: {x: -450, y: -50}
+    width: 1016
+    height: 152
+    stageColor: 9C9797
+    stageShowColor: 1
+    listMovePoints:
+    - color: {r: 0.13420546, g: 0.7370769, b: 0.44556683, a: 1}
+      point: {x: -508, y: -34}
+    - color: {r: 0.6504011, g: 0.20462346, b: 0.57561857, a: 1}
+      point: {x: 508, y: -34}
+    - color: {r: 0.15580237, g: 0.7449875, b: 0.36452204, a: 1}
+      point: {x: 508, y: -76}
+    - color: {r: 0.49458998, g: 0.77749324, b: 0.7238487, a: 1}
+      point: {x: -508, y: -76}
+    listTaskIds: e9030000
+    listBGMs:
     - ClipName: BGM/bgm01_Start.ogg
       IsLoop: 0
       Volume: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 1
       LerpTime: 0
-    ListSceneBuilding:
+    listSceneBuildings:
     - SceneObjType: 2
       Id: 1
       Name: Cafe1
@@ -59,38 +59,38 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Cafe.prefab
-  - Id: 1002
-    MapPath: Assets/ArtResources/Textures/Stage/1001_2.png
-    SceneName: Stage1_2
+  - id: 1002
+    mapPath: Assets/ArtResources/Textures/Stage/1001_2.png
+    sceneName: Stage1_2
     assetPath: ArtResources/Scenes/Stage1_2.unity
-    StageIndex: 1
-    Level: 2
-    CurrPos: {x: 357, y: -21}
-    InitPos: {x: -505, y: -32}
-    Width: 1016
-    Height: 152
-    StageColor: 9C9797
-    StageShowColor: 1
-    ListMovePoints:
-    - Color: {r: 0.8017901, g: 0.53815776, b: 0.5861946, a: 1}
-      Point: {x: -470.56, y: -17}
-    - Color: {r: 0.2558679, g: 0.5030951, b: 0.7698418, a: 1}
-      Point: {x: 343.8, y: -17}
-    - Color: {r: 0.33592266, g: 0.20094657, b: 0.8198658, a: 1}
-      Point: {x: 361.58, y: 2}
-    - Color: {r: 0.26673323, g: 0.11007202, b: 0.26610464, a: 1}
-      Point: {x: 507.4, y: 2}
-    - Color: {r: 0.26509017, g: 0.8692683, b: 0.021642327, a: 1}
-      Point: {x: 506.6, y: -44}
-    - Color: {r: 0.19631696, g: 0.8853133, b: 0.49004966, a: 1}
-      Point: {x: 317, y: -44}
-    - Color: {r: 0.35294563, g: 0.12716603, b: 0.4131021, a: 1}
-      Point: {x: 317, y: -58}
-    - Color: {r: 0.7588613, g: 0.29950637, b: 0.5740307, a: 1}
-      Point: {x: -514, y: -58}
-    ListTaskId: f0030000
-    ListBGM: []
-    ListSceneBuilding:
+    stageIndex: 1
+    level: 2
+    currPos: {x: 357, y: -21}
+    initPos: {x: -505, y: -32}
+    width: 1016
+    height: 152
+    stageColor: 9C9797
+    stageShowColor: 1
+    listMovePoints:
+    - color: {r: 0.8017901, g: 0.53815776, b: 0.5861946, a: 1}
+      point: {x: -470.56, y: -17}
+    - color: {r: 0.2558679, g: 0.5030951, b: 0.7698418, a: 1}
+      point: {x: 343.8, y: -17}
+    - color: {r: 0.33592266, g: 0.20094657, b: 0.8198658, a: 1}
+      point: {x: 361.58, y: 2}
+    - color: {r: 0.26673323, g: 0.11007202, b: 0.26610464, a: 1}
+      point: {x: 507.4, y: 2}
+    - color: {r: 0.26509017, g: 0.8692683, b: 0.021642327, a: 1}
+      point: {x: 506.6, y: -44}
+    - color: {r: 0.19631696, g: 0.8853133, b: 0.49004966, a: 1}
+      point: {x: 317, y: -44}
+    - color: {r: 0.35294563, g: 0.12716603, b: 0.4131021, a: 1}
+      point: {x: 317, y: -58}
+    - color: {r: 0.7588613, g: 0.29950637, b: 0.5740307, a: 1}
+      point: {x: -514, y: -58}
+    listTaskIds: f0030000
+    listBGMs: []
+    listSceneBuildings:
     - SceneObjType: 1
       Id: 1
       Name: WoodDoorOpen
@@ -133,29 +133,29 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/Pit.prefab
-  - Id: 1003
-    MapPath: Assets/ArtResources/Textures/Stage/1001_3.png
-    SceneName: Stage1_3
+  - id: 1003
+    mapPath: Assets/ArtResources/Textures/Stage/1001_3.png
+    sceneName: Stage1_3
     assetPath: ArtResources/Scenes/Stage1_3.unity
-    StageIndex: 1
-    Level: 3
-    CurrPos: {x: 233, y: 34}
-    InitPos: {x: -215, y: -53}
-    Width: 504
-    Height: 152
-    StageColor: 9C9797
-    StageShowColor: 1
-    ListMovePoints:
-    - Color: {r: 0.61346716, g: 0.0019204617, b: 0.13383842, a: 1}
-      Point: {x: -252, y: -31}
-    - Color: {r: 0.26542717, g: 0.7551669, b: 0.7546375, a: 1}
-      Point: {x: 252, y: -31}
-    - Color: {r: 0.03376019, g: 0.26125664, b: 0.92274857, a: 1}
-      Point: {x: 252, y: -76}
-    - Color: {r: 0.26941448, g: 0.75491965, b: 0.8922688, a: 1}
-      Point: {x: -252, y: -76}
-    ListTaskId: f5030000
-    ListBGM:
+    stageIndex: 1
+    level: 3
+    currPos: {x: 233, y: 34}
+    initPos: {x: -215, y: -53}
+    width: 504
+    height: 152
+    stageColor: 9C9797
+    stageShowColor: 1
+    listMovePoints:
+    - color: {r: 0.61346716, g: 0.0019204617, b: 0.13383842, a: 1}
+      point: {x: -252, y: -31}
+    - color: {r: 0.26542717, g: 0.7551669, b: 0.7546375, a: 1}
+      point: {x: 252, y: -31}
+    - color: {r: 0.03376019, g: 0.26125664, b: 0.92274857, a: 1}
+      point: {x: 252, y: -76}
+    - color: {r: 0.26941448, g: 0.75491965, b: 0.8922688, a: 1}
+      point: {x: -252, y: -76}
+    listTaskIds: f5030000
+    listBGMs:
     - ClipName: BGM/bgm06Boss_Start.ogg
       IsLoop: 0
       Volume: 1
@@ -164,7 +164,7 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 1
       LerpTime: 0
-    ListSceneBuilding:
+    listSceneBuildings:
     - SceneObjType: 2
       Id: 1
       Name: ConveyorBelt1
@@ -186,29 +186,29 @@ MonoBehaviour:
       TriggerSize: {x: 0, y: 0}
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBeltLast.prefab
-  - Id: 2001
-    MapPath: Assets/ArtResources/Textures/Stage/2001_1.png
-    SceneName: Stage2_1
+  - id: 2001
+    mapPath: Assets/ArtResources/Textures/Stage/2001_1.png
+    sceneName: Stage2_1
     assetPath: ArtResources/Scenes/Stage2_1.unity
-    StageIndex: 2
-    Level: 1
-    CurrPos: {x: 501, y: -0}
-    InitPos: {x: -488, y: -47}
-    Width: 1016
-    Height: 152
-    StageColor: 7700FF
-    StageShowColor: 2
-    ListMovePoints:
-    - Color: {r: 0.7083858, g: 0.13301182, b: 0.32529527, a: 1}
-      Point: {x: -506, y: -30}
-    - Color: {r: 0.08343315, g: 0.9157592, b: 0.20957172, a: 1}
-      Point: {x: 506, y: -30}
-    - Color: {r: 0.06243491, g: 0.08004427, b: 0.1330105, a: 1}
-      Point: {x: 506, y: -75}
-    - Color: {r: 0.91512454, g: 0.4748028, b: 0.81011736, a: 1}
-      Point: {x: -506, y: -75}
-    ListTaskId: 
-    ListBGM:
+    stageIndex: 2
+    level: 1
+    currPos: {x: 501, y: -0}
+    initPos: {x: -488, y: -47}
+    width: 1016
+    height: 152
+    stageColor: 7700FF
+    stageShowColor: 2
+    listMovePoints:
+    - color: {r: 0.7083858, g: 0.13301182, b: 0.32529527, a: 1}
+      point: {x: -506, y: -30}
+    - color: {r: 0.08343315, g: 0.9157592, b: 0.20957172, a: 1}
+      point: {x: 506, y: -30}
+    - color: {r: 0.06243491, g: 0.08004427, b: 0.1330105, a: 1}
+      point: {x: 506, y: -75}
+    - color: {r: 0.91512454, g: 0.4748028, b: 0.81011736, a: 1}
+      point: {x: -506, y: -75}
+    listTaskIds: 
+    listBGMs:
     - ClipName: BGM/bgm02_Start.ogg
       IsLoop: 0
       Volume: 1
@@ -217,53 +217,53 @@ MonoBehaviour:
       IsLoop: 1
       Volume: 1
       LerpTime: 0
-    ListSceneBuilding: []
-  - Id: 2002
-    MapPath: Assets/ArtResources/Textures/Stage/2001_2.png
-    SceneName: Stage2_2
+    listSceneBuildings: []
+  - id: 2002
+    mapPath: Assets/ArtResources/Textures/Stage/2001_2.png
+    sceneName: Stage2_2
     assetPath: 
-    StageIndex: 2
-    Level: 2
-    CurrPos: {x: 0, y: 0}
-    InitPos: {x: 0, y: 0}
-    Width: 1275
-    Height: 152
-    StageColor: 7700FF
-    StageShowColor: 2
-    ListMovePoints: []
-    ListTaskId: 
-    ListBGM: []
-    ListSceneBuilding: []
-  - Id: 5001
-    MapPath: Assets/ArtResources/Textures/Stage/5001_2.png
-    SceneName: 
+    stageIndex: 2
+    level: 2
+    currPos: {x: 0, y: 0}
+    initPos: {x: 0, y: 0}
+    width: 1275
+    height: 152
+    stageColor: 7700FF
+    stageShowColor: 2
+    listMovePoints: []
+    listTaskIds: 
+    listBGMs: []
+    listSceneBuildings: []
+  - id: 5001
+    mapPath: Assets/ArtResources/Textures/Stage/5001_2.png
+    sceneName: 
     assetPath: 
-    StageIndex: 0
-    Level: 0
-    CurrPos: {x: 0, y: 0}
-    InitPos: {x: 0, y: 0}
-    Width: 1016
-    Height: 152
-    StageColor: 0
-    StageShowColor: 0
-    ListMovePoints: []
-    ListTaskId: 
-    ListBGM: []
-    ListSceneBuilding: []
-  - Id: 0
-    MapPath: Assets/ArtResources/Textures/Stage/2001_3.png
-    SceneName: 
+    stageIndex: 0
+    level: 0
+    currPos: {x: 0, y: 0}
+    initPos: {x: 0, y: 0}
+    width: 1016
+    height: 152
+    stageColor: 0
+    stageShowColor: 0
+    listMovePoints: []
+    listTaskIds: 
+    listBGMs: []
+    listSceneBuildings: []
+  - id: 0
+    mapPath: Assets/ArtResources/Textures/Stage/2001_3.png
+    sceneName: 
     assetPath: 
-    StageIndex: 0
-    Level: 0
-    CurrPos: {x: 0, y: 0}
-    InitPos: {x: 0, y: 0}
-    Width: 504
-    Height: 152
-    StageColor: 7700FF
-    StageShowColor: 2
-    ListMovePoints: []
-    ListTaskId: 
-    ListBGM: []
-    ListSceneBuilding: []
-  MapPath: Assets/ArtResources/Textures/Stage/
+    stageIndex: 0
+    level: 0
+    currPos: {x: 0, y: 0}
+    initPos: {x: 0, y: 0}
+    width: 504
+    height: 152
+    stageColor: 7700FF
+    stageShowColor: 2
+    listMovePoints: []
+    listTaskIds: 
+    listBGMs: []
+    listSceneBuildings: []
+  mapTexturesPath: Assets/ArtResources/Textures/Stage/

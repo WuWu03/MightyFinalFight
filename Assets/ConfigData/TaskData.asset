@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e10e8fbf8634b44842e1807cf31514, type: 3}
   m_Name: TaskData
   m_EditorClassIdentifier: 
-  Datas:
-  - Id: 1001
+  listDatas:
+  - id: 1001
     ConditionType: 1
     Position:
       PosType: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1002
     FailureID: 0
-  - Id: 1002
+  - id: 1002
     ConditionType: 2
     Position:
       PosType: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1003
     FailureID: 0
-  - Id: 1003
+  - id: 1003
     ConditionType: 2
     Position:
       PosType: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1004
     FailureID: 0
-  - Id: 1004
+  - id: 1004
     ConditionType: 1
     Position:
       PosType: 0
@@ -270,7 +270,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1005
     FailureID: 0
-  - Id: 1005
+  - id: 1005
     ConditionType: 2
     Position:
       PosType: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1006
     FailureID: 0
-  - Id: 1006
+  - id: 1006
     ConditionType: 0
     Position:
       PosType: 2
@@ -314,7 +314,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1007
     FailureID: 0
-  - Id: 1007
+  - id: 1007
     ConditionType: 0
     Position:
       PosType: 2
@@ -336,7 +336,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 0
     FailureID: 0
-  - Id: 1008
+  - id: 1008
     ConditionType: 0
     Position:
       PosType: 0
@@ -358,7 +358,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1009
     FailureID: 0
-  - Id: 1009
+  - id: 1009
     ConditionType: 1
     Position:
       PosType: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1010
     FailureID: 0
-  - Id: 1010
+  - id: 1010
     ConditionType: 2
     Position:
       PosType: 0
@@ -428,7 +428,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1011
     FailureID: 0
-  - Id: 1011
+  - id: 1011
     ConditionType: 0
     Position:
       PosType: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1012
     FailureID: 0
-  - Id: 1012
+  - id: 1012
     ConditionType: 0
     Position:
       PosType: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 0
     FailureID: 0
-  - Id: 1013
+  - id: 1013
     ConditionType: 0
     Position:
       PosType: 0
@@ -520,7 +520,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1014
     FailureID: 0
-  - Id: 1014
+  - id: 1014
     ConditionType: 2
     Position:
       PosType: 0
@@ -542,7 +542,7 @@ MonoBehaviour:
     PrevID: 0
     NextID: 1015
     FailureID: 0
-  - Id: 1015
+  - id: 1015
     ConditionType: 0
     Position:
       PosType: 0

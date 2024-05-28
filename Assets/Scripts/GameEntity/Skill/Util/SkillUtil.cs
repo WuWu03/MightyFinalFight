@@ -139,7 +139,7 @@ public static class SkillUtil
         }
 
         HurtStateData hurtData = HurtStateData.Create();
-        hurtData.id = data.Id;
+        hurtData.id = data.id;
         hurtData.skillExp = data.EXP;
         hurtData.attackerDir = owner.dir;
         hurtData.attackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);

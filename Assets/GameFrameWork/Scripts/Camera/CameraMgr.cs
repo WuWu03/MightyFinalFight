@@ -4,19 +4,6 @@ using DG.Tweening;
 
 namespace GameFrameWork.Camera
 {
-    public struct MaskName
-    {
-        public const string UI = "UI";
-        public const string Map = "Map";
-        public const string Unit = "Unit";
-    }
-
-    public struct CameraDepthDefine
-    {
-        public const int MapCamera = 0;
-        public const int RoleCamera = 1;
-    }
-
     public class CameraMgr : BaseMgr<CameraMgr>
     {
         public GameObject cameraRoot
@@ -31,29 +18,78 @@ namespace GameFrameWork.Camera
         {
             m_ListCamera = new List<UnityEngine.Camera>();
             m_CameraRoot = new GameObject("CameraRoot");
-
             m_CameraFollow = m_CameraRoot.AddComponent<CameraFollow>();
-
-            m_ListCamera.Add(InitCamera("MapCamera", CameraDepthDefine.MapCamera, "MainCamera", MaskName.Map));
-            m_ListCamera.Add(InitCamera("RoleCamera", CameraDepthDefine.RoleCamera, maskName: MaskName.Unit));
-
-            m_CameraFollow.camera = m_ListCamera[0];
-
+   
             AllowAxisFollow(true, true);
             DontDestroyOnLoad(m_CameraRoot);
         }
 
-        public UnityEngine.Camera GetCamera(string name)
+        public UnityEngine.Camera AddOrthographicCamera(string name, int depth, string tag, float orthographicSize, params string[] maskName)
+        {
+            UnityEngine.Camera camera = new GameObject(name).AddComponent<UnityEngine.Camera>();
+            camera.transform.SetParent(m_CameraRoot.transform, false);
+            camera.transform.localPosition = Vector3.forward * -50;
+            camera.tag = tag;
+            camera.orthographic = true;
+            camera.orthographicSize = orthographicSize;
+            camera.nearClipPlane = -1000;
+            camera.farClipPlane = 1000;
+            camera.depth = depth;
+            camera.clearFlags = CameraClearFlags.Depth;
+            camera.cullingMask = LayerMask.GetMask(maskName);
+
+            if (tag.Equals("MainCamera"))
+            {
+                m_MainCamera = camera;
+                m_CameraFollow.orthographicSize = orthographicSize;
+            }
+
+            m_ListCamera.Add(camera);
+            return camera;
+        }
+
+        public UnityEngine.Camera GetCamera(string cameraName)
         {
             for (int i = 0; i < m_ListCamera.Count; i++)
             {
-                if(m_ListCamera[i].name.Equals(name))
+                if (m_ListCamera[i].name.Equals(cameraName))
                 {
                     return m_ListCamera[i];
                 }
             }
 
             return null;
+        }
+
+        public bool RemoveCamera(string cameraName)
+        {
+            for (int i = m_ListCamera.Count - 1; i >= 0; i--)
+            {
+                if (m_ListCamera[i].name.Equals(cameraName))
+                {
+                    GameObject.Destroy(m_ListCamera[i]);
+                    m_ListCamera.RemoveAt(i);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void SetOrthographicSize(string cameraName, float orthographicSize)
+        {
+            if (string.IsNullOrEmpty(cameraName))
+            {
+                Log.LogError("相机名称为空");
+            }
+
+            UnityEngine.Camera camera = GetCamera(cameraName);
+            camera.orthographicSize = orthographicSize;
+
+            if (camera.CompareTag("MainCamera"))
+            {
+                m_CameraFollow.UpdateOrthographicSize(orthographicSize);
+            }
         }
 
         public void SetOrthographicSize(float orthographicSize)
@@ -63,10 +99,10 @@ namespace GameFrameWork.Camera
                 m_ListCamera[i].orthographicSize = orthographicSize;
             }
 
-            m_CameraFollow.UpdateOrthographicSize();
+            m_CameraFollow.UpdateOrthographicSize(orthographicSize);
         }
 
-        public void SetTarget(Transform target)
+        public void SetFollowTarget(Transform target)
         {
             m_CameraFollow.SetTarget(target);
         }
@@ -76,27 +112,38 @@ namespace GameFrameWork.Camera
             m_CameraFollow.SetFollowSize(width, height);
         }
 
+        public void SetFollowMode(FollowMode followMode)
+        {
+            m_CameraFollow.followMode = followMode;
+        }
+
         public void StartFollow(bool isForceStart = false)
         {
-            if (isForceStart) m_IsForceEnd = false;
-            if (!m_IsForceEnd) m_CameraFollow.StartFollow();
+            if (isForceStart)
+            {
+                m_IsForceEnd = false;
+            }
+
+            if (!m_IsForceEnd)
+            {
+                m_CameraFollow.StartFollow();
+            }
         }
 
         public void EndFollow(bool isForceEnd = false)
         {
-            if (isForceEnd) m_IsForceEnd = true;
+            if (isForceEnd)
+            {
+                m_IsForceEnd = true;
+            }
+
             m_CameraFollow.EndFollow();
         }
 
-        public void Shake(float time = 0.3f)
+        public void AllowAxisFollow(bool allowHorizontalAxisFollow, bool allowVerticalAxisFollow)
         {
-            m_CameraFollow.EndFollow();
-            m_CameraRoot.transform.DOShakePosition(time, 0.1f, 20, 100).OnComplete(OnShakeComplete);
-        }
-
-        public void SetFollowMode(FollowMode mode)
-        {
-            m_CameraFollow.followMode = mode;
+            m_CameraFollow.allowHorizontalAxisFollow = allowHorizontalAxisFollow;
+            m_CameraFollow.allowVerticalAxisFollow = allowVerticalAxisFollow;
         }
 
         public bool IsOutVision(Vector2 targetPos)
@@ -114,13 +161,19 @@ namespace GameFrameWork.Camera
 
         public Vector3 WorldPosToScreenPos(Vector3 worldPos)
         {
-            return m_ListCamera[0].WorldToScreenPoint(worldPos);
+            if (m_MainCamera)
+            {
+                Log.LogError("主相机不存在，请初始化主相机");
+                return Vector3.zero;
+            }
+
+            return m_MainCamera.WorldToScreenPoint(worldPos);
         }
 
-        public void AllowAxisFollow(bool xFollow,bool yFollow)
+        public void Shake(float duration = 0.3f, float strength = 1f, int vibrato = 10, float randomness = 90f, bool snapping = false, bool fadeOut = true)
         {
-            m_CameraFollow.allowXAxisFollow = xFollow;
-            m_CameraFollow.allowYAxisFollow = yFollow;
+            m_CameraFollow.EndFollow();
+            m_CameraRoot.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut).OnComplete(OnShakeComplete);
         }
 
         private void OnShakeComplete()
@@ -131,34 +184,15 @@ namespace GameFrameWork.Camera
             }
         }
 
-        private UnityEngine.Camera InitCamera(string name, int depth, string tag = "Untagged", params string[] maskName)
-        {
-            UnityEngine.Camera camera = new GameObject(name).AddComponent<UnityEngine.Camera>();
-            camera.transform.SetParent(m_CameraRoot.transform, false);
-            camera.transform.localPosition = Vector3.forward * -50;
-
-            camera.tag = tag;
-            camera.orthographic = true;
-            camera.orthographicSize = Screen.height / 200f;
-            camera.nearClipPlane = -500;
-            camera.farClipPlane = 500;
-            camera.depth = depth;
-            camera.clearFlags = CameraClearFlags.Depth;
-            camera.cullingMask = LayerMask.GetMask(maskName);
-
-            return camera;
-        }
-
         protected override void OnShutDown()
         {
             m_ListCamera.Clear();
+            m_ListCamera = null;
         }
-
-        private const float NormalWidth = 1920f;
-        private const float NormalHeight = 1080;
 
         private List<UnityEngine.Camera> m_ListCamera = null;
         private CameraFollow m_CameraFollow = null;
+        private UnityEngine.Camera m_MainCamera = null;
         private GameObject m_CameraRoot = null;
         private bool m_IsForceEnd = false;
     }

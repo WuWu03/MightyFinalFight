@@ -1,6 +1,4 @@
 ﻿using GameFrameWork.Editor;
-using GameFrameWork.Utilities;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -32,118 +30,11 @@ public static class MapEditorHelper
         }
     }
 
-    public static List<MapEditorConfigData.MoveArea> MoveAreas
+    public static MapEditorConfigData currData
     {
         get
         {
-            return m_CurrData.ListMovePoints;
-        }
-    }
-
-    public static int Id
-    {
-        get
-        {
-            return m_CurrData.Id;
-        }
-        set
-        {
-            m_CurrData.Id = value;
-        }
-    }
-
-    public static string SceneName
-    {
-        get
-        {
-            return m_CurrData.SceneName;
-        }
-        set
-        {
-            m_CurrData.SceneName = value;
-        }
-    }
-
-    public static string assetPath
-    {
-        get
-        {
-            return m_CurrData.assetPath;
-        }
-        set
-        {
-            m_CurrData.assetPath = value;
-        }
-    }
-
-    public static int StageIndex
-    {
-        get
-        {
-            return m_CurrData.StageIndex;
-        }
-        set
-        {
-            m_CurrData.StageIndex = value;
-        }
-    }
-
-    public static int Level
-    {
-        get
-        {
-            return m_CurrData.Level;
-        }
-        set
-        {
-            m_CurrData.Level = value;
-        }
-    }
-
-    public static string StageColor
-    {
-        get
-        {
-            return m_CurrData.StageColor;
-        }
-        set
-        {
-            m_CurrData.StageColor = value;
-        }
-    }
-
-    public static int StageShowColor
-    {
-        get
-        {
-            return m_CurrData.StageShowColor;
-        }
-        set
-        {
-            m_CurrData.StageShowColor = value;
-        }
-    }
-    public static List<int> ListTaskId
-    {
-        get
-        {
-            return m_CurrData.ListTaskId;
-        }
-    }
-
-    public static List<StageConfigData.BGM> ListBGM
-    {
-        get
-        {
-            return m_CurrData.ListBGM;
-        }
-    }
-
-    public static List<StageConfigData.SceneBuilding> listSceneBuilding
-    {
-        get
-        {
-            return m_CurrData.ListSceneBuilding;
+            return m_CurrData;
         }
     }
 
@@ -151,7 +42,7 @@ public static class MapEditorHelper
     {
         get
         {
-            return m_MapEditorConfig.MapPath;
+            return m_MapEditorConfig.mapTexturesPath;
         }
     }
 
@@ -199,22 +90,6 @@ public static class MapEditorHelper
         }
     }
 
-    public static Vector2 currPos
-    {
-        get
-        {
-            return m_CurrData.CurrPos;
-        }
-    }
-
-    public static Vector2 initPos
-    {
-        get
-        {
-            return m_CurrData.InitPos;
-        }
-    }
-
     public static void InitConfig()
     {
         string fileName = "MapEditorConfig";
@@ -230,22 +105,22 @@ public static class MapEditorHelper
         {
             m_MapEditorConfig = AssetDatabase.LoadAssetAtPath<MapEditorConfig>("Assets/Editor/Config/" + fileName + ext);
 
-            if (!Directory.Exists(m_MapEditorConfig.MapPath))
+            if (!Directory.Exists(m_MapEditorConfig.mapTexturesPath))
             {
-                m_MapEditorConfig.MapPath = string.Empty;
+                m_MapEditorConfig.mapTexturesPath = string.Empty;
             }
 
-            m_MapEditorConfig.MapPath = "Assets/ArtResources/Textures/Stage/";
+            m_MapEditorConfig.mapTexturesPath = "Assets/ArtResources/Textures/Stage/";
         }
 
-        for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)
+        for (int i = 0; i < m_MapEditorConfig.listDatas.Count; i++)
         {
-            string mapTextureName = Path.GetFileName(m_MapEditorConfig.Datas[i].MapPath);
-            string mapTexturePath = Path.GetDirectoryName(m_MapEditorConfig.Datas[i].MapPath).Replace("\\", "/") + "/";
+            string mapTextureName = Path.GetFileName(m_MapEditorConfig.listDatas[i].mapPath);
+            string mapTexturePath = Path.GetDirectoryName(m_MapEditorConfig.listDatas[i].mapPath).Replace("\\", "/") + "/";
 
-            if(mapTexturePath != m_MapEditorConfig.MapPath)
+            if(mapTexturePath != m_MapEditorConfig.mapTexturesPath)
             {
-                m_MapEditorConfig.Datas[i].MapPath = mapTexturePath + mapTextureName;
+                m_MapEditorConfig.listDatas[i].mapPath = mapTexturePath + mapTextureName;
             }
         }
 
@@ -264,7 +139,7 @@ public static class MapEditorHelper
 
     public static void LoadTexture(string path)
     {
-        if (m_CurrData != null && m_CurrData.MapPath.Equals(path))
+        if (m_CurrData != null && m_CurrData.mapPath.Equals(path))
         {
             return;
         }
@@ -275,41 +150,41 @@ public static class MapEditorHelper
         if (m_CurrData == null)
         {
             m_CurrData = new MapEditorConfigData();
-            m_CurrData.MapPath = path;
-            m_CurrData.ListMovePoints = new List<MapEditorConfigData.MoveArea>();
-            m_CurrData.ListTaskId = new List<int>();
-            m_CurrData.ListBGM = new List<StageConfigData.BGM>();
-            m_CurrData.ListSceneBuilding = new List<StageConfigData.SceneBuilding>();
+            m_CurrData.mapPath = path;
+            m_CurrData.listMovePoints = new List<MapEditorConfigData.MoveArea>();
+            m_CurrData.listTaskIds = new List<int>();
+            m_CurrData.listBGMs = new List<StageConfigData.BGM>();
+            m_CurrData.listSceneBuildings = new List<StageConfigData.SceneBuilding>();
             m_MapEditorConfig.AddData(m_CurrData);
         }
 
         m_NormalSizeMinimum = (float)m_Textrue.height / 100 / 2;
-        m_CurrData.Width = m_Textrue.width;
-        m_CurrData.Height = m_Textrue.height;
+        m_CurrData.width = m_Textrue.width;
+        m_CurrData.height = m_Textrue.height;
     }
 
     public static void SetInitPos(Vector2 pos, bool convert = false)
     {
-        m_CurrData.InitPos = convert ? ConvertPos(pos) : pos;
+        m_CurrData.initPos = convert ? ConvertPos(pos) : pos;
     }
 
     public static void SetCurrPos(Vector2 pos, bool convert = false)
     {
-        m_CurrData.CurrPos = convert ? ConvertPos(pos) : pos;
+        m_CurrData.currPos = convert ? ConvertPos(pos) : pos;
     }
 
     public static void AddMovePoint(Vector2 pos, Color color)
     {
         Vector2 realPos = ConvertPos(pos);
         MapEditorConfigData.MoveArea area = new MapEditorConfigData.MoveArea();
-        area.Point = realPos;
-        area.Color = color;
-        m_CurrData.ListMovePoints.Add(area);
+        area.point = realPos;
+        area.color = color;
+        m_CurrData.listMovePoints.Add(area);
     }
 
     public static void SetMovePoint(int index, Vector2 pos)
     {
-        m_CurrData.ListMovePoints[index].Point = pos;
+        m_CurrData.listMovePoints[index].point = pos;
     }
 
     public static Vector2 GetTextureSize(bool ignoreScale = false)
@@ -349,7 +224,7 @@ public static class MapEditorHelper
 
     public static Rect GetCurrPointRect()
     {
-        Vector2 currPos = RevertPos(m_CurrData.CurrPos);
+        Vector2 currPos = RevertPos(m_CurrData.currPos);
 
         m_CurrPointRect.x = currPos.x;
         m_CurrPointRect.y = currPos.y;
@@ -361,7 +236,7 @@ public static class MapEditorHelper
 
     public static Rect GetInitPointRect()
     {
-        Vector2 initPos = RevertPos(m_CurrData.InitPos);
+        Vector2 initPos = RevertPos(m_CurrData.initPos);
 
         m_InitPointRect.x = initPos.x;
         m_InitPointRect.y = initPos.y;
@@ -432,7 +307,7 @@ public static class MapEditorHelper
 
     public static bool HasData()
     {
-        if(m_MapEditorConfig == null || m_MapEditorConfig.Datas == null || m_MapEditorConfig.Datas.Count < 1)
+        if(m_MapEditorConfig == null || m_MapEditorConfig.listDatas == null || m_MapEditorConfig.listDatas.Count < 1)
         {
             return false;
         }
@@ -448,45 +323,45 @@ public static class MapEditorHelper
 
         StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageConfigData.asset");
 
-        if(stageConfig.Datas == null)
+        if(stageConfig.listDatas == null)
         {
-            stageConfig.Datas = new List<StageConfigData>();
+            stageConfig.listDatas = new List<StageConfigData>();
         }
         else
         {
-            stageConfig.Datas.Clear();
+            stageConfig.listDatas.Clear();
         }
 
-        m_MapEditorConfig.Datas.Sort();
+        m_MapEditorConfig.listDatas.Sort();
 
-        for (int i = 0; i < m_MapEditorConfig.Datas.Count; i++)
+        for (int i = 0; i < m_MapEditorConfig.listDatas.Count; i++)
         {
-            MapEditorConfigData configData = m_MapEditorConfig.Datas[i];
+            MapEditorConfigData configData = m_MapEditorConfig.listDatas[i];
             StageConfigData data = new StageConfigData();
-            data.Id = configData.Id;
-            data.Name = configData.SceneName;
-            data.SceneName = configData.SceneName;
+            data.id = configData.id;
+            data.Name = configData.sceneName;
+            data.SceneName = configData.sceneName;
             data.assetPath = configData.assetPath;
-            data.StageIndex = configData.StageIndex;
-            data.Level = configData.Level;
-            data.Width = configData.Width;
-            data.Height = configData.Height;
-            data.InitPos = new Vector2Int((int)configData.InitPos.x, (int)configData.InitPos.y);
-            data.TaskIDs = configData.ListTaskId.ToArray();
-            data.BGMs = configData.ListBGM.ToArray();
-            data.SceneBuildings = configData.ListSceneBuilding.ToArray();
-            data.MovePoints = new Vector2Int[configData.ListMovePoints.Count];
-            data.StageColor = configData.StageColor;
-            data.StageShowColor = configData.StageShowColor;
+            data.StageIndex = configData.stageIndex;
+            data.Level = configData.level;
+            data.Width = configData.width;
+            data.Height = configData.height;
+            data.InitPos = new Vector2Int((int)configData.initPos.x, (int)configData.initPos.y);
+            data.TaskIDs = configData.listTaskIds.ToArray();
+            data.BGMs = configData.listBGMs.ToArray();
+            data.SceneBuildings = configData.listSceneBuildings.ToArray();
+            data.MovePoints = new Vector2Int[configData.listMovePoints.Count];
+            data.StageColor = configData.stageColor;
+            data.StageShowColor = configData.stageShowColor;
 
             for (int j = 0; j < data.MovePoints.Length; j++)
             {
-                int x = (int)configData.ListMovePoints[j].Point.x;
-                int y = (int)configData.ListMovePoints[j].Point.y;
+                int x = (int)configData.listMovePoints[j].point.x;
+                int y = (int)configData.listMovePoints[j].point.y;
                 data.MovePoints[j] = new Vector2Int(x, y);
             }
 
-            stageConfig.Datas.Add(data);
+            stageConfig.listDatas.Add(data);
         }
 
         UnityEditor.EditorUtility.SetDirty(stageConfig);

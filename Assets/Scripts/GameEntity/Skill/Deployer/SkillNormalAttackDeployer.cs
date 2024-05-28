@@ -19,7 +19,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         AttackStateData attackData = AttackStateData.Create();
         attackData.dir = m_Owner.dir;
-        attackData.skillID = m_SkillData.Id;
+        attackData.skillID = m_SkillData.id;
         attackData.animName = m_SkillData.AnimationName;
         attackData.animSpeed = m_SkillData.AnimSpeed;
         attackData.animTime = m_SkillData.AnimTime;

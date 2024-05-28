@@ -47,26 +47,26 @@ namespace GameFrameWork.Camera
             }
         }
 
-        public new UnityEngine.Camera camera
+        public float orthographicSize
         {
             get
             {
-                return m_Camera;
+                return m_OrthographicSize;
             }
             set
             {
-                m_Camera = value;
+                m_OrthographicSize = value;
             }
         }
 
-        public bool allowXAxisFollow
+        public bool allowHorizontalAxisFollow
         {
             get;
             set;
         }
 
 
-        public bool allowYAxisFollow
+        public bool allowVerticalAxisFollow
         {
             get;
             set;
@@ -77,10 +77,13 @@ namespace GameFrameWork.Camera
             m_Target = target;
         }
 
-        public Rect GetVision()//获取当前摄像机的视野范围 左 右 下 上
+        /// <summary>
+        /// 获取当前摄像机的视野范围 左 右 下 上
+        /// </summary>
+        public Rect GetVision()
         {
             float aspectRate = (float)Screen.width / Screen.height;
-            float orthographicSize = m_Camera.orthographicSize;
+            float orthographicSize = m_OrthographicSize;
 
             m_VisionRect.width = aspectRate * orthographicSize * 2;
             m_VisionRect.height = orthographicSize * 2;
@@ -91,8 +94,9 @@ namespace GameFrameWork.Camera
             return m_VisionRect;
         }
 
-        public void UpdateOrthographicSize()
+        public void UpdateOrthographicSize(float orthographicSize)
         {
+            m_OrthographicSize = orthographicSize;
             SetFollowSize(m_MapWidth, m_MapHeight);
         }
 
@@ -107,7 +111,7 @@ namespace GameFrameWork.Camera
             m_MapHeight = height;
 
             float aspectRate = (float)Screen.width / Screen.height;
-            float orthographicSize = m_Camera.orthographicSize;
+            float orthographicSize = m_OrthographicSize;
 
             m_Border.xMin = -width / 200f + orthographicSize * aspectRate;
             m_Border.xMax = width / 200f - orthographicSize * aspectRate;
@@ -164,7 +168,7 @@ namespace GameFrameWork.Camera
 
         private Vector3 GetClampPos(Vector3 targetPos)
         {
-            if (allowXAxisFollow)
+            if (allowHorizontalAxisFollow)
             {
                 m_CameraClamp.x = Mathf.Clamp(targetPos.x, m_Border.xMin > targetPos.x ? m_Border.xMin : targetPos.x, m_Border.xMax < targetPos.x ? m_Border.xMax : targetPos.x);
             }
@@ -173,7 +177,7 @@ namespace GameFrameWork.Camera
                 m_CameraClamp.x = 0;
             }
 
-            if (allowYAxisFollow)
+            if (allowVerticalAxisFollow)
             {
                 m_CameraClamp.y = Mathf.Clamp(targetPos.y, m_Border.yMin > targetPos.y ? m_Border.yMin : targetPos.y, m_Border.yMax < targetPos.y ? m_Border.yMax : targetPos.y);
             }
@@ -192,7 +196,7 @@ namespace GameFrameWork.Camera
         private float m_InitSpeed = 0.5f;
         private float m_Delta = 1f;
         private bool m_IsStart = false;
-        private UnityEngine.Camera m_Camera = null;
+        private float m_OrthographicSize = 0f;
         private Transform m_Target = null;
         private int m_MapWidth = 0;
         private int m_MapHeight = 0;

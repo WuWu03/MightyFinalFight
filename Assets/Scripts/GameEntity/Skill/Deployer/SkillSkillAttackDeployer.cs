@@ -15,7 +15,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
         SkillStateData skillData = SkillStateData.Create();
-        skillData.skillID = m_SkillData.Id;
+        skillData.skillID = m_SkillData.id;
         skillData.animName = m_SkillData.AnimationName;
         skillData.animTime = m_SkillData.AnimTime;
         skillData.animSpeed = m_SkillData.AnimSpeed;

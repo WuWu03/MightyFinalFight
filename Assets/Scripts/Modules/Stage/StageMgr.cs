@@ -60,12 +60,12 @@ public class StageMgr : BaseMgr<StageMgr>
     public void StageEnter(int stageId)
     {
         StageConfigData configData = null;// StaticConfig.StageConfig.GetData(stageId);
-        for (int i = 0; i < StaticConfig.StageConfig.Datas.Count; i++)
+        for (int i = 0; i < StaticConfig.StageConfig.listDatas.Count; i++)
         {
-            if (StaticConfig.StageConfig.Datas[i].Id == stageId)
+            if (StaticConfig.StageConfig.listDatas[i].id == stageId)
             {
                 m_StageIndex = i + 1;
-                configData = StaticConfig.StageConfig.Datas[i];
+                configData = StaticConfig.StageConfig.listDatas[i];
                 break;
             }
         }
@@ -82,7 +82,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
     private void StageEnter(StageConfigData configData)
     {
-        if (m_CurrStageData != null && m_CurrStageData.Id == configData.Id)
+        if (m_CurrStageData != null && m_CurrStageData.id == configData.id)
         {
             return;
         }
