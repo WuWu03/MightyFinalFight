@@ -22,6 +22,26 @@ namespace GameFrameWork.Editor
             titleContent = new GUIContent(GetType().Name);
         }
 
+        private void OnEnable()
+        {
+            m_DicEncodes = new Dictionary<string, GameFrameWorkTemplateAction<Texture2D, byte[]>>();
+            m_DicEncodes.Add(".png", (Texture2D tex) =>
+            {
+                return tex.EncodeToPNG();
+            });
+
+            m_DicEncodes.Add(".jpg", (Texture2D tex) =>
+            {
+                return tex.EncodeToJPG();
+            });
+        }
+
+        private void OnDisable()
+        {
+            m_DicEncodes.Clear();
+            m_DicEncodes = null;
+        }
+
         private void OnGUI()
         {
             MainGUI();
@@ -241,7 +261,16 @@ namespace GameFrameWork.Editor
 
         private void SplitSprite(Texture2D texture)
         {
-            if (texture == null) return;
+            if (texture == null)
+            {
+                return;
+            }
+
+            if (!m_DicEncodes.ContainsKey(m_OutPutExtName))
+            {
+                this.ShowNotification(new GUIContent("输出文件格式错误"));
+                return;
+            }
 
             string selectionPath = AssetDatabase.GetAssetPath(texture);
             SpriteRect[] spriteRects = null;
@@ -337,17 +366,7 @@ namespace GameFrameWork.Editor
                     tex.Apply();
 
                     // 写入成各种格式文件
-                    byte[] bytes = null;
-
-                    if (m_OutPutExtName.Equals(".png"))
-                    {
-                        bytes = tex.EncodeToPNG();
-                    }
-                    else if (m_OutPutExtName.Equals(".jpb"))
-                    {
-                        bytes = tex.EncodeToJPG();
-                    }
-
+                    byte[] bytes = m_DicEncodes[m_OutPutExtName]?.Invoke(tex);
                     File.WriteAllBytes(realOutPutPath + sprite.name + m_OutPutExtName, bytes);
                 }
 
@@ -415,6 +434,20 @@ namespace GameFrameWork.Editor
             return containedRects;
         }
 
+        private byte[] Encode(Texture2D tex)
+        {
+            if (m_OutPutExtName.Equals(".png"))
+            {
+                return tex.EncodeToPNG();
+            }
+            else if (m_OutPutExtName.Equals(".jpb"))
+            {
+                return tex.EncodeToJPG();
+            }
+
+            return null;
+        }
+
         private void OnDestroy()
         {
             m_SelectObject = null;
@@ -425,6 +458,7 @@ namespace GameFrameWork.Editor
         private int m_SpriteWidth = 256;
         private int m_SpriteHeight = 256;
         private string m_OutPutExtName = ".png";
+        private Dictionary<string, GameFrameWorkTemplateAction<Texture2D, byte[]>> m_DicEncodes = null;
         private UnityEngine.Object m_SelectObject = null;
         private string m_SelectFolder = string.Empty;
         private string[] m_ExtNames = new string[] { ".png", ".jpg" };

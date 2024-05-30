@@ -21,11 +21,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using UnityEditorInternal;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace DragonBones
 {
@@ -339,7 +339,20 @@ namespace DragonBones
                     _armatureComponent.zSpace = EditorGUILayout.Slider("Z Space", _armatureComponent.zSpace, 0.0f, 0.5f);
                     EditorGUILayout.EndHorizontal();
 
-                    _frameIndex = EditorGUILayout.IntSlider("Frame", _frameIndex, 0, (int)_armatureComponent.animation.animations[_animationNames[_animationIndex]].frameCount);
+                    int frameCount = 0;
+                    string animationName = string.Empty;
+
+                    if(_animationIndex > -1 && _animationIndex < _animationNames.Count)
+                    {
+                        animationName = _animationNames[_animationIndex];
+                    }
+
+                    if (!string.IsNullOrEmpty(animationName) && _armatureComponent.animation.animations.TryGetValue(animationName, out AnimationData animationData))
+                    {
+                        frameCount = (int)animationData.frameCount;
+                    }
+
+                    _frameIndex = EditorGUILayout.IntSlider("Frame", _frameIndex, 0, frameCount);
                     if(_frameIndex > 0)
                     {
                         _armatureComponent.animation.GotoAndStopByFrame(_animationNames[_animationIndex], (uint)(_frameIndex & 0x7FFFFFFFF));
@@ -399,7 +412,6 @@ namespace DragonBones
             if (!EditorApplication.isPlayingOrWillChangePlaymode && Selection.activeObject == _armatureComponent.gameObject)
             {
                 EditorUtility.SetDirty(_armatureComponent);
-                HandleUtility.Repaint();
             }
         }
 

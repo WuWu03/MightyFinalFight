@@ -239,6 +239,5 @@ public class Barrel : BaseAvatar, ICanBeHit
         OnHurtMsg(hurtData);
     }
 
-    private bool m_IsHurt = false;
     private BarrelData m_BarrelData = null;
 }

@@ -127,7 +127,7 @@ public abstract class BaseAvatar : BaseGravityObject
             Log.LogError(name, "[Animator] 组件不存在");
             return;
         }
-
+        
         if (string.IsNullOrEmpty(animName))
         {
             if (string.IsNullOrEmpty(m_CurrAnimName))

@@ -12,13 +12,15 @@ namespace GameFrameWork.UI
             GetPreferredSize();
         }
 
-       
         private RectTransform rectTransform
         {
             get
             {
                 if (m_RectTransform == null)
+                {
                     m_RectTransform = GetComponent<RectTransform>();
+                }
+
                 return m_RectTransform;
             }
         }
@@ -28,7 +30,10 @@ namespace GameFrameWork.UI
             get
             {
                 if (m_ContentSizeFitter == null)
+                {
                     m_ContentSizeFitter = GetComponent<ContentSizeFitter>();
+                }
+
                 return m_ContentSizeFitter;
             }
         }
