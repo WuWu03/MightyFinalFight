@@ -21,19 +21,6 @@ namespace SkillNew
             }
         }
 
-        public static List<SkillEditorConfigData> skillDatas
-        {
-            get
-            {
-                if (!HasData())
-                {
-                    return null;
-                }
-
-                return m_SkillEditorConfig.listDatas;
-            }
-        }
-
         public static int currSelectIndex
         {
             get
