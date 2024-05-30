@@ -10,7 +10,7 @@ namespace SkillNew
             m_EditorWindow = window;
         }
 
-        public virtual void UpdateData()
+        public void UpdateData()
         {
             OnUpdateData();
         }
@@ -20,7 +20,7 @@ namespace SkillNew
             OnGUI();
         }
 
-        protected void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight, bool showMsg = true)
+        protected void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight = 20, bool showMsg = true)
         {
             (m_EditorWindow as SkillEditorWindow).DrawField(modify, draw, change, changeBtnHeight, showMsg);
         }

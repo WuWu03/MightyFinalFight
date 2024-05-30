@@ -11,8 +11,9 @@ namespace SkillNew
         public SkillInfoGUI(EditorWindow window) : base(window)
         {
             m_ListKey = new List<GameFrameWork.Input.KeyType>();
-            m_ListDeleteSkillEvent = new List<int>();
             m_ListSkillEventType = new List<SkillEventType>();
+            m_ListSkillEventContinuous = new List<bool>();
+            m_ListSkillEventNextSkill = new List<int>();
         }
 
         protected override void OnUpdateData()
@@ -41,10 +42,14 @@ namespace SkillNew
                 if (m_ListSkillEvent != null && m_ListSkillEvent.Count > 0)
                 {
                     m_ListSkillEventType.Clear();
+                    m_ListSkillEventContinuous.Clear();
+                    m_ListSkillEventNextSkill.Clear();
 
                     for (int i = 0; i < m_ListSkillEvent.Count; i++)
                     {
                         m_ListSkillEventType.Add(m_ListSkillEvent[i].skillEventType);
+                        m_ListSkillEventContinuous.Add(m_ListSkillEvent[i].continuous);
+                        m_ListSkillEventNextSkill.Add(m_ListSkillEvent[i].nextSkill);
                         SkillEditorHelper.UpdateSKilEventGUI(m_ListSkillEvent[i]);
                     }
                 }
@@ -56,7 +61,11 @@ namespace SkillNew
         protected override void OnGUI()
         {
             m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
-            GUILayout.Label(SkillEditorHelper.currShowName, SkillEditorHelper.indexLabelStyle);
+
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            {
+                GUILayout.Label(SkillEditorHelper.currShowName, SkillEditorHelper.indexLabelStyle);
+            });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
@@ -118,7 +127,7 @@ namespace SkillNew
 
             if (m_ListSkillEvent != null)
             {
-                m_ListDeleteSkillEvent.Clear();
+                int removeIndex = -1;
 
                 for (int i = 0; i < m_ListSkillEvent.Count; i++)
                 {
@@ -132,7 +141,7 @@ namespace SkillNew
                         {
                             if (UnityEditor.EditorUtility.DisplayDialog("提示", "确定删除该事件？", "确定", "取消"))
                             {
-                                m_ListDeleteSkillEvent.Add(i);
+                                removeIndex = i;
                             }
                         }
                         EditorGUILayout.EndHorizontal();
@@ -170,17 +179,18 @@ namespace SkillNew
 
                         SkillEditorHelper.DrawSKilEventlGUI(m_ListSkillEvent[i]);
 
+                        DrawField(() => { return m_ListSkillEventContinuous[i] != m_ListSkillEvent[i].continuous; },
+                            () => { m_ListSkillEventContinuous[i] = EditorGUILayout.Toggle("持续检测", m_ListSkillEventContinuous[i]); },
+                            () => { m_ListSkillEvent[i].continuous = m_ListSkillEventContinuous[i]; }, 20);
+
                         EditorGUILayout.EndVertical();
                     });
                 }
 
-                if (m_ListDeleteSkillEvent.Count > 0)
+                if (removeIndex >= 0)
                 {
-                    for (int i = 0; i < m_ListDeleteSkillEvent.Count; i++)
-                    {
-                        m_ListSkillEvent.RemoveAt(m_ListDeleteSkillEvent[i]);
-                        m_ListSkillEventType.RemoveAt(m_ListDeleteSkillEvent[i]);
-                    }
+                    m_ListSkillEvent.RemoveAt(removeIndex);
+                    m_ListSkillEventType.RemoveAt(removeIndex);
 
                     if (m_ListSkillEvent.Count < 1)
                     {
@@ -212,6 +222,8 @@ namespace SkillNew
 
             EditorGUILayout.EndVertical();
 
+            int removeKeyIndex = -1;
+
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
@@ -220,8 +232,6 @@ namespace SkillNew
                 if (SkillEditorHelper.currConfigData.skillKey != null)
                 {
                     SkillEditorHelper.currConfigData.skillKey.addTrigger = EditorGUILayout.Toggle("加入触发", SkillEditorHelper.currConfigData.skillKey.addTrigger);
-
-                    int removeKeyIndex = -1;
 
                     for (int i = 0; i < SkillEditorHelper.currConfigData.skillKey.keys.Length; i++)
                     {
@@ -234,13 +244,6 @@ namespace SkillNew
 
                         EditorGUILayout.EndHorizontal();
                     }
-
-                    if (removeKeyIndex >= 0)
-                    {
-                        m_ListKey.RemoveAt(removeKeyIndex);
-                        SkillEditorHelper.currConfigData.skillKey.keys = m_ListKey.ToArray();
-                        removeKeyIndex = -1;
-                    }
                 }
 
                 if (GUILayout.Button("增加按键"))
@@ -252,12 +255,20 @@ namespace SkillNew
                 EditorGUILayout.EndVertical();
             });
 
+            if (removeKeyIndex >= 0)
+            {
+                m_ListKey.RemoveAt(removeKeyIndex);
+                SkillEditorHelper.currConfigData.skillKey.keys = m_ListKey.ToArray();
+                removeKeyIndex = -1;
+            }
+
             EditorGUILayout.EndScrollView();
         }
 
-        private List<SkillEditorConfigData.SkillEvent> m_ListSkillEvent = null;
+        private List<SkillEvent> m_ListSkillEvent = null;
         private List<SkillEventType> m_ListSkillEventType = null;
-        private List<int> m_ListDeleteSkillEvent = null;
+        private List<bool> m_ListSkillEventContinuous = null;
+        private List<int> m_ListSkillEventNextSkill = null;
         private int m_SkillFrameCount = 0;
         private int m_CurrFrame = 0;
         private List<GameFrameWork.Input.KeyType> m_ListKey = null;

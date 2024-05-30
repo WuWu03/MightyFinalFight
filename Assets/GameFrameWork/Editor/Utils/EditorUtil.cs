@@ -1,5 +1,4 @@
-﻿using GameFrameWork.BehaviourTree;
-using GameFrameWork.Serialize;
+﻿using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +8,7 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-	public static class EditorUtil
+    public static class EditorUtil
 	{
 		public static string[] GetAssemblyTypeNames(string typeName, bool isFullName, params string[] parttern)
 		{

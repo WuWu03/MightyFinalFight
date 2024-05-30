@@ -25,13 +25,15 @@ MonoBehaviour:
         Value:
           target:
           - skillEventType: 0
-            animName: 
-            animSpeed: 0
-            animPlayTimes: 0
-            audioClipName: 
-            audioPlaySpeed: 0
-            audioPlayLoop: 0
-            audioPlayVolume: 0
+            animEventInfo:
+              animName: 
+              animSpeed: 0
+              animPlayTimes: 0
+            audioEventInfo:
+              audioClipName: 
+              audioPlaySpeed: 0
+              audioPlayLoop: 0
+              audioPlayVolume: 0
             targetTransformEventInfo:
               position: {x: 0, y: 0}
               rotation: {x: 0, y: 0, z: 0}
@@ -39,18 +41,18 @@ MonoBehaviour:
               isPositionBasedOnSelf: 0
               isRotationBasedOnSelf: 0
               isPositionAnim: 0
-              positionAnimInfo:
+              positionTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
               isRotationAnim: 0
-              rotationAnimInfo:
+              rotationTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
               rotateMode: 0
               isScaleAnim: 0
-              scaleAnimInfo:
+              scaleTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
@@ -61,18 +63,18 @@ MonoBehaviour:
               isPositionBasedOnSelf: 0
               isRotationBasedOnSelf: 0
               isPositionAnim: 0
-              positionAnimInfo:
+              positionTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
               isRotationAnim: 0
-              rotationAnimInfo:
+              rotationTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
               rotateMode: 0
               isScaleAnim: 0
-              scaleAnimInfo:
+              scaleTweenInfo:
                 duration: 0
                 delay: 0
                 ease: 0
@@ -88,8 +90,36 @@ MonoBehaviour:
               drag: 0
               gravity: 0
               distanceLimit: 0
-            bulletEventInfos: []
-            args: 
+            bulletEventInfo:
+              bulletName: 
+              assetPath: 
+              bulletClass: 
+              normalAnim: 
+              hitAnim: 
+              normalAnimSpeed: 0
+              hitAnimSpeed: 0
+              hitRange: 0
+              bulletCount: 0
+              pos: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              moveSpeed: 0
+              isPhysicsMove: 0
+            hurtEventInfo:
+              isSmoon: 0
+              isOnGroundHurt: 0
+              isOnGroundEffect: 0
+              canBeDefense: 0
+              hitFinish: 0
+            effectEventInfo:
+              assetPath: 
+              pos: {x: 0, y: 0}
+              rotation: {x: 0, y: 0, z: 0}
+              scale: {x: 0, y: 0, z: 0}
+            buffEventInfo:
+              buffId: 0
+            continuous: 0
+            nextSkill: 0
     skillKey:
       keys: 
       addTrigger: 0
@@ -97,4 +127,36 @@ MonoBehaviour:
     - prevConditionType: 0
       isRevert: 0
       hpLimit: 0
-      args: 
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0
+    - prevConditionType: 0
+      isRevert: 0
+      hpLimit: 0

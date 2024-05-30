@@ -64,14 +64,17 @@ namespace SkillNew
 
             EditorGUILayout.Space(10f);
 
-            int selectIndex = EditorGUILayout.Popup("选择处理项", SkillEditorHelper.currSelectIndex, SkillEditorHelper.showNames);
-
-            if (selectIndex != SkillEditorHelper.currSelectIndex)
+            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                SkillEditorHelper.currSelectIndex = selectIndex;
-                m_SkillGUIs[m_CurrPage].UpdateData();
-                UpdateData();
-            }
+                int selectIndex = EditorGUILayout.Popup("选择处理项", SkillEditorHelper.currSelectIndex, SkillEditorHelper.showNames);
+
+                if (selectIndex != SkillEditorHelper.currSelectIndex)
+                {
+                    SkillEditorHelper.currSelectIndex = selectIndex;
+                    m_SkillGUIs[m_CurrPage].UpdateData();
+                    UpdateData();
+                }
+            });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {

@@ -72,15 +72,15 @@ namespace SkillNew
 
             DrawField(() => { return currPhysicsEventInfo.drag != physicsEventInfo.drag; },
                 () => { currPhysicsEventInfo.drag = EditorGUILayout.FloatField("摩擦力", currPhysicsEventInfo.drag); },
-                () => { physicsEventInfo.drag = currPhysicsEventInfo.drag; }, 20);
+                () => { physicsEventInfo.drag = currPhysicsEventInfo.drag; });
 
             DrawField(() => { return currPhysicsEventInfo.gravity != physicsEventInfo.gravity; },
                 () => { currPhysicsEventInfo.gravity = EditorGUILayout.FloatField("重力", currPhysicsEventInfo.gravity); },
-                () => { physicsEventInfo.gravity = currPhysicsEventInfo.gravity; }, 20);
+                () => { physicsEventInfo.gravity = currPhysicsEventInfo.gravity; });
 
             DrawField(() => { return currPhysicsEventInfo.distanceLimit != physicsEventInfo.distanceLimit; },
                 () => { currPhysicsEventInfo.distanceLimit = EditorGUILayout.FloatField("距离限制", currPhysicsEventInfo.distanceLimit); },
-                () => { physicsEventInfo.distanceLimit = currPhysicsEventInfo.distanceLimit; }, 20);
+                () => { physicsEventInfo.distanceLimit = currPhysicsEventInfo.distanceLimit; });
         }
 
         protected override void OnResetEvent()

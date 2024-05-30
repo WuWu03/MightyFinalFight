@@ -175,9 +175,14 @@ namespace GameFrameWork.Utilities
                 {
                     bool conditon = m_ListArgs[i] != null;
 
-                    if (m_ListArgs[i] is string argStr)
+                    if (m_ListArgs[i - 1] is string argStr)
                     {
                         conditon = !string.IsNullOrEmpty(argStr);
+                    }
+
+                    if (m_ListArgs[i] is string argStr2)
+                    {
+                        conditon = conditon && !string.IsNullOrEmpty(argStr2);
                     }
 
                     if (conditon)

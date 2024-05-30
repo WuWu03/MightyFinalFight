@@ -118,6 +118,7 @@ namespace SkillNew
                 {SkillEditorConfigData.SkillEventType.SelfTransformEvent,new SkillTransformEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.TargetPhysicsEvent,new SkillPhysicsEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.SelfPhysicsEvent,new SkillPhysicsEventGUI(window) },
+                {SkillEditorConfigData.SkillEventType.BulletEvent,new SkillBulletEventGUI(window) },
             };
 
             m_CurrSelectIndex = 0;

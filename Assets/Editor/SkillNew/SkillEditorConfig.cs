@@ -1,6 +1,5 @@
 using GameFrameWork.Serialize;
 using System;
-using System.Security.Policy;
 using UnityEngine;
 
 [Serializable]
@@ -66,19 +65,29 @@ public class SkillEditorConfigData : BaseConfigData
     {
         public SkillEventType skillEventType;
 
-        //动画事件
-        public string animName;
-        public float animSpeed;
-        public float animPlayTimes;
+        [Serializable]//动画事件
+        public class AnimEventInfo
+        {
+            public string animName;
+            public float animSpeed;
+            public float animPlayTimes;
+        }
 
-        //声音事件
-        public string audioClipName;
-        public float audioPlaySpeed;
-        public bool audioPlayLoop;
-        public float audioPlayVolume;
+        public AnimEventInfo animEventInfo = null;
+
+        [Serializable]//声音事件
+        public class AudioEventInfo
+        {
+            public string audioClipName;
+            public float audioPlaySpeed;
+            public bool audioPlayLoop;
+            public float audioPlayVolume;
+        }
+
+        public AudioEventInfo audioEventInfo = null;
 
         [Serializable]//位移事件
-        public class AnimInfo
+        public class TweenInfo
         {
             public float duration;
             public float delay;
@@ -94,18 +103,18 @@ public class SkillEditorConfigData : BaseConfigData
             public bool isPositionBasedOnSelf;//位置变化是否在自身基础上变化
             public bool isRotationBasedOnSelf;//旋转变化是否在自身基础上变化
             public bool isPositionAnim;//动画补间
-            public AnimInfo positionAnimInfo = new AnimInfo();
+            public TweenInfo positionTweenInfo = new TweenInfo();
             public bool isRotationAnim;//动画补间
-            public AnimInfo rotationAnimInfo = new AnimInfo();
+            public TweenInfo rotationTweenInfo = new TweenInfo();
             public DG.Tweening.RotateMode rotateMode;
             public bool isScaleAnim;//动画补间
-            public AnimInfo scaleAnimInfo = new AnimInfo();
+            public TweenInfo scaleTweenInfo = new TweenInfo();
         }
 
         public TransformEventInfo targetTransformEventInfo = null;
         public TransformEventInfo selfTransformEventInfo = null;
 
-        [Serializable]//
+        [Serializable]
         public class PhysicsEventInfo
         {
             public Vector2 force;
@@ -123,33 +132,59 @@ public class SkillEditorConfigData : BaseConfigData
         public class BulletEventInfo
         {
             public string bulletName;
-            public string assetName;
+            public string assetPath;
+            public string bulletClass;//子弹脚本
             public string normalAnim;
             public string hitAnim;
             public float normalAnimSpeed;
             public float hitAnimSpeed;
-            public Vector2 dir;
-            public Vector2 pos;
-            public Vector2 velocity;
             public float hitRange;
-            public float drag;
-            public bool isPenatrate;//是否穿透
-
+            public int bulletCount = -1;//子弹数量，-1表示跟随脚本数量
+            public Vector2 pos;//初始相对位置
+            public Vector2 velocity;//物理运动初始速度
+            public float drag;//摩擦力
+            public float moveSpeed;//线性移动速度
+            public bool isPhysicsMove;//是否是物理运动
         }
 
-        public BulletEventInfo[] bulletEventInfos;//发射子弹
+        public BulletEventInfo bulletEventInfo;//子弹事件
 
-        ////伤害事件
-        //public bool isSmoon;//是否击昏
-        //public bool isShakeCamera;//击中敌人是否震屏
-        //public bool isOnGroundHurt;//是否落地才触发伤害
-        //public bool isOnGroundEffect;//落地才触发效果
-        //public bool canBeDefense;//能否被防御
-        //public bool hitFinish;//攻击到任何敌人就结束技能
+        [Serializable]//伤害事件
+        public class HurtEventInfo
+        {
+            public bool isSmoon;//是否击昏
+            public bool isOnGroundHurt;//是否落地才触发伤害
+            public bool isOnGroundEffect;//落地才触发效果
+            public bool canBeDefense;//能否被防御
+            public bool hitFinish;//击中任意敌人就结束事件
+        }
+
+        public HurtEventInfo hurtEventInfo = null;
 
         //特效事件
+        [Serializable]
+        public class EffectEventInfo
+        {
+            public string assetPath;//资源路径
+            public Vector2 pos;//初始相对位置
+            public Vector3 rotation;//角度
+            public Vector3 scale;//缩放
+        }
+
+        public EffectEventInfo effectEventInfo = null;
+
         //Buff事件
-        public string args;//各种数值效果的参数 每种类型效果自行解析
+        [Serializable]
+        public class BuffEventInfo
+        {
+            public int buffId;
+        }
+
+        public BuffEventInfo buffEventInfo = null;
+
+
+        public bool continuous;//持续检测事件触发
+        public int nextSkill;//技能结束后连接下一个技能
     }
 
     [Serializable]
@@ -169,7 +204,6 @@ public class SkillEditorConfigData : BaseConfigData
         public SkillPrevConditionType prevConditionType;
         public bool isRevert;
         public int hpLimit;
-        public string args;
     }
 
     public string skillName; 

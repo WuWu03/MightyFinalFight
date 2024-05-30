@@ -18,7 +18,7 @@ namespace SkillNew
 
             if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
             {
-                if(m_CurrEvent.targetTransformEventInfo == null)
+                if (m_CurrEvent.targetTransformEventInfo == null)
                 {
                     m_CurrEvent.targetTransformEventInfo = new TransformEventInfo();
                 }
@@ -26,7 +26,7 @@ namespace SkillNew
                 currTransformEventInfo = m_TargetTransformInfo;
                 transformEventInfo = m_CurrEvent.targetTransformEventInfo;
             }
-            else if(m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
+            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
             {
                 if (m_CurrEvent.selfTransformEventInfo == null)
                 {
@@ -44,20 +44,20 @@ namespace SkillNew
             currTransformEventInfo.isRotationBasedOnSelf = transformEventInfo.isRotationBasedOnSelf;
 
             currTransformEventInfo.isPositionAnim = transformEventInfo.isPositionAnim;
-            currTransformEventInfo.positionAnimInfo.duration = transformEventInfo.positionAnimInfo.duration;
-            currTransformEventInfo.positionAnimInfo.delay = transformEventInfo.positionAnimInfo.delay;
-            currTransformEventInfo.positionAnimInfo.ease = transformEventInfo.positionAnimInfo.ease;
+            currTransformEventInfo.positionTweenInfo.duration = transformEventInfo.positionTweenInfo.duration;
+            currTransformEventInfo.positionTweenInfo.delay = transformEventInfo.positionTweenInfo.delay;
+            currTransformEventInfo.positionTweenInfo.ease = transformEventInfo.positionTweenInfo.ease;
 
             currTransformEventInfo.isRotationAnim = transformEventInfo.isRotationAnim;
-            currTransformEventInfo.rotationAnimInfo.duration = transformEventInfo.rotationAnimInfo.duration;
-            currTransformEventInfo.rotationAnimInfo.delay = transformEventInfo.rotationAnimInfo.delay;
-            currTransformEventInfo.rotationAnimInfo.ease = transformEventInfo.rotationAnimInfo.ease;
+            currTransformEventInfo.rotationTweenInfo.duration = transformEventInfo.rotationTweenInfo.duration;
+            currTransformEventInfo.rotationTweenInfo.delay = transformEventInfo.rotationTweenInfo.delay;
+            currTransformEventInfo.rotationTweenInfo.ease = transformEventInfo.rotationTweenInfo.ease;
             currTransformEventInfo.rotateMode = transformEventInfo.rotateMode;
 
             currTransformEventInfo.isScaleAnim = transformEventInfo.isScaleAnim;
-            currTransformEventInfo.scaleAnimInfo.duration = transformEventInfo.scaleAnimInfo.duration;
-            currTransformEventInfo.scaleAnimInfo.delay = transformEventInfo.scaleAnimInfo.delay;
-            currTransformEventInfo.scaleAnimInfo.ease = transformEventInfo.scaleAnimInfo.ease;
+            currTransformEventInfo.scaleTweenInfo.duration = transformEventInfo.scaleTweenInfo.duration;
+            currTransformEventInfo.scaleTweenInfo.delay = transformEventInfo.scaleTweenInfo.delay;
+            currTransformEventInfo.scaleTweenInfo.ease = transformEventInfo.scaleTweenInfo.ease;
         }
 
         protected override void OnResetEvent()
@@ -113,11 +113,11 @@ namespace SkillNew
 
             DrawField(() => { return currTransformInfo.isPositionBasedOnSelf != transformEventInfo.isPositionBasedOnSelf; },
                       () => { currTransformInfo.isPositionBasedOnSelf = EditorGUILayout.Toggle("基于自身位置", currTransformInfo.isPositionBasedOnSelf); },
-                      () => { transformEventInfo.isPositionBasedOnSelf = currTransformInfo.isPositionBasedOnSelf; }, 20);
+                      () => { transformEventInfo.isPositionBasedOnSelf = currTransformInfo.isPositionBasedOnSelf; });
 
             DrawField(() => { return currTransformInfo.isRotationBasedOnSelf != transformEventInfo.isRotationBasedOnSelf; },
                       () => { currTransformInfo.isRotationBasedOnSelf = EditorGUILayout.Toggle("基于自身旋转", currTransformInfo.isRotationBasedOnSelf); },
-                      () => { transformEventInfo.isRotationBasedOnSelf = currTransformInfo.isRotationBasedOnSelf; }, 20);
+                      () => { transformEventInfo.isRotationBasedOnSelf = currTransformInfo.isRotationBasedOnSelf; });
 
             DrawAnimInfo(currTransformInfo, transformEventInfo, 1);
             DrawAnimInfo(currTransformInfo, transformEventInfo, 2);
@@ -130,13 +130,13 @@ namespace SkillNew
         {
             bool condition = false;
             bool eventCondition = false;
-            AnimInfo animInfo = null;
-            AnimInfo eventAnimInfo = null;
+            TweenInfo tweenInfo = null;
+            TweenInfo eventTweenInfo = null;
 
             if (type == 1)
             {
-                animInfo = currTransformEventInfo.positionAnimInfo;
-                eventAnimInfo = transformEventInfo.positionAnimInfo;
+                tweenInfo = currTransformEventInfo.positionTweenInfo;
+                eventTweenInfo = transformEventInfo.positionTweenInfo;
                 condition = currTransformEventInfo.isPositionAnim;
                 eventCondition = transformEventInfo.isPositionAnim;
 
@@ -146,8 +146,8 @@ namespace SkillNew
             }
             else if (type == 2)
             {
-                animInfo = currTransformEventInfo.rotationAnimInfo;
-                eventAnimInfo = transformEventInfo.rotationAnimInfo;
+                tweenInfo = currTransformEventInfo.rotationTweenInfo;
+                eventTweenInfo = transformEventInfo.rotationTweenInfo;
                 condition = currTransformEventInfo.isRotationAnim;
                 eventCondition = transformEventInfo.isRotationAnim;
 
@@ -157,8 +157,8 @@ namespace SkillNew
             }
             else if (type == 3)
             {
-                animInfo = currTransformEventInfo.scaleAnimInfo;
-                eventAnimInfo = transformEventInfo.scaleAnimInfo;
+                tweenInfo = currTransformEventInfo.scaleTweenInfo;
+                eventTweenInfo = transformEventInfo.scaleTweenInfo;
                 condition = currTransformEventInfo.isScaleAnim;
                 eventCondition = transformEventInfo.isScaleAnim;
 
@@ -172,17 +172,17 @@ namespace SkillNew
                 GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     EditorGUILayout.BeginVertical();
-                    DrawField(() => { return animInfo.duration != eventAnimInfo.duration; },
-                       () => { animInfo.duration = EditorGUILayout.FloatField("动画时长", animInfo.duration); },
-                       () => { eventAnimInfo.duration = animInfo.duration; }, 20);
+                    DrawField(() => { return tweenInfo.duration != eventTweenInfo.duration; },
+                       () => { tweenInfo.duration = EditorGUILayout.FloatField("动画时长", tweenInfo.duration); },
+                       () => { eventTweenInfo.duration = tweenInfo.duration; }, 20);
 
-                    DrawField(() => { return animInfo.delay != transformEventInfo.positionAnimInfo.delay; },
-                       () => { animInfo.delay = EditorGUILayout.FloatField("动画延迟", animInfo.delay); },
-                       () => { eventAnimInfo.delay = animInfo.delay; }, 20);
+                    DrawField(() => { return tweenInfo.delay != transformEventInfo.positionTweenInfo.delay; },
+                       () => { tweenInfo.delay = EditorGUILayout.FloatField("动画延迟", tweenInfo.delay); },
+                       () => { eventTweenInfo.delay = tweenInfo.delay; }, 20);
 
-                    DrawField(() => { return animInfo.ease != eventAnimInfo.ease; },
-                       () => { animInfo.ease = (DG.Tweening.Ease)EditorGUILayout.EnumPopup("动画曲线", animInfo.ease); },
-                       () => { eventAnimInfo.ease = animInfo.ease; }, 20);
+                    DrawField(() => { return tweenInfo.ease != eventTweenInfo.ease; },
+                       () => { tweenInfo.ease = (DG.Tweening.Ease)EditorGUILayout.EnumPopup("动画曲线", tweenInfo.ease); },
+                       () => { eventTweenInfo.ease = tweenInfo.ease; }, 20);
 
                     if (type == 2)
                     {
@@ -195,12 +195,12 @@ namespace SkillNew
             }
             else
             {
-                animInfo.duration = 0;
-                animInfo.delay = 0;
-                animInfo.ease = DG.Tweening.Ease.Unset;
-                eventAnimInfo.duration = 0;
-                eventAnimInfo.delay = 0;
-                eventAnimInfo.ease = DG.Tweening.Ease.Unset;
+                tweenInfo.duration = 0;
+                tweenInfo.delay = 0;
+                tweenInfo.ease = DG.Tweening.Ease.Unset;
+                eventTweenInfo.duration = 0;
+                eventTweenInfo.delay = 0;
+                eventTweenInfo.ease = DG.Tweening.Ease.Unset;
             }
         }
 
