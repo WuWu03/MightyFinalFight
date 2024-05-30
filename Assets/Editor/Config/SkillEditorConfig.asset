@@ -24,7 +24,7 @@ MonoBehaviour:
       - Key: 1
         Value:
           target:
-          - skillEventType: 0
+          - skillEventType: 7
             animEventInfo:
               animName: 
               animSpeed: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
               normalAnimSpeed: 0
               hitAnimSpeed: 0
               hitRange: 0
-              bulletCount: 0
+              bulletCount: -1
               pos: {x: 0, y: 0}
               velocity: {x: 0, y: 0}
               drag: 0
@@ -124,39 +124,6 @@ MonoBehaviour:
       keys: 
       addTrigger: 0
     skillPrevConditions:
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
-    - prevConditionType: 0
-      isRevert: 0
-      hpLimit: 0
     - prevConditionType: 0
       isRevert: 0
       hpLimit: 0

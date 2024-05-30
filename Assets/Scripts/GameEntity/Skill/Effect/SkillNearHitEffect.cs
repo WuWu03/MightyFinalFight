@@ -38,7 +38,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             {
                 if (m_SkillEffect.IsShakeCamera)
                 {
-                    CameraMgr.instance.Shake();
+                    CameraMgr.instance.Shake(0.3f, 0.1f, 20, 100);
                 }
             }
 
@@ -84,10 +84,10 @@ public class SkillNearHitEffect : SkillBaseEffect
                     m_OffsetTime = 0.1f;
                     return;
                 }
-                
-                if(Time.timeScale < 1f || m_PauseTimer < 0f)
+
+                if (Time.timeScale < 1f || m_PauseTimer < 0f)
                 {
-                    if(m_PauseIndex < m_Targets.Count)
+                    if (m_PauseIndex < m_Targets.Count)
                     {
                         HurtStateData hurtStateData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
 
@@ -104,7 +104,7 @@ public class SkillNearHitEffect : SkillBaseEffect
                             m_PauseTimer = Time.unscaledTime;
                         }
                     }
-         
+
                     m_PauseIndex++;
                 }
             }
@@ -117,7 +117,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             {
                 if (m_SkillEffect.IsShakeCamera)
                 {
-                    CameraMgr.instance.Shake();
+                    CameraMgr.instance.Shake(0.3f, 0.1f, 20, 100);
                 }
             }
 
