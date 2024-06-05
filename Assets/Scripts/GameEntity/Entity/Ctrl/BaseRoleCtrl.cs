@@ -226,29 +226,6 @@ public class BaseRoleCtrl : BaseCtrl
         m_SkillManager.DeploySkill(m_CurrSkillID);
     }
 
-    protected virtual bool IsCanNormalAttack()
-    {
-        if (m_RoleData.attackWait == null || m_RoleData.attackWait.Length < 1)
-        {
-            return false;
-        }
-
-        if (m_AttackTimer > 0 && m_RoleData.attackNextTime != null && m_RoleData.attackNextTime.Length > 0)
-        {
-            if (m_AttackIndex >= m_RoleData.attackNextTime.Length)
-            {
-                return false;
-            }
-
-            if (Time.time - m_AttackTimer < m_RoleData.attackNextTime[m_AttackIndex])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     private int m_CurrSkillID = 0;
     private int m_AttackIndex = 0;
     private bool m_IsHitSuccess = false;

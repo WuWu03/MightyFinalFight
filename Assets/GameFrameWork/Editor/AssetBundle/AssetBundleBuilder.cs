@@ -1,7 +1,6 @@
 ﻿using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.IO;
 using UnityEditor;
 using FileUtil = GameFrameWork.Utilities.FileUtil;

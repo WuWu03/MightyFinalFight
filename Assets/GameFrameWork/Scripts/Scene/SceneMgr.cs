@@ -142,9 +142,13 @@ namespace GameFrameWork.Scene
                     LoadSceneRequest request = m_LoadQueue.Dequeue();
 
                     if (request.isUnLoad)
+                    {
                         InnerUnLoadSceneAsync(request);
+                    }
                     else
+                    {
                         InnerLoadSceneAsync(request);
+                    }
                 }
             }
         }
@@ -256,7 +260,7 @@ namespace GameFrameWork.Scene
 #if UNITY_EDITOR
                 if (!AppConfig.instance.loadAB)
                 {
-                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetFullPath(sceneName), parameters);
+                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName), parameters);
                 }
                 else
 #endif

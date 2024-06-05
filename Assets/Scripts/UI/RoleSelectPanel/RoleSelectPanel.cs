@@ -85,8 +85,8 @@ public class RoleSelectPanel : BasePanel
 	{
 		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.itemIndex];
 
-		item.txtDesc.text = roleSelectConfigData.desc;
-		item.txtName.text = roleSelectConfigData.name;
+		item.txtName.UpdateLanguageTextId(roleSelectConfigData.name);
+		item.txtDesc.UpdateLanguageTextId(roleSelectConfigData.desc);
 		item.btnRoleIcon.image.SetSprite(roleSelectConfigData.headIcon);
 	}
 

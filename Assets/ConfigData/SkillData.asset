@@ -320,7 +320,7 @@ MonoBehaviour:
       ForceType: 0
       Bullets:
       - Name: CodyBullet
-        AssetName: FX/CodyBullet
+        AssetName: FX/CodyBullet.prefab
         NormalAnim: Normal
         HitAnim: Hit
         NormalAnimSpeed: 0.3

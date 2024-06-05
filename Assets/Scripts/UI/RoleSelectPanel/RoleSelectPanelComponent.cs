@@ -1,6 +1,6 @@
 /*******************************************************/
-/**2022-9-4 16:4**************************************/
-/**Create By GQY****************************************/
+/**2024-06-05 12:02*************************************/
+/**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+using GameFrameWork.Localization;
 public class RoleSelectPanelComponent : BasePanelComponent
 {
 	//roleContent,GameObject
@@ -31,13 +32,13 @@ public class RoleSelectPanelComponent : BasePanelComponent
 	public class RoleContentItem : LayoutGroupViewItem
 	{
 		public ButtonEx btnRoleIcon = null;
-		public Text txtName = null;
-		public Text txtDesc = null;
+		public LanguageText txtName = null;
+		public LanguageText txtDesc = null;
 		protected override void OnCreate(GameObject go)
 		{
 			btnRoleIcon = transform.Find("btnRoleIcon").GetComponent<ButtonEx>();
-			txtName = transform.Find("txtName").GetComponent<Text>();
-			txtDesc = transform.Find("txtDesc").GetComponent<Text>();
+			txtName = transform.Find("txtName").GetComponent<LanguageText>();
+			txtDesc = transform.Find("txtDesc").GetComponent<LanguageText>();
 		}
 	}
 }

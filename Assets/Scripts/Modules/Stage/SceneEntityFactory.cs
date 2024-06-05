@@ -82,9 +82,8 @@ public static class SceneEntityFactory
 
         enemySkillData.attackIds = enemyConfigData.attactIds;
         enemySkillData.skillIds = enemyConfigData.skillIds;
-        enemySkillData.attackWait = enemyConfigData.attackWait;
+        enemySkillData.attackWait = new float[1] { -1f };
         enemySkillData.jumpAttackIds = enemyConfigData.jumpAttackIds;
-        enemySkillData.attackNextTime = enemyConfigData.attackNextTime;
         enemySkillData.behaviourTreeIds = enemyConfigData.behaviourTreeIds;
 
         enemyAttribute.health = hp;

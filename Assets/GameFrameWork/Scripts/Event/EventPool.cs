@@ -149,7 +149,7 @@ namespace GameFrameWork.Event
                 return;
             }
 
-            for (int i = 0; i < eventList.Count; i++)
+            for (int i = eventList.Count - 1; i >= 0; i--)
             {
                 eventList[i]?.Invoke(sender, args);
             }

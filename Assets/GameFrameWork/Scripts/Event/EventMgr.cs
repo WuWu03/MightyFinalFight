@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace GameFrameWork.Event
 {
+    public struct GameFrameWorkCommonEvent
+    {
+        public const int LanguageChangeEvent = -9998;
+        public const int ApplicationQuitEvent = -9999;
+    }
+
     public class EventMgr : BaseMgr<EventMgr>
     {
         public int eventHandlerCount
@@ -63,6 +69,7 @@ namespace GameFrameWork.Event
 
         protected override void OnShutDown()
         {
+            base.OnShutDown();
             m_EventPool.ShutDown();
         }
 

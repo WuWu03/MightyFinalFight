@@ -1,11 +1,8 @@
 ﻿using GameFrameWork.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Text;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameFrameWork.Editor
@@ -45,6 +42,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
+            sb.AppendLine("using GameFrameWork.Localization;");
             sb.AppendFormat("public class {0}Component : BasePanelComponent\r\n", setting.panelName);
             sb.AppendLine("{");
 

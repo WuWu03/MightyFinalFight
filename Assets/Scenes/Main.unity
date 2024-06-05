@@ -238,7 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2173410555044130344}
   - component: {fileID: 372239519741864554}
-  - component: {fileID: 6856301879259277705}
+  - component: {fileID: 3253013279760738338}
   m_Layer: 0
   m_Name: GameEntry
   m_TagString: Untagged
@@ -246,7 +246,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &6856301879259277705
+--- !u!114 &3253013279760738338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,7 +1,7 @@
 
 //===================================================
 //作者：WuWu                                          
-//创建时间：2023-07-17 15:39:12
+//创建时间：2024-06-05 11:58:34
 //备注：此代码为工具生成 请勿手工修改
 //===================================================
 using GameFrameWork;
@@ -33,7 +33,7 @@ public class SceneItemConfigData : BaseConfigData
 	public int type { get; private set; }
 
 	/// <summary>
-	/// 资源路径
+	/// 生命或经验
 	/// </summary>
 	public int value { get; private set; }
 

@@ -1,7 +1,7 @@
 
 //===================================================
 //作者：WuWu                                          
-//创建时间：2023-07-17 15:39:12
+//创建时间：2024-06-05 11:58:34
 //备注：此代码为工具生成 请勿手工修改
 //===================================================
 using GameFrameWork;
@@ -25,12 +25,12 @@ public class RoleSelectConfigData : BaseConfigData
 	/// <summary>
 	/// 名字
 	/// </summary>
-	public string name { get; private set; }
+	public int name { get; private set; }
 
 	/// <summary>
 	/// 描述
 	/// </summary>
-	public string desc { get; private set; }
+	public int desc { get; private set; }
 
 	/// <summary>
 	/// 头像
@@ -81,8 +81,8 @@ public class RoleSelectConfigData : BaseConfigData
 	{
 		this.id = parser.GetFieldValue("id").ToInt();
 		this.roleId = parser.GetFieldValue("roleId").ToInt();
-		this.name = parser.GetFieldValue("name");
-		this.desc = parser.GetFieldValue("desc");
+		this.name = parser.GetFieldValue("name").ToInt();
+		this.desc = parser.GetFieldValue("desc").ToInt();
 		this.headIcon = parser.GetFieldValue("headIcon");
 		this.assetName = parser.GetFieldValue("assetName");
 		this.animName = parser.GetFieldValue("animName");

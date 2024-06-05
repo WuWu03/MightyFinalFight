@@ -1,7 +1,7 @@
 
 //===================================================
 //作者：WuWu                                          
-//创建时间：2023-07-17 15:39:12
+//创建时间：2024-06-05 11:58:34
 //备注：此代码为工具生成 请勿手工修改
 //===================================================
 using GameFrameWork;
@@ -88,16 +88,6 @@ public class RoleConfigData : BaseConfigData
 	public int[] skillIds { get; private set; }
 
 	/// <summary>
-	/// 连击等待时间
-	/// </summary>
-	public float[] attackWait { get; private set; }
-
-	/// <summary>
-	/// 下一击等待时间
-	/// </summary>
-	public float[] attackNextTime { get; private set; }
-
-	/// <summary>
 	/// 武器
 	/// </summary>
 	public int weaponId { get; private set; }
@@ -139,8 +129,6 @@ public class RoleConfigData : BaseConfigData
 		roleConfigData.weaponAttackId = this.weaponAttackId;
 		roleConfigData.throwWeaponId = this.throwWeaponId;
 		roleConfigData.skillIds = this.skillIds;
-		roleConfigData.attackWait = this.attackWait;
-		roleConfigData.attackNextTime = this.attackNextTime;
 		roleConfigData.weaponId = this.weaponId;
 		roleConfigData.isCatchControl = this.isCatchControl;
 		roleConfigData.behaviourTreeIds = this.behaviourTreeIds;
@@ -166,8 +154,6 @@ public class RoleConfigData : BaseConfigData
 		this.weaponAttackId = parser.GetFieldValue("weaponAttackId").ToInt();
 		this.throwWeaponId = parser.GetFieldValue("throwWeaponId").ToInt();
 		this.skillIds = parser.GetFieldValue("skillIds").ToIntArray();
-		this.attackWait = parser.GetFieldValue("attackWait").ToFloatArray();
-		this.attackNextTime = parser.GetFieldValue("attackNextTime").ToFloatArray();
 		this.weaponId = parser.GetFieldValue("weaponId").ToInt();
 		this.isCatchControl = parser.GetFieldValue("isCatchControl").ToBool();
 		this.behaviourTreeIds = parser.GetFieldValue("behaviourTreeIds").ToIntArray();

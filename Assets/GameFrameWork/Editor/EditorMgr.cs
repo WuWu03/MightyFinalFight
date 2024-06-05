@@ -19,17 +19,24 @@ namespace GameFrameWork.Editor
 				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
 			}
 
-			EditorApplication.update += delegate ()
-			{
-                RefreshScenesPath();
-                RefreshUIMenuItem();
-				EditorApplication.update = null;
-            };
+			s_UIScenesPath = PlayerPrefs.GetString("_editor_ui_scenes_directory_", string.Empty);
 
-            EditorApplication.projectChanged += delegate ()
-            {
+			if (string.IsNullOrEmpty(s_UIScenesPath))
+			{
+				EditorApplication.update += EditorMgrInit;
+			}
+     
+			EditorApplication.projectChanged += delegate ()
+			{
 				RefreshUIMenuItem();
-            };
+			};
+		}
+
+		private static void EditorMgrInit()
+		{
+            RefreshScenesPath();
+            RefreshUIMenuItem();
+			EditorApplication.update -= EditorMgrInit;
         }
 
         [MenuItem("GameFrameWork/Start Up", false, 0)]
@@ -276,6 +283,7 @@ namespace GameFrameWork.Editor
                 }
 
                 s_UIScenesPath = PathUtil.GetAssetPath(EditorPathUtil.GetUIScenesPath());
+				PlayerPrefs.SetString("_editor_ui_scenes_directory_", s_UIScenesPath);
             }
         }
 
@@ -287,7 +295,7 @@ namespace GameFrameWork.Editor
 				return;
 			}
 
-			EditorUtil.RemoveAllMenuItem();
+			EditorUtil.RebuildAllMenus();
 
             string[] files = GameFrameWork.Utilities.FileUtil.GetFiles(s_UIScenesPath, "*.unity");
 

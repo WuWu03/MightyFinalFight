@@ -329,7 +329,7 @@ namespace GameFrameWork.Editor
 			typeof(Menu).GetMethod("RemoveMenuItem", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, new object[] { menuItem });
 		}
 
-		public static void RemoveAllMenuItem()
+		public static void RebuildAllMenus()
 		{
 			typeof(Menu).GetMethod("RebuildAllMenus", BindingFlags.NonPublic | BindingFlags.Static).Invoke(null, null);
         }

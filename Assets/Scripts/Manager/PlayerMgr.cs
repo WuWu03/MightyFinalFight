@@ -159,7 +159,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         heroSkillData.jumpAttackIds = m_RoleConfigData.jumpAttackIds;
         heroSkillData.skillIds = m_RoleConfigData.skillIds;
         heroSkillData.attackWait = new float[3] { 0.2f, 0.4f,1f };//m_RoleConfigData.attackWait;
-        heroSkillData.attackNextTime = m_RoleConfigData.attackNextTime;
         heroSkillData.catchAttackID = m_RoleConfigData.catchAttackId;
         heroSkillData.throwAttackID = m_RoleConfigData.throwAttackId;
         heroSkillData.weaponAttackID = m_RoleConfigData.weaponAttackId;

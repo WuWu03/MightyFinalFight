@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-05-02 23:05*************************************/
+/**2024-06-05 19:02*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+using GameFrameWork.Localization;
 public class TitlePanelComponent : BasePanelComponent
 {
 	//imgLogoBG,Image

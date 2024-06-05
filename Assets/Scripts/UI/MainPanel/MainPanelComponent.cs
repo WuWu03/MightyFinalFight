@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-01-29 16:32*************************************/
+/**2024-06-05 19:11*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+using GameFrameWork.Localization;
 public class MainPanelComponent : BasePanelComponent
 {
 	//bg/top/player/playerHpBar,Slider

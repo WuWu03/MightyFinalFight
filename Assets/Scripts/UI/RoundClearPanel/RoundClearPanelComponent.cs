@@ -1,6 +1,6 @@
 /*******************************************************/
-/**2023-11-29 19:31**************************************/
-/**Create By GQY****************************************/
+/**2024-06-05 11:36*************************************/
+/**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+using GameFrameWork.Localization;
 public class RoundClearPanelComponent : BasePanelComponent
 {
 	//bottom/GameObject/txtRound,Text

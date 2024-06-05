@@ -33,7 +33,6 @@ namespace GameFrameWork.Editor
             EditorGUILayout.PropertyField(openLog);
             EditorGUILayout.PropertyField(useLua);
 
-
             if (m_AppConfig.useLua)
             {
                 EditorGUILayout.PropertyField(loadLuaAB);
