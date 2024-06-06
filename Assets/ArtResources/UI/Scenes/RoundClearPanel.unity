@@ -393,7 +393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 52.39085, y: 0}
+  m_AnchoredPosition: {x: 52.800003, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &529841074
@@ -505,6 +505,7 @@ MonoBehaviour:
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/RoundClearPanel/RoundClearPanel.cs
   panelComponentPath: Assets/Scripts/UI/RoundClearPanel/RoundClearPanelComponent.cs
+  panelSettingsPath: Assets/Scripts/UI/RoundClearPanel/RoundClearPanelSettings.cs
   panelPrefabPath: Assets/ArtResources/UI/Prefabs/RoundClearPanel.prefab
 --- !u!4 &589985609
 Transform:
@@ -827,7 +828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 206.632, y: 0}
+  m_AnchoredPosition: {x: 206.64, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1242947082

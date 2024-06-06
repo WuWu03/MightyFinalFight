@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &632135520
 GameObject:
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1285304433
 GameObject:
@@ -1237,7 +1237,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1438736093
 GameObject:
@@ -1280,6 +1280,7 @@ MonoBehaviour:
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/StagePanel/StagePanel.cs
   panelComponentPath: Assets/Scripts/UI/StagePanel/StagePanelComponent.cs
+  panelSettingsPath: Assets/Scripts/UI/StagePanel/StagePanelSettings.cs
   panelPrefabPath: Assets/ArtResources/UI/Prefabs/StagePanel.prefab
 --- !u!4 &1438736095
 Transform:
@@ -1451,7 +1452,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1646893348
 GameObject:
@@ -1905,7 +1906,7 @@ MonoBehaviour:
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
   m_IsLayout: 0
-  m_IsLoopScroll: 0
+  m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2073645757
 GameObject:

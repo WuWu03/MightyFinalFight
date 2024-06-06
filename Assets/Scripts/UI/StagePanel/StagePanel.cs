@@ -8,21 +8,32 @@ using GameFrameWork.Pool;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StagePanel : BasePanel
 {
-	public override string panelName { get { return "StagePanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer3; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Always; } }
+    protected override Type componentType
+    {
+        get
+        {
+            return typeof(StagePanelComponent);
+        }
+    }
 
-	protected override void OnInit(object[] param)
-	{
-		m_Component = new StagePanelComponent(m_UIRefRoot);
-	}
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(StagePanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
+    {
+        m_Component = panelComponent as StagePanelComponent;
+    }
 
 	protected override void OnOpen()
 	{

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Event;
+using GameFrameWork.Event;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,21 +7,30 @@ namespace GameFrameWork.UI
 {
     public abstract class BasePanel
     {
-        public abstract string panelName { get; }
-
-        public abstract float panelUnLoadTime { get; }
-
-        public abstract UIMgr.Type panelType { get; }
-
-        public abstract UIMgr.Layer panelLayer { get; }
-
-        public abstract UIMgr.CloseMode panelCloseMode { get; }
-
         public GameObject gameObject { get; private set; }
 
         public Transform transform { get; private set; }
 
-        public string assetPath { get; private set; }
+        public BasePanelSettings settings
+        {
+            get
+            {
+                if (m_Settings == null)
+                {
+                    m_Settings = Activator.CreateInstance(settingsType) as BasePanelSettings;
+                }
+
+                return m_Settings;
+            }
+        }
+
+        public string assetPath 
+        {
+            get
+            {
+                return m_AssetPath;
+            }
+        }
 
         public bool isOpen
         {
@@ -43,23 +52,33 @@ namespace GameFrameWork.UI
         {
             get
             {
-                return panelCloseMode == UIMgr.CloseMode.DelayDestroy && m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
+                return m_Settings.panelCloseMode == UIMgr.CloseMode.DelayDestroy && m_DelayTime > 0f && Time.time - m_DelayTime >= 5f;
             }
         }
 
-        protected UIRefRoot m_UIRefRoot { get; private set; }
+        protected abstract Type componentType
+        {
+            get;
+        }
+
+        protected abstract Type settingsType
+        {
+            get;
+        }
 
         public void Init(GameObject go, string assetPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
             m_UIRefRoot = go.GetComponent<UIRefRoot>();
+            m_Component = Activator.CreateInstance(componentType, new object[] { m_UIRefRoot }) as BasePanelComponent;
             m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
-            this.assetPath = assetPath;
-            gameObject.SetLayer(LayerName.UI);
-            transform.SetParent(UIMgr.instance.GetUILayer(panelLayer), false);
+            m_AssetPath = assetPath;
 
-            OnInit(param);
+            gameObject.SetLayer(LayerName.UI);
+            transform.SetParent(UIMgr.instance.GetUILayer(m_Settings.panelLayer), false);
+
+            OnInit(m_Component, param);
             m_IsInit = true;
             Open();
 
@@ -142,15 +161,20 @@ namespace GameFrameWork.UI
 
         public void Destroy()
         {
-            m_IsInit = false;
-            m_DelayTime = 0f;
-
             m_DicHandler.Clear();
+            m_IsOpen = false;
+            m_IsInit = false;
+            m_IsHide = false;
+            m_DelayTime = 0f;
+            m_AssetPath = string.Empty;
+            m_Component = null;
+            m_Settings = null;
+            m_UIRefRoot = null;
             m_DicHandler = null;
             OnDestroy();
         }
 
-        protected abstract void OnInit(object[] param);
+        protected abstract void OnInit(BasePanelComponent panelComponent, object[] param);
         protected abstract void OnOpen();
         protected abstract void OnUpdate();
         protected abstract void OnClose();
@@ -176,13 +200,17 @@ namespace GameFrameWork.UI
 
         protected void CloseSelf()
         {
-            UIMgr.instance.Close(panelName);
+            UIMgr.instance.Close(m_Settings.panelName);
         }
 
         private bool m_IsOpen = false;
         private bool m_IsInit = false;
         private bool m_IsHide = false;
         private float m_DelayTime = 0f;
+        private string m_AssetPath = string.Empty;
+        private BasePanelComponent m_Component = null;
+        private BasePanelSettings m_Settings = null;
+        private UIRefRoot m_UIRefRoot = null;
         private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = null;
     }
 }

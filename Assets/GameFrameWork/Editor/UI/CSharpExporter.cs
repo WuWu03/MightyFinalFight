@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +12,7 @@ namespace GameFrameWork.Editor
         public override void Export(UIRef[] uiRefs, UIRefSetting setting)
         {
             ExportComponent(uiRefs, setting);
+            ExportPanelSettings(setting);
             ExportPanel(setting);
         }
 
@@ -42,7 +43,8 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
-            sb.AppendLine("using GameFrameWork.Localization;");
+            sb.AppendLine();
+
             sb.AppendFormat("public class {0}Component : BasePanelComponent\r\n", setting.panelName);
             sb.AppendLine("{");
 
@@ -119,6 +121,36 @@ namespace GameFrameWork.Editor
             FileUtil.CreateTextFile(setting.panelComponentPath, sb.ToString());
         }
 
+        private void ExportPanelSettings(UIRefSetting setting)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            string layerName = Enum.GetName(typeof(UIRefSetting.Layer), setting.panelLayer);
+            string closeModeName = Enum.GetName(typeof(UIRefSetting.CloseMode), setting.panelCloseMode);
+            string typeName = Enum.GetName(typeof(UIRefSetting.Type), setting.panelType);
+            float unLoadTime = setting.unLoadTime;
+
+            sb.AppendLine("/*******************************************************/");
+            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}*************************************/\r\n", year, month, day, hour, minute);
+            sb.AppendLine("/**Create By WuWu***************************************/");
+            sb.AppendLine("/**工具生成，请勿修改************************************/");
+            sb.AppendLine("/*******************************************************/");
+            sb.AppendLine("using GameFrameWork.UI;");
+            sb.AppendLine();
+
+            sb.AppendFormat("public class {0}Settings : BasePanelSettings\r\n", setting.panelName);
+            sb.AppendLine("{");
+
+            sb.Append("\tpublic override string panelName { get { " + string.Format("return \"{0}\"", setting.panelName) + "; } }\r\n");
+            sb.Append("\tpublic override float panelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\r\n");
+            sb.Append("\tpublic override UIMgr.Type panelType { get { " + string.Format("return UIMgr.Type.{0}", typeName) + "; } }\r\n");
+            sb.Append("\tpublic override UIMgr.Layer panelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\r\n");
+            sb.Append("\tpublic override UIMgr.CloseMode panelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\r\n");
+            sb.Append("}");
+            FileUtil.VerifyDirectory(setting.scriptFolder);
+            FileUtil.CreateTextFile(setting.panelSettingsPath, sb.ToString());
+        }
+
         private void ExportPanel(UIRefSetting setting)
         {
             if (File.Exists(setting.panelPath))
@@ -128,32 +160,37 @@ namespace GameFrameWork.Editor
 
             StringBuilder sb = new StringBuilder();
 
-            string layerName = Enum.GetName(typeof(UIRefSetting.Layer), setting.panelLayer);
-            string closeModeName = Enum.GetName(typeof(UIRefSetting.CloseMode), setting.panelCloseMode);
-            string typeName = Enum.GetName(typeof(UIRefSetting.Type), setting.panelType);
-            float unLoadTime = setting.unLoadTime;
-
             sb.Clear();
             sb.AppendLine("/*******************************************************/");
             sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}****************************************/\r\n", year, month, day, hour, minute);
             sb.AppendLine("/**Create By GQY****************************************/");
             sb.AppendLine("/*******************************************************/");
-            sb.AppendLine("using UnityEngine;");
-            sb.AppendLine("using UnityEngine.UI;");
-            sb.AppendLine("using DG.Tweening;");
             sb.AppendLine("using GameFrameWork.UI;");
+            sb.AppendLine("using System;");
             sb.AppendLine();
             sb.AppendFormat("public class {0} : BasePanel", setting.panelName);
             sb.AppendLine("\r\n{");
-            sb.Append("\tpublic override string panelName { get { " + string.Format("return \"{0}\"", setting.panelName) + "; } }\r\n");
-            sb.Append("\tpublic override float panelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.Type panelType { get { " + string.Format("return UIMgr.Type.{0}", typeName) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.Layer panelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.CloseMode panelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\r\n");
-            sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnInit(object[] param)");
+            sb.AppendLine("\tprotected override Type componentType");
             sb.AppendLine("\t{");
-            sb.AppendFormat("\t\tm_Component = new {0}Component(m_UIRefRoot);\r\n", setting.panelName);
+            sb.AppendLine("\t\tget");
+            sb.AppendLine("\t\t{");
+            sb.AppendFormat("\t\t\treturn typeof({0}Component);\r\n", setting.panelName);
+            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t}");
+            sb.AppendLine();
+
+            sb.AppendLine("\tprotected override Type settingsType");
+            sb.AppendLine("\t{");
+            sb.AppendLine("\t\tget");
+            sb.AppendLine("\t\t{");
+            sb.AppendFormat("\t\t\treturn typeof({0}Settings);\r\n", setting.panelName);
+            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t}");
+            sb.AppendLine();
+
+            sb.AppendLine("\tprotected override void OnInit(BasePanelComponent panelComponent, object[] param)");
+            sb.AppendLine("\t{");
+            sb.AppendFormat("\t\tm_Component = panelComponent as {0}Component;\r\n", setting.panelName);
             sb.AppendLine("\t}");
             sb.AppendLine();
             sb.AppendLine("\tprotected override void OnOpen()");

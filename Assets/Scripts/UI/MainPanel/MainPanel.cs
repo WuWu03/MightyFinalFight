@@ -4,25 +4,34 @@
 /*******************************************************/
 
 using DG.Tweening;
-using GameFrameWork.Camera;
 using GameFrameWork.Event;
-using GameFrameWork.Pool;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainPanel : BasePanel
 {
-	public override string panelName { get { return "MainPanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Root; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer2; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
-
-    protected override void OnInit(object[] param)
+	protected override Type componentType
 	{
-		m_Component = new MainPanelComponent(m_UIRefRoot);
+		get
+		{
+			return typeof(MainPanelComponent);
+		}
+	}
+
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(MainPanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
+	{
+		m_Component = panelComponent as MainPanelComponent;
 		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
@@ -33,10 +42,6 @@ public class MainPanel : BasePanel
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
 		SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
-
-		GameObjectPool.instance.AddPool("PlayerDamageText", m_Component.txtPlayerDamage.gameObject);
-		GameObjectPool.instance.AddPool("EnemyDamageText", m_Component.txtEnemyDamage.gameObject);
-
 		AddEvent(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
 		SetColor();
 	}
@@ -121,36 +126,6 @@ public class MainPanel : BasePanel
 		}
 
 		m_EnemyHpBarHideTimer = Time.time;
-	}
-
-	public void ShowEnemyDamage(int value,Vector3 pos)
-    {
-		ShowDamageText("EnemyDamageText", value, pos);
-	}
-
-	public void ShowPlayerDamage(int value, Vector3 pos)
-	{
-		ShowDamageText("PlayerDamageText", value, pos);
-	}
-
-	private void ShowDamageText(string textName, int value, Vector3 pos)
-	{
-		GameObject go = GameObjectPool.instance.Get(textName, transform, LayerName.UI, true);
-		Text text = go.GetComponent<Text>();
-		RectTransform textRect = text.GetComponent<RectTransform>();
-
-		text.text = value.ToString();
-		text.DOFade(1, 0);
-		text.transform.localScale = Vector3.one * 2f;
-		text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
-		Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
-		Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.instance.uiCamera);
-		textRect.localPosition = uguiPos;
-		textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
-		text.DOFade(0, 2f).OnComplete(() =>
-		{
-			GameObjectPool.instance.Put(textName, go);
-		});
 	}
 
 	public void SetRound(int round)

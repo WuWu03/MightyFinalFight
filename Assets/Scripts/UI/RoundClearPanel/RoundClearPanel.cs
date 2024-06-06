@@ -2,23 +2,31 @@
 /**2023-11-29 19:31****************************************/
 /**Create By GQY****************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
 using GameFrameWork.UI;
+using System;
 
 public class RoundClearPanel : BasePanel
 {
-	public override string panelName { get { return "RoundClearPanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer4; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
+    protected override Type componentType
+    {
+        get
+        {
+            return typeof(RoundClearPanelComponent);
+        }
+    }
 
-	protected override void OnInit(object[] param)
-	{
-		m_Component = new RoundClearPanelComponent(m_UIRefRoot);
-	}
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(RoundClearPanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
+    {
+        m_Component = panelComponent as RoundClearPanelComponent;
+    }
 
 	protected override void OnOpen()
 	{

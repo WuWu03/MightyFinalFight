@@ -2,28 +2,35 @@
 /**2023-11-29 9:28****************************************/
 /**Create By GQY****************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
+using GameFrameWork.Event;
+using GameFrameWork.Input;
 using GameFrameWork.UI;
 using System;
-using GameFrameWork.Input;
 using System.Threading.Tasks;
-using System.ComponentModel.Design;
-using System.Runtime.CompilerServices;
-using GameFrameWork.Event;
+using UnityEngine;
 
 public class TalkPanel : BasePanel
 {
-	public override string panelName { get { return "TalkPanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer4; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
+    protected override Type componentType
+    {
+        get
+        {
+            return typeof(TalkPanelComponent);
+        }
+    }
 
-	protected override void OnInit(object[] param)
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(TalkPanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent,object[] param)
 	{
-		m_Component = new TalkPanelComponent(m_UIRefRoot);
+        m_Component = panelComponent as TalkPanelComponent;
 		m_TalkId = int.Parse(param[0].ToString());
 		m_Component.talkSelectGroupView.Init(m_Component.talkSelect, m_Component.talkSelectItem);
         m_Component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;

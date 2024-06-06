@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using GameFrameWork.Utilities;
 using System;
 using System.Collections;
@@ -77,20 +77,11 @@ namespace GameFrameWork.Assets
             }
 
             string filePath = PathUtil.GetAssetPath(assetPath);
-            string fileName = Path.GetFileName(assetPath);
-            string directoryName = Path.GetDirectoryName(filePath).Replace("\\", "/");
-            string searchParttern = StringUtil.Format(fileName, "*");
-            string[] files = FileUtil.GetFiles(directoryName, searchParttern);
-
-            if (t == typeof(UnityEngine.SceneManagement.Scene))
-            {
-
-            }
-            obj = UnityEditor.AssetDatabase.LoadAssetAtPath(files[0], t);
+            obj = UnityEditor.AssetDatabase.LoadAssetAtPath(filePath, t);
 
             if (obj == null)
             {
-                Log.LogInfo("加载失败 , 资源路径不存在 : ", assetPath);
+                Log.LogError("加载失败 , 资源路径不存在 : [<color=#FF0000>", assetPath, "</color>]");
                 return null;
             }
 

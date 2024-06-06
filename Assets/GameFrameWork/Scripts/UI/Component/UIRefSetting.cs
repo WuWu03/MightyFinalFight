@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -118,6 +118,7 @@ public class UIRefSetting : MonoBehaviour
 
     [HideInInspector] public string panelPath;
     [HideInInspector] public string panelComponentPath;
+    [HideInInspector] public string panelSettingsPath;
     [HideInInspector] public string panelPrefabPath;
 
 
@@ -160,6 +161,7 @@ public class UIRefSetting : MonoBehaviour
 
         panelPath = string.Format(m_ScriptFolder + "{0}.{1}", m_PanelName, extension);
         panelComponentPath = string.Format(m_ScriptFolder + "{0}Component.{1}", m_PanelName, extension);
+        panelSettingsPath = string.Format(m_ScriptFolder + "{0}Settings.{1}", m_PanelName, extension);
     }
 
     public void RefreshPrefabFolder()

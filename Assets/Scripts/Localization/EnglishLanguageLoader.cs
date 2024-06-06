@@ -1,6 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.Localization;
-using System.Collections.Generic;
+using LitJson;
 using UnityEngine;
 
 public class EnglishLanguageLoader : BaseLanguageLoader
@@ -15,31 +15,14 @@ public class EnglishLanguageLoader : BaseLanguageLoader
             return;
         }
 
-        if (m_DicLanguageText == null)
-        {
-            m_DicLanguageText = new Dictionary<string, string>();
-        }
-
-        string[] contents = textAsset.text.Split("#");
-
-        foreach (string line in contents)
-        {
-            if (string.IsNullOrEmpty(line))
-            {
-                continue;
-            }
-
-            string result = line.TrimStart('\r', '\n');
-            string[] datas = result.Split(',', 2);
-            m_DicLanguageText.Add(datas[0], datas[1]);
-        }
+        m_JsonData = JsonMapper.ToObject(textAsset.text);
     }
 
     public override string GetLanguageText(string key)
     {
-        if (m_DicLanguageText.TryGetValue(key, out string text))
+        if (m_JsonData.ContainsKey(key))
         {
-            return text;
+            return m_JsonData[key].ToString();
         }
 
         return string.Empty;
@@ -52,9 +35,9 @@ public class EnglishLanguageLoader : BaseLanguageLoader
 
     protected override void OnRelease()
     {
-        m_DicLanguageText.Clear();
-        m_DicLanguageText = null;
+        m_JsonData.Clear();
+        m_JsonData = null;
     }
 
-    private Dictionary<string, string> m_DicLanguageText = null;
+    private JsonData m_JsonData = null;
 }

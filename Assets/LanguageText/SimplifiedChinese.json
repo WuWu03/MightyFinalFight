@@ -1,0 +1,15 @@
+{
+  "GameStart":"开始游戏",
+  "RoleNameCody":"科迪",
+  "RoleNameGuy":"凯",
+  "RoleNameHagger":"哈格",
+  "RoleDescCody":"街头霸王，刀法精湛。",
+  "RoleDescGuy":"忍者末裔，健步如飞。",
+  "RoleDescHagger":"暴躁市长，背摔达人。",
+  "MainPanelPlayer":"玩家",
+  "MainPanelEnemy":"敌人",
+  "MainPanelStage":"关卡",
+  "MainPanelLife":"生命",
+  "MainPanelLevel":"等级",
+  "MainPanelExp":"经验"
+}

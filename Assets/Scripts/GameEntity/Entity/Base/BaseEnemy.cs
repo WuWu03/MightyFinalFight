@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.UI;
 using UnityEngine;
 
@@ -136,13 +136,12 @@ public class BaseEnemy : BaseRole
         }
 
         Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
-        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
 
         if (data.attackValue > 0)
         {
-            mainPanel.ShowEnemyDamage(data.attackValue, damagePos);
+            HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
-            mainPanel.SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
+            UIMgr.instance.Get<MainPanel>().SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {

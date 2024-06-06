@@ -3,27 +3,35 @@
 /**Create By GQY****************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using GameFrameWork.UI;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
-using GameFrameWork;
-using GameFrameWork.Utilities;
+using GameFrameWork.UI;
+using System;
+using UnityEngine;
 
 public class RoleSelectPanel : BasePanel
 {
-	public override string panelName { get { return "RoleSelectPanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer3; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
+    protected override Type componentType
+    {
+        get
+        {
+            return typeof(RoleSelectPanelComponent);
+        }
+    }
 
-    protected override void OnInit(object[] param)
-	{
-		m_Component = new RoleSelectPanelComponent(m_UIRefRoot);
-		m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(RoleSelectPanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
+    {
+        m_Component = panelComponent as RoleSelectPanelComponent;
+        m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
         m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
         m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
     }

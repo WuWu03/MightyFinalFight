@@ -1,4 +1,4 @@
-﻿public struct AssetPathDefine
+public struct AssetPathDefine
 {
     public const string PrefabPath = "ArtResources/Prefabs";
     public const string EffectPath = "ArtResources/Prefabs/FX";
@@ -7,7 +7,7 @@
     public const string TexturePath = "ArtResources/Textures";
     public const string AudioClipPath = "ArtResources/AudioClip";
 
-    public const string SimplifiedChinesePath = "LanguageText/SimplifiedChinese.txt";
-    public const string EnglishPath = "LanguageText/English.txt";
-    public const string JapanesePath = "LanguageText/Japanese.txt";
+    public const string SimplifiedChinesePath = "LanguageText/SimplifiedChinese.json";
+    public const string EnglishPath = "LanguageText/English.json";
+    public const string JapanesePath = "LanguageText/Japanese.json";
 }

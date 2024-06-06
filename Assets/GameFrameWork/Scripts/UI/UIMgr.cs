@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Pool;
+using GameFrameWork.Pool;
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
@@ -208,7 +208,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            ClosePanel(panel.panelName, isForceDestroy);
+            ClosePanel(panel.settings.panelName, isForceDestroy);
         }
 
         private BasePanel RealOpen(string panelName, object[] args)
@@ -229,12 +229,12 @@ namespace GameFrameWork.UI
                 panel = Activator.CreateInstance(type) as BasePanel;
             }
 
-            if (!m_CanPopPanel && panel.panelType == Type.Root)
+            if (!m_CanPopPanel && panel.settings.panelType == Type.Root)
             {
                 m_CanPopPanel = true;
             }
 
-            if (m_CanPopPanel && panel.panelType != Type.Pop)
+            if (m_CanPopPanel && panel.settings.panelType != Type.Pop)
             {
                 if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
                 {
@@ -269,7 +269,7 @@ namespace GameFrameWork.UI
         {
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                if (m_ListOpenPanel[i].panelName.Equals(panelName))
+                if (m_ListOpenPanel[i].settings.panelName.Equals(panelName))
                 {
                     return m_ListOpenPanel[i];
                 }
@@ -293,7 +293,7 @@ namespace GameFrameWork.UI
 
             panel.Close();
 
-            if (panel.panelCloseMode == CloseMode.Destroy || isForceDestroy)
+            if (panel.settings.panelCloseMode == CloseMode.Destroy || isForceDestroy)
             {
                 panel.Destroy();
                 GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
@@ -305,14 +305,14 @@ namespace GameFrameWork.UI
                     m_CurrPopPanel = null;
                 }
             }
-            else if (panel.panelCloseMode == CloseMode.DelayDestroy)
+            else if (panel.settings.panelCloseMode == CloseMode.DelayDestroy)
             {
                 if (!m_ListDelayDestroy.Contains(panel))
                 {
                     m_ListDelayDestroy.Add(panel);
                 }
             }
-            else if (panel.panelCloseMode == CloseMode.Always)
+            else if (panel.settings.panelCloseMode == CloseMode.Always)
             {
                 if (!m_ListAlways.Contains(panel))
                 {
@@ -320,7 +320,7 @@ namespace GameFrameWork.UI
                 }
             }
 
-            if (m_CanPopPanel && isPop && panel.panelType != Type.Pop && m_ListPopPanel.Count > 0)
+            if (m_CanPopPanel && isPop && panel.settings.panelType != Type.Pop && m_ListPopPanel.Count > 0)
             {
                 BasePanel oldPanel = m_ListPopPanel[m_ListPopPanel.Count- 1];
                 oldPanel.Open();
@@ -335,7 +335,7 @@ namespace GameFrameWork.UI
         private void OnLoadComplete(string assetPath, UnityEngine.Object obj, object[] param)
         {
             WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
-            waitLoadPanel.panel.Init(obj as GameObject, PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.panelName), waitLoadPanel.param);
+            waitLoadPanel.panel.Init(obj as GameObject, PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), waitLoadPanel.panel.settings.panelName), waitLoadPanel.param);
             ReferencePool.ReleaseReference(waitLoadPanel);
         }
 
@@ -349,7 +349,7 @@ namespace GameFrameWork.UI
                 lock (queue)
                 { 
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
-                    string prefabName = StringUtil.Format(waitLoadPanel.panel.panelName, ".prefab");
+                    string prefabName = StringUtil.Format(waitLoadPanel.panel.settings.panelName, ".prefab");
                     GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), prefabName), OnLoadComplete, waitLoadPanel);
                 }
             }

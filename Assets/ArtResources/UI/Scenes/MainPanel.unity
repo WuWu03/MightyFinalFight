@@ -956,6 +956,7 @@ MonoBehaviour:
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/MainPanel/MainPanel.cs
   panelComponentPath: Assets/Scripts/UI/MainPanel/MainPanelComponent.cs
+  panelSettingsPath: Assets/Scripts/UI/MainPanel/MainPanelSettings.cs
   panelPrefabPath: Assets/ArtResources/UI/Prefabs/MainPanel.prefab
 --- !u!4 &575058724
 Transform:
@@ -2719,7 +2720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 128.79605, y: 0}
+  m_AnchoredPosition: {x: 123.68, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1746242805

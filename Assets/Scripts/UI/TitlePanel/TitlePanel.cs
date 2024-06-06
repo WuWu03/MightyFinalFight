@@ -2,25 +2,34 @@
 /**2021-9-6 21:9****************************************/
 /**Create By GQY****************************************/
 /*******************************************************/
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
-using GameFrameWork.UI;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
-//using TMPro;
+using GameFrameWork.UI;
+using System;
+using UnityEngine;
 
 public class TitlePanel : BasePanel
 {
-	public override string panelName { get { return "TitlePanel"; } }
-	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Normal; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer3; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Destroy; } }
-
-	protected override void OnInit(object[] param)
+	protected override Type componentType
 	{
-		m_Component = new TitlePanelComponent(m_UIRefRoot);
+		get
+		{
+			return typeof(TitlePanelComponent);
+		}
+	}
+
+    protected override Type settingsType
+    {
+        get
+        {
+            return typeof(TitlePanelSettings);
+        }
+    }
+
+    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
+	{
+		m_Component = panelComponent as TitlePanelComponent;
 	}
 
 	protected override void OnOpen()
@@ -38,7 +47,7 @@ public class TitlePanel : BasePanel
 		if (InputMgr.instance.GetKeyDown(KeyType.Start))
 		{
 			m_CanStart = false;
-            StartGame();
+			StartGame();
 		}
 	}
 
@@ -53,21 +62,21 @@ public class TitlePanel : BasePanel
 
 	private void StartGame()
 	{
-        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
-        loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
-        {
-            UIMgr.instance.Open<RoleSelectPanel>();
-            CloseSelf();
-        });
+		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
+		{
+			UIMgr.instance.Open<RoleSelectPanel>();
+			CloseSelf();
+		});
 
-        loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
-        {
-            UIMgr.instance.Close<LoadPanel>();
-        });
-    }
+		loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
+		{
+			UIMgr.instance.Close<LoadPanel>();
+		});
+	}
 
 	private void TitleAnim()
-    {
+	{
 		m_CanStart = false;
 		m_Component.imgCapcom.color = new Color(1, 1, 1, 0);
 		m_Component.txtDeveloper.color = new Color(1, 1, 1, 0);
@@ -109,7 +118,7 @@ public class TitlePanel : BasePanel
 		sequence.AppendCallback(() =>
 		{
 			m_Component.imgLogoBG.gameObject.SetActive(true);
-			m_Component.imgRetro.gameObject.SetActive(true);		
+			m_Component.imgRetro.gameObject.SetActive(true);
 			m_Component.imgLogoBG.DOFillAmount(1, 0.2f);
 			m_Component.imgRetro.DOFillAmount(1, 0.2f);
 		});
@@ -121,7 +130,7 @@ public class TitlePanel : BasePanel
 		});
 		sequence.AppendInterval(0.1f);
 		sequence.Append(m_Component.imgStar.DOFade(1, 1f));
-		sequence.AppendCallback(() => 
+		sequence.AppendCallback(() =>
 		{
 			m_Component.txtStart.gameObject.SetActive(true);
 			m_CanStart = true;

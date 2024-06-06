@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
-using GameFrameWork.Localization;
+
 public class TalkPanelComponent : BasePanelComponent
 {
 	//bottom/txtContent,Text

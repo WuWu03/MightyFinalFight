@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using UnityEditor;
 
@@ -59,6 +59,7 @@ namespace GameFrameWork.Editor
                 m_SBHelp.AppendLine("1.View and Controller will be Created at:");
                 m_SBHelp.AppendLine("        " + m_UIRefSetting.panelPath);
                 m_SBHelp.AppendLine("        " + m_UIRefSetting.panelComponentPath);
+                m_SBHelp.AppendLine("        " + m_UIRefSetting.panelSettingsPath);
                 m_SBHelp.AppendLine("2.Prefab will be Created at:");
                 m_SBHelp.AppendLine("        " + m_UIRefSetting.panelPrefabPath);
                 m_SBHelp.AppendLine();

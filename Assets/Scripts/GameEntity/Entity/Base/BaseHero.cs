@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Camera;
+using GameFrameWork.Camera;
 using GameFrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -411,8 +411,25 @@ public class BaseHero : BaseRole
 
     protected override void OnGroundHurtMsg(HurtStateData data)
     {
-        base.OnGroundHurtMsg(data);
-        UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+        //if (!data.isGroundHurt)
+        //{
+        //    int dir = data.attackerPos.x > m_Pos.x ? -1 : 1;
+        //    Vector3 pos = new Vector3(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -m_Dir);
+        //    EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+        //}
+
+        Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
+
+        if (data.attackValue > 0)
+        {
+            HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
+            base.OnGroundHurtMsg(data);
+            UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+        }
+        else
+        {
+            base.OnGroundHurtMsg(data);
+        }
     }
 
     protected override void OnGround()
