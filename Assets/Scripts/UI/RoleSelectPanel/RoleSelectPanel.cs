@@ -35,7 +35,7 @@ public class RoleSelectPanel : BasePanel
 		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 
-		AudioMgr.instance.PlayBGM(ResDefine.AudioClipPath, SoundName.Bgm14Character, true);
+		AudioMgr.instance.PlayBGM(AssetPathDefine.AudioClipPath, SoundName.Bgm14Character, true);
 	}
 
     protected override void OnUpdate()
@@ -61,7 +61,7 @@ public class RoleSelectPanel : BasePanel
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-			AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.OnSelect);
+			AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.OnSelect);
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -85,8 +85,8 @@ public class RoleSelectPanel : BasePanel
 	{
 		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.itemIndex];
 
-		item.txtName.UpdateLanguageTextId(roleSelectConfigData.name);
-		item.txtDesc.UpdateLanguageTextId(roleSelectConfigData.desc);
+		item.txtName.UpdateLanguageTextKey(roleSelectConfigData.name);
+		item.txtDesc.UpdateLanguageTextKey(roleSelectConfigData.desc);
 		item.btnRoleIcon.image.SetSprite(roleSelectConfigData.headIcon);
 	}
 
@@ -105,7 +105,7 @@ public class RoleSelectPanel : BasePanel
         m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
 
 		AudioMgr.instance.StopBGM(true);
-		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.OnSelected);
+		AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.OnSelected);
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();

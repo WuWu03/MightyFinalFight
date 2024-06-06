@@ -7,7 +7,7 @@ namespace GameFrameWork.Fsm
 {
     public class FsmMachine : BaseFsm
     {
-        public FsmMachine(System.Object owner, string name, params BaseFsmState[] states) : base(owner, name, states)
+        public FsmMachine(object owner, string name, params BaseFsmState[] states) : base(owner, name)
         {
             m_CurrentState = null;
             m_CurrentStateTime = 0;

@@ -56,7 +56,6 @@ public class StageMgr : BaseMgr<StageMgr>
 
     }
 
-
     public void StageEnter(int stageId)
     {
         StageConfigData configData = null;// StaticConfig.StageConfig.GetData(stageId);
@@ -100,9 +99,9 @@ public class StageMgr : BaseMgr<StageMgr>
 
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
-            EntityMgr.instance.DestoryAllUnUsedEntities();      
+            EntityMgr.instance.DestoryAllUnUsedEntities();
             GameObjectPool.instance.CheckRelease();
-            AssetsPool.instance.CheckRelease();   
+            AssetsPool.instance.CheckRelease();
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath);
             ReferencePool.Release();
@@ -158,8 +157,8 @@ public class StageMgr : BaseMgr<StageMgr>
         Vector2Int pos = MapUtil.PolygonRandomPoints(m_CurrStageData.MovePoints, vision);
         Vector2 ret = Vector2.zero;
 
-        ret.x = (float)pos.x / 100f;
-        ret.y = (float)pos.y / 100f;
+        ret.x = pos.x / 100f;
+        ret.y = pos.y / 100f;
 
         return ret;
     }
@@ -176,7 +175,7 @@ public class StageMgr : BaseMgr<StageMgr>
                 bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
                 float volume = m_CurrStageData.BGMs[i].Volume;
                 float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
-                groups[i] = AudioGroup.Create(ResDefine.AudioClipPath, clipName, isLoop, volume, lerpTime);
+                groups[i] = AudioGroup.Create(AssetPathDefine.AudioClipPath, clipName, isLoop, volume, lerpTime);
             }
 
             AudioMgr.instance.PlayBGMGroup(groups, true);

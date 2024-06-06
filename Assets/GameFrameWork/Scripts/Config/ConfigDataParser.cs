@@ -21,7 +21,10 @@ namespace GameFrameWork.ConfigData
         /// </summary>
         public string[] fieldName
         {
-            get { return m_FieldNames; }
+            get
+            {
+                return m_FieldNames;
+            }
         }
 
         /// <summary>
@@ -85,6 +88,7 @@ namespace GameFrameWork.ConfigData
             {
                 return;
             }
+
             m_CurrRow++;
         }
 

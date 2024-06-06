@@ -19,7 +19,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.UpdatePosZ(0);
         AudioMgr.instance.PauseBGM();
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.FallDownHigh);
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.FallDownHigh);
         UIMgr.instance.Get<MainPanel>().Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;

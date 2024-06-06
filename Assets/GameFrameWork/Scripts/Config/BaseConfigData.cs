@@ -1,6 +1,4 @@
-﻿using GameFrameWork.ConfigData;
-
-namespace GameFrameWork.ConfigData
+﻿namespace GameFrameWork.ConfigData
 {
     public abstract class BaseConfigData
     {

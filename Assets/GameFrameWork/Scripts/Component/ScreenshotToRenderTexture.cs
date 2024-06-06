@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScreenshotToRenderTexture : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class ScreenshotToRenderTexture : MonoBehaviour
     public int showCount = 0;
 
     public Material blurMaterial;
-    public RenderTexture outPutRenderTexture = null;
+    public RenderTexture outPutRenderTexture;
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
@@ -22,7 +20,7 @@ public class ScreenshotToRenderTexture : MonoBehaviour
 
         for (int i = 0; i < blurCount; i++)
         {
-            blurMaterial.SetFloat("_BlurSize", (float)blurSize + (float)i * blurSize);
+            blurMaterial.SetFloat("_BlurSize", blurSize + (float)i * blurSize);
             RenderTexture buffer1 = RenderTexture.GetTemporary(textureWidth, textureHeight, 0);
             Graphics.Blit(buffer0, buffer1, blurMaterial, 0);
             RenderTexture.ReleaseTemporary(buffer0);

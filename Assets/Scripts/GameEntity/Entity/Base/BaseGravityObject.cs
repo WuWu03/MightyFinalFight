@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class BaseGravityObject : BaseBoundObject
 {
-
     public bool isFloat
     {
         get

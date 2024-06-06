@@ -1,5 +1,4 @@
-﻿using GameFrameWork.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -18,26 +17,7 @@ namespace GameFrameWork.Editor
 			{
 				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
 			}
-
-			s_UIScenesPath = PlayerPrefs.GetString("_editor_ui_scenes_directory_", string.Empty);
-
-			if (string.IsNullOrEmpty(s_UIScenesPath))
-			{
-				EditorApplication.update += EditorMgrInit;
-			}
-     
-			EditorApplication.projectChanged += delegate ()
-			{
-				RefreshUIMenuItem();
-			};
 		}
-
-		private static void EditorMgrInit()
-		{
-            RefreshScenesPath();
-            RefreshUIMenuItem();
-			EditorApplication.update -= EditorMgrInit;
-        }
 
         [MenuItem("GameFrameWork/Start Up", false, 0)]
 		public static void GameFrameWorkStartUp()
@@ -119,7 +99,7 @@ namespace GameFrameWork.Editor
             PlayerPrefs.SetInt("create_entry_script", 0);
         }
 
-		[MenuItem("GameFrameWork/UI/创建UI场景", false, 1)]
+		[MenuItem("GameFrameWork/UI/创建UI场景", false, 101)]
 		public static void NewUIScene()
 		{
 			string entryScene = PlayerPrefs.GetString("entry_scene",string.Empty);
@@ -144,15 +124,31 @@ namespace GameFrameWork.Editor
 			UIEditorInit.NewUIScene();
 		}
 
-		[MenuItem("GameFrameWork/SpriteSpliter")]
-		public static void OpenSpriteSpliter()
+
+        [MenuItem("GameFrameWork/UI/UI列表", false, 102)]
+        public static void OpenUIListWindow()
+        {
+            EditorWindow window = EditorWindow.GetWindow<UIListWindow>();
+            window.Show();
+        }
+
+        [MenuItem("GameFrameWork/Tools/切图工具", false, 103)]
+		public static void OpenSpriteSpliterTool()
 		{
-			Rect wr = new Rect(0, 0, 600, 300);
-			EditorWindow window = EditorWindow.GetWindowWithRect(typeof(SpriteSplitWindow), wr);
+			Rect rect = new Rect(0, 0, 600, 300);
+			EditorWindow window = EditorWindow.GetWindowWithRect<SpriteSplitTool>(rect);
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/AssetBundleEditor")]
+		[MenuItem("GameFrameWork/Tools/PlayerPrefs工具", false, 104)]
+		public static void OpenPlayerPrefsTool()
+		{
+			Rect rect = new Rect(0, 0, 600, 300);
+			EditorWindow window = EditorWindow.GetWindowWithRect<PlayerPrefsTool>(rect);
+			window.Show();
+		}
+
+        [MenuItem("GameFrameWork/AssetBundleEditor")]
 		public static void AssetBundleEditor()
 		{
 			Rect wr = new Rect(0, 0, 700, 800);
@@ -167,7 +163,7 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/EditorDemo/Tab")]
+		[MenuItem("GameFrameWork/EditorDemo/Tab", false, 1001)]
 		public static void TabDemoWinow()
 		{
 			Rect wr = new Rect(0, 0, 600, 600);
@@ -175,7 +171,7 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/EditorDemo/Styles&Icons")]
+		[MenuItem("GameFrameWork/EditorDemo/Styles&Icons", false, 1002)]
 		public static void BuiltInDemo()
 		{
 			BuiltInDemo window = EditorWindow.GetWindow<BuiltInDemo>();
@@ -270,47 +266,5 @@ namespace GameFrameWork.Editor
 
             EditorUtil.CopyTextEditor(sb.ToString());
         }
-
-		public static void RefreshScenesPath()
-		{
-            string entryScene = PlayerPrefs.GetString("entry_scene", string.Empty);
-
-            if (!string.IsNullOrEmpty(entryScene))
-            {
-                if (EditorSceneManager.GetActiveScene().path != entryScene)
-                {
-                    EditorSceneManager.OpenScene(entryScene);
-                }
-
-                s_UIScenesPath = PathUtil.GetAssetPath(EditorPathUtil.GetUIScenesPath());
-				PlayerPrefs.SetString("_editor_ui_scenes_directory_", s_UIScenesPath);
-            }
-        }
-
-        [UnityEditor.Callbacks.DidReloadScripts(1)]
-        public static void RefreshUIMenuItem()
-        {
-            if (string.IsNullOrEmpty(s_UIScenesPath))
-			{
-				return;
-			}
-
-			EditorUtil.RebuildAllMenus();
-
-            string[] files = GameFrameWork.Utilities.FileUtil.GetFiles(s_UIScenesPath, "*.unity");
-
-			for (int i = 0; i < files.Length; i++)
-			{
-				string filePath = files[i];
-				string menuItemPath = string.Format("GameFrameWork/UI/{0}", Path.GetFileNameWithoutExtension(filePath));
-
-				EditorUtil.AddMenuItem(menuItemPath, () =>
-				{
-					EditorSceneManager.OpenScene(filePath);
-				}, 100 + i + 1);
-			}
-        }
-
-        private static string s_UIScenesPath = string.Empty;
     }
 }

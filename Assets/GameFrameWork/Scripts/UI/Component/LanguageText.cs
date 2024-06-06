@@ -1,9 +1,10 @@
 using GameFrameWork.Event;
+using GameFrameWork.Localization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameFrameWork.Localization
+namespace GameFrameWork.UI
 {
     [AddComponentMenu("UI/LanguageText")]
     public class LanguageText : MonoBehaviour
@@ -20,17 +21,10 @@ namespace GameFrameWork.Localization
 
         private void Awake()
         {
-            m_TextMesh = GetComponent<TextMeshProUGUI>();
-
-            if (m_TextMesh == null)
+            if (!TryGetComponent(out m_TextMesh) && !TryGetComponent(out m_Text))
             {
-                m_Text = GetComponent<Text>();
-
-                if (m_Text == null)
-                {
-                    Log.LogError("文本组件为空，请检查");
-                    return;
-                }
+                Log.LogError("文本组件为空，请检查");
+                return;
             }
 
             UpdateLanguage();
@@ -58,6 +52,7 @@ namespace GameFrameWork.Localization
             }
 
             languageTextId = id;
+            languageMode = LanguageMode.UseId;
             UpdateLanguage();
         }
 
@@ -69,6 +64,7 @@ namespace GameFrameWork.Localization
             }
 
             languageTextKey = key;
+            languageMode = LanguageMode.UseKey;
             UpdateLanguage();
         }
 
@@ -79,7 +75,7 @@ namespace GameFrameWork.Localization
 
         private void UpdateLanguage()
         {
-            string text = string.Empty;
+            string text;
 
             if (languageMode == LanguageMode.UseKey)
             {

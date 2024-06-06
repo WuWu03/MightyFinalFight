@@ -40,7 +40,7 @@ public class DBEffect : BaseEffect
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, PathUtil.FormatPath("Sound", eventObject.name) + ".ogg");
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, PathUtil.FormatPath("Sound", eventObject.name) + ".ogg");
     }
 
     private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;

@@ -48,10 +48,12 @@
 
 		protected void ChangeState<T>(BaseFsm fsm, BaseEventArgs stateData = null) where T : BaseFsmState
 		{
-			if (fsm != null)
+			if (fsm == null)
 			{
-				fsm.ChangeState<T>(stateData);
+				return;
 			}
+
+			fsm.ChangeState<T>(stateData);
 		}
 	}
 }

@@ -135,7 +135,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_LevelConfigData = ConfigDataHelper.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
-        m_Player.SetAsset(PathUtil.FormatPath(ResDefine.PrefabPath, m_RoleConfigData.assetName));
+        m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
         m_Player.SetLayer(LayerName.Unit);
         m_PlayerCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
 
@@ -226,7 +226,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
             mainPanel.SetPlayerLevel();
-            AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.LevelUp);
+            AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.LevelUp);
         }
 
         mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);

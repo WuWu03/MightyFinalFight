@@ -4,7 +4,7 @@ namespace GameFrameWork.Fsm
 {
     public abstract class BaseFsm
     {
-        public BaseFsm(System.Object owner, string name, params BaseFsmState[] states)
+        public BaseFsm(object owner, string name)
         {
             m_Owner = owner;
             m_Name = name;
@@ -18,10 +18,10 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public System.Object owner
+        public object owner
         {
-            get 
-            { 
+            get
+            {
                 return m_Owner;
             }
         }
@@ -53,11 +53,10 @@ namespace GameFrameWork.Fsm
         public abstract BaseFsmState[] GetAllStates();
         public abstract void Update(float deltaTime, float unscaleDeltaTime);
         public abstract void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime);
-
         public abstract void Release();
         public abstract void ShutDown();
 
-        private string m_Name;
-        private System.Object m_Owner;
+        private readonly string m_Name = string.Empty;
+        private readonly object m_Owner = null;
     }
 }

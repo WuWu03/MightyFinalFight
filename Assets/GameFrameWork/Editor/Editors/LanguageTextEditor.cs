@@ -1,4 +1,4 @@
-using GameFrameWork.Localization;
+using GameFrameWork.UI;
 using UnityEditor;
 
 namespace GameFrameWork.Editor

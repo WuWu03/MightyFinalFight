@@ -1,28 +1,59 @@
+using GameFrameWork;
 using GameFrameWork.Localization;
-using GameFrameWork.Utilities;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class JapaneseLanguageLoader : ILanguageLoader
+public class JapaneseLanguageLoader : BaseLanguageLoader
 {
-    public string GetLanguageText(string key)
+    public JapaneseLanguageLoader(string dataPath) : base(dataPath) { }
+    protected override void OnInit(TextAsset textAsset)
     {
-        LocalizationConfigData[] datas = ConfigDataHelper.localizationConfigDatas.GetConfigDatasByAttr(StringUtil.Format("key=", key));
-        if (datas == null || datas.Length < 1)
+        if (string.IsNullOrEmpty(textAsset.text))
         {
-            return string.Empty;
+            Log.LogError("日语语言文件错误");
+            return;
         }
 
-        return datas[1].japanese;
-    }
-
-    public string GetLanguageText(int id)
-    {
-        LocalizationConfigData data = ConfigDataHelper.localizationConfigDatas.GetConfigDataById(id);
-
-        if (data == null)
+        if (m_DicLanguageText == null)
         {
-            return string.Empty;
+            m_DicLanguageText = new Dictionary<string, string>();
         }
-        return data.japanese;
+
+        string[] contents = textAsset.text.Split("#");
+
+        foreach (string line in contents)
+        {
+            if (string.IsNullOrEmpty(line))
+            {
+                continue;
+            }
+
+            string result = line.TrimStart('\r', '\n');
+            string[] datas = result.Split(",", 2);
+            m_DicLanguageText.Add(datas[0], datas[1]);
+        }
     }
 
+    public override string GetLanguageText(string key)
+    {
+        if (m_DicLanguageText.TryGetValue(key, out string text))
+        {
+            return text;
+        }
+
+        return string.Empty;
+    }
+
+    public override string GetLanguageText(int id)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void OnRelease()
+    {
+        m_DicLanguageText.Clear();
+        m_DicLanguageText = null;
+    }
+
+    private Dictionary<string, string> m_DicLanguageText = null;
 }

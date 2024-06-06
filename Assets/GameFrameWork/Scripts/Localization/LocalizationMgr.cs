@@ -19,33 +19,63 @@ namespace GameFrameWork.Localization
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_Language = (LanguageType)PlayerPrefs.GetInt(m_CacheKey, (int)LanguageType.None);
-            m_DicLanguageLoader = new Dictionary<LanguageType, ILanguageLoader>();
+            m_LanguageType = (LanguageType)PlayerPrefs.GetInt(m_CacheKey, (int)LanguageType.None);
+            m_DicLanguageLoader = new Dictionary<LanguageType, BaseLanguageLoader>();
         }
 
         public void SetDefaultLanguage(LanguageType languageType)
         {
-            if (m_Language != LanguageType.None)
+            if (m_LanguageType != LanguageType.None)
             {
                 return;
             }
 
-            ChangeLanguage(languageType);
+            m_LanguageType = languageType;
+            PlayerPrefs.SetInt(m_CacheKey, (int)languageType);
         }
 
         public void ChangeLanguage(LanguageType languageType)
         {
-            if (m_Language == languageType)
+            if (m_LanguageType == languageType || languageType == LanguageType.None)
             {
                 return;
             }
 
-            PlayerPrefs.SetInt(m_CacheKey, (int)languageType);
-            m_Language = languageType;
-            EventMgr.instance.Dispatch(this, GameEventArgs.Create(GameFrameWorkCommonEvent.LanguageChangeEvent));
+            if (m_DicLanguageLoader.Count < 1)
+            {
+                Log.LogError("Î´³õÊ¼»¯ÓïÑÔ¶ÁÈ¡Æ÷£¬ÇëÏÈÌí¼Ó¶ÔÓ¦ÓïÑÔµÄ¶ÁÈ¡Æ÷");
+                return;
+            }
+
+            BaseLanguageLoader loader;
+
+            if (m_LanguageType != LanguageType.None)
+            {
+                if (m_DicLanguageLoader.TryGetValue(m_LanguageType, out loader))
+                {
+                    loader.Release();
+                }
+                else
+                {
+                    Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
+                    return;
+                }
+            }
+
+            if (m_DicLanguageLoader.TryGetValue(languageType, out loader))
+            {
+                PlayerPrefs.SetInt(m_CacheKey, (int)languageType);
+                m_LanguageType = languageType;
+                loader.Init();
+                EventMgr.instance.Dispatch(this, GameEventArgs.Create(GameFrameWorkCommonEvent.LanguageChangeEvent));
+            }
+            else
+            {
+                Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", languageType, "]");
+            }
         }
 
-        public void AddLanguageLoader(LanguageType languageType,ILanguageLoader loader)
+        public void AddLanguageLoader(LanguageType languageType, BaseLanguageLoader loader)
         {
             if (m_DicLanguageLoader.ContainsKey(languageType))
             {
@@ -53,28 +83,33 @@ namespace GameFrameWork.Localization
             }
 
             m_DicLanguageLoader.Add(languageType, loader);
+
+            if (m_LanguageType == languageType)
+            {
+                loader.Init();
+            }
         }
 
         public string GetLanguageText(string key)
         {
-            if (m_DicLanguageLoader.TryGetValue(m_Language, out ILanguageLoader loader))
+            if (m_DicLanguageLoader.TryGetValue(m_LanguageType, out BaseLanguageLoader loader))
             {
                 return loader.GetLanguageText(key);
             }
 
-            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_Language, "]");
+            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
 
             return string.Empty;
         }
 
         public string GetLanguageText(int id)
         {
-            if (m_DicLanguageLoader.TryGetValue(m_Language, out ILanguageLoader loader))
+            if (m_DicLanguageLoader.TryGetValue(m_LanguageType, out BaseLanguageLoader loader))
             {
                 return loader.GetLanguageText(id);
             }
 
-            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_Language, "]");
+            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
 
             return string.Empty;
         }
@@ -87,8 +122,8 @@ namespace GameFrameWork.Localization
         }
 
         private const string m_CacheKey = "_GAME_LANGUAGE_NAME_";
-      
-        private LanguageType m_Language = LanguageType.None;
-        private Dictionary<LanguageType,ILanguageLoader> m_DicLanguageLoader = null;
+
+        private LanguageType m_LanguageType = LanguageType.None;
+        private Dictionary<LanguageType, BaseLanguageLoader> m_DicLanguageLoader = null;
     }
 }

@@ -83,7 +83,6 @@ namespace GameFrameWork.Editor
 
             EditorSceneManager.SaveScene(scene, path);
             Selection.activeGameObject = settings.gameObject;
-            EditorMgr.RefreshUIMenuItem();
         }
 
         private static void DuringSceneGUI(SceneView scnView)

@@ -33,7 +33,7 @@ public class StagePanel : BasePanel
         RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
 
 		GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
-		GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
+		GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
 		{
@@ -54,7 +54,7 @@ public class StagePanel : BasePanel
 		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
 		m_Role.SetActive(true);
 
-		AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, roleSelectConfig.soundName);
+		AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName);
 		Timer.Register(roleSelectConfig.showTime, OnTimer);
 	}
 
@@ -73,7 +73,7 @@ public class StagePanel : BasePanel
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
 		RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
-		GameObjectPool.instance.Put(PathUtil.FormatPath(ResDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
+		GameObjectPool.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
 		m_Role = null;
 	}
 

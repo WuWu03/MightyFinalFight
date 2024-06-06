@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-    public class SpriteSplitWindow : EditorWindow
+    public class SpriteSplitTool : EditorWindow
     {
         enum SplitType
         {
@@ -17,7 +17,7 @@ namespace GameFrameWork.Editor
             Folder,
         }
 
-        public SpriteSplitWindow()
+        public SpriteSplitTool()
         {
             titleContent = new GUIContent(GetType().Name);
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace GameFrameWork.Event
 {
@@ -34,7 +33,7 @@ namespace GameFrameWork.Event
 
         private void Update()
         {
-            m_EventPool.Update(Time.time, Time.unscaledTime);
+            m_EventPool.Update();
         }
 
         public void Subscribe(int id, EventHandler<GameEventArgs> handler)
@@ -71,6 +70,7 @@ namespace GameFrameWork.Event
         {
             base.OnShutDown();
             m_EventPool.ShutDown();
+            m_EventPool = null;
         }
 
         private EventPool<GameEventArgs> m_EventPool = null;

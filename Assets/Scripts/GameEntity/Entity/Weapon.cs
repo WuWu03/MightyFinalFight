@@ -37,7 +37,7 @@ public class Weapon : BaseSceneItem
     {
         m_Owner = owner;
         SetActive(false);
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.Bonus);
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Bonus);
     }
 
     protected override void OnUpdate()

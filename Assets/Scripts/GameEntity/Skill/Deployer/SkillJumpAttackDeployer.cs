@@ -86,7 +86,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, StringUtil.Format("Sound/", eventObject.name, ".ogg"));
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, StringUtil.Format("Sound/", eventObject.name, ".ogg"));
     }
 
     private void OnDropEvent()

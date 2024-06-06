@@ -45,19 +45,19 @@ public class Consume : BaseSceneItem
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
             UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.Eat);
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Eat);
     }
 
     private void AddExp()
     {
         PlayerMgr.instance.AddExp(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.Eat);
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Eat);
     }
 
     private void AddLife()
     {
         PlayerMgr.instance.AddLife(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(ResDefine.AudioClipPath, SoundName.GetRobot);
+        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.GetRobot);
     }
 
     private void AddMoney()

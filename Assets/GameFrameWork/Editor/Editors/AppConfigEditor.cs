@@ -154,9 +154,6 @@ namespace GameFrameWork.Editor
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiPrefabPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiAtlasPath);
                 GameFrameWork.Utilities.FileUtil.VerifyDirectory(uiScenePath);
-
-                EditorMgr.RefreshScenesPath();
-                EditorMgr.RefreshUIMenuItem();
             }
         }
 

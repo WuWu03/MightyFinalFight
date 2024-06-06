@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-06-05 19:11*************************************/
+/**2024-06-06 12:08*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -19,7 +19,7 @@ public class MainPanelComponent : BasePanelComponent
 	public Slider enemyHpBar { get; private set; }
 	//bg/top/enemy/enemyHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage1 { get; private set; }
-	//bg/top/state/txtStage,Text
+	//bg/top/stage/txtStage,Text
 	public Text txtStage { get; private set; }
 	//bg/top/playerLife/txtPlayerLife,Text
 	public Text txtPlayerLife { get; private set; }

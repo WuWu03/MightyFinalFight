@@ -266,8 +266,9 @@ namespace GameFrameWork.Scene
 #endif
                 {
                     AssetsMgr.instance.LoadAssetSync(sceneName, typeof(UnityEngine.SceneManagement.Scene));
-                }
                     SceneManager.LoadScene(sceneName, mode);
+                }
+
                 LoadSceneSuccess(sceneName, args);
             }
             catch (Exception e)
@@ -363,7 +364,7 @@ namespace GameFrameWork.Scene
 #if UNITY_EDITOR
                 if(!AppConfig.instance.loadAB)
                 {
-                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(PathUtil.GetAssetFullPath(request.sceneName), parameters);
+                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(PathUtil.GetAssetPath(request.sceneName), parameters);
                 }
                 else
 #endif
@@ -433,7 +434,7 @@ namespace GameFrameWork.Scene
 #if UNITY_EDITOR
                 if (!AppConfig.instance.loadAB)
                 {
-                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.UnloadSceneAsync(PathUtil.GetAssetFullPath(request.sceneName));
+                    m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.UnloadSceneAsync(PathUtil.GetAssetPath(request.sceneName));
                 }
                 else
 #endif

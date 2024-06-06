@@ -317,9 +317,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2414c347e134e4b9b8c186ab24aaca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  languageTextId: 1001
-  languageTextKey: 
-  languageMode: 0
+  languageTextId: -1
+  languageTextKey: GameStart
+  languageMode: 1
 --- !u!1 &5165383598320223616
 GameObject:
   m_ObjectHideFlags: 0

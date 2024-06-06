@@ -21,21 +21,22 @@ public class GameEntry : GameFrameWorkEntry
     protected override void OnStartGame()
     {
         LocalizationMgr.instance.SetDefaultLanguage(LanguageType.English);
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new SimplifiedChineseLanguageLoader());
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new EnglishLanguageLoader());
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new JapaneseLanguageLoader());
-        LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new SimplifiedChineseLanguageLoader(AssetPathDefine.SimplifiedChinesePath));
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new EnglishLanguageLoader(AssetPathDefine.EnglishPath));
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new JapaneseLanguageLoader(AssetPathDefine.JapanesePath));
+        LocalizationMgr.instance.ChangeLanguage(LanguageType.English);
 
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
 
-        UIMgr.instance.Open<TitlePanel>();
+        UIMgr.instance.Open<RoleSelectPanel>();
     }
 
     protected override void OnExit()
     {
+        ConfigDataHelper.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();
         StageMgr.instance.ShutDown();

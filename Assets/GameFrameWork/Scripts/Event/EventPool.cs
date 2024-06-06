@@ -1,8 +1,6 @@
 ﻿using GameFrameWork.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GameFrameWork.Event
 {
@@ -40,7 +38,7 @@ namespace GameFrameWork.Event
             return 0;
         }
 
-        public void Update(float elapseSeconds, float realElapseSeconds)
+        public void Update()
         {
             while (m_Events.Count > 0)
             {
@@ -103,7 +101,7 @@ namespace GameFrameWork.Event
                 throw new Exception("Event handler is invalid.");
             }
 
-            if(!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
                 return false;
             }
@@ -126,18 +124,12 @@ namespace GameFrameWork.Event
             HandleEvent(sender, args);
         }
 
-        public void Clear()
-        {
-            lock (m_Events)
-            {
-                m_Events.Clear();
-            }
-        }
-
         public void ShutDown()
         {
-            Clear();
+            m_Events.Clear();
             m_EventHandlers.Clear();
+            m_Events = null;
+            m_EventHandlers = null;
         }
 
         private void HandleEvent(object sender, T args)
