@@ -4,6 +4,7 @@
 /*******************************************************/
 
 using DG.Tweening;
+using GameFrameWork;
 using GameFrameWork.Event;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
@@ -38,6 +39,7 @@ public class MainPanel : BasePanel
 	protected override void OnOpen()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
+		m_Component.enemyHpBar.SetActive(false);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
@@ -85,8 +87,8 @@ public class MainPanel : BasePanel
 	{
 		if (width != 0)
 		{
-			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		}
+            m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+        }
 
 		m_Component.playerHpBar.maxValue = max;
 		m_Component.playerHpBar.value = value;
@@ -99,12 +101,12 @@ public class MainPanel : BasePanel
 			return;
 		}
 
-		m_Component.enemyHpBar.gameObject.SetActive(true);
-		m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		m_Component.enemyHpBar.maxValue = max;
+        m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+        m_Component.enemyHpBar.maxValue = max;
 		m_Component.enemyHpBar.value = value;
+        m_Component.enemyHpBar.gameObject.SetActive(true);
 
-		Image image = m_Component.enemyHpBar.GetComponent<Image>();
+        Image image = m_Component.enemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
 
 		if (value == 0)

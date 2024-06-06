@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+
 public class LoadPanelComponent : BasePanelComponent
 {
 	//imgShade,Image

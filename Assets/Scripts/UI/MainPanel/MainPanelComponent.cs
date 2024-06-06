@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-06-06 12:08*************************************/
+/**2024-06-06 19:13*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -8,16 +8,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
-using GameFrameWork.Localization;
+
 public class MainPanelComponent : BasePanelComponent
 {
-	//bg/top/player/playerHpBar,Slider
+	//bg/top/playerHpBar,Slider
 	public Slider playerHpBar { get; private set; }
-	//bg/top/player/playerHpBar/playerHpBarImage,Image
+	//bg/top/playerHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage { get; private set; }
-	//bg/top/enemy/enemyHpBar,Slider
+	//bg/top/enemyHpBar,Slider
 	public Slider enemyHpBar { get; private set; }
-	//bg/top/enemy/enemyHpBar/playerHpBarImage,Image
+	//bg/top/enemyHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage1 { get; private set; }
 	//bg/top/stage/txtStage,Text
 	public Text txtStage { get; private set; }
