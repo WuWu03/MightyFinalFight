@@ -16,7 +16,6 @@ namespace GameFrameWork.Assets
             base.OnAwake();
             m_DicLoadedAssetBundles = new Dictionary<string, AssetBundleInfo>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_DicAssetBundleVersions = new Dictionary<string, AssetBundleVersion>();
             m_DicAssetMap = new Dictionary<string, string>();
 
 #if UNITY_EDITOR
@@ -26,29 +25,17 @@ namespace GameFrameWork.Assets
             }
 #endif
             string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.maniFestName);
-            string versionUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, AppConfig.instance.versionFileName);
             string assetMapUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.assetMapName);
 
             byte[] stream = File.ReadAllBytes(maniFesturl);
             AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
             m_Manifest = assetbundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
 
-            string[] version = File.ReadAllText(versionUrl).Split('\n');
-
-            for (int i = 0; i < version.Length; i++)
-            {
-                string[] data = version[i].Split('|');
-                if (!data[1].Equals(".manifest"))
-                {
-                    m_DicAssetBundleVersions.Add(data[0], new AssetBundleVersion(data[0], data[1], data[2]));
-                }
-            }
-
             string[] assetMap = File.ReadAllText(assetMapUrl).Split('\n');
 
             for (int i = 0; i < assetMap.Length; i++)
             {
-                string[] data = assetMap[i].Split('|');
+                string[] data = assetMap[i].Split('|', 2);
                 m_DicAssetMap.Add(data[0], data[1]);
             }
         }
@@ -377,15 +364,9 @@ namespace GameFrameWork.Assets
             }
 
             assetBundleName = assetBundleName.ToLower();
+            string ext = Path.GetExtension(assetBundleName);
 
-            if (m_DicAssetBundleVersions.TryGetValue(assetBundleName, out AssetBundleVersion version))
-            {
-                return StringUtil.Format(assetBundleName, version.extendName);
-            }
-
-            Log.LogError("获取资源版本失败 : ", assetPath);
-
-            if (!assetBundleName.EndsWith(PathUtil.assetBundleExtension))
+            if (string.IsNullOrEmpty(ext))
             {
                 return StringUtil.Format(assetBundleName, PathUtil.assetBundleExtension);
             }
@@ -419,14 +400,12 @@ namespace GameFrameWork.Assets
             list.Clear();
             m_DicLoadedAssetBundles.Clear();
             m_DicLoadRequests.Clear();
-            m_DicAssetBundleVersions.Clear();
             m_DicAssetMap.Clear();
         }
 
         private AssetBundleManifest m_Manifest;
         private Dictionary<string, AssetBundleInfo> m_DicLoadedAssetBundles = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
-        private Dictionary<string, AssetBundleVersion> m_DicAssetBundleVersions = null;
         private Dictionary<string, string> m_DicAssetMap = null;
     }
 }

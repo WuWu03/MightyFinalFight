@@ -41,16 +41,17 @@ public class SkillEditorConfigData : BaseConfigData
         BuffEvent,
     }
 
-    public enum SkillPrevConditionType
+    public enum SkillConditionType
     {
         None,
-        Ground,//Õ¾Á¢ÔÚÂ½µØÉÏ
-        DropGround,//¸Õ¸ÕÂäµ½µØÉÏ
-        Float,//¸¡¿Õ
-        Catch,//×¥ÈË
-        GroundNotCatch,//×ÅÂ½ÇÒÃ»ÓĞ×¥ÈË
-        HPMoreThan,//hp´óÓÚ
-        HPLessThan,//hpĞ¡ÓÚ
+        Ground,//ç«™ç«‹åœ¨é™†åœ°ä¸Š
+        DropGround,//åˆšåˆšè½åˆ°åœ°ä¸Š
+        Float,//æµ®ç©º
+        Catch,//æŠ“äºº
+        GroundNotCatch,//ç€é™†ä¸”æ²¡æœ‰æŠ“äºº
+        HPMoreThan,//hpå¤§äº
+        HPLessThan,//hpå°äº
+        TimeElapsed,//ä»é‡Šæ”¾æŠ€èƒ½å¼€å§‹æ—¶é—´æµé€xç§’
     }
 
     [Serializable]
@@ -65,7 +66,7 @@ public class SkillEditorConfigData : BaseConfigData
     {
         public SkillEventType skillEventType;
 
-        [Serializable]//¶¯»­ÊÂ¼ş
+        [Serializable]//åŠ¨ç”»äº‹ä»¶
         public class AnimEventInfo
         {
             public string animName;
@@ -75,7 +76,7 @@ public class SkillEditorConfigData : BaseConfigData
 
         public AnimEventInfo animEventInfo = null;
 
-        [Serializable]//ÉùÒôÊÂ¼ş
+        [Serializable]//å£°éŸ³äº‹ä»¶
         public class AudioEventInfo
         {
             public string audioClipName;
@@ -86,7 +87,7 @@ public class SkillEditorConfigData : BaseConfigData
 
         public AudioEventInfo audioEventInfo = null;
 
-        [Serializable]//Î»ÒÆÊÂ¼ş
+        [Serializable]//ä½ç§»äº‹ä»¶
         public class TweenInfo
         {
             public float duration;
@@ -94,20 +95,20 @@ public class SkillEditorConfigData : BaseConfigData
             public DG.Tweening.Ease ease;
         }
 
-        [Serializable]//Î»ÒÆÊÂ¼ş
+        [Serializable]//ä½ç§»äº‹ä»¶
         public class TransformEventInfo
         {
-            public Vector2 position;//Ä¿±êÎ»ÖÃ±ä»¯ 
-            public Vector3 rotation;//Ä¿±êĞı×ª±ä»¯
-            public Vector3 scale;//Ä¿±êËõ·Å±ä»¯
-            public bool isPositionBasedOnSelf;//Î»ÖÃ±ä»¯ÊÇ·ñÔÚ×ÔÉí»ù´¡ÉÏ±ä»¯
-            public bool isRotationBasedOnSelf;//Ğı×ª±ä»¯ÊÇ·ñÔÚ×ÔÉí»ù´¡ÉÏ±ä»¯
-            public bool isPositionAnim;//¶¯»­²¹¼ä
+            public Vector2 position;//ç›®æ ‡ä½ç½®å˜åŒ– 
+            public Vector3 rotation;//ç›®æ ‡æ—‹è½¬å˜åŒ–
+            public Vector3 scale;//ç›®æ ‡ç¼©æ”¾å˜åŒ–
+            public bool isPositionBasedOnSelf;//ä½ç½®å˜åŒ–æ˜¯å¦åœ¨è‡ªèº«åŸºç¡€ä¸Šå˜åŒ–
+            public bool isRotationBasedOnSelf;//æ—‹è½¬å˜åŒ–æ˜¯å¦åœ¨è‡ªèº«åŸºç¡€ä¸Šå˜åŒ–
+            public bool isPositionAnim;//åŠ¨ç”»è¡¥é—´
             public TweenInfo positionTweenInfo = new TweenInfo();
-            public bool isRotationAnim;//¶¯»­²¹¼ä
+            public bool isRotationAnim;//åŠ¨ç”»è¡¥é—´
             public TweenInfo rotationTweenInfo = new TweenInfo();
             public DG.Tweening.RotateMode rotateMode;
-            public bool isScaleAnim;//¶¯»­²¹¼ä
+            public bool isScaleAnim;//åŠ¨ç”»è¡¥é—´
             public TweenInfo scaleTweenInfo = new TweenInfo();
         }
 
@@ -121,96 +122,94 @@ public class SkillEditorConfigData : BaseConfigData
             public Vector2 velocity;
             public float drag;
             public float gravity;
+
             public float distanceLimit;
         }
 
         public PhysicsEventInfo targetPhysicsEventInfo = null;
         public PhysicsEventInfo selfPhysicsEventInfo = null;
 
-        //×Óµ¯ÊÂ¼ş
+        //å­å¼¹äº‹ä»¶
         [Serializable]
         public class BulletEventInfo
         {
             public string bulletName;
             public string assetPath;
-            public string bulletClass;//×Óµ¯½Å±¾
+            public string bulletClass;//å­å¼¹è„šæœ¬
             public string normalAnim;
             public string hitAnim;
             public float normalAnimSpeed;
             public float hitAnimSpeed;
             public float hitRange;
-            public int bulletCount = -1;//×Óµ¯ÊıÁ¿£¬-1±íÊ¾¸úËæ½Å±¾ÊıÁ¿
-            public Vector2 pos;//³õÊ¼Ïà¶ÔÎ»ÖÃ
-            public Vector2 velocity;//ÎïÀíÔË¶¯³õÊ¼ËÙ¶È
-            public float drag;//Ä¦²ÁÁ¦
-            public float moveSpeed;//ÏßĞÔÒÆ¶¯ËÙ¶È
-            public bool isPhysicsMove;//ÊÇ·ñÊÇÎïÀíÔË¶¯
+            public int bulletCount = -1;//å­å¼¹æ•°é‡ï¼Œ-1è¡¨ç¤ºè·Ÿéšè„šæœ¬æ•°é‡
+            public Vector2 pos;//åˆå§‹ç›¸å¯¹ä½ç½®
+            public Vector2 velocity;//ç‰©ç†è¿åŠ¨åˆå§‹é€Ÿåº¦
+            public float drag;//æ‘©æ“¦åŠ›
+            public float moveSpeed;//çº¿æ€§ç§»åŠ¨é€Ÿåº¦
+            public bool isPhysicsMove;//æ˜¯å¦æ˜¯ç‰©ç†è¿åŠ¨
         }
 
-        public BulletEventInfo bulletEventInfo;//×Óµ¯ÊÂ¼ş
+        public BulletEventInfo bulletEventInfo;//å­å¼¹äº‹ä»¶
 
-        [Serializable]//ÉËº¦ÊÂ¼ş
+        [Serializable]//ä¼¤å®³äº‹ä»¶
         public class HurtEventInfo
         {
-            public bool isSmoon;//ÊÇ·ñ»÷»è
-            public bool isOnGroundHurt;//ÊÇ·ñÂäµØ²Å´¥·¢ÉËº¦
-            public bool isOnGroundEffect;//ÂäµØ²Å´¥·¢Ğ§¹û
-            public bool canBeDefense;//ÄÜ·ñ±»·ÀÓù
-            public bool hitFinish;//»÷ÖĞÈÎÒâµĞÈË¾Í½áÊøÊÂ¼ş
+            public bool isSmoon;//æ˜¯å¦å‡»æ˜
+            public bool isOnGroundHurt;//æ˜¯å¦è½åœ°æ‰è§¦å‘ä¼¤å®³
+            public bool isOnGroundEffect;//è½åœ°æ‰è§¦å‘æ•ˆæœ
+            public bool canBeDefense;//èƒ½å¦è¢«é˜²å¾¡
+            public bool hitFinish;//å‡»ä¸­ä»»æ„æ•Œäººå°±ç»“æŸäº‹ä»¶
         }
 
         public HurtEventInfo hurtEventInfo = null;
 
-        //ÌØĞ§ÊÂ¼ş
+        //ç‰¹æ•ˆäº‹ä»¶
         [Serializable]
         public class EffectEventInfo
         {
-            public string assetPath;//×ÊÔ´Â·¾¶
-            public Vector2 pos;//³õÊ¼Ïà¶ÔÎ»ÖÃ
-            public Vector3 rotation;//½Ç¶È
-            public Vector3 scale;//Ëõ·Å
+            public string assetPath;//èµ„æºè·¯å¾„
+            public Vector2 pos;//åˆå§‹ç›¸å¯¹ä½ç½®
+            public Vector3 rotation;//è§’åº¦
+            public Vector3 scale;//ç¼©æ”¾
+        }
+
+        public class WaitEventInfo
+        {
+            public SkillConditionType conditionType;
+            public float timeElapsed;
         }
 
         public EffectEventInfo effectEventInfo = null;
 
-        //BuffÊÂ¼ş
-        [Serializable]
-        public class BuffEventInfo
-        {
-            public int buffId;
-        }
-
-        public BuffEventInfo buffEventInfo = null;
-
-
-        public bool continuous;//³ÖĞø¼ì²âÊÂ¼ş´¥·¢
-        public int nextSkill;//¼¼ÄÜ½áÊøºóÁ¬½ÓÏÂÒ»¸ö¼¼ÄÜ
+        public bool continuous;//æŒç»­æ£€æµ‹äº‹ä»¶è§¦å‘
+        public int nextSkill;//æŠ€èƒ½ç»“æŸåè¿æ¥ä¸‹ä¸€ä¸ªæŠ€èƒ½
     }
 
     [Serializable]
     public class SkillSelector
     {
-        public SkillSelectorType selectorType;//Ñ¡ÔñÆ÷ÀàĞÍ
-        public float selectorAngle;//Ñ¡ÔñÆ÷½Ç¶È
-        public float selectorRadius;//Ñ¡ÔñÆ÷°ë¾¶
-        public float selectorWidth;//Ñ¡ÔñÆ÷¿í
-        public float selectorHeight;//Ñ¡ÔñÆ÷¸ß
-        public Vector2 selectorOffest;//Ñ¡ÔñÆ÷Æ«ÒÆ
+        public SkillSelectorType selectorType;//é€‰æ‹©å™¨ç±»å‹
+        public float selectorAngle;//é€‰æ‹©å™¨è§’åº¦
+        public float selectorRadius;//é€‰æ‹©å™¨åŠå¾„
+        public float selectorWidth;//é€‰æ‹©å™¨å®½
+        public float selectorHeight;//é€‰æ‹©å™¨é«˜
+        public Vector2 selectorOffest;//é€‰æ‹©å™¨åç§»
     }
 
     [Serializable]
     public class SkillPrevCondition
     {
-        public SkillPrevConditionType prevConditionType;
+        public SkillConditionType conditionType;
         public bool isRevert;
         public int hpLimit;
+        public float timeElapsed;
     }
 
     public string skillName; 
     public int skillFrameCount;
-    public SkillDeployerType deployerType;//ÊÍ·ÅÆ÷ÀàĞÍ
+    public SkillDeployerType deployerType;//é‡Šæ”¾å™¨ç±»å‹
     public SerializableDictionary<int, SkillSelector> dicSkillSelectors = null;
     public SerializableDictionary<int, SerializableList<SkillEvent>> dicSkillEvents = null;
     public SkillKey skillKey;
-    public SkillPrevCondition[] skillPrevConditions;//ÊÍ·Å¼¼ÄÜµÄÇ°ÖÃÌõ¼ş
+    public SkillPrevCondition[] skillPrevConditions;//é‡Šæ”¾æŠ€èƒ½çš„å‰ç½®æ¡ä»¶
 }

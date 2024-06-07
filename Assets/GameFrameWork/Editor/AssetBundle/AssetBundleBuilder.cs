@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -171,7 +171,7 @@ namespace GameFrameWork.Editor
 
                         for (int j = 0; j < listFiles.Count; j++)
                         {
-                            m_AssetMap.Add(listFiles[j].Substring(7), bundleName);
+                            m_AssetMap.Add(listFiles[j].Substring(7), bundleName + extend);
                         }
 
                         return true;
@@ -188,7 +188,7 @@ namespace GameFrameWork.Editor
 
             for (int i = 0; i < listFiles.Count; i++)
             {
-                m_AssetMap.Add(listFiles[i].Substring(7), bundleName);
+                m_AssetMap.Add(listFiles[i].Substring(7), bundleName + extend);
             }
 
             AssetBundleBuild build = new AssetBundleBuild();
@@ -232,7 +232,7 @@ namespace GameFrameWork.Editor
                 build.assetBundleName = bundleName + extend;
                 build.assetNames = new string[] { listFiles[i] };
                 m_BuildMaps.Add(build);
-                m_AssetMap.Add(listFiles[i].Substring(7), bundleName);
+                m_AssetMap.Add(listFiles[i].Substring(7), bundleName + extend);
             }
 
             return true;
@@ -256,17 +256,17 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < m_ListFiles.Count; i++)
             {
                 string md5 = FileUtil.MD5File(m_ListFiles[i]);
-                string value = m_ListFiles[i].Replace(config.assetBuildFullDir, string.Empty);
-                string directory = Path.GetDirectoryName(value).Replace("\\", "/");
-                string fileName = Path.GetFileNameWithoutExtension(value);
-                string ext = Path.GetExtension(value);
+                string value = m_ListFiles[i].Replace(config.assetBuildFullDir, string.Empty).Replace("\\", "/");
+                //string directory = Path.GetDirectoryName(value).Replace("\\", "/");
+                //string fileName = Path.GetFileNameWithoutExtension(value);
+                //string ext = Path.GetExtension(value);
 
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    directory += "/";
-                }
+                //if (!string.IsNullOrEmpty(directory))
+                //{
+                //    directory += "/";
+                //}
 
-                content += directory + fileName + "|" + ext + "|" + md5 + (i < m_ListFiles.Count - 1 ? "\n" : string.Empty);
+                content += value + "|" + md5 + (i < m_ListFiles.Count - 1 ? "\n" : string.Empty);
             }
 
             FileUtil.CreateTextFile(versionPath, content);

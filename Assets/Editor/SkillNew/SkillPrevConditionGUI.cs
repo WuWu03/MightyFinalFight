@@ -51,9 +51,9 @@ namespace SkillNew
 
                         EditorGUILayout.EndHorizontal();
 
-                        DrawField(() => { return m_ListPrevCondition[i].prevConditionType != skillPrevCondition.prevConditionType; },
-                            () => { m_ListPrevCondition[i].prevConditionType = (SkillPrevConditionType)EditorGUILayout.EnumPopup("条件类型", m_ListPrevCondition[i].prevConditionType); },
-                            () => { skillPrevCondition.prevConditionType = m_ListPrevCondition[i].prevConditionType; });
+                        DrawField(() => { return m_ListPrevCondition[i].conditionType != skillPrevCondition.conditionType; },
+                            () => { m_ListPrevCondition[i].conditionType = (SkillConditionType)EditorGUILayout.EnumPopup("条件类型", m_ListPrevCondition[i].conditionType); },
+                            () => { skillPrevCondition.conditionType = m_ListPrevCondition[i].conditionType; });
 
                         DrawField(() => { return m_ListPrevCondition[i].hpLimit != skillPrevCondition.hpLimit; },
                             () => { m_ListPrevCondition[i].hpLimit = EditorGUILayout.IntField("血量限制", m_ListPrevCondition[i].hpLimit); },
@@ -107,7 +107,7 @@ namespace SkillNew
         {
             SkillPrevCondition newCondition = new SkillPrevCondition
             {
-                prevConditionType = source.prevConditionType,
+                conditionType = source.conditionType,
                 isRevert = source.isRevert,
                 hpLimit = source.hpLimit
             };

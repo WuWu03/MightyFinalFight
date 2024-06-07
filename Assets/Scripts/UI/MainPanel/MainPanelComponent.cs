@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-06-06 19:13*************************************/
+/**2024-06-07 11:07*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -11,13 +11,13 @@ using GameFrameWork.UI;
 
 public class MainPanelComponent : BasePanelComponent
 {
-	//bg/top/playerHpBar,Slider
+	//bg/top/player/playerHpBar,Slider
 	public Slider playerHpBar { get; private set; }
-	//bg/top/playerHpBar/playerHpBarImage,Image
+	//bg/top/player/playerHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage { get; private set; }
-	//bg/top/enemyHpBar,Slider
+	//bg/top/enemy/enemyHpBar,Slider
 	public Slider enemyHpBar { get; private set; }
-	//bg/top/enemyHpBar/playerHpBarImage,Image
+	//bg/top/enemy/enemyHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage1 { get; private set; }
 	//bg/top/stage/txtStage,Text
 	public Text txtStage { get; private set; }

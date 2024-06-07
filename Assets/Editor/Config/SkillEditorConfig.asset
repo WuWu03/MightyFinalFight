@@ -24,7 +24,7 @@ MonoBehaviour:
       - Key: 1
         Value:
           target:
-          - skillEventType: 7
+          - skillEventType: 10
             animEventInfo:
               animName: 
               animSpeed: 0
@@ -116,14 +116,13 @@ MonoBehaviour:
               pos: {x: 0, y: 0}
               rotation: {x: 0, y: 0, z: 0}
               scale: {x: 0, y: 0, z: 0}
-            buffEventInfo:
-              buffId: 0
             continuous: 0
             nextSkill: 0
     skillKey:
       keys: 
       addTrigger: 0
     skillPrevConditions:
-    - prevConditionType: 0
+    - conditionType: 0
       isRevert: 0
       hpLimit: 0
+      timeElapsed: 0
