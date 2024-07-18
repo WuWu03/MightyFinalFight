@@ -107,8 +107,8 @@ namespace GameFrameWork.Editor
         Vector2 pos;
         private void OnGUI()
         {
-            int atlasIndex = EditorGUILayout.Popup("µ±Ç°Í¼¼¯", m_CurrAtlasIndex, m_DisplayAtlasNames);
-            m_BuildPath = EditorGUILayout.TextField("Í¼¼¯Â·¾¶", m_BuildPath);
+            int atlasIndex = EditorGUILayout.Popup("å½“å‰å›¾é›†", m_CurrAtlasIndex, m_DisplayAtlasNames);
+            m_BuildPath = EditorGUILayout.TextField("å›¾é›†è·¯å¾„", m_BuildPath);
 
             if (string.IsNullOrEmpty(m_BuildPath))
             {
@@ -256,7 +256,7 @@ namespace GameFrameWork.Editor
 
         private void CreateNewAtals()
         {
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("´´½¨ĞÂÍ¼¼¯", "New Atlas", "spriteatlas", "Save Atals as...", PathUtil.GetAssetFullPath(m_BuildPath));
+            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("åˆ›å»ºæ–°å›¾é›†", "New Atlas", "spriteatlas", "Save Atals as...", PathUtil.GetAssetFullPath(m_BuildPath));
 
             if (!string.IsNullOrEmpty(path))
             {
@@ -273,7 +273,7 @@ namespace GameFrameWork.Editor
                 atlas.SetPlatformSettings(new TextureImporterPlatformSettings
                 {
                     maxTextureSize = 2048,
-                    textureCompression = TextureImporterCompression.CompressedHQ,
+                    textureCompression = TextureImporterCompression.CompressedLQ,
                     format = TextureImporterFormat.Automatic,
                 });
 
@@ -315,7 +315,7 @@ namespace GameFrameWork.Editor
 
             if(!hasChanged)
             {
-                ShowNotification(new GUIContent("Í¼¼¯Î´·¢Éú±ä»¯£¬ÎŞĞè´ò°üÍ¼¼¯"));
+                ShowNotification(new GUIContent("å›¾é›†æœªå‘ç”Ÿå˜åŒ–ï¼Œæ— éœ€æ‰“åŒ…å›¾é›†"));
                 return;
             }
 
@@ -336,7 +336,7 @@ namespace GameFrameWork.Editor
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             UpdateSpriteStatus();
-            ShowNotification(new GUIContent("Í¼¼¯´ò°ü³É¹¦"));
+            ShowNotification(new GUIContent("å›¾é›†æ‰“åŒ…æˆåŠŸ"));
             Selection.activeObject = m_ListAtlas[m_CurrAtlasIndex];
         }
 

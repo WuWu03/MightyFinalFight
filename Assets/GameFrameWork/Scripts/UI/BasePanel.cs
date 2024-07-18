@@ -180,6 +180,15 @@ namespace GameFrameWork.UI
         protected abstract void OnClose();
         protected abstract void OnDestroy();
 
+        protected virtual void OnJoyStickUp() { }
+        protected virtual void OnJoyStickLeft() { }
+        protected virtual void OnJoyStickDown() { }
+        protected virtual void OnJoyStickRight() { }
+        protected virtual void OnButtonA() { }
+        protected virtual void OnButtonB() { }
+        protected virtual void OnButtonX() { }
+        protected virtual void OnButtonY() { }
+
         protected void AddEvent(int eventId, EventHandler<GameEventArgs> handler)
         {
             if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArgs>> list))

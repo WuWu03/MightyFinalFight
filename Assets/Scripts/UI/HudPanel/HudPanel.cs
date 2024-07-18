@@ -74,7 +74,7 @@ public class HudPanel : BasePanel
         text.DOFade(1, 0);
         text.transform.localScale = Vector3.one * 2f;
         text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
-        Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
+        Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos); 
         Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.instance.uiCamera);
         textRect.localPosition = uguiPos;
         textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);

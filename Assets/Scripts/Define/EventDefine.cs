@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct EventDefine
 {
-    public const int TalkEndEventId = 1001;
-    public const int StageEnterStartEventId = 2001;
-    public const int StageEnterEndEventId = 2002; 
+    public const int TalkEndEvent = 1001;
+    public const int StageEnterStartEvent = 2001;
+    public const int StageEnterEndEvent = 2002; 
 }

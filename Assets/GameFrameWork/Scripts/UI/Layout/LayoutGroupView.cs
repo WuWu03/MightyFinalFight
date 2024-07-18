@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +14,8 @@ namespace GameFrameWork.UI
         {
             m_Item = item;
             m_ItemParent = parent;
+            m_Item.SetActive(false);
+
             m_ListItem = new List<T>();
 
             for (int i = 0; i < initCount; i++)

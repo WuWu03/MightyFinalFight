@@ -12,7 +12,7 @@
   "MainPanelLife": "PL",
   "MainPanelLevel": "LEVEL",
   "MainPanelExp": "EXP",
-  "Talk1001":"HEN-HEN. I AM THRASHER.",
+  "Talk1001":"HEN-HEN. I AM DAMND.",
   "Talk1002":"RULER OF THIS CITY.",
   "Talk1003": "BOW DOWN BEFORE ME!",
   "Talk1004":"I AM SUPERIOR.",
@@ -25,6 +25,11 @@
   "Talk1011":"DON'T YOU KNOW I RULE THE STREETS!?",
   "Talk1012":"ARGHHHHH!",
   "Talk1013":"THOSE WHO OFFEND ME MUST DIE!",
-  "TalkSelectYes":"YES",
-  "TalkSelectNo":"NO"
+  "Talk1003_Select1":"YES",
+  "Talk1003_Select2":"NO",
+  "Talk1006_Select1":"YES",
+  "Talk1006_Select2":"NO",
+  "Talk1011_Select1":"YES",
+  "Talk1011_Select2":"NO"
+  
 }

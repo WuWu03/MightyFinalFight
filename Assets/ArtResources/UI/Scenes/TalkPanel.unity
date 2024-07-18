@@ -134,7 +134,9 @@ GameObject:
   - component: {fileID: 81327187}
   - component: {fileID: 81327190}
   - component: {fileID: 81327189}
+  - component: {fileID: 81327191}
   - component: {fileID: 81327188}
+  - component: {fileID: 81327192}
   m_Layer: 0
   m_Name: txtContent
   m_TagString: Untagged
@@ -158,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 14.02}
   m_SizeDelta: {x: 1200, y: 49.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &81327188
@@ -173,9 +175,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseDefaultName: 1
-  m_RefName: txtContent
-  m_ComponentName: Text
+  m_UseDefaultName: 0
+  m_RefName: languageContent
+  m_ComponentName: LanguageText
   m_Desc: 
   m_IsLayoutItem: 0
   m_IsLayoutItemVariable: 0
@@ -204,7 +206,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: a195e329d1697144ba24eb074ad13644, type: 3}
-    m_FontSize: 30
+    m_FontSize: 35
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -224,6 +226,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81327186}
   m_CullTransparentMesh: 1
+--- !u!114 &81327191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81327186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce2414c347e134e4b9b8c186ab24aaca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  languageTextId: -1
+  languageTextKey: 
+  languageMode: 1
+--- !u!114 &81327192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81327186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UseDefaultName: 1
+  m_RefName: txtContent
+  m_ComponentName: Text
+  m_Desc: 
+  m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 0
+  m_IsLayout: 0
+  m_IsScrollLayout: 0
+  m_IsCopyRefStr: 0
 --- !u!1 &161920217
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +463,9 @@ GameObject:
   - component: {fileID: 183817133}
   - component: {fileID: 183817136}
   - component: {fileID: 183817135}
+  - component: {fileID: 183817140}
   - component: {fileID: 183817139}
+  - component: {fileID: 183817141}
   m_Layer: 0
   m_Name: txtSelect
   m_TagString: Untagged
@@ -447,10 +487,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1617518071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 78.62069, y: -9.827586}
-  m_SizeDelta: {x: 157.24138, y: 19.655172}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183817135
 MonoBehaviour:
@@ -473,7 +513,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 6e701116d9b8e23499298f5999af0519, type: 3}
+    m_Font: {fileID: 12800000, guid: a195e329d1697144ba24eb074ad13644, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -495,6 +535,42 @@ CanvasRenderer:
   m_GameObject: {fileID: 183817132}
   m_CullTransparentMesh: 1
 --- !u!114 &183817139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183817132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UseDefaultName: 0
+  m_RefName: languageSelect
+  m_ComponentName: LanguageText
+  m_Desc: 
+  m_IsLayoutItem: 0
+  m_IsLayoutItemVariable: 1
+  m_IsLayout: 0
+  m_IsScrollLayout: 0
+  m_IsCopyRefStr: 0
+--- !u!114 &183817140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183817132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce2414c347e134e4b9b8c186ab24aaca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  languageTextId: -1
+  languageTextKey: 
+  languageMode: 1
+--- !u!114 &183817141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -668,8 +744,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -4.5999985, y: 1}
-  m_SizeDelta: {x: 8.04, y: 16.08}
+  m_AnchoredPosition: {x: -8.81, y: 0}
+  m_SizeDelta: {x: 10.65, y: 21.17}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1116311662
 MonoBehaviour:
@@ -714,7 +790,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 17f56cb49c9515c4794fd11317dad248, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -859,6 +935,7 @@ MonoBehaviour:
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/TalkPanel/TalkPanel.cs
   panelComponentPath: Assets/Scripts/UI/TalkPanel/TalkPanelComponent.cs
+  panelSettingsPath: Assets/Scripts/UI/TalkPanel/TalkPanelSettings.cs
   panelPrefabPath: Assets/ArtResources/UI/Prefabs/TalkPanel.prefab
 --- !u!4 &1507287115
 Transform:
@@ -925,6 +1002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
+  - {fileID: 81327191}
   - {fileID: 81327189}
   - {fileID: 161920217}
   - {fileID: 1617518070}
@@ -945,7 +1023,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1617518071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -962,10 +1040,10 @@ RectTransform:
   - {fileID: 1116311661}
   m_Father: {fileID: 161920218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 78.62069, y: -9.827586}
-  m_SizeDelta: {x: 157.24138, y: 19.655172}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1617518072
 MonoBehaviour:

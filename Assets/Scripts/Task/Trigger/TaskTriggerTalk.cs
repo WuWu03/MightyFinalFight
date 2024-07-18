@@ -19,7 +19,7 @@ public class TaskTriggerTalk : BaseTaskTrigger
         base.Enter();
         TalkPanel a = UIMgr.instance.Open<TalkPanel>(m_TaskData.TalkID);
         PlayerMgr.instance.player.currCtrl.Move(Vector2.zero);
-        EventMgr.instance.Subscribe(EventDefine.TalkEndEventId, OnTalkEnd);
+        EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 
     private void OnTalkEnd(object sender, GameEventArgs e)
@@ -35,6 +35,6 @@ public class TaskTriggerTalk : BaseTaskTrigger
     public override void Complete()
     {
         base.Complete();
-        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEventId, OnTalkEnd);
+        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 }

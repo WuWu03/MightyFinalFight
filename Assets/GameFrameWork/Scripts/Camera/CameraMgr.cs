@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -173,6 +174,7 @@ namespace GameFrameWork.Camera
         public void Shake(float duration = 0.3f, float strength = 1f, int vibrato = 10, float randomness = 90f, bool snapping = false, bool fadeOut = true)
         {
             m_CameraFollow.EndFollow();
+
             m_CameraRoot.transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut).OnComplete(OnShakeComplete);
         }
 

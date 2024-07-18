@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Input
@@ -27,7 +27,7 @@ namespace GameFrameWork.Input
             m_TriggerKey = new List<KeyType>();
             m_QueueKeyDown = new Queue<string>();
             m_DicAfterTriggerEvents = new Dictionary<KeyType, List<GameFrameWorkAction>>();
-
+   
             InputHelper.Init();
         }
 

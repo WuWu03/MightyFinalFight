@@ -102,7 +102,7 @@ public class StageMgr : BaseMgr<StageMgr>
             EntityMgr.instance.DestoryAllUnUsedEntities();
             GameObjectPool.instance.CheckRelease();
             AssetsPool.instance.CheckRelease();
-            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEventId));
+            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEvent));
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath);
             ReferencePool.Release();
         });
@@ -205,7 +205,7 @@ public class StageMgr : BaseMgr<StageMgr>
                 TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
             }
 
-            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEventId));
+            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
         });
     }
 

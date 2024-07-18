@@ -25,7 +25,7 @@ public class GameEntry : GameFrameWorkEntry
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new SimplifiedChineseLanguageLoader(AssetPathDefine.SimplifiedChinesePath));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new EnglishLanguageLoader(AssetPathDefine.EnglishPath));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new JapaneseLanguageLoader(AssetPathDefine.JapanesePath));
-        LocalizationMgr.instance.ChangeLanguage(LanguageType.English);
+        LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
 
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);

@@ -44,7 +44,7 @@ public class MainPanel : BasePanel
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
 		SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
-		AddEvent(EventDefine.StageEnterStartEventId, OnStageEnterStartEvent);
+		AddEvent(EventDefine.StageEnterStartEvent, OnStageEnterStartEvent);
 		SetColor();
 	}
 

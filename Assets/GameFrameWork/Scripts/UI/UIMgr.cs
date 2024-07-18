@@ -69,6 +69,7 @@ namespace GameFrameWork.UI
             }
         }
 
+
         protected override void OnAwake()
         {
             m_ListOpenPanel = new List<BasePanel>();

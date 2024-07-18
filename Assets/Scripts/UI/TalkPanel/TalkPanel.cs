@@ -5,6 +5,7 @@
 using DG.Tweening;
 using GameFrameWork.Event;
 using GameFrameWork.Input;
+using GameFrameWork.Localization;
 using GameFrameWork.UI;
 using System;
 using System.Threading.Tasks;
@@ -40,7 +41,8 @@ public class TalkPanel : BasePanel
 	protected override void OnOpen()
 	{
         m_Component.talkSelect.SetActive(false);
-		PlayTalk();
+        m_Component.talkSelectGroupView.SelectItem(0);
+        PlayTalk();
     }
 
     protected override void OnUpdate()
@@ -115,10 +117,12 @@ public class TalkPanel : BasePanel
             return;
         }
 
+        string content = LocalizationMgr.instance.GetLanguageText(talkConfigData.content);
         m_Component.txtContent.text = string.Empty;
-        m_Component.txtContent.DOText(talkConfigData.content, talkConfigData.content.Length * 0.05f).OnComplete(async () =>
+        m_Component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(async () =>
 		{
             m_IsComplete = true;
+            m_Component.languageContent.UpdateLanguageTextKey(talkConfigData.content);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
 			{
@@ -133,7 +137,7 @@ public class TalkPanel : BasePanel
                 if (talkConfigData.nextTalkId == 0)
                 {
                     await Task.Delay(1000);
-                    EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.TalkEndEventId));
+                    EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.TalkEndEvent));
                     Close();
                 }
             }
@@ -143,7 +147,7 @@ public class TalkPanel : BasePanel
     private void OnItemUpdateEvent(TalkPanelComponent.TalkSelectItem item)
     {
         TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
-        item.txtSelect.text = talkConfigData.talkSelect[item.itemIndex].content;
+        item.languageSelect.UpdateLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
     }
 
     private void OnItemSelectEvent(TalkPanelComponent.TalkSelectItem item, bool isSelect)

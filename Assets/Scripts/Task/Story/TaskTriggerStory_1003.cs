@@ -32,7 +32,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         m_Boss = SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
         m_Boss.currCtrl.Stop();
 
-        EventMgr.instance.Subscribe(EventDefine.TalkEndEventId, OnTalkEnd);
+        EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 
     public override void Trigger()
@@ -87,7 +87,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
     public override void Complete()
     {
         base.Complete();
-        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEventId, OnTalkEnd);
+        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 
     private void OnTalkEnd(object sender, GameEventArgs e)
