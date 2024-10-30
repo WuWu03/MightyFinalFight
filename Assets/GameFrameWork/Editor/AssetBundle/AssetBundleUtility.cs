@@ -8,6 +8,13 @@ namespace GameFrameWork.Editor
     [InitializeOnLoad]
     public static class AssetBundleUtility
     {
+        enum AssetFindResult
+        {
+            Failure = 1,//澶辫触
+            Success = 2,//鎴愬姛
+            InSubPath = 3,//瀛愮洰褰曟湁璧勬簮
+        }
+
         static AssetBundleUtility()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemGUI;
@@ -24,7 +31,7 @@ namespace GameFrameWork.Editor
         private static void ProjectWindowItemGUI(string guid, Rect selectionRect)
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-  
+
             if (string.IsNullOrEmpty(assetPath) || !assetPath.Contains("Assets"))
             {
                 return;
@@ -35,38 +42,38 @@ namespace GameFrameWork.Editor
                 assetPath = assetPath + "/";
             }
 
-            int result = GetAssetBuildMapIndex(assetPath);
+            AssetFindResult result = GetAssetBuildMapIndex(assetPath, out int assetIndex);
 
-            if (result != -1)
+            if (result == AssetFindResult.Failure)
             {
-                GUIStyle labelStyle = new GUIStyle("AssetLabel");
-                labelStyle.alignment = TextAnchor.MiddleCenter;
-                labelStyle.normal.textColor = Color.green;
-                labelStyle.focused.textColor = Color.green;
-                float x = selectionRect.x + selectionRect.width - 40;
-                float y = selectionRect.y;
-                float width = 40f;
-                float height = selectionRect.height;
+                return;
+            }
 
-                if (result >= 0)
-                {
-                    GUI.Label(new Rect(x, y, width, height), (result + 1).ToString(), labelStyle);
-                }
-                else
-                {
-                    GUI.Label(new Rect(x, y, width, height), "*", labelStyle);
-                }
+            GUIStyle labelStyle = new GUIStyle("AssetLabel");
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.normal.textColor = Color.green;
+            labelStyle.focused.textColor = Color.green;
+            float x = selectionRect.x + selectionRect.width - 40;
+            float y = selectionRect.y;
+            float width = 40f;
+            float height = selectionRect.height;
+
+            if (result == AssetFindResult.Success)
+            {
+                GUI.Label(new Rect(x, y, width, height), (assetIndex + 1).ToString(), labelStyle);
+            }
+            else if (result == AssetFindResult.InSubPath)
+            {
+                GUI.Label(new Rect(x, y, width, height), "*", labelStyle);
             }
         }
 
-        /// <summary>
-        /// -1没找到，-2路径有打包资源
-        /// </summary>
-        private static int GetAssetBuildMapIndex(string assetPath)
+        private static AssetFindResult GetAssetBuildMapIndex(string assetPath, out int assetIndex)
         {
             if (m_AssetBundleConfig == null)
             {
-                return -1;
+                assetIndex = -1;
+                return AssetFindResult.Failure;
             }
 
             if (!m_DicAssetContainer.TryGetValue(assetPath, out int result))
@@ -81,19 +88,29 @@ namespace GameFrameWork.Editor
                     if (m_AssetBundleConfig.listDatas[i].assetPath.Equals(assetPath) || assetPath.StartsWith(m_AssetBundleConfig.listDatas[i].assetPath))
                     {
                         m_DicAssetContainer.Add(assetPath, i);
-                        return i;
+                        assetIndex = i;
+                        return AssetFindResult.Success;
                     }
                     else if (m_AssetBundleConfig.listDatas[i].assetPath.Contains(assetPath))
                     {
-                        m_DicAssetContainer.Add(assetPath, -2);
-                        return -2;
+                        m_DicAssetContainer.Add(assetPath, -1);
+                        assetIndex = -1;
+                        return AssetFindResult.InSubPath;
                     }
                 }
 
-                return -1;
+                assetIndex = -1;
+                return AssetFindResult.Failure;
             }
 
-            return result;
+            assetIndex = result;
+
+            if (result == -1)
+            {
+                return AssetFindResult.InSubPath;
+            }
+
+            return AssetFindResult.Success;
         }
 
         private static Dictionary<string, int> m_DicAssetContainer = null;

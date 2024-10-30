@@ -1,9 +1,8 @@
-﻿using GameFrameWork.Pool;
 using GameFrameWork.Assets;
+using GameFrameWork.Pool;
 using GameFrameWork.Utilities;
 using System.Text;
 using UnityEngine;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 namespace GameFrameWork
@@ -90,7 +89,6 @@ namespace GameFrameWork
 
             return comp;
         }
-
 
         public static void SetSprite(this Image renderer, string spriteName)
         {
@@ -346,7 +344,42 @@ namespace GameFrameWork
             return new Vector3(x, y, z);
         }
 
-        public static StringBuilder AppendInt(this StringBuilder sb, int n, int len = 0)
+        public static void ForceRebuildLayoutImmediate(this RectTransform rectTransform)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        }
+
+        public static Vector2 GetContentSizeFitterPreferredSize(this ContentSizeFitter contentSizeFitter)
+        {
+            RectTransform rectTransform = contentSizeFitter.GetComponent<RectTransform>();
+            rectTransform.ForceRebuildLayoutImmediate();
+
+            float horizontalSize;
+            float verticalSize;
+
+            if (contentSizeFitter.horizontalFit == ContentSizeFitter.FitMode.MinSize)
+            {
+                horizontalSize = LayoutUtility.GetMinSize(rectTransform, 0);
+            }
+            else
+            {
+                horizontalSize = LayoutUtility.GetPreferredSize(rectTransform, 0);
+            }
+
+            if (contentSizeFitter.verticalFit == ContentSizeFitter.FitMode.MinSize)
+            {
+                verticalSize = LayoutUtility.GetMinSize(rectTransform, 1);
+            }
+            else
+            {
+                verticalSize = LayoutUtility.GetPreferredSize(rectTransform, 1);
+            }
+
+            return new Vector2(horizontalSize, verticalSize);
+        }
+
+
+        public static void AppendInt(this StringBuilder sb, int n, int len = 0)
         {
             int l;
             int k;
@@ -381,8 +414,6 @@ namespace GameFrameWork
                     k /= 10;
                 }
             } while (k > 0);
-
-            return sb;
         }
     }
 }

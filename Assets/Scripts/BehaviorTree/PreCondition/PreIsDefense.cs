@@ -1,8 +1,4 @@
-﻿using GameFrameWork.BehaviourTree;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using GameFrameWork.BehaviourTree;
 using UnityEngine;
 
 public class PreIsDefense : PreCondition
@@ -34,7 +30,7 @@ public class PreIsDefense : PreCondition
 
         if (m_IsDefense)
         {
-            data.hurtSound = "Sound/OnEat";
+            data.hurtSound = SoundName.Eat;
             data.attackValue = 0;
         }
 

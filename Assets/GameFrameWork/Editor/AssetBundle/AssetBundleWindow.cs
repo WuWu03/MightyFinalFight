@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -15,12 +15,12 @@ namespace GameFrameWork.Editor
             m_ListPatternIndex = new List<int>();
             m_ListBundleExtendIndex = new List<int>();
             m_ListDataHasRemove = new List<bool>();
+            m_StackRemovedData = new Stack<int>();
         }
 
         private void OnDisable()
         {
             AssetBundleUtility.RefreshData();
-            //SaveConfig();
         }
 
         private void OnDestroy()
@@ -36,12 +36,17 @@ namespace GameFrameWork.Editor
 
         private bool IsConfigChanged()
         {
-            if(m_ListData == null)
+            if (m_StackRemovedData.Count > 0)
+            {
+                return true;
+            }
+
+            if (m_ListData == null)
             {
                 return false;
             }
 
-            if(m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
+            if (m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
             {
                 return true;
             }
@@ -145,6 +150,8 @@ namespace GameFrameWork.Editor
             }
 
             m_AssetBundleConfig.listDatas = m_ListData;
+
+            m_StackRemovedData.Clear();
             m_ListDataHasRemove.Clear();
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
             EditorUtility.SetDirty(m_AssetBundleConfig);
@@ -259,6 +266,7 @@ namespace GameFrameWork.Editor
                         if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                         {
                             m_ListDataHasRemove[i] = true;
+                            m_StackRemovedData.Push(i);
                         }
                     }
                     GUILayout.EndHorizontal();
@@ -519,6 +527,18 @@ namespace GameFrameWork.Editor
                 }
             }
 
+            if (m_StackRemovedData.Count> 0)
+            {
+                if (GUILayout.Button("还原已经删除配置"))
+                {
+                    if (EditorUtility.DisplayDialog("提示", "确认还原吗？", "确认", "取消"))
+                    {
+                        int dataIndex = m_StackRemovedData.Pop();
+                        m_ListDataHasRemove[dataIndex] = false;
+                    }
+                }
+            }
+
             if (GUILayout.Button("保存配置"))
             {
                 SortConfig();
@@ -583,6 +603,7 @@ namespace GameFrameWork.Editor
             "iOS"
         };
 
+        private Stack<int> m_StackRemovedData = null;
         private List<int> m_ListBundleExtendIndex = null;
         private List<int> m_ListPatternIndex = null;
         private List<bool> m_ListDataHasRemove = null;
