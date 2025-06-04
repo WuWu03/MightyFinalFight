@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -388,7 +389,7 @@ namespace GameFrameWork.Editor
 
         private static bool IsUIScene()
         {
-            return GameObject.FindObjectOfType<UIRefSetting>() != null;
+            return UnityEngine.Object.FindAnyObjectByType<UIRefSetting>() != null;
         }
 
         private static bool CanExprot()

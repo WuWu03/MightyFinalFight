@@ -550,7 +550,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        m_Rigidbody2D.drag = 0;
+        m_Rigidbody2D.linearDamping = 0;
         onDropEvent.Invoke();
         onDropEvent.RemoveAllListeners();
 

@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
@@ -91,8 +91,9 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.canContrl = false;
         CameraMgr.instance.EndFollow();
         SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
+        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 
-        UIMgr.instance.Open<LoadPanel>().DOFade(0f, 1f, 0.3f, 0, () =>
+        loadPanel.DOFade(0f, 1f, 0.3f, 0, () =>
         {
             m_OnStageStartEnterEvent?.Invoke();
             m_OnStageStartEnterEvent = null;
@@ -190,8 +191,9 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.InitPlayer();
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
+        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 
-        UIMgr.instance.Open<LoadPanel>().DOFade(1f, 0f, 0.3f, 0, () =>
+        loadPanel.DOFade(1f, 0f, 0.3f, 0, () =>
         {
             UIMgr.instance.Close<LoadPanel>();
             CameraMgr.instance.StartFollow();

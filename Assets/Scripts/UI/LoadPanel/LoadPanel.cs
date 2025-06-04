@@ -20,25 +20,9 @@ public class LoadPanel : BasePanel
 		public GameFrameWorkAction onComplete;
     }
 
-    protected override Type componentType
+    protected override void OnInit( object[] param)
     {
-		get
-		{
-			return typeof(LoadPanelComponent);
-		}
-    }
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(LoadPanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-    {
-        m_Component = panelComponent as LoadPanelComponent;
+        m_Component = GetPanelComponent<LoadPanelComponent>();
     }
 
 	protected override void OnOpen()

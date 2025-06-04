@@ -6,30 +6,13 @@ using DG.Tweening;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
-using System;
 using UnityEngine;
 
 public class TitlePanel : BasePanel
 {
-	protected override Type componentType
+    protected override void OnInit(object[] param)
 	{
-		get
-		{
-			return typeof(TitlePanelComponent);
-		}
-	}
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(TitlePanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-	{
-		m_Component = panelComponent as TitlePanelComponent;
+		m_Component = GetPanelComponent<TitlePanelComponent>();
 	}
 
 	protected override void OnOpen()
@@ -62,7 +45,7 @@ public class TitlePanel : BasePanel
 
 	private void StartGame()
 	{
-		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
 		{
 			UIMgr.instance.Open<RoleSelectPanel>();

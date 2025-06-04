@@ -1,4 +1,4 @@
-﻿namespace SRDebugger.UI
+namespace SRDebugger.UI
 {
     using Other;
     using SRF;

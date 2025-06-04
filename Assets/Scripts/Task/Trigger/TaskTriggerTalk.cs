@@ -17,7 +17,7 @@ public class TaskTriggerTalk : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        TalkPanel a = UIMgr.instance.Open<TalkPanel>(m_TaskData.TalkID);
+        UIMgr.instance.Open<TalkPanel>(m_TaskData.TalkID);
         PlayerMgr.instance.player.currCtrl.Move(Vector2.zero);
         EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Audio;
+using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,6 +45,7 @@ public class Consume : BaseSceneItem
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
             UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
+
         AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Eat);
     }
 

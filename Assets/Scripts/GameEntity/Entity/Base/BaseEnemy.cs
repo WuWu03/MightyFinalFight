@@ -112,7 +112,7 @@ public class BaseEnemy : BaseRole
 
         if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
         {
-            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
+            float x = m_Rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
 
             if (!StageMgr.instance.CanMovePosX(x))
             {
@@ -139,7 +139,7 @@ public class BaseEnemy : BaseRole
 
         if (data.attackValue > 0)
         {
-            HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
+            HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
             UIMgr.instance.Get<MainPanel>().SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
         }

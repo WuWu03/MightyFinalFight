@@ -45,8 +45,8 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
 
-            sb.AppendFormat("public class {0}Component : BasePanelComponent\r\n", setting.panelName);
-            sb.AppendLine("{");
+            sb.AppendFormat("public class {0}Component : BasePanelComponent", setting.panelName);
+            sb.AppendLine("\r\n{");
 
             List<UIRef> layoutRefList = new List<UIRef>();
             List<UIRef> normalRefList = new List<UIRef>();
@@ -138,8 +138,8 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
 
-            sb.AppendFormat("public class {0}Settings : BasePanelSettings\r\n", setting.panelName);
-            sb.AppendLine("{");
+            sb.AppendFormat("public class {0}Settings : BasePanelSettings", setting.panelName);
+            sb.AppendLine("\r\n{");
 
             sb.Append("\tpublic override string panelName { get { " + string.Format("return \"{0}\"", setting.panelName) + "; } }\r\n");
             sb.Append("\tpublic override float panelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\r\n");
@@ -170,23 +170,6 @@ namespace GameFrameWork.Editor
             sb.AppendLine();
             sb.AppendFormat("public class {0} : BasePanel", setting.panelName);
             sb.AppendLine("\r\n{");
-            sb.AppendLine("\tprotected override Type componentType");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t\tget");
-            sb.AppendLine("\t\t{");
-            sb.AppendFormat("\t\t\treturn typeof({0}Component);\r\n", setting.panelName);
-            sb.AppendLine("\t\t}");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
-
-            sb.AppendLine("\tprotected override Type settingsType");
-            sb.AppendLine("\t{");
-            sb.AppendLine("\t\tget");
-            sb.AppendLine("\t\t{");
-            sb.AppendFormat("\t\t\treturn typeof({0}Settings);\r\n", setting.panelName);
-            sb.AppendLine("\t\t}");
-            sb.AppendLine("\t}");
-            sb.AppendLine();
 
             sb.AppendLine("\tprotected override void OnInit(BasePanelComponent panelComponent, object[] param)");
             sb.AppendLine("\t{");

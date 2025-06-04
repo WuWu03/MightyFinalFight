@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace GameFrameWork
 {
@@ -11,7 +11,7 @@ namespace GameFrameWork
                 if (m_Instance == null)
                 {
 
-                    T[] instances = GameObject.FindObjectsOfType<T>();
+                    T[] instances = Object.FindObjectsByType<T>(FindObjectsSortMode.None);
 
                     if (instances != null && instances.Length > 0)
                     {

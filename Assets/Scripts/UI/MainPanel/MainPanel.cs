@@ -8,32 +8,15 @@ using GameFrameWork;
 using GameFrameWork.Event;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MainPanel : BasePanel
 {
-	protected override Type componentType
+    protected override void OnInit(object[] param)
 	{
-		get
-		{
-			return typeof(MainPanelComponent);
-		}
-	}
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(MainPanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-	{
-		m_Component = panelComponent as MainPanelComponent;
-		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
+		m_Component = GetPanelComponent<MainPanelComponent>();
+        m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
 	protected override void OnOpen()

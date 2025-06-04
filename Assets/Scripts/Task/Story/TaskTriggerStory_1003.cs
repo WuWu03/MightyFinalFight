@@ -24,8 +24,8 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
-        int hp = 5000;// m_TaskData.Targets[0].Hp;
-        int attack = 1;// m_TaskData.Targets[0].AttackValue;
+        int hp = 300;// m_TaskData.Targets[0].Hp;
+        int attack = 30;// m_TaskData.Targets[0].AttackValue;
         int defense = m_TaskData.Targets[0].DefenseValue;
         int hpBarWidth = m_TaskData.Targets[0].HpBarWidth;
         Vector2Int pos = m_TaskData.Targets[0].Pos;
@@ -68,10 +68,10 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
-        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
+        UIMgr.instance.Get<MainPanel>().Show();
         //CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
         //group.alpha = 0f;
-        mainPanel.Show();
+
         //group.DOFade(1, 1);
 
         black.GetComponent<SpriteRenderer>().DOFade(0, 1).OnComplete(() =>

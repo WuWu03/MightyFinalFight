@@ -28,7 +28,7 @@ public class Bullet : BaseAvatar
         if (m_BulletData.isPenatrate)
         {
             bool isOutVersion = IsOutVersionX(transform.localPosition.x) || IsOutVersionY(transform.localPosition.y);
-            if (isOutVersion || m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
+            if (isOutVersion || m_Rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
             {
                 Release();
                 return;
@@ -46,7 +46,7 @@ public class Bullet : BaseAvatar
             }
             else
             {
-                if (m_Rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
+                if (m_Rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
                 {
                     Release();
                     return;

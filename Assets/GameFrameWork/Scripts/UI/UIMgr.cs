@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace GameFrameWork.UI
 {
@@ -139,45 +140,38 @@ namespace GameFrameWork.UI
             return m_UILayerTransform[Convert.ToInt32(layer)];
         }
 
-        public T Open<T>(params object[] args) where T : BasePanel, new()
+        public T Open<T>(params object[] args) where T : BasePanel
         {
-            BasePanel panel = RealOpen(typeof(T).Name, args);
+            BasePanel panel = OpenPanel(typeof(T).Name, args);
 
-            if (panel == null)
+            if (panel != null)
             {
-                return default(T);
+                return panel as T;
             }
 
-            return panel as T;
+            return null;
         }
 
-        public BasePanel Open(string panelName, params object[] args)
+        public object Open(string panelName, params object[] args)
         {
-            return RealOpen(panelName, args);
+            return OpenPanel(panelName, args);
         }
 
         public T Get<T>() where T : BasePanel
         {
             BasePanel panel = GetPanel(typeof(T).Name);
 
-            if (panel == null)
+            if (panel != null)
             {
-                return null;
+                return panel as T;
             }
 
-            return panel as T;
+            return null;
         }
 
         public BasePanel Get(string panelName)
         {
-            BasePanel panel = GetPanel(panelName);
-
-            if (panel == null)
-            {
-                return null;
-            }
-
-            return panel;
+            return GetPanel(panelName);
         }
 
         public bool IsOpen<T>()
@@ -192,7 +186,7 @@ namespace GameFrameWork.UI
             return panel != null && panel.isOpen;
         }
 
-        public void Close<T>(bool isForceDestroy = false) where T : BasePanel
+        public void Close<T>(bool isForceDestroy = false)
         {
             ClosePanel(typeof(T).Name, isForceDestroy);
         }
@@ -212,7 +206,7 @@ namespace GameFrameWork.UI
             ClosePanel(panel.settings.panelName, isForceDestroy);
         }
 
-        private BasePanel RealOpen(string panelName, object[] args)
+        private BasePanel OpenPanel(string panelName, object[] args)
         {
             System.Type type = System.Type.GetType(panelName);
 
@@ -222,7 +216,7 @@ namespace GameFrameWork.UI
                 return null;
             }
 
-            BasePanel panel = GetPanel(panelName);
+            BasePanel panel = GetPanel(panelName) ;
             bool isNew = panel == null;
 
             if (isNew)
@@ -255,7 +249,7 @@ namespace GameFrameWork.UI
                 panel.Open();
             }
 
-            if(isNew)
+            if (isNew)
             {
                 m_ListOpenPanel.Add(panel);
             }
@@ -270,9 +264,11 @@ namespace GameFrameWork.UI
         {
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                if (m_ListOpenPanel[i].settings.panelName.Equals(panelName))
+                BasePanel panel = m_ListOpenPanel[i];
+
+                if (panel.settings.panelName.Equals(panelName))
                 {
-                    return m_ListOpenPanel[i];
+                    return panel;
                 }
             }
 
@@ -323,7 +319,7 @@ namespace GameFrameWork.UI
 
             if (m_CanPopPanel && isPop && panel.settings.panelType != Type.Pop && m_ListPopPanel.Count > 0)
             {
-                BasePanel oldPanel = m_ListPopPanel[m_ListPopPanel.Count- 1];
+                BasePanel oldPanel = m_ListPopPanel[m_ListPopPanel.Count - 1];
                 oldPanel.Open();
                 m_ListOpenPanel.Add(oldPanel);
                 m_ListAlways.Remove(oldPanel);
@@ -348,7 +344,7 @@ namespace GameFrameWork.UI
                 Queue<WaitLoadPanel> queue = m_QueueWaitLoadPanel;
 
                 lock (queue)
-                { 
+                {
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
                     string prefabName = StringUtil.Format(waitLoadPanel.panel.settings.panelName, ".prefab");
                     GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), prefabName), OnLoadComplete, waitLoadPanel);
@@ -369,7 +365,7 @@ namespace GameFrameWork.UI
                         m_ListDelayDestroy.Remove(panel);
                         m_ListPopPanel.Remove(panel);
 
-                        if(m_CurrPopPanel == panel)
+                        if (m_CurrPopPanel == panel)
                         {
                             m_CurrPopPanel = null;
                         }
@@ -394,9 +390,10 @@ namespace GameFrameWork.UI
 
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                if (m_ListOpenPanel[i].isOpen)
+                BasePanel panel = m_ListOpenPanel[i];
+                if (panel.isOpen)
                 {
-                    m_ListOpenPanel[i].Update();
+                    panel.Update();
                 }
             }
         }

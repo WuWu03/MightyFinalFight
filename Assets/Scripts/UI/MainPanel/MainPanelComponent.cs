@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2024-06-07 11:07*************************************/
+/**2025-06-04 15:32*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -29,10 +29,6 @@ public class MainPanelComponent : BasePanelComponent
 	public GameObject itemGO { get; private set; }
 	//exp/txtExp,Text
 	public Text txtExp { get; private set; }
-	//txtEnemyDamage,Text
-	public Text txtEnemyDamage { get; private set; }
-	//txtPlayerDamage,Text
-	public Text txtPlayerDamage { get; private set; }
 	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 
 	public MainPanelComponent(UIRefRoot root) : base(root) { }
@@ -48,8 +44,6 @@ public class MainPanelComponent : BasePanelComponent
 		levelList = root.objects[6] as GameObject;
 		itemGO = root.objects[7] as GameObject;
 		txtExp = root.objects[8] as Text;
-		txtEnemyDamage = root.objects[9] as Text;
-		txtPlayerDamage = root.objects[10] as Text;
 		levelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 

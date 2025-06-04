@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +8,7 @@ public class BaseGravityObject : BaseBoundObject
     {
         get
         {
-            return m_Rigidbody2D.velocity.y >= 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
+            return m_Rigidbody2D.linearVelocity.y >= 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
         }
     }
 
@@ -16,7 +16,7 @@ public class BaseGravityObject : BaseBoundObject
     {
         get
         {
-            return m_Rigidbody2D.velocity.y < 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
+            return m_Rigidbody2D.linearVelocity.y < 0 && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic;
         }
     }
 
@@ -72,7 +72,7 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D = gameObject.GetOrAddComponent<Rigidbody2D>();
         m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-        m_Rigidbody2D.velocity = Vector2.zero;
+        m_Rigidbody2D.linearVelocity = Vector2.zero;
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
         m_Rigidbody2D.freezeRotation = true;
 
@@ -106,12 +106,12 @@ public class BaseGravityObject : BaseBoundObject
 
     public void SetVelocityX(float x, bool isGroundForce = false)
     {
-        SetVelocity(x, m_Rigidbody2D.velocity.y, isGroundForce);
+        SetVelocity(x, m_Rigidbody2D.linearVelocity.y, isGroundForce);
     }
 
     public void SetVelocityY(float y, bool isGroundForce = false)
     {
-        SetVelocity(m_Rigidbody2D.velocity.x, y, isGroundForce);
+        SetVelocity(m_Rigidbody2D.linearVelocity.x, y, isGroundForce);
     }
 
     public void SetVelocity(float x, float y, bool isGroundForce = false)
@@ -122,7 +122,7 @@ public class BaseGravityObject : BaseBoundObject
     public void SetVelocity(Vector2 velocity, bool isGroundForce = false)
     {
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-        m_Rigidbody2D.velocity = velocity;
+        m_Rigidbody2D.linearVelocity = velocity;
         m_IsAddGroundForce = isGroundForce;
     }
 
@@ -133,24 +133,24 @@ public class BaseGravityObject : BaseBoundObject
 
     public void SetDrag(float drag)
     {
-        m_Rigidbody2D.drag = drag;
+        m_Rigidbody2D.linearDamping = drag;
     }
 
     public void SetAngularDrag(float angularDrag)
     {
-        m_Rigidbody2D.angularDrag = angularDrag;
+        m_Rigidbody2D.angularDamping = angularDrag;
     }
 
     public void ResetRigidbody(bool changBodyType = true)
     {
         m_Rigidbody2D.gravityScale = 0.8f;
-        m_Rigidbody2D.drag = 0;
-        m_Rigidbody2D.angularDrag = 0;
+        m_Rigidbody2D.linearDamping = 0;
+        m_Rigidbody2D.angularDamping = 0;
       
         if (changBodyType)
         {
             m_Rigidbody2D.angularVelocity = 0;
-            m_Rigidbody2D.velocity = Vector2.zero;
+            m_Rigidbody2D.linearVelocity = Vector2.zero;
             m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
     }
@@ -196,7 +196,7 @@ public class BaseGravityObject : BaseBoundObject
             return;
         }
 
-        m_Rigidbody2D.drag = 0;
+        m_Rigidbody2D.linearDamping = 0;
         m_OnDropEvent.Invoke();
         m_OnDropEvent.RemoveAllListeners();
         OnDrop();

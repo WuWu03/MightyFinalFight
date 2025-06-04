@@ -1,4 +1,5 @@
 using GameFrameWork.Event;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,16 +16,16 @@ namespace GameFrameWork.UI
         {
             get
             {
-                if (m_Settings == null)
+                if(m_Settings == null)
                 {
-                    m_Settings = Activator.CreateInstance(settingsType) as BasePanelSettings;
+                    m_Settings = CreatePanelSetting();
                 }
 
                 return m_Settings;
             }
         }
 
-        public string assetPath 
+        public string assetPath
         {
             get
             {
@@ -56,29 +57,18 @@ namespace GameFrameWork.UI
             }
         }
 
-        protected abstract Type componentType
-        {
-            get;
-        }
-
-        protected abstract Type settingsType
-        {
-            get;
-        }
-
         public void Init(GameObject go, string assetPath, object[] param)
         {
             gameObject = go;
             transform = go.transform;
             m_UIRefRoot = go.GetComponent<UIRefRoot>();
-            m_Component = Activator.CreateInstance(componentType, new object[] { m_UIRefRoot }) as BasePanelComponent;
-            m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
             m_AssetPath = assetPath;
-
+            m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
+            m_Component = CreatePanelComponent();
             gameObject.SetLayer(LayerName.UI);
             transform.SetParent(UIMgr.instance.GetUILayer(m_Settings.panelLayer), false);
 
-            OnInit(m_Component, param);
+            OnInit(param);
             m_IsInit = true;
             Open();
 
@@ -87,7 +77,7 @@ namespace GameFrameWork.UI
                 gameObject.SetActive(false);
             }
         }
-        
+
         public void Open()
         {
             m_IsOpen = true;
@@ -121,7 +111,7 @@ namespace GameFrameWork.UI
 
         public void Show()
         {
-            if(!m_IsHide)
+            if (!m_IsHide)
             {
                 return;
             }
@@ -143,7 +133,7 @@ namespace GameFrameWork.UI
 
             m_IsHide = true;
 
-            if(gameObject != null)
+            if (gameObject != null)
             {
                 gameObject.SetActive(false);
             }
@@ -174,7 +164,46 @@ namespace GameFrameWork.UI
             OnDestroy();
         }
 
-        protected abstract void OnInit(BasePanelComponent panelComponent, object[] param);
+        private BasePanelComponent CreatePanelComponent()
+        {
+            string componentTypeName = StringUtil.Format(GetType().Name, "Component");
+            Type componentType = GetPaneInfoType(componentTypeName);
+
+            if (componentType != null)
+            {
+                return Activator.CreateInstance(componentType, new object[] { m_UIRefRoot }) as BasePanelComponent;
+            }
+
+            return null;
+        }
+
+        private BasePanelSettings CreatePanelSetting()
+        {
+            string settingsTypeName = StringUtil.Format(GetType().Name, "Settings");
+            Type settingsType = GetPaneInfoType(settingsTypeName);
+
+            if (settingsType != null)
+            {
+                return Activator.CreateInstance(settingsType) as BasePanelSettings;
+            }
+
+            return null;
+        }
+
+        private Type GetPaneInfoType(string typeName)
+        {
+            Type type = Type.GetType(typeName);
+
+            if (type == null)
+            {
+                Log.LogError(typeName, "不存在");
+                return null;
+            }
+
+            return type;
+        }
+
+        protected abstract void OnInit(object[] param);
         protected abstract void OnOpen();
         protected abstract void OnUpdate();
         protected abstract void OnClose();
@@ -210,6 +239,11 @@ namespace GameFrameWork.UI
         protected void CloseSelf()
         {
             UIMgr.instance.Close(m_Settings.panelName);
+        }
+
+        protected T GetPanelComponent<T>() where T : BasePanelComponent
+        {
+            return m_Component as T;
         }
 
         private bool m_IsOpen = false;

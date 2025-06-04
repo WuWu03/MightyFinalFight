@@ -8,31 +8,14 @@ using GameFrameWork.Pool;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StagePanel : BasePanel
 {
-    protected override Type componentType
+    protected override void OnInit(object[] param)
     {
-        get
-        {
-            return typeof(StagePanelComponent);
-        }
-    }
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(StagePanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-    {
-        m_Component = panelComponent as StagePanelComponent;
+        m_Component = GetPanelComponent<StagePanelComponent>();
     }
 
 	protected override void OnOpen()

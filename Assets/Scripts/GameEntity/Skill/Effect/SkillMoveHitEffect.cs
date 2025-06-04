@@ -21,7 +21,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
     protected override void OnComplete()
     {
         base.OnComplete();
-        m_Owner.rigidbody2D.velocity = Vector2.zero;
+        m_Owner.rigidbody2D.linearVelocity = Vector2.zero;
     }
 
     protected override void OnReset()
@@ -36,7 +36,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
             return;
         }
 
-        if (m_Owner.rigidbody2D.velocity.sqrMagnitude <= 0.1 * 0.1)
+        if (m_Owner.rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
         {
             Complete();
             return;

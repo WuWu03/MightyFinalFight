@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Object = UnityEngine.Object;
+using SRF;
 
 namespace GameFrameWork.Timer
 {
@@ -53,7 +54,7 @@ namespace GameFrameWork.Timer
         {
             if (Timer.m_TimerManager == null)
             {
-                TimerManager managerInScene = Object.FindObjectOfType<TimerManager>();
+                TimerManager managerInScene = Object.FindAnyObjectByType<TimerManager>();
 
                 if (managerInScene != null)
                 {

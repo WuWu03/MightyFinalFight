@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using GameFrameWork.Pool;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;

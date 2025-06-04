@@ -3,9 +3,11 @@ using GameFrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class HudMgr : BaseMgr<HudMgr>
 {
-    enum DamageType
+    public enum DamageType
     {
         Player = 1,
         Enemy = 2,
@@ -38,15 +40,7 @@ public class HudMgr : BaseMgr<HudMgr>
             while (m_QueueHudArgs.Count > 0)
             {
                 HudArg arg = m_QueueHudArgs.Dequeue();
-
-                if (arg.damageType == DamageType.Player)
-                {
-                    m_HudPanel.ShowPlayerDamage(arg.value, arg.pos);
-                }
-                else
-                {
-                    m_HudPanel.ShowEnemyDamage(arg.value, arg.pos);
-                }
+                m_HudPanel.ShowDamageText(arg.damageType, arg.value, arg.pos);
             }
         }
     }
@@ -73,7 +67,7 @@ public class HudMgr : BaseMgr<HudMgr>
     {
         lock (m_QueueHudArgs)
         {
-            m_QueueHudArgs.Enqueue(new HudArg { value = value, pos = pos, damageType = DamageType.Enemy });
+            m_QueueHudArgs.Enqueue(new HudArg { value = value, pos = pos, damageType = DamageType.Player });
         }
 
         ShowHud();

@@ -1,4 +1,4 @@
-﻿namespace SRDebugger.Internal
+namespace SRDebugger.Internal
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -53,7 +53,7 @@
                 return false;
             }
 
-            var e = Object.FindObjectOfType<EventSystem>();
+            var e = UnityEngine.Object.FindAnyObjectByType<EventSystem>();
 
             // Check if EventSystem is in the scene but not registered yet
             if (e != null && e.gameObject.activeSelf && e.enabled)

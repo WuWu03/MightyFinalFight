@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
 using UnityEngine;
 
 namespace GameFrameWork.Audio

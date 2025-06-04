@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Editor;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
@@ -55,7 +55,7 @@ public class EditorMgr : MonoBehaviour
     private static void BuildGame(bool openLog)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/Main.unity");
-        AppConfig appConfig = GameObject.FindObjectOfType<AppConfig>();
+        AppConfig appConfig = Object.FindAnyObjectByType<AppConfig>();
         appConfig.loadAB = true;
         appConfig.openLog = openLog;
 

@@ -3,29 +3,12 @@
 /**Create By GQY****************************************/
 /*******************************************************/
 using GameFrameWork.UI;
-using System;
 
 public class RoundClearPanel : BasePanel
 {
-    protected override Type componentType
+    protected override void OnInit(object[] param)
     {
-        get
-        {
-            return typeof(RoundClearPanelComponent);
-        }
-    }
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(RoundClearPanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-    {
-        m_Component = panelComponent as RoundClearPanelComponent;
+        m_Component = GetPanelComponent<RoundClearPanelComponent>();
     }
 
 	protected override void OnOpen()

@@ -7,31 +7,14 @@ using GameFrameWork.Event;
 using GameFrameWork.Input;
 using GameFrameWork.Localization;
 using GameFrameWork.UI;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class TalkPanel : BasePanel
 {
-    protected override Type componentType
-    {
-        get
-        {
-            return typeof(TalkPanelComponent);
-        }
-    }
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(TalkPanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent,object[] param)
+    protected override void OnInit(object[] param)
 	{
-        m_Component = panelComponent as TalkPanelComponent;
+        m_Component = GetPanelComponent<TalkPanelComponent>();
 		m_TalkId = int.Parse(param[0].ToString());
 		m_Component.talkSelectGroupView.Init(m_Component.talkSelect, m_Component.talkSelectItem);
         m_Component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;

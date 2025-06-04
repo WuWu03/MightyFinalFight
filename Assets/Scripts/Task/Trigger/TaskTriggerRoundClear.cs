@@ -27,7 +27,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
 
         if (m_PlayTimer > 0 && Time.time - m_PlayTimer >= 3.76)
         {
-            LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+            LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 
             loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
             {

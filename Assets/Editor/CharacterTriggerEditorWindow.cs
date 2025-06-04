@@ -1,4 +1,4 @@
-﻿using DragonBones;
+using DragonBones;
 using GameFrameWork;
 using UnityEditor;
 using UnityEngine;

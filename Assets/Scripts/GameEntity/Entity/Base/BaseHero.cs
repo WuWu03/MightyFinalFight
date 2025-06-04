@@ -141,9 +141,9 @@ public class BaseHero : BaseRole
         CheckCatch();
         CheckRebirthState();
 
-        if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(m_Rigidbody2D.velocity.x) > 0)
+        if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(m_Rigidbody2D.linearVelocity.x) > 0)
         {
-            float x = m_Rigidbody2D.velocity.x > 0 ? bound.xMax : bound.xMin;
+            float x = m_Rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
 
             if (IsOutVersionX(x))
             {
@@ -422,7 +422,7 @@ public class BaseHero : BaseRole
 
         if (data.attackValue > 0)
         {
-            HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
+            HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
             UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
         }

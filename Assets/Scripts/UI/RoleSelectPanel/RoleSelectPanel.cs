@@ -7,30 +7,13 @@ using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
-using System;
 using UnityEngine;
 
 public class RoleSelectPanel : BasePanel
 {
-    protected override Type componentType
+    protected override void OnInit(object[] param)
     {
-        get
-        {
-            return typeof(RoleSelectPanelComponent);
-        }
-    }
-
-    protected override Type settingsType
-    {
-        get
-        {
-            return typeof(RoleSelectPanelSettings);
-        }
-    }
-
-    protected override void OnInit(BasePanelComponent panelComponent, object[] param)
-    {
-        m_Component = panelComponent as RoleSelectPanelComponent;
+        m_Component = GetPanelComponent<RoleSelectPanelComponent>();
         m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
         m_Component.roleContentGroupView.onItemUpdateEvent = OnItemUpdate;
         m_Component.roleContentGroupView.onItemSelectEvent = OnItemSelect;
@@ -116,7 +99,7 @@ public class RoleSelectPanel : BasePanel
 		AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.OnSelected);
 		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
-		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>();
+		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
 		{
 			UIMgr.instance.Open<StagePanel>();
