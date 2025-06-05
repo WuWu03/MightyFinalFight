@@ -1,10 +1,11 @@
 /*******************************************************/
-/**2024-06-11 17:03*************************************/
+/**2025-06-04 17:16*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
@@ -13,8 +14,8 @@ public class TalkPanelComponent : BasePanelComponent
 {
 	//bottom/txtContent,LanguageText
 	public LanguageText languageContent { get; private set; }
-	//bottom/txtContent,Text
-	public Text txtContent { get; private set; }
+	//bottom/txtContent,TextMeshProUGUI
+	public TextMeshProUGUI txtContent { get; private set; }
 	//bottom/talkSelect,GameObject
 	public GameObject talkSelect { get; private set; }
 	//bottom/talkSelect/talkSelectItem,GameObject
@@ -26,7 +27,7 @@ public class TalkPanelComponent : BasePanelComponent
 	protected override void InitComponent(UIRefRoot root)
 	{
 		languageContent = root.objects[0] as LanguageText;
-		txtContent = root.objects[1] as Text;
+		txtContent = root.objects[1] as TextMeshProUGUI;
 		talkSelect = root.objects[2] as GameObject;
 		talkSelectItem = root.objects[3] as GameObject;
 		talkSelectGroupView = new LayoutGroupView<TalkSelectItem>();
@@ -35,12 +36,12 @@ public class TalkPanelComponent : BasePanelComponent
 	public class TalkSelectItem : LayoutGroupViewItem
 	{
 		public LanguageText languageSelect = null;
-		public Text txtSelect = null;
+		public TextMeshProUGUI txtSelect = null;
 		public GameObject selectGO = null;
 		protected override void OnCreate(GameObject go)
 		{
 			languageSelect = transform.Find("txtSelect").GetComponent<LanguageText>();
-			txtSelect = transform.Find("txtSelect").GetComponent<Text>();
+			txtSelect = transform.Find("txtSelect").GetComponent<TextMeshProUGUI>();
 			selectGO = transform.Find("select").gameObject;
 		}
 	}

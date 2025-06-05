@@ -102,16 +102,17 @@ public class TalkPanel : BasePanel
 
         string content = LocalizationMgr.instance.GetLanguageText(talkConfigData.content);
         m_Component.txtContent.text = string.Empty;
+
         m_Component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(async () =>
-		{
+        {
             m_IsComplete = true;
             m_Component.languageContent.UpdateLanguageTextKey(talkConfigData.content);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
-			{
+            {
                 m_Component.talkSelect.SetActive(true);
-				m_Component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
-				m_Component.talkSelectGroupView.SelectItem(0);
+                m_Component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
+                m_Component.talkSelectGroupView.SelectItem(0);
             }
             else
             {

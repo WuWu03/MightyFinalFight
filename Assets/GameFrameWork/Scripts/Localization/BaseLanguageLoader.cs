@@ -1,4 +1,5 @@
 using GameFrameWork.Assets;
+using GameFrameWork.ConfigData;
 using UnityEngine;
 
 namespace GameFrameWork.Localization
@@ -20,25 +21,20 @@ namespace GameFrameWork.Localization
 
             if (string.IsNullOrEmpty(m_DataPath))
             {
-                Log.LogError("”Ô—‘Œƒº˛¬∑æ∂≈‰÷√≤ª¥Ê‘⁄");
+                Log.LogError("ËØ≠Ë®ÄÊñá‰ª∂Ë∑ØÂæÑÈÖçÁΩÆ‰∏çÂ≠òÂú®");
                 return;
             }
 
-            if (m_TextAsset != null)
-            {
-                return;
-            }
+            TextAsset txt = AssetsMgr.instance.LoadAssetSync<TextAsset>(m_DataPath);
 
-            m_TextAsset = AssetsMgr.instance.LoadAssetSync<TextAsset>(m_DataPath);
-
-            if(m_TextAsset == null)
+            if(txt == null)
             {
-                Log.LogError("”Ô—‘Œƒº˛≤ª¥Ê‘⁄");
+                Log.LogError("ËØ≠Ë®ÄÊñá‰ª∂‰∏çÂ≠òÂú®");
                 return;
             }
 
             m_IsInit = true;
-            OnInit(m_TextAsset);
+            OnInit(txt);
         }
 
         public void Release()
@@ -49,7 +45,6 @@ namespace GameFrameWork.Localization
             }
 
             AssetsMgr.instance.UnloadAsset(m_DataPath);
-            m_TextAsset = null;
             m_IsInit = false;
             OnRelease();
         }
@@ -58,12 +53,9 @@ namespace GameFrameWork.Localization
 
         public abstract string GetLanguageText(string key);
 
-        public abstract string GetLanguageText(int id);
-
         protected abstract void OnRelease();
 
         private bool m_IsInit = false;
-        private TextAsset m_TextAsset = null;
         private string m_DataPath = string.Empty;
     }
 }

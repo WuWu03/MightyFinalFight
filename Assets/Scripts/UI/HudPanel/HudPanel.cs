@@ -51,7 +51,7 @@ public class HudPanel : BasePanel
 
         if (damageType == HudMgr.DamageType.Player)
         {
-            text.color = Color.green; // 绿色为玩家伤害
+            text.color = Color.white; // 绿色为玩家伤害
         }
         else
         {

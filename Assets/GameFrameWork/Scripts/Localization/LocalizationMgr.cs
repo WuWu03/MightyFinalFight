@@ -43,7 +43,7 @@ namespace GameFrameWork.Localization
 
             if (m_DicLanguageLoader.Count < 1)
             {
-                Log.LogError("Î´³õÊ¼»¯ÓïÑÔ¶ÁÈ¡Æ÷£¬ÇëÏÈÌí¼Ó¶ÔÓ¦ÓïÑÔµÄ¶ÁÈ¡Æ÷");
+                Log.LogError("æœªåˆå§‹åŒ–è¯­è¨€è¯»å–å™¨ï¼Œè¯·å…ˆæ·»åŠ å¯¹åº”è¯­è¨€çš„è¯»å–å™¨");
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace GameFrameWork.Localization
                 }
                 else
                 {
-                    Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
+                    Log.LogError("è¯­è¨€è¯»å–å™¨ä¸å­˜åœ¨ï¼š[", m_LanguageType, "]");
                     return;
                 }
             }
@@ -71,7 +71,7 @@ namespace GameFrameWork.Localization
             }
             else
             {
-                Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", languageType, "]");
+                Log.LogError("è¯­è¨€è¯»å–å™¨ä¸å­˜åœ¨ï¼š[", languageType, "]");
             }
         }
 
@@ -79,7 +79,7 @@ namespace GameFrameWork.Localization
         {
             if (m_DicLanguageLoader.ContainsKey(languageType))
             {
-                Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷ÒÑ¾­´æÔÚ£º[", languageType, "]");
+                Log.LogError("è¯­è¨€è¯»å–å™¨å·²ç»å­˜åœ¨ï¼š[", languageType, "]");
             }
 
             m_DicLanguageLoader.Add(languageType, loader);
@@ -97,19 +97,7 @@ namespace GameFrameWork.Localization
                 return loader.GetLanguageText(key);
             }
 
-            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
-
-            return string.Empty;
-        }
-
-        public string GetLanguageText(int id)
-        {
-            if (m_DicLanguageLoader.TryGetValue(m_LanguageType, out BaseLanguageLoader loader))
-            {
-                return loader.GetLanguageText(id);
-            }
-
-            Log.LogError("ÓïÑÔ¶ÁÈ¡Æ÷²»´æÔÚ£º[", m_LanguageType, "]");
+            Log.LogError("è¯­è¨€è¯»å–å™¨ä¸å­˜åœ¨ï¼š[", m_LanguageType, "]");
 
             return string.Empty;
         }

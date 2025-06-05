@@ -1,10 +1,11 @@
 /*******************************************************/
-/**2024-06-06 10:01*************************************/
+/**2025-06-04 17:20*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
@@ -19,10 +20,10 @@ public class TitlePanelComponent : BasePanelComponent
 	public Image imgRetro { get; private set; }
 	//imgLogo,Image
 	public Image imgLogo { get; private set; }
-	//txtStart,Text
-	public Text txtStart { get; private set; }
-	//txtDeveloper,Text
-	public Text txtDeveloper { get; private set; }
+	//txtStart,TextMeshProUGUI
+	public TextMeshProUGUI txtStart { get; private set; }
+	//txtDeveloper,TextMeshProUGUI
+	public TextMeshProUGUI txtDeveloper { get; private set; }
 	//imgCapcom,Image
 	public Image imgCapcom { get; private set; }
 
@@ -34,8 +35,8 @@ public class TitlePanelComponent : BasePanelComponent
 		imgStar = root.objects[1] as Image;
 		imgRetro = root.objects[2] as Image;
 		imgLogo = root.objects[3] as Image;
-		txtStart = root.objects[4] as Text;
-		txtDeveloper = root.objects[5] as Text;
+		txtStart = root.objects[4] as TextMeshProUGUI;
+		txtDeveloper = root.objects[5] as TextMeshProUGUI;
 		imgCapcom = root.objects[6] as Image;
 	}
 }

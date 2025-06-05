@@ -9,21 +9,13 @@ namespace GameFrameWork.UI
     [AddComponentMenu("UI/LanguageText")]
     public class LanguageText : MonoBehaviour
     {
-        public enum LanguageMode
-        {
-            UseId,
-            UseKey,
-        }
-
-        public int languageTextId;
         public string languageTextKey;
-        public LanguageMode languageMode = LanguageMode.UseKey;
 
         private void Awake()
         {
             if (!TryGetComponent(out m_TextMesh) && !TryGetComponent(out m_Text))
             {
-                Log.LogError("ÎÄ±¾×é¼þÎª¿Õ£¬Çë¼ì²é");
+                Log.LogError("æ–‡æœ¬ç»„ä»¶ä¸ºç©ºï¼Œè¯·æ£€æŸ¥");
                 return;
             }
 
@@ -44,17 +36,6 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void UpdateLanguageTextId(int id)
-        {
-            if (languageTextId == id)
-            {
-                return;
-            }
-
-            languageTextId = id;
-            languageMode = LanguageMode.UseId;
-            UpdateLanguage();
-        }
 
         public void UpdateLanguageTextKey(string key)
         {
@@ -64,7 +45,6 @@ namespace GameFrameWork.UI
             }
 
             languageTextKey = key;
-            languageMode = LanguageMode.UseKey;
             UpdateLanguage();
         }
 
@@ -75,26 +55,12 @@ namespace GameFrameWork.UI
 
         private void UpdateLanguage()
         {
-            string text;
-
-            if (languageMode == LanguageMode.UseKey)
+            if (string.IsNullOrEmpty(languageTextKey))
             {
-                if (string.IsNullOrEmpty(languageTextKey))
-                {
-                    return;
-                }
-
-                text = LocalizationMgr.instance.GetLanguageText(languageTextKey);
+                return;
             }
-            else
-            {
-                if (languageTextId < 1)
-                {
-                    return;
-                }
 
-                text = LocalizationMgr.instance.GetLanguageText(languageTextId);
-            }
+            string text = LocalizationMgr.instance.GetLanguageText(languageTextKey);
 
             if (m_TextMesh != null)
             {

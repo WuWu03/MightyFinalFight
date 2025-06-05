@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Utilities;
 using System.Collections.Generic;
@@ -180,7 +180,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             }
 
             m_ListSceneItems[i].Release();
-            m_ListSceneItems.RemoveAt(i);
         }
     }
 

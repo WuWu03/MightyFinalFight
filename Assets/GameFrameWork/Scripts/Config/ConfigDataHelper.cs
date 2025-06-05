@@ -10,6 +10,7 @@ using UnityEngine;
 
 public static partial class ConfigDataHelper
 {
+
     public static T[] LoadConfigData<T>(string filePath, string fileName) where T : BaseConfigData, new()
     {
         string path = PathUtil.FormatPath(filePath, fileName);
@@ -20,7 +21,7 @@ public static partial class ConfigDataHelper
 
         if (txt == null || txt.bytes == null)
         {
-            Log.LogError("∂¡»°≈‰÷√Œƒº˛ ß∞‹ : ", path);
+            Log.LogError("ËØªÂèñÈÖçÁΩÆÊñá‰ª∂Â§±Ë¥• : ", path);
             return null;
         }
 
@@ -33,7 +34,7 @@ public static partial class ConfigDataHelper
                 t[index] = new T();
                 t[index].Read(parser);
                 parser.Next();
-                index++; ;
+                index++;
             }
         }
         return t;

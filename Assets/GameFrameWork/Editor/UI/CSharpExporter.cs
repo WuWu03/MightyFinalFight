@@ -40,6 +40,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("/*******************************************************/");
             sb.AppendLine("using System.Collections;");
             sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("using TMPro;");
             sb.AppendLine("using UnityEngine;");
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");

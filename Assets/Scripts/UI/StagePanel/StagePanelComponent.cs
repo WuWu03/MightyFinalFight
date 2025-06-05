@@ -1,13 +1,15 @@
 /*******************************************************/
-/**2022-9-4 17:48**************************************/
-/**Create By GQY****************************************/
+/**2025-06-04 16:43*************************************/
+/**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
+
 public class StagePanelComponent : BasePanelComponent
 {
 	//blue,GameObject

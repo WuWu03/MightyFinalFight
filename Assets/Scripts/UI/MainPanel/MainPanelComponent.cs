@@ -1,10 +1,11 @@
 /*******************************************************/
-/**2025-06-04 15:32*************************************/
+/**2025-06-04 16:41*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
@@ -19,16 +20,16 @@ public class MainPanelComponent : BasePanelComponent
 	public Slider enemyHpBar { get; private set; }
 	//bg/top/enemy/enemyHpBar/playerHpBarImage,Image
 	public Image playerHpBarImage1 { get; private set; }
-	//bg/top/stage/txtStage,Text
-	public Text txtStage { get; private set; }
-	//bg/top/playerLife/txtPlayerLife,Text
-	public Text txtPlayerLife { get; private set; }
+	//bg/top/stage/txtStage,TextMeshProUGUI
+	public TextMeshProUGUI txtStage { get; private set; }
+	//bg/top/playerLife/txtPlayerLife,TextMeshProUGUI
+	public TextMeshProUGUI txtPlayerLife { get; private set; }
 	//level/levelList,GameObject
 	public GameObject levelList { get; private set; }
 	//level/levelList/item,GameObject
 	public GameObject itemGO { get; private set; }
-	//exp/txtExp,Text
-	public Text txtExp { get; private set; }
+	//exp/txtExp,TextMeshProUGUI
+	public TextMeshProUGUI txtExp { get; private set; }
 	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 
 	public MainPanelComponent(UIRefRoot root) : base(root) { }
@@ -39,11 +40,11 @@ public class MainPanelComponent : BasePanelComponent
 		playerHpBarImage = root.objects[1] as Image;
 		enemyHpBar = root.objects[2] as Slider;
 		playerHpBarImage1 = root.objects[3] as Image;
-		txtStage = root.objects[4] as Text;
-		txtPlayerLife = root.objects[5] as Text;
+		txtStage = root.objects[4] as TextMeshProUGUI;
+		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
 		levelList = root.objects[6] as GameObject;
 		itemGO = root.objects[7] as GameObject;
-		txtExp = root.objects[8] as Text;
+		txtExp = root.objects[8] as TextMeshProUGUI;
 		levelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 
