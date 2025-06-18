@@ -91,6 +91,7 @@ namespace GameFrameWork.Editor
             if (!EditorApplication.isPlayingOrWillChangePlaymode && IsUIScene())
             {
                 AppConfig appGo = GameObject.FindAnyObjectByType<AppConfig>();
+
                 if (appGo != null)
                 {
                     GameObject.DestroyImmediate(appGo.gameObject);

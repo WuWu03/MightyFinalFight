@@ -52,7 +52,7 @@ public class ScreenshotToRenderTexture : MonoBehaviour
         texture2D.Apply(false, true);
 
         //使用《Shader入门精要》中用到的高斯模糊
-        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>("Assets/GameFrameWork/Shaders/GaussianBlur.shader");
+        Shader shader = null;// AssetDatabase.LoadAssetAtPath<Shader>("Assets/GameFrameWork/Shaders/GaussianBlur.shader");
         if (shader == null || rawImage == null)
             yield break;
         var material = new Material(shader);

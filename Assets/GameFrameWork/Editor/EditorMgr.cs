@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -11,26 +11,82 @@ namespace GameFrameWork.Editor
     [InitializeOnLoad]
 	public static class EditorMgr
 	{
-		static EditorMgr()
+        static EditorMgr()
 		{
 			if (!Directory.Exists(EditorPathUtil.configDataFullPath))
 			{
 				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
 			}
-		}
+        }
 
-        [MenuItem("GameFrameWork/Start Up", false, 0)]
+        [MenuItem("GameFrameWork/Start Up &1", false,0)]
 		public static void GameFrameWorkStartUp()
 		{
-            if (UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消"))
-			{
-				CreateEntry();
-			}
-		}
+            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
 
-		private static void CreateEntry()
+			if (string.IsNullOrEmpty(entryScenePath))
+			{
+				CheckEntryScene();
+                return;
+            }
+
+            if (EditorSceneManager.GetActiveScene().path.Equals(entryScenePath))
+            {
+                UnityEditor.EditorUtility.DisplayDialog("提示", "当前已经位于启动场景", "确认");
+				return;
+            }
+
+            bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "已创建过启动场景，是否跳转？", "确认", "取消");
+
+            if (result)
+            {
+                CheckEntryScene();
+            }
+        }
+
+		/// <summary>
+		/// 检查框架启动场景，若未创建则弹提示框进行创建，若已创建则跳转到启动场景
+		/// </summary>
+        public static bool CheckEntryScene()
+        {
+            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
+
+            if (string.IsNullOrEmpty(entryScenePath))
+            {
+                Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
+
+                if (entryTypes == null || entryTypes.Length < 1)
+                {
+                    bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消");
+
+					if(result)
+					{
+                        CreateEntry();
+                    }
+
+					return result;
+                }
+                else
+                {
+					bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "尚未设置框架启动场景，是否以当前场景作为框架启动场景？", "确认", "取消");
+                    if (result)
+                    {
+                        PlayerPrefs.SetString("unity_editor_entry_scene", EditorSceneManager.GetActiveScene().path);
+                        GoToGameFrameWorkEntryScene();
+                    }
+                    return result;
+                }
+            }
+
+            GoToGameFrameWorkEntryScene();
+            return true;
+        }
+
+        /// <summary>
+        /// 创建框架启动脚本
+        /// </summary>
+        private static void CreateEntry()
 		{
-			PlayerPrefs.SetInt("create_entry_script", 1);
             string[] entryScript = EditorUtil.GetAssemblyTypeNames("GameFrameWork.GameFrameWorkEntry", true, "GameFrameWorkEntry");
 
             if (entryScript == null || entryScript.Length < 1)
@@ -62,44 +118,79 @@ namespace GameFrameWork.Editor
 				File.WriteAllText(Application.dataPath + "/Scripts/GameEntry.cs", sb.ToString());
 				AssetDatabase.Refresh();
             }
-			else
-			{
-				OnScriptReload();
-			}
+
+            PlayerPrefs.SetString("unity_editor_entry_scene", EditorSceneManager.GetActiveScene().path);
+            GoToGameFrameWorkEntryScene();
         }
 
-		[UnityEditor.Callbacks.DidReloadScripts(0)]
+        /// <summary>
+        /// 主要用于第一次启动Unity编辑器时，检查是否已经初始化框架启动场景
+        /// </summary>
+        [UnityEditor.Callbacks.DidReloadScripts(0)]
 		private static void OnScriptReload()
 		{
-			if(PlayerPrefs.GetInt("create_entry_script",0) == 0)
+			int isInit = PlayerPrefs.GetInt("unity_editor_is_init", 0);
+
+            if (isInit == 1)
+			{
+                EditorApplication.quitting += () =>
+                {
+                    PlayerPrefs.SetInt("unity_editor_is_init", 0);
+                };
+
+                EditorApplication.update -= CheckIsInit;
+				return;
+			}
+
+			EditorApplication.update += CheckIsInit;
+		}
+
+		private static void CheckIsInit()
+		{
+			if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
 			{
 				return;
+			}
+
+            PlayerPrefs.SetInt("unity_editor_is_init", 1);
+            EditorApplication.update -= CheckIsInit;
+			CheckEntryScene();
+		}
+
+        /// <summary>
+        /// 跳转到框架启动场景
+        /// </summary>
+        private static void GoToGameFrameWorkEntryScene()
+		{
+            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
+
+            if (string.IsNullOrEmpty(entryScenePath))
+			{
+				return;
+			}
+
+			if (!EditorSceneManager.GetActiveScene().path.Equals(entryScenePath))
+			{
+                EditorSceneManager.OpenScene(entryScenePath);
 			}
 
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
 
-			if (entryTypes == null || entryTypes.Length < 1)
-			{
-				return;
-			}
-
-            GameObject go = GameObject.Find("GameEntry");
-
-            if (go == null)
+            if (entryTypes == null || entryTypes.Length < 1)
             {
-                go = new GameObject("GameEntry");
+                return;
             }
 
-            if (go.GetComponent(entryTypes[0]) == null)
-            {
-                go.AddComponent(entryTypes[0]);
-            }
+			GameObject entry = GameObject.Find("GameEntry");
 
-			PlayerPrefs.SetString("entry_scene", EditorSceneManager.GetActiveScene().path);
-            PlayerPrefs.SetInt("create_entry_script", 0);
+            if (entry == null)
+            {
+                entry = new GameObject("GameEntry");
+                entry.AddComponent(entryTypes[0]);
+            }
         }
 
-		[MenuItem("GameFrameWork/UI/创建UI场景", false, 101)]
+        [MenuItem("GameFrameWork/UI/创建UI场景", false, 101)]
 		public static void NewUIScene()
 		{
 			string entryScene = PlayerPrefs.GetString("entry_scene",string.Empty);

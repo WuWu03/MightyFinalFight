@@ -202,7 +202,7 @@ MonoBehaviour:
   luaDirectory: Assets/Scripts/Lua
   uiDirectory: ArtResources/UI
   logColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
-  pcBuildPath: C:\Users\21691\Desktop\MightyFinalFight\MightyFinalFight.exe
+  pcBuildPath: C:\Users\WuWu\Desktop\MightyFinalFight\MightyFinalFight.exe
   androidBuildPath: 
   iosBuildPath: 
   versionFileName: Version.txt

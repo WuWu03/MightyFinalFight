@@ -20,7 +20,7 @@ namespace GameFrameWork.Editor
         private void OnGUI()
         {
             EditorGUILayout.BeginVertical();
-            int inputCount = Mathf.Max(EditorGUILayout.IntField("ÊäÈëÌõÄ¿", m_InputCount), 0);
+            int inputCount = Mathf.Clamp(EditorGUILayout.IntField("è¾“å…¥æ¡ç›®", m_InputCount), 1, 100);
 
             if (inputCount != m_InputCount)
             {
@@ -42,7 +42,7 @@ namespace GameFrameWork.Editor
             EditorGUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
 
-            if (GUILayout.Button("Çå³ı"))
+            if (GUILayout.Button("æ¸…é™¤"))
             {
                 List<string> invalidKeys = new List<string>();
 
@@ -77,12 +77,12 @@ namespace GameFrameWork.Editor
                         notificationStr += "Key : " + invalidKeys[i] + "\n";
                     }
 
-                    notificationStr += "²»´æÔÚ£¬Çë¼ì²ékeyÖµÊÇ·ñ´íÎó";
-                    EditorUtility.DisplayDialog("ÌáÊ¾", notificationStr, "È·¶¨");
+                    notificationStr += "ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥keyå€¼æ˜¯å¦é”™è¯¯";
+                    EditorUtility.DisplayDialog("æç¤º", notificationStr, "ç¡®å®š");
                 }
                 else
                 {
-                    ShowNotification(new GUIContent("Çå³ı³É¹¦"));
+                    ShowNotification(new GUIContent("æ¸…é™¤æˆåŠŸ"));
                 }
             }
 

@@ -342,13 +342,6 @@ MonoBehaviour:
     pattern: '*.*'
     assetPath: Assets/ConfigData/
     bundlePath: ConfigData/
-  - id: 48
-    bundleBuildType: 0
-    bundleName: 
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/LanguageText/
-    bundlePath: LanguageText/
   lockConfig: 0
   platFormIndex: 0
   assetBuildDir: Assets/StreamingAssets/
