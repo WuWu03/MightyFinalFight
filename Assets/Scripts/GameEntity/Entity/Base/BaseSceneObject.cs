@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Pool;

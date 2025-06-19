@@ -1,6 +1,7 @@
 using GameFrameWork;
 using GameFrameWork.UI;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 public class BaseEnemy : BaseRole
 {
@@ -106,6 +107,27 @@ public class BaseEnemy : BaseRole
         base.Release();
     }
 
+    public void Resume()
+    {
+        if(m_MoveToPos != Vector2.zero)
+        {
+            m_IsAutoMove = true;
+        }
+
+        rigidbody2D.bodyType = m_LastBodyType;
+        m_FsmMachine.Resume();
+        ResumeAnimation();
+    }
+
+    public void Pause()
+    {
+        m_IsAutoMove = false;
+        m_LastBodyType = rigidbody2D.bodyType;
+        rigidbody2D.bodyType = RigidbodyType2D.Static;
+        m_FsmMachine.Pause();
+        PauseAnimation();
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -188,7 +210,7 @@ public class BaseEnemy : BaseRole
         OnHurtMsg(hurtData);
     }
 
-   
+    private RigidbodyType2D m_LastBodyType = RigidbodyType2D.Static;
     private int m_SkillExp = 0;
     private int m_HpBarWidth = 0;
     private bool m_IsBoss = false;

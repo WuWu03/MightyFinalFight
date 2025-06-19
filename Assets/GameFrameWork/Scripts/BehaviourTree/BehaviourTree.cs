@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,11 @@ namespace GameFrameWork.BehaviourTree
 
         public void Start()
         {
+            if (m_IsRunning)
+            {
+                return;
+            }
+
             m_Root.Start();
             m_IsRunning = true;
             m_IsPause = false;
@@ -38,9 +43,14 @@ namespace GameFrameWork.BehaviourTree
             m_Root.LateUpdate(deltaTime);
         }
 
-        public void Pasuse(bool value)
+        public void Pause()
         {
-            m_IsPause = value;
+            m_IsPause = true;
+        }
+
+        public void Resume()
+        {
+            m_IsPause = false;
         }
 
         public void Stop()
@@ -52,10 +62,13 @@ namespace GameFrameWork.BehaviourTree
 
             m_IsRunning = false;
             m_IsPause = false;
+            m_Root.Reset();
         }
 
         public void Destroy()
         {
+            m_IsRunning = false;
+            m_IsPause = false;
             m_Root.Destroy();
         }
 
@@ -86,13 +99,6 @@ namespace GameFrameWork.BehaviourTree
             }
 
             return root;
-        }
-
-        protected void Reset()
-        {
-            m_IsRunning = false;
-            m_IsPause = false;
-            m_Root.Reset();
         }
 
         private bool m_IsPause = false;

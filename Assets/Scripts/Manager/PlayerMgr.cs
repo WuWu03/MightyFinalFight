@@ -1,10 +1,12 @@
 using GameFrameWork;
+using GameFrameWork.Audio;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
-using GameFrameWork.Audio;
 using GameFrameWork.UI;
 using GameFrameWork.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMgr : BaseMgr<PlayerMgr>
@@ -317,31 +319,44 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             SceneEntityMgr.instance.CreateSceneItem(1001, m_Player.mapPos);
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Keypad2))
         {
            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            UIMgr.instance.Open<RoleSelectPanel>();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            UIMgr.instance.Close<RoleSelectPanel>();
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             StageMgr.instance.StageEnterNext();
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            List<BaseEnemy> enemys = SceneEntityMgr.instance.GetEnemies();
+ 
+            foreach (var enemy in enemys)
+            {
+                if (m_IsStopBHT)
+                {
+                    (enemy.currCtrl as BaseEnemyCtrl).Resume();
+                }
+                else
+                {
+                    (enemy.currCtrl as BaseEnemyCtrl).Pause();
+                }
+            }
+
+            m_IsStopBHT = !m_IsStopBHT;
+        }
+
+
     }
+
+    private bool m_IsStopBHT = false;
 
     private bool AfterTrigger()
     {

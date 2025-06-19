@@ -1,5 +1,6 @@
 using GameFrameWork.UI;
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,25 +12,18 @@ namespace GameFrameWork.Editor
         void OnEnable()
         {
             m_LanguageText = (target as LanguageText);
+            m_SelectedIndex = -1;
 
             if (m_LanguageTextKeys == null)
             {
-                TextAsset textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Editor/Config/LanguageKeys.txt");
+                string languageKeyPath = PlayerPrefs.GetString("unity_editor_language_key_file", string.Empty);
 
-                if (textAsset != null && !string.IsNullOrEmpty(textAsset.text))
+                if (!string.IsNullOrEmpty(languageKeyPath) && System.IO.File.Exists(languageKeyPath))
                 {
-                    m_LanguageTextKeys = textAsset.text.Split("\r\n", System.StringSplitOptions.RemoveEmptyEntries);
-                    Array.Sort(m_LanguageTextKeys, StringComparer.Ordinal);
+                    m_LanguageTextKeys = new List<string>();
+                    m_LanguageTextKeys.AddRange(System.IO.File.ReadAllLines(languageKeyPath, System.Text.Encoding.UTF8));
+                    m_LanguageTextKeys.Sort(StringComparer.Ordinal);
                 }
-            }
-
-            if (!string.IsNullOrEmpty(m_LanguageText.languageTextKey))
-            {
-                m_SelectedIndex = System.Array.IndexOf(m_LanguageTextKeys, m_LanguageText.languageTextKey);
-            }
-            else
-            {
-                m_SelectedIndex = -1;
             }
         }
 
@@ -42,18 +36,51 @@ namespace GameFrameWork.Editor
 
         public override void OnInspectorGUI()
         {
-            int select = EditorGUILayout.Popup(m_SelectedIndex, m_LanguageTextKeys);
+            SerializedProperty languageTextKey = serializedObject.FindProperty("languageTextKey");
 
-            if(select != m_SelectedIndex)
+            if (m_LanguageTextKeys != null && m_LanguageTextKeys.Count > 0)
             {
-                m_SelectedIndex = select;
-                m_LanguageText.languageTextKey = m_LanguageTextKeys[m_SelectedIndex];
-                EditorUtility.SetDirty(m_LanguageText);
+                GUI.color = m_LanguageTextKeys.Contains(m_LanguageText.languageTextKey) ? Color.green : Color.red;
+            }
+            else
+            {
+                GUI.color = Color.red;
+                EditorGUILayout.LabelField("多语言检测文件不存在，请设置多语言检测文件", EditorStyles.boldLabel);
+                GUI.color = Color.white;
+            }
+
+            EditorGUILayout.PropertyField(languageTextKey);
+
+            if (languageTextKey.stringValue != m_LanguageText.languageTextKey)
+            {
+                EditorUtility.SetDirty(target);
+
+                if (m_LanguageTextKeys != null && m_LanguageTextKeys.Count > 0)
+                {
+                    m_PopKeys = m_LanguageTextKeys.FindAll(key => key.ToLower().StartsWith(languageTextKey.stringValue.ToLower())).ToArray();
+                }
+
+                m_SelectedIndex = -1;
+            }
+
+            m_LanguageText.languageTextKey = languageTextKey.stringValue;
+
+            if (m_PopKeys != null && m_PopKeys.Length > 0)
+            {
+                int select = EditorGUILayout.Popup(m_SelectedIndex, m_PopKeys);
+                if (select != m_SelectedIndex)
+                {
+                    m_SelectedIndex = select;
+                    m_LanguageText.languageTextKey = m_PopKeys[select];
+                    m_PopKeys = null;
+                    m_SelectedIndex = -1;
+                }
             }
         }
 
+        private string[] m_PopKeys = null;
         private int m_SelectedIndex = -1;
-        private static string[] m_LanguageTextKeys = null;
+        private static List<string> m_LanguageTextKeys = null;
         private LanguageText m_LanguageText;
     }
 }

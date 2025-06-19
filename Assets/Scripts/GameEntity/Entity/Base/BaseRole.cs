@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Timer;
@@ -300,6 +300,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnMoveMsg(MoveStateData data)
     {
+        if (this.gameObject.name == "TwoP")
+        {
+
+        }
+
         if (data == null)
         {
             return;
@@ -686,6 +691,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckAutoMove()
     {
+        if(this.gameObject.name == "TwoP")
+        {
+
+        }
+
         if (!m_IsAssetLoadComplete || !isInGround || !m_IsAutoMove)
         {
             return;
@@ -732,10 +742,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected bool m_IsBeCatch = false;
     protected bool m_IsBeThrow = false;
     protected bool m_IsCatchControl = false;
+    protected bool m_IsAutoMove = false;
     protected BaseRoleCtrl m_CurrCtrl = null;
     protected event GameFrameWorkAction<HurtStateData> m_OnHurtEvent = null;
 
-    private bool m_IsAutoMove = false;
     private bool m_XArrived = false;
     private bool m_YArrived = false;
     private bool m_IsDropGround = false;

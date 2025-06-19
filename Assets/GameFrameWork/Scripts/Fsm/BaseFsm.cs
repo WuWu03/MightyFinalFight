@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GameFrameWork.Fsm
 {
@@ -42,6 +42,8 @@ namespace GameFrameWork.Fsm
         public abstract float currStateTime { get; }
 
         public abstract void Start<T>() where T:BaseFsmState;
+        public abstract void Pause();
+        public abstract void Resume();
         public abstract void AddState<T>() where T : BaseFsmState, new();
         public abstract void RemoveState<T>() where T : BaseFsmState;
         public abstract void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState;

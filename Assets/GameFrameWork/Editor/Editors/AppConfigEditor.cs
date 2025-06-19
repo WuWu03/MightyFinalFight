@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
 using System.IO;
 using UnityEditor;
 using UnityEngine;

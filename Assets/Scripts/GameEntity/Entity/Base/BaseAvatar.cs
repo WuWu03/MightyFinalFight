@@ -1,4 +1,4 @@
-﻿using DragonBones;
+using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Fsm;
 using System;
@@ -139,6 +139,28 @@ public abstract class BaseAvatar : BaseGravityObject
         }
 
         m_Animator.animation.Stop(animName);
+    }
+
+    public void PauseAnimation()
+    {
+        if (m_Animator == null)
+        {
+            Log.LogError(name, "[Animator] 组件不存在");
+            return;
+        }
+
+        m_LastAnimTimeScale = m_Animator.animation.timeScale;
+        m_Animator.animation.timeScale = 0f;
+    }
+
+    public void ResumeAnimation()
+    {
+        if (m_Animator == null)
+        {
+            Log.LogError(name, "[Animator] 组件不存在");
+            return;
+        }
+        m_Animator.animation.timeScale = m_LastAnimTimeScale;
     }
 
     public bool IsPlayComplete()
@@ -291,6 +313,8 @@ public abstract class BaseAvatar : BaseGravityObject
     protected HitTrigger m_HitTrigger = null;
     protected FsmMachine m_FsmMachine = null;
     protected UnityArmatureComponent m_Animator;
+
+    private float m_LastAnimTimeScale = 1f;
     private string m_LastTriggerAnimName = string.Empty;
     private int m_LastTriggerFrameIndex = -1;
 }

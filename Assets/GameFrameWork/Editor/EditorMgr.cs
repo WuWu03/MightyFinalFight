@@ -330,6 +330,29 @@ namespace GameFrameWork.Editor
             EditorUtil.CopyTextEditor(AssetDatabase.GetAssetPath(Selection.activeObject));
         }
 
+
+        [MenuItem("Assets/GameFrameWork/SetLanguageKeyFile", false, 4)]
+        private static void SetLanguageKeyFile()
+        {
+            if (Selection.activeObject == null)
+            {
+                UnityEditor.EditorUtility.DisplayDialog("提示", "没有选中任何物体", "确定");
+                return;
+            }
+
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+
+            if(Path.GetExtension(path) != ".txt")
+            {
+                UnityEditor.EditorUtility.DisplayDialog("提示", "请选中一个文本文件", "确定");
+                return;
+            }
+
+            PlayerPrefs.SetString("unity_editor_language_key_file", path);
+            UnityEditor.EditorUtility.DisplayDialog("提示", "设置多语言检测文件成功", "确定");
+            AssetDatabase.Refresh();
+        }
+
         [MenuItem("GameObject/CopyPath", false, 0)]
         private static void CopyGameObjectPath()
         {
@@ -357,5 +380,6 @@ namespace GameFrameWork.Editor
 
             EditorUtil.CopyTextEditor(sb.ToString());
         }
+
     }
 }

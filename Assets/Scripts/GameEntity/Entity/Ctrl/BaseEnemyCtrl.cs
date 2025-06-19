@@ -1,9 +1,34 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Input;
 using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
+    public BehaviourTreeMgr behaviourTreeMgr
+    {
+        get
+        {
+            return m_BehaviourTreeMgr;
+        }
+    }
+
+    public void OppositePlayer()
+    {
+        m_Owner.SetDir(PlayerMgr.instance.player.pos.x - m_Owner.pos.x > 0 ? 1f : -1f);
+    }
+
+    public void Resume()
+    {
+        m_BehaviourTreeMgr.ResumeAll();
+        (m_Owner as BaseEnemy).Resume();
+    }
+
+    public void Pause()
+    {
+        m_BehaviourTreeMgr.PauseAll();
+        (m_Owner as BaseEnemy).Pause();
+    }
+
     protected override void OnInit()
     {
         base.OnInit();
@@ -27,43 +52,6 @@ public class BaseEnemyCtrl : BaseRoleCtrl
     {
         base.OnUpdate();
         m_BehaviourTreeMgr.Update(Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            //m_Owner.OnHurtMsg(new HurtData() { attackerDir = 1, attackerId = 10011, attackValue = 1 });
-            OppositePlayer();
-
-        }
-
-        //Vector2 dir = Vector2.zero;
-        //if (Input.GetKey(KeyCode.UpArrow))
-        //{
-        //    dir.y = 1f;
-        //}
-
-        //if (Input.GetKey(KeyCode.DownArrow))
-        //{
-        //    dir.y = -1f;
-        //}
-
-        //if (Input.GetKey(KeyCode.LeftArrow)) {
-        //    dir.x = -1f;
-        //}
-
-        //if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    dir.x = 1f;
-        //}
-
-        //MoveData m = MoveData.Create();
-        //m.dir = dir;
-        //m.canChangeDir = true;
-        //m_Owner.OnMoveMsg(m);
-
-        //if(Input.GetKeyDown(KeyCode.P)) 
-        //{
-        //    DeploySkill(2001001);
-        //}
     }
 
     protected override void OnRelease()
@@ -73,10 +61,7 @@ public class BaseEnemyCtrl : BaseRoleCtrl
         base.OnRelease();
     }
 
-    public void OppositePlayer()
-    {
-        m_Owner.SetDir(PlayerMgr.instance.player.pos.x - m_Owner.pos.x > 0 ? 1f : -1f);
-    }
+
 
     protected BehaviourTreeMgr m_BehaviourTreeMgr = null;
 }

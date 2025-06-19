@@ -1,4 +1,4 @@
-﻿using DG.Tweening.Core;
+using DG.Tweening.Core;
 using GameFrameWork.Assets;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,6 +63,42 @@ namespace GameFrameWork.BehaviourTree
             {
                 m_ListTrees[i].Update(deltaTime);
             }
+        }
+
+        public void PauseAll()
+        {
+            for (int i = 0; i < m_ListTrees.Count; i++)
+            {
+                Pause(i);
+            }
+        }
+
+        public void Pause(int index)
+        {
+            if (index < 0 || index >= m_ListTrees.Count)
+            {
+                return;
+            }
+
+            m_ListTrees[index].Pause();
+        }
+
+        public void ResumeAll()
+        {
+            for (int i = 0; i < m_ListTrees.Count; i++)
+            {
+                Resume(i);
+            }
+        }
+
+        public void Resume(int index)
+        {
+            if (index < 0 || index >= m_ListTrees.Count)
+            {
+                return;
+            }
+
+            m_ListTrees[index].Resume();
         }
 
         public void StopAll()

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,20 +91,30 @@ namespace GameFrameWork.Fsm
         {
             if (isRunning)
             {
-                throw new Exception("Fsm is running.");
+                throw new Exception("有限状态机已经启动，不要重复启动");
             }
 
             BaseFsmState fsmState = this.GetState<T>();
 
             if (fsmState == null)
             {
-                throw new Exception("Fsm state is invalid.");
+                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             m_DefaultState = fsmState;
             m_CurrentStateTime = Time.time;
             m_CurrentState = fsmState;
             fsmState.Enter(this);
+        }
+
+        public override void Pause()
+        {
+            m_IsPaused = true;
+        }
+
+        public override void Resume()
+        {
+            m_IsPaused = false;
         }
 
         public override void AddState<T>()
@@ -131,7 +141,7 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception(StringUtil.Format("Fsm [", typeof(T).Name, "] state is invalid or destroyed."));
+                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             state.SetStateData(stateData);
@@ -141,12 +151,7 @@ namespace GameFrameWork.Fsm
         {
             if (!isRunning)
             {
-                throw new Exception("Fsm is not in running please use Start() to run it first.");
-            }
-
-            if (m_CurrentState == null)
-            {
-                throw new Exception("Fsm current state is invalid or destroyed.");
+                throw new Exception("有限状态机没有启动，调用Start方法启动");
             }
 
             if (m_CurrentState.GetType().Equals(typeof(T)))
@@ -163,7 +168,7 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception(StringUtil.Format("Fsm [", typeof(T).Name, "] state is invalid or destroyed."));
+                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             if (stateData != null)
@@ -179,19 +184,14 @@ namespace GameFrameWork.Fsm
 
         public override void ChangeDefaultState()
         {
-            if (!isRunning)
-            {
-                throw new Exception("Fsm is not in running please use Start() to run it first.");
-            }
-
             if (m_CurrentState == null)
             {
-                throw new Exception("Fsm current state is invalid or destroyed.");
+                throw new Exception("有限状态机没有启动，调用Start方法启动");
             }
 
             if (m_DefaultState == null)
             {
-                throw new Exception("Fsm default state is invalid or destroyed.");
+                throw new Exception("默认状态为空，调用SetDefaultState方法设置默认状态");
             }
 
             if (m_CurrentState == m_DefaultState)
@@ -229,7 +229,7 @@ namespace GameFrameWork.Fsm
 
         public override void Update(float deltaTime, float unscaleDeltaTime)
         {
-            if (m_CurrentState == null)
+            if (m_CurrentState == null || m_IsPaused)
             {
                 return;
             }
@@ -239,7 +239,7 @@ namespace GameFrameWork.Fsm
 
         public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
         {
-            if (m_CurrentState == null)
+            if (m_CurrentState == null || m_IsPaused)
             {
                 return;
             }
@@ -296,6 +296,7 @@ namespace GameFrameWork.Fsm
         private BaseFsmState m_CurrentState;
         private BaseFsmState m_DefaultState;
         private float m_CurrentStateTime;
-        private bool m_IsDestroyed;
+        private bool m_IsPaused = false;
+        private bool m_IsDestroyed = false;
     }
 }

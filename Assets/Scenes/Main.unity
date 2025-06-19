@@ -206,6 +206,7 @@ MonoBehaviour:
   androidBuildPath: 
   iosBuildPath: 
   versionFileName: Version.txt
+  languageKeyPath: Assets/Editor/Config/LanguageKeys.txt
 --- !u!4 &2173410555044130344
 Transform:
   m_ObjectHideFlags: 0

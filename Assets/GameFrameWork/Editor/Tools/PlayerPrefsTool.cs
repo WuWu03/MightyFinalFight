@@ -84,6 +84,8 @@ namespace GameFrameWork.Editor
                 {
                     ShowNotification(new GUIContent("清除成功"));
                 }
+
+                AssetDatabase.Refresh();
             }
 
             EditorGUILayout.EndVertical();
