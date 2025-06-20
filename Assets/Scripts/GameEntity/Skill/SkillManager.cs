@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 public class SkillManager
 {
     public SkillManager(BaseRole owner, int[] skillIDs)
@@ -51,7 +51,7 @@ public class SkillManager
 
     public void Update()
     {
-        if (m_CurrSkillDeployer == null)
+        if (m_CurrSkillDeployer == null || m_Owner.isPause)
         {
             return;
         }

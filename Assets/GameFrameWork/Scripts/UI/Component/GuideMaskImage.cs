@@ -1,36 +1,50 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace GameFrameWork.UI
 {
-    [AddComponentMenu("UI/GuidMask")]
-    public class GuidMask : MaskableGraphic, ICanvasRaycastFilter
+    [AddComponentMenu("UI/GuideMaskImage")]
+    public class GuideMaskImage : MaskableGraphic, ICanvasRaycastFilter
     {
         public enum MaskType
         {
             Circle,
             Rectangle,
         }
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            m_CanMask = false;
+        }
+
+        public void SetMaskBounds(Bounds bounds)
+        {
+            m_TargetBoundsMin = bounds.min;
+            m_TargetBoundsMax = bounds.max;
+            m_TargetBoundsCenter = bounds.center;
+            m_CanMask = true;
+        }
 
         public void SetTarget(RectTransform target, MaskType maskType = MaskType.Rectangle)
         {
-            m_Target = target;
             m_MaskType = maskType;
 
-            if (m_Target == null)
+            if (target == null)
             {
                 m_TargetBoundsMin = Vector3.zero;
                 m_TargetBoundsMax = Vector3.zero;
                 m_TargetBoundsCenter = Vector3.zero;
+                m_CanMask = false;
                 SetAllDirty();
             }
             else
             {
-                Bounds bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(rectTransform, m_Target);
+                Bounds bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(rectTransform, target);
                 m_TargetBoundsMin = bounds.min;
                 m_TargetBoundsMax = bounds.max;
                 m_TargetBoundsCenter = bounds.center;
+                m_CanMask = true;
             }
         }
 
@@ -38,7 +52,7 @@ namespace GameFrameWork.UI
         {
             SetTarget(target, maskType);
 
-            if (m_Target != null)
+            if (target != null)
             {
                 m_TargetBoundsMin = new Vector3(m_TargetBoundsCenter.x - width / 2f, m_TargetBoundsCenter.y - height / 2f, 0f);
                 m_TargetBoundsMax = new Vector3(m_TargetBoundsCenter.x + width / 2f, m_TargetBoundsCenter.y + height / 2f, 0f);
@@ -47,7 +61,7 @@ namespace GameFrameWork.UI
 
         protected override void OnPopulateMesh(VertexHelper vh)
         {
-            if (m_Target == null || (m_TargetBoundsMin == Vector3.zero && this.m_TargetBoundsMax == Vector3.zero))
+            if (!m_CanMask)
             {
                 base.OnPopulateMesh(vh);
                 return;
@@ -118,7 +132,7 @@ namespace GameFrameWork.UI
 
                 float tw = Mathf.Abs(m_TargetBoundsMax.x - m_TargetBoundsMin.x);
                 float th = Mathf.Abs(m_TargetBoundsMax.y - m_TargetBoundsMin.y);
-                float radius = m_Target.pivot.x * tw;
+                float radius = tw/2;
 
                 Vector4 uv = Vector4.zero;
                 Bounds bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(rectTransform, rectTransform);
@@ -157,6 +171,7 @@ namespace GameFrameWork.UI
                 }
 
                 triangleCount = segements * 3 * 2;
+
                 for (int i = 0, vIdx = 0; i < triangleCount - 6; i += 6, vIdx += 2)
                 {
                     vh.AddTriangle(vIdx + 1, vIdx, vIdx + 3);
@@ -168,20 +183,41 @@ namespace GameFrameWork.UI
             }
         }
 
-        bool ICanvasRaycastFilter.IsRaycastLocationValid(Vector2 screenPos, UnityEngine.Camera eventCamera)
+        bool ICanvasRaycastFilter.IsRaycastLocationValid(Vector2 screenPoint, UnityEngine.Camera eventCamera)
         {
-            if (m_Target == null)
+            if (!m_CanMask)
             {
                 return true;
             }
 
-            return !RectTransformUtility.RectangleContainsScreenPoint(this.m_Target, screenPos, eventCamera);
+            Vector2 local;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPoint, eventCamera, out local);
+
+            if (m_MaskType == MaskType.Rectangle)
+            {
+                if(local.x >= m_TargetBoundsMin.x && local.x <= m_TargetBoundsMax.x && local.y >= m_TargetBoundsMin.y && local.y <= m_TargetBoundsMax.y)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                float radius = Mathf.Abs(m_TargetBoundsMax.x - m_TargetBoundsMin.x) / 2f;
+
+                if ((local.x - m_TargetBoundsCenter.x) * (local.x - m_TargetBoundsCenter.x) + (local.y - m_TargetBoundsCenter.y) * (local.y - m_TargetBoundsCenter.y) <= radius * radius)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
+
 
         private MaskType m_MaskType = MaskType.Rectangle;
         private Vector3 m_TargetBoundsCenter;
         private Vector3 m_TargetBoundsMin;
         private Vector3 m_TargetBoundsMax;
-        private RectTransform m_Target;
+        private bool m_CanMask = false;
     }
 }

@@ -149,8 +149,12 @@ public class BaseGravityObject : BaseBoundObject
       
         if (changBodyType)
         {
-            m_Rigidbody2D.angularVelocity = 0;
-            m_Rigidbody2D.linearVelocity = Vector2.zero;
+            if(m_Rigidbody2D.bodyType != RigidbodyType2D.Static)
+            {
+                m_Rigidbody2D.angularVelocity = 0;
+                m_Rigidbody2D.linearVelocity = Vector2.zero;
+            }
+
             m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
         }
     }

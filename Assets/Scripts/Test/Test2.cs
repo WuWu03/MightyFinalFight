@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class Test2 : MonoBehaviour
 {
-    public GuidMask mask;
+    public GuideMaskImage mask;
     public RectTransform target;
     public Button btn;
     private void Start()
     {
-        mask.SetTarget(target, 200f, 200f);
+        mask.SetTarget(target, 200f, 200f,GuideMaskImage.MaskType.Circle);
 
         btn.onClick.AddListener(() =>
         {

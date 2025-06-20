@@ -1,8 +1,7 @@
-﻿using GameFrameWork.Assets;
+using GameFrameWork.Assets;
 using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace GameFrameWork.Pool
@@ -58,7 +57,7 @@ namespace GameFrameWork.Pool
             Get(assetPath, null, t);
         }
 
-        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
+        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args) where T : UnityEngine.Object
         {
             Get(assetPath, call, typeof(T), args);
         }
@@ -145,14 +144,12 @@ namespace GameFrameWork.Pool
         protected override void OnShutDown()
         {
             base.OnShutDown();
-            List<string> list = m_DicLoadedAssets.Keys.ToList();
 
-            for (int i = 0; i < list.Count; i++)
+            foreach(KeyValuePair<string, PoolObjectInfo> kvp in m_DicLoadedAssets)
             {
-                AssetsMgr.instance.UnloadAsset(m_DicLoadedAssets[list[i]].assetPath);
+                AssetsMgr.instance.UnloadAsset(kvp.Value.assetPath);
             }
 
-            list.Clear();
             m_DicLoadedAssets.Clear();
             m_DicLoadRequests.Clear();
             m_RemoveList.Clear();

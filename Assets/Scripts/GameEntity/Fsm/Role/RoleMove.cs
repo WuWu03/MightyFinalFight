@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
@@ -23,6 +23,11 @@ public class RoleMove : BaseFsmState
 
     protected override void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
+        if (m_Owner.isPause)
+        {
+            return;
+        }
+
         if (m_CanChangeDir && !m_Owner.isCatching)
         {
             m_Owner.SetDir(m_Owner.moveDir.x);

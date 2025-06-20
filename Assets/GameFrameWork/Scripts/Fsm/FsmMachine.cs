@@ -16,7 +16,7 @@ namespace GameFrameWork.Fsm
 
             if (owner == null)
             {
-                throw new Exception("Fsm owner (type [" + owner.GetType().Name + "] is invalid!");
+                Log.LogError("状态机持有者不存在，请检查");
             }
 
             if (states != null && states.Length > 0)
@@ -25,7 +25,7 @@ namespace GameFrameWork.Fsm
                 {
                     if (states[i] == null)
                     {
-                        throw new Exception("Fsm state is invalid.");
+                        Log.LogError("状态不存在，请检查状态列表");
                     }
 
                     states[i].Init(this);
@@ -91,14 +91,14 @@ namespace GameFrameWork.Fsm
         {
             if (isRunning)
             {
-                throw new Exception("有限状态机已经启动，不要重复启动");
+                Log.LogError("有限状态机已经启动，不要重复启动");
             }
 
             BaseFsmState fsmState = this.GetState<T>();
 
             if (fsmState == null)
             {
-                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
+                Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
             }
 
             m_DefaultState = fsmState;
@@ -141,7 +141,7 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
+                Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
             }
 
             state.SetStateData(stateData);
@@ -151,7 +151,7 @@ namespace GameFrameWork.Fsm
         {
             if (!isRunning)
             {
-                throw new Exception("有限状态机没有启动，调用Start方法启动");
+                Log.LogError("有限状态机没有启动，调用Start方法启动");
             }
 
             if (m_CurrentState.GetType().Equals(typeof(T)))
@@ -168,7 +168,7 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception(StringUtil.Format("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
+                Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
             }
 
             if (stateData != null)
@@ -186,12 +186,12 @@ namespace GameFrameWork.Fsm
         {
             if (m_CurrentState == null)
             {
-                throw new Exception("有限状态机没有启动，调用Start方法启动");
+                Log.LogError("有限状态机没有启动，调用Start方法启动");
             }
 
             if (m_DefaultState == null)
             {
-                throw new Exception("默认状态为空，调用SetDefaultState方法设置默认状态");
+                Log.LogError("默认状态不存在，调用SetDefaultState方法设置默认状态");
             }
 
             if (m_CurrentState == m_DefaultState)
@@ -286,7 +286,7 @@ namespace GameFrameWork.Fsm
 
             if (state == null)
             {
-                throw new Exception("Fsm state is invalid");
+                Log.LogError("状态 [", typeof(T).Name, "] 不存在，调用AddState方法添加该状态");
             }
 
             m_DefaultState = state;

@@ -128,6 +128,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public bool isPause
+    {
+        get
+        {
+            return m_IsPause;
+        }
+    }
+
     public virtual bool canChangeDefaultState
     {
         get
@@ -511,6 +519,37 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
+    public virtual void Resume()
+    {
+        if (m_MoveToPos != Vector2.zero)
+        {
+            m_IsAutoMove = true;
+        }
+
+        m_IsPause = false;
+        m_Rigidbody2D.bodyType = m_PrevBodyType;
+        m_Rigidbody2D.gravityScale = m_PrevGravityScale;
+        m_Rigidbody2D.linearDamping = m_PrevLinearDamping;
+        m_Rigidbody2D.angularDamping = m_PrevAngularDamping;
+        m_Rigidbody2D.linearVelocity = m_PrevVelocity;
+
+        ResumeAnimation();
+    }
+
+    public virtual void Pause()
+    {
+        m_IsPause = true;
+        m_IsAutoMove = false;
+        m_PrevBodyType = rigidbody2D.bodyType;
+        m_PrevGravityScale = m_Rigidbody2D.gravityScale;
+        m_PrevLinearDamping =  m_Rigidbody2D.linearDamping;
+        m_PrevAngularDamping = m_Rigidbody2D.angularDamping;
+        m_PrevVelocity = m_Rigidbody2D.linearVelocity;
+        m_Rigidbody2D.bodyType = RigidbodyType2D.Static;
+
+        PauseAnimation();
+    }
+
     protected virtual void OnGroundHurtMsg(HurtStateData hurtStatedata)
     {
         if (!hurtStatedata.isNotPlayHurtSound)
@@ -749,7 +788,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private bool m_XArrived = false;
     private bool m_YArrived = false;
     private bool m_IsDropGround = false;
+    private bool m_IsPause = false;
     private float m_DropGourndTime = 0f;
+
+    private float m_PrevGravityScale = 0f;
+    private float m_PrevLinearDamping = 0f;
+    private float m_PrevAngularDamping = 0f;
+    private Vector2 m_PrevVelocity = Vector2.zero;
+    private RigidbodyType2D m_PrevBodyType = RigidbodyType2D.Static;
     private HurtStateData m_OnGroundHurtStateData = null;
     private DropTrapStateData m_DropTrapStateData = null;
     private UnityEvent m_AutoMoveComplete = null;
