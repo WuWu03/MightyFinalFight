@@ -1,13 +1,11 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
     public class PrioritySelector : Composite
     {
-        public PrioritySelector(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public PrioritySelector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
             m_ListWeights = new List<int>();
             m_ListIndexes = new List<int>();

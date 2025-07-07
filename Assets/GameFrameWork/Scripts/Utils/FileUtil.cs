@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public class FileUtil
     {
@@ -56,6 +56,31 @@ namespace GameFrameWork.Utilities
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
+            }
+        }
+
+        /// <summary>
+        /// 验证路径是否存在
+        /// </summary>
+        public static bool VerifyDirectory(string dirPath)
+        {
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除路径
+        /// </summary>
+        public static void DeleteDirectory(string directory, bool recursive = true)
+        {
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, recursive);
             }
         }
 
@@ -175,32 +200,6 @@ namespace GameFrameWork.Utilities
                 }
             }
         }
-
-        /// <summary>
-        /// 验证路径是否存在
-        /// </summary>
-        public static bool VerifyDirectory(string dirPath)
-        {
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 删除路径
-        /// </summary>
-        public static void DeleteDirectory(string directory, bool recursive = true)
-        {
-            if (Directory.Exists(directory))
-            {
-                Directory.Delete(directory, recursive);
-            }
-        }
-
 
         /// <summary>
         /// 计算文件的MD5值

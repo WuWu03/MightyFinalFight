@@ -1,3 +1,4 @@
+using GameFrameWork.Utils;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -8,8 +9,8 @@ namespace GameFrameWork.Editor
     {
         private void OnEnable()
         {
-            string uiScenePath = EditorPathUtil.GetUIScenesPath();
-            m_UISceneFiles = GameFrameWork.Utilities.FileUtil.GetFiles(uiScenePath, "*.unity");
+            string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.uiScenesPath);
+            m_UISceneFiles = GameFrameWork.Utils.FileUtil.GetFiles(uiScenesPath, "*.unity");
         }
 
         private void OnDisable()
@@ -29,7 +30,7 @@ namespace GameFrameWork.Editor
 
                 EditorGUILayout.LabelField(filePath);
 
-                if (GUILayout.Button("´ò¿ª"))
+                if (GUILayout.Button("æ‰“å¼€"))
                 {
                     EditorSceneManager.OpenScene(filePath);
                 }

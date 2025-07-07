@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +22,22 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
+        public int id
+        {
+            get
+            {
+                return m_ID;
+            }
+        }
+
+        public object owner
+        {
+            get
+            {
+                return m_Owner;
+            }
+        }
+
         public int priority
         {
             get
@@ -30,12 +46,13 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public Node(string name, string args, object owner, int priority)
+        public Node(string name, int id, object owner, int priority, string args)
         {
             m_Name = name;
-            m_Args = args;
+            m_ID = id;
             m_Owner = owner;
             m_Priority = priority;
+            m_Args = args;
         }
 
         public void Start()
@@ -64,6 +81,11 @@ namespace GameFrameWork.BehaviourTree
             OnLateUpdate(deltaTime);
         }
 
+        public void FixedUpdate(float fixedDeltaTime)
+        {
+            OnFixedUpdate(fixedDeltaTime);
+        }
+
         public void Destroy()
         {
             OnDestroy();
@@ -88,13 +110,15 @@ namespace GameFrameWork.BehaviourTree
         protected virtual void OnEnter() { }
         protected virtual void OnUpdate(float deltaTime) { }
         protected virtual void OnLateUpdate(float deltaTime) { }
+        protected virtual void OnFixedUpdate(float fixedDeltaTime) { }
         protected virtual void OnDestroy() { }
         protected virtual void OnReset() { }
 
         protected string m_Name = string.Empty;
-        protected string m_Args = string.Empty;
+        protected int m_ID = 0;
         protected object m_Owner = null;
         protected int m_Priority = 0;
+        protected string m_Args = string.Empty;
 
         private bool m_HasEnter = false;
     }

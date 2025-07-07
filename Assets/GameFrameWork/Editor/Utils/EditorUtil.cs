@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Serialize;
+using GameFrameWork.Serialize;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -104,7 +105,9 @@ namespace GameFrameWork.Editor
 			return GetNodePath(current.parent, path, endParttern);
 		}
 
-		public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
+
+
+        public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
 		{
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
@@ -114,12 +117,21 @@ namespace GameFrameWork.Editor
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
 
+
 		private static void CreateScriptableObject(Type type, string name, string ext, string dir = null)
 		{
-			string directory = EditorPathUtil.configDataFullPath;
-			if (!string.IsNullOrEmpty(dir)) directory = dir;
+			string directory = string.Empty;
 
+			if (!string.IsNullOrEmpty(dir))
+			{
+				directory = dir;
+			}
+			else
+			{
+				directory = PathUtil.GetAssetFullPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
+			}
 			string fileName = directory + name + ext;
+
 			if (File.Exists(fileName))
 			{
 				return;

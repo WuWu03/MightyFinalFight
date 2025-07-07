@@ -1,17 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public class PathUtil
     {
         public static string appDataPath = Application.dataPath;
         public static string streamingAssetsPath = Application.streamingAssetsPath;
         public static string persistentDataPath = Application.persistentDataPath;
-        public static string luaPath = "Lua";
-        public static string configDataPath = "ConfigData";
-        public const string behaviourTreeConfigDataPath = "ConfigData/BehaviourTreeConfigData.json";
+
+        public const string configDataPath = "ConfigData";
         public const string uiPrefabPath = "Prefabs";
-        public const string uiAtlasPath = "UIAtlas";
+        public const string uiAtlasPath = "Atlas";
+
+        public const string gameFrameWorkConfigDataName = "GameFrameWorkConfig.asset";
+        public const string behaviourTreeConfigDataName = "BehaviourTreeConfigData.json";
         public const string assetBundleVersionName = "Version.txt";
         public const string assetMapName = "AssetMap.txt";
         public const string maniFestName = "StreamingAssets";
@@ -76,33 +78,33 @@ namespace GameFrameWork.Utilities
 
         public static string GetUIPrefabPath()
         {
-            string uiDirectory = AppConfig.instance.uiDirectory;
+            string uiPath = GameFrameWorkEntry.config.uiPath;
 
-            if (string.IsNullOrEmpty(uiDirectory))
+            if (string.IsNullOrEmpty(uiPath))
             {
                 return string.Empty;
             }
 
-            return FormatPath(uiDirectory, uiPrefabPath);
+            return FormatPath(uiPath, uiPrefabPath);
         }
 
         public static string GetUIAtlasPath()
         {
-            string uiDirectory = AppConfig.instance.uiDirectory;
+            string uiPath = GameFrameWorkEntry.config.uiPath;
 
-            if (string.IsNullOrEmpty(uiDirectory))
+            if (string.IsNullOrEmpty(uiPath))
             {
                 return string.Empty;
             }
 
-            return FormatPath(uiDirectory, uiAtlasPath);
+            return FormatPath(uiPath, uiAtlasPath);
         }
 
         public static string GetAssetPath(string path)
         {
-            if(string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
-                return string.Empty;
+                return "Assets/";
             }
 
             int assetIndex = path.IndexOf("Assets");
@@ -119,7 +121,7 @@ namespace GameFrameWork.Utilities
         {
             if (string.IsNullOrEmpty(assetPath))
             {
-                return string.Empty;
+                return appDataPath;
             }
 
             int assetIndex = assetPath.IndexOf("Assets");

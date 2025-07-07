@@ -33,7 +33,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public new Rigidbody2D rigidbody2D
+    public Rigidbody2D rigidbody2D
     {
         get
         {

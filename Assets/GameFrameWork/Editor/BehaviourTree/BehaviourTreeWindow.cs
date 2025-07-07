@@ -1,5 +1,6 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Editor.Config;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,9 +46,9 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            if (!Directory.Exists(EditorPathUtil.behaviourTreeWindowConfigFullPath))
+            if (!Directory.Exists(EditorPathUtil.editorConfigFullPath))
             {
-                Directory.CreateDirectory(EditorPathUtil.behaviourTreeWindowConfigFullPath);
+                Directory.CreateDirectory(EditorPathUtil.editorConfigFullPath);
             }
 
             if (!File.Exists(EditorPathUtil.behaviourTreeWindowDataFullPath))
@@ -550,7 +551,8 @@ namespace GameFrameWork.Editor
                 }
 
                 string jsonStr = LitJson.JsonMapper.ToJson(config);
-                File.WriteAllText(EditorPathUtil.behaviourTreeConfigDataFullPath, jsonStr);
+                string dataPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().configDataPath, PathUtil.behaviourTreeConfigDataName);
+                File.WriteAllText(dataPath, jsonStr);
 
                 jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
                 File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);

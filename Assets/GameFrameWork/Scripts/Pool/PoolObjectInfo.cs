@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace GameFrameWork.Pool
 {
     public class PoolObjectInfo : IReference
@@ -10,6 +8,7 @@ namespace GameFrameWork.Pool
         public string assetPath;
         public int referenceCount;
 
+        public PoolObjectInfo() { }
 
         public static PoolObjectInfo Create(UnityEngine.Object poolObject, float releaseTime, bool isReleaseImmediate, string assetPath)
         {
@@ -20,11 +19,6 @@ namespace GameFrameWork.Pool
             resourcePoolInfo.assetPath = assetPath;
             resourcePoolInfo.referenceCount = 0;
             return resourcePoolInfo;
-        }
-
-        public PoolObjectInfo()
-        {
-
         }
 
         public void Clear()

@@ -1,4 +1,5 @@
-﻿using GameFrameWork.Editor;
+using GameFrameWork.Editor;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -316,12 +317,15 @@ public static class MapEditorHelper
     }
     public static void Export()
     {
-        if (!File.Exists(EditorPathUtil.configDataFullPath + "StageConfigData.asset"))
+        string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
+        string configDataFullPath = PathUtil.GetAssetFullPath(configDataPath);
+
+        if (!File.Exists(configDataFullPath + "StageConfigData.asset"))
         {
-            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfigData", ".asset", EditorPathUtil.configDataPath);
+            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfigData", ".asset", configDataPath);
         }
 
-        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(EditorPathUtil.configDataPath + "StageConfigData.asset");
+        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(configDataPath + "StageConfigData.asset");
 
         if(stageConfig.listDatas == null)
         {

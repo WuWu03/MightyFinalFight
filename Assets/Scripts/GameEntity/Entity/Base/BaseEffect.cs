@@ -1,7 +1,4 @@
-﻿using DragonBones;
 using GameFrameWork;
-using GameFrameWork.GameEntity;
-using GameFrameWork.Audio;
 using UnityEngine;
 
 public class BaseEffect : BaseSceneObject

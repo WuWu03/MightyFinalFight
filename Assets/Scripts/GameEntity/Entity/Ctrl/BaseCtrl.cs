@@ -1,6 +1,3 @@
-﻿using GameFrameWork.GameEntity;
-using UnityEngine;
-
 public abstract class BaseCtrl
 {
     public BaseRole owner
@@ -19,7 +16,7 @@ public abstract class BaseCtrl
 
     public void Start()
     {
-        if(m_IsRunning)
+        if (m_IsRunning)
         {
             return;
         }
@@ -30,7 +27,13 @@ public abstract class BaseCtrl
 
     public void Stop()
     {
+        if (!m_IsRunning)
+        {
+            return;
+        }
+
         m_IsRunning = false;
+        OnStop();
     }
 
     public bool IsRunning()
@@ -75,8 +78,8 @@ public abstract class BaseCtrl
     }
 
     protected virtual void OnInit() { }
-
     protected virtual void OnStart() { }
+    protected virtual void OnStop() { }
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
     protected virtual void OnFixedUpdate() { }

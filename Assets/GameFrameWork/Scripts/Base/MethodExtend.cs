@@ -1,6 +1,6 @@
 using GameFrameWork.Assets;
 using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;

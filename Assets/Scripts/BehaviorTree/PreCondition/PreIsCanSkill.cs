@@ -1,13 +1,8 @@
-﻿using GameFrameWork.BehaviourTree;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
+using GameFrameWork.BehaviourTree;
 
 public class PreIsCanSkill : PreCondition
 {
-    public PreIsCanSkill(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public PreIsCanSkill(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_PreOwner = base.m_Owner as BaseRoleCtrl;
     }

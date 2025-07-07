@@ -22,7 +22,7 @@ namespace GameFrameWork.Assets
         {
             if (!string.IsNullOrEmpty(gameObjectPath))
             {
-                GameObjectPool.instance.Put(gameObjectPath, go);
+                GameObjectPoolMgr.instance.Put(gameObjectPath, go);
             }
             else if (!string.IsNullOrEmpty(spritePath))
             {

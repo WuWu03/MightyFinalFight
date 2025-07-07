@@ -1,12 +1,10 @@
 using GameFrameWork.BehaviourTree;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class PreIsPlayerInRange : PreCondition
 {
-    public PreIsPlayerInRange(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public PreIsPlayerInRange(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         if (!string.IsNullOrEmpty(args))
         {
@@ -40,5 +38,3 @@ public class PreIsPlayerInRange : PreCondition
     private float m_Range = -1;
     private Regex m_Regex = new Regex(@"(Range:)(-?[0-9]+(\.[0-9])?)");
 }
-
-

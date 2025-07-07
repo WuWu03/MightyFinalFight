@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoJumpAttack : DoAttack
 {
-    public DoJumpAttack(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoJumpAttack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         if (!string.IsNullOrEmpty(args))
         {

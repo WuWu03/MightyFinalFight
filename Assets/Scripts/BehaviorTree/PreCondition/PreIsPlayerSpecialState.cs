@@ -1,11 +1,8 @@
 using GameFrameWork.BehaviourTree;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class PreIsPlayerSpecialState : PreCondition
 {
-    public PreIsPlayerSpecialState(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public PreIsPlayerSpecialState(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
 
     }

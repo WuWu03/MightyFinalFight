@@ -237,7 +237,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         base.OnLoadAssetComplete(go, param);
         m_MoveDir = Vector2.right;
-        m_FsmMachine.Start<RoleIdle>();
+        m_FSM.Start<RoleIdle>();
 
         if (m_CurrCtrl != null)
         {
@@ -577,7 +577,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_IsDropGround = false;
         }
 
-        if (m_FsmMachine == null || !m_FsmMachine.isRunning)
+        if (m_FSM == null || !m_FSM.isRunning)
         {
             return;
         }

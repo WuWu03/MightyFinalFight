@@ -3,96 +3,42 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
     [InitializeOnLoad]
-	public static class EditorMgr
+    public static class EditorMgr
 	{
-        static EditorMgr()
-		{
-			if (!Directory.Exists(EditorPathUtil.configDataFullPath))
-			{
-				Directory.CreateDirectory(EditorPathUtil.configDataFullPath);
-			}
+        public static GameFrameWorkConfigWindowData GetGameFrameWorkConfig()
+        {
+            GameFrameWorkConfigWindowData config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.gameFrameWorkConfigWindowDataPath);
+            return config;
         }
 
         [MenuItem("GameFrameWork/Start Up &1", false,0)]
 		public static void GameFrameWorkStartUp()
 		{
-            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
+            CreateEntryScript();
 
-			if (string.IsNullOrEmpty(entryScenePath))
-			{
-				CheckEntryScene();
-                return;
-            }
-
-            if (EditorSceneManager.GetActiveScene().path.Equals(entryScenePath))
-            {
-                UnityEditor.EditorUtility.DisplayDialog("提示", "当前已经位于启动场景", "确认");
-				return;
-            }
-
-            bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "已创建过启动场景，是否跳转？", "确认", "取消");
-
-            if (result)
-            {
-                CheckEntryScene();
-            }
-        }
-
-		/// <summary>
-		/// 检查框架启动场景，若未创建则弹提示框进行创建，若已创建则跳转到启动场景
-		/// </summary>
-        public static bool CheckEntryScene()
-        {
-            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
-
-            if (string.IsNullOrEmpty(entryScenePath))
-            {
-                Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
-
-                if (entryTypes == null || entryTypes.Length < 1)
-                {
-                    bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "是否以当前场景作为框架启动场景？", "确认", "取消");
-
-					if(result)
-					{
-                        CreateEntry();
-                    }
-
-					return result;
-                }
-                else
-                {
-					bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "尚未设置框架启动场景，是否以当前场景作为框架启动场景？", "确认", "取消");
-                    if (result)
-                    {
-                        PlayerPrefs.SetString("unity_editor_entry_scene", EditorSceneManager.GetActiveScene().path);
-                        GoToGameFrameWorkEntryScene();
-                    }
-                    return result;
-                }
-            }
-
-            GoToGameFrameWorkEntryScene();
-            return true;
+            Rect rect = new Rect(0, 0, 600, 300);
+            EditorWindow window = EditorWindow.GetWindowWithRect<GameFrameWorkConfigWindow>(rect);
+            window.Show();
         }
 
         /// <summary>
         /// 创建框架启动脚本
         /// </summary>
-        private static void CreateEntry()
-		{
+        private static void CreateEntryScript()
+        {
             string[] entryScript = EditorUtil.GetAssemblyTypeNames("GameFrameWork.GameFrameWorkEntry", true, "GameFrameWorkEntry");
 
             if (entryScript == null || entryScript.Length < 1)
             {
-				StringBuilder sb = new StringBuilder();
-				sb.AppendLine("using GameFrameWork;");
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("using GameFrameWork;");
                 sb.AppendLine("using UnityEngine;");
                 sb.AppendLine();
                 sb.AppendLine("public class GameEntry : GameFrameWorkEntry");
@@ -114,64 +60,74 @@ namespace GameFrameWork.Editor
                 sb.AppendLine();
                 sb.Append("}");
 
-				Utilities.FileUtil.VerifyDirectory(Application.dataPath + "/Scripts/");
-				File.WriteAllText(Application.dataPath + "/Scripts/GameEntry.cs", sb.ToString());
-				AssetDatabase.Refresh();
+                Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorScriptFullPath);
+                File.WriteAllText(EditorPathUtil.entryScriptFullPath, sb.ToString());
+                AssetDatabase.Refresh();
             }
-
-            PlayerPrefs.SetString("unity_editor_entry_scene", EditorSceneManager.GetActiveScene().path);
-            GoToGameFrameWorkEntryScene();
         }
 
         /// <summary>
-        /// 主要用于第一次启动Unity编辑器时，检查是否已经初始化框架启动场景
+        /// 主要用于第一次启动Unity编辑器和编译完成后，检查是否已经设置框架启动场景
         /// </summary>
         [UnityEditor.Callbacks.DidReloadScripts(0)]
 		private static void OnScriptReload()
 		{
-			int isInit = PlayerPrefs.GetInt("unity_editor_is_init", 0);
-
-            if (isInit == 1)
-			{
-                EditorApplication.quitting += () =>
-                {
-                    PlayerPrefs.SetInt("unity_editor_is_init", 0);
-                };
-
-                EditorApplication.update -= CheckIsInit;
-				return;
-			}
-
-			EditorApplication.update += CheckIsInit;
+            EditorApplication.update += CheckIsInit;
 		}
 
-		private static void CheckIsInit()
+        private static bool m_HasAddSceneChangeEvent = false;
+        private static void CheckIsInit()
 		{
 			if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
 			{
 				return;
 			}
 
-            PlayerPrefs.SetInt("unity_editor_is_init", 1);
+            if(!m_HasAddSceneChangeEvent)
+            {
+                m_HasAddSceneChangeEvent = true;
+                EditorSceneManager.sceneOpened += (scene, mode) =>
+                {
+                    CheckEntryScene();
+                };
+            }
+
             EditorApplication.update -= CheckIsInit;
-			CheckEntryScene();
+            CheckEntryScene();
 		}
+
+        private static bool m_IsShowMainScene = false;
+        private static void CheckEntryScene()
+        {
+            GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
+            if (config == null || string.IsNullOrEmpty(config.entryScene))
+            {
+                m_IsShowMainScene = true;
+                GameFrameWorkStartUp();
+                return;
+            }
+
+            if(!m_IsShowMainScene)
+            {
+                m_IsShowMainScene = true;
+                GoToGameFrameWorkEntryScene();
+            }
+        }
 
         /// <summary>
         /// 跳转到框架启动场景
         /// </summary>
-        private static void GoToGameFrameWorkEntryScene()
+        public static void GoToGameFrameWorkEntryScene()
 		{
-            string entryScenePath = PlayerPrefs.GetString("unity_editor_entry_scene", string.Empty);
-
-            if (string.IsNullOrEmpty(entryScenePath))
-			{
-				return;
+            GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
+            if (config == null || string.IsNullOrEmpty(config.entryScene))
+            {
+                return;
 			}
 
-			if (!EditorSceneManager.GetActiveScene().path.Equals(entryScenePath))
+			if (!EditorSceneManager.GetActiveScene().path.Equals(config.entryScene))
 			{
-                EditorSceneManager.OpenScene(entryScenePath);
+                EditorSceneManager.OpenScene(config.entryScene);
 			}
 
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
@@ -193,24 +149,18 @@ namespace GameFrameWork.Editor
         [MenuItem("GameFrameWork/UI/创建UI场景", false, 101)]
 		public static void NewUIScene()
 		{
-			string entryScene = PlayerPrefs.GetString("entry_scene",string.Empty);
+            GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
+            if (config == null || string.IsNullOrEmpty(config.entryScene))
+            {
+                bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI目录，点击确定前往设置", "确定");
 
-			if (string.IsNullOrEmpty(entryScene))
-			{
-                UnityEditor.EditorUtility.DisplayDialog("提示", "未设置[框架启动场景]\n通过[GameFrameWord/StartUp]选项设置", "确定");
+                if(result)
+                {
+                    GameFrameWorkStartUp();
+                }
+
                 return;
 			}
-
-            if (EditorSceneManager.GetActiveScene().path != entryScene)
-            {
-                EditorSceneManager.OpenScene(entryScene);
-            }
-
-			if (string.IsNullOrEmpty(AppConfig.instance.uiDirectory))
-			{
-                UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI路径\n在[框架启动场景]选中[GameEntry]并设置[uiDirectory]字段", "确定");
-                return;
-            }
 
 			UIEditorInit.NewUIScene();
 		}
@@ -239,7 +189,7 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-        [MenuItem("GameFrameWork/AssetBundleEditor")]
+        [MenuItem("GameFrameWork/AssetBundleEditor",false,105)]
 		public static void AssetBundleEditor()
 		{
 			Rect wr = new Rect(0, 0, 700, 800);
@@ -247,14 +197,114 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/BehaviourTreeEditor")]
+		[MenuItem("GameFrameWork/BehaviourTreeEditor",false , 106)]
 		public static void BehaviourTreeEditor()
 		{
 			EditorWindow window = EditorWindow.GetWindow<BehaviourTreeWindow>();
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/EditorDemo/Tab", false, 1001)]
+        [MenuItem("GameFrameWork/Build/Build Game",false , 107)]
+        public static void BuildGame()
+        {
+            BuildGame(false);
+
+        }
+
+        [MenuItem("GameFrameWork/Build/Build Game Log",false , 108)]
+        public static void BuildGameLog()
+        {
+            BuildGame(true);
+        }
+
+        private static void BuildGame(bool openLog)
+        {
+            GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
+            if (config == null || string.IsNullOrEmpty(config.entryScene))
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "没有设置框架启动场景，点击确认前往设置", "确认"))
+                {
+                    GameFrameWorkStartUp();
+                }
+
+                return;
+            }
+
+            if (!UnityEditor.EditorUtility.DisplayDialog("提示", "点击确认开始打包", "确认", "取消"))
+            {
+                return;
+            }
+
+            bool isLoadFromAssetBundle = config.isLoadFromAssetBundle;
+            bool isOpenLog = config.isOpenLog;
+
+            config.isLoadFromAssetBundle = true;
+            config.isOpenLog = openLog;
+
+            EditorSceneManager.SaveOpenScenes();
+
+            using (AssetBundleBuilder builder = new AssetBundleBuilder())
+            {
+                builder.Build(BuildTarget.StandaloneWindows, false);
+            }
+
+            AssetDatabase.Refresh();
+
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+#if UNITY_ANDROID
+            string buildPath = config.androidBuildPath;
+            string ext = ".apk";
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Android;
+            buildPlayerOptions.target = BuildTarget.Android;
+#elif UNITY_IOS
+            string buildPath = config.iosBuildPath;
+            string ext = ".ipa";
+            buildPlayerOptions.targetGroup = BuildTargetGroup.iOS;
+            buildPlayerOptions.target = BuildTarget.iOS;
+#else
+            string buildPath = config.pcBuildPath;
+            string ext = ".exe";
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+            buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+#endif
+            if (string.IsNullOrEmpty(buildPath))
+            {
+                buildPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" + Application.productName + "\\" + Application.productName + ext;
+            }
+
+            string[] scenes = new string[EditorBuildSettings.scenes.Length];
+
+            for (int i = 0; i < scenes.Length; i++)
+            {
+                scenes[i] = EditorBuildSettings.scenes[i].path;
+            }
+
+            buildPlayerOptions.locationPathName = buildPath;
+            buildPlayerOptions.scenes = scenes;
+            buildPlayerOptions.options = BuildOptions.None;
+            BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildSummary buildSummary = buildReport.summary;
+
+            if (buildSummary.result == BuildResult.Succeeded)
+            {
+                config = GetGameFrameWorkConfig();
+                config.isLoadFromAssetBundle = isLoadFromAssetBundle;
+                config.isOpenLog = isOpenLog;
+                EditorSceneManager.SaveOpenScenes();
+                UnityEditor.EditorUtility.DisplayDialog("提示", "打包成功", "确认");
+                System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(buildPath) + @"\");
+            }
+            else if (buildSummary.result == BuildResult.Failed)
+            {
+                config = GetGameFrameWorkConfig();
+                config.isLoadFromAssetBundle = isLoadFromAssetBundle;
+                config.isOpenLog = isOpenLog;
+                Debug.LogError("Build windows error : [" + buildSummary.ToString() + "]");
+            }
+        }
+
+
+        [MenuItem("GameFrameWork/EditorDemo/Tab", false, 1001)]
 		public static void TabDemoWinow()
 		{
 			Rect wr = new Rect(0, 0, 600, 600);

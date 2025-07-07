@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dffffb1543480b241b13957a31d954d8, type: 3}
-  m_Name: AssetBundleData
+  m_Name: AssetBundleWindowData
   m_EditorClassIdentifier: 
   listDatas:
   - id: 1
@@ -287,54 +287,54 @@ MonoBehaviour:
     assetPath: Assets/ArtResources/Textures/Stage/
     bundlePath: 
   - id: 40
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/Common
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/Common/
+    bundlePath: 
+  - id: 41
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/MainPanel
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/MainPanel/
+    bundlePath: 
+  - id: 42
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/RoleSelectPanel
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/RoleSelectPanel/
+    bundlePath: 
+  - id: 43
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/StagePanel
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/StagePanel/
+    bundlePath: 
+  - id: 44
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/TalkPanel
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/TalkPanel/
+    bundlePath: 
+  - id: 45
+    bundleBuildType: 1
+    bundleName: ArtResources/UI/Atlas/TitlePanel
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Atlas/TitlePanel/
+    bundlePath: 
+  - id: 46
     bundleBuildType: 0
     bundleName: 
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/Prefabs/
     bundlePath: ArtResources/UI/Prefabs/
-  - id: 41
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/Common
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/Common/
-    bundlePath: 
-  - id: 42
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/MainPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/MainPanel/
-    bundlePath: 
-  - id: 43
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/RoleSelectPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/RoleSelectPanel/
-    bundlePath: 
-  - id: 44
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/StagePanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/StagePanel/
-    bundlePath: 
-  - id: 45
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/TalkPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/TalkPanel/
-    bundlePath: 
-  - id: 46
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/UIAtlas/TitlePanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/UIAtlas/TitlePanel/
-    bundlePath: 
   - id: 47
     bundleBuildType: 0
     bundleName: 

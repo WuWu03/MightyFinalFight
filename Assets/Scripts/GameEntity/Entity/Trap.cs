@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using GameFrameWork;
 
 public class Trap : BaseBoundObject
 {

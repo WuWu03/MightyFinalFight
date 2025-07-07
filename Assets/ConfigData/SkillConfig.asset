@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c65c759b485d79d4eae2bd2091f2947e, type: 3}
-  m_Name: SkillData
+  m_Name: SkillConfig
   m_EditorClassIdentifier: 
   listDatas:
   - id: 1001001

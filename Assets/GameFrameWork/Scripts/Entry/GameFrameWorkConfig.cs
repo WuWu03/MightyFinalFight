@@ -1,0 +1,21 @@
+using UnityEngine;
+
+namespace GameFrameWork
+{
+    public class GameFrameWorkConfig : ScriptableObject
+    {
+        public bool isCheckVersion = false;
+        public bool isLoadFromAssetBundle = false;
+        public bool isOpenLog = false;
+        public bool isUseLua = false;
+        public bool isLoadLuaFromAssetBundle = false;
+        public bool isLuaByteMode = false;
+        public string luaPath = string.Empty;
+        public string uiPath = string.Empty;
+        public string uiPrefabsPath = string.Empty;
+        public string uiAtlasPath = string.Empty;
+        public string configDataPath = string.Empty;
+        public string versionFileName = string.Empty;
+        public Color logColor = Color.white;
+    }
+}

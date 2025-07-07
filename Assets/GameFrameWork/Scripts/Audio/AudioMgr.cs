@@ -1,6 +1,6 @@
 using DG.Tweening;
 using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 

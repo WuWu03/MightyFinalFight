@@ -1,15 +1,15 @@
-﻿using GameFrameWork;
-using GameFrameWork.Fsm;
+using GameFrameWork;
+using GameFrameWork.FSM;
 using UnityEngine;
 
 public class RoleJump : BaseFsmState
 {
-    protected override void OnInit(BaseFsm fsm)
+    protected override void OnInit(FiniteStateMachine fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(FiniteStateMachine fsm)
     {
         m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, m_Owner.entityAttribute.jumpForce.y);
         m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Catch : AnimName.JumpUp);
@@ -23,7 +23,7 @@ public class RoleJump : BaseFsmState
         m_Owner.onDropEvent.AddListener(OnDrop);
     }
 
-    protected override void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
+    protected override void OnFixedUpdate(FiniteStateMachine fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
         if (m_Owner.isFloat)
         {
@@ -62,14 +62,14 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    protected override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
     {
         m_Dir = 0;
         m_CanChangeDir = false;
         m_HasAddXForce = false;
     }
 
-    protected override void OnRelease(BaseFsm fsm)
+    protected override void OnRelease(FiniteStateMachine fsm)
     {
         base.OnRelease(fsm);
         m_Owner = null;

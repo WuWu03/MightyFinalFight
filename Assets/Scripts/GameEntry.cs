@@ -2,7 +2,8 @@ using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.Localization;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
+using System;
 using UnityEngine;
 
 public class GameEntry : GameFrameWorkEntry
@@ -16,7 +17,7 @@ public class GameEntry : GameFrameWorkEntry
         PlayerMgr.Init(manager);
         HudMgr.Init(manager);
         StaticConfig.InitConfig();
-        ConfigDataHelper.Init(PathUtil.configDataPath);
+        ConfigData.Init();
     }
 
     protected override void OnStartGame()
@@ -37,7 +38,7 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnExit()
     {
-        ConfigDataHelper.ShutDown();
+        ConfigData.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();
         StageMgr.instance.ShutDown();

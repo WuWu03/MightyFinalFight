@@ -1,33 +1,40 @@
-﻿namespace GameFrameWork.Fsm
+using UnityEngine;
+
+namespace GameFrameWork.FSM
 {
-    public abstract class BaseFsmState
+	public abstract class BaseFsmState
 	{
-		public void Init(BaseFsm fsm)
+		public void Init(FiniteStateMachine fsm)
 		{
 			OnInit(fsm);
 		}
 
-		public void Enter(BaseFsm fsm)
+		public void Enter(FiniteStateMachine fsm)
 		{
 			OnEnter(fsm);
 		}
 
-		public void Update(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+		public void Update(FiniteStateMachine fsm, float deltaTime, float unscaledDeltaTime)
 		{
-			OnUpdate(fsm, deltaTime, unscaleDeltaTime);
+			OnUpdate(fsm, deltaTime, unscaledDeltaTime);
 		}
 
-		public void FixedUpdate(BaseFsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
+		public void LateUpdate(FiniteStateMachine fsm, float deltaTime, float unscaledDeltaTime)
+		{
+			OnLateUpdate(fsm, deltaTime, unscaledDeltaTime);
+		}
+
+		public void FixedUpdate(FiniteStateMachine fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
 		{
 			OnFixedUpdate(fsm, fixedDeltaTime, fixedUnscaledDeltaTime);
 		}
 
-		public void Exit(BaseFsm fsm, bool isShutdown)
+		public void Exit(FiniteStateMachine fsm, bool isShutdown)
 		{
 			OnExit(fsm, isShutdown);
 		}
 
-		public void Release(BaseFsm fsm)
+		public void Release(FiniteStateMachine fsm)
 		{
 			OnRelease(fsm);
 		}
@@ -35,18 +42,19 @@
 		public void SetStateData(BaseEventArgs stateData)
 		{
 			OnSetStateData(stateData);
-        }
+		}
 
-		protected virtual void OnInit(BaseFsm fsm) { }
-		protected abstract void OnEnter(BaseFsm fsm);
-		protected virtual void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime) { }
-		protected virtual void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float unscaleDeltaTime) { }
-		protected abstract void OnExit(BaseFsm fsm, bool isShutdown);
-		protected virtual void OnRelease(BaseFsm fsm) { }
+		protected virtual void OnInit(FiniteStateMachine fsm) { }
+		protected abstract void OnEnter(FiniteStateMachine fsm);
+		protected virtual void OnUpdate(FiniteStateMachine fsm, float deltaTime, float unscaledDeltaTime) { }
+		protected virtual void OnLateUpdate(FiniteStateMachine fsm, float deltaTime, float unscaledDeltaTime) { }
+		protected virtual void OnFixedUpdate(FiniteStateMachine fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime) { }
+		protected abstract void OnExit(FiniteStateMachine fsm, bool isShutdown);
+		protected virtual void OnRelease(FiniteStateMachine fsm) { }
 
 		protected virtual void OnSetStateData(BaseEventArgs stateData) { }
 
-		protected void ChangeState<T>(BaseFsm fsm, BaseEventArgs stateData = null) where T : BaseFsmState
+		protected void ChangeState<T>(FiniteStateMachine fsm, BaseEventArgs stateData = null) where T : BaseFsmState
 		{
 			if (fsm == null)
 			{

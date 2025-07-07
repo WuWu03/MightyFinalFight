@@ -43,7 +43,7 @@ namespace GameFrameWork.GameEntity
         {
             get
             {
-                return m_DicUsingEntity.Count;
+                return m_ListUsingEntities.Count;
             }
         }
 
@@ -60,15 +60,46 @@ namespace GameFrameWork.GameEntity
             m_PoolRoot = new GameObject("EntityMgr").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);
-            m_DicUsingEntity = new Dictionary<Type, List<BaseEntity>>();
+            m_ListUsingEntities = new List<BaseEntity>();
             m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
         }
 
-        public T GetEntity<T>(string name = null, Transform parent = null) where T : BaseEntity
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            for (int i = m_ListUsingEntities.Count - 1; i > - 1 ; i--)
+            {
+                m_ListUsingEntities[i].Update(Time.deltaTime, Time.unscaledDeltaTime);
+            }
+        }
+
+        protected override void OnLateUpdate()
+        {
+            base.OnLateUpdate();
+
+            for (int i = m_ListUsingEntities.Count - 1; i > -1; i--)
+            {
+                m_ListUsingEntities[i].LateUpdate(Time.deltaTime, Time.unscaledDeltaTime);
+            }
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            base.OnFixedUpdate();
+
+            for (int i = m_ListUsingEntities.Count - 1; i > -1; i--)
+            {
+                m_ListUsingEntities[i].FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
+            }
+        }
+
+        public T GetEntity<T>(string name = null, Transform parent = null) where T : BaseEntity, new()
         {
             T entity = null;
-            Type key = typeof(T);
-            List<BaseEntity> unUsedList = GetUnUsedList(key);
+            GameObject entityGameObject = null;
+            Type type = typeof(T);
+            List<BaseEntity> unUsedList = GetUnUsedList(type);
 
             if (unUsedList.Count > 0)
             {
@@ -81,18 +112,19 @@ namespace GameFrameWork.GameEntity
 
             if (entity == null)
             {
-                entity = new GameObject().GetOrAddComponent<T>();
-                DontDestroyOnLoad(entity);
+                entityGameObject = new GameObject();
+                entity = Activator.CreateInstance<T>();
+                entity.SetGameObject(entityGameObject);
+                DontDestroyOnLoad(entityGameObject);
                 m_CreateCount++;
             }
 
             m_AcquireCount++;
 
-            entity.Init(m_DicUsingEntity.Count, name);
+            entity.Init(m_AcquireCount, name);
             entity.SetParent(parent, false);
-            entity.transform.localPosition = Vector3.zero;
             entity.SetActive(true);
-            GetUsingList(key).Add(entity);
+            m_ListUsingEntities.Add(entity);
 
             return entity;
         }
@@ -108,23 +140,11 @@ namespace GameFrameWork.GameEntity
         public void PutEntity(BaseEntity entity)
         {
             entity.SetActive(false);
-            entity.transform.localPosition = Vector3.zero;
             entity.SetParent(m_PoolRoot, false);
 
             Type key = entity.GetType();
-
             GetUnUsedList(key).Add(entity);
-
-            if (m_DicUsingEntity.TryGetValue(key, out List<BaseEntity> list))
-            {
-                list.Remove(entity);
-
-                if (list.Count < 1)
-                {
-                    m_DicUsingEntity.Remove(key);
-                }
-            }
-
+            m_ListUsingEntities.Remove(entity);
             m_ReleaseCount++;
         }
 
@@ -174,56 +194,52 @@ namespace GameFrameWork.GameEntity
 
         public void DestroyAll()
         {
-            List<BaseEntity> releaseList = new List<BaseEntity>();
-
-            foreach (KeyValuePair<Type, List<BaseEntity>> kvp in m_DicUsingEntity)
+            for (int i = 0; i < m_ListUsingEntities.Count; i++)
             {
-                for (int i = 0; i < kvp.Value.Count; i++)
-                {
-                    releaseList.Add(kvp.Value[i]);
-                }
+                m_ListUsingEntities[i].Release();
             }
 
-            for (int i = 0; i < releaseList.Count; i++)
-            {
-                releaseList[i].Release();
-            }
-
-            releaseList.Clear();
+            m_ListUsingEntities.Clear();
             DestoryAllUnUsedEntities();
 
-            m_DicUsingEntity.Clear();
+            m_ListUsingEntities.Clear();
             m_AcquireCount = 0;
             m_CreateCount = 0;
             m_ReleaseCount = 0;
             m_DestroyCount = 0;
         }
 
-        public T[] FindEntities<T>(string name = null) where T : BaseEntity
+        public List<T> FindEntities<T>(string name = null) where T : BaseEntity
         {
             List<T> entityList = new List<T>();
-            List<BaseEntity> usingList = GetUsingList(typeof(T));
+            Type type = typeof(T);
 
-            for (int i = 0; i < usingList.Count; i++)
+            for (int i = 0; i < m_ListUsingEntities.Count; i++)
             {
-                if (string.IsNullOrEmpty(name) || usingList[i].entityName.Equals(name))
+                if (m_ListUsingEntities[i].GetType() == type)
                 {
-                    entityList.Add(usingList[i] as T);
+                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].entityName.Equals(name))
+                    {
+                        entityList.Add(m_ListUsingEntities[i] as T);
+                    }
                 }
             }
 
-            return entityList.ToArray();
+            return entityList;
         }
 
         public T FindEntity<T>(string name = null) where T : BaseEntity
         {
-            List<BaseEntity> usingList = GetUsingList(typeof(T));
+            Type type = typeof(T);
 
-            for (int i = 0; i < usingList.Count; i++)
+            for (int i = 0; i < m_ListUsingEntities.Count; i++)
             {
-                if (string.IsNullOrEmpty(name) || usingList[i].entityName.Equals(name))
+                if (m_ListUsingEntities[i].GetType() == type)
                 {
-                    return usingList[i] as T;
+                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].entityName.Equals(name))
+                    {
+                        return m_ListUsingEntities[i] as T;
+                    }
                 }
             }
 
@@ -233,17 +249,6 @@ namespace GameFrameWork.GameEntity
         public bool HasEntity<T>(string name = null) where T : BaseEntity
         {
             return FindEntity<T>(name) != null;
-        }
-
-        private List<BaseEntity> GetUsingList(Type type)
-        {
-            if (!m_DicUsingEntity.TryGetValue(type, out List<BaseEntity> usingList))
-            {
-                usingList = new List<BaseEntity>();
-                m_DicUsingEntity.Add(type, usingList);
-            }
-
-            return usingList;
         }
 
         private List<BaseEntity> GetUnUsedList(Type type)
@@ -260,7 +265,7 @@ namespace GameFrameWork.GameEntity
         protected override void OnShutDown()
         {
             DestroyAll();
-            m_DicUsingEntity.Clear();
+            m_ListUsingEntities.Clear();
             m_DicUnUsedEntity.Clear();
             m_AcquireCount = 0;
             m_CreateCount = 0;
@@ -273,7 +278,7 @@ namespace GameFrameWork.GameEntity
         private int m_ReleaseCount = 0;
         private int m_DestroyCount = 0;
         private Transform m_PoolRoot = null;
-        private Dictionary<Type, List<BaseEntity>> m_DicUsingEntity = null;
+        private List<BaseEntity> m_ListUsingEntities = null;
         private Dictionary<Type, List<BaseEntity>> m_DicUnUsedEntity = null;
     }
 }

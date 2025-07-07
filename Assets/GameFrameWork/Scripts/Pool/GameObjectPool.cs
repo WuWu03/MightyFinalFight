@@ -1,360 +1,175 @@
 using GameFrameWork.Assets;
-using GameFrameWork.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Pool
 {
-    public class GameObjectPool : BaseMgr<GameObjectPool>
+    public class GameObjectPool
     {
-        class Pool
+        public int count
         {
-            public int count
+            get
             {
-                get
-                {
-                    return m_QueuePool.Count;
-                }
+                return m_QueuePool.Count;
             }
+        }
 
-            public int usingCount
+        public int usingCount
+        {
+            get
             {
-                get
-                {
-                    return m_UsingCount;
-                }
+                return m_UsingCount;
             }
+        }
 
-            public bool isFromAsset
+        public bool isFromAsset
+        {
+            get
             {
-                get
-                {
-                    return m_IsFromAsset;
-                }
+                return m_IsFromAsset;
             }
+        }
 
-            public Pool(string tag, Transform poolRoot, GameObject prefab, bool isFromAsset)
+        public GameObjectPool(string tag, Transform poolRoot, GameObject prefab, bool isFromAsset)
+        {
+            GameObject root = new GameObject(tag);
+            root.transform.SetParent(poolRoot, false);
+            root.SetActive(false);
+            m_GORoot = root.transform;
+            m_Prefab = prefab;
+            m_Tag = tag;
+            m_IsFromAsset = isFromAsset;
+            m_QueuePool = new Queue<PoolObjectInfo>();
+        }
+
+        public GameObject Get(bool isActive = true)
+        {
+            GameObject go = null;
+
+            if (m_QueuePool.Count > 0)
             {
-                GameObject root = new GameObject(tag);
-                root.transform.SetParent(poolRoot, false);
-                root.SetActive(false);
-                m_GORoot = root.transform;
-                m_Prefab = prefab;
-                m_Tag = tag;
-                m_IsFromAsset = isFromAsset;
-                m_QueuePool = new Queue<PoolObjectInfo>();
-            }
-
-            public GameObject Get(bool isActive = true)
-            {
-                GameObject go = null;
-
-                if (m_QueuePool.Count > 0)
-                {
-                    lock (m_QueuePool)
-                    {
-                        PoolObjectInfo info = m_QueuePool.Dequeue();
-                        go = info.poolObject as GameObject;
-                        ReferencePool.ReleaseReference(info);
-                    }
-                }
-
-                if (go == null)
-                {
-                    go = GameObject.Instantiate(m_Prefab, null, false);
-                }
-
-                if (m_IsFromAsset)
-                {
-                    AssetUnLoader resourceUnLoader = go.GetOrAddComponent<AssetUnLoader>();
-                    resourceUnLoader.ResetAssetInfo();
-                    resourceUnLoader.gameObjectPath = m_Tag;
-                    resourceUnLoader.go = go;
-                }
-
-                m_UsingCount++;
-                go.SetActive(isActive);
-                return go;
-            }
-
-            public void Cache()
-            {
-                if (m_Prefab == null)
-                {
-                    return;
-                }
-
-                GameObject go = GameObject.Instantiate(m_Prefab, m_GORoot, false);
-                go.SetActive(false);
-                m_QueuePool.Enqueue(PoolObjectInfo.Create(go, -1, false, string.Empty));
-            }
-
-            public void Put(GameObject go, bool isReleaseImmdiately)
-            {
-                if (go != null)
-                {
-                    go.SetActive(false);
-                    go.transform.SetParent(m_GORoot, false);
-                    go.transform.localPosition = Vector3.zero;
-                    m_UsingCount--;
-                    m_QueuePool.Enqueue(PoolObjectInfo.Create(go, Time.time, isReleaseImmdiately, string.Empty));
-
-                    if (isReleaseImmdiately)
-                    {
-                        CheckRelease();
-                    }
-                }
-            }
-
-            public void CheckRelease()
-            {
-                int count = m_QueuePool.Count;
-
-                while (count > 0)
-                {
-                    count--;
-
-                    PoolObjectInfo info = m_QueuePool.Dequeue();
-
-                    if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime > ConstField.CollectTime))
-                    {
-                        DestoryPoolObject(info);
-                        ReferencePool.ReleaseReference(info);
-                    }
-                    else
-                    {
-                        m_QueuePool.Enqueue(info);
-                    }
-                }
-            }
-
-            public void Clear()
-            {
-                while (m_QueuePool.Count > 0)
+                lock (m_QueuePool)
                 {
                     PoolObjectInfo info = m_QueuePool.Dequeue();
-
-                    if (info != null)
-                    {
-                        DestoryPoolObject(info);
-                        ReferencePool.ReleaseReference(info);
-                    }
+                    go = info.poolObject as GameObject;
+                    ReferencePool.ReleaseReference(info);
                 }
-
-                if (m_IsFromAsset)
-                {
-                    AssetsPool.instance.Put(m_Tag, m_Prefab);
-                }
-
-                m_QueuePool.Clear();
-                m_Prefab = null;
-                m_Tag = string.Empty;
-                m_IsFromAsset = false;
-                GameObject.Destroy(m_GORoot.gameObject);
             }
 
-            private void DestoryPoolObject(PoolObjectInfo info)
+            if (go == null)
             {
-                AssetUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<AssetUnLoader>(true);
-
-                for (int i = 0; i < resourceUnLoaders.Length; i++)
-                {
-                    if (resourceUnLoaders[i].go != info.poolObject)
-                    {
-                        resourceUnLoaders[i].BeforeOnDestroy();
-                    }
-                }
-
-                GameObject.Destroy(info.poolObject);
+                go = GameObject.Instantiate(m_Prefab, null, false);
             }
 
-            private GameObject m_Prefab = null;
-            private Transform m_GORoot = null;
-            private Queue<PoolObjectInfo> m_QueuePool = null;
-            private int m_UsingCount = 0;
-            private string m_Tag = string.Empty;
-            private bool m_IsFromAsset = false;
-        }
-
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-           
-            m_PoolRoot = new GameObject("GameObjectPool").transform;
-            m_PoolRoot.SetParent(transform, false);
-            m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
-
-            m_DicPool = new Dictionary<string, Pool>();
-            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_ListReleasePoolKey = new List<string>();
-        }
-
-        /// <summary>
-        /// 添加一个池
-        /// </summary>
-        public void AddPool(string tag, GameObject obj, int count = 1)
-        {
-            AddPool(tag, obj, count, false);
-        }
-
-        /// <summary>
-        /// 删除一个池
-        /// </summary>
-        public void RemovePool(string tag)
-        {
-            if (m_DicPool.TryGetValue(tag, out Pool pool))
+            if (m_IsFromAsset)
             {
-                pool.Clear();
-                m_DicPool.Remove(tag);
+                AssetUnLoader resourceUnLoader = go.GetOrAddComponent<AssetUnLoader>();
+                resourceUnLoader.ResetAssetInfo();
+                resourceUnLoader.gameObjectPath = m_Tag;
+                resourceUnLoader.go = go;
             }
+
+            m_UsingCount++;
+            go.SetActive(isActive);
+            return go;
         }
 
-        /// <summary>
-        /// 生成一个预制物
-        /// </summary>
-        public GameObject Get(string tag, Transform parent, string layer, bool isActive = true)
+        public void Cache()
         {
-            if (m_DicPool.TryGetValue(tag, out Pool pool))
+            if (m_Prefab == null)
             {
-                GameObject go = pool.Get(isActive);
-
-                go.transform.SetParent(parent, false);
-                go.SetLayer(layer, true);
-                return go;
+                return;
             }
 
-            return null;
+            GameObject go = GameObject.Instantiate(m_Prefab, m_GORoot, false);
+            go.SetActive(false);
+            m_QueuePool.Enqueue(PoolObjectInfo.Create(go, -1, false, string.Empty));
         }
 
-
-        /// <summary>
-        /// 从资源中加载一个物体
-        /// </summary>
-        public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
+        public void Put(GameObject go, bool isReleaseImmdiately)
         {
-            GameObject go = Get(assetPath, null, string.Empty);
-
             if (go != null)
             {
-                call?.Invoke(assetPath, go, args);
-            }
-            else
-            {
-                LoadRequest request = LoadRequest.Create();
-                request.assetPath = assetPath;
-                request.action = call;
-                request.args = args;
+                go.SetActive(false);
+                go.transform.SetParent(m_GORoot, false);
+                go.transform.localPosition = Vector3.zero;
+                m_UsingCount--;
+                m_QueuePool.Enqueue(PoolObjectInfo.Create(go, Time.time, isReleaseImmdiately, string.Empty));
 
-                if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+                if (isReleaseImmdiately)
                 {
-                    listLoadRequest = new List<LoadRequest>() { request };
-                    m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                    AssetsPool.instance.Get<GameObject>(assetPath, OnLoaded);
+                    CheckRelease();
                 }
-                else
-                {
-                    listLoadRequest.Add(request);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 回收物体
-        /// </summary>
-        public void Put(string tag, GameObject go, bool isReleaseImmdiately = false)
-        {
-            if (m_DicPool.TryGetValue(tag, out Pool pool))
-            {
-                AssetUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<AssetUnLoader>(true);
-
-                for (int i = 0; i < resourceUnLoaders.Length; i++)
-                {
-                    if (resourceUnLoaders[i].gameObject != go)
-                    {
-                        Put(resourceUnLoaders[i].gameObjectPath, resourceUnLoaders[i].go, false);
-                    }
-                }
-
-                pool.Put(go, isReleaseImmdiately);
             }
         }
 
         public void CheckRelease()
         {
-            base.OnUpdate();
+            int count = m_QueuePool.Count;
 
-            m_ListReleasePoolKey.Clear();
-
-            foreach (KeyValuePair<string, Pool> kvp in m_DicPool)
+            while (count > 0)
             {
-                kvp.Value.CheckRelease();
+                count--;
 
-                if (kvp.Value.count < 1 && kvp.Value.isFromAsset && kvp.Value.usingCount < 1)
+                PoolObjectInfo info = m_QueuePool.Dequeue();
+
+                if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime > ConstField.CollectTime))
                 {
-                    m_ListReleasePoolKey.Add(kvp.Key);
+                    DestoryPoolObject(info);
+                    ReferencePool.ReleaseReference(info);
+                }
+                else
+                {
+                    m_QueuePool.Enqueue(info);
+                }
+            }
+        }
+
+        public void Clear()
+        {
+            while (m_QueuePool.Count > 0)
+            {
+                PoolObjectInfo info = m_QueuePool.Dequeue();
+
+                if (info != null)
+                {
+                    DestoryPoolObject(info);
+                    ReferencePool.ReleaseReference(info);
                 }
             }
 
-            for (int i = 0; i < m_ListReleasePoolKey.Count; i++)
+            if (m_IsFromAsset)
             {
-                m_DicPool[m_ListReleasePoolKey[i]].Clear();
-                m_DicPool.Remove(m_ListReleasePoolKey[i]);
+                AssetsPool.instance.Put(m_Tag, m_Prefab);
             }
+
+            m_QueuePool.Clear();
+            m_Prefab = null;
+            m_Tag = string.Empty;
+            m_IsFromAsset = false;
+            GameObject.Destroy(m_GORoot.gameObject);
         }
 
-        private void AddPool(string tag, GameObject obj, int prefab, bool isFromAsset)
+        private void DestoryPoolObject(PoolObjectInfo info)
         {
-            if (!m_DicPool.TryGetValue(tag, out Pool pool))
-            {
-                pool = new Pool(tag, m_PoolRoot, obj, isFromAsset);
+            AssetUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<AssetUnLoader>(true);
 
-                for (int i = 0; i < prefab; i++)
+            for (int i = 0; i < resourceUnLoaders.Length; i++)
+            {
+                if (resourceUnLoaders[i].go != info.poolObject)
                 {
-                    pool.Cache();
+                    resourceUnLoaders[i].BeforeOnDestroy();
                 }
-
-                m_DicPool.Add(tag, pool);
             }
+
+            GameObject.Destroy(info.poolObject);
         }
 
-        private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
-        {
-            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
-            {
-                Log.LogError(StringUtil.Format("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
-                return;
-            }
-
-            AddPool(assetPath, obj as GameObject, 1, true);
-
-            for (int i = 0; i < listLoadRequest.Count; i++)
-            {
-                listLoadRequest[i].Call(Get(assetPath, null, string.Empty));
-                ReferencePool.ReleaseReference(listLoadRequest[i]);
-            }
-
-            m_DicLoadRequests.Remove(assetPath);
-        }
-
-        /// <summary>
-        /// 释放
-        /// </summary>
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-
-            foreach (KeyValuePair<string, Pool> kvp in m_DicPool)
-            {
-                kvp.Value.Clear();
-            }
-
-            m_DicLoadRequests.Clear();
-            m_DicPool.Clear();
-        }
-
-        private List<string> m_ListReleasePoolKey = null;
-        private Transform m_PoolRoot = null;
-        private Dictionary<string, Pool> m_DicPool = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
+        private GameObject m_Prefab = null;
+        private Transform m_GORoot = null;
+        private Queue<PoolObjectInfo> m_QueuePool = null;
+        private int m_UsingCount = 0;
+        private string m_Tag = string.Empty;
+        private bool m_IsFromAsset = false;
     }
 }

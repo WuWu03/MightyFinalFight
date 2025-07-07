@@ -1,21 +1,21 @@
-﻿using GameFrameWork.Assets;
+using GameFrameWork.Assets;
 using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
-using GameFrameWork.Fsm;
+using GameFrameWork.FSM;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
 using GameFrameWork.Localization;
 using GameFrameWork.Pool;
 using GameFrameWork.Scene;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
+using System.IO;
 using UnityEngine;
 
 namespace GameFrameWork
 {
-    [RequireComponent(typeof(AppConfig))]
     public abstract class GameFrameWorkEntry : MonoBehaviour
     {
         public static bool IsApplicationRunning()
@@ -23,10 +23,27 @@ namespace GameFrameWork
             return s_Manager != null;
         }
 
+        public static GameFrameWorkConfig config
+        {
+            get
+            {
+                return s_Config;
+            }
+        }
+
+        public static GameObject manager
+        {
+            get
+            {
+                return s_Manager;
+            }
+        }
+
         private void Awake()
         {
+            s_Config = Resources.Load<GameFrameWorkConfig>(Path.GetFileNameWithoutExtension(PathUtil.gameFrameWorkConfigDataName));
             s_Manager = new GameObject("GameManager");
-
+            
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(s_Manager);
     
@@ -34,10 +51,10 @@ namespace GameFrameWork
             RedPointMgr.Init(s_Manager);
             InputMgr.Init(s_Manager);
             AssetsMgr.Init(s_Manager);
-            BehaviourTreeMgr.Init(PathUtil.behaviourTreeConfigDataPath);
-            GameObjectPool.Init(s_Manager);
+            BehaviourTreeMgr.Init(s_Manager);
+            GameObjectPoolMgr.Init(s_Manager);
             EntityMgr.Init(s_Manager);
-            FsmMgr.Init(s_Manager);
+            FSMMgr.Init(s_Manager);
             CameraMgr.Init(s_Manager);
             AudioMgr.Init(s_Manager);
             EventMgr.Init(s_Manager);
@@ -56,7 +73,6 @@ namespace GameFrameWork
         {
             OnExit();
             EventMgr.instance.DispatchNow(this, GameEventArgs.Create(GameFrameWorkCommonEvent.ApplicationQuitEvent));
-
             EntityMgr.instance.ShutDown();
             UIMgr.instance.ShutDown();
             RedPointMgr.instance.ShutDown();
@@ -64,13 +80,14 @@ namespace GameFrameWork
             CameraMgr.instance.ShutDown();
             AudioMgr.instance.ShutDown();
             SceneMgr.instance.ShutDown();
-            FsmMgr.instance.ShutDown();
-            GameObjectPool.instance.ShutDown();
+            FSMMgr.instance.ShutDown();
+            GameObjectPoolMgr.instance.ShutDown();
             AssetsPool.instance.ShutDown();
             AssetsMgr.instance.ShutDown();
             ReferencePool.ShutDown();
             LocalizationMgr.instance.ShutDown();
             EventMgr.instance.ShutDown();
+            BehaviourTreeMgr.instance.ShutDown();
             Destroy(s_Manager);
             s_Manager = null;
         }
@@ -79,6 +96,7 @@ namespace GameFrameWork
         protected abstract void OnStartGame();
         protected abstract void OnExit();
 
+        private static GameFrameWorkConfig s_Config = null;
         private static GameObject s_Manager = null;
     }
 }

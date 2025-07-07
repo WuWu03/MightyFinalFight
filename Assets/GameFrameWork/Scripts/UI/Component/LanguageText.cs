@@ -30,12 +30,13 @@ namespace GameFrameWork.UI
 
         private void OnDisable()
         {
-            if (GameFrameWorkEntry.IsApplicationRunning())
+            if (!GameFrameWorkEntry.IsApplicationRunning())
             {
-                EventMgr.instance.UnSubscribe(GameFrameWorkCommonEvent.LanguageChangeEvent, OnLanguageChange);
+                return;
             }
-        }
 
+            EventMgr.instance.UnSubscribe(GameFrameWorkCommonEvent.LanguageChangeEvent, OnLanguageChange);
+        }
 
         public void UpdateLanguageTextKey(string key)
         {

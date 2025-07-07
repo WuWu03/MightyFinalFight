@@ -18,13 +18,13 @@ namespace GameFrameWork.Editor
         static AssetBundleUtility()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemGUI;
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
             m_DicAssetContainer = new Dictionary<string, int>();
         }
 
         public static void RefreshData()
         {
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
             m_DicAssetContainer.Clear();
         }
 

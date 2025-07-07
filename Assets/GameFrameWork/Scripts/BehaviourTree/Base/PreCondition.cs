@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 
 namespace GameFrameWork.BehaviourTree
 {
     public abstract class PreCondition : Node
     {
-        public PreCondition(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public PreCondition(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
             if (!string.IsNullOrEmpty(args))
             {

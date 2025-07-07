@@ -1,9 +1,9 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using UnityEngine;
 
 public class DoRunToPlayer : Action
 {
-    public DoRunToPlayer(string name, string args, object owner, int priority) : base(name, args, owner, priority) 
+    public DoRunToPlayer(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
     }

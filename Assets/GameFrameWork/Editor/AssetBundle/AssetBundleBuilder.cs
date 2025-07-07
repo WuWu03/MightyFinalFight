@@ -1,9 +1,9 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using FileUtil = GameFrameWork.Utilities.FileUtil;
+using FileUtil = GameFrameWork.Utils.FileUtil;
 
 namespace GameFrameWork.Editor
 {
@@ -22,13 +22,12 @@ namespace GameFrameWork.Editor
         /// </summary>
         public void Build(BuildTarget target, bool isShowNotify = true)
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
             FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(config.assetBuildDir));
 
-            if (AppConfig.instance.useLua)
+            if (EditorMgr.GetGameFrameWorkConfig().isUseLua)
             {
-                if (AppConfig.instance.loadLuaAB)
+                if (EditorMgr.GetGameFrameWorkConfig().isLoadLuaFromAssetBundle)
                 {
                     HandleLuaBundle();
                 }
@@ -49,9 +48,10 @@ namespace GameFrameWork.Editor
                 {
                     BuildPipeline.BuildAssetBundles(config.assetBuildDir, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
 
-                    if (AppConfig.instance.useLua)
+                    if (EditorMgr.GetGameFrameWorkConfig().isUseLua)
                     {
-                        FileUtil.DeleteDirectory(EditorPathUtil.luaPath);
+                        //FileUtil.DeleteDirectory(EditorPathUtil.luaPath);
+
                     }
 
                     AssetDatabase.Refresh();
@@ -243,8 +243,8 @@ namespace GameFrameWork.Editor
         /// </summary>
         private void CreateVersionFile()
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
-            string versionPath = config.assetBuildFullDir + AppConfig.instance.versionFileName;
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
+            string versionPath = config.assetBuildFullDir + EditorMgr.GetGameFrameWorkConfig().versionFileName;
 
             m_ListPaths.Clear();
             m_ListFiles.Clear();
@@ -277,7 +277,7 @@ namespace GameFrameWork.Editor
         /// </summary>
         private void CreateAssetMapFile()
         {
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleDataPath);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
             string mapFile = config.assetBuildFullDir + "AssetMap.txt";
 
             string content = string.Empty;

@@ -120,7 +120,7 @@ public class BaseSceneObject : BaseEntity
    
         if (m_Asset != null)
         {
-            GameObjectPool.instance.Put(m_AssetPath, m_Asset);
+            GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
         }
 
         if(m_Data != null)
@@ -295,7 +295,7 @@ public class BaseSceneObject : BaseEntity
 
         m_AssetPath = assetPath;
         m_IsAssetLoadComplete = false;
-        GameObjectPool.instance.GetFromAsset(assetPath, OnLoadAssetComplete);
+        GameObjectPoolMgr.instance.GetFromAsset(assetPath, OnLoadAssetComplete);
     }
 
     public bool IsOutVersionX(float posX)
@@ -333,9 +333,9 @@ public class BaseSceneObject : BaseEntity
         m_IsAssetLoadComplete = true;
     }
 
-    protected override void Update()
+    public override void Update(float deltaTime, float unscaledDeltaTime)
     {
-        base.Update();
+        base.Update(deltaTime, unscaledDeltaTime);
 
         if (!IsResComplete())
         {
@@ -345,8 +345,10 @@ public class BaseSceneObject : BaseEntity
         OnUpdate();
     }
 
-    protected override void LateUpdate()
+    public override void LateUpdate(float deltaTime, float unscaledDeltaTime)
     {
+        base.LateUpdate(deltaTime, unscaledDeltaTime);
+
         if (!IsResComplete())
         {
             return;
@@ -355,8 +357,10 @@ public class BaseSceneObject : BaseEntity
         OnLateUpdate();
     }
 
-    protected override void FixedUpdate()
+    public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
+        base.FixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
+
         if (!IsResComplete())
         {
             return;

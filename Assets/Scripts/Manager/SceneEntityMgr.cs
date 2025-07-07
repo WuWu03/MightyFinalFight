@@ -1,6 +1,7 @@
 using GameFrameWork;
+using GameFrameWork.ConfigData;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +50,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataHelper.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigData.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
 
         if (enemy == null)
         {
@@ -64,7 +65,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseSceneObject CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemConfigData sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(id);
+        SceneItemConfigData sceneItemConfigData = ConfigData.sceneItemConfigDatas.GetConfigDataById(id);
         BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
 
         if (sceneItem == null)

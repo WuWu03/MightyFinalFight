@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1054cc3b99d464d97e0d5aec841a53, type: 3}
+  m_Name: GameFrameWorkConfigWindowData
+  m_EditorClassIdentifier: 
+  pcBuildPath: 
+  androidBuildPath: 
+  iosBuildPath: 
+  entryScene: Assets/Scenes/Main.unity
+  m_IsCheckVersion: 0
+  m_IsLoadFromAssetBundle: 0
+  m_IsOpenLog: 1
+  m_IsUseLua: 0
+  m_IsLoadLuaFromAssetBundle: 0
+  m_IsLuaByteMode: 0
+  m_LuaPath: 
+  m_UIPath: Assets/ArtResources/UI
+  m_UIPrefabsPath: Assets/ArtResources/UI/Prefabs
+  m_UIAtlasPath: Assets/ArtResources/UI/Atlas
+  m_ConfigDataPath: Assets/ConfigData
+  m_VersionFileName: Version.txt
+  m_LogColor: {r: 1, g: 1, b: 1, a: 1}

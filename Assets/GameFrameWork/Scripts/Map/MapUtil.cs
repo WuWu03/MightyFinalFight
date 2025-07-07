@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Map
@@ -7,7 +5,7 @@ namespace GameFrameWork.Map
     public class MapUtil
     {
         /// <summary>
-        /// Âß¼­×ø±ê×ªÊÀ½ç×ø±ê
+        /// é€»è¾‘åæ ‡è½¬ä¸–ç•Œåæ ‡
         /// </summary>
         /// <returns></returns>
         public static Vector2 LogicPosToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
@@ -16,7 +14,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// ËÄ±ßĞÎ×ø±ê×ªXÖáÅÅÁĞÁù±ßĞÎ×ø±ê
+        /// å››è¾¹å½¢åæ ‡è½¬Xè½´æ’åˆ—å…­è¾¹å½¢åæ ‡
         /// </summary>
         public static Vector2Int SquarePosToHexagonXPos(int x, int y)
         {
@@ -24,7 +22,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// ËÄ±ßĞÎ×ø±ê×ªXÖáÅÅÁĞÁù±ßĞÎ×ø±ê
+        /// å››è¾¹å½¢åæ ‡è½¬Xè½´æ’åˆ—å…­è¾¹å½¢åæ ‡
         /// </summary>
         public static Vector2Int SquarePosToHexagonYPos(int x, int y)
         {
@@ -32,7 +30,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// XÖáÅÅÁĞÁù±ßĞÎ×ø±ê×ªËÄ±ßĞÎ×ø±ê
+        /// Xè½´æ’åˆ—å…­è¾¹å½¢åæ ‡è½¬å››è¾¹å½¢åæ ‡
         /// </summary>>
         public static Vector2Int HexagonXPosToSquarePos(int x, int y)
         {
@@ -40,7 +38,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// YÖáÅÅÁĞÁù±ßĞÎ×ø±ê×ªËÄ±ßĞÎ×ø±ê
+        /// Yè½´æ’åˆ—å…­è¾¹å½¢åæ ‡è½¬å››è¾¹å½¢åæ ‡
         /// </summary>>
         public static Vector2Int HexagonYPosToSquarePos(int x, int y)
         {
@@ -48,7 +46,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// Ä³µãÊÇ·ñÔÚ¶à±ßĞÎÄÚ
+        /// æŸç‚¹æ˜¯å¦åœ¨å¤šè¾¹å½¢å†…
         /// </summary>
         public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int p)
         {
@@ -68,7 +66,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// ÔÚ¶à±ßĞÎÄÚËæ»úÒ»µã
+        /// åœ¨å¤šè¾¹å½¢å†…éšæœºä¸€ç‚¹
         /// </summary>
         public Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints)
         {
@@ -76,7 +74,7 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// ÔÚ¶à±ßĞÎÄÚËæ»úÒ»µã
+        /// åœ¨å¤šè¾¹å½¢å†…éšæœºä¸€ç‚¹
         /// </summary>
         public static Vector2Int PolygonRandomPoints(Vector2Int[] polygonPoints, Rect vision)
         {

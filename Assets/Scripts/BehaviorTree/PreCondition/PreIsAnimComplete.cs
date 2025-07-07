@@ -1,13 +1,8 @@
 using GameFrameWork.BehaviourTree;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
 
 public class PreIsAnimComplete : PreCondition
 {
-    public PreIsAnimComplete(string name, string args, object owner,int priority) : base(name, args, owner, priority)
+    public PreIsAnimComplete(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_PreOwner = base.m_Owner as BaseRoleCtrl;
     }

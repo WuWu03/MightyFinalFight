@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 namespace GameFrameWork
@@ -7,47 +7,47 @@ namespace GameFrameWork
     {
         public static void LogInfo(object arg1)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, null, null, null, null, null, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, null, null, null, null, null, null);
         }
 
         public static void LogInfo(object arg1, object arg2)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, null, null, null, null, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, null, null, null, null, null);
         }
 
         public static void LogInfo(object arg1, object arg2, object arg3)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, arg3, null, null, null, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, null, null, null, null);
         }
 
         public static void LogInfo(object arg1, object arg2, object arg3, object arg4)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, null, null, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, null, null, null);
         }
 
         public static void LogInfo(object arg1, object arg2, object arg3, object arg4, object arg5)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, null, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, null, null);
         }
 
         public static void LogInfo(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, arg6, null);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
 
         public static void LogInfo(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
         {
-            LogInfo(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            LogInfo(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         public static void LogInfo(params object[] args)
         {
-            LogInfo(AppConfig.instance.logColor, args);
+            LogInfo(GameFrameWorkEntry.config.logColor, args);
         }
 
-        public static void LogInfo(Color color,object arg1)
+        public static void LogInfo(Color color, object arg1)
         {
-            LogInfo(color,arg1, null, null, null, null, null, null);
+            LogInfo(color, arg1, null, null, null, null, null, null);
         }
 
         public static void LogInfo(Color color, object arg1, object arg2)
@@ -77,7 +77,7 @@ namespace GameFrameWork
 
         public static void LogInfo(Color color, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
         {
-            if (!AppConfig.instance.openLog)
+            if (!GameFrameWorkEntry.config.isOpenLog)
             {
                 return;
             }
@@ -87,7 +87,7 @@ namespace GameFrameWork
 
         public static void LogInfo(Color color, params object[] args)
         {
-            if (!AppConfig.instance.openLog)
+            if (!GameFrameWorkEntry.config.isOpenLog)
             {
                 return;
             }
@@ -97,42 +97,42 @@ namespace GameFrameWork
 
         public static void LogError(object arg1)
         {
-            LogError(AppConfig.instance.logColor, arg1, null, null, null, null, null, null);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, null, null, null, null, null, null);
         }
 
         public static void LogError(object arg1, object arg2)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, null, null, null, null, null);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, arg2, null, null, null, null, null);
         }
 
         public static void LogError(object arg1, object arg2, object arg3)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, arg3, null, null, null, null);
+            LogError(GameFrameWorkEntry.config  , arg1, arg2, arg3, null, null, null, null);
         }
 
         public static void LogError(object arg1, object arg2, object arg3, object arg4)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, null, null, null);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, null, null, null);
         }
 
         public static void LogError(object arg1, object arg2, object arg3, object arg4, object arg5)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, null, null);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, null, null);
         }
 
         public static void LogError(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, arg6, null);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
 
         public static void LogError(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
         {
-            LogError(AppConfig.instance.logColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            LogError(GameFrameWorkEntry.config.logColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
         }
 
         public static void LogError(params object[] args)
         {
-            LogError(AppConfig.instance.logColor, args);
+            LogError(GameFrameWorkEntry.config.logColor, args);
         }
 
         public static void LogError(Color color, object arg1)
@@ -187,7 +187,7 @@ namespace GameFrameWork
             return GetLogInfo(color, logInfo);
         }
 
-        private static string GetLogInfo(Color color,string logInfo)
+        private static string GetLogInfo(Color color, string logInfo)
         {
             string hex = CommonUtil.RGBToHex(color);
 

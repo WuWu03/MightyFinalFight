@@ -1,6 +1,6 @@
 using DragonBones;
 using GameFrameWork.Audio;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public class DBEffect : BaseEffect

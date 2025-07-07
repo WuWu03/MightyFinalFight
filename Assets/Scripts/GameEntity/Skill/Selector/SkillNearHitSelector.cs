@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillNearHitSelector : SkillBaseSelector
@@ -49,32 +49,25 @@ public class SkillNearHitSelector : SkillBaseSelector
 
     private void CheckTarget(BaseBoundObject bbo)
     {
-        if(bbo == null)
-        {
-            return;
-        }
-
-        ICanBeHit hit = bbo.GetComponent<ICanBeHit>();
-
-        if (hit == null)
+        if (bbo == null || bbo is not ICanBeHit)
         {
             return;
         }
 
         bool isInRange = false;
 
-        if(SkillUtil.IsRectangleCollide(bbo.bound, m_Owner.bound))
+        if (SkillUtil.IsRectangleCollide(bbo.bound, m_Owner.bound))
         {
             if (bbo is Barrel)
             {
                 Vector2 bsoLeftTop = new Vector2(bbo.bound.xMin, bbo.bound.yMax) - bbo.bound.center;
                 float selectorAngle = m_SkillEffect.SelectorAngle;
-                
-                if(m_Owner.pos.y > bbo.pos.y)
+
+                if (m_Owner.pos.y > bbo.pos.y)
                 {
                     selectorAngle = Vector2.Angle(Vector2.left, bsoLeftTop.normalized);
                 }
-                
+
                 Vector2 target = (bbo.pos - m_Owner.pos).normalized;
                 Vector2 normal = m_Owner.dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
                 float angle = Vector2.Angle(target, normal);
@@ -105,7 +98,9 @@ public class SkillNearHitSelector : SkillBaseSelector
                 }
             }
         }
-      
+
+        ICanBeHit hit = bbo as ICanBeHit;
+
         if (isInRange && hit.canBeHit)
         {
             m_ListTargets.Add(hit);

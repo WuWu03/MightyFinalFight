@@ -101,7 +101,7 @@ public class StageMgr : BaseMgr<StageMgr>
             TaskMgr.instance.GiveupTask();
             SceneEntityMgr.instance.ReleaseAll();
             EntityMgr.instance.DestoryAllUnUsedEntities();
-            GameObjectPool.instance.CheckRelease();
+            GameObjectPoolMgr.instance.CheckRelease();
             AssetsPool.instance.CheckRelease();
             EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEvent));
             SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath);

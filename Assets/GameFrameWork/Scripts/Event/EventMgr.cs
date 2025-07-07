@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GameFrameWork.Event
 {
@@ -42,7 +42,7 @@ namespace GameFrameWork.Event
         }
 
         public void UnSubscribe(int id, EventHandler<GameEventArgs> handler)
-        {
+        {            
             m_EventPool.UnSubscibe(id, handler);
         }
 

@@ -1,20 +1,21 @@
+using GameFrameWork.Assets;
 using System.Collections;
 using UnityEngine.Networking;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public class DownLoadUtil
     {
         /// <summary>
-        /// httpœ¬‘ÿ
+        /// http‰∏ãËΩΩ
         /// </summary>
         /// <returns></returns>
         public static void WebRequest(string url, GameFrameWorkAction<UnityWebRequest> onComplete, GameFrameWorkAction<string> onError, GameFrameWorkAction<float> onProgress = null)
         {
-            AppConfig.instance.StartCoroutine(StartUnityWebRequest(url, onComplete, onError, onProgress));
+            AssetsMgr.instance.StartCoroutine(StartUnityWebRequest(url, onComplete, onError, onProgress));
         }
 
-        //uwrœ¬‘ÿ
+        //uwr‰∏ãËΩΩ
         private static IEnumerator StartUnityWebRequest(string url, GameFrameWorkAction<UnityWebRequest> onComplete, GameFrameWorkAction<string> onError, GameFrameWorkAction<float> onProgress)
         {
             UnityWebRequest uwr = UnityWebRequest.Get(url);

@@ -4,7 +4,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public abstract class Task : BaseTask
     {
-        public Task(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public Task(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
             m_Children = new List<BaseTask>();
 

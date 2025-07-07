@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using UnityEngine;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public class CommonUtil
     {

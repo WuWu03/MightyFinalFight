@@ -1,25 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 namespace GameFrameWork.BehaviourTree
 {
     public class BehaviourTree
     {
-        public BehaviourTree(BehaviourTreeData data,object owner)
+        public Node tree
         {
-            m_Root = Load(data, owner);
+            get
+            {
+                return m_Root;
+            }
         }
 
-        public void Start()
+        public BehaviourTree(BehaviourTreeData data, object owner)
         {
-            if (m_IsRunning)
-            {
-                return;
-            }
-
-            m_Root.Start();
-            m_IsRunning = true;
+            m_Root = Load(data, owner);
+            m_IsRunning = false;
             m_IsPause = false;
         }
 
@@ -41,6 +37,28 @@ namespace GameFrameWork.BehaviourTree
             }
 
             m_Root.LateUpdate(deltaTime);
+        }
+
+        public void FixedUpdate(float fixedDeltaTime)
+        {
+            if (!m_IsRunning || m_IsPause)
+            {
+                return;
+            }
+
+            m_Root.FixedUpdate(fixedDeltaTime);
+        }
+
+        public void Start()
+        {
+            if (m_IsRunning)
+            {
+                return;
+            }
+
+            m_Root.Start();
+            m_IsRunning = true;
+            m_IsPause = false;
         }
 
         public void Pause()
@@ -74,15 +92,15 @@ namespace GameFrameWork.BehaviourTree
 
         private Node Load(BehaviourTreeData data, object owner)
         {
-            Node root = BehaviourFactory.GetNodeByClassType(data.name, data.classType, data.args, owner, data.priority);
+            Node root = GetNodeByClassType(data.name, data.id, owner, data.priority, data.args, data.classType);
 
             if (data.preConditions != null && data.preConditions.Length > 0)
             {
                 for (int i = 0; i < data.preConditions.Length; i++)
                 {
-                    if(root is BaseTask)
+                    if (root is BaseTask)
                     {
-                        (root as BaseTask).AddPreCondition(BehaviourFactory.GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].classType, data.preConditions[i].args, owner, 0));
+                        (root as BaseTask).AddPreCondition(GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].id, owner, 0, data.preConditions[i].args, data.preConditions[i].classType));
                     }
                 }
             }
@@ -91,7 +109,7 @@ namespace GameFrameWork.BehaviourTree
             {
                 for (int i = 0; i < data.children.Length; i++)
                 {
-                    if(root is Task)
+                    if (root is Task)
                     {
                         (root as Task).AddChild(Load(data.children[i], owner) as BaseTask);
                     }
@@ -99,6 +117,24 @@ namespace GameFrameWork.BehaviourTree
             }
 
             return root;
+        }
+
+        private Node GetNodeByClassType(string name, int id, object owner, int priority, string args, string className)
+        {
+            Type t = Type.GetType("GameFrameWork.BehaviourTree." + className);
+
+            if (t == null)
+            {
+                t = Type.GetType(className);
+            }
+
+            if (t == null)
+            {
+                Log.LogError("行为树数据实例不存在 : " + name);
+                return null;
+            }
+
+            return (Node)System.Activator.CreateInstance(t, name, id, owner, priority, args);
         }
 
         private bool m_IsPause = false;

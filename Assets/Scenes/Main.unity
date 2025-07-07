@@ -180,32 +180,6 @@ LightingSettings:
   m_PVRFilteringAtrousPositionSigmaIndirect: 2
   m_PVRFilteringAtrousPositionSigmaAO: 1
   m_RespectSceneVisibilityWhenBakingGI: 0
---- !u!114 &372239519741864554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3253013279760738337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21c6bfa09477bf04db64d745df6a1c80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  checkVersion: 0
-  openUpdate: 0
-  loadAB: 0
-  openLog: 1
-  useLua: 0
-  loadLuaAB: 0
-  luaByteMode: 0
-  luaDirectory: Assets/Scripts/Lua
-  uiDirectory: ArtResources/UI
-  logColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
-  pcBuildPath: C:\Users\WuWu\Desktop\MightyFinalFight\MightyFinalFight.exe
-  androidBuildPath: 
-  iosBuildPath: 
-  versionFileName: Version.txt
 --- !u!4 &2173410555044130344
 Transform:
   m_ObjectHideFlags: 0
@@ -230,7 +204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2173410555044130344}
-  - component: {fileID: 372239519741864554}
   - component: {fileID: 3253013279760738338}
   m_Layer: 0
   m_Name: GameEntry

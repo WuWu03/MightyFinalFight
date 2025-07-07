@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GameFrameWork.BehaviourTree
 {
     public class Decorator : Task
     {
-        public Decorator(string name, string args, object owner, int priority) : base(name, args, owner, priority) { }
+        public Decorator(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args) { }
     }
 }

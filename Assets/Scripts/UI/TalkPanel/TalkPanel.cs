@@ -3,6 +3,7 @@
 /**Create By GQY****************************************/
 /*******************************************************/
 using DG.Tweening;
+using GameFrameWork.ConfigData;
 using GameFrameWork.Event;
 using GameFrameWork.Input;
 using GameFrameWork.Localization;
@@ -38,7 +39,7 @@ public class TalkPanel : BasePanel
             }
 			else
 			{
-                TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+                TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
 
                 if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
                 {
@@ -58,7 +59,7 @@ public class TalkPanel : BasePanel
 
 		if (m_IsComplete)
 		{
-            TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+            TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
             {
@@ -93,7 +94,7 @@ public class TalkPanel : BasePanel
 	{
         m_IsComplete = false;
 
-        TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
 
         if(talkConfigData == null)
         {
@@ -130,7 +131,7 @@ public class TalkPanel : BasePanel
 
     private void OnItemUpdateEvent(TalkPanelComponent.TalkSelectItem item)
     {
-        TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
         item.languageSelect.UpdateLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
     }
 
@@ -146,7 +147,7 @@ public class TalkPanel : BasePanel
 
     private void SelectNext()
     {
-        TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
 
 		if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
 		{
@@ -165,7 +166,7 @@ public class TalkPanel : BasePanel
 
     private void SelectPrevious()
     {
-        TalkConfigData talkConfigData = ConfigDataHelper.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
 
         if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
         {

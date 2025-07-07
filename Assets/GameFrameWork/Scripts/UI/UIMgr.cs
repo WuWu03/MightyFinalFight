@@ -1,11 +1,10 @@
 using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace GameFrameWork.UI
 {
@@ -104,8 +103,9 @@ namespace GameFrameWork.UI
             m_UICanvas.renderMode = RenderMode.ScreenSpaceCamera;
             m_UICanvas.worldCamera = m_UICamera;
             m_UICanvas.planeDistance = 100;
+            m_UICanvas.vertexColorAlwaysGammaSpace = true;
 
-            canvasScaler.referenceResolution = new Vector2(1280, 720);
+            canvasScaler.referenceResolution = new Vector2(1920, 1080);
             canvasScaler.referencePixelsPerUnit = 100f;
             canvasScaleAdapt.ScalerType = UICanvasScaleAdapt.Type.WidthOrHeight;
             inputModule.submitButton = "A";
@@ -119,17 +119,24 @@ namespace GameFrameWork.UI
 
             for (int i = 0; i < layers.Length; i++)
             {
-                m_UILayerTransform[i] = new GameObject(Enum.GetValues(typeof(Layer)).GetValue(i).ToString()).AddComponent<RectTransform>();
-                m_UILayerTransform[i].gameObject.GetOrAddComponent<Canvas>().overrideSorting = true;
-                m_UILayerTransform[i].gameObject.GetOrAddComponent<Canvas>().sortingOrder = i * 1000;
-                m_UILayerTransform[i].gameObject.GetOrAddComponent<GraphicRaycaster>();
-                m_UILayerTransform[i].anchoredPosition = Vector3.zero;
-                m_UILayerTransform[i].sizeDelta = Vector2.zero;
-                m_UILayerTransform[i].anchorMin = new Vector2(0, 0);
-                m_UILayerTransform[i].anchorMax = new Vector2(1, 1);
-                m_UILayerTransform[i].pivot = new Vector2(0.5f, 0.5f);
-                m_UILayerTransform[i].SetParent(m_UICanvas.transform, false);
-                m_UILayerTransform[i].gameObject.SetLayer("UI");
+                GameObject layerGameObject = new GameObject(layers.GetValue(i).ToString());
+                RectTransform layerRectTransform = layerGameObject.AddComponent<RectTransform>();
+                Canvas layerCanvas = layerGameObject.GetOrAddComponent<Canvas>();
+
+                layerRectTransform.anchoredPosition = Vector3.zero;
+                layerRectTransform.sizeDelta = Vector2.zero;
+                layerRectTransform.anchorMin = new Vector2(0, 0);
+                layerRectTransform.anchorMax = new Vector2(1, 1);
+                layerRectTransform.pivot = new Vector2(0.5f, 0.5f);
+                layerRectTransform.SetParent(m_UICanvas.transform, false);
+
+                layerGameObject.SetLayer("UI");
+
+                layerCanvas.overrideSorting = true;
+                layerCanvas.sortingOrder = (i + 1) * 1000;
+                layerCanvas.vertexColorAlwaysGammaSpace = true;
+    
+                m_UILayerTransform[i] = layerRectTransform;
             }
 
             DontDestroyOnLoad(m_UIRoot);
@@ -152,7 +159,7 @@ namespace GameFrameWork.UI
             return null;
         }
 
-        public object Open(string panelName, params object[] args)
+        public BasePanel Open(string panelName, params object[] args)
         {
             return OpenPanel(panelName, args);
         }
@@ -293,7 +300,7 @@ namespace GameFrameWork.UI
             if (panel.settings.panelCloseMode == CloseMode.Destroy || isForceDestroy)
             {
                 panel.Destroy();
-                GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
 
@@ -347,7 +354,7 @@ namespace GameFrameWork.UI
                 {
                     waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
                     string prefabName = StringUtil.Format(waitLoadPanel.panel.settings.panelName, ".prefab");
-                    GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), prefabName), OnLoadComplete, waitLoadPanel);
+                    GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabPath(), prefabName), OnLoadComplete, waitLoadPanel);
                 }
             }
 
@@ -360,7 +367,7 @@ namespace GameFrameWork.UI
                     if (panel.isDelayTimeOut)
                     {
                         panel.Destroy();
-                        GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
+                        GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
                         m_ListOpenPanel.Remove(panel);
                         m_ListDelayDestroy.Remove(panel);
                         m_ListPopPanel.Remove(panel);
@@ -377,7 +384,7 @@ namespace GameFrameWork.UI
             {
                 BasePanel panel = m_ListAlways[0];
                 panel.Destroy();
-                GameObjectPool.instance.Put(panel.assetPath, panel.gameObject, true);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
                 m_ListAlways.Remove(panel);
                 m_ListOpenPanel.Remove(panel);
                 m_ListPopPanel.Remove(panel);
@@ -404,22 +411,22 @@ namespace GameFrameWork.UI
 
             for (int i = 0; i < m_ListPopPanel.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListPopPanel[i].assetPath, m_ListPopPanel[i].gameObject);
+                GameObjectPoolMgr.instance.Put(m_ListPopPanel[i].assetPath, m_ListPopPanel[i].gameObject);
             }
 
             for (int i = 0; i < m_ListOpenPanel.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListOpenPanel[i].assetPath, m_ListOpenPanel[i].gameObject);
+                GameObjectPoolMgr.instance.Put(m_ListOpenPanel[i].assetPath, m_ListOpenPanel[i].gameObject);
             }
 
             for (int i = 0; i < m_ListDelayDestroy.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListDelayDestroy[i].assetPath, m_ListDelayDestroy[i].gameObject);
+                GameObjectPoolMgr.instance.Put(m_ListDelayDestroy[i].assetPath, m_ListDelayDestroy[i].gameObject);
             }
 
             for (int i = 0; i < m_ListAlways.Count; i++)
             {
-                GameObjectPool.instance.Put(m_ListAlways[i].assetPath, m_ListAlways[i].gameObject);
+                GameObjectPoolMgr.instance.Put(m_ListAlways[i].assetPath, m_ListAlways[i].gameObject);
             }
 
             m_ListPopPanel.Clear();

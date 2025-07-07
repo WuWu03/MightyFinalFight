@@ -1,5 +1,5 @@
-﻿using GameFrameWork;
-using GameFrameWork.Utilities;
+using GameFrameWork;
+using GameFrameWork.Utils;
 using UnityEditor;
 using UnityEngine;
 public class AssetImportSettings : AssetPostprocessor
@@ -42,7 +42,7 @@ public class AssetImportSettings : AssetPostprocessor
 
 	private bool IsUITexture(string assetPath)
 	{
-        string uiPath = PathUtil.FormatPath(PathUtil.GetAssetPath(AppConfig.instance.uiDirectory), "UISprites");
-        return assetPath.Contains(uiPath);
+        string uiAtlasPath = GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().uiAtlasPath;
+        return assetPath.Contains(uiAtlasPath);
 	}
 }

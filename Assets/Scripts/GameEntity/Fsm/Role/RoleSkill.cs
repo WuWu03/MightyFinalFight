@@ -1,20 +1,20 @@
-﻿using GameFrameWork;
-using GameFrameWork.Fsm;
+using GameFrameWork;
+using GameFrameWork.FSM;
 using UnityEngine;
 
 public class RoleSkill : BaseFsmState
 {
-    protected override void OnInit(BaseFsm fsm)
+    protected override void OnInit(FiniteStateMachine fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(FiniteStateMachine fsm)
     {
 
     }
 
-    protected override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaledDeltaTime)
+    protected override void OnUpdate(FiniteStateMachine fsm, float deltaTime, float unscaledDeltaTime)
     {
         if (m_CanChangeDir)
         {
@@ -22,7 +22,7 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    protected override void OnFixedUpdate(BaseFsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
+    protected override void OnFixedUpdate(FiniteStateMachine fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
         if (m_CanMove)
         {
@@ -48,14 +48,14 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    protected override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
     {
         m_CanChangeDir = false;
         m_CanMove = false;
         m_Dir = Vector2.zero;
     }
 
-    protected override void OnRelease(BaseFsm fsm)
+    protected override void OnRelease(FiniteStateMachine fsm)
     {
         m_Owner = null;
     }

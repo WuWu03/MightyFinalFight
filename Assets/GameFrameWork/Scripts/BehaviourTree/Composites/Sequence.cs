@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-
-
 namespace GameFrameWork.BehaviourTree
 {
     public class Sequence : Composite
     {
-        public Sequence(string name, string args, object owner, int priority) : base(name, args, owner, priority) 
+        public Sequence(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args) 
         {
             m_CurrChildIndex = 0;
         }

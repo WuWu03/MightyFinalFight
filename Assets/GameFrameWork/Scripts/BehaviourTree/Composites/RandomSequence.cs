@@ -1,6 +1,3 @@
-﻿using GameFrameWork.Utilities;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 
@@ -8,7 +5,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public class RandomSequence : Composite
     {
-        public RandomSequence(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public RandomSequence(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
 
         }

@@ -1,10 +1,10 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TweenType = GameFrameWork.Utilities.TweenUtil.TweenType;
+using TweenType = GameFrameWork.Utils.TweenUtil.TweenType;
 
 namespace GameFrameWork.UI
 {

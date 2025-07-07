@@ -1,15 +1,36 @@
 using GameFrameWork.BehaviourTree;
-using GameFrameWork.Input;
-using UnityEngine;
 
 public class BaseEnemyCtrl : BaseRoleCtrl
 {
-    public BehaviourTreeMgr behaviourTreeMgr
+    protected override void OnInit()
     {
-        get
-        {
-            return m_BehaviourTreeMgr;
-        }
+        base.OnInit();
+    }
+
+    public override void SetData(BaseRoleSkillData data)
+    {
+        BaseEnemySkillData baseEnemySkillData = data as BaseEnemySkillData;
+        m_BehaviourID = baseEnemySkillData.behaviourTreeIds[0];
+        BehaviourTreeMgr.instance.AddBehaviourTree(this, m_BehaviourID);
+        base.SetData(data);
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        BehaviourTreeMgr.instance.StartTree(this, m_BehaviourID);
+    }
+
+    protected override void OnStop()
+    {
+        base.OnStop();
+        BehaviourTreeMgr.instance.StopTree(this, m_BehaviourID);
+    }
+
+    protected override void OnRelease()
+    {
+        BehaviourTreeMgr.instance.RemoveBehaviourTree(this, m_BehaviourID);
+        base.OnRelease();
     }
 
     public void OppositePlayer()
@@ -19,49 +40,15 @@ public class BaseEnemyCtrl : BaseRoleCtrl
 
     public void Resume()
     {
-        m_BehaviourTreeMgr.ResumeAll();
+        BehaviourTreeMgr.instance.ResumeTree(this, m_BehaviourID);
         (m_Owner as BaseEnemy).Resume();
     }
 
     public void Pause()
     {
-        m_BehaviourTreeMgr.PauseAll();
+        BehaviourTreeMgr.instance.PauseTree(this, m_BehaviourID);
         (m_Owner as BaseEnemy).Pause();
     }
 
-    protected override void OnInit()
-    {
-        base.OnInit();
-        m_BehaviourTreeMgr = new BehaviourTreeMgr(this);
-    }
-
-    public override void SetData(BaseRoleSkillData data)
-    {
-        BaseEnemySkillData baseEnemySkillInfo = data as BaseEnemySkillData;
-        m_BehaviourTreeMgr.InitTree(baseEnemySkillInfo.behaviourTreeIds);
-        base.SetData(data);
-    }
-
-    protected override void OnStart()
-    {
-        base.OnStart();
-        m_BehaviourTreeMgr.Start();
-    }
-
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-        m_BehaviourTreeMgr.Update(Time.deltaTime);
-    }
-
-    protected override void OnRelease()
-    {
-        m_BehaviourTreeMgr.ShutDown();
-        m_BehaviourTreeMgr = null;
-        base.OnRelease();
-    }
-
-
-
-    protected BehaviourTreeMgr m_BehaviourTreeMgr = null;
+    private int m_BehaviourID = 0;
 }

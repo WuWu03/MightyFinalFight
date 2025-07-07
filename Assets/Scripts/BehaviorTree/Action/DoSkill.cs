@@ -1,10 +1,10 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class DoSkill : Action
 {
-    public DoSkill(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoSkill(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
 

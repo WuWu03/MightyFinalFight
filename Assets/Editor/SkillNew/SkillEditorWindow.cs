@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace SkillNew
             SkillEditorHelper.SaveConfig();
         }
 
-        public void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight,bool showMsg = true)
+        public void DrawField(Func<bool> modify, Action draw, Action change, int changeBtnHeight, bool showMsg = true)
         {
             EditorGUILayout.BeginHorizontal();
             bool isModify = modify.Invoke();

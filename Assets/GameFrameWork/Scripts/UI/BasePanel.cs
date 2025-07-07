@@ -1,5 +1,5 @@
 using GameFrameWork.Event;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -222,6 +222,12 @@ namespace GameFrameWork.UI
         {
             if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArgs>> list))
             {
+                if (list.Contains(handler))
+                {
+                    Log.LogError("事件 [", eventId, "] 已经存在，不能重复添加");
+                    return;
+                }
+
                 list.Add(handler);
             }
             else
@@ -230,6 +236,7 @@ namespace GameFrameWork.UI
                 {
                     handler
                 };
+
                 m_DicHandler.Add(eventId, list);
             }
 

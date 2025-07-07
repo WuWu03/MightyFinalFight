@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DoRoundMap : Action
 {
-    public DoRoundMap(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoRoundMap(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
         m_ListPos = new List<Vector2>();

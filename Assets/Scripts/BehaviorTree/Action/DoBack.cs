@@ -1,11 +1,11 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class DoBack : Action
 {
-    public DoBack(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoBack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
         if (!string.IsNullOrEmpty(args))

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +18,7 @@ public class MapEditorWindow : EditorWindow
             }
         }
 
-        string[] files = GameFrameWork.Utilities.FileUtil.GetFiles(MapEditorHelper.mapPath);
+        string[] files = GameFrameWork.Utils.FileUtil.GetFiles(MapEditorHelper.mapPath);
 
         if (files.Length > 0)
         {

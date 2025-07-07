@@ -1,6 +1,6 @@
 using DragonBones;
 using GameFrameWork;
-using GameFrameWork.Fsm;
+using GameFrameWork.FSM;
 using System;
 using UnityEngine;
 
@@ -26,9 +26,9 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.Init(id, name);
 
-        if (m_FsmMachine == null)
+        if (m_FSM == null)
         {
-            m_FsmMachine = FsmMgr.instance.Create(this, this.GetType().Name);
+            m_FSM = FSMMgr.instance.Create(this, this.GetType().Name);
         }
     }
 
@@ -52,7 +52,7 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Release()
     {
         m_Animator.animation.Reset();
-        m_FsmMachine.Release();
+        m_FSM.Release();
         
         m_HitTrigger = null;
         m_Animator = null;
@@ -66,7 +66,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(name, "[Animator] 组件不存在");
+            Log.LogError(m_EntityName, "[Animator] 组件不存在");
             return;
         }
 
@@ -96,7 +96,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(name, "[Animator] 组件不存在");
+            Log.LogError(m_EntityName, "[Animator] 组件不存在");
             return false;
         }
 
@@ -124,7 +124,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(name, "[Animator] 组件不存在");
+            Log.LogError(m_EntityName, "[Animator] 组件不存在");
             return;
         }
         
@@ -145,7 +145,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(name, "[Animator] 组件不存在");
+            Log.LogError(m_EntityName, "[Animator] 组件不存在");
             return;
         }
 
@@ -157,7 +157,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(name, "[Animator] 组件不存在");
+            Log.LogError(m_EntityName, "[Animator] 组件不存在");
             return;
         }
         m_Animator.animation.timeScale = m_LastAnimTimeScale;
@@ -180,30 +180,30 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsAnyState(Type stateType1, Type stateType2 = null, Type stateType3 = null, Type stateType4 = null, Type stateType5 = null, Type stateType6 = null)
     {
-        if (m_FsmMachine == null || !m_FsmMachine.isRunning)
+        if (m_FSM == null || !m_FSM.isRunning)
         {
             return false;
         }
 
-        bool condition1 = stateType1 != null && m_FsmMachine.currStateType.Equals(stateType1);
-        bool condition2 = stateType2 != null && m_FsmMachine.currStateType.Equals(stateType2);
-        bool condition3 = stateType3 != null && m_FsmMachine.currStateType.Equals(stateType3);
-        bool condition4 = stateType4 != null && m_FsmMachine.currStateType.Equals(stateType4);
-        bool condition5 = stateType5 != null && m_FsmMachine.currStateType.Equals(stateType5);
-        bool condition6 = stateType6 != null && m_FsmMachine.currStateType.Equals(stateType6);
+        bool condition1 = stateType1 != null && m_FSM.currStateType.Equals(stateType1);
+        bool condition2 = stateType2 != null && m_FSM.currStateType.Equals(stateType2);
+        bool condition3 = stateType3 != null && m_FSM.currStateType.Equals(stateType3);
+        bool condition4 = stateType4 != null && m_FSM.currStateType.Equals(stateType4);
+        bool condition5 = stateType5 != null && m_FSM.currStateType.Equals(stateType5);
+        bool condition6 = stateType6 != null && m_FSM.currStateType.Equals(stateType6);
         return condition1 || condition2 || condition3 || condition4 || condition5 || condition6;
     }
 
     public bool IsAnyState(params Type[] stateTypes)
     {
-        if (m_FsmMachine == null || !m_FsmMachine.isRunning || stateTypes == null || stateTypes.Length < 1)
+        if (m_FSM == null || !m_FSM.isRunning || stateTypes == null || stateTypes.Length < 1)
         {
             return false;
         }
 
         for (int i = 0; i < stateTypes.Length; i++)
         {
-            if (m_FsmMachine.currStateType.Equals(stateTypes[i]))
+            if (m_FSM.currStateType.Equals(stateTypes[i]))
             {
                 return true;
             }
@@ -214,42 +214,42 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool IsCurrState<T>() where T : BaseFsmState, new()
     {
-        return m_FsmMachine.currStateType == typeof(T);
+        return m_FSM.currStateType == typeof(T);
     }
 
     public void AddState<T>() where T : BaseFsmState, new()
     {
-        m_FsmMachine.AddState<T>();
+        m_FSM.AddState<T>();
     }
 
     public T GetState<T>() where T : BaseFsmState
     {
-        return m_FsmMachine.GetState<T>();
+        return m_FSM.GetState<T>();
     }
 
     public void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
     {
-        m_FsmMachine.SetStateData<T>(stateData);
+        m_FSM.SetStateData<T>(stateData);
     }
 
     public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
     {
-        m_FsmMachine.ChangeState<T>(stateData);
+        m_FSM.ChangeState<T>(stateData);
     }
 
     public void ChangeDefaultState()
     {
-        m_FsmMachine.ChangeDefaultState();
+        m_FSM.ChangeDefaultState();
     }
 
     public void RemoveState<T>() where T : BaseFsmState
     {
-        m_FsmMachine.RemoveState<T>();
+        m_FSM.RemoveState<T>();
     }
 
     public void SetDefaultState<T>() where T : BaseFsmState
     {
-        m_FsmMachine.SetDefaultState<T>();
+        m_FSM.SetDefaultState<T>();
     }
 
     protected void SetTrigger(string animName, int frameIndex = 0)
@@ -303,15 +303,15 @@ public abstract class BaseAvatar : BaseGravityObject
 
     protected override void OnBeforeDestroy()
     {
-        FsmMgr.instance.ReleaseFsm(m_FsmMachine);
-        m_FsmMachine = null;
+        FSMMgr.instance.ReleaseFSM(m_FSM);
+        m_FSM = null;
 
         base.OnBeforeDestroy();
     }
 
     protected string m_CurrAnimName = string.Empty;
     protected HitTrigger m_HitTrigger = null;
-    protected FsmMachine m_FsmMachine = null;
+    protected FiniteStateMachine m_FSM = null;
     protected UnityArmatureComponent m_Animator;
 
     private float m_LastAnimTimeScale = 1f;

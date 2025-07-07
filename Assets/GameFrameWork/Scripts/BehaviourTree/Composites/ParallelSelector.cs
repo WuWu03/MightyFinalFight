@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ParallelSelector : Composite
 {
-    public ParallelSelector(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public ParallelSelector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
 
     }

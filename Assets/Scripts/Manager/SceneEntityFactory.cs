@@ -1,6 +1,7 @@
-﻿using GameFrameWork;
+using GameFrameWork;
+using GameFrameWork.ConfigData;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public static class SceneEntityFactory
@@ -36,7 +37,7 @@ public static class SceneEntityFactory
             weaponAttribute.health = sceneItemConfigData.value;
             weaponAttribute.maxHealth = sceneItemConfigData.value;
 
-            sceneItemConfigData = ConfigDataHelper.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
+            sceneItemConfigData = ConfigData.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
             sceneItem = EntityMgr.instance.GetEntity<Weapon>(sceneItemConfigData.name);
 
@@ -147,7 +148,7 @@ public static class SceneEntityFactory
         barrelData.groundY = groundY;
         barrelData.isFloat = isFloat;
         barrelData.moveSpeed = moveSpeed;
-        barrelData.itemId = itemId == -1 ? ConfigDataHelper.sceneItemConfigDatas[Random.Range(0, ConfigDataHelper.sceneItemConfigDatas.Length)].id : itemId;
+        barrelData.itemId = itemId == -1 ? ConfigData.sceneItemConfigDatas[Random.Range(0, ConfigData.sceneItemConfigDatas.Length)].id : itemId;
         barrelAttribute.health = 1;
         barrelAttribute.maxHealth = 1;
 

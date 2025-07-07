@@ -1,11 +1,11 @@
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
+using GameFrameWork.ConfigData;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -133,8 +133,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Level = 1;
         m_EXP = 0;
 
-        m_RoleConfigData = ConfigDataHelper.roleConfigDatas.GetConfigDataById(m_SelectRoleId);
-        m_LevelConfigData = ConfigDataHelper.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);
+        m_RoleConfigData = ConfigData.roleConfigDatas.GetConfigDataById(m_SelectRoleId);
+        m_LevelConfigData = ConfigData.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
@@ -223,7 +223,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         {
             m_Level++;
             m_EXP -= m_LevelConfigData.exp;
-            m_LevelConfigData = ConfigDataHelper.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_RoleConfigData.id + ",level=" + m_Level);
+            m_LevelConfigData = ConfigData.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_RoleConfigData.id + ",level=" + m_Level);
             m_Player.entityAttribute.health = m_LevelConfigData.hpValue;
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);

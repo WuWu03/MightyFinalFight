@@ -1,12 +1,10 @@
-﻿using GameFrameWork.BehaviourTree;
-using System.Collections;
-using System.Collections.Generic;
+using GameFrameWork.BehaviourTree;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class PreIsPlayerDistance : PreCondition
 {
-    public PreIsPlayerDistance(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public PreIsPlayerDistance(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         if (!string.IsNullOrEmpty(args))
         {
@@ -30,5 +28,3 @@ public class PreIsPlayerDistance : PreCondition
     private float m_Distance = 0.5f;
     private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
 }
-
-   

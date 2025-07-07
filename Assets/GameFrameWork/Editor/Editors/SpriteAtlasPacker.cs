@@ -1,5 +1,5 @@
 using DG.DemiEditor;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEditor.U2D;
 using UnityEngine;
 using UnityEngine.U2D;
-using FileUtil = GameFrameWork.Utilities.FileUtil;
+using FileUtil = GameFrameWork.Utils.FileUtil;
 
 namespace GameFrameWork.Editor
 {

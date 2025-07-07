@@ -1,7 +1,7 @@
-﻿using DragonBones;
+using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.BehaviourTree;
+using GameFrameWork.BehaviourTree;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DoIdle : Action
 {
-    public DoIdle(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoIdle(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_Owner = base.m_Owner as BaseEnemyCtrl;
     }

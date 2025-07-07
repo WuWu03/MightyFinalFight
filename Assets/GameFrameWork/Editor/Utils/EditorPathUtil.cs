@@ -1,4 +1,4 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
@@ -8,43 +8,34 @@ namespace GameFrameWork.Editor
         public static string appDataPath = Application.dataPath + "/";
         public static string appDataPathWithoutAsset = Application.dataPath.Substring(0, Application.dataPath.IndexOf("Assets"));
         public const string editorUIRootPath = "Assets/GameFrameWork/UI/UIRoot.prefab";
-        public const string ediorConfigPath = "Assets/GameFrameWork/Editor/Config/";
 
-        public const string configDataPath = "Assets/ConfigData/";
-        public static string configDataFullPath = appDataPath + "ConfigData/";
+        public const string editorConfigPath = "Assets/GameFrameWork/Editor/Config/";
+        public static string editorConfigFullPath = appDataPath + "GameFrameWork/Editor/Config/";
 
-        public static string behaviourTreeWindowConfigFullPath = appDataPath + "GameFrameWork/Editor/Config/";
+        public const string editorResourcesPath = "Assets/Resources/";
+        public static string editorResourcesFullPath = appDataPath + "Resources/";
+
+        public const string editorScriptPath = "Assets/Scripts/";
+        public static string editorScriptFullPath = appDataPath + "Scripts/";
+
         public const string behaviourTreeWindowDataName = "BehaviourTreeWindowData";
         public const string behaviourTreeWindowDataExtend = ".json";
-        public const string behaviourTreeWindowDataFullPath = ediorConfigPath + behaviourTreeWindowDataName + behaviourTreeWindowDataExtend;
+        public const string behaviourTreeWindowDataFullPath =  editorConfigPath + behaviourTreeWindowDataName + behaviourTreeWindowDataExtend;
 
-        public const string behaviourTreeConfigDataName = "BehaviourTreeConfigData";
-        public const string behaviourTreeConfigDataExtend = ".json";
-        public static string behaviourTreeConfigDataFullPath = appDataPath + "ConfigData/" + behaviourTreeConfigDataName + behaviourTreeConfigDataExtend;
+        public const string assetBundleWindowDataName = "AssetBundleWindowData";
+        public const string assetBundleWindowDataExtend = ".asset";
+        public const string assetBundleWindowDataPath = editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
+        public static string assetBundleWindowDataFullPath = appDataPath + editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
 
-        public static string assetBundleConfigFullPath = appDataPath + "GameFrameWork/Editor/Config/";
-        public const string assetBundleDataName = "AssetBundleData";
-        public const string assetBundleDataExtend = ".asset";
-        public const string assetBundleDataPath = ediorConfigPath + assetBundleDataName + assetBundleDataExtend;
-        public static string assetBundleDataFullPath = appDataPath + "GameFrameWork/Editor/Config/" + assetBundleDataName + assetBundleDataExtend;
+        public const string gameFrameWorkConfigWindowDataName = "GameFrameWorkConfigWindowData";
+        public const string gameFrameWorkConfigWindowDataExtend = ".asset";
+        public static string gameFrameWorkConfigWindowDataPath = editorConfigPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
+        public static string gameFrameWorkConfigWindowDataFullPath = editorConfigFullPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
 
-        public static string assetBuildFilePath = appDataPath + "GameFrameWork/Editor/Config/AssetBuild";
-        public const string assetBuildFileExtend = ".txt";
-        public static string assetBuildFileFullPath = assetBuildFilePath + assetBuildFileExtend;
+        public const string entryScriptName = "GameEntry";
+        public const string entryScriptExtend = ".cs";
+        public static string entryScriptFullPath = editorScriptFullPath + entryScriptName + entryScriptExtend;
 
-        public static string luaPath = appDataPath + "Lua";
-        public const string uiScenePath = "Scenes";
-
-        public static string GetUIScenesPath()
-        {
-            string uiDirectory = AppConfig.instance.uiDirectory;
-
-            if (string.IsNullOrEmpty(uiDirectory))
-            {
-                return null;
-            }
-
-            return PathUtil.FormatPath("Assets", uiDirectory, uiScenePath);
-        }
+        public const string uiScenesPath = "Scenes";
     }
 }

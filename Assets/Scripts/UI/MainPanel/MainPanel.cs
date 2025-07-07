@@ -7,7 +7,7 @@ using DG.Tweening;
 using GameFrameWork;
 using GameFrameWork.Event;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

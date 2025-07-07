@@ -4,10 +4,11 @@
 /*******************************************************/
 using DragonBones;
 using GameFrameWork.Audio;
+using GameFrameWork.ConfigData;
 using GameFrameWork.Pool;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,10 +25,10 @@ public class StagePanel : BasePanel
 		int characterId = PlayerMgr.instance.selectRoleId;
 
 		StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
-        RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
+        RoleSelectConfigData roleSelectConfigData = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
 
 		GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
-		GameObjectPool.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
+		GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
 		for (int i = 1; i < 6; i++)
 		{
@@ -40,7 +41,7 @@ public class StagePanel : BasePanel
 	private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
-		RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
+		RoleSelectConfigData roleSelectConfig = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
 
 		m_Role = obj as GameObject;
 		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
@@ -66,8 +67,8 @@ public class StagePanel : BasePanel
 	protected override void OnClose()
 	{
 		int characterId = PlayerMgr.instance.selectRoleId;
-		RoleSelectConfigData roleSelectConfig = ConfigDataHelper.roleSelectConfigDatas.GetConfigDataById(characterId);
-		GameObjectPool.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
+		RoleSelectConfigData roleSelectConfig = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
+		GameObjectPoolMgr.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
 		m_Role = null;
 	}
 

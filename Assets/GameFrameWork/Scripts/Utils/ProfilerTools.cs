@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public class ProfilerTools
     {

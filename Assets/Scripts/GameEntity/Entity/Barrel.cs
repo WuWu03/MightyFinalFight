@@ -1,6 +1,6 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.Fsm;
+using GameFrameWork.FSM;
 using UnityEngine;
 
 public class Barrel : BaseAvatar, ICanBeHit
@@ -39,11 +39,11 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
     }
 
-    public FsmMachine barrelFsm
+    public FiniteStateMachine barrelFSM
     {
         get
         {
-            return m_FsmMachine;
+            return m_FSM;
         }
     }
 
@@ -142,13 +142,13 @@ public class Barrel : BaseAvatar, ICanBeHit
             if (m_BarrelData.moveSpeed >= 0)
             {
                 SetTrigger(AnimName.Move);
-                m_FsmMachine.Start<BarrelMove>();
+                m_FSM.Start<BarrelMove>();
                 AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Barrel);
             }
             else
             {
                 SetTrigger(AnimName.Idle);
-                m_FsmMachine.Start<BarrelIdle>();
+                m_FSM.Start<BarrelIdle>();
             }
         }
         else

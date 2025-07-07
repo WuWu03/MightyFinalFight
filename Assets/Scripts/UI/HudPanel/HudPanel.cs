@@ -7,7 +7,7 @@ using DG.Tweening;
 using GameFrameWork.UI;
 using GameFrameWork.Camera;
 using GameFrameWork.Pool;
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using TMPro;
 
 public class HudPanel : BasePanel
@@ -15,7 +15,7 @@ public class HudPanel : BasePanel
     protected override void OnInit(object[] param)
     {
         m_Component = GetPanelComponent<HudPanelComponent>();
-        GameObjectPool.instance.AddPool(m_DamageText, m_Component.txtDamageGO);
+        GameObjectPoolMgr.instance.AddPool(m_DamageText, m_Component.txtDamageGO);
     }
 
     protected override void OnOpen()
@@ -35,12 +35,12 @@ public class HudPanel : BasePanel
 
     protected override void OnDestroy()
     {
-        GameObjectPool.instance.RemovePool(m_DamageText);
+        GameObjectPoolMgr.instance.RemovePool(m_DamageText);
     }
 
     public void ShowDamageText(HudMgr.DamageType damageType, int value, Vector3 pos)
     {
-        GameObject go = GameObjectPool.instance.Get(m_DamageText, transform, LayerName.UI, true);
+        GameObject go = GameObjectPoolMgr.instance.Get(m_DamageText, transform, LayerName.UI, true);
         TextMeshProUGUI text = go.GetComponent<TextMeshProUGUI>();
         RectTransform textRect = text.GetComponent<RectTransform>();
 
@@ -64,7 +64,7 @@ public class HudPanel : BasePanel
         textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
         text.DOFade(0, 2f).OnComplete(() =>
         {
-            GameObjectPool.instance.Put(m_DamageText, go);
+            GameObjectPoolMgr.instance.Put(m_DamageText, go);
         });
     }
 

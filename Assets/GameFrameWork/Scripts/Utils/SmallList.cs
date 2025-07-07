@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     /// <summary>
     /// This is a super light implementation of an array that

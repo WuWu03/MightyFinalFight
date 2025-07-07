@@ -1,5 +1,5 @@
-﻿using GameFrameWork.Assets;
-using GameFrameWork.Utilities;
+using GameFrameWork.Assets;
+using GameFrameWork.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -258,7 +258,7 @@ namespace GameFrameWork.Scene
             {
                 LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = mode };
 #if UNITY_EDITOR
-                if (!AppConfig.instance.loadAB)
+                if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
                 {
                     UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName), parameters);
                 }
@@ -338,7 +338,7 @@ namespace GameFrameWork.Scene
             m_ListLoadingScene.Add(request.sceneName);
 
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 StartCoroutine(OnLoadSceneAsync(request));
             }
@@ -362,7 +362,7 @@ namespace GameFrameWork.Scene
                 LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = request.mode };
 
 #if UNITY_EDITOR
-                if(!AppConfig.instance.loadAB)
+                if(!GameFrameWorkEntry.config.isLoadFromAssetBundle)
                 {
                     m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(PathUtil.GetAssetPath(request.sceneName), parameters);
                 }
@@ -413,7 +413,7 @@ namespace GameFrameWork.Scene
         private void InnerUnLoadSceneAsync(LoadSceneRequest request)
         {
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 StartCoroutine(OnUnLoadSceneAsync(request));
             }
@@ -432,7 +432,7 @@ namespace GameFrameWork.Scene
                 m_ListUnLoadingScene.Add(request.sceneName);
 
 #if UNITY_EDITOR
-                if (!AppConfig.instance.loadAB)
+                if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
                 {
                     m_AsyncOperation = UnityEditor.SceneManagement.EditorSceneManager.UnloadSceneAsync(PathUtil.GetAssetPath(request.sceneName));
                 }

@@ -1,4 +1,4 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace GameFrameWork.Assets
             m_DicAssetMap = new Dictionary<string, string>();
 
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace GameFrameWork.Assets
                 t = typeof(Object);
             }
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 return EditorAssetsMgr.Instance.LoadAssetSync(assetPath, t);
             }
@@ -107,7 +107,7 @@ namespace GameFrameWork.Assets
                 t = typeof(Object);
             }
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 EditorAssetsMgr.Instance.LoadAssetAsync(assetPath, action, t, args);
                 return;
@@ -122,7 +122,7 @@ namespace GameFrameWork.Assets
         public void UnloadAsset(string assetPath, bool isThorough = false)
         {
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 EditorAssetsMgr.Instance.UnLoadAssetEditor(assetPath);
                 return;
@@ -384,7 +384,7 @@ namespace GameFrameWork.Assets
             base.OnShutDown();
 
 #if UNITY_EDITOR
-            if (!AppConfig.instance.loadAB)
+            if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
                 EditorAssetsMgr.Instance.UnLoadAll();
                 return;

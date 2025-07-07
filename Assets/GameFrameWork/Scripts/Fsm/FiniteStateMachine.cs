@@ -1,14 +1,15 @@
-using GameFrameWork.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFrameWork.Fsm
+namespace GameFrameWork.FSM
 {
-    public class FsmMachine : BaseFsm
+    public class FiniteStateMachine
     {
-        public FsmMachine(object owner, string name, params BaseFsmState[] states) : base(owner, name)
+        public FiniteStateMachine(object owner, string name, params BaseFsmState[] states)
         {
+            m_Owner = owner;
+            m_Name = name;
             m_CurrentState = null;
             m_CurrentStateTime = 0;
             m_DicStates = new Dictionary<Type, BaseFsmState>();
@@ -34,7 +35,31 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override int stateCount
+        public string name
+        {
+            get
+            {
+                return m_Name;
+            }
+        }
+
+        public object owner
+        {
+            get
+            {
+                return m_Owner;
+            }
+        }
+
+        public Type ownerType
+        {
+            get
+            {
+                return m_Owner.GetType();
+            }
+        }
+
+        public int stateCount
         {
             get
             {
@@ -42,7 +67,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override bool isRunning
+        public bool isRunning
         {
             get
             {
@@ -50,7 +75,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override bool isDestroy
+        public bool isDestroy
         {
             get
             {
@@ -58,7 +83,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override BaseFsmState currState
+        public BaseFsmState currState
         {
             get
             {
@@ -66,7 +91,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override Type currStateType
+        public Type currStateType
         {
             get
             {
@@ -79,7 +104,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override float currStateTime
+        public float currStateTime
         {
             get
             {
@@ -87,7 +112,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override void Start<T>()
+        public void Start<T>() where T : BaseFsmState
         {
             if (isRunning)
             {
@@ -107,17 +132,17 @@ namespace GameFrameWork.Fsm
             fsmState.Enter(this);
         }
 
-        public override void Pause()
+        public void Pause()
         {
             m_IsPaused = true;
         }
 
-        public override void Resume()
+        public void Resume()
         {
             m_IsPaused = false;
         }
 
-        public override void AddState<T>()
+        public void AddState<T>() where T : BaseFsmState, new()
         {
             if (!m_DicStates.ContainsKey(typeof(T)))
             {
@@ -127,7 +152,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override void RemoveState<T>()
+        public void RemoveState<T>() where T : BaseFsmState
         {
             if (m_DicStates.ContainsKey(typeof(T)))
             {
@@ -135,7 +160,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public override void SetStateData<T>(BaseEventArgs stateData)
+        public void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
         {
             BaseFsmState state = GetState<T>();
 
@@ -147,7 +172,7 @@ namespace GameFrameWork.Fsm
             state.SetStateData(stateData);
         }
 
-        public override void ChangeState<T>(BaseEventArgs stateData = null)
+        public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
         {
             if (!isRunning)
             {
@@ -182,7 +207,19 @@ namespace GameFrameWork.Fsm
             m_CurrentState.Enter(this);
         }
 
-        public override void ChangeDefaultState()
+        public void SetDefaultState<T>() where T : BaseFsmState
+        {
+            BaseFsmState state = this.GetState<T>();
+
+            if (state == null)
+            {
+                Log.LogError("状态 [", typeof(T).Name, "] 不存在，调用AddState方法添加该状态");
+            }
+
+            m_DefaultState = state;
+        }
+
+        public void ChangeDefaultState()
         {
             if (m_CurrentState == null)
             {
@@ -205,7 +242,7 @@ namespace GameFrameWork.Fsm
             m_CurrentState.Enter(this);
         }
 
-        public override T GetState<T>()
+        public T GetState<T>() where T : BaseFsmState
         {
             if (!m_DicStates.TryGetValue(typeof(T), out BaseFsmState result))
             {
@@ -215,29 +252,38 @@ namespace GameFrameWork.Fsm
             return result as T;
         }
 
-        public override BaseFsmState[] GetAllStates()
+        public BaseFsmState[] GetAllStates()
         {
             BaseFsmState[] results = new BaseFsmState[m_DicStates.Count];
             m_DicStates.Values.CopyTo(results, 0);
             return results;
         }
 
-        public override bool HasState<T>()
+        public bool HasState<T>() where T : BaseFsmState
         {
             return m_DicStates.ContainsKey(typeof(T));
         }
 
-        public override void Update(float deltaTime, float unscaleDeltaTime)
+        public void Update(float deltaTime, float unscaledDeltaTime)
         {
             if (m_CurrentState == null || m_IsPaused)
             {
                 return;
             }
 
-            m_CurrentState.Update(this, deltaTime, unscaleDeltaTime);
+            m_CurrentState.Update(this, deltaTime, unscaledDeltaTime);
         }
 
-        public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
+        public void LateUpdate(float deltaTime, float unscaledDeltaTime)
+        {
+            if (m_CurrentState == null || m_IsPaused)
+            {
+                return;
+            }
+            m_CurrentState.LateUpdate(this, deltaTime, unscaledDeltaTime);
+        }
+
+        public void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
         {
             if (m_CurrentState == null || m_IsPaused)
             {
@@ -247,7 +293,7 @@ namespace GameFrameWork.Fsm
             m_CurrentState.FixedUpdate(this, fixedDeltaTime, fixedUnscaledDeltaTime);
         }
 
-        public override void Release()
+        public void Release()
         {
             foreach (KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
             {
@@ -260,7 +306,7 @@ namespace GameFrameWork.Fsm
             m_CurrentStateTime = 0f;
         }
 
-        public override void ShutDown()
+        public void ShutDown()
         {
             if (m_IsDestroyed)
             {
@@ -280,23 +326,14 @@ namespace GameFrameWork.Fsm
             m_IsDestroyed = true;
         }
 
-        public override void SetDefaultState<T>()
-        {
-            BaseFsmState state = this.GetState<T>();
-
-            if (state == null)
-            {
-                Log.LogError("状态 [", typeof(T).Name, "] 不存在，调用AddState方法添加该状态");
-            }
-
-            m_DefaultState = state;
-        }
+        private readonly string m_Name = string.Empty;
+        private readonly object m_Owner = null;
+        private float m_CurrentStateTime;
+        private bool m_IsPaused = false;
+        private bool m_IsDestroyed = false;
 
         private Dictionary<Type, BaseFsmState> m_DicStates;
         private BaseFsmState m_CurrentState;
         private BaseFsmState m_DefaultState;
-        private float m_CurrentStateTime;
-        private bool m_IsPaused = false;
-        private bool m_IsDestroyed = false;
     }
 }

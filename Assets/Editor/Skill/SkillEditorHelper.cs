@@ -1,5 +1,5 @@
-﻿using GameFrameWork.Editor;
-using GameFrameWork.Utilities;
+using GameFrameWork.Editor;
+using GameFrameWork.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -93,12 +93,15 @@ public static class SkillEditorHelper
             return;
         }
 
-        if (!File.Exists(EditorPathUtil.configDataFullPath + "SkillData.asset"))
+        string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
+        string configDataFullPath = PathUtil.GetAssetFullPath(configDataPath);
+
+        if (!File.Exists(configDataFullPath + "SkillData.asset"))
         {
             EditorMgr.CreateSkillData();
         }
 
-        m_SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>(EditorPathUtil.configDataPath + "SkillData.asset");
+        m_SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>(configDataPath + "SkillData.asset");
 
         SetShowNames();
     }

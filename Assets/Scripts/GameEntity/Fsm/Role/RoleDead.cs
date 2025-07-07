@@ -1,15 +1,15 @@
-﻿using DG.Tweening.Plugins.Options;
+using DG.Tweening.Plugins.Options;
 using GameFrameWork;
-using GameFrameWork.Fsm;
+using GameFrameWork.FSM;
 using UnityEngine;
 public class RoleDead : BaseFsmState
 {
-    protected override void OnInit(BaseFsm fsm)
+    protected override void OnInit(FiniteStateMachine fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(FiniteStateMachine fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4);
@@ -17,7 +17,7 @@ public class RoleDead : BaseFsmState
         m_Owner.SetThrow(false);
     }
 
-    protected override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnUpdate(FiniteStateMachine fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.IsPlayComplete())
         {
@@ -38,12 +38,12 @@ public class RoleDead : BaseFsmState
         m_ReBirthPos = trapData.rebirthPos;
     }
 
-    protected override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
     {
         m_ReBirthPos = Vector2.zero;
     }
 
-    protected override void OnRelease(BaseFsm fsm)
+    protected override void OnRelease(FiniteStateMachine fsm)
     {
         m_Owner = null;
     }

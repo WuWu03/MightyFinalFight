@@ -23,7 +23,7 @@ public class RoleSelectPanel : BasePanel
 	{
 		m_HasSelect = false;
 		m_Component.imgSelectRect.gameObject.SetActive(true);
-		m_Component.roleContentGroupView.Update(ConfigDataHelper.roleSelectConfigDatas.Length);
+		m_Component.roleContentGroupView.Update(ConfigData.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 
 		AudioMgr.instance.PlayBGM(AssetPathDefine.AudioClipPath, SoundName.Bgm14Character, true);
@@ -43,12 +43,12 @@ public class RoleSelectPanel : BasePanel
 			if (axis.y < 0)
 			{
 				m_CurrSelectIndex++;
-				if (m_CurrSelectIndex >= ConfigDataHelper.roleSelectConfigDatas.Length) m_CurrSelectIndex = 0;
+				if (m_CurrSelectIndex >= ConfigData.roleSelectConfigDatas.Length) m_CurrSelectIndex = 0;
 			}
 			else
 			{
 				m_CurrSelectIndex--;
-				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataHelper.roleSelectConfigDatas.Length - 1;
+				if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigData.roleSelectConfigDatas.Length - 1;
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
@@ -74,7 +74,7 @@ public class RoleSelectPanel : BasePanel
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{
-		RoleSelectConfigData roleSelectConfigData = ConfigDataHelper.roleSelectConfigDatas[item.itemIndex];
+		RoleSelectConfigData roleSelectConfigData = ConfigData.roleSelectConfigDatas[item.itemIndex];
 
 		item.txtName.UpdateLanguageTextKey(roleSelectConfigData.name);
 		item.txtDesc.UpdateLanguageTextKey(roleSelectConfigData.desc);
@@ -97,7 +97,7 @@ public class RoleSelectPanel : BasePanel
 
 		AudioMgr.instance.StopBGM(true);
 		AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.OnSelected);
-		PlayerMgr.instance.selectRoleId = ConfigDataHelper.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
+		PlayerMgr.instance.selectRoleId = ConfigData.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
 
 		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
 		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>

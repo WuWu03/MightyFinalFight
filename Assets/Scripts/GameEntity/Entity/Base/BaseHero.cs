@@ -466,35 +466,28 @@ public class BaseHero : BaseRole
 
             for (int i = 0; i < enemyTargets.Count; i++)
             {
-                ICanBeHit temp = enemyTargets[i].GetComponent<ICanBeHit>();
+                BaseEnemy target = enemyTargets[i];
 
-                if (temp == null || !temp.canBeHit || !(temp is BaseRole))
+                if (target == null || !target.canBeHit || !enemyTargets[i].isInGround)
                 {
                     continue;
                 }
 
-                BaseRole tempEnemy = temp as BaseRole;
-
-                if (!tempEnemy.isInGround)
-                {
-                    continue;
-                }
-
-                float distance = GetCatchDistance(tempEnemy);
-                float yOffest = Mathf.Abs(tempEnemy.pos.y - m_Pos.y);
-                float xOffest = Mathf.Abs(tempEnemy.pos.x - m_Pos.x);
-                float dirOffest = (tempEnemy.pos.x - m_Pos.x) * m_Dir;
+                float distance = GetCatchDistance(target);
+                float yOffest = Mathf.Abs(target.pos.y - m_Pos.y);
+                float xOffest = Mathf.Abs(target.pos.x - m_Pos.x);
+                float dirOffest = (target.pos.x - m_Pos.x) * m_Dir;
                 bool isInRange = yOffest <= 0.03f && xOffest <= distance && dirOffest > 0;
 
                 if (isInRange)
                 {
-                    tempEnemy.SetDir(m_Dir * -1);
-                    tempEnemy.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
-                    tempEnemy.SetDepth(m_Pos.y + 0.05f);
-                    temp.SetCatch(true);
+                    target.SetDir(m_Dir * -1);
+                    target.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
+                    target.SetDepth(m_Pos.y + 0.05f);
+                    target.SetCatch(true);
                     ChangeState<HeroCatch>();
                     SetDefaultState<HeroCatch>();
-                    m_ListCatchTarget.Add(temp);
+                    m_ListCatchTarget.Add(target);
                     break;
                 }
             }

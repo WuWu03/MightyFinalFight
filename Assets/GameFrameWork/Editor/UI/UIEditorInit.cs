@@ -1,4 +1,4 @@
-using GameFrameWork.Utilities;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,7 +48,8 @@ namespace GameFrameWork.Editor
 
         public static void NewUIScene()
         {
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...", EditorPathUtil.GetUIScenesPath());
+            string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.uiScenesPath);
+            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...", uiScenesPath);
 
             if (string.IsNullOrEmpty(path))
             {
@@ -90,13 +91,6 @@ namespace GameFrameWork.Editor
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode && IsUIScene())
             {
-                AppConfig appGo = GameObject.FindAnyObjectByType<AppConfig>();
-
-                if (appGo != null)
-                {
-                    GameObject.DestroyImmediate(appGo.gameObject);
-                }
-
                 GUI.color = Color.green;
                 Handles.BeginGUI();
 
@@ -369,7 +363,7 @@ namespace GameFrameWork.Editor
 
             GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
-            Utilities.FileUtil.VerifyDirectory(Path.GetDirectoryName(path));
+            Utils.FileUtil.VerifyDirectory(Path.GetDirectoryName(path));
 
             bool isSuccess;
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out isSuccess);

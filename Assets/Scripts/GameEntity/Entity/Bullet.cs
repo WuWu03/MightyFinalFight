@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : BaseAvatar
@@ -113,13 +113,15 @@ public class Bullet : BaseAvatar
             return;
         }
 
-        ICanBeHit hit = bgo.GetComponent<ICanBeHit>();
+        
 
-        if (hit == null || !hit.canBeHit)
+        if (bgo is not ICanBeHit)
         {
             return;
         }
 
+
+        ICanBeHit hit = bgo as ICanBeHit;
         bool isInRange = false;
 
         if (SkillUtil.IsRectangleCollide(bgo.bound, bound))

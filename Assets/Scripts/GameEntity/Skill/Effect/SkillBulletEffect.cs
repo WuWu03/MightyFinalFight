@@ -1,5 +1,5 @@
-﻿using GameFrameWork.GameEntity;
-using GameFrameWork.Utilities;
+using GameFrameWork.GameEntity;
+using GameFrameWork.Utils;
 
 public class SkillBulletEffect : SkillBaseEffect
 {

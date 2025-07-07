@@ -1,19 +1,19 @@
 using GameFrameWork;
-using GameFrameWork.Fsm;
+using GameFrameWork.FSM;
 
 public class RoleAttack : BaseFsmState
 {
-    protected override void OnInit(BaseFsm fsm)
+    protected override void OnInit(FiniteStateMachine fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(BaseFsm fsm)
+    protected override void OnEnter(FiniteStateMachine fsm)
     {
 
     }
 
-    protected override void OnUpdate(BaseFsm fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnUpdate(FiniteStateMachine fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_CanChangeDir)
         {
@@ -38,13 +38,13 @@ public class RoleAttack : BaseFsmState
         }
     }
 
-    protected override void OnExit(BaseFsm fsm, bool isShutdown)
+    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
     {
         m_CanChangeDir = false;
         m_Dir = 0;
     }
 
-    protected override void OnRelease(BaseFsm fsm)
+    protected override void OnRelease(FiniteStateMachine fsm)
     {
         m_Owner = null;
     }

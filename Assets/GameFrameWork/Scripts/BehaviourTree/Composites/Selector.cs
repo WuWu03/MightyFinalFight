@@ -1,11 +1,8 @@
-﻿using System.Text.RegularExpressions;
-
-
 namespace GameFrameWork.BehaviourTree
 {
     public class Selector : Composite
     {
-        public Selector(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public Selector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
             m_CurrChildIndex = 0;
         }

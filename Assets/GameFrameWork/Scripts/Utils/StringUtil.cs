@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GameFrameWork.Utilities
+namespace GameFrameWork.Utils
 {
     public static class StringUtil
     {

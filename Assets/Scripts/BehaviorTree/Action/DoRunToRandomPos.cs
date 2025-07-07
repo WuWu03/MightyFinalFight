@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFrameWork.BehaviourTree;
@@ -6,7 +6,7 @@ using GameFrameWork.Camera;
 
 public class DoRunToRandomPos : Action
 {
-    public DoRunToRandomPos(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+    public DoRunToRandomPos(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
         m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
     }

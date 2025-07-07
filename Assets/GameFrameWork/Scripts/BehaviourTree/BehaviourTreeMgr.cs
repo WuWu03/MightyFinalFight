@@ -1,152 +1,180 @@
-using DG.Tweening.Core;
 using GameFrameWork.Assets;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
-    public class BehaviourTreeMgr
+    public class BehaviourTreeMgr : BaseMgr<BehaviourTreeMgr>
     {
-        public static void Init(string configPath)
+        protected override void OnAwake()
         {
-            if (m_Config == null)
+            base.OnAwake();
+            m_ListBehaviourTrees = new List<BehaviourTree>();
+            string dataPath = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, PathUtil.behaviourTreeConfigDataName);
+            string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(dataPath).text;
+            m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
+        }
+
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+
+
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(configPath).text;
-                m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
+                m_ListBehaviourTrees[i].Update(Time.deltaTime);
             }
         }
 
-        public BehaviourTreeMgr(object owner)
+        protected override void OnLateUpdate()
         {
-            m_Owner = owner;
+            base.OnLateUpdate();
+
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                m_ListBehaviourTrees[i].LateUpate(Time.deltaTime);
+            }
         }
 
-        public void InitTree(params int[] treesID)
+        protected override void OnFixedUpdate()
         {
-            if(m_Config == null)
+            base.OnFixedUpdate();
+
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                Debugger.LogError("Behavior tree data not found, generate behavior tree data please!");
+                m_ListBehaviourTrees[i].FixedUpdate(Time.fixedDeltaTime);
+            }
+        }
+
+        protected override void OnShutDown()
+        {
+            base.OnShutDown();
+            StopAllTrees();
+
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                m_ListBehaviourTrees[i].Destroy();
+            }
+
+            m_ListBehaviourTrees.Clear();
+            m_ListBehaviourTrees = null;
+        }
+
+        public void AddBehaviourTree(object owner, int id)
+        {
+            if (m_ListBehaviourTrees == null)
+            {
                 return;
             }
 
-            m_ListTrees = new List<BehaviourTree>();
-            m_ListTreeID = new List<int>();
-            m_ListTreeID.AddRange(treesID);
-            LoadAll();
-        }
-
-        public void AddBehaviourTree(int id)
-        {
-            if (m_ListTreeID == null)
-            {
-                return;
-            }
-
-            m_ListTreeID.Add(id);
             BehaviourTreeData data = m_Config.GetDataById(id);
-            m_ListTrees.Add(new BehaviourTree(data, m_Owner));
+            m_ListBehaviourTrees.Add(new BehaviourTree(data, owner));
         }
 
-        public void Start(int index = 0)
+        public void RemoveBehaviourTree(object owner, int id)
         {
-            for(int  i = 0; i < m_ListTrees.Count; i++)
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                m_ListTrees[i].Stop();
-            }
-
-            m_ListTrees[index].Start();
-        }
-
-        public void Update(float deltaTime)
-        {
-            for(int  i = 0; i < m_ListTrees.Count; i++)
-            {
-                m_ListTrees[i].Update(deltaTime);
+                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                if (behaviourTree.tree.id == id && behaviourTree.tree.owner == owner)
+                {
+                    behaviourTree.Destroy();
+                    m_ListBehaviourTrees.RemoveAt(i);
+                    break;
+                }
             }
         }
 
-        public void PauseAll()
+        public void StartAllTrees()
         {
-            for (int i = 0; i < m_ListTrees.Count; i++)
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                Pause(i);
+                m_ListBehaviourTrees[i].Start();
             }
         }
 
-        public void Pause(int index)
+        public void StartTree(object owner, int id)
         {
-            if (index < 0 || index >= m_ListTrees.Count)
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                return;
-            }
+                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
 
-            m_ListTrees[index].Pause();
-        }
-
-        public void ResumeAll()
-        {
-            for (int i = 0; i < m_ListTrees.Count; i++)
-            {
-                Resume(i);
+                if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
+                {
+                    behaviourTree.Start();
+                    return;
+                }
             }
         }
 
-        public void Resume(int index)
+        public void StopAllTrees()
         {
-            if (index < 0 || index >= m_ListTrees.Count)
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                return;
-            }
-
-            m_ListTrees[index].Resume();
-        }
-
-        public void StopAll()
-        {
-            for (int i = 0; i < m_ListTrees.Count; i++)
-            {
-                Stop(i);
+                m_ListBehaviourTrees[i].Stop();
             }
         }
 
-        public void Stop(int index)
+        public void StopTree(object owner, int id)
         {
-            if (index < 0 || index >= m_ListTrees.Count)
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
             {
-                return;
-            }
+                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
 
-            m_ListTrees[index].Stop();
-        }
-
-        public void ShutDown()
-        {
-            StopAll();
-
-            for (int i = 0; i < m_ListTrees.Count; i++)
-            {
-                m_ListTrees[i].Destroy();
-            }
-
-            m_ListTrees.Clear();
-            m_ListTreeID.Clear();
-            m_ListTrees = null;
-            m_ListTreeID = null;
-            m_Owner = null;
-        }
-
-        private void LoadAll()
-        {
-            for (int i = 0; i < m_ListTreeID.Count; i++)
-            {
-                BehaviourTreeData data = m_Config.GetDataById(m_ListTreeID[i]);
-                m_ListTrees.Add(new BehaviourTree(data, m_Owner));
+                if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
+                {
+                    behaviourTree.Stop();
+                    return;
+                }
             }
         }
 
-        private List<BehaviourTree> m_ListTrees = null;
-        private List<int> m_ListTreeID = null;
-        private object m_Owner = null;
-        private static BehaviourTreeConfig m_Config = null;
+        public void PauseAllTrees()
+        {
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                m_ListBehaviourTrees[i].Pause();
+            }
+        }
+
+        public void PauseTree(object owner, int id)
+        {
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+
+                if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
+                {
+                    behaviourTree.Pause();
+                    return;
+                }
+            }
+        }
+
+        public void ResumeAllTrees()
+        {
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                m_ListBehaviourTrees[i].Resume();
+            }
+        }
+
+        public void ResumeTree(object owner, int id)
+        {
+            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            {
+                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+
+                if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
+                {
+                    behaviourTree.Resume();
+                    return;
+                }
+            }
+        }
+
+        private List<BehaviourTree> m_ListBehaviourTrees = null;
+        private BehaviourTreeConfig m_Config = null;
     }
 }

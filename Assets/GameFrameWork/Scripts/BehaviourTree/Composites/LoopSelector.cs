@@ -1,12 +1,8 @@
-﻿
-using System.Text.RegularExpressions;
-using UnityEngine;
-
 namespace GameFrameWork.BehaviourTree
 {
     public class LoopSelector : Composite
     {
-        public LoopSelector(string name, string args, object owner, int priority) : base(name, args, owner, priority)
+        public LoopSelector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
             //m_CurrChildIndex = 0;
             //m_LastChildIndex = -1;
