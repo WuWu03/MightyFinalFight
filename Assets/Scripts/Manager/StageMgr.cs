@@ -118,21 +118,19 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.canContrl = false;
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
         SceneMgr.instance.AllowScene();
-        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
-        {
-            TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
-        }
         LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
 
     private void OnFadeWhiteComplete()
     {
         LoadPanelMgr.instance.CloseLoadPanel();
-
-
         EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
         CameraMgr.instance.StartFollow();
         PlayerMgr.instance.canContrl = true;
+        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
+        {
+            TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
+        }
     }
 
     public Rect GetMoveArea()

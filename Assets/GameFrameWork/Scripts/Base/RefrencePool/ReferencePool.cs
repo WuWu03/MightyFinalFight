@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace GameFrameWork
@@ -82,29 +82,27 @@ namespace GameFrameWork
 
                 m_DicReferenceCollection.Clear();
             }
+
+            m_DicReferenceCollection = null;
         }
 
         public static T Acquire<T>() where T : class, IReference, new()
         {
-            return GetReferenceCollection(typeof(T)).Acquire<T>(null);
+            return GetReferenceCollection(typeof(T)).Acquire<T>();
         }
 
-        public static T Acquire<T>(params object[] args) where T : class, IReference, new()
-        {
-            return GetReferenceCollection(typeof(T)).Acquire<T>(args);
-        }
-
-        public static IReference Acquire(Type referenceType, params object[] args)
+        public static IReference Acquire(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
-            return GetReferenceCollection(referenceType).Acquire(args);
+            return GetReferenceCollection(referenceType).Acquire();
         }
 
         public static void ReleaseReference(IReference reference)
         {
             if (reference == null)
             {
-                throw new Exception("对象为空");
+                Log.LogError("对象为空，无法回收");
+                return;
             }
 
             Type referenceType = reference.GetType();
@@ -154,17 +152,19 @@ namespace GameFrameWork
 
             if (referenceType == null)
             {
-                throw new Exception("引用类型为空");
+                Log.LogError("引用类型为空");
+                return;
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                throw new Exception("引用类型错误");
+                Log.LogError("引用类型错误");
+                return;
             }
 
             if (!referenceType.IsAssignableFrom(typeof(IReference)))
             {
-                throw new Exception("未实现[IRefenece]接口");
+                Log.LogError("未实现 [IRefenece] 接口");
             }
         }
 
@@ -172,7 +172,8 @@ namespace GameFrameWork
         {
             if (type == null)
             {
-                throw new Exception("引用类型为空.");
+                Log.LogError("引用类型为空.");
+                return null;
             }
 
             ReferenceCollection referenceCollection = null;

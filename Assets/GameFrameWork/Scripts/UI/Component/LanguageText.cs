@@ -1,4 +1,3 @@
-using GameFrameWork.Event;
 using GameFrameWork.Localization;
 using GameFrameWork.Utils;
 using TMPro;
@@ -31,7 +30,6 @@ namespace GameFrameWork.UI
 
         private void OnDisable()
         {
-            Debug.Log("==========================会乐乐乐乐=================");
             LocalizationMgr.instance.lanuageChangeEvent -= OnLanguageChange;
         }
 

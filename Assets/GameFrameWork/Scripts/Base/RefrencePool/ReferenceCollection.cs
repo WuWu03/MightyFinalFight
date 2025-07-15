@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace GameFrameWork
@@ -65,11 +65,12 @@ namespace GameFrameWork
             m_RemoveReferenceCount = 0;
         }
 
-        public T Acquire<T>(object[] args) where T : class, IReference, new()
+        public T Acquire<T>() where T : class, IReference, new()
         {
             if (!typeof(T).Equals(m_ReferenceType))
             {
-                throw new Exception("Reference type is invalid.");
+                Log.LogError("创建对象的类型错误，请检查");
+                return null;
             }
 
             m_UsingReferenceCount++;
@@ -83,10 +84,10 @@ namespace GameFrameWork
                 }
             }
 
-            return Activator.CreateInstance(typeof(T), args, null) as T;
+            return Activator.CreateInstance<T>();
         }
 
-        public IReference Acquire(object[] args)
+        public IReference Acquire()
         {
             m_UsingReferenceCount++;
             m_AcquireReferenceCount++;
@@ -99,7 +100,7 @@ namespace GameFrameWork
                 }
             }
 
-            return Activator.CreateInstance(m_ReferenceType, args) as IReference;
+            return Activator.CreateInstance(m_ReferenceType) as IReference;
         }
 
         public void Release(IReference reference, bool strictCheck)

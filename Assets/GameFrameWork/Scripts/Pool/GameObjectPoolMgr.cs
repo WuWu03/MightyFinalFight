@@ -18,6 +18,7 @@ namespace GameFrameWork.Pool
             m_DicPool = new Dictionary<string, GameObjectPool>();
             m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
             m_ListReleasePoolKey = new List<string>();
+            m_ListUnloader = new List<GameObjectUnLoader>();
         }
 
         /// <summary>
@@ -120,13 +121,15 @@ namespace GameFrameWork.Pool
         {
             if (m_DicPool.TryGetValue(tag, out GameObjectPool pool))
             {
-                GameObjectUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<GameObjectUnLoader>(true);
+                m_ListUnloader.Clear();
+                go.GetComponentsInChildren<GameObjectUnLoader>(true, m_ListUnloader);
 
-                for (int i = 0; i < resourceUnLoaders.Length; i++)
+                for (int i = 0; i < m_ListUnloader.Count; i++)
                 {
-                    if (resourceUnLoaders[i].gameObject != go && !string.IsNullOrEmpty(resourceUnLoaders[i].gameObjectPath))
+                    GameObjectUnLoader gameObjectUnLoader = m_ListUnloader[i];
+                    if (gameObjectUnLoader.gameObject != go && !string.IsNullOrEmpty(gameObjectUnLoader.gameObjectPath))
                     {
-                        resourceUnLoaders[i].Release();
+                        gameObjectUnLoader.Release();
                     }
                 }
 
@@ -195,5 +198,6 @@ namespace GameFrameWork.Pool
         private Transform m_PoolRoot = null;
         private Dictionary<string, GameObjectPool> m_DicPool = null;
         private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
+        private List<GameObjectUnLoader> m_ListUnloader = null;
     }
 }
