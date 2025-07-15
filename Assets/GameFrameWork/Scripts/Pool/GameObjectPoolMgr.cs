@@ -120,13 +120,13 @@ namespace GameFrameWork.Pool
         {
             if (m_DicPool.TryGetValue(tag, out GameObjectPool pool))
             {
-                AssetUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<AssetUnLoader>(true);
+                GameObjectUnLoader[] resourceUnLoaders = go.GetComponentsInChildren<GameObjectUnLoader>(true);
 
                 for (int i = 0; i < resourceUnLoaders.Length; i++)
                 {
-                    if (resourceUnLoaders[i].gameObject != go)
+                    if (resourceUnLoaders[i].gameObject != go && !string.IsNullOrEmpty(resourceUnLoaders[i].gameObjectPath))
                     {
-                        Put(resourceUnLoaders[i].gameObjectPath, resourceUnLoaders[i].go, false);
+                        resourceUnLoaders[i].Release();
                     }
                 }
 
@@ -176,7 +176,7 @@ namespace GameFrameWork.Pool
         {
             if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                Log.LogError(StringUtil.Format("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
+                Log.LogError(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
                 return;
             }
 
@@ -190,8 +190,6 @@ namespace GameFrameWork.Pool
 
             m_DicLoadRequests.Remove(assetPath);
         }
-
-
 
         private List<string> m_ListReleasePoolKey = null;
         private Transform m_PoolRoot = null;

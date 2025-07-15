@@ -5,18 +5,22 @@ namespace GameFrameWork.Editor
 {
     public class EditorPathUtil
     {
-        public static string appDataPath = Application.dataPath + "/";
-        public static string appDataPathWithoutAsset = Application.dataPath.Substring(0, Application.dataPath.IndexOf("Assets"));
-        public const string editorUIRootPath = "Assets/GameFrameWork/UI/UIRoot.prefab";
+        public const string applicationDataPath = "Assets/";
+        public static string applicationDataFullPath = Application.dataPath + "/";
 
-        public const string editorConfigPath = "Assets/GameFrameWork/Editor/Config/";
-        public static string editorConfigFullPath = appDataPath + "GameFrameWork/Editor/Config/";
+        public static string streamingAssetsPath = applicationDataPath + "StreamingAssets/";
+        public static string streamingAssetsFullPath = applicationDataFullPath + "StreamingAssets/";
 
-        public const string editorResourcesPath = "Assets/Resources/";
-        public static string editorResourcesFullPath = appDataPath + "Resources/";
+        public const string editorUIRootPath = applicationDataPath + "GameFrameWork/UI/UIRoot.prefab";
 
-        public const string editorScriptPath = "Assets/Scripts/";
-        public static string editorScriptFullPath = appDataPath + "Scripts/";
+        public const string editorConfigPath = applicationDataPath +  "GameFrameWork/Editor/Config/";
+        public static string editorConfigFullPath = applicationDataFullPath + "GameFrameWork/Editor/Config/";
+
+        public const string editorResourcesPath = applicationDataPath + "Resources/";
+        public static string editorResourcesFullPath = applicationDataFullPath + "Resources/";
+
+        public const string editorScriptPath = applicationDataPath + "Scripts/";
+        public static string editorScriptFullPath = applicationDataFullPath + "Scripts/";
 
         public const string behaviourTreeWindowDataName = "BehaviourTreeWindowData";
         public const string behaviourTreeWindowDataExtend = ".json";
@@ -25,17 +29,71 @@ namespace GameFrameWork.Editor
         public const string assetBundleWindowDataName = "AssetBundleWindowData";
         public const string assetBundleWindowDataExtend = ".asset";
         public const string assetBundleWindowDataPath = editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
-        public static string assetBundleWindowDataFullPath = appDataPath + editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
+        public static string assetBundleWindowDataFullPath = applicationDataFullPath + editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
 
         public const string gameFrameWorkConfigWindowDataName = "GameFrameWorkConfigWindowData";
         public const string gameFrameWorkConfigWindowDataExtend = ".asset";
         public static string gameFrameWorkConfigWindowDataPath = editorConfigPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
         public static string gameFrameWorkConfigWindowDataFullPath = editorConfigFullPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
-
+        
         public const string entryScriptName = "GameEntry";
         public const string entryScriptExtend = ".cs";
         public static string entryScriptFullPath = editorScriptFullPath + entryScriptName + entryScriptExtend;
 
+        public const string defaultUIPath = "UI";
+        public const string defaultConfigDataPath = "ConfigData";
+
+        public const string uiPrefabsPath = "Prefabs";
+        public const string uiAtlasPath = "Atlas";
         public const string uiScenesPath = "Scenes";
+        public const string uiSpritesPath = "Sprites";
+
+        public const string assetMapFileDefaultName = "AssetMap";
+        public const string assetMapFileDefaultExt = ".txt";
+
+        public const string versionFileDefaultName = "Version";
+        public const string versionFileDefaultExt = ".txt";
+
+        public static string GetUIPrefabPath()
+        {
+            string uiPath = EditorMgr.GetGameFrameWorkConfig().uiPath;
+
+            if (string.IsNullOrEmpty(uiPath))
+            {
+                return string.Empty;
+            }
+
+            return PathUtil.FormatPath(uiPath, uiPrefabsPath);
+        }
+
+        public static string GetUIAtlasPath()
+        {
+            string uiPath = EditorMgr.GetGameFrameWorkConfig().uiPath;
+
+            if (string.IsNullOrEmpty(uiPath))
+            {
+                return string.Empty;
+            }
+
+            return PathUtil.FormatPath(uiPath, uiAtlasPath);
+        }
+
+        public static string GetPathWithoutAssets(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !path.Contains("Assets"))
+            {
+                return path;
+            }
+
+            path = path.Replace("\\", "/");
+            path = path.Substring(path.IndexOf("Assets") + 6);
+
+            if (path.StartsWith("/"))
+            {
+                path = path.Substring(1);
+            }
+
+            return path;
+        }
     }
 }

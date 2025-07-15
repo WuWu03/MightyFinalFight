@@ -4,16 +4,16 @@
 /*******************************************************/
 using GameFrameWork.UI;
 
-public class RoundClearPanel : BasePanel
+public class RoundClearPanel : BasePanel<RoundClearPanelComponent>
 {
     protected override void OnInit(object[] param)
     {
-        m_Component = GetPanelComponent<RoundClearPanelComponent>();
+
     }
 
 	protected override void OnOpen()
 	{
-		m_Component.txtRound.text = StageMgr.instance.currStageData.StageIndex.ToString();
+		m_Component.txtRound.SetLanguageTextParams("1");// StageMgr.instance.currStageData.StageIndex.ToString());
     }
 
 	protected override void OnUpdate()
@@ -26,7 +26,6 @@ public class RoundClearPanel : BasePanel
 
 	protected override void OnDestroy()
 	{
-	}
 
-	private RoundClearPanelComponent m_Component = null;
+	}
 }

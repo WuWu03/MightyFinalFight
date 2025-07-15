@@ -15,9 +15,7 @@ public class HudPanelComponent : BasePanelComponent
 	//txtDamage,GameObject
 	public GameObject txtDamageGO { get; private set; }
 
-	public HudPanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		txtDamageGO = root.objects[0] as GameObject;
 	}

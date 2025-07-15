@@ -166,11 +166,10 @@ namespace GameFrameWork.Utils
             byte r = (byte)(Mathf.Clamp01(color.r) * byte.MaxValue);
             byte g = (byte)(Mathf.Clamp01(color.g) * byte.MaxValue);
             byte b = (byte)(Mathf.Clamp01(color.b) * byte.MaxValue);
-            //byte a = (byte)(Mathf.Clamp01(color.a) * 255);
+            byte a = (byte)(Mathf.Clamp01(color.a) * byte.MaxValue);
 
-            //return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
-            return StringUtil.FormatDefault("#{0:X2}{1:X2}{2:X2}", r, g, b);
-        }
+            return StringUtil.Append("#", ((r << 24) + (g << 16) + (b << 8) + a).ToString("X"));        }
+
 
         /// <summary>
         /// 16进制转RGBA

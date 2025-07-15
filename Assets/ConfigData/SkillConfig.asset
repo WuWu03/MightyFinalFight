@@ -299,7 +299,7 @@ MonoBehaviour:
     TriggerType: 2
     EnternalTiggerTime: 0
     Key:
-      Keys: 0400000005000000
+      Keys: 0d00000001000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
@@ -360,7 +360,7 @@ MonoBehaviour:
     TriggerType: 2
     EnternalTiggerTime: 0
     Key:
-      Keys: 0100000005000000
+      Keys: 0a00000001000000
       AddTrigger: 1
     AnimSpeed: 0.7
     AnimTime: 1
@@ -521,7 +521,7 @@ MonoBehaviour:
     TriggerType: 1
     EnternalTiggerTime: 0
     Key:
-      Keys: 0500000006000000
+      Keys: 0100000002000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 0
@@ -1065,7 +1065,7 @@ MonoBehaviour:
     TriggerType: 2
     EnternalTiggerTime: 0
     Key:
-      Keys: 0500000004000000
+      Keys: 0d00000001000000
       AddTrigger: 1
     AnimSpeed: 0.3
     AnimTime: 1
@@ -1134,7 +1134,7 @@ MonoBehaviour:
     TriggerType: 1
     EnternalTiggerTime: 0
     Key:
-      Keys: 0500000006000000
+      Keys: 0100000002000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: -1
@@ -1387,7 +1387,7 @@ MonoBehaviour:
     TriggerType: 2
     EnternalTiggerTime: 0
     Key:
-      Keys: 0100000005000000
+      Keys: 0a00000001000000
       AddTrigger: 1
     AnimSpeed: 1
     AnimTime: 1
@@ -1946,7 +1946,7 @@ MonoBehaviour:
     TriggerType: 2
     EnternalTiggerTime: 0
     Key:
-      Keys: 0400000005000000
+      Keys: 0d00000001000000
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
@@ -1992,7 +1992,7 @@ MonoBehaviour:
     TriggerType: 3
     EnternalTiggerTime: 2
     Key:
-      Keys: 0500000006000000
+      Keys: 0100000002000000
       AddTrigger: 1
     AnimSpeed: 0.5
     AnimTime: -1

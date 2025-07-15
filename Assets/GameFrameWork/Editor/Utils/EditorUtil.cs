@@ -105,8 +105,6 @@ namespace GameFrameWork.Editor
 			return GetNodePath(current.parent, path, endParttern);
 		}
 
-
-
         public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
 		{
 			CreateScriptableObject(typeof(T), name, ext, dir);

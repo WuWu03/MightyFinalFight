@@ -1,7 +1,7 @@
 using DG.Tweening;
 using GameFrameWork.Pool;
-using GameFrameWork.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace GameFrameWork.Audio
@@ -26,42 +26,42 @@ namespace GameFrameWork.Audio
             m_BGMAudioSource = m_Root.GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();
             m_Root.transform.SetParent(transform, false);
-            m_QueueBGMAudioGroup = new Queue<AudioGroup>();
-            m_ListPlayingSE = new List<AudioSEInfo>();
-            m_StackSE = new Stack<AudioSEInfo>();
+            m_BGMAudioGroupQueue = new Queue<BGMInfo>();
+            m_PlayingSEList = new List<SEInfo>();
+            m_SoundEffectQueue = new Queue<SEInfo>();
         }
 
-        public void PlaySE(string path, string name, float volume = 1)
+        public void PlaySE(string sePath, float volume = 1)
         {
-            for (int i = 0; i < m_ListPlayingSE.Count; i++)
+            for (int i = 0; i < m_PlayingSEList.Count; i++)
             {
-                string sePath = m_ListPlayingSE[i].path;
-                string seName = m_ListPlayingSE[i].name;
-                float process = Time.time - m_ListPlayingSE[i].playTime;
-                if (sePath.Equals(path) && seName.Equals(name) && process <= 0.05f)
+                string path = m_PlayingSEList[i].path;
+                float process = Time.time - m_PlayingSEList[i].playTime;
+                if (sePath.Equals(path) && process <= 0.05f)
                 {
                     return;
                 }
             }
 
-            InnerPlaySE(path, name, volume);
+            GetSE(sePath, volume);
+            InnerPlaySE(sePath, volume);
         }
 
         public void SetSEPlaySpeed(float speed)
         {
-            if(m_ListPlayingSE != null && m_ListPlayingSE.Count > 0)
+            if(m_PlayingSEList != null && m_PlayingSEList.Count > 0)
             {
-                for (int i = 0; i < m_ListPlayingSE.Count; i++)
+                for (int i = 0; i < m_PlayingSEList.Count; i++)
                 {
-                    if(m_ListPlayingSE[i].audioSource != null && m_ListPlayingSE[i].audioSource.isPlaying)
+                    if(m_PlayingSEList[i].audioSource != null && m_PlayingSEList[i].audioSource.isPlaying)
                     {
-                        m_ListPlayingSE[i].audioSource.pitch = speed;
+                        m_PlayingSEList[i].audioSource.pitch = speed;
                     }
                 }
             }
         }
 
-        public void PlayBGMGroup(AudioGroup[] audioGroups, bool isForcePlay = false)
+        public void PlayBGMGroup(BGMInfo[] audioGroups, bool isForcePlay = false)
         {
             if (!isForcePlay)
             {
@@ -69,7 +69,7 @@ namespace GameFrameWork.Audio
 
                 for (int i = 0; i < audioGroups.Length; i++)
                 {
-                    if (!IsBGMPlaying(audioGroups[i].GetPath()))
+                    if (!IsBGMPlaying(audioGroups[i].assetPath))
                     {
                         isAllInPlaying = false;
                         break;
@@ -86,34 +86,34 @@ namespace GameFrameWork.Audio
 
             for (int i = 0; i < audioGroups.Length; i++)
             {
-                m_QueueBGMAudioGroup.Enqueue(audioGroups[i]);
+                m_BGMAudioGroupQueue.Enqueue(audioGroups[i]);
             }
 
             if (audioGroups.Length > 1)
             {
                 for (int i = 1; i < audioGroups.Length; i++)
                 {
-                    AssetsPool.instance.Cache<AudioClip>(audioGroups[i].GetPath());
+                    AssetsPool.instance.Cache<AudioClip>(audioGroups[i].assetPath);
                 }
             }
         }
 
-        public void PlayBGM(string path, string name, bool isLoop, float volum = 1, float lerpTime = 0, bool isForcePlay = false)
+        public void PlayBGM(string assetPath, bool isLoop, float volum = 1, float lerpTime = 0, bool isForcePlay = false)
         {
-            if (!isForcePlay && IsBGMPlaying(PathUtil.FormatPath(path, name)))
+            if (!isForcePlay && IsBGMPlaying(assetPath))
             {
                 return;
             }
 
             StopBGM(isForcePlay);
-            m_QueueBGMAudioGroup.Enqueue(AudioGroup.Create(path, name, isLoop, volum, lerpTime));
+            m_BGMAudioGroupQueue.Enqueue(BGMInfo.Create(assetPath, isLoop, volum, lerpTime));
         }
 
         public void StopBGM(bool isForceStop = false)
         {
             if (m_BGMAudioGroup != null)
             {
-                AssetsPool.instance.Put(m_BGMAudioGroup.GetPath(), m_BGMAudioSource.clip);
+                AssetsPool.instance.Put(m_BGMAudioGroup.assetPath, m_BGMAudioSource.clip);
                 ReferencePool.ReleaseReference(m_BGMAudioGroup);
                 m_BGMAudioSource.Stop();
                 m_BGMAudioGroup = null;
@@ -122,7 +122,7 @@ namespace GameFrameWork.Audio
 
             if (isForceStop)
             {
-                m_QueueBGMAudioGroup.Clear();
+                m_BGMAudioGroupQueue.Clear();
             }
         }
 
@@ -164,21 +164,24 @@ namespace GameFrameWork.Audio
             }
         }
 
-        public bool IsBGMPlaying(string fullName)
+        public bool IsBGMPlaying(string assetPath)
         {
             if(m_IsBGMPause)
             {
                 return false;
             }
 
-            if (m_BGMAudioGroup != null && m_BGMAudioGroup.GetPath().Equals(fullName))
+            if (m_BGMAudioGroup != null && m_BGMAudioGroup.assetPath.Equals(assetPath))
             {
                 return true;
             }
 
-            foreach(AudioGroup group in m_QueueBGMAudioGroup)
+            foreach(BGMInfo audioGroup in m_BGMAudioGroupQueue)
             {
-                if(group.GetPath().Equals(fullName)) return true;
+                if (audioGroup.assetPath.Equals(assetPath))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -192,95 +195,121 @@ namespace GameFrameWork.Audio
             }
         }
 
+        public void ReleaseAuioClips()
+        {
+            while (m_SoundEffectQueue.Count > 0)
+            {
+                SEInfo seInfo = m_SoundEffectQueue.Dequeue();
+                GameObject.Destroy(seInfo.audioSource.gameObject);
+            }
+
+            m_SoundEffectQueue.Clear();
+        }
+
         private void OnBGMFadeComplete()
         {
             m_OnBGMFadeCompleteEvent?.Invoke();
             m_OnBGMFadeCompleteEvent = null;
         }
 
-        private void InnerPlaySE(string path, string name, float volume)
+        private void InnerPlaySE(string assetPath,float volume)
         {
-            AssetsPool.instance.Get<AudioClip>(PathUtil.FormatPath(path, name), OnSELoaded, path, name, volume);
+            AssetsPool.instance.Get<AudioClip>(assetPath, OnSELoaded, AudioSourceInfo.Create(volume, 0, false));
         }
 
         private void OnSELoaded(string assetPath, UnityEngine.Object obj, object[] param)
         {
-            string path = (string)param[0];
-            string name = (string)param[1];
-            float volume = (float)param[2];
+            AudioSourceInfo audioSourceInfo = (AudioSourceInfo)param[0];
+            SEInfo seInfo = null;
 
-            AudioSEInfo audioSEInfo = GetSE(path, name, volume);
-            audioSEInfo.audioSource.clip = obj as AudioClip;
-            audioSEInfo.audioSource.Play();
+            for (int i = 0; i < m_PlayingSEList.Count; i++)
+            {
+                SEInfo tempSoundEffectInfo = m_PlayingSEList[i];
+                if (tempSoundEffectInfo.path == assetPath && tempSoundEffectInfo.audioSource.clip == null)
+                {
+                    seInfo = m_PlayingSEList[i];
+                }
+            }
 
-            m_ListPlayingSE.Add(audioSEInfo);
+            if (seInfo == null)
+            {
+                seInfo = GetSE(assetPath, audioSourceInfo.volume);
+            }
+
+            seInfo.audioSource.clip = obj as AudioClip;
+            seInfo.audioSource.SetActiveSelf(true);
+            seInfo.audioSource.Play();
+            ReferencePool.ReleaseReference(audioSourceInfo);
         }
 
         private void InnerPlayBGM(string assetPath, float volum, float fadeTime, bool isLoop)
         {
-            AssetsPool.instance.Get<AudioClip>(assetPath, OnBGMLoaded, volum, fadeTime, isLoop);
+            AssetsPool.instance.Get<AudioClip>(assetPath, OnBGMLoaded, AudioSourceInfo.Create(volum, fadeTime, isLoop));
         }
 
         private void OnBGMLoaded(string assetPath, UnityEngine.Object obj, object[] param)
         {
-            float volume = (float)param[0];
-            float fadeTime = (float)param[1];
-            bool isLoop = (bool)param[2];
+            AudioSourceInfo audioSourceInfo = (AudioSourceInfo)param[0];
 
             m_BGMAudioSource.clip = obj as AudioClip;
-            m_BGMAudioSource.loop = isLoop;
-            m_BGMAudioSource.volume = fadeTime > 0f ? 0f : volume;
+            m_BGMAudioSource.loop = audioSourceInfo.isLoop;
+            m_BGMAudioSource.volume = audioSourceInfo.fadeTime > 0f ? 0f : audioSourceInfo.volume;
 
             if (!m_IsBGMPause)
             {
                 m_BGMAudioSource.Play();
 
-                if (fadeTime > 0f)
+                if (audioSourceInfo.fadeTime > 0f)
                 {
-                    m_BGMAudioSource.DOFade(volume, fadeTime);
+                    m_BGMAudioSource.DOFade(audioSourceInfo.volume, audioSourceInfo.fadeTime);
                 }
             }
             else
             {
                 m_BGMAudioSource.Pause();
             }
+
+            ReferencePool.ReleaseReference(audioSourceInfo);
         }
 
-        private AudioSEInfo GetSE(string path, string name, float volume)
+        private SEInfo GetSE(string assetPath, float volume)
         {
-            AudioSEInfo audioSEInfo = null;
+            SEInfo seInfo = null;
 
-            if (m_StackSE.Count > 0)
+            if (m_SoundEffectQueue.Count > 0)
             {
-                audioSEInfo = m_StackSE.Pop();
-            }
-            else
-            {
-                audioSEInfo = AudioSEInfo.Create();
-                audioSEInfo.audioSource.transform.SetParent(m_Root.transform, false);
+                seInfo = m_SoundEffectQueue.Dequeue();
             }
 
-            audioSEInfo.path = path;
-            audioSEInfo.name = name;
-            audioSEInfo.playTime = Time.time;
-            audioSEInfo.audioSource.SetActive(true);
-            audioSEInfo.audioSource.name = name;
-            audioSEInfo.audioSource.volume = volume;
-            audioSEInfo.audioSource.playOnAwake = false;
-            audioSEInfo.audioSource.loop = false;
-            audioSEInfo.audioSource.Stop();
+            if (seInfo == null)
+            {
+                seInfo = SEInfo.Create();
+                seInfo.audioSource.transform.SetParent(m_Root.transform, false);
+            }
 
-            return audioSEInfo;
+            m_PlayingSEList.Add(seInfo);
+
+            seInfo.path = assetPath;
+            seInfo.playTime = Time.time;
+            seInfo.audioSource.SetActiveSelf(false);
+            seInfo.audioSource.name = Path.GetFileNameWithoutExtension(assetPath);
+            seInfo.audioSource.volume = volume;
+            seInfo.audioSource.playOnAwake = false;
+            seInfo.audioSource.loop = false;
+            seInfo.audioSource.Stop();
+
+            return seInfo;
         }
 
-        private void PutSE(AudioSEInfo audioSEInfo)
+        private void PutSE(SEInfo seInfo)
         {
-            AssetsPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
-            audioSEInfo.Clear();
-            audioSEInfo.audioSource.clip = null;
-            audioSEInfo.audioSource.Stop();
-            audioSEInfo.audioSource.SetActive(false);
-            m_StackSE.Push(audioSEInfo);
+            AssetsPool.instance.Put(seInfo.path, seInfo.audioSource.clip);
+            seInfo.Clear();
+            seInfo.audioSource.clip = null;
+            seInfo.audioSource.Stop();
+            seInfo.audioSource.SetActiveSelf(false);
+            m_PlayingSEList.Remove(seInfo);
+            m_SoundEffectQueue.Enqueue(seInfo);
         }
 
         protected override void OnUpdate()
@@ -297,10 +326,10 @@ namespace GameFrameWork.Audio
                 return;
             }
 
-            if (m_BGMAudioGroup == null && m_QueueBGMAudioGroup.Count > 0)
+            if (m_BGMAudioGroup == null && m_BGMAudioGroupQueue.Count > 0)
             {
-                m_BGMAudioGroup = m_QueueBGMAudioGroup.Dequeue();
-                InnerPlayBGM(m_BGMAudioGroup.GetPath(), m_BGMAudioGroup.volume, m_BGMAudioGroup.lerpTime, m_BGMAudioGroup.isLoop);
+                m_BGMAudioGroup = m_BGMAudioGroupQueue.Dequeue();
+                InnerPlayBGM(m_BGMAudioGroup.assetPath, m_BGMAudioGroup.volume, m_BGMAudioGroup.lerpTime, m_BGMAudioGroup.isLoop);
             }
 
             if (m_BGMAudioGroup != null && m_BGMAudioSource.clip != null && !m_BGMAudioGroup.isLoop)
@@ -314,49 +343,43 @@ namespace GameFrameWork.Audio
 
         private void CheckSE()
         {
-            if (m_ListPlayingSE.Count < 1)
+            if (m_PlayingSEList.Count < 1)
             {
                 return;
             }
 
-            for (int i = m_ListPlayingSE.Count - 1; i >= 0; i--)
+            for (int i = m_PlayingSEList.Count - 1; i >= 0; i--)
             {
-                if (!m_ListPlayingSE[i].audioSource.isPlaying && m_ListPlayingSE[i].audioSource.clip != null)
+                if (!m_PlayingSEList[i].audioSource.isPlaying && m_PlayingSEList[i].audioSource.clip != null)
                 {
-                    PutSE(m_ListPlayingSE[i]);
-                    m_ListPlayingSE.RemoveAt(i);
+                    PutSE(m_PlayingSEList[i]);
                 }
             }
         }
 
-
         protected override void OnShutDown()
         {
+            base.OnShutDown();
             StopBGM(true);
 
-            for (int i = 0; i < m_ListPlayingSE.Count; i++)
+            for (int i = m_PlayingSEList.Count - 1; i > -1; i--)
             {
-                PutSE(m_ListPlayingSE[i]);
+                PutSE(m_PlayingSEList[i]);
             }
 
-            while(m_StackSE.Count > 0)
-            {
-                AudioSEInfo audioSEInfo = m_StackSE.Pop();
-                AssetsPool.instance.Put(audioSEInfo.GetResPath(), audioSEInfo.audioSource.clip);
-                GameObject.Destroy(audioSEInfo.audioSource.gameObject);
-            }
-
-            m_ListPlayingSE.Clear();
-            m_StackSE.Clear();
+            ReleaseAuioClips();
+            m_PlayingSEList.Clear();
+            m_PlayingSEList = null;
+            m_SoundEffectQueue = null;
         }
 
         private bool m_IsBGMPause = false;
         private event GameFrameWorkAction m_OnBGMFadeCompleteEvent = null;
         private AudioSource m_BGMAudioSource = null;
-        private AudioGroup m_BGMAudioGroup = null;
-        private Queue<AudioGroup> m_QueueBGMAudioGroup = null;
-        private List<AudioSEInfo> m_ListPlayingSE = null;
-        private Stack<AudioSEInfo> m_StackSE = null;
+        private BGMInfo m_BGMAudioGroup = null;
+        private Queue<BGMInfo> m_BGMAudioGroupQueue = null;
+        private List<SEInfo> m_PlayingSEList = null;
+        private Queue<SEInfo> m_SoundEffectQueue = null;
         private GameObject m_Root = null;
     }
 }

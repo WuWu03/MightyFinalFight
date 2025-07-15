@@ -39,12 +39,11 @@ public class BaseBoundObject : BaseSceneObject
         UpdateBound();
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_Bound = Rect.zero;
         m_BoxCollider2D = null;
-
-        base.Release();
     }
 
     protected override void OnLoadAssetComplete(GameObject go, object[] param)

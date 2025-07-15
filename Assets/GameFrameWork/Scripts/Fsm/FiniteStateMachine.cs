@@ -6,35 +6,6 @@ namespace GameFrameWork.FSM
 {
     public class FiniteStateMachine
     {
-        public FiniteStateMachine(object owner, string name, params BaseFsmState[] states)
-        {
-            m_Owner = owner;
-            m_Name = name;
-            m_CurrentState = null;
-            m_CurrentStateTime = 0;
-            m_DicStates = new Dictionary<Type, BaseFsmState>();
-            m_IsDestroyed = false;
-
-            if (owner == null)
-            {
-                Log.LogError("状态机持有者不存在，请检查");
-            }
-
-            if (states != null && states.Length > 0)
-            {
-                for (int i = 0; i < states.Length; i++)
-                {
-                    if (states[i] == null)
-                    {
-                        Log.LogError("状态不存在，请检查状态列表");
-                    }
-
-                    states[i].Init(this);
-                    m_DicStates.Add(states[i].GetType(), states[i]);
-                }
-            }
-        }
-
         public string name
         {
             get
@@ -63,7 +34,7 @@ namespace GameFrameWork.FSM
         {
             get
             {
-                return m_DicStates.Count;
+                return m_StateDict.Count;
             }
         }
 
@@ -72,14 +43,6 @@ namespace GameFrameWork.FSM
             get
             {
                 return m_CurrentState != null;
-            }
-        }
-
-        public bool isDestroy
-        {
-            get
-            {
-                return m_IsDestroyed;
             }
         }
 
@@ -112,13 +75,30 @@ namespace GameFrameWork.FSM
             }
         }
 
+        public FiniteStateMachine(object owner, string name)
+        {
+            ResetInfo(owner, name);
+        }
+
+        public void ResetInfo(object owner, string name)
+        {
+            m_Owner = owner;
+            m_Name = name;
+            m_CurrentState = null;
+            m_CurrentStateTime = 0;
+            m_StateDict = new Dictionary<Type, BaseFsmState>();
+
+            if (owner == null)
+            {
+                Log.LogError("状态机持有者不存在，请检查");
+            }
+        }
+
+        /// <summary>
+        /// 以指定状态运行状态机
+        /// </summary>
         public void Start<T>() where T : BaseFsmState
         {
-            if (isRunning)
-            {
-                Log.LogError("有限状态机已经启动，不要重复启动");
-            }
-
             BaseFsmState fsmState = this.GetState<T>();
 
             if (fsmState == null)
@@ -126,10 +106,15 @@ namespace GameFrameWork.FSM
                 Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
             }
 
-            m_DefaultState = fsmState;
-            m_CurrentStateTime = Time.time;
-            m_CurrentState = fsmState;
-            fsmState.Enter(this);
+            Start(fsmState);
+        }
+
+        /// <summary>
+        /// 以默认状态运行状态机
+        /// </summary>
+        public void Start()
+        {
+            Start(m_DefaultState);
         }
 
         public void Pause()
@@ -144,19 +129,19 @@ namespace GameFrameWork.FSM
 
         public void AddState<T>() where T : BaseFsmState, new()
         {
-            if (!m_DicStates.ContainsKey(typeof(T)))
+            if (!m_StateDict.ContainsKey(typeof(T)))
             {
                 T state = new T();
                 state.Init(this);
-                m_DicStates.Add(typeof(T), state);
+                m_StateDict.Add(typeof(T), state);
             }
         }
 
         public void RemoveState<T>() where T : BaseFsmState
         {
-            if (m_DicStates.ContainsKey(typeof(T)))
+            if (m_StateDict.ContainsKey(typeof(T)))
             {
-                m_DicStates.Remove(typeof(T));
+                m_StateDict.Remove(typeof(T));
             }
         }
 
@@ -244,7 +229,7 @@ namespace GameFrameWork.FSM
 
         public T GetState<T>() where T : BaseFsmState
         {
-            if (!m_DicStates.TryGetValue(typeof(T), out BaseFsmState result))
+            if (!m_StateDict.TryGetValue(typeof(T), out BaseFsmState result))
             {
                 return null;
             }
@@ -254,14 +239,19 @@ namespace GameFrameWork.FSM
 
         public BaseFsmState[] GetAllStates()
         {
-            BaseFsmState[] results = new BaseFsmState[m_DicStates.Count];
-            m_DicStates.Values.CopyTo(results, 0);
+            BaseFsmState[] results = new BaseFsmState[m_StateDict.Count];
+            m_StateDict.Values.CopyTo(results, 0);
             return results;
         }
 
         public bool HasState<T>() where T : BaseFsmState
         {
-            return m_DicStates.ContainsKey(typeof(T));
+            return m_StateDict.ContainsKey(typeof(T));
+        }
+
+        public bool HasDefaultState()
+        {
+            return m_DefaultState != null;
         }
 
         public void Update(float deltaTime, float unscaledDeltaTime)
@@ -295,44 +285,51 @@ namespace GameFrameWork.FSM
 
         public void Release()
         {
-            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
+            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_StateDict)
             {
                 kvp.Value.Release(this);
             }
 
-            m_DicStates.Clear();
+            m_StateDict.Clear();
+            m_Name = string.Empty;
+            m_Owner = null;
+            m_CurrentStateTime = 0f;
+            m_IsPaused = false;
+            m_CurrentState = null;
+            m_StateDict = null;
             m_CurrentState = null;
             m_DefaultState = null;
-            m_CurrentStateTime = 0f;
         }
 
-        public void ShutDown()
+        private void Start(BaseFsmState fsmState)
         {
-            if (m_IsDestroyed)
+            if (isRunning)
             {
-                return;
+                Log.LogError("有限状态机已经启动，不要重复启动");
             }
 
-            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_DicStates)
+            if (fsmState == null)
             {
-                kvp.Value.Release(this);
+                Log.LogError("默认状态不存在，调用AddState方法添加该状态");
             }
 
-            m_DicStates.Clear();
-            m_DicStates = null;
-            m_CurrentState = null;
-            m_DefaultState = null;
-            m_CurrentStateTime = 0f;
-            m_IsDestroyed = true;
+            m_CurrentStateTime = Time.time;
+            m_CurrentState = fsmState;
+
+            if (m_DefaultState == null)
+            {
+                m_DefaultState = fsmState;
+            }
+
+            fsmState.Enter(this);
         }
 
-        private readonly string m_Name = string.Empty;
-        private readonly object m_Owner = null;
+        private string m_Name = string.Empty;
+        private object m_Owner = null;
         private float m_CurrentStateTime;
         private bool m_IsPaused = false;
-        private bool m_IsDestroyed = false;
 
-        private Dictionary<Type, BaseFsmState> m_DicStates;
+        private Dictionary<Type, BaseFsmState> m_StateDict;
         private BaseFsmState m_CurrentState;
         private BaseFsmState m_DefaultState;
     }

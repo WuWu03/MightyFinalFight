@@ -24,8 +24,8 @@ namespace GameFrameWork.Assets
                 return;
             }
 #endif
-            string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.maniFestName);
-            string assetMapUrl = PathUtil.FormatPath(PathUtil.runTimeAssetPath, PathUtil.assetMapName);
+            string maniFesturl = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, PathUtil.maniFestName);
+            string assetMapUrl = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, GameFrameWorkEntry.config.assetMapFileName);
 
             byte[] stream = File.ReadAllBytes(maniFesturl);
             AssetBundle assetbundle = AssetBundle.LoadFromMemory(stream);
@@ -137,9 +137,9 @@ namespace GameFrameWork.Assets
         /// </summary>
         public void UnloadAssetBundle(string assetBundleName, bool isThorough)
         {
-            Log.LogInfo("开始卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count);
+            Log.LogInfo("开始卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] , ", "卸载前资源数为 : ", m_DicLoadedAssetBundles.Count.ToString());
             Unload(assetBundleName, isThorough);
-            Log.LogInfo("卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count);
+            Log.LogInfo("卸载资源 : [<color=#FF0000>", assetBundleName, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssetBundles.Count.ToString());
         }
 
         /// <summary>
@@ -231,7 +231,25 @@ namespace GameFrameWork.Assets
 
         private IEnumerator OnLoadAssetAsync(string assetBundleName)
         {
-            yield return null;
+            string[] dependencies = GetDependencies(assetBundleName);
+            bool isDepenenciesLoaded = dependencies == null || dependencies.Length < 1;
+
+            while (!isDepenenciesLoaded)
+            {
+                isDepenenciesLoaded = true;
+
+                for (int i = 0; i < dependencies.Length; i++)
+                {
+                    if (GetLoadedAssetBundle(dependencies[i]) == null)
+                    {
+                        isDepenenciesLoaded = false;
+                        break;
+                    }
+                }
+
+                yield return null;
+            }
+
             AssetBundleInfo assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
 
             if (assetBundleInfo == null)
@@ -363,20 +381,12 @@ namespace GameFrameWork.Assets
                 Log.LogError("获取资源映射失败 : ", assetPath);
             }
 
-            assetBundleName = assetBundleName.ToLower();
-            string ext = Path.GetExtension(assetBundleName);
-
-            if (string.IsNullOrEmpty(ext))
-            {
-                return StringUtil.Format(assetBundleName, PathUtil.assetBundleExtension);
-            }
-
-            return assetBundleName;
+            return assetBundleName.ToLower();
         }
 
         private string GetAssetBundlePath(string assetBundleName)
         {
-            return PathUtil.FormatPath(PathUtil.runTimeAssetPath, assetBundleName);
+            return PathUtil.FormatPath(PathUtil.runTimeAssetsPath, assetBundleName);
         }
 
         protected override void OnShutDown()

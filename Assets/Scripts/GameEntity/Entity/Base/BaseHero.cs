@@ -114,8 +114,9 @@ public class BaseHero : BaseRole
         }
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_DicAttacker.Clear();
         m_ListCatchTarget.Clear();
         m_RebirthStateTimer = 0;
@@ -131,8 +132,8 @@ public class BaseHero : BaseRole
         m_Slot2Renderer = null;
         m_IsRebirthState = false;
         m_Weapon = null;
-
-        base.Release();
+        m_ListCatchTarget = null;
+        m_DicAttacker = null;
     }
 
     protected override void OnUpdate()
@@ -167,14 +168,6 @@ public class BaseHero : BaseRole
         m_Slot2Renderer = go.transform.Find("slot2").GetComponent<Renderer>();
         m_Slot1Renderer.enabled = true;
         m_Slot2Renderer.enabled = false;
-    }
-
-    protected override void OnBeforeDestroy()
-    {
-        m_ListCatchTarget = null;
-        m_DicAttacker = null;
-
-        base.OnBeforeDestroy();
     }
 
     public override List<ICanBeHit> OnHitStart()
@@ -346,7 +339,8 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+        mainPanel.SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
     }
 
     public void SetRebirthState()
@@ -424,7 +418,8 @@ public class BaseHero : BaseRole
         {
             HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
-            UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
+            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+            mainPanel.SetPlayerHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth);
         }
         else
         {

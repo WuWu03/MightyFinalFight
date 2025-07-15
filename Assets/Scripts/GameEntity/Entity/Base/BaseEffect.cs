@@ -66,18 +66,18 @@ public class BaseEffect : BaseSceneObject
         if (m_IsAssetLoadComplete)
         {
             m_Timer = Time.time;
-            m_Asset.SetActive(true);
+            m_Asset.SetActiveSelf(true);
         }
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_PlayTime = 0;
         m_Timer = -1;
         m_IsAutoRelease = false;
         m_IsPlaying = false;
         m_PlayEndCallback = null;
-        base.Release();
     }
 
     protected override void OnLoadAssetComplete(GameObject go,object[] param)
@@ -86,7 +86,7 @@ public class BaseEffect : BaseSceneObject
         if (m_IsPlaying)
         {
             m_Timer = Time.time;
-            m_Asset.SetActive(true);
+            m_Asset.SetActiveSelf(true);
         }
     }
 

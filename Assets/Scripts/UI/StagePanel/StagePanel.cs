@@ -3,8 +3,10 @@
 /**Create By GQY****************************************/
 /*******************************************************/
 using DragonBones;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.ConfigData;
+using GameFrameWork.Event;
 using GameFrameWork.Pool;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
@@ -12,76 +14,86 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StagePanel : BasePanel
+public class StagePanel : BasePanel<StagePanelComponent>
 {
     protected override void OnInit(object[] param)
     {
-        m_Component = GetPanelComponent<StagePanelComponent>();
+
     }
 
-	protected override void OnOpen()
-	{
-		int stageIndex = StageMgr.instance.stageIndex;
-		int characterId = PlayerMgr.instance.selectRoleId;
+    protected override void OnOpen()
+    {
+        int stageIndex = StageMgr.instance.stageIndex;
+        StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
+        GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
 
-		StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
-        RoleSelectConfigData roleSelectConfigData = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
+        for (int i = 1; i < 6; i++)
+        {
+            m_Component.imgMapGO.transform.Find("pos" + i).gameObject.SetActiveSelf(false);
+        }
 
-		GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
-		GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
+        m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
 
-		for (int i = 1; i < 6; i++)
-		{
-			m_Component.imgMapGO.transform.Find("pos" + i).gameObject.SetActive(false);
-		}
+        int characterId = PlayerMgr.instance.selectRoleId;
+        RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
+        GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
-		m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActive(true);
-	}
+        AddEvent(EventDefine.StageEnterStartEvent, OnStageEnterStart);
+    }
 
-	private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
-	{
-		int characterId = PlayerMgr.instance.selectRoleId;
-		RoleSelectConfigData roleSelectConfig = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
+    protected override void OnUpdate()
+    {
 
-		m_Role = obj as GameObject;
-		m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
-		m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
-		m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
-		m_Role.SetActive(true);
+    }
 
-		AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName);
-		Timer.Register(roleSelectConfig.showTime, OnTimer);
-	}
+    protected override void OnClose()
+    {
+        int characterId = PlayerMgr.instance.selectRoleId;
+        RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
+        GameObjectPoolMgr.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
+        m_Role = null;
+    }
+
+    protected override void OnDestroy()
+    {
+
+    }
+
+    private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
+    {
+        m_Role = obj as GameObject;
+        m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
+        m_Role.gameObject.SetActiveSelf(true);
+        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
+        LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+    }
+
+    private void OnFadeWhiteComplete()
+    {
+        int characterId = PlayerMgr.instance.selectRoleId;
+        RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
+        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
+        m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
+        TimerMgr.instance.Register(roleSelectConfig.showTime, OnTimer);
+    }
 
 	private void OnTimer()
 	{
-		StageMgr.instance.onStageStartEnterEvent += CloseSelf;
 		StageMgr.instance.StageEnterNext();
 	}
 
-    protected override void OnUpdate()
-	{
-
-	}
-
-	protected override void OnClose()
-	{
-		int characterId = PlayerMgr.instance.selectRoleId;
-		RoleSelectConfigData roleSelectConfig = ConfigData.roleSelectConfigDatas.GetConfigDataById(characterId);
-		GameObjectPoolMgr.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
-		m_Role = null;
-	}
-
-	protected override void OnDestroy()
-	{
-	}
-
-	private Text GetRoundTxt(int type)
+    private void OnStageEnterStart(object sender, GameEventArgs e)
     {
-		GameObject go = null;
-		m_Component.blue.SetActive(false);
-		m_Component.green.SetActive(false);
-		m_Component.red.SetActive(false);
+        CloseSelf();
+    }
+
+    private Text GetRoundTxt(int type)
+    {
+		GameObject go;
+		m_Component.blue.SetActiveSelf(false);
+		m_Component.green.SetActiveSelf(false);
+		m_Component.red.SetActiveSelf(false);
 
 		if (type == 1)
 			go = m_Component.blue;
@@ -90,10 +102,9 @@ public class StagePanel : BasePanel
 		else
 			go = m_Component.red;
 
-		go.SetActive(true);
+		go.SetActiveSelf(true);
 		return go.transform.Find("txtIndex").GetComponent<Text>();
     }
 
 	private GameObject m_Role = null;
-	private StagePanelComponent m_Component = null;
 }

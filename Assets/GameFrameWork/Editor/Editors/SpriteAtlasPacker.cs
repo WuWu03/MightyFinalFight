@@ -23,7 +23,6 @@ namespace GameFrameWork.Editor
         public SpriteAtlasPacker()
         {
             titleContent = new GUIContent(this.GetType().Name);
-
         }
 
         private void OnEnable()
@@ -78,7 +77,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            string atlasPath = PathUtil.GetUIAtlasPath();
+            string atlasPath = EditorPathUtil.GetUIAtlasPath();
             string[] atlasFiles = FileUtil.GetFiles(PathUtil.GetAssetFullPath(atlasPath));
 
             if (atlasFiles != null && atlasFiles.Length > 0)
@@ -112,7 +111,7 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(m_BuildPath))
             {
-                m_BuildPath = PathUtil.GetUIAtlasPath() + "/";
+                m_BuildPath = EditorPathUtil.GetUIAtlasPath() + "/";
             }
 
             if(m_CurrAtlasIndex != atlasIndex)
@@ -254,9 +253,9 @@ namespace GameFrameWork.Editor
             });
         }
 
-        private void CreateNewAtals()
+        private bool CreateNewAtals()
         {
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新图集", "New Atlas", "spriteatlas", "Save Atals as...", PathUtil.GetAssetFullPath(m_BuildPath));
+            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新图集", "New Atlas", "spriteatlas", "Save Atals as...", PathUtil.GetAssetFullPath(EditorMgr.GetGameFrameWorkConfig().uiAtlasPath));
 
             if (!string.IsNullOrEmpty(path))
             {
@@ -269,7 +268,7 @@ namespace GameFrameWork.Editor
                     enableTightPacking = false,
                     padding = 4,
                 });
-                atlas.GetPlatformSettings(GetPlatformName(EditorUserBuildSettings.activeBuildTarget));
+                atlas.GetPlatformSettings(EditorUserBuildSettings.activeBuildTarget.ToString());
                 atlas.SetPlatformSettings(new TextureImporterPlatformSettings
                 {
                     maxTextureSize = 2048,
@@ -287,13 +286,22 @@ namespace GameFrameWork.Editor
                 m_CurrAtlasIndex = m_ListAtlas.Count - 1;
                 UpdateSpriteStatus();
             }
+
+            return !string.IsNullOrEmpty(path);
         }
 
         private void BuildAtals()
         {
+            bool canBuild = true;
+
             if(m_ListAtlas == null || m_ListAtlas.Count < 1 || m_CurrAtlasIndex < 0 || m_CurrAtlasIndex >= m_ListAtlas.Count)
             {
-                CreateNewAtals();
+                canBuild = CreateNewAtals();
+            }
+
+            if(!canBuild)
+            {
+                return;
             }
 
             string atlasPath = PathUtil.GetAssetPath(PathUtil.FormatPath(m_BuildPath, m_ListAtlas[m_CurrAtlasIndex].name));
@@ -338,24 +346,6 @@ namespace GameFrameWork.Editor
             UpdateSpriteStatus();
             ShowNotification(new GUIContent("图集打包成功"));
             Selection.activeObject = m_ListAtlas[m_CurrAtlasIndex];
-        }
-
-        private static string GetPlatformName(BuildTarget target)
-        {
-            string platformName = "";
-            switch (target)
-            {
-                case BuildTarget.StandaloneWindows:
-                    platformName = "StandaloneWindows";
-                    break;
-                case BuildTarget.Android:
-                    platformName = "Android";
-                    break;
-                case BuildTarget.iOS:
-                    platformName = "iOS";
-                    break;
-            }
-            return platformName;
         }
 
         private string m_BuildPath = string.Empty;

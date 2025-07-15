@@ -23,6 +23,7 @@ public class SkillEditorWindow : EditorWindow
     public void OnDisable()
     {
         SkillEditorHelper.SaveConfig();
+        SkillEditorHelper.Release();
     }
 
     private void OnGUI()

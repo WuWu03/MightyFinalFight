@@ -1,6 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.FSM;
-using System;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public class RoleSwoon : BaseFsmState
@@ -43,14 +43,14 @@ public class RoleSwoon : BaseFsmState
         m_Owner.SetVelocityY(1.5f);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown);
-        GameFrameWork.Audio.AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.FallDown);
+        GameFrameWork.Audio.AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     private void OnGround()
     {
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetThrow(false);
-        GameFrameWork.Audio.AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.FallDown);
+        GameFrameWork.Audio.AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)

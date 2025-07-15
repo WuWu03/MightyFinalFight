@@ -1,4 +1,4 @@
-﻿using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace GameFrameWork.Scene
 {
@@ -36,14 +36,6 @@ namespace GameFrameWork.Scene
             }
         }
 
-        public bool isUnLoad
-        {
-            get
-            {
-                return m_IsUnLoad;
-            }
-        }
-
         public static LoadSceneRequest Create(string sceneName, object[] args, LoadSceneMode mode, bool isAutoAllowScene)
         {
             LoadSceneRequest request = ReferencePool.Acquire<LoadSceneRequest>();
@@ -51,16 +43,6 @@ namespace GameFrameWork.Scene
             request.m_Args = args;
             request.m_Mode = mode;
             request.m_IsAutoAllowScene = isAutoAllowScene;
-            request.m_IsUnLoad = false;
-            return request;
-        }
-
-        public static LoadSceneRequest Create(string sceneName, object[] args)
-        {
-            LoadSceneRequest request = ReferencePool.Acquire<LoadSceneRequest>();
-            request.m_SceneName = sceneName;
-            request.m_Args = args;
-            request.m_IsUnLoad = true;
             return request;
         }
 
@@ -75,6 +57,5 @@ namespace GameFrameWork.Scene
         private object[] m_Args = null;
         private LoadSceneMode m_Mode;
         private bool m_IsAutoAllowScene = false;
-        private bool m_IsUnLoad = false;
     }
 }

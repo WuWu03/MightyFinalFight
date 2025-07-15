@@ -10,8 +10,7 @@ namespace GameFrameWork.Editor
         private void OnEnable()
         {
             m_UIRefSetting = target as UIRefSetting;
-            m_UIRefSetting.RefreshPanelFolder();
-            m_UIRefSetting.RefreshPrefabFolder();
+            m_UIRefSetting.RefreshScriptFolder();
         }
 
         public override void OnInspectorGUI()
@@ -33,13 +32,6 @@ namespace GameFrameWork.Editor
                 m_UIRefSetting.scriptFolder = scriptFolder;
             }
 
-            string prefabFolder = EditorGUILayout.TextField("Prefab Folder", m_UIRefSetting.prefabFolder);
-            if (m_UIRefSetting.prefabFolder != prefabFolder)
-            {
-                EditorUtil.RegisterUndo(target, "Change UIRefSetting Res Folder Name");
-                m_UIRefSetting.prefabFolder = prefabFolder;
-            }
-
             UIRefSetting.ExoprtScriptType scriptType = (UIRefSetting.ExoprtScriptType)EditorGUILayout.EnumPopup("Script Type", m_UIRefSetting.scriptType);
             if (m_UIRefSetting.scriptType != scriptType)
             {
@@ -56,12 +48,12 @@ namespace GameFrameWork.Editor
 
             if (!string.IsNullOrEmpty(panelName))
             {
-                m_SBHelp.AppendLine("1.View and Controller will be Created at:");
-                m_SBHelp.AppendLine("        " + m_UIRefSetting.panelPath);
-                m_SBHelp.AppendLine("        " + m_UIRefSetting.panelComponentPath);
-                m_SBHelp.AppendLine("        " + m_UIRefSetting.panelSettingsPath);
-                m_SBHelp.AppendLine("2.Prefab will be Created at:");
-                m_SBHelp.AppendLine("        " + m_UIRefSetting.panelPrefabPath);
+                m_SBHelp.AppendLine("1.脚本创建路径:");
+                m_SBHelp.AppendLine("        UI逻辑脚本" + m_UIRefSetting.panelPath);
+                m_SBHelp.AppendLine("        UI视图脚本" + m_UIRefSetting.panelComponentPath);
+                m_SBHelp.AppendLine("        UI设置脚本" + m_UIRefSetting.panelSettingsPath);
+                m_SBHelp.AppendLine("2.预制体创建路径:");
+                m_SBHelp.AppendLine("        " + EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath);
                 m_SBHelp.AppendLine();
             }
             else
@@ -131,7 +123,6 @@ namespace GameFrameWork.Editor
             }
 
             EditorGUILayout.HelpBox(m_SBHelp.ToString(), MessageType.None);
-
             serializedObject.ApplyModifiedProperties();
         }
 

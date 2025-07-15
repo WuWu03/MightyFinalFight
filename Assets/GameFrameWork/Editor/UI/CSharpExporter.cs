@@ -86,9 +86,7 @@ namespace GameFrameWork.Editor
             }
 
             sb.AppendLine();
-            sb.AppendFormat("\tpublic {0}Component(UIRefRoot root) : base(root)", setting.panelName);
-            sb.Append(" { }\r\n\r\n");
-            sb.AppendLine("\tprotected override void InitComponent(UIRefRoot root)");
+            sb.AppendLine("\tprotected override void OnInitComponent(UIRefRoot root)");
             sb.AppendLine("\t{");
 
             for (int i = 0; i < normalRefList.Count; i++)

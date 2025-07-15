@@ -42,14 +42,14 @@ namespace GameFrameWork.Assets
 
         public void UnLoadAssetEditor(string assetPath)
         {
-            Log.LogInfo("开始卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] , ", "卸载前资源数为 : ",m_DicLoadedAssets.Count);
+            Log.LogInfo("开始卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] , ", "卸载前资源数为 : ",m_DicLoadedAssets.Count.ToString());
 
             if (m_DicLoadedAssets.ContainsKey(assetPath))
             {
                 m_DicLoadedAssets.Remove(assetPath);
             }
 
-            Log.LogInfo("卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssets.Count);
+            Log.LogInfo("卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssets.Count.ToString());
         }
 
         public void UnLoadAll()

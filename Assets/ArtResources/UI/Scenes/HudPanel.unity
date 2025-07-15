@@ -608,18 +608,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ScriptFolder: Assets/Scripts/UI/HudPanel/
   m_PanelName: HudPanel
-  m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
   panelType: 3
   panelPreLoadType: 0
-  panelCloseMode: 2
+  panelCloseMode: 4
   panelLayer: 3
   isCustomLayer: 0
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/HudPanel/HudPanel.cs
   panelComponentPath: Assets/Scripts/UI/HudPanel/HudPanelComponent.cs
   panelSettingsPath: Assets/Scripts/UI/HudPanel/HudPanelSettings.cs
-  panelPrefabPath: Assets/ArtResources/UI/Prefabs/HudPanel.prefab
 --- !u!4 &1731513110
 Transform:
   m_ObjectHideFlags: 0

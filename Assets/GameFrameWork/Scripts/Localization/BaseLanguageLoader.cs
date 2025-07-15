@@ -1,5 +1,4 @@
 using GameFrameWork.Assets;
-using GameFrameWork.ConfigData;
 using UnityEngine;
 
 namespace GameFrameWork.Localization

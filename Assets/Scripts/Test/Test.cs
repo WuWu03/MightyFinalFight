@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
 using DragonBones;
@@ -82,38 +82,38 @@ public class Test : MonoBehaviour
 
     private void OnMail1Show(RedPointState state, int data)
     {
-        mail1RedPoint.SetActive(state == RedPointState.Show);
+        mail1RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail1.text = data.ToString();
     }
 
     private void OnMail2Show(RedPointState state, int data)
     {
-        mail2RedPoint.SetActive(state == RedPointState.Show);
+        mail2RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail2.text = data.ToString();
     }
 
     private void OnMail3Show(RedPointState state, int data)
     {
-        mail3RedPoint.SetActive(state == RedPointState.Show);
+        mail3RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail3.text = data.ToString();
     }
 
     private void OnMail4Show(RedPointState state, int data)
     {
-        mail4RedPoint.SetActive(state == RedPointState.Show);
+        mail4RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail4.text = data.ToString();
     }
 
     private void OnMail5Show(RedPointState state, int data)
     {
-        mail5RedPoint.SetActive(state == RedPointState.Show);
+        mail5RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail5.text = data.ToString();
         
     }
 
     private void OnMail6Show(RedPointState state, int data)
     {
-        mail6RedPoint.SetActive(state == RedPointState.Show);
+        mail6RedPoint.SetActiveSelf(state == RedPointState.Show);
         txtMail6.text = data.ToString();
     }
 

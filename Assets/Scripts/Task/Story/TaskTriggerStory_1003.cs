@@ -1,10 +1,13 @@
 using DG.Tweening;
+using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Event;
 using GameFrameWork.Timer;
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
 using UnityEngine;
+
 public class TaskTriggerStory_1003 : BaseTaskTrigger
 {
     public TaskTriggerStory_1003(TaskConfigData data) : base(data)
@@ -19,12 +22,12 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.UpdatePosZ(0);
         AudioMgr.instance.PauseBGM();
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.FallDownHigh);
-        UIMgr.instance.Get<MainPanel>().Hide();
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDownHigh));
+        UIMgr.instance.Get(UINames.MainPanel).Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
-        int hp = 300;// m_TaskData.Targets[0].Hp;
+        int hp = m_TaskData.Targets[0].Hp;
         int attack = 30;// m_TaskData.Targets[0].AttackValue;
         int defense = m_TaskData.Targets[0].DefenseValue;
         int hpBarWidth = m_TaskData.Targets[0].HpBarWidth;
@@ -49,7 +52,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         {
             m_IsSwoon = true;
             Rect vision = CameraMgr.instance.GetVision();
-            PlayerMgr.instance.player.SetActive(true);
+            PlayerMgr.instance.player.gameObject.SetActiveSelf(true);
             PlayerMgr.instance.player.SetPosXY(vision.xMin + 0.5f, vision.yMax);
             PlayerMgr.instance.player.PlayAnimation(AnimName.SwoonUp);
             PlayerMgr.instance.player.transform.DOMoveY(-0.6f, 2.2f).SetEase(Ease.Linear).OnComplete(OnPlayComplete);
@@ -59,7 +62,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
     private void OnPlayComplete()
     {
         PlayerMgr.instance.player.PlayAnimation(AnimName.SwoonDown);
-        Timer.Register(1, MoveTo);
+        TimerMgr.instance.Register(1, MoveTo);
     }
 
     private void MoveTo()
@@ -68,32 +71,23 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");
-        UIMgr.instance.Get<MainPanel>().Show();
-        //CanvasGroup group = mainPanel.GetComponent<CanvasGroup>();
-        //group.alpha = 0f;
-
-        //group.DOFade(1, 1);
+        UIMgr.instance.Get(UINames.MainPanel).Show();
 
         black.GetComponent<SpriteRenderer>().DOFade(0, 1).OnComplete(() =>
         {
-            black.SetActive(false);
-            PlayerMgr.instance.player.AutoMoveToPos(new Vector2(0.8f, -0.6f),()=> 
+            black.SetActiveSelf(false);
+            PlayerMgr.instance.player.AutoMoveToPos(new Vector2(0.8f, -0.6f), () =>
             {
-                UIMgr.instance.Open<TalkPanel>(m_TaskData.TalkID);
+                UIMgr.instance.Open(UINames.TalkPanel, m_TaskData.TalkID);
             });
         });
-    }
-
-    public override void Complete()
-    {
-        base.Complete();
-        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 
     private void OnTalkEnd(object sender, GameEventArgs e)
     {
         m_Boss.currCtrl.Start();
         PlayerMgr.instance.canContrl = true;
+        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
         Complete();
     }
 

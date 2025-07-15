@@ -13,8 +13,10 @@ public static class StaticConfig
         TaskConfig = AssetsMgr.instance.LoadAssetSync<TaskConfig>("ConfigData/TaskConfig.asset");
     }
 
-    public static void Clear()
+    public static void ShutDown()
     {
-
+        SkillConfig = null;
+        StageConfig = null;
+        TaskConfig = null;
     }
 }

@@ -1,8 +1,4 @@
 using GameFrameWork.BehaviourTree;
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class ParallelSelector : Composite
 {

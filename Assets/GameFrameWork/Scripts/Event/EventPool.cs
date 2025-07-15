@@ -1,4 +1,3 @@
-using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -6,13 +5,7 @@ namespace GameFrameWork.Event
 {
     public class EventPool<T> where T : BaseEventArgs
     {
-        public EventPool()
-        {
-            m_Events = new Queue<Event<T>>();
-            m_EventHandlers = new Dictionary<int, List<EventHandler<T>>>();
-        }
-
-        public int eventCount
+        public int currEventCount
         {
             get
             {
@@ -27,6 +20,13 @@ namespace GameFrameWork.Event
                 return m_EventHandlers.Count;
             }
         }
+
+        public EventPool()
+        {
+            m_Events = new Queue<Event<T>>();
+            m_EventHandlers = new Dictionary<int, List<EventHandler<T>>>();
+        }
+
 
         public int Count(int id)
         {
@@ -50,37 +50,41 @@ namespace GameFrameWork.Event
             }
         }
 
-        public void Subscribe(int id, EventHandler<T> handler)
+        public void Subscribe(int eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
-                throw new Exception("Event handler is invalid.");
+                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
+                return;
             }
 
-            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
             {
                 eventList = new List<EventHandler<T>>();
-                m_EventHandlers.Add(id, eventList);
+                m_EventHandlers.Add(eventId, eventList);
             }
 
             if (eventList.Contains(handler))
             {
-                throw new Exception("Event handler has already subscribe.");
+                Log.LogError("事件 [", eventId.ToString(), "] 重复订阅");
+                return;
             }
 
             eventList.Add(handler);
         }
 
-        public void UnSubscibe(int id, EventHandler<T> handler)
+        public void UnSubscibe(int eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
-                throw new Exception("Event handler is invalid.");
+                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
+                return;
             }
 
-            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
             {
-                throw new Exception(StringUtil.Format("Dont't have event ID:", id.ToString(), "."));
+                Log.LogError("事件 [", eventId.ToString(), "] 不存在");
+                return;
             }
 
             if (eventList.Contains(handler))
@@ -90,18 +94,18 @@ namespace GameFrameWork.Event
 
             if (eventList.Count < 1)
             {
-                m_EventHandlers.Remove(id);
+                m_EventHandlers.Remove(eventId);
             }
         }
 
-        public bool Check(int id, EventHandler<T> handler)
+        public bool Check(int eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
-                throw new Exception("Event handler is invalid.");
+                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
             }
 
-            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
             {
                 return false;
             }

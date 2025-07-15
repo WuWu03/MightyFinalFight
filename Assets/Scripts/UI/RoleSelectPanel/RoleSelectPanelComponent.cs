@@ -20,9 +20,7 @@ public class RoleSelectPanelComponent : BasePanelComponent
 	public RectTransform imgSelectRect { get; private set; }
 	public LayoutGroupView<RoleContentItem> roleContentGroupView { get; private set; }
 
-	public RoleSelectPanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		roleContent = root.objects[0] as GameObject;
 		itemGO = root.objects[1] as GameObject;

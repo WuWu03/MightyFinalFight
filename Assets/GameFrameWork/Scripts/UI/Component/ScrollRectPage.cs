@@ -10,10 +10,10 @@ namespace GameFrameWork.UI
     public class ScrollRectPage : MonoBehaviour
     {
         public int pageCount = 1;
-        public GameObject[] pageTabs;//Ò³ÊıµÄ±êÇ©
+        public GameObject[] pageTabs;//é¡µæ•°çš„æ ‡ç­¾
         public bool canAutoFlip = false;
         [Min(0f)] public float autoFlipTime = 0f;
-        [Range(0f, 0.4f)] public float additiveSensitivity;//·­Ò³ÁéÃô¶ÈĞŞÕı
+        [Range(0f, 0.4f)] public float additiveSensitivity;//ç¿»é¡µçµæ•åº¦ä¿®æ­£
         [Min(0.1f)] public float moveSpeed;
         private void Awake()
         {
@@ -47,7 +47,7 @@ namespace GameFrameWork.UI
                     }
                     else
                     {
-                        pageTabs[i].SetActive(i == m_PageIndex);
+                        pageTabs[i].SetActiveSelf(i == m_PageIndex);
                     }
                 }
             }
@@ -214,7 +214,7 @@ namespace GameFrameWork.UI
             }
             else
             {
-                page.SetActive(isActive);
+                page.SetActiveSelf(isActive);
             }
         }
 

@@ -1,6 +1,9 @@
-﻿using GameFrameWork.Audio;
+using GameFrameWork;
+using GameFrameWork.Audio;
 using GameFrameWork.Timer;
+using GameFrameWork.Utils;
 using UnityEngine;
+
 public class TaskTriggerStory_1001 : BaseTaskTrigger
 {
     public TaskTriggerStory_1001(TaskConfigData data) : base(data)
@@ -16,13 +19,13 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
         PlayerMgr.instance.player.SetDir(1);
         PlayerMgr.instance.playerCtrl.Move(Vector2.zero);
 
-        Timer.Register(1, () =>
+        TimerMgr.instance.Register(1, () =>
         {
-            SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").SetActive(false);
-            AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Break);
+            SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").gameObject.SetActiveSelf(false);
+            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Break));
         });
 
-        Timer.Register(2, () => 
+        TimerMgr.instance.Register(2, () => 
         {
             PlayerMgr.instance.player.AutoMoveToPos(new Vector2(-3.5f, -0.28f));
             m_IsAutoMove = true;

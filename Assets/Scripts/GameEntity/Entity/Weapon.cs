@@ -1,6 +1,7 @@
 using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Audio;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Weapon : BaseSceneItem
@@ -26,7 +27,7 @@ public class Weapon : BaseSceneItem
             return;
         }
     
-        SetActive(true);
+        gameObject.SetActiveSelf(true);
         SetPosXY(m_Owner.pos.x, m_Owner.pos.y);
         AddForce(40f * attackerDir, 150f);
         PlayAnimation(AnimName.Drop);
@@ -36,8 +37,8 @@ public class Weapon : BaseSceneItem
     public override void SetOwner(BaseRole owner)
     {
         m_Owner = owner;
-        SetActive(false);
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Bonus);
+        gameObject.SetActiveSelf(false);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bonus));
     }
 
     protected override void OnUpdate()
@@ -82,7 +83,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
             return;
         }
 
@@ -106,7 +107,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
             return false;
         }
 
@@ -135,9 +136,9 @@ public class Weapon : BaseSceneItem
         }
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
-        base.Release();
+        base.OnRelease();
         m_WeaponData = null;
         m_HitTrigger = null;
         m_Animator = null;

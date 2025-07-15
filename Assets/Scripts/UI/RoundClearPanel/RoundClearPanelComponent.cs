@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-07-04 21:18*************************************/
+/**2025-07-12 15:13*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -12,13 +12,11 @@ using GameFrameWork.UI;
 
 public class RoundClearPanelComponent : BasePanelComponent
 {
-	//bottom/GameObject/txtRound,Text
-	public Text txtRound { get; private set; }
+	//bottom/txtRound,LanguageText
+	public LanguageText txtRound { get; private set; }
 
-	public RoundClearPanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
-		txtRound = root.objects[0] as Text;
+		txtRound = root.objects[0] as LanguageText;
 	}
 }

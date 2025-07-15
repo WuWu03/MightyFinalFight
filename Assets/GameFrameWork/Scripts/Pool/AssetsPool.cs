@@ -33,6 +33,7 @@ namespace GameFrameWork.Pool
 
                 if (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime)
                 {
+                    
                     AssetsMgr.instance.UnloadAsset(info.assetPath, false);
                     ReferencePool.ReleaseReference(info);
                     m_RemoveList.Add(kvp.Key);
@@ -74,6 +75,7 @@ namespace GameFrameWork.Pool
             {
                 UnityEngine.Object obj = info.poolObject;
                 info.referenceCount++;
+                info.releaseTime = -1;
                 call?.Invoke(assetPath, obj, args);
                 return;
             }
@@ -110,6 +112,7 @@ namespace GameFrameWork.Pool
             }
 
             info.releaseTime = Time.time;
+            info.referenceCount--;
             info.isReleaseImmediate = false;
         }
 
@@ -117,7 +120,7 @@ namespace GameFrameWork.Pool
         {
             if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
-                Log.LogError(StringUtil.Format("[", assetPath, "] 资源加载完成 , 但加载回调不存在"));
+                Log.LogError(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但加载回调不存在"));
                 return;
             }
 
@@ -126,6 +129,8 @@ namespace GameFrameWork.Pool
                 info = PoolObjectInfo.Create(obj, -1, false, assetPath);
                 m_DicLoadedAssets.Add(assetPath, info);
             }
+
+            info.releaseTime = -1;
 
             for (int i = 0; i < listLoadRequest.Count; i++)
             {

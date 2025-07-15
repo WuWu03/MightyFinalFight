@@ -1,20 +1,19 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameFrameWork.UI
 {
     public class LayoutGroupView<T> where T : LayoutGroupViewItem, new()
     {
-        public GameFrameWorkAction<T> onItemUpdateEvent;
-        public GameFrameWorkAction<T,bool> onItemSelectEvent;
+        public event GameFrameWorkAction<T> onItemUpdateEvent;
+        public event GameFrameWorkAction<T,bool> onItemSelectEvent;
+        public event GameFrameWorkAction<T> onItemReleaseEvent;
 
         public void Init(GameObject parent, GameObject item, int initCount = 1)
         {
             m_Item = item;
             m_ItemParent = parent;
-            m_Item.SetActive(false);
+            m_Item.SetActiveSelf(false);
 
             m_ListItem = new List<T>();
 
@@ -30,20 +29,20 @@ namespace GameFrameWork.UI
             {
                 if(i < m_ListItem.Count)
                 {
-                    m_ListItem[i].SetActive(true);
+                    m_ListItem[i].SetActiveSelf(true);
                     onItemUpdateEvent?.Invoke(m_ListItem[i]);
                 }
                 else
                 {
                     GetItem(i);
-                    m_ListItem[i].SetActive(true);
+                    m_ListItem[i].SetActiveSelf(true);
                     onItemUpdateEvent?.Invoke(m_ListItem[i]);
                 }
             }
 
             for (int i = count; i < m_ListItem.Count; i++)
             {
-                m_ListItem[i].SetActive(false);
+                m_ListItem[i].SetActiveSelf(false);
             }
         }
 
@@ -74,6 +73,15 @@ namespace GameFrameWork.UI
             }
 
             return m_ListItem[index];
+        }
+
+        public void Release()
+        {
+            for (int i = 0; i < m_ListItem.Count; i++)
+            {
+                m_ListItem[i].SetActiveSelf(false);
+                onItemReleaseEvent?.Invoke(m_ListItem[i]);
+            }
         }
             
         private void GetItem(int index)

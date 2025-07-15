@@ -9,6 +9,7 @@ using GameFrameWork.Input;
 using GameFrameWork.Localization;
 using GameFrameWork.Pool;
 using GameFrameWork.Scene;
+using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using System.IO;
@@ -18,24 +19,11 @@ namespace GameFrameWork
 {
     public abstract class GameFrameWorkEntry : MonoBehaviour
     {
-        public static bool IsApplicationRunning()
-        {
-            return s_Manager != null;
-        }
-
         public static GameFrameWorkConfig config
         {
             get
             {
                 return s_Config;
-            }
-        }
-
-        public static GameObject manager
-        {
-            get
-            {
-                return s_Manager;
             }
         }
 
@@ -61,6 +49,7 @@ namespace GameFrameWork
             SceneMgr.Init(s_Manager);
             AssetsPool.Init(s_Manager);
             LocalizationMgr.Init(s_Manager);
+            TimerMgr.Init(s_Manager);
             OnInit(s_Manager);
         }
 
@@ -72,24 +61,25 @@ namespace GameFrameWork
         private void OnApplicationQuit()
         {
             OnExit();
-            EventMgr.instance.DispatchNow(this, GameEventArgs.Create(GameFrameWorkCommonEvent.ApplicationQuitEvent));
             EntityMgr.instance.ShutDown();
+            BehaviourTreeMgr.instance.ShutDown();
+            FSMMgr.instance.ShutDown();
             UIMgr.instance.ShutDown();
             RedPointMgr.instance.ShutDown();
             InputMgr.instance.ShutDown();
             CameraMgr.instance.ShutDown();
             AudioMgr.instance.ShutDown();
             SceneMgr.instance.ShutDown();
-            FSMMgr.instance.ShutDown();
+            TimerMgr.instance.ShutDown();
             GameObjectPoolMgr.instance.ShutDown();
             AssetsPool.instance.ShutDown();
             AssetsMgr.instance.ShutDown();
-            ReferencePool.ShutDown();
             LocalizationMgr.instance.ShutDown();
             EventMgr.instance.ShutDown();
-            BehaviourTreeMgr.instance.ShutDown();
+            ReferencePool.ShutDown();
             Destroy(s_Manager);
             s_Manager = null;
+            s_Config = null;
         }
 
         protected abstract void OnInit(GameObject manager);

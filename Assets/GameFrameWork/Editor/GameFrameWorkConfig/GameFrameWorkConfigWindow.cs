@@ -18,20 +18,19 @@ namespace GameFrameWork.Editor
         private void OnEnable()
         {
             InitConfig();
-            Debug.Log("GameFrameWorkConfigWindow OnEnable");
         }
 
         private void OnDisable()
         {
-            Debug.Log("GameFrameWorkConfigWindow OnDisable");
             EditorUtility.SetDirty(m_EditorConfig);
             m_EditorConfig = null;
         }
 
+        private Vector2 m_ScrollPos = Vector2.zero;
         private void OnGUI()
         {
             InitConfig();
-
+            m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
             DrawField(
                 () => m_EditorConfig.isCheckVersion != m_IsCheckVersion, 
                 () => m_IsCheckVersion = EditorGUILayout.Toggle("是否进行版本检查", m_IsCheckVersion), 
@@ -84,28 +83,42 @@ namespace GameFrameWork.Editor
                 () => m_UIPath = EditorGUILayout.TextField("UI目录", m_UIPath),
                 () =>
                 {
+                    if (m_UIPath.EndsWith("/"))
+                    {
+                        m_UIPath = m_UIPath.Substring(0, m_UIPath.Length - 1);
+                    }
+
+                    if (m_UIPath == "Assets")
+                    {
+                        m_UIPath += "/UI";
+                    }
+
                     string uiPath = PathUtil.GetAssetPath(m_UIPath);
-                    string uiPrefabPath = PathUtil.FormatPath(uiPath, "Prefabs");
-                    string uiAtlasPath = PathUtil.FormatPath(uiPath, "Atlas");
-                    string uiScenesPath = PathUtil.FormatPath(uiPath, "Scenes");
+                    string uiPrefabsPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiPrefabsPath);
+                    string uiAtlasPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiAtlasPath);
+                    string uiScenesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiScenesPath);
+                    string uiSpritesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiSpritesPath);
 
                     string uiFullPath = PathUtil.GetAssetFullPath(m_UIPath);
-                    string uiPrefabsFullPath = PathUtil.FormatPath(uiFullPath, "Prefabs");
-                    string uiAtlasFullPath = PathUtil.FormatPath(uiFullPath, "Atlas");
-                    string uiScenesFullPath = PathUtil.FormatPath(uiFullPath, "Scenes");
+                    string uiPrefabsFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiPrefabsPath);
+                    string uiAtlasFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiAtlasPath);
+                    string uiScenesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiScenesPath);
+                    string uiSpritesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiSpritesPath);
 
                     Utils.FileUtil.VerifyDirectory(uiFullPath);
                     Utils.FileUtil.VerifyDirectory(uiPrefabsFullPath);
                     Utils.FileUtil.VerifyDirectory(uiAtlasFullPath);
                     Utils.FileUtil.VerifyDirectory(uiScenesFullPath);
+                    Utils.FileUtil.VerifyDirectory(uiSpritesFullPath);
 
                     AssetDatabase.Refresh();
 
                     m_UIPath = uiPath;
                     m_EditorConfig.uiPath = uiPath;
-                    m_EditorConfig.uiPrefabsPath = uiPrefabPath;
+                    m_EditorConfig.uiPrefabsPath = uiPrefabsPath;
                     m_EditorConfig.uiAtlasPath = uiAtlasPath;
-                    PlayerPrefs.SetString(EditorPathUtil.uiScenesPath, uiScenesPath);
+                    m_EditorConfig.uiScenesPath = uiScenesPath;
+                    m_EditorConfig.uiSpritesPath = uiSpritesPath;
                 }, 20);
 
             DrawField(
@@ -113,6 +126,16 @@ namespace GameFrameWork.Editor
                 () => m_ConfigDataPath = EditorGUILayout.TextField("配置文件目录", m_ConfigDataPath),
                 () =>
                 {
+                    if (m_ConfigDataPath.EndsWith("/"))
+                    {
+                        m_ConfigDataPath = m_ConfigDataPath.Substring(0, m_ConfigDataPath.Length - 1);
+                    }
+
+                    if (m_ConfigDataPath == "Assets")
+                    {
+                        m_ConfigDataPath += "/ConfigData";
+                    }
+
                     string configDataPath = PathUtil.GetAssetPath(m_ConfigDataPath);
                     string configDataFullPath = PathUtil.GetAssetFullPath(m_ConfigDataPath);
 
@@ -123,43 +146,55 @@ namespace GameFrameWork.Editor
                 }, 20);
 
             DrawField(
-                () => m_EditorConfig.pcBuildPath != m_PCBuildPath,
-                () => m_PCBuildPath = EditorGUILayout.TextField("PC平台打包路径", m_PCBuildPath),
-                () => m_EditorConfig.pcBuildPath = m_PCBuildPath, 20);
-
-            DrawField(
-               () => m_EditorConfig.androidBuildPath != m_AndroidBuildPath,
-               () => m_AndroidBuildPath = EditorGUILayout.TextField("Android平台打包路径", m_AndroidBuildPath),
-               () => m_EditorConfig.androidBuildPath = m_AndroidBuildPath, 20);
-
-            DrawField(
-               () => m_EditorConfig.iosBuildPath != m_IOSBuildPath,
-               () => m_IOSBuildPath = EditorGUILayout.TextField("iOS平台打包路径", m_IOSBuildPath),
-               () => m_EditorConfig.iosBuildPath = m_IOSBuildPath, 20);
-
-            DrawField(
                 () => m_EditorConfig.versionFileName != m_VersionFileName,
-                () => m_VersionFileName = EditorGUILayout.TextField("版本文件名", m_VersionFileName),
+                () => m_VersionFileName = EditorGUILayout.TextField("资源版本文件名称", m_VersionFileName),
                 () =>
                 {
-                    string ext = Path.GetExtension(m_VersionFileName);
-                    if (string.IsNullOrEmpty(ext))
+                    if (string.IsNullOrEmpty(m_VersionFileName))
                     {
-                        m_VersionFileName += ".txt";
+                        m_VersionFileName = EditorPathUtil.versionFileDefaultName;
                     }
-                    else if (!ext.Equals(".txt"))
+
+                    if (string.IsNullOrEmpty(Path.GetExtension(m_VersionFileName)))
                     {
-                        m_VersionFileName = Path.GetFileNameWithoutExtension(m_VersionFileName) + ".txt";
+                        m_VersionFileName += EditorPathUtil.versionFileDefaultExt;
                     }
 
                     m_EditorConfig.versionFileName = m_VersionFileName;
                 }, 20);
 
             DrawField(
+                   () => m_EditorConfig.assetMapFileName != m_AssetMapFileName,
+                   () => m_AssetMapFileName = EditorGUILayout.TextField("资源映射文件名称", m_AssetMapFileName),
+                   () =>
+                   {
+                       if (string.IsNullOrEmpty(m_AssetMapFileName))
+                       {
+                           m_AssetMapFileName = EditorPathUtil.assetMapFileDefaultName;
+                       }
+
+                       if (string.IsNullOrEmpty(Path.GetExtension(m_AssetMapFileName)))
+                       {
+                           m_AssetMapFileName += EditorPathUtil.assetMapFileDefaultExt;
+                       }
+
+                       m_EditorConfig.assetMapFileName = m_AssetMapFileName;
+                   }, 20);
+
+            DrawField(
+                () => m_EditorConfig.buildPath != m_BuildPath,
+                () => m_BuildPath = EditorGUILayout.TextField("打包绝对路径", m_BuildPath),
+                () => m_EditorConfig.buildPath = m_BuildPath, 20);
+
+            DrawField(
                 () => m_EditorConfig.logColor != m_LogColor,
                 () => m_LogColor = EditorGUILayout.ColorField("日志文本颜色", m_LogColor),
                 () => m_EditorConfig.logColor = m_LogColor, 20);
 
+            m_LanguageKeyFile = EditorGUILayout.ObjectField("多语言矫正文件", m_LanguageKeyFile, typeof(TextAsset),false);
+            m_EditorConfig.languageKeyFilePath = AssetDatabase.GetAssetPath(m_LanguageKeyFile);
+
+            EditorGUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
 
             Color oriColor = GUI.color;
@@ -202,7 +237,6 @@ namespace GameFrameWork.Editor
             }
 
             m_EditorConfig = GetGameFrameWorkConfig();
-
             m_IsCheckVersion = m_EditorConfig.isCheckVersion;
             m_IsLoadFromAssetBundle = m_EditorConfig.isLoadFromAssetBundle;
             m_IsOpenLog = m_EditorConfig.isOpenLog;
@@ -212,11 +246,61 @@ namespace GameFrameWork.Editor
             m_LuaPath = m_EditorConfig.luaPath;
             m_UIPath = m_EditorConfig.uiPath;
             m_ConfigDataPath = m_EditorConfig.configDataPath;
+            m_AssetMapFileName = m_EditorConfig.assetMapFileName;
             m_VersionFileName = m_EditorConfig.versionFileName;
-            m_PCBuildPath = m_EditorConfig.pcBuildPath;
-            m_AndroidBuildPath = m_EditorConfig.androidBuildPath;
-            m_IOSBuildPath = m_EditorConfig.iosBuildPath;
+            m_BuildPath = m_EditorConfig.buildPath;
             m_LogColor = m_EditorConfig.logColor;
+
+            if (string.IsNullOrEmpty(m_VersionFileName))
+            {
+                m_VersionFileName = EditorPathUtil.versionFileDefaultName;
+                m_EditorConfig.versionFileName = m_VersionFileName;
+            }
+
+            if (string.IsNullOrEmpty(Path.GetExtension(m_VersionFileName)))
+            {
+                m_VersionFileName += EditorPathUtil.versionFileDefaultExt;
+                m_EditorConfig.versionFileName = m_VersionFileName;
+            }
+
+            if (string.IsNullOrEmpty(m_AssetMapFileName))
+            {
+                m_AssetMapFileName = EditorPathUtil.assetMapFileDefaultName;
+                m_EditorConfig.assetMapFileName = m_AssetMapFileName;
+            }
+
+            if(string.IsNullOrEmpty(Path.GetExtension(m_AssetMapFileName)))
+            {
+                m_AssetMapFileName += EditorPathUtil.assetMapFileDefaultExt;
+                m_EditorConfig.assetMapFileName = m_AssetMapFileName;
+            }
+
+            if (string.IsNullOrEmpty(m_UIPath))
+            {
+                m_UIPath = "Assets/" + EditorPathUtil.defaultUIPath;
+                m_EditorConfig.uiPath = m_UIPath;
+            }
+
+            if (string.IsNullOrEmpty(m_ConfigDataPath))
+            {
+                m_ConfigDataPath = "Assets/" + EditorPathUtil.defaultConfigDataPath;
+                m_EditorConfig.configDataPath = m_ConfigDataPath;
+            }
+
+            if (!string.IsNullOrEmpty(m_EditorConfig.languageKeyFilePath))
+            {
+                m_LanguageKeyFile = AssetDatabase.LoadAssetAtPath<TextAsset>(m_EditorConfig.languageKeyFilePath);
+
+                if(m_LanguageKeyFile == null)
+                {
+                    Debug.LogWarning($"多语言矫正文件 {m_EditorConfig.languageKeyFilePath} 不存在，请重新设置！");
+                    m_EditorConfig.languageKeyFilePath = string.Empty;
+                }
+            }
+            else
+            {
+                m_LanguageKeyFile = null;
+            }
         }
 
         private GameFrameWorkConfigWindowData GetGameFrameWorkConfig()
@@ -277,12 +361,11 @@ namespace GameFrameWork.Editor
         private string m_UIPath = string.Empty;
         private string m_ConfigDataPath = string.Empty;
         private string m_VersionFileName = string.Empty;
+        private string m_AssetMapFileName = string.Empty;
         private Color m_LogColor = Color.white;
 
-        private string m_PCBuildPath = string.Empty;
-        private string m_AndroidBuildPath = string.Empty;
-        private string m_IOSBuildPath = string.Empty;
-
+        private string m_BuildPath = string.Empty;
+        private UnityEngine.Object m_LanguageKeyFile = null;
         private GameFrameWorkConfigWindowData m_EditorConfig = null;
     }
 }

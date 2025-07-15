@@ -34,6 +34,11 @@ public class SkillBulletEffect : SkillBaseEffect
         Complete();
     }
 
+    protected override void OnUpdate(ISkillSelector selector)
+    {
+        base.OnUpdate(selector);
+
+    }
     public void BulletEffect(ICanBeHit hit)
     {
         SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect);

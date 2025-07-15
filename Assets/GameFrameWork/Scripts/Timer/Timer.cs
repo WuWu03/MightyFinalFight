@@ -1,27 +1,46 @@
 using UnityEngine;
-using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using Object = UnityEngine.Object;
-using SRF;
 
 namespace GameFrameWork.Timer
 {
-    public class Timer
+    public class Timer : IReference
     {
-        public float duration { get; private set; }
+        public float duration
+        {
+            get
+            {
+                return m_Duration;
+            }
+        }
 
-        public bool isLooped { get; set; }
+        public bool isLooped
+        {
+            get
+            {
+                return m_IsLooped;
+            }
+        }
 
-        public bool isCompleted { get; private set; }
+        public bool isCompleted
+        {
+            get
+            {
+                return m_IsCompleted;
+            }
+        }
 
-        public bool usesRealTime { get; private set; }
+        public bool usesRealTime
+        {
+            get
+            {
+                return m_UsesRealTime;
+            }
+        }
 
         public bool isPaused
         {
             get
             {
-                return this.m_TimeElapsedBeforePause.HasValue;
+                return m_TimeElapsedBeforePause > 0;
             }
         }
 
@@ -29,7 +48,7 @@ namespace GameFrameWork.Timer
         {
             get
             {
-                return this.m_TimeElapsedBeforeCancel.HasValue;
+                return m_TimeElapsedBeforeCancel > 0;
             }
         }
 
@@ -37,288 +56,160 @@ namespace GameFrameWork.Timer
         {
             get
             {
-                return this.isCompleted || this.isCancelled || this.isOwnerDestroyed;
+                return isCompleted || isCancelled;
             }
         }
 
-        private bool isOwnerDestroyed
+        public static Timer Create(float duration, GameFrameWorkAction onComplete, GameFrameWorkAction<float> onUpdate, bool isLooped, bool usesRealTime)
         {
-            get
-            {
-                return this.m_HasAutoDestroyOwner && this.m_AutoDestroyOwner == null;
-            }
-        }
-
-
-        public static Timer Register(float duration, Action onComplete, Action<float> onUpdate = null, bool isLooped = false, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
-        {
-            if (Timer.m_TimerManager == null)
-            {
-                TimerManager managerInScene = Object.FindAnyObjectByType<TimerManager>();
-
-                if (managerInScene != null)
-                {
-                    Timer.m_TimerManager = managerInScene;
-                }
-                else
-                {
-                    GameObject managerObject = new GameObject("TimerManager");
-                    Timer.m_TimerManager = managerObject.GetOrAddComponent<TimerManager>();
-                }
-            }
-
-            Timer timer = new Timer(duration, onComplete, onUpdate, isLooped, useRealTime, autoDestroyOwner);
-            Timer.m_TimerManager.RegisterTimer(timer);
+            Timer timer = ReferencePool.Acquire<Timer>();
+            timer.m_Duration = duration;
+            timer.m_OnComplete = onComplete;
+            timer.m_OnUpdate = onUpdate;
+            timer.m_IsLooped = isLooped;
+            timer.m_UsesRealTime = usesRealTime;
+            timer.m_StartTime = timer.GetWorldTime();
+            timer.m_LastUpdateTime = timer.m_StartTime;
             return timer;
         }
 
-        public static void Cancel(Timer timer)
+        public void Update()
         {
-            if (timer != null)
+            if (isDone)
             {
-                timer.Cancel();
+                return;
             }
-        }
 
-        public static void Pause(Timer timer)
-        {
-            if (timer != null)
+            if (isPaused)
             {
-                timer.Pause();
+                m_StartTime += GetTimeDelta();
+                m_LastUpdateTime = GetWorldTime();
+                return;
             }
-        }
 
-        public static void Resume(Timer timer)
-        {
-            if (timer != null)
-            {
-                timer.Resume();
-            }
-        }
+            m_LastUpdateTime = GetWorldTime();
 
-        public static void CancelAllRegisteredTimers()
-        {
-            if (Timer.m_TimerManager != null)
-            {
-                Timer.m_TimerManager.CancelAllTimers();
-            }
-        }
+            m_OnUpdate?.Invoke(GetTimeElapsed());
 
-        public static void PauseAllRegisteredTimers()
-        {
-            if (Timer.m_TimerManager != null)
+            if (GetWorldTime() >= GetFireTime())
             {
-                Timer.m_TimerManager.PauseAllTimers();
-            }
-        }
-
-        public static void ResumeAllRegisteredTimers()
-        {
-            if (Timer.m_TimerManager != null)
-            {
-                Timer.m_TimerManager.ResumeAllTimers();
+                m_OnComplete?.Invoke();
+                if (isLooped)
+                {
+                    m_StartTime = GetWorldTime();
+                }
+                else
+                {
+                    m_IsCompleted = true;
+                }
             }
         }
 
         public void Cancel()
         {
-            if (this.isDone)
+            if (isDone)
             {
                 return;
             }
 
-            this.m_TimeElapsedBeforeCancel = this.GetTimeElapsed();
-            this.m_TimeElapsedBeforePause = null;
+            m_TimeElapsedBeforeCancel = GetTimeElapsed();
+            m_TimeElapsedBeforePause = -1;
         }
 
         public void Pause()
         {
-            if (this.isPaused || this.isDone)
+            if (isPaused || isDone)
             {
                 return;
             }
 
-            this.m_TimeElapsedBeforePause = this.GetTimeElapsed();
+            m_TimeElapsedBeforePause = GetTimeElapsed();
         }
 
         public void Resume()
         {
-            if (!this.isPaused || this.isDone)
+            if (!isPaused || isDone)
             {
                 return;
             }
 
-            this.m_TimeElapsedBeforePause = null;
+            m_TimeElapsedBeforePause = -1;
         }
 
         public float GetTimeElapsed()
         {
-            if (this.isCompleted || this.GetWorldTime() >= this.GetFireTime())
+            if (isCompleted || GetWorldTime() >= GetFireTime())
             {
-                return this.duration;
+                return duration;
             }
 
-            return this.m_TimeElapsedBeforeCancel ??
-                   this.m_TimeElapsedBeforePause ??
-                   this.GetWorldTime() - this.m_StartTime;
+            if (m_TimeElapsedBeforeCancel > 0)
+            {
+                return m_TimeElapsedBeforeCancel;
+            }
+
+            if (m_TimeElapsedBeforePause > 0)
+            {
+                return m_TimeElapsedBeforePause;
+            }
+
+            return GetWorldTime() - m_StartTime;
         }
 
         public float GetTimeRemaining()
         {
-            return this.duration - this.GetTimeElapsed();
+            return duration - GetTimeElapsed();
         }
 
         public float GetRatioComplete()
         {
-            return this.GetTimeElapsed() / this.duration;
+            return GetTimeElapsed() / duration;
         }
 
         public float GetRatioRemaining()
         {
-            return this.GetTimeRemaining() / this.duration;
-        }
-
-        private static TimerManager m_TimerManager;
-
-        private readonly Action m_OnComplete;
-        private readonly Action<float> m_OnUpdate;
-        private float m_StartTime;
-        private float m_LastUpdateTime;
-        private float? m_TimeElapsedBeforeCancel;
-        private float? m_TimeElapsedBeforePause;
-
-        private readonly MonoBehaviour m_AutoDestroyOwner;
-        private readonly bool m_HasAutoDestroyOwner;
-
-        private Timer(float duration, Action onComplete, Action<float> onUpdate, bool isLooped, bool usesRealTime, MonoBehaviour autoDestroyOwner)
-        {
-            this.duration = duration;
-            this.m_OnComplete = onComplete;
-            this.m_OnUpdate = onUpdate;
-
-            this.isLooped = isLooped;
-            this.usesRealTime = usesRealTime;
-
-            this.m_AutoDestroyOwner = autoDestroyOwner;
-            this.m_HasAutoDestroyOwner = autoDestroyOwner != null;
-
-            this.m_StartTime = this.GetWorldTime();
-            this.m_LastUpdateTime = this.m_StartTime;
+            return GetTimeRemaining() / duration;
         }
 
         private float GetWorldTime()
         {
-            return this.usesRealTime ? Time.realtimeSinceStartup : Time.time;
+            return usesRealTime ? Time.realtimeSinceStartup : Time.time;
         }
 
         private float GetFireTime()
         {
-            return this.m_StartTime + this.duration;
+            return m_StartTime + duration;
         }
 
         private float GetTimeDelta()
         {
-            return this.GetWorldTime() - this.m_LastUpdateTime;
+            return GetWorldTime() - m_LastUpdateTime;
         }
 
-        private void Update()
+        public void Clear()
         {
-            if (this.isDone)
-            {
-                return;
-            }
-
-            if (this.isPaused)
-            {
-                this.m_StartTime += this.GetTimeDelta();
-                this.m_LastUpdateTime = this.GetWorldTime();
-                return;
-            }
-
-            this.m_LastUpdateTime = this.GetWorldTime();
-
-            if (this.m_OnUpdate != null)
-            {
-                this.m_OnUpdate(this.GetTimeElapsed());
-            }
-
-            if (this.GetWorldTime() >= this.GetFireTime())
-            {
-
-                if (this.m_OnComplete != null)
-                {
-                    this.m_OnComplete();
-                }
-
-                if (this.isLooped)
-                {
-                    this.m_StartTime = this.GetWorldTime();
-                }
-                else
-                {
-                    this.isCompleted = true;
-                }
-            }
+            m_OnComplete = null;
+            m_OnUpdate = null;
+            m_Duration = -1;
+            m_StartTime = -1;
+            m_LastUpdateTime = -1;
+            m_TimeElapsedBeforeCancel = -1;
+            m_TimeElapsedBeforePause = -1;
+            m_IsLooped = false;
+            m_IsCompleted = false;
+            m_UsesRealTime = false;
         }
 
-        private class TimerManager : MonoBehaviour
-        {
-            public void RegisterTimer(Timer timer)
-            {
-                this.m_ListTimersToAdd.Add(timer);
-            }
+        private GameFrameWorkAction m_OnComplete = null;
+        private GameFrameWorkAction<float> m_OnUpdate = null;
 
-            public void CancelAllTimers()
-            {
-                foreach (Timer timer in this.m_ListTimers)
-                {
-                    timer.Cancel();
-                }
-
-                this.m_ListTimers.Clear();
-                this.m_ListTimersToAdd.Clear();
-            }
-
-            public void PauseAllTimers()
-            {
-                foreach (Timer timer in this.m_ListTimers)
-                {
-                    timer.Pause();
-                }
-            }
-
-            public void ResumeAllTimers()
-            {
-                foreach (Timer timer in this.m_ListTimers)
-                {
-                    timer.Resume();
-                }
-            }
-
-            [UsedImplicitly]
-            private void Update()
-            {
-                this.UpdateAllTimers();
-            }
-
-            private void UpdateAllTimers()
-            {
-                if (this.m_ListTimersToAdd.Count > 0)
-                {
-                    this.m_ListTimers.AddRange(this.m_ListTimersToAdd);
-                    this.m_ListTimersToAdd.Clear();
-                }
-
-                foreach (Timer timer in this.m_ListTimers)
-                {
-                    timer.Update();
-                }
-
-                this.m_ListTimers.RemoveAll(t => t.isDone);
-            }
-
-            private List<Timer> m_ListTimers = new List<Timer>();
-            private List<Timer> m_ListTimersToAdd = new List<Timer>();
-        }
+        private float m_Duration = -1;
+        private float m_StartTime = -1;
+        private float m_LastUpdateTime = -1;
+        private float m_TimeElapsedBeforeCancel = -1;
+        private float m_TimeElapsedBeforePause = -1;
+        private bool m_IsLooped = false;
+        private bool m_IsCompleted = false;
+        private bool m_UsesRealTime = false;
     }
 }

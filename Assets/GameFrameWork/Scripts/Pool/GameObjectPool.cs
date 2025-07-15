@@ -34,8 +34,8 @@ namespace GameFrameWork.Pool
         {
             GameObject root = new GameObject(tag);
             root.transform.SetParent(poolRoot, false);
-            root.SetActive(false);
-            m_GORoot = root.transform;
+            root.SetActiveSelf(false);
+            m_Root = root.transform;
             m_Prefab = prefab;
             m_Tag = tag;
             m_IsFromAsset = isFromAsset;
@@ -63,14 +63,13 @@ namespace GameFrameWork.Pool
 
             if (m_IsFromAsset)
             {
-                AssetUnLoader resourceUnLoader = go.GetOrAddComponent<AssetUnLoader>();
+                GameObjectUnLoader resourceUnLoader = go.GetOrAddComponent<GameObjectUnLoader>();
                 resourceUnLoader.ResetAssetInfo();
                 resourceUnLoader.gameObjectPath = m_Tag;
-                resourceUnLoader.go = go;
             }
 
             m_UsingCount++;
-            go.SetActive(isActive);
+            go.SetActiveSelf(isActive);
             return go;
         }
 
@@ -81,8 +80,8 @@ namespace GameFrameWork.Pool
                 return;
             }
 
-            GameObject go = GameObject.Instantiate(m_Prefab, m_GORoot, false);
-            go.SetActive(false);
+            GameObject go = GameObject.Instantiate(m_Prefab, m_Root, false);
+            go.SetActiveSelf(false);
             m_QueuePool.Enqueue(PoolObjectInfo.Create(go, -1, false, string.Empty));
         }
 
@@ -90,8 +89,8 @@ namespace GameFrameWork.Pool
         {
             if (go != null)
             {
-                go.SetActive(false);
-                go.transform.SetParent(m_GORoot, false);
+                go.SetActiveSelf(false);
+                go.transform.SetParent(m_Root, false);
                 go.transform.localPosition = Vector3.zero;
                 m_UsingCount--;
                 m_QueuePool.Enqueue(PoolObjectInfo.Create(go, Time.time, isReleaseImmdiately, string.Empty));
@@ -113,7 +112,7 @@ namespace GameFrameWork.Pool
 
                 PoolObjectInfo info = m_QueuePool.Dequeue();
 
-                if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime > ConstField.CollectTime))
+                if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime))
                 {
                     DestoryPoolObject(info);
                     ReferencePool.ReleaseReference(info);
@@ -147,26 +146,16 @@ namespace GameFrameWork.Pool
             m_Prefab = null;
             m_Tag = string.Empty;
             m_IsFromAsset = false;
-            GameObject.Destroy(m_GORoot.gameObject);
+            GameObject.Destroy(m_Root.gameObject);
         }
 
         private void DestoryPoolObject(PoolObjectInfo info)
         {
-            AssetUnLoader[] resourceUnLoaders = (info.poolObject as GameObject).GetComponentsInChildren<AssetUnLoader>(true);
-
-            for (int i = 0; i < resourceUnLoaders.Length; i++)
-            {
-                if (resourceUnLoaders[i].go != info.poolObject)
-                {
-                    resourceUnLoaders[i].BeforeOnDestroy();
-                }
-            }
-
             GameObject.Destroy(info.poolObject);
         }
 
         private GameObject m_Prefab = null;
-        private Transform m_GORoot = null;
+        private Transform m_Root = null;
         private Queue<PoolObjectInfo> m_QueuePool = null;
         private int m_UsingCount = 0;
         private string m_Tag = string.Empty;

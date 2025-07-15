@@ -207,7 +207,7 @@ namespace GameFrameWork.UI
 
                 if (m_Scrollbar != null)
                 {
-                    if (m_ItemOffsetArray != null && m_ItemOffsetArray.Count > 0)
+                    if (m_ItemOffsetArray != null && m_ItemOffsetArray.count > 0)
                     {
                         if (m_ScrollRect.vertical)
                         {
@@ -220,11 +220,11 @@ namespace GameFrameWork.UI
 
                         if (m_ItemOffsetArray.Last() < scrollRectSize || m_Loop)
                         {
-                            m_Scrollbar.gameObject.SetActive(m_ScrollbarVisibility == ScrollbarVisibilityType.Always);
+                            m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility == ScrollbarVisibilityType.Always);
                         }
                         else
                         {
-                            m_Scrollbar.gameObject.SetActive(m_ScrollbarVisibility != ScrollbarVisibilityType.Never);
+                            m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility != ScrollbarVisibilityType.Never);
                         }
 
                         if (!m_Scrollbar.gameObject.activeSelf)
@@ -528,7 +528,7 @@ namespace GameFrameWork.UI
             go = new GameObject("Recycled Cells", typeof(RectTransform));
             go.transform.SetParent(m_ScrollRect.transform, false);
             m_RecycledItemsContent = go.GetComponent<RectTransform>();
-            m_RecycledItemsContent.gameObject.SetActive(false);
+            m_RecycledItemsContent.gameObject.SetActiveSelf(false);
 
             m_LastScrollRectSize = scrollRectSize;
             m_LastLoop = m_Loop;
@@ -542,7 +542,7 @@ namespace GameFrameWork.UI
             m_RecycledItems = new SmallList<ScrollLayoutGroupViewItem>();
 
             prefab.transform.SetParent(m_ScrollRect.viewport, false);
-            prefab.SetActive(false);
+            prefab.SetActiveSelf(false);
 
             m_IsInitialized = true;
         }
@@ -582,7 +582,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public void RefreshActiveCellViews()
         {
-            for (var i = 0; i < m_ActiveItems.Count; i++)
+            for (var i = 0; i < m_ActiveItems.count; i++)
             {
                 itemUpdateEvent?.Invoke(m_ActiveItems[i]);
             }
@@ -602,7 +602,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public void ClearActive()
         {
-            for (var i = 0; i < m_ActiveItems.Count; i++)
+            for (var i = 0; i < m_ActiveItems.count; i++)
             {
                 DestroyImmediate(m_ActiveItems[i].gameObject);
             }
@@ -615,7 +615,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public void ClearRecycled()
         {
-            for (var i = 0; i < m_RecycledItems.Count; i++)
+            for (var i = 0; i < m_RecycledItems.count; i++)
             {
                 DestroyImmediate(m_RecycledItems[i].gameObject);
             }
@@ -820,7 +820,7 @@ namespace GameFrameWork.UI
                 {
                     ScrollLayoutGroupViewItem cellView = null;
 
-                    for (var i = 0; i < m_ActiveItems.Count; i++)
+                    for (var i = 0; i < m_ActiveItems.count; i++)
                     {
                         if (m_ActiveItems[i].dataIndex == snapDataIndex)
                         {
@@ -852,7 +852,7 @@ namespace GameFrameWork.UI
             }
             else
             {
-                if (itemIndex < m_ItemOffsetArray.Count)
+                if (itemIndex < m_ItemOffsetArray.count)
                 {
                     if (insertPosition == ItemPositionType.Before)
                     {
@@ -865,7 +865,7 @@ namespace GameFrameWork.UI
                 }
                 else
                 {
-                    return m_ItemOffsetArray[m_ItemOffsetArray.Count - 2];
+                    return m_ItemOffsetArray[m_ItemOffsetArray.count - 2];
                 }
             }
         }
@@ -883,7 +883,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public int GetItemIndexAtPosition(float position)
         {
-            return GetItemIndexAtPosition(position, 0, m_ItemOffsetArray.Count - 1);
+            return GetItemIndexAtPosition(position, 0, m_ItemOffsetArray.count - 1);
         }
 
         /// <summary>
@@ -891,7 +891,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public ScrollLayoutGroupViewItem GetItemByDataIndex(int dataIndex)
         {
-            for (var i = 0; i < m_ActiveItems.Count; i++)
+            for (var i = 0; i < m_ActiveItems.count; i++)
             {
                 if (m_ActiveItems[i].dataIndex == dataIndex)
                 {
@@ -964,7 +964,7 @@ namespace GameFrameWork.UI
 
             if (m_Loop)
             {
-                var itemCount = m_ItemSizeArray.Count;
+                var itemCount = m_ItemSizeArray.count;
 
                 if (offset < scrollRectSize)
                 {
@@ -1043,8 +1043,8 @@ namespace GameFrameWork.UI
             for (var i = 0; i < itemCount; i++)
             {
                 m_ItemSizeArray.Add(getItemSizeEvent.Invoke(i) + (i == 0 ? 0 : spacing));
-                m_SingleLoopGroupSize += m_ItemSizeArray[m_ItemSizeArray.Count - 1];
-                offset += m_ItemSizeArray[m_ItemSizeArray.Count - 1];
+                m_SingleLoopGroupSize += m_ItemSizeArray[m_ItemSizeArray.count - 1];
+                offset += m_ItemSizeArray[m_ItemSizeArray.count - 1];
             }
 
             return offset;
@@ -1071,7 +1071,7 @@ namespace GameFrameWork.UI
         {
             m_ItemOffsetArray.Clear();
             var offset = 0f;
-            for (var i = 0; i < m_ItemSizeArray.Count; i++)
+            for (var i = 0; i < m_ItemSizeArray.count; i++)
             {
                 offset += m_ItemSizeArray[i];
                 m_ItemOffsetArray.Add(offset);
@@ -1083,7 +1083,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private ScrollLayoutGroupViewItem GetRecycledItem()
         {
-            if (m_RecycledItems != null && m_RecycledItems.Count > 0) 
+            if (m_RecycledItems != null && m_RecycledItems.count > 0) 
             {
                 var cellView = m_RecycledItems.RemoveAt(0);
                 return cellView;
@@ -1106,7 +1106,7 @@ namespace GameFrameWork.UI
             var i = 0;
             SmallList<int> remainingCellIndices = new SmallList<int>();
 
-            while (i < m_ActiveItems.Count)
+            while (i < m_ActiveItems.count)
             {
                 if (m_ActiveItems[i].itemIndex < startIndex || m_ActiveItems[i].itemIndex > endIndex)
                 {
@@ -1119,7 +1119,7 @@ namespace GameFrameWork.UI
                 }
             }
 
-            if (remainingCellIndices.Count == 0)
+            if (remainingCellIndices.count == 0)
             {
                 for (i = startIndex; i <= endIndex; i++)
                 {
@@ -1156,7 +1156,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private void RecycleAllItems()
         {
-            while (m_ActiveItems.Count > 0)
+            while (m_ActiveItems.count > 0)
             {
                 RecycleItem(m_ActiveItems[0]);
             }
@@ -1173,7 +1173,7 @@ namespace GameFrameWork.UI
             m_ActiveItems.Remove(item);
             m_RecycledItems.Add(item);
 
-            item.SetActive(false);
+            item.SetActiveSelf(false);
             item.itemIndex = 0;
             item.dataIndex = 0;
         }
@@ -1195,7 +1195,7 @@ namespace GameFrameWork.UI
             item.dataIndex = dataIndex;
             item.transform.localScale = Vector3.one;
             item.transform.SetParent(m_Content, false);
-            item.SetActive(true);
+            item.SetActiveSelf(true);
 
             LayoutElement layoutElement = item.gameObject.GetOrAddComponent<LayoutElement>();
 
@@ -1246,16 +1246,16 @@ namespace GameFrameWork.UI
             if (m_ScrollRect.vertical)
             {
                 m_FirstPadder.minHeight = firstSize;
-                m_FirstPadder.gameObject.SetActive(m_FirstPadder.minHeight > 0);
+                m_FirstPadder.gameObject.SetActiveSelf(m_FirstPadder.minHeight > 0);
                 m_LastPadder.minHeight = lastSize;
-                m_LastPadder.gameObject.SetActive(m_LastPadder.minHeight > 0);
+                m_LastPadder.gameObject.SetActiveSelf(m_LastPadder.minHeight > 0);
             }
             else
             {
                 m_FirstPadder.minWidth = firstSize;
-                m_FirstPadder.gameObject.SetActive(m_FirstPadder.minWidth > 0);
+                m_FirstPadder.gameObject.SetActiveSelf(m_FirstPadder.minWidth > 0);
                 m_LastPadder.minWidth = lastSize;
-                m_LastPadder.gameObject.SetActive(m_LastPadder.minWidth > 0);
+                m_LastPadder.gameObject.SetActiveSelf(m_LastPadder.minWidth > 0);
             }
         }
 

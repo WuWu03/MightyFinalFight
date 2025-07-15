@@ -22,9 +22,7 @@ public class TalkPanelComponent : BasePanelComponent
 	public GameObject talkSelectItem { get; private set; }
 	public LayoutGroupView<TalkSelectItem> talkSelectGroupView { get; private set; }
 
-	public TalkPanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		languageContent = root.objects[0] as LanguageText;
 		txtContent = root.objects[1] as TextMeshProUGUI;

@@ -18,6 +18,15 @@ namespace GameFrameWork.Editor
             m_StackRemovedData = new Stack<int>();
         }
 
+        private void OnEnable()
+        {
+            string[] buildAssetsPath = Directory.GetDirectories("Assets/ArtResources/Fonts/");
+
+            if (buildAssetsPath == null || buildAssetsPath.Length < 1)
+            {
+                buildAssetsPath = Directory.GetFiles("Assets/ArtResources/Fonts/");
+            }
+        }
         private void OnDisable()
         {
             AssetBundleUtility.RefreshData();
@@ -34,40 +43,7 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private bool IsConfigChanged()
-        {
-            if (m_StackRemovedData.Count > 0)
-            {
-                return true;
-            }
 
-            if (m_ListData == null)
-            {
-                return false;
-            }
-
-            if (m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
-            {
-                return true;
-            }
-
-            Func<AssetBundleData, AssetBundleData, bool> equals = (a, b) =>
-            a.bundleBuildType == b.bundleBuildType &&
-            string.Equals(a.bundleName, b.bundleName) &&
-            string.Equals(a.bundleExtend, b.bundleExtend) &&
-            string.Equals(a.pattern, b.pattern) &&
-            string.Equals(a.assetPath, b.assetPath);
-
-            for (int i = 0; i < m_ListData.Count; i++)
-            {
-                if (!equals(m_ListData[i], m_AssetBundleConfig.listDatas[i]))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         private void OnGUI()
         {
@@ -134,6 +110,21 @@ namespace GameFrameWork.Editor
                 }
             }
 
+            Array buildTargetArray = Enum.GetValues(typeof(BuildTarget));
+            m_BuildTargetDisplayNames = new string[buildTargetArray.Length];
+            m_BuildTargets = new BuildTarget[buildTargetArray.Length];
+
+            for (int i = 0; i < buildTargetArray.Length; i++)
+            {
+                m_BuildTargetDisplayNames[i] = buildTargetArray.GetValue(i).ToString();
+                m_BuildTargets[i] = (BuildTarget)buildTargetArray.GetValue(i);
+
+                if (m_BuildTargets[i] == EditorUserBuildSettings.activeBuildTarget)
+                {
+                    m_AssetBundleConfig.platFormIndex = i;
+                }
+            }
+
             m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
         }
 
@@ -184,6 +175,41 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private bool IsConfigChanged()
+        {
+            if (m_StackRemovedData.Count > 0)
+            {
+                return true;
+            }
+
+            if (m_ListData == null)
+            {
+                return false;
+            }
+
+            if (m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
+            {
+                return true;
+            }
+
+            Func<AssetBundleData, AssetBundleData, bool> equals = (a, b) =>
+            a.bundleBuildType == b.bundleBuildType &&
+            string.Equals(a.bundleName, b.bundleName) &&
+            string.Equals(a.bundleExtend, b.bundleExtend) &&
+            string.Equals(a.pattern, b.pattern) &&
+            string.Equals(a.assetPath, b.assetPath);
+
+            for (int i = 0; i < m_ListData.Count; i++)
+            {
+                if (!equals(m_ListData[i], m_AssetBundleConfig.listDatas[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void ClearConfig()
         {
             m_ListData.Clear();
@@ -206,36 +232,6 @@ namespace GameFrameWork.Editor
             {
                 m_AssetBundleConfig.listPattern = new List<string>();
             }
-
-            GUI.enabled = !m_AssetBundleConfig.lockConfig;
-            EditorUtil.GUIBoxScope(() =>
-            {
-                GUILayout.BeginVertical();
-                m_AssetBundleConfig.assetBuildDir = EditorGUILayout.TextField("资源打包路径（相对路径）", m_AssetBundleConfig.assetBuildDir);
- 
-                if (!string.IsNullOrEmpty(m_AssetBundleConfig.assetBuildDir) && !m_AssetBundleConfig.assetBuildDir.StartsWith("Assets/"))
-                {
-                    m_AssetBundleConfig.assetBuildDir = "Assets/" + m_AssetBundleConfig.assetBuildDir;
-                }
-
-                if (!string.IsNullOrEmpty(m_AssetBundleConfig.assetBuildDir) && !m_AssetBundleConfig.assetBuildDir.EndsWith("/"))
-                {
-                    m_AssetBundleConfig.assetBuildDir += "/";
-                }
-
-                if (m_AssetBundleConfig.isCopyAsset)
-                {
-                    m_AssetBundleConfig.assetCopyDir = EditorGUILayout.TextField("资源复制路径（绝对路径）", m_AssetBundleConfig.assetCopyDir);
-
-                    if (!string.IsNullOrEmpty(m_AssetBundleConfig.assetCopyDir) && !m_AssetBundleConfig.assetCopyDir.EndsWith("\\"))
-                    {
-                        m_AssetBundleConfig.assetCopyDir += "\\";
-                    }
-                }
-                GUILayout.EndVertical();
-            });
-
-            GUI.enabled = true;
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             GUI.enabled = !m_AssetBundleConfig.lockConfig;
@@ -270,7 +266,6 @@ namespace GameFrameWork.Editor
                         }
                     }
                     GUILayout.EndHorizontal();
-
                     m_ListData[i].bundleBuildType = (AssetBundleData.BundleBuildType)EditorGUILayout.EnumPopup("包类型：", (Enum)m_ListData[i].bundleBuildType);
                     m_ListData[i].assetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].assetPath);
 
@@ -279,51 +274,32 @@ namespace GameFrameWork.Editor
                         m_ListData[i].assetPath += "/";
                     }
 
+                    m_ListData[i].bundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].bundleName);
+
                     if (m_ListData[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
                     {
-                        m_ListData[i].bundleName = string.Empty;
-                        m_ListData[i].bundlePath = EditorGUILayout.TextField("包路径： ", m_ListData[i].bundlePath);
-
-                        if (!string.IsNullOrEmpty(m_ListData[i].bundlePath))
+                        if (!string.IsNullOrEmpty(m_ListData[i].bundleName))
                         {
-                            if (!m_ListData[i].bundlePath.EndsWith("/"))
+                            if (!m_ListData[i].bundleName.EndsWith("/"))
                             {
-                                m_ListData[i].bundlePath += "/";
-                            }
-
-                            if (m_ListData[i].bundlePath.StartsWith("Assets"))
-                            {
-                                m_ListData[i].bundlePath = m_ListData[i].bundlePath.Replace("Assets", string.Empty);
-                            }
-
-                            if (m_ListData[i].bundlePath.StartsWith("/"))
-                            {
-                                m_ListData[i].bundlePath = m_ListData[i].bundlePath.Substring(1);
+                                m_ListData[i].bundleName += "/";
                             }
                         }
                     }
                     else
                     {
-                        m_ListData[i].bundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].bundleName);
-                        m_ListData[i].bundlePath = string.Empty;
-
                         if (!string.IsNullOrEmpty(m_ListData[i].bundleName))
                         {
                             if (m_ListData[i].bundleName.EndsWith("/"))
                             {
                                 m_ListData[i].bundleName = m_ListData[i].bundleName.Substring(0, m_ListData[i].bundleName.Length - 1);
                             }
-
-                            if (m_ListData[i].bundleName.StartsWith("Assets"))
-                            {
-                                m_ListData[i].bundleName = m_ListData[i].bundleName.Replace("Assets", string.Empty);
-                            }
-
-                            if (m_ListData[i].bundleName.StartsWith("/"))
-                            {
-                                m_ListData[i].bundleName = m_ListData[i].bundleName.Substring(1);
-                            }
                         }
+                    }
+
+                    if (m_ListData[i].bundleName.StartsWith("Assets/"))
+                    {
+                        m_ListData[i].bundleName = m_ListData[i].bundleName.Replace("Assets/", string.Empty);
                     }
 
                     if (m_AssetBundleConfig.listExtendName.Count > 0)
@@ -376,6 +352,20 @@ namespace GameFrameWork.Editor
             {
                 m_AssetBundleConfig.isCopyAsset = GUILayout.Toggle(m_AssetBundleConfig.isCopyAsset, "打包完成后自动复制资源到指定文件夹", GUI.skin.toggle);
             });
+
+            if (m_AssetBundleConfig.isCopyAsset)
+            {
+                EditorUtil.GUIBoxScope(() =>
+                {
+                    m_AssetBundleConfig.assetCopyDir = EditorGUILayout.TextField("资源复制路径（绝对路径）", m_AssetBundleConfig.assetCopyDir);
+                });
+
+                if (!string.IsNullOrEmpty(m_AssetBundleConfig.assetCopyDir) && !m_AssetBundleConfig.assetCopyDir.EndsWith("\\"))
+                {
+                    m_AssetBundleConfig.assetCopyDir += "\\";
+                }
+            }
+
             GUI.enabled = true;
         }
 
@@ -503,7 +493,7 @@ namespace GameFrameWork.Editor
             style.alignment = TextAnchor.MiddleCenter;
             style.fixedWidth = 346;
             GUILayout.Label("打包平台", style);
-            m_AssetBundleConfig.platFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.platFormIndex, TARGET_PLATFORM);
+            m_AssetBundleConfig.platFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.platFormIndex, m_BuildTargetDisplayNames);
             GUILayout.EndHorizontal();
             GUI.enabled = true;
         }
@@ -546,16 +536,9 @@ namespace GameFrameWork.Editor
                 ShowNotification(new GUIContent("保存成功"));
             }
 
-            //if (GUILayout.Button("重新排序"))
-            //{
-            //    SortConfig();
-            //    SaveConfig();
-            //    ShowNotification(new GUIContent("排序成功"));
-            //}
             GUI.enabled = true;
         }
 
-        int platFormIndex = 0;
         private void BuildGUI()
         {
             if (GUILayout.Button("打        包"))
@@ -564,45 +547,16 @@ namespace GameFrameWork.Editor
                 {
                     SaveConfig();
 
-                    if (platFormIndex == 0)
+                    using (AssetBundleBuilder builder = new AssetBundleBuilder())
                     {
-                        using(AssetBundleBuilder builder = new AssetBundleBuilder())
-                        {
-                            builder.Build(BuildTarget.StandaloneWindows);
-                        }
-                    }
-                    else if (platFormIndex == 1)
-                    {
-                        using (AssetBundleBuilder builder = new AssetBundleBuilder())
-                        {
-                            builder.Build(BuildTarget.Android);
-                        }
-                    }
-                    else
-                    {
-                        BuildTarget target;
-#if UNITY_5_3_OR_NEWER
-                        target = BuildTarget.iOS;
-#else
-                        target = BuildTarget.iPhone;
-#endif
-                        using (AssetBundleBuilder builder = new AssetBundleBuilder())
-                        {
-                            builder.Build(target);
-                        }
+                        builder.Build(m_BuildTargets[m_AssetBundleConfig.platFormIndex]);
                     }
                 }
             }
         }
 
-
-        private readonly string[] TARGET_PLATFORM = new string[3]
-        {
-            "PC",
-            "Andriod",
-            "iOS"
-        };
-
+        private string[] m_BuildTargetDisplayNames = null;
+        private BuildTarget[] m_BuildTargets = null;
         private Stack<int> m_StackRemovedData = null;
         private List<int> m_ListBundleExtendIndex = null;
         private List<int> m_ListPatternIndex = null;

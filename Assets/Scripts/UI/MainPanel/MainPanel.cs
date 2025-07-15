@@ -11,18 +11,17 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainPanel : BasePanel
+public class MainPanel : BasePanel<MainPanelComponent>
 {
     protected override void OnInit(object[] param)
 	{
-		m_Component = GetPanelComponent<MainPanelComponent>();
         m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
 	protected override void OnOpen()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent = OnItemUpdate;
-		m_Component.enemyHpBar.SetActive(false);
+		m_Component.levelListGroupView.onItemUpdateEvent += OnItemUpdate;
+		m_Component.enemyHpBar.SetActiveSelf(false);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
@@ -40,14 +39,14 @@ public class MainPanel : BasePanel
     {
 		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ConstField.EnemyHPBarHideTime)
 		{
-			m_Component.enemyHpBar.gameObject.SetActive(false);
+			m_Component.enemyHpBar.gameObject.SetActiveSelf(false);
 			m_EnemyHpBarHideTimer = -1;
 		}
 	}
 
 	protected override void OnClose()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent = null;
+		m_Component.levelListGroupView.onItemUpdateEvent -= OnItemUpdate;
     }
 
 	protected override void OnDestroy()
@@ -59,11 +58,11 @@ public class MainPanel : BasePanel
 	{
 		int stageIndex = StageMgr.instance.currStageData.StageIndex;
 		int playerLevel = PlayerMgr.instance.level;
-		item.imgLevel1.gameObject.SetActive(stageIndex == 1 && playerLevel >= item.id);
-		item.imgLevel2.gameObject.SetActive(stageIndex == 2 && playerLevel >= item.id);
-		item.imgLevel3.gameObject.SetActive(stageIndex == 3 && playerLevel >= item.id);
-		item.imgLevel4.gameObject.SetActive(stageIndex == 4 && playerLevel >= item.id);
-		item.imgLevel5.gameObject.SetActive(stageIndex == 5 && playerLevel >= item.id);
+		item.imgLevel1.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
+		item.imgLevel2.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
+		item.imgLevel3.gameObject.SetActiveSelf(stageIndex == 3 && playerLevel >= item.id);
+		item.imgLevel4.gameObject.SetActiveSelf(stageIndex == 4 && playerLevel >= item.id);
+		item.imgLevel5.gameObject.SetActiveSelf(stageIndex == 5 && playerLevel >= item.id);
 	}
 
 	public void SetPlayerHP(int value, int max, float width = 0f)
@@ -87,7 +86,7 @@ public class MainPanel : BasePanel
         m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
         m_Component.enemyHpBar.maxValue = max;
 		m_Component.enemyHpBar.value = value;
-        m_Component.enemyHpBar.gameObject.SetActive(true);
+        m_Component.enemyHpBar.gameObject.SetActiveSelf(true);
 
         Image image = m_Component.enemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
@@ -104,7 +103,7 @@ public class MainPanel : BasePanel
 			}
 			sequence.AppendCallback(() =>
 			{
-				m_Component.enemyHpBar.gameObject.SetActive(false);
+				m_Component.enemyHpBar.gameObject.SetActiveSelf(false);
 				m_IsEnemyHpBarAnim = false;
 			});
 			return;
@@ -127,7 +126,7 @@ public class MainPanel : BasePanel
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.txtExp.text = PathUtil.FormatPath(currExpStr, maxExpStr);
+		m_Component.txtExp.text = StringUtil.Append(currExpStr, "/", maxExpStr);
 	}
 
 	public void SetPlayerLevel()
@@ -148,5 +147,4 @@ public class MainPanel : BasePanel
 
 	private bool m_IsEnemyHpBarAnim = false;
 	private float m_EnemyHpBarHideTimer = -1;
-	private MainPanelComponent m_Component = null;
 }

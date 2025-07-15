@@ -93,15 +93,15 @@ public static class SkillEditorHelper
             return;
         }
 
-        string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
+        string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath + "SkillConfig.asset");
         string configDataFullPath = PathUtil.GetAssetFullPath(configDataPath);
 
-        if (!File.Exists(configDataFullPath + "SkillData.asset"))
+        if (!File.Exists(configDataFullPath))
         {
             EditorMgr.CreateSkillData();
         }
 
-        m_SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>(configDataPath + "SkillData.asset");
+        m_SkillConfig = AssetDatabase.LoadAssetAtPath<SkillConfig>(configDataPath);
 
         SetShowNames();
     }
@@ -196,6 +196,11 @@ public static class SkillEditorHelper
     public static void SaveConfig()
     {
         UnityEditor.EditorUtility.SetDirty(m_SkillConfig);
+    }
+
+    public static void Release()
+    {
+        m_SkillConfig = null;
     }
 
     private static int m_CurrSelectIndex = 0;

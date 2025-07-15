@@ -37,7 +37,7 @@ public static class TaskFactory
                 ret = new TaskTriggerCreateTargets(data);
                 break;
             case TaskConfigData.TaskTriggerType.Story:
-                string className = StringUtil.Format("TaskTriggerStory_", data.StoryId);
+                string className = StringUtil.Append("TaskTriggerStory_", data.StoryId.ToString());
                 Type t = Type.GetType(className);
                 if (t != null)
                 {

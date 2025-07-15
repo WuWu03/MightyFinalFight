@@ -37,7 +37,7 @@ public static class SceneEntityFactory
             weaponAttribute.health = sceneItemConfigData.value;
             weaponAttribute.maxHealth = sceneItemConfigData.value;
 
-            sceneItemConfigData = ConfigData.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
+            sceneItemConfigData = ConfigDataSheet.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
             sceneItem = EntityMgr.instance.GetEntity<Weapon>(sceneItemConfigData.name);
 
@@ -148,7 +148,7 @@ public static class SceneEntityFactory
         barrelData.groundY = groundY;
         barrelData.isFloat = isFloat;
         barrelData.moveSpeed = moveSpeed;
-        barrelData.itemId = itemId == -1 ? ConfigData.sceneItemConfigDatas[Random.Range(0, ConfigData.sceneItemConfigDatas.Length)].id : itemId;
+        barrelData.itemId = itemId == -1 ? ConfigDataSheet.sceneItemConfigDatas[Random.Range(0, ConfigDataSheet.sceneItemConfigDatas.Length)].id : itemId;
         barrelAttribute.health = 1;
         barrelAttribute.maxHealth = 1;
 

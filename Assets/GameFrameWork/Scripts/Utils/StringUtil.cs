@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,37 +6,37 @@ namespace GameFrameWork.Utils
 {
     public static class StringUtil
     {
-        public static string Format(bool isPath, object arg1)
+        public static string Format(string format, string arg1)
         {
-            return Format(isPath, arg1, null, null, null, null, null, null);
+            return Format(format, arg1, null, null, null, null, null, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2)
+        public static string Format(string format, string arg1, string arg2)
         {
-            return Format(isPath, arg1, arg2, null, null, null, null, null);
+            return Format(format, arg1, arg2, null, null, null, null, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2, object arg3)
+        public static string Format(string format, string arg1, string arg2, string arg3)
         {
-            return Format(isPath, arg1, arg2, arg3, null, null, null, null);
+            return Format(format, arg1, arg2, arg3, null, null, null, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4)
+        public static string Format(string format, string arg1, string arg2, string arg3, string arg4)
         {
-            return Format(isPath, arg1, arg2, arg3, arg4, null, null, null);
+            return Format(format, arg1, arg2, arg3, arg4, null, null, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5)
+        public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            return Format(isPath, arg1, arg2, arg3, arg4, arg5, null, null);
+            return Format(format, arg1, arg2, arg3, arg4, arg5, null, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
+        public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
         {
-            return Format(isPath, arg1, arg2, arg3, arg4, arg5, arg6, null);
+            return Format(format, arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
 
-        public static string Format(bool isPath, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
+        public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
         {
             m_ListArgs.Clear();
 
@@ -49,91 +48,48 @@ namespace GameFrameWork.Utils
             AddArg(arg6);
             AddArg(arg7);
 
-            return Format(isPath);
+            return Format(format);
         }
 
-        public static string Format(bool isPath, params object[] args)
+        public static string Format(string format, params string[] args)
         {
             m_ListArgs.Clear();
             m_ListArgs.AddRange(args);
 
-            return Format(isPath);
+            return Format(format);
         }
 
-        public static string Format(object arg1)
+        public static string Append(string arg1)
         {
-            return Format(false, arg1, null, null, null, null, null, null);
+            return Append(arg1, null, null, null, null, null, null);
         }
 
-        public static string Format(object arg1, object arg2)
+        public static string Append(string arg1, string arg2)
         {
-            return Format(false, arg1, arg2, null, null, null, null, null);
+            return Append(arg1, arg2, null, null, null, null, null);
         }
 
-        public static string Format(object arg1, object arg2, object arg3)
+        public static string Append(string arg1, string arg2, string arg3)
         {
-            return Format(false, arg1, arg2, arg3, null, null, null, null);
+            return Append(arg1, arg2, arg3, null, null, null, null);
         }
 
-        public static string Format(object arg1, object arg2, object arg3, object arg4)
+        public static string Append(string arg1, string arg2, string arg3, string arg4)
         {
-            return Format(false, arg1, arg2, arg3, arg4, null, null, null);
+            return Append(arg1, arg2, arg3, arg4, null, null, null);
         }
 
-        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5)
+        public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            return Format(false, arg1, arg2, arg3, arg4, arg5, null, null);
+            return Append(arg1, arg2, arg3, arg4, arg5, null, null);
         }
 
-        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
+        public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
         {
-            return Format(false, arg1, arg2, arg3, arg4, arg5, arg6, null);
+            return Append(arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
 
-        public static string Format(object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
-        {
-            return Format(false, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-        }
-
-        public static string Format(params object[] args)
-        {
-            m_ListArgs.Clear();
-            m_ListArgs.AddRange(args);
-
-            return Format(false);
-        }
-
-        public static string FormatDefault(string format, object arg1)
-        {
-            return FormatDefault(format, arg1, null, null, null, null, null, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2)
-        {
-            return FormatDefault(format, arg1, arg2, null, null, null, null, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2, object arg3)
-        {
-            return FormatDefault(format, arg1, arg2, arg3, null, null, null, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4)
-        {
-            return FormatDefault(format, arg1, arg2, arg3, arg4, null, null, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5)
-        {
-            return FormatDefault(format, arg1, arg2, arg3, arg4, arg5, null, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6)
-        {
-            return FormatDefault(format, arg1, arg2, arg3, arg4, arg5, arg6, null);
-        }
-
-        public static string FormatDefault(string format, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7)
+        public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
         {
             m_ListArgs.Clear();
 
@@ -145,77 +101,15 @@ namespace GameFrameWork.Utils
             AddArg(arg6);
             AddArg(arg7);
 
-            return FormatDefault(format);
+            return Append(false);
         }
 
-        public static string FormatDefault(string format, params object[] args)
+        public static string Append(params string[] args)
         {
             m_ListArgs.Clear();
             m_ListArgs.AddRange(args);
-            return FormatDefault(format);
-        }
 
-        private static string Format(bool isPath)
-        {
-            if (m_ListArgs == null || m_ListArgs.Count < 1)
-            {
-                return string.Empty;
-            }
-
-            if (m_ListArgs.Count < 2)
-            {
-                return m_ListArgs[0].ToString();
-            }
-
-            m_StringBuilder.Clear();
-
-            for (int i = 0; i < m_ListArgs.Count; i++)
-            {
-                if (isPath && i > 0)
-                {
-                    bool conditon = m_ListArgs[i] != null;
-
-                    if (m_ListArgs[i - 1] is string argStr)
-                    {
-                        conditon = !string.IsNullOrEmpty(argStr);
-                    }
-
-                    if (m_ListArgs[i] is string argStr2)
-                    {
-                        conditon = conditon && !string.IsNullOrEmpty(argStr2);
-                    }
-
-                    if (conditon)
-                    {
-                        m_StringBuilder.Append("/");
-                    }
-                }
-
-                m_StringBuilder.Append(m_ListArgs[i]);
-            }
-
-            return m_StringBuilder.ToString();
-        }
-
-        private static string FormatDefault(string format)
-        {
-            if (format == null)
-            {
-                throw new Exception("Format is invalid.");
-            }
-
-            m_StringBuilder.Clear();
-            m_StringBuilder.AppendFormat(format, m_ListArgs.ToArray());
-
-            return m_StringBuilder.ToString();
-        }
-
-        private static void AddArg(object arg)
-        {
-            if (arg != null || (arg is string argStr && !string.IsNullOrEmpty(argStr)))
-            {
-                m_ListArgs.Add(arg);
-            }
+            return Append(false);
         }
 
         /// <summary>
@@ -290,6 +184,210 @@ namespace GameFrameWork.Utils
             return m_StringBuilder.ToString();
         }
 
+        public static string GetChineseNum(decimal num)
+        {
+            if (num == 0)
+            {
+                return new string(new char[] { m_ChineseDigit[0] });
+            }
+
+            decimal integerNum = Math.Round(num, 0);
+            decimal decimalNum = num - integerNum;
+            decimal tempIntegerNum = integerNum;
+            int unitIndex = 0;
+            int prevUnitDigit = 0;
+            int lastDigit = 0;
+            int[] isUnitDigtsAdd = new int[m_UnitDigits.Length];
+            m_StringBuilder.Clear();
+
+            while (tempIntegerNum >= 1)
+            {
+                int digit = (int)(tempIntegerNum % 10);
+
+                if (digit > 0)
+                {
+                    string chineseUnitStr = string.Empty;
+                    int tempUnitIndex = unitIndex;
+
+                    while (tempUnitIndex > 0)
+                    {
+                        if (tempUnitIndex < 4)
+                        {
+                            m_StringBuilder.Insert(0, m_ChineseUnit[tempUnitIndex]);
+                            tempUnitIndex -= 4;
+                        }
+                        else
+                        {
+                            for (int i = prevUnitDigit; i < m_UnitDigits.Length; i++)
+                            {
+                                if (tempUnitIndex < m_UnitDigits[i])
+                                {
+                                    int digitIndex = i - 1;
+                                    if (digitIndex > prevUnitDigit)
+                                    {
+                                        for (int j = 0; j < m_UnitDigits.Length; j++)
+                                        {
+                                            isUnitDigtsAdd[j] = 0;
+                                        }
+
+                                        prevUnitDigit = digitIndex;
+                                    }
+
+                                    if (isUnitDigtsAdd[digitIndex] != m_UnitDigits[digitIndex])
+                                    {
+                                        m_StringBuilder.Insert(0, m_ChineseUnit[digitIndex + 4]);
+                                        isUnitDigtsAdd[digitIndex] = m_UnitDigits[digitIndex];
+                                    }
+
+                                    tempUnitIndex -= m_UnitDigits[digitIndex];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    m_StringBuilder.Insert(0, m_ChineseDigit[digit]);
+                }
+                else
+                {
+                    if (m_StringBuilder.Length > 0 && m_StringBuilder[0] != m_ChineseDigit[0])
+                    {
+                        m_StringBuilder.Insert(0, m_ChineseDigit[0]);
+                    }
+                }
+
+                tempIntegerNum /= 10;
+                unitIndex++;
+            }
+
+            lastDigit = (int)(tempIntegerNum * 10);
+
+            if (lastDigit == 1 && (unitIndex - 1) % 4 == 1)//十，十万，十亿，十兆等十开头的移除最高位的1，否则会出现一十五这样的数字
+            {
+                m_StringBuilder.Remove(0, 1);
+            }
+
+
+            if (integerNum == 0)
+            {
+                m_StringBuilder.Insert(0, m_ChineseDigit[0]);
+            }
+
+            if (decimalNum > 0)
+            {
+                m_StringBuilder.Append(m_ChineseDot);
+
+                while (decimalNum > 0 && decimalNum < 1)
+                {
+                    decimalNum *= 10;
+                    int decimalValue = (int)(decimalNum);
+                    decimalNum -= decimalValue;
+                    m_StringBuilder.Append(m_ChineseDigit[decimalValue]);
+                }
+            }
+
+            if (integerNum < 0)
+            {
+                m_StringBuilder.Insert(0, m_ChineseNegative);
+            }
+
+            return m_StringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// 计算字符串的MD5值
+        /// </summary>
+        public static string MD5(string source)
+        {
+            return MD5(Encoding.UTF8.GetBytes(source));
+        }
+
+        /// <summary>
+        /// 计算二进制的MD5
+        /// </summary>
+
+        public static string MD5(byte[] source)
+        {
+            try
+            {
+                using MD5 md5 = new MD5CryptoServiceProvider();
+                byte[] result = md5.ComputeHash(source);
+
+                m_StringBuilder.Clear();
+
+                for (int i = 0; i < result.Length; i++)
+                {
+                    m_StringBuilder.Append(result[i].ToString("x2"));
+                }
+
+                return m_StringBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("MD5 caculation error:" + ex.Message);
+            }
+        }
+
+        public static void AddArg(string arg)
+        {
+            if (!string.IsNullOrEmpty(arg))
+            {
+                m_ListArgs.Add(arg);
+            }
+        }
+
+        public static void ClearArgs()
+        {
+            if(m_ListArgs != null && m_ListArgs.count > 0)
+            {
+                m_ListArgs.Clear();
+            }
+        }
+
+        public static string Append(bool isPath)
+        {
+            if (m_ListArgs == null || m_ListArgs.count < 1)
+            {
+                return string.Empty;
+            }
+
+            if (m_ListArgs.count < 2)
+            {
+                return m_ListArgs[0].ToString();
+            }
+
+            m_StringBuilder.Clear();
+
+            for (int i = 0; i < m_ListArgs.count; i++)
+            {
+                string arg = m_ListArgs[i];
+                bool addPath = isPath && !string.IsNullOrEmpty(arg) && !arg.EndsWith("/") && i < m_ListArgs.count - 1;
+
+                m_StringBuilder.Append(m_ListArgs[i]);
+
+                if (addPath)
+                {
+                    m_StringBuilder.Append('/');
+                }
+            }
+
+            m_ListArgs.Clear();
+            return m_StringBuilder.ToString();
+        }
+
+        private static string Format(string format)
+        {
+            if (format == null)
+            {
+                throw new Exception("Format is invalid.");
+            }
+
+            m_StringBuilder.Clear();
+            m_StringBuilder.AppendFormat(format, m_ListArgs.ToArray());
+
+            return string.Format(format, m_ListArgs.ToArray());//m_StringBuilder.ToString();
+        }
+
         private static string GetRomanStr(int num)
         {
             switch (num)
@@ -313,43 +411,13 @@ namespace GameFrameWork.Utils
             return string.Empty;
         }
 
-        /// <summary>
-        /// 计算字符串的MD5值
-        /// </summary>
-        public static string MD5(string source)
-        {
-            return MD5(Encoding.UTF8.GetBytes(source));
-        }
+        private static readonly char[] m_ChineseUnit = { default, '十', '百', '千', '万', '亿', '兆', '京' };
+        private static readonly char[] m_ChineseDigit = { '零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十' };
+        private static readonly int[] m_UnitDigits = { 4, 8, 16, 32 };
+        private static readonly char m_ChineseNegative = '负';
+        private static readonly char m_ChineseDot = '点';
 
-        /// <summary>
-        /// 计算二进制的MD5
-        /// </summary>
-
-        public static string MD5(byte[] source)
-        {
-            try
-            {
-                using (MD5 md5 = new MD5CryptoServiceProvider())
-                {
-                    byte[] result = md5.ComputeHash(source); 
-
-                    m_StringBuilder.Clear();
-
-                    for (int i = 0; i < result.Length; i++)
-                    {
-                        m_StringBuilder.Append(result[i].ToString("x2"));
-                    }
-
-                    return m_StringBuilder.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("MD5 caculation error:" + ex.Message);
-            }
-        }
-
-        private static List<object> m_ListArgs = new List<object>();
-        private static StringBuilder m_StringBuilder = new StringBuilder();
+        private static readonly SmallList<string> m_ListArgs = new();
+        private static readonly StringBuilder m_StringBuilder = new();
     }
 }

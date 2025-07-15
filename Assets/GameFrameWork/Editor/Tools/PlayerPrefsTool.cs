@@ -7,92 +7,86 @@ namespace GameFrameWork.Editor
     {
         private void OnEnable()
         {
-            m_ListInputKeys = new List<string>();
+            m_ListInputKeys = Serialize.PlayerPrefs.GetPlayerPrefsSaveKeyList();
+            m_ListDeleteKeys = new List<string>();
         }
 
         private void OnDisable()
         {
+            m_ListDeleteKeys.Clear();
+            m_ListDeleteKeys = null;
+
+            if (m_ListInputKeys == null)
+            {
+                return;
+            }
+
             m_ListInputKeys.Clear();
-            m_InputCount = 0;
             m_ListInputKeys = null;
         }
 
         private void OnGUI()
         {
-            EditorGUILayout.BeginVertical();
-            int inputCount = Mathf.Clamp(EditorGUILayout.IntField("输入条目", m_InputCount), 1, 100);
-
-            if (inputCount != m_InputCount)
+            if (m_ListDeleteKeys.Count > 0 && m_ListDeleteKeys != null && m_ListDeleteKeys.Count > 0)
             {
-                m_InputCount = inputCount;
-                m_ListInputKeys.Clear();
-
-                for (int i = 0; i < inputCount; i++)
+                for (int i = 0; i < m_ListDeleteKeys.Count; i++)
                 {
-                    m_ListInputKeys.Add(string.Empty);
+                    m_ListInputKeys.Remove(m_ListDeleteKeys[i]);
                 }
-            }
 
-            m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
-            for (int i = 0; i < m_InputCount; i++)
+                m_ListDeleteKeys.Clear();
+            }
+   
+            if(m_ListInputKeys == null || m_ListInputKeys.Count == 0)
             {
-                m_ListInputKeys[i] = EditorGUILayout.TextField((i + 1).ToString(), m_ListInputKeys[i]);
+               GUI.Label(new Rect((this.position.width - 120f)/2f, 0, this.position.width, this.position.height), "[PlayerPrefs]数据为空。");
             }
-
-            EditorGUILayout.EndScrollView();
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button("清除"))
+            else
             {
-                List<string> invalidKeys = new List<string>();
+                EditorGUILayout.BeginVertical();
+                m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
 
-                for (int i = m_InputCount - 1; i >= 0; i--)
+                for (int i = 0; i < m_ListInputKeys.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(m_ListInputKeys[i]))
+                    EditorUtil.GUIBoxScope(() =>
                     {
-                        m_ListInputKeys.RemoveAt(i);
-                        m_InputCount--;
-                        continue;
-                    }
+                        EditorGUILayout.BeginHorizontal();
+                        string key = m_ListInputKeys[i];
+                        string stringValue = PlayerPrefs.GetString(key, string.Empty);
+                        string intValue = PlayerPrefs.GetInt(key, 0).ToString();
+                        string floatValue = PlayerPrefs.GetFloat(key, 0f).ToString("F2");
 
-                    if (PlayerPrefs.HasKey(m_ListInputKeys[i]))
-                    {
-                        PlayerPrefs.DeleteKey(m_ListInputKeys[i]);
-                        m_ListInputKeys.RemoveAt(i);
-                        m_InputCount--;
-                    }
-                    else
-                    {
-                        invalidKeys.Add(m_ListInputKeys[i]);
-                    }
+                        string content = string.Format("键：{0}    字符串值：{1}    整型值：{2}    浮点值：{3}", key, string.IsNullOrEmpty(stringValue) ? "空" : stringValue, intValue, floatValue);
+                        EditorGUILayout.LabelField(content);
+
+                        if (GUILayout.Button("删除", GUILayout.Width(50f)))
+                        {
+                            Serialize.PlayerPrefs.DeleteKey(m_ListInputKeys[i]);
+                            m_ListDeleteKeys.Add(m_ListInputKeys[i]);
+                            ShowNotification(new GUIContent("成功删除 PlayerPrefs: " + m_ListInputKeys[i]));
+                        }
+
+                        EditorGUILayout.EndHorizontal();
+                    });
                 }
 
-                if (invalidKeys.Count > 0)
-                {
-                    invalidKeys.Reverse();
-                    string notificationStr = string.Empty;
+                EditorGUILayout.EndScrollView();
+                GUILayout.FlexibleSpace();
 
-                    for (int i = 0; i < invalidKeys.Count; i++)
-                    {
-                        notificationStr += "Key : " + invalidKeys[i] + "\n";
-                    }
-
-                    notificationStr += "不存在，请检查key值是否错误";
-                    EditorUtility.DisplayDialog("提示", notificationStr, "确定");
-                }
-                else
+                if (GUILayout.Button("清除所有"))
                 {
-                    ShowNotification(new GUIContent("清除成功"));
+                    Serialize.PlayerPrefs.DeleteAll();
+                    m_ListInputKeys.Clear();
+                    ShowNotification(new GUIContent("成功清除所有 PlayerPrefs"));
+                    AssetDatabase.Refresh();
                 }
 
-                AssetDatabase.Refresh();
+                EditorGUILayout.EndVertical();
             }
-
-            EditorGUILayout.EndVertical();
         }
 
         private Vector2 m_ScrollPos = Vector2.zero;
         private List<string> m_ListInputKeys = null;
-        private int m_InputCount = 0;
+        private List<string> m_ListDeleteKeys = null;
     }
 }

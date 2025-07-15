@@ -16,7 +16,6 @@ public class DoDefense : Action
 
     public override BehaviourTreeState Excute()
     {
-        Debug.Log("开始防御");
         m_Owner.owner.OnDefenseMsg(PlayerMgr.instance.player.dir);
         m_Owner.OppositePlayer();
         return BehaviourTreeState.Success;

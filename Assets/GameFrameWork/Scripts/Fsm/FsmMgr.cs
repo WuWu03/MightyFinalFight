@@ -9,90 +9,75 @@ namespace GameFrameWork.FSM
         {
             get
             {
-                return m_ListFsms.Count;
+                return m_FSMList.Count;
+            }
+        }
+
+        public int unUsedFSMCount
+        {
+            get
+            {
+                return m_FSMQueue.Count;
             }
         }
 
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_ListFsms = new List<FiniteStateMachine>();
-        }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            for (int i = 0; i < m_ListFsms.Count; i++)
-            {
-                m_ListFsms[i].Update(Time.deltaTime, Time.unscaledDeltaTime);
-            }
-        }
-
-        protected override void OnLateUpdate()
-        {
-            base.OnLateUpdate();
-
-            for (int i = 0; i < m_ListFsms.Count; i++)
-            {
-                m_ListFsms[i].LateUpdate(Time.deltaTime, Time.unscaledDeltaTime);
-            }
-        }
-
-        protected override void OnFixedUpdate()
-        {
-            for (int i = 0; i < m_ListFsms.Count; i++)
-            {
-                m_ListFsms[i].FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
-            }
+            m_FSMQueue = new Queue<FiniteStateMachine>();
+            m_FSMList = new List<FiniteStateMachine>();
         }
 
         protected override void OnShutDown()
         {
-            for (int i = 0; i < m_ListFsms.Count; i++)
+            for (int i = 0; i < m_FSMList.Count; i++)
             {
-                m_ListFsms[i].ShutDown();
+                m_FSMList[i].Release();
             }
 
-            m_ListFsms.Clear();
+            m_FSMList.Clear();
+            m_FSMQueue.Clear();
+            m_FSMList = null;
+            m_FSMQueue = null;
         }
 
-        public FiniteStateMachine Create(object owner, string name, params BaseFsmState[] fsmStates)
+        public FiniteStateMachine CreateFSM(object owner, string name)
         {
-            if (HasFSM(owner))
+            FiniteStateMachine fsm = null;
+
+            if (m_FSMQueue.Count > 0)
             {
-                Log.LogError("有限状态机[ ", name, "] 已经存在");
-                return null;
+                fsm = m_FSMQueue.Dequeue();
+                fsm.ResetInfo(owner, name);
             }
 
-            FiniteStateMachine fsm = new FiniteStateMachine(owner, name, fsmStates);
-            m_ListFsms.Add(fsm);
+            if (fsm == null)
+            {
+                fsm = new FiniteStateMachine(owner, name);
+            }
+
+            m_FSMList.Add(fsm);
             return fsm;
         }
 
         public FiniteStateMachine GetFSM(object owner)
         {
-            for (int i = 0; i < m_ListFsms.Count; i++)
+            for (int i = 0; i < m_FSMList.Count; i++)
             {
-                if (m_ListFsms[i].owner == owner)
+                if (m_FSMList[i].owner == owner)
                 {
-                    return m_ListFsms[i];
+                    return m_FSMList[i];
                 }
             }
 
             return null;
         }
 
-        public FiniteStateMachine[] GetAllFSM()
-        {
-            return m_ListFsms.ToArray() ;
-        }
-
         public bool HasFSM(object owner)
         {
-            for (int i = 0; i < m_ListFsms.Count; i++)
+            for (int i = 0; i < m_FSMList.Count; i++)
             {
-                if (m_ListFsms[i].owner == owner)
+                if (m_FSMList[i].owner == owner)
                 {
                     return true;
                 }
@@ -101,33 +86,19 @@ namespace GameFrameWork.FSM
             return false;
         }
 
-        public bool ReleaseFSM(object owner)
-        {
-            for (int i = m_ListFsms.Count - 1; i >= 0 ; i--)
-            {
-                if (m_ListFsms[i].owner == owner)
-                {
-                    m_ListFsms[i].ShutDown();
-                    m_ListFsms.RemoveAt(i);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool ReleaseFSM(FiniteStateMachine fsm)
+        public void ReleaseFSM(FiniteStateMachine fsm)
         {
             if (fsm == null)
             {
-                return false;
+                return;
             }
 
-            fsm.ShutDown();
-            m_ListFsms.Remove(fsm);
-            return true;
+            fsm.Release();
+            m_FSMQueue.Enqueue(fsm);
+            m_FSMList.Remove(fsm);
         }
 
-        private List<FiniteStateMachine> m_ListFsms = null;
+        private List<FiniteStateMachine> m_FSMList = null;
+        private Queue<FiniteStateMachine> m_FSMQueue = null;
     }
 }

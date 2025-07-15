@@ -1,40 +1,38 @@
 using GameFrameWork;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EntityAttribute : IReference
 {
     /// <summary>
-    /// µ±Ç°ÑªÁ¿
+    /// å½“å‰è¡€é‡
     /// </summary>
     public int health { get; set; }
     /// <summary>
-    /// ÑªÁ¿ÉÏÏŞ
+    /// è¡€é‡ä¸Šé™
     /// </summary>
     public int maxHealth { get; set; }
     /// <summary>
-    /// ¹¥»÷ËÙ¶È
+    /// æ”»å‡»é€Ÿåº¦
     /// </summary>
     public float attackSpeed { get; set; }
     /// <summary>
-    /// ¹¥»÷
+    /// æ”»å‡»
     /// </summary>
     public int attackValue { get; set; }
     /// <summary>
-    /// ·ÀÓù
+    /// é˜²å¾¡
     /// </summary>
     public int defenseValue { get; set; }
     /// <summary>
-    /// ±©»÷
+    /// æš´å‡»
     /// </summary>
     public int criticalValue { get; set; }
     /// <summary>
-    /// ÒÆ¶¯ËÙ¶È
+    /// ç§»åŠ¨é€Ÿåº¦
     /// </summary>
     public float moveSpeed { get; set; }
     /// <summary>
-    /// ÌøÔ¾
+    /// è·³è·ƒ
     /// </summary>
     public Vector2 jumpForce { get; set; }
 

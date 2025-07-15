@@ -2,11 +2,11 @@ namespace GameFrameWork.UI
 {
     public abstract class BasePanelComponent
     {
-        public BasePanelComponent(UIRefRoot root)
+        public void InitComponent(UIRefRoot root)
         {
-            InitComponent(root);
+            OnInitComponent(root);
         }
 
-        protected abstract void InitComponent(UIRefRoot root);
+        protected abstract void OnInitComponent(UIRefRoot root);
     }
 }

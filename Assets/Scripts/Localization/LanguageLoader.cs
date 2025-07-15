@@ -1,14 +1,14 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
 using GameFrameWork.Localization;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LanguageLoader : BaseLanguageLoader
 {
-    public LanguageLoader(string dataPath) : base(dataPath) 
+    public LanguageLoader(string dataPath) : base(dataPath)
     {
-        m_LanguageDataTable = new Hashtable();
+        m_LanguageDict = new Dictionary<string, string>();
     }
 
     protected override void OnInit(TextAsset textAsset)
@@ -19,21 +19,19 @@ public class LanguageLoader : BaseLanguageLoader
             return;
         }
 
-        using (ConfigDataParser parser = new ConfigDataParser(textAsset.bytes))
+        using ConfigDataParser parser = new ConfigDataParser(textAsset.bytes);
+        while (!parser.eof)
         {
-            while (!parser.eof)
-            {
-                m_LanguageDataTable.Add(parser.GetFieldValue("key"), parser.GetFieldValue("content"));
-                parser.Next();
-            }
+            m_LanguageDict.Add(parser.GetFieldValue("key"), parser.GetFieldValue("content"));
+            parser.Next();
         }
     }
 
     public override string GetLanguageText(string key)
     {
-        if (m_LanguageDataTable.ContainsKey(key))
+        if (m_LanguageDict.TryGetValue(key, out string result))
         {
-            return m_LanguageDataTable[key].ToString();
+            return result;
         }
 
         return string.Empty;
@@ -41,9 +39,9 @@ public class LanguageLoader : BaseLanguageLoader
 
     protected override void OnRelease()
     {
-        m_LanguageDataTable.Clear();
-        m_LanguageDataTable = null;
+        m_LanguageDict.Clear();
+        m_LanguageDict = null;
     }
 
-    private Hashtable m_LanguageDataTable = null;
+    private Dictionary<string, string> m_LanguageDict = null;
 }

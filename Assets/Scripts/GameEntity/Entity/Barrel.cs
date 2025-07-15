@@ -1,6 +1,7 @@
 using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.FSM;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Barrel : BaseAvatar, ICanBeHit
@@ -70,10 +71,10 @@ public class Barrel : BaseAvatar, ICanBeHit
         m_BarrelData = data as BarrelData;
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_BarrelData = null;
-        base.Release();
     }
 
     public bool IsHurtWillDie(int attackValue)
@@ -84,7 +85,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     public void OnHurtMsg(HurtStateData data)
     {
         m_EntityAttribute.SubHealth(data.attackValue);
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Hurt);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
 
         if (isDead)
         {
@@ -143,7 +144,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             {
                 SetTrigger(AnimName.Move);
                 m_FSM.Start<BarrelMove>();
-                AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Barrel);
+                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
             }
             else
             {
@@ -171,22 +172,21 @@ public class Barrel : BaseAvatar, ICanBeHit
             return;
         }
 
-        BaseRole role = go.GetComponent<BaseRole>();
-        ICanBeHit hit = go.GetComponent<ICanBeHit>();
+        BaseHero player = PlayerMgr.instance.player;
 
-        if (role == null || hit == null || role.objectType != ObjectType.Player)
+        if (player == null || player.gameObject != go)
         {
             return;
         }
           
         bool isInRange = false;
 
-        if (SkillUtil.IsRectangleCollide(role.bound, bound) && role.pos.y >= m_Pos.y)
+        if (SkillUtil.IsRectangleCollide(player.bound, bound) && player.pos.y >= m_Pos.y)
         {
             Vector2 bsoLeftTop = new Vector2(bound.xMin, bound.yMax) - bound.center;
             float selectorAngle = Vector2.Angle(Vector2.left, bsoLeftTop.normalized);
 
-            Vector2 target = (role.pos - m_Pos).normalized;
+            Vector2 target = (player.pos - m_Pos).normalized;
             Vector2 normal = m_Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
             float angle = Vector2.Angle(target, normal);
 
@@ -202,7 +202,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             hurtData.attackerDir = m_Dir;
             hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
             hurtData.isSwoon = true;
-            hit.OnHurtMsg(hurtData);
+            player.OnHurtMsg(hurtData);
         }
     }
 
@@ -214,9 +214,8 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
 
         BaseRole role = go.GetComponent<BaseRole>();
-        ICanBeHit hit = go.GetComponent<ICanBeHit>();
 
-        if (role == null || hit == null || role.objectType != ObjectType.Enemy || !role.isBeThrow)
+        if (role == null || role.objectType != ObjectType.Enemy || !role.isBeThrow || !role.canBeHit)
         {
             return;
         }

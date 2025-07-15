@@ -7,6 +7,8 @@ using GameFrameWork.Map;
 using GameFrameWork.Pool;
 using GameFrameWork.Scene;
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
+using System;
 using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>
@@ -27,30 +29,6 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    public event GameFrameWorkAction onStageStartEnterEvent
-    {
-        add
-        {
-            m_OnStageStartEnterEvent += value;
-        }
-        remove
-        {
-            m_OnStageStartEnterEvent -= value;
-        }
-    }
-
-    public event GameFrameWorkAction onStageEndEnterEvent
-    {
-        add
-        {
-            m_OnStageEndEnterEvent += value;
-        }
-        remove
-        {
-            m_OnStageEndEnterEvent -= value;
-        }
-    }
-
     protected override void OnAwake()
     {
 
@@ -58,7 +36,8 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public void StageEnter(int stageId)
     {
-        StageConfigData configData = null;// StaticConfig.StageConfig.GetData(stageId);
+        StageConfigData configData = null;
+
         for (int i = 0; i < StaticConfig.StageConfig.listDatas.Count; i++)
         {
             if (StaticConfig.StageConfig.listDatas[i].id == stageId)
@@ -86,27 +65,74 @@ public class StageMgr : BaseMgr<StageMgr>
             return;
         }
 
+        if (m_CurrStageData != null)
+        {
+            SceneMgr.instance.UnLoadScene(m_CurrStageData.assetPath);
+        }
+
         m_CurrStageData = configData;
 
         PlayerMgr.instance.canContrl = false;
-        CameraMgr.instance.EndFollow();
+        CameraMgr.instance.EndFollow();  
+        LoadPanelMgr.instance.DOFadeBlack(OnFadeBlackComplete);
+    }
+
+    private void OnFadeBlackComplete()
+    {
+        EventMgr.instance.DispatchNow(this, GameEventArgs.Create(EventDefine.StageEnterStartEvent));
+        TaskMgr.instance.GiveupTask();
+        SceneEntityMgr.instance.ReleaseAll();
+        EntityMgr.instance.DestoryAllUnUsedEntities();
+        AudioMgr.instance.ReleaseAuioClips();
+        GameObjectPoolMgr.instance.CheckRelease();
+        AssetsPool.instance.CheckRelease();
+        ReferencePool.Release();
+        GC.Collect();
         SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
-        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
+        SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath, false);
+    }
 
-        loadPanel.DOFade(0f, 1f, 0.3f, 0, () =>
+    private void LoadSceneSuccess(LoadSceneSuccessEventArgs e)
+    {
+        if (m_CurrStageData.BGMs.Length > 0)
         {
-            m_OnStageStartEnterEvent?.Invoke();
-            m_OnStageStartEnterEvent = null;
+            BGMInfo[] bgmInfos = new BGMInfo[m_CurrStageData.BGMs.Length];
 
-            TaskMgr.instance.GiveupTask();
-            SceneEntityMgr.instance.ReleaseAll();
-            EntityMgr.instance.DestoryAllUnUsedEntities();
-            GameObjectPoolMgr.instance.CheckRelease();
-            AssetsPool.instance.CheckRelease();
-            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterStartEvent));
-            SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath);
-            ReferencePool.Release();
-        });
+            for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
+            {
+                string clipName = m_CurrStageData.BGMs[i].ClipName;
+                bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
+                float volume = m_CurrStageData.BGMs[i].Volume;
+                float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
+                string assetPath = PathUtil.FormatPath(AssetPathDefine.AudioClipPath, clipName);
+                bgmInfos[i] = BGMInfo.Create(assetPath, isLoop, volume, lerpTime);
+            }
+
+            AudioMgr.instance.PlayBGMGroup(bgmInfos, true);
+        }
+
+        UIMgr.instance.Open(UINames.MainPanel).Show();
+        SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
+        PlayerMgr.instance.InitPlayer();
+        PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
+        PlayerMgr.instance.canContrl = false;
+        CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
+        SceneMgr.instance.AllowScene();
+        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
+        {
+            TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
+        }
+        LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+    }
+
+    private void OnFadeWhiteComplete()
+    {
+        LoadPanelMgr.instance.CloseLoadPanel();
+
+
+        EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
+        CameraMgr.instance.StartFollow();
+        PlayerMgr.instance.canContrl = true;
     }
 
     public Rect GetMoveArea()
@@ -164,55 +190,6 @@ public class StageMgr : BaseMgr<StageMgr>
         return ret;
     }
 
-    private void LoadSceneSuccess(LoadSceneSuccessEventArgs t)
-    {
-        if (m_CurrStageData.BGMs.Length > 0)
-        {
-            AudioGroup[] groups = new AudioGroup[m_CurrStageData.BGMs.Length];
-
-            for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
-            {
-                string clipName = m_CurrStageData.BGMs[i].ClipName;
-                bool isLoop = m_CurrStageData.BGMs[i].IsLoop;
-                float volume = m_CurrStageData.BGMs[i].Volume;
-                float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
-                groups[i] = AudioGroup.Create(AssetPathDefine.AudioClipPath, clipName, isLoop, volume, lerpTime);
-            }
-
-            AudioMgr.instance.PlayBGMGroup(groups, true);
-        }
-
-        if (UIMgr.instance.Get<MainPanel>() == null)
-        {
-            UIMgr.instance.Open<MainPanel>();
-        }
-
-        SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
-        PlayerMgr.instance.InitPlayer();
-        PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
-        CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
-        LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
-
-        loadPanel.DOFade(1f, 0f, 0.3f, 0, () =>
-        {
-            UIMgr.instance.Close<LoadPanel>();
-            CameraMgr.instance.StartFollow();
-            PlayerMgr.instance.canContrl = true;
-
-            m_OnStageEndEnterEvent?.Invoke();
-            m_OnStageEndEnterEvent = null;
-
-            for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
-            {
-                TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
-            }
-
-            EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
-        });
-    }
-
-    private event GameFrameWorkAction m_OnStageStartEnterEvent = null;
-    private event GameFrameWorkAction m_OnStageEndEnterEvent = null;
     private StageConfigData m_CurrStageData = null;
     private int m_StageIndex = 0;
 }

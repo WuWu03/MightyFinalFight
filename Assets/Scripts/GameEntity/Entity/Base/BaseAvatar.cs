@@ -25,11 +25,6 @@ public abstract class BaseAvatar : BaseGravityObject
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-
-        if (m_FSM == null)
-        {
-            m_FSM = FSMMgr.instance.Create(this, this.GetType().Name);
-        }
     }
 
     public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
@@ -49,27 +44,20 @@ public abstract class BaseAvatar : BaseGravityObject
         return Vector2.zero;
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
-        m_Animator.animation.Reset();
-        m_FSM.Release();
-        
+        base.OnRelease();
+        m_Animator.animation?.Reset();
+        FSMMgr.instance.ReleaseFSM(m_FSM);
         m_HitTrigger = null;
         m_Animator = null;
         m_CurrAnimName = string.Empty;
         m_LastTriggerAnimName = string.Empty;
-
-        base.Release();
+        m_FSM = null;
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
     {
-        if (m_Animator == null)
-        {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
-            return;
-        }
-
         if(!HasAnimation(animName))
         {
             return;
@@ -96,13 +84,13 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
             return false;
         }
 
         bool result = m_CurrAnimName.Equals(animName);
 
-        if (m_Animator.animation.isCompleted)
+        if (m_Animator.animation != null && m_Animator.animation.isCompleted)
         {
             m_CurrAnimName = string.Empty;
         }
@@ -112,7 +100,18 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public bool HasAnimation(string animName)
     {
-        if(m_Animator != null && !string.IsNullOrEmpty(animName))
+        if (m_Animator == null)
+        {
+            Log.LogError(entityName, "[Animator] 组件不存在");
+            return false;
+        }
+
+        if (m_Animator.animation == null)
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrEmpty(animName))
         {
             return m_Animator.animation.HasAnimation(animName);
         }
@@ -124,10 +123,15 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
             return;
         }
-        
+
+        if (m_Animator.animation == null)
+        {
+            return;
+        }
+
         if (string.IsNullOrEmpty(animName))
         {
             if (string.IsNullOrEmpty(m_CurrAnimName))
@@ -145,7 +149,12 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
+            return;
+        }
+
+        if(m_Animator.animation == null)
+        {
             return;
         }
 
@@ -157,15 +166,30 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         if (m_Animator == null)
         {
-            Log.LogError(m_EntityName, "[Animator] 组件不存在");
+            Log.LogError(entityName, "[Animator] 组件不存在");
             return;
         }
-        m_Animator.animation.timeScale = m_LastAnimTimeScale;
+
+        if (m_Animator.animation != null)
+        {
+            m_Animator.animation.timeScale = m_LastAnimTimeScale;
+        }
     }
 
     public bool IsPlayComplete()
     {
-        return m_Animator.animation.isCompleted;
+        if (m_Animator == null)
+        {
+            Log.LogError(entityName, "[Animator] 组件不存在");
+            return true;
+        }
+
+        if (m_Animator.animation != null)
+        {
+            return m_Animator.animation.isCompleted;
+        }
+
+        return true;
     }
 
     public void AddAnimationEvent(string eventName, ListenerDelegate<EventObject> listener)
@@ -219,6 +243,11 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void AddState<T>() where T : BaseFsmState, new()
     {
+        if (m_FSM == null)
+        {
+            m_FSM = FSMMgr.instance.CreateFSM(this, this.GetType().Name);
+        }
+
         m_FSM.AddState<T>();
     }
 
@@ -279,7 +308,12 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnUpdate();
 
-        if (m_Animator.animation.isPlaying)
+        if (m_FSM != null)
+        {
+            m_FSM.Update(Time.deltaTime, Time.unscaledDeltaTime);
+        }
+
+        if (m_Animator != null && m_Animator.animation != null && m_Animator.animation.isPlaying)
         {
             int frameCount = (int)m_Animator.animation.animations[m_CurrAnimName].frameCount;
             float duration = m_Animator.animation.animations[m_CurrAnimName].duration;
@@ -289,24 +323,36 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
+
+        if (m_FSM != null)
+        {
+            m_FSM.LateUpdate(Time.deltaTime, Time.unscaledDeltaTime);
+        }
+    }
+
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
+
+        if (m_FSM != null)
+        {
+            m_FSM.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
+        }
     }
 
     protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
         base.OnLoadAssetComplete(go, param);
-        m_Animator = m_Asset.GetComponent<UnityArmatureComponent>();
-        m_HitTrigger = m_Asset.GetComponent<HitTrigger>();
-    }
+        m_Animator = go.GetComponent<UnityArmatureComponent>();
+        m_HitTrigger = go.GetComponent<HitTrigger>();
 
-    protected override void OnBeforeDestroy()
-    {
-        FSMMgr.instance.ReleaseFSM(m_FSM);
-        m_FSM = null;
-
-        base.OnBeforeDestroy();
+        if (m_FSM != null && m_FSM.HasDefaultState())
+        {
+            m_FSM.Start();
+        }
     }
 
     protected string m_CurrAnimName = string.Empty;

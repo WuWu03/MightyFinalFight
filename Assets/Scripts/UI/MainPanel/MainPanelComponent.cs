@@ -32,9 +32,7 @@ public class MainPanelComponent : BasePanelComponent
 	public TextMeshProUGUI txtExp { get; private set; }
 	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 
-	public MainPanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		playerHpBar = root.objects[0] as Slider;
 		playerHpBarImage = root.objects[1] as Image;

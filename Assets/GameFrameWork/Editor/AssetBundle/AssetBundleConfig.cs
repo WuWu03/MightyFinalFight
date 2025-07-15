@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Serialize;
+using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +12,6 @@ namespace GameFrameWork.Editor
         [SerializeField]
         public int platFormIndex = 0;
         [SerializeField]
-        public string assetBuildDir = string.Empty;
-        [SerializeField]
         public string assetCopyDir = string.Empty;
         [SerializeField]
         public bool isCopyAsset = false;
@@ -21,8 +19,6 @@ namespace GameFrameWork.Editor
         public List<string> listExtendName = null;
         [SerializeField]
         public List<string> listPattern = null;
-
-        public string assetBuildFullDir => Application.dataPath + assetBuildDir.Substring(6);
     }
 
     [Serializable]
@@ -39,7 +35,6 @@ namespace GameFrameWork.Editor
         public string bundleExtend;
         public string pattern;
         public string assetPath;
-        public string bundlePath;
 
         public override int CompareTo(object obj)
         {
@@ -55,7 +50,6 @@ namespace GameFrameWork.Editor
             data.bundleExtend = this.bundleExtend;
             data.pattern = this.pattern;
             data.assetPath = this.assetPath;
-            data.bundlePath = this.bundlePath;
 
             return data;
         }

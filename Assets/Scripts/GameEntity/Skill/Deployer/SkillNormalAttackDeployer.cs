@@ -62,12 +62,12 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         {
             if (m_SkillData.IsInEffectPlaySound)
             {
-                AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, PathUtil.FormatPath("Sound", soundName) + ".ogg");
+                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
             }
         }
         else
         {
-            AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, PathUtil.FormatPath("Sound", soundName) + ".ogg");
+            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using static SkillConfigData;
@@ -12,7 +12,7 @@ public class SkillFactory
 
         if (data == null)
         {
-            Log.LogError("skill data is invalid skillId:", skillId);
+            Log.LogError("skill data is invalid skillId:", skillId.ToString());
             return null;
         }
 

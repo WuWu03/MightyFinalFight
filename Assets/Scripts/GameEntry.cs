@@ -3,7 +3,6 @@ using GameFrameWork.Camera;
 using GameFrameWork.Localization;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
-using System;
 using UnityEngine;
 
 public class GameEntry : GameFrameWorkEntry
@@ -16,16 +15,18 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.Init(manager);
         PlayerMgr.Init(manager);
         HudMgr.Init(manager);
+        LoadPanelMgr.Init(manager);
         StaticConfig.InitConfig();
-        ConfigData.Init();
+        ConfigDataSheet.Init();
+
     }
 
     protected override void OnStartGame()
     {
         LocalizationMgr.instance.SetDefaultLanguage(LanguageType.English);
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(PathUtil.configDataPath, "SimplifiedChineseLanguageData.bytes")));
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(PathUtil.configDataPath, "EnglishLanguageData.bytes")));
-        LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(PathUtil.configDataPath, "JapaneseLanguageData.bytes")));
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "SimplifiedChineseLanguageData.bytes")));
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "EnglishLanguageData.bytes")));
+        LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "JapaneseLanguageData.bytes")));
         LocalizationMgr.instance.ChangeLanguage(LanguageType.Japanese);
 
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
@@ -33,16 +34,19 @@ public class GameEntry : GameFrameWorkEntry
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
 
-        UIMgr.instance.Open<TitlePanel>();
+        UIMgr.instance.Open(UINames.TitlePanel);
     }
 
     protected override void OnExit()
     {
-        ConfigData.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();
         StageMgr.instance.ShutDown();
         SceneEntityMgr.instance.ShutDown();
+        PlayerMgr.instance.ShutDown();
         HudMgr.instance.ShutDown();
+        LoadPanelMgr.instance.ShutDown();
+        StaticConfig.ShutDown();
+        ConfigDataSheet.ShutDown();
     }
 }

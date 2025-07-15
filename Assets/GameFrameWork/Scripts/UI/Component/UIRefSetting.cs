@@ -58,7 +58,7 @@ public class UIRefSetting : MonoBehaviour
             if (m_ScriptFolder != value)
             {
                 m_ScriptFolder = value;
-                RefreshPanelFolder();
+                RefreshScriptFolder();
             }
         }
     }
@@ -73,23 +73,7 @@ public class UIRefSetting : MonoBehaviour
             if (m_PanelName != value)
             {
                 m_PanelName = System.Text.RegularExpressions.Regex.Replace(value, "\\.|\\s|/|\\\\", "");
-                RefreshPanelFolder();
-                RefreshPrefabFolder();
-            }
-        }
-    }
-
-    [HideInInspector] [SerializeField] 
-    private string m_PrefabFolder = string.Empty;
-    public string prefabFolder
-    {
-        get { return m_PrefabFolder; }
-        set
-        {
-            if (m_PrefabFolder != value)
-            {
-                m_PrefabFolder = value;
-                RefreshPrefabFolder();
+                RefreshScriptFolder();
             }
         }
     }
@@ -104,7 +88,7 @@ public class UIRefSetting : MonoBehaviour
             if (m_ScriptType != value)
             {
                 m_ScriptType = value;
-                RefreshPanelFolder();
+                RefreshScriptFolder();
             }
         }
     }
@@ -119,10 +103,9 @@ public class UIRefSetting : MonoBehaviour
     [HideInInspector] public string panelPath;
     [HideInInspector] public string panelComponentPath;
     [HideInInspector] public string panelSettingsPath;
-    [HideInInspector] public string panelPrefabPath;
 
 
-    public void RefreshPanelFolder()
+    public void RefreshScriptFolder()
     {
         if (!m_PanelName.EndsWith("Panel"))
         {
@@ -159,33 +142,17 @@ public class UIRefSetting : MonoBehaviour
             m_ScriptFolder += "/";
         }
 
+        if (!m_ScriptFolder.EndsWith(m_PanelName + "/"))
+        {
+            m_ScriptFolder += m_PanelName + "/";
+        }
+
         panelPath = string.Format(m_ScriptFolder + "{0}.{1}", m_PanelName, extension);
         panelComponentPath = string.Format(m_ScriptFolder + "{0}Component.{1}", m_PanelName, extension);
         panelSettingsPath = string.Format(m_ScriptFolder + "{0}Settings.{1}", m_PanelName, extension);
     }
 
-    public void RefreshPrefabFolder()
-    {
-        if (string.IsNullOrEmpty(m_PrefabFolder))
-        {
-            m_PrefabFolder = DefaultPrefabFolder;
-        }
-
-        if (!m_PrefabFolder.StartsWith("Assets/"))
-        {
-            m_PrefabFolder = "Assets/" + m_PrefabFolder;
-        }
-
-        if (!m_PrefabFolder.EndsWith("/"))
-        {
-            m_PrefabFolder += "/";
-        }
-
-        panelPrefabPath = string.Format(m_PrefabFolder + "{0}.prefab", m_PanelName);
-    }
-
     private const string DefaultCSharpScriptFolder = "Assets/Scripts/UI/";
     private const string DefaultLuaScriptFolder = "Assets/Lua/UI/";
-    private const string DefaultPrefabFolder = "Assets/ArtResources/UI/Prefabs/";
 }
 #endif

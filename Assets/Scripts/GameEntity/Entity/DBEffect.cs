@@ -30,17 +30,17 @@ public class DBEffect : BaseEffect
         }
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_ArmatureAnimator.animation.Stop();
         m_ArmatureAnimator.RemoveEventListener(EventObject.SOUND_EVENT, SoundEvent);
         m_ArmatureAnimator = null;
-        base.Release();
     }
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, PathUtil.FormatPath("Sound", eventObject.name) + ".ogg");
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;

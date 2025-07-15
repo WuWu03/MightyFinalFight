@@ -1,4 +1,5 @@
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -16,12 +17,13 @@ namespace GameFrameWork.Editor
 
             if (m_LanguageTextKeys == null)
             {
-                string languageKeyPath = PlayerPrefs.GetString("unity_editor_language_key_file", string.Empty);
+                string languageKeyPath = EditorMgr.GetGameFrameWorkConfig().languageKeyFilePath;
+                string languageKeyFullPath = PathUtil.GetAssetFullPath(languageKeyPath);
 
-                if (!string.IsNullOrEmpty(languageKeyPath) && System.IO.File.Exists(languageKeyPath))
+                if (!string.IsNullOrEmpty(languageKeyPath) && System.IO.File.Exists(languageKeyFullPath))
                 {
                     m_LanguageTextKeys = new List<string>();
-                    m_LanguageTextKeys.AddRange(System.IO.File.ReadAllLines(languageKeyPath, System.Text.Encoding.UTF8));
+                    m_LanguageTextKeys.AddRange(System.IO.File.ReadAllLines(languageKeyFullPath, System.Text.Encoding.UTF8));
                     m_LanguageTextKeys.Sort(StringComparer.Ordinal);
                 }
             }
@@ -40,7 +42,14 @@ namespace GameFrameWork.Editor
 
             if (m_LanguageTextKeys != null && m_LanguageTextKeys.Count > 0)
             {
-                GUI.color = m_LanguageTextKeys.Contains(m_LanguageText.languageTextKey) ? Color.green : Color.red;
+                if (!string.IsNullOrEmpty(m_LanguageText.languageTextKey))
+                {
+                    GUI.color = m_LanguageTextKeys.Contains(m_LanguageText.languageTextKey) ? Color.green : Color.red;
+                }
+                else
+                {
+                    GUI.color = Color.white;
+                }
             }
             else
             {

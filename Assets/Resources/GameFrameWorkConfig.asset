@@ -19,9 +19,9 @@ MonoBehaviour:
   isLoadLuaFromAssetBundle: 0
   isLuaByteMode: 0
   luaPath: 
-  uiPath: ArtResources/UI
   uiPrefabsPath: ArtResources/UI/Prefabs
-  uiAtlasPath: ArtResources/UI/Atlas
+  uiSpritesPath: ArtResources/UI/Sprites
   configDataPath: ConfigData
   versionFileName: Version.txt
+  assetMapFileName: AssetMap.txt
   logColor: {r: 1, g: 1, b: 1, a: 1}

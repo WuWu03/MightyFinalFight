@@ -47,10 +47,9 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
     }
 
-
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigData.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataSheet.roleConfigDatas.GetConfigDataById(sourceId), entityId, 1, attack, defense, hpBarWidth, pos);
 
         if (enemy == null)
         {
@@ -65,7 +64,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseSceneObject CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemConfigData sceneItemConfigData = ConfigData.sceneItemConfigDatas.GetConfigDataById(id);
+        SceneItemConfigData sceneItemConfigData = ConfigDataSheet.sceneItemConfigDatas.GetConfigDataById(id);
         BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
 
         if (sceneItem == null)

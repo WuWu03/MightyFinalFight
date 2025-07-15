@@ -15,9 +15,8 @@ public class LoadPanelComponent : BasePanelComponent
 	//imgShade,Image
 	public Image imgShade { get; private set; }
 
-	public LoadPanelComponent(UIRefRoot root) : base(root) { }
 
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		imgShade = root.objects[0] as Image;
 	}

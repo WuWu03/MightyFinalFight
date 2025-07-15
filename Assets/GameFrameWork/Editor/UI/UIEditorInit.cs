@@ -67,7 +67,6 @@ namespace GameFrameWork.Editor
 
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
             settings.panelName = Path.GetFileNameWithoutExtension(path);
-            settings.prefabFolder = PathUtil.GetUIPrefabPath();
             settings.transform.SetAsLastSibling();
 
             GameObject rootObj = root as GameObject;
@@ -97,7 +96,10 @@ namespace GameFrameWork.Editor
                 if (GUI.Button(new Rect(10, 10, 150f, 30f), "生成预制体"))
                 {
                     string exportPath = ExportUIPrefab(true);
-                    if (string.IsNullOrEmpty(exportPath)) return;
+                    if (string.IsNullOrEmpty(exportPath))
+                    {
+                        return;
+                    }
 
                     AssetDatabase.Refresh();
                     AssetDatabase.SaveAssets();
@@ -108,7 +110,10 @@ namespace GameFrameWork.Editor
                 if (GUI.Button(new Rect(10, 50, 150f, 30f), "生成预制体(不生成代码)"))
                 {
                     string exportPath = ExportUIPrefab(false);
-                    if (string.IsNullOrEmpty(exportPath)) return;
+                    if (string.IsNullOrEmpty(exportPath))
+                    {
+                        return;
+                    }
 
                     AssetDatabase.Refresh();
                     AssetDatabase.SaveAssets();
@@ -345,13 +350,20 @@ namespace GameFrameWork.Editor
 
         private static string ExportUIPrefab(bool generateCode)
         {
-            if (!CanExprot()) return null;
-            if (generateCode)
+            if (!CanExprot())
             {
-                 if(!ExportUIRef()) return null;
+                return null;
             }
 
-            string path = uiRefSetting.panelPrefabPath;
+            if (generateCode)
+            {
+                if (!ExportUIRef())
+                {
+                    return null;
+                }
+            }
+
+            string path = StringUtil.Append(EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath, s_UIRefSetting.panelName, ".prefab");
 
             if (File.Exists(path))
             {
@@ -368,7 +380,10 @@ namespace GameFrameWork.Editor
             bool isSuccess;
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out isSuccess);
 
-            if (!isSuccess) return null;
+            if (!isSuccess)
+            {
+                return null;
+            }
 
             UIRef[] components = prefab.GetComponentsInChildren<UIRef>(true);
 

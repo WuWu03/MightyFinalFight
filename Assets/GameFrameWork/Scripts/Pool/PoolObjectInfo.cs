@@ -24,7 +24,7 @@ namespace GameFrameWork.Pool
         public void Clear()
         {
             poolObject = null;
-            releaseTime = 0;
+            releaseTime = -1;
             isReleaseImmediate = false;
             assetPath = null;
             referenceCount = 0;

@@ -64,40 +64,9 @@ namespace GameFrameWork.GameEntity
             m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
         }
 
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            for (int i = m_ListUsingEntities.Count - 1; i > - 1 ; i--)
-            {
-                m_ListUsingEntities[i].Update(Time.deltaTime, Time.unscaledDeltaTime);
-            }
-        }
-
-        protected override void OnLateUpdate()
-        {
-            base.OnLateUpdate();
-
-            for (int i = m_ListUsingEntities.Count - 1; i > -1; i--)
-            {
-                m_ListUsingEntities[i].LateUpdate(Time.deltaTime, Time.unscaledDeltaTime);
-            }
-        }
-
-        protected override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-
-            for (int i = m_ListUsingEntities.Count - 1; i > -1; i--)
-            {
-                m_ListUsingEntities[i].FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
-            }
-        }
-
         public T GetEntity<T>(string name = null, Transform parent = null) where T : BaseEntity, new()
         {
             T entity = null;
-            GameObject entityGameObject = null;
             Type type = typeof(T);
             List<BaseEntity> unUsedList = GetUnUsedList(type);
 
@@ -112,10 +81,8 @@ namespace GameFrameWork.GameEntity
 
             if (entity == null)
             {
-                entityGameObject = new GameObject();
-                entity = Activator.CreateInstance<T>();
-                entity.SetGameObject(entityGameObject);
-                DontDestroyOnLoad(entityGameObject);
+                entity = new GameObject().GetOrAddComponent<T>();
+                DontDestroyOnLoad(entity);
                 m_CreateCount++;
             }
 
@@ -123,7 +90,7 @@ namespace GameFrameWork.GameEntity
 
             entity.Init(m_AcquireCount, name);
             entity.SetParent(parent, false);
-            entity.SetActive(true);
+            entity.gameObject.SetActiveSelf(true);
             m_ListUsingEntities.Add(entity);
 
             return entity;
@@ -139,7 +106,7 @@ namespace GameFrameWork.GameEntity
 
         public void PutEntity(BaseEntity entity)
         {
-            entity.SetActive(false);
+            entity.gameObject.SetActiveSelf(false);
             entity.SetParent(m_PoolRoot, false);
 
             Type key = entity.GetType();
@@ -171,7 +138,7 @@ namespace GameFrameWork.GameEntity
                 }
             }
 
-            entity.BeforeDestroy();
+            m_ListUsingEntities.Remove(entity);
             GameObject.Destroy(entity.gameObject);
             m_DestroyCount++;
         }
@@ -182,7 +149,6 @@ namespace GameFrameWork.GameEntity
             {
                 for (int i = 0; i < kvp.Value.Count; i++)
                 {
-                    kvp.Value[i].BeforeDestroy();
                     GameObject.Destroy(kvp.Value[i].gameObject);
                     m_ReleaseCount++;
                     m_DestroyCount++;

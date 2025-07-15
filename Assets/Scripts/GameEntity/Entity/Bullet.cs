@@ -113,13 +113,10 @@ public class Bullet : BaseAvatar
             return;
         }
 
-        
-
         if (bgo is not ICanBeHit)
         {
             return;
         }
-
 
         ICanBeHit hit = bgo as ICanBeHit;
         bool isInRange = false;
@@ -129,7 +126,7 @@ public class Bullet : BaseAvatar
             isInRange = Mathf.Abs(bgo.pos.y - m_Pos.y) < m_BulletData.hitRange;
         }
 
-        if(!isInRange)
+        if (!isInRange)
         {
             return;
         }
@@ -163,12 +160,12 @@ public class Bullet : BaseAvatar
         SetVelocity(m_BulletData.velocity.x * m_Owner.dir, m_BulletData.velocity.y);
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_BulletData = null;
         m_IsHit = false;
         m_SkillBulletEffect = null;
-        base.Release();
     }
 
     private bool m_IsHit = false;

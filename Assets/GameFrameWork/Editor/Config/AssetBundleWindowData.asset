@@ -15,338 +15,140 @@ MonoBehaviour:
   listDatas:
   - id: 1
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/AudioClip/BGM/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/AudioClip/BGM/
-    bundlePath: ArtResources/AudioClip/BGM/
   - id: 2
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/AudioClip/Sound/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/AudioClip/Sound/
-    bundlePath: ArtResources/AudioClip/Sound/
   - id: 3
     bundleBuildType: 1
     bundleName: ArtResources/Fonts
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Fonts/
-    bundlePath: 
   - id: 4
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Materials/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Materials/
-    bundlePath: ArtResources/Materials/
   - id: 5
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Andore
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Andore/
-    bundlePath: 
-  - id: 6
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Axl
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Axl/
-    bundlePath: 
-  - id: 7
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Bred
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Bred/
-    bundlePath: 
-  - id: 8
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Cody
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Cody/
-    bundlePath: 
-  - id: 9
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Damnd
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Damnd/
-    bundlePath: 
-  - id: 10
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Guy
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Guy/
-    bundlePath: 
-  - id: 11
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/Hagger
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/Hagger/
-    bundlePath: 
-  - id: 12
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Character/TwoP
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/TwoP/
-    bundlePath: 
-  - id: 13
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/CharacterUI/CodyUI
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/CharacterUI/CodyUI/
-    bundlePath: 
-  - id: 14
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/CharacterUI/GuyUI
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/CharacterUI/GuyUI/
-    bundlePath: 
-  - id: 15
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/CharacterUI/HaggerUI
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/CharacterUI/HaggerUI/
-    bundlePath: 
-  - id: 16
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/FX/CodyBullet
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/CodyBullet/
-    bundlePath: 
-  - id: 17
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/FX/CodyHit
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/CodyHit/
-    bundlePath: 
-  - id: 18
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/FX/Go
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/Go/
-    bundlePath: 
-  - id: 19
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/FX/GuyHit
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/GuyHit/
-    bundlePath: 
-  - id: 20
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/FX/HaggerHit
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/HaggerHit/
-    bundlePath: 
-  - id: 21
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/SceneBuilding/Barrel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/Barrel/
-    bundlePath: 
-  - id: 22
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/SceneBuilding/Cafe
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/Cafe/
-    bundlePath: 
-  - id: 23
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/SceneBuilding/ConveyorBelt
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/ConveyorBelt/
-    bundlePath: 
-  - id: 24
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/SceneBuilding/ConveyorBeltLast
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/ConveyorBeltLast/
-    bundlePath: 
-  - id: 25
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/SceneBuilding/Movie
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/Movie/
-    bundlePath: 
-  - id: 26
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Weapon/CodyWeapon
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Weapon/CodyWeapon/
-    bundlePath: 
-  - id: 27
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Weapon/GuyWeapon
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Weapon/GuyWeapon/
-    bundlePath: 
-  - id: 28
-    bundleBuildType: 1
-    bundleName: ArtResources/Models/Weapon/HaggerWeapon
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Weapon/HaggerWeapon/
-    bundlePath: 
-  - id: 29
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Models/Character/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Models/Character/
+  - id: 6
+    bundleBuildType: 0
+    bundleName: ArtResources/Models/CharacterUI/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Models/CharacterUI/
+  - id: 7
+    bundleBuildType: 0
+    bundleName: ArtResources/Models/FX/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Models/FX/
+  - id: 8
+    bundleBuildType: 0
+    bundleName: ArtResources/Models/SceneBuilding/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Models/SceneBuilding/
+  - id: 9
+    bundleBuildType: 0
+    bundleName: ArtResources/Models/Weapon/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/Models/Weapon/
+  - id: 10
+    bundleBuildType: 0
+    bundleName: ArtResources/Prefabs/Character/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/Character/
-    bundlePath: ArtResources/Prefabs/Character/
-  - id: 30
+  - id: 11
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Prefabs/CharacterUI/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/CharacterUI/
-    bundlePath: ArtResources/Prefabs/CharacterUI/
-  - id: 31
+  - id: 12
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Prefabs/FX/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/FX/
-    bundlePath: ArtResources/Prefabs/FX/
-  - id: 32
+  - id: 13
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Prefabs/SceneBuilding/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/SceneBuilding/
-    bundlePath: ArtResources/Prefabs/SceneBuilding/
-  - id: 33
+  - id: 14
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Prefabs/SceneItem/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/SceneItem/
-    bundlePath: ArtResources/Prefabs/SceneItem/
-  - id: 34
+  - id: 15
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Prefabs/Weapon/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Prefabs/Weapon/
-    bundlePath: ArtResources/Prefabs/Weapon/
-  - id: 35
+  - id: 16
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/Scenes/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Scenes/
-    bundlePath: ArtResources/Scenes/
-  - id: 36
+  - id: 17
     bundleBuildType: 1
     bundleName: ArtResources/Shaders
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Shaders/
-    bundlePath: 
-  - id: 37
-    bundleBuildType: 1
-    bundleName: ArtResources/Textures/SceneBuilding
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Textures/SceneBuilding/
-    bundlePath: 
-  - id: 38
+  - id: 18
     bundleBuildType: 1
     bundleName: ArtResources/Textures/SceneItem
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Textures/SceneItem/
-    bundlePath: 
-  - id: 39
-    bundleBuildType: 1
-    bundleName: ArtResources/Textures/Stage
+  - id: 19
+    bundleBuildType: 0
+    bundleName: ArtResources/Textures/Stage/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/Textures/Stage/
-    bundlePath: 
-  - id: 40
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/Common
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/Common/
-    bundlePath: 
-  - id: 41
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/MainPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/MainPanel/
-    bundlePath: 
-  - id: 42
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/RoleSelectPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/RoleSelectPanel/
-    bundlePath: 
-  - id: 43
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/StagePanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/StagePanel/
-    bundlePath: 
-  - id: 44
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/TalkPanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/TalkPanel/
-    bundlePath: 
-  - id: 45
-    bundleBuildType: 1
-    bundleName: ArtResources/UI/Atlas/TitlePanel
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Atlas/TitlePanel/
-    bundlePath: 
-  - id: 46
+  - id: 20
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/UI/Prefabs/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ArtResources/UI/Prefabs/
-    bundlePath: ArtResources/UI/Prefabs/
-  - id: 47
+  - id: 21
     bundleBuildType: 0
-    bundleName: 
+    bundleName: ArtResources/UI/Sprites/
+    bundleExtend: .assetbundle
+    pattern: '*.*'
+    assetPath: Assets/ArtResources/UI/Sprites/
+  - id: 22
+    bundleBuildType: 0
+    bundleName: ConfigData/
     bundleExtend: .assetbundle
     pattern: '*.*'
     assetPath: Assets/ConfigData/
-    bundlePath: ConfigData/
   lockConfig: 0
-  platFormIndex: 0
-  assetBuildDir: Assets/StreamingAssets/
+  platFormIndex: 11
   assetCopyDir: 
-  isCopyAsset: 0
+  isCopyAsset: 1
   listExtendName:
   - .assetbundle
   listPattern:

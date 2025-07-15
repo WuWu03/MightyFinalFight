@@ -1,5 +1,4 @@
 using GameFrameWork.BehaviourTree;
-using System.Security.Policy;
 using UnityEngine;
 
 public class DoRunAwayPlayer : Action
@@ -32,7 +31,7 @@ public class DoRunAwayPlayer : Action
         float playerDir = PlayerMgr.instance.player.dir;
         float ownerDir = m_Owner.owner.dir;
 
-        if(playerDir == ownerDir)
+        if (playerDir == ownerDir)
         {
             m_State = BehaviourTreeState.Success;
             return;
@@ -41,9 +40,9 @@ public class DoRunAwayPlayer : Action
         Vector2 playerPos = PlayerMgr.instance.player.pos;
         Vector2 ownerPos = m_Owner.owner.pos;
 
-        if(playerPos.x > ownerPos.x)
+        if (playerPos.x > ownerPos.x)
         {
-            if(playerDir != -1)
+            if (playerDir != -1)
             {
                 m_State = BehaviourTreeState.Success;
                 return;
@@ -58,7 +57,7 @@ public class DoRunAwayPlayer : Action
             }
         }
 
-        if(Vector2.Distance(playerPos,ownerPos) < m_Owner.owner.bound.width * 3)
+        if (Vector2.Distance(playerPos, ownerPos) < m_Owner.owner.bound.width * 3)
         {
             m_Owner.Move((playerPos - ownerPos).normalized, false);
             m_Owner.OppositePlayer();

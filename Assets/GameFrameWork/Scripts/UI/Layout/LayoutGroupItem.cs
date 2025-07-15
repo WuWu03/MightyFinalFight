@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.UI
@@ -65,17 +63,17 @@ namespace GameFrameWork.UI
             m_GameObject = go;
             m_Transform = go.transform;
             m_RectTransform = go.GetComponent<RectTransform>();
-            m_GameObject.SetActive(m_IsActive);
+            m_GameObject.SetActiveSelf(m_IsActive);
             OnCreate(go);
         }
 
-        public void SetActive(bool isAcitve)
+        public void SetActiveSelf(bool isAcitve)
         {
             m_IsActive = isAcitve;
 
             if (m_GameObject != null)
             {
-                m_GameObject.SetActive(isAcitve);
+                m_GameObject.SetActiveSelf(isAcitve);
             }
         }
 

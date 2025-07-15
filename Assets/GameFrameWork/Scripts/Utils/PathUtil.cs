@@ -8,96 +8,87 @@ namespace GameFrameWork.Utils
         public static string streamingAssetsPath = Application.streamingAssetsPath;
         public static string persistentDataPath = Application.persistentDataPath;
 
-        public const string configDataPath = "ConfigData";
-        public const string uiPrefabPath = "Prefabs";
-        public const string uiAtlasPath = "Atlas";
-
         public const string gameFrameWorkConfigDataName = "GameFrameWorkConfig.asset";
         public const string behaviourTreeConfigDataName = "BehaviourTreeConfigData.json";
-        public const string assetBundleVersionName = "Version.txt";
-        public const string assetMapName = "AssetMap.txt";
         public const string maniFestName = "StreamingAssets";
-        public const string assetBundleExtension = ".assetbundle";
 
-        public static string runTimeAssetPath
+        public static string runTimeAssetsPath
         {
             get
             {
-
-#if UNITY_EDITOR
-                return streamingAssetsPath;
-#elif UNITY_STANDALONE_WIN
-                return streamingAssetsPath;
-#elif UNITY_ANDROID
+#if UNITY_ANDROID
                 return persistentDataPath;
 #elif UNITY_IOS
                 return persistentDataPath;
+#else
+                return streamingAssetsPath;
 #endif
             }
         }
 
         public static string FormatPath(string arg1)
         {
-            return StringUtil.Format(true, arg1);
+            return FormatPath(arg1, null, null, null, null, null, null);
         }
 
         public static string FormatPath(string arg1, string arg2)
         {
-            return StringUtil.Format(true, arg1, arg2);
+            return FormatPath(arg1, arg2, null, null, null, null, null);
         }
 
         public static string FormatPath(string arg1, string arg2, string arg3)
         {
-            return StringUtil.Format(true, arg1, arg2, arg3);
+            return FormatPath(arg1, arg2, arg3, null, null, null, null);
         }
 
         public static string FormatPath(string arg1, string arg2, string arg3, string arg4)
         {
-            return StringUtil.Format(true, arg1, arg2, arg3, arg4);
+            return FormatPath(arg1, arg2, arg3, arg4, null, null, null);
         }
 
         public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5);
+            return FormatPath(arg1, arg2, arg3, arg4, arg5, null, null);
         }
 
         public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
         {
-            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5, arg6);
+            return FormatPath(arg1, arg2, arg3, arg4, arg5, arg6, null);
         }
 
         public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
         {
-            return StringUtil.Format(true, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            StringUtil.ClearArgs();
+            StringUtil.AddArg(arg1);
+            StringUtil.AddArg(arg2);
+            StringUtil.AddArg(arg3);
+            StringUtil.AddArg(arg4);
+            StringUtil.AddArg(arg5);
+            StringUtil.AddArg(arg6);
+            StringUtil.AddArg(arg7);
+            return StringUtil.Append(true);
         }
 
         public static string FormatPath(params string[] args)
         {
-            return StringUtil.Format(true, args);
-        }
+            StringUtil.ClearArgs();
 
-        public static string GetUIPrefabPath()
-        {
-            string uiPath = GameFrameWorkEntry.config.uiPath;
-
-            if (string.IsNullOrEmpty(uiPath))
+            for(int i = 0; i < args.Length; i++)
             {
-                return string.Empty;
+                StringUtil.AddArg(args[i]);
             }
 
-            return FormatPath(uiPath, uiPrefabPath);
+            return StringUtil.Append(true);
+        }
+
+        public static string GetUIPrefabsPath()
+        {
+            return GameFrameWorkEntry.config.uiPrefabsPath;
         }
 
         public static string GetUIAtlasPath()
         {
-            string uiPath = GameFrameWorkEntry.config.uiPath;
-
-            if (string.IsNullOrEmpty(uiPath))
-            {
-                return string.Empty;
-            }
-
-            return FormatPath(uiPath, uiAtlasPath);
+            return GameFrameWorkEntry.config.uiSpritesPath;
         }
 
         public static string GetAssetPath(string path)
@@ -119,16 +110,16 @@ namespace GameFrameWork.Utils
 
         public static string GetAssetFullPath(string assetPath)
         {
-            if (string.IsNullOrEmpty(assetPath))
+            if (string.IsNullOrEmpty(assetPath) || assetPath == "Assets")
             {
                 return appDataPath;
             }
 
-            int assetIndex = assetPath.IndexOf("Assets");
+            int assetIndex = assetPath.IndexOf("Assets/");
 
             if (assetIndex > -1)
             {
-                assetPath = assetPath.Substring(assetIndex + 6);
+                assetPath = assetPath.Substring(assetIndex + 7);
             }
 
             return FormatPath(appDataPath, assetPath);

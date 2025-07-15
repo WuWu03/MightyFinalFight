@@ -3,6 +3,7 @@
 /**Create By GQY****************************************/
 /*******************************************************/
 using DG.Tweening;
+using GameFrameWork;
 using GameFrameWork.ConfigData;
 using GameFrameWork.Event;
 using GameFrameWork.Input;
@@ -11,20 +12,20 @@ using GameFrameWork.UI;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class TalkPanel : BasePanel
+public class TalkPanel : BasePanel<TalkPanelComponent>
 {
     protected override void OnInit(object[] param)
 	{
-        m_Component = GetPanelComponent<TalkPanelComponent>();
 		m_TalkId = int.Parse(param[0].ToString());
-		m_Component.talkSelectGroupView.Init(m_Component.talkSelect, m_Component.talkSelectItem);
+        m_Component.talkSelectGroupView.Init(m_Component.talkSelect, m_Component.talkSelectItem);
         m_Component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;
         m_Component.talkSelectGroupView.onItemSelectEvent += OnItemSelectEvent;
     }
 
 	protected override void OnOpen()
-	{
-        m_Component.talkSelect.SetActive(false);
+    {
+
+        m_Component.talkSelect.SetActiveSelf(false);
         m_Component.talkSelectGroupView.SelectItem(0);
         PlayTalk();
     }
@@ -39,12 +40,12 @@ public class TalkPanel : BasePanel
             }
 			else
 			{
-                TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
+                TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
 
                 if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
                 {
                     m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
-                    m_Component.talkSelect.SetActive(false);
+                    m_Component.talkSelect.SetActiveSelf(false);
                 }
                 else
                 {
@@ -59,11 +60,11 @@ public class TalkPanel : BasePanel
 
 		if (m_IsComplete)
 		{
-            TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
+            TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
             {
-                Vector2 axis = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
+                Vector2 axis = InputMgr.instance.GetAxis(AxisType.LeftAxis);
 
                 if (axis.x > 0)
                 {
@@ -86,6 +87,7 @@ public class TalkPanel : BasePanel
 
 	protected override void OnDestroy()
 	{
+
         m_Component.talkSelectGroupView.onItemUpdateEvent -= OnItemUpdateEvent;
         m_Component.talkSelectGroupView.onItemSelectEvent -= OnItemSelectEvent;
     }
@@ -94,7 +96,7 @@ public class TalkPanel : BasePanel
 	{
         m_IsComplete = false;
 
-        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
 
         if(talkConfigData == null)
         {
@@ -107,23 +109,23 @@ public class TalkPanel : BasePanel
         m_Component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(async () =>
         {
             m_IsComplete = true;
-            m_Component.languageContent.UpdateLanguageTextKey(talkConfigData.content);
+            m_Component.languageContent.SetLanguageTextKey(talkConfigData.content);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
             {
-                m_Component.talkSelect.SetActive(true);
+                m_Component.talkSelect.SetActiveSelf(true);
                 m_Component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
                 m_Component.talkSelectGroupView.SelectItem(0);
             }
             else
             {
-                m_Component.talkSelect.SetActive(false);
+                m_Component.talkSelect.SetActiveSelf(false);
 
                 if (talkConfigData.nextTalkId == 0)
                 {
                     await Task.Delay(1000);
                     EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.TalkEndEvent));
-                    Close();
+                    CloseSelf();
                 }
             }
         });
@@ -131,8 +133,8 @@ public class TalkPanel : BasePanel
 
     private void OnItemUpdateEvent(TalkPanelComponent.TalkSelectItem item)
     {
-        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
-        item.languageSelect.UpdateLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
+        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
+        item.languageSelect.SetLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
     }
 
     private void OnItemSelectEvent(TalkPanelComponent.TalkSelectItem item, bool isSelect)
@@ -142,12 +144,12 @@ public class TalkPanel : BasePanel
 			m_SelectIndex = item.itemIndex;
         }
 
-		item.selectGO.SetActive(isSelect);
+		item.selectGO.SetActiveSelf(isSelect);
     }
 
     private void SelectNext()
     {
-        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
 
 		if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
 		{
@@ -166,7 +168,7 @@ public class TalkPanel : BasePanel
 
     private void SelectPrevious()
     {
-        TalkConfigData talkConfigData = ConfigData.talkConfigDatas.GetConfigDataById(m_TalkId);
+        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
 
         if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
         {
@@ -186,5 +188,4 @@ public class TalkPanel : BasePanel
     private bool m_IsComplete = false;
 	private int m_SelectIndex = -1;
     private int m_TalkId = -1;
-	private TalkPanelComponent m_Component = null;
 }

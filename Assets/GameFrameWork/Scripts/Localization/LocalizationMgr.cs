@@ -1,4 +1,3 @@
-using GameFrameWork.Event;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,11 +15,46 @@ namespace GameFrameWork.Localization
 
     public class LocalizationMgr : BaseMgr<LocalizationMgr>
     {
+        public event GameFrameWorkAction lanuageChangeEvent
+        {
+            add
+            {
+                m_LanguageChangeEvent += value;
+            }
+            remove
+            {
+                m_LanguageChangeEvent -= value;
+            }
+        }
+
         protected override void OnAwake()
         {
             base.OnAwake();
             m_LanguageType = (LanguageType)PlayerPrefs.GetInt(m_CacheKey, (int)LanguageType.None);
             m_DicLanguageLoader = new Dictionary<LanguageType, BaseLanguageLoader>();
+        }
+
+        protected override void OnShutDown()
+        {
+            base.OnShutDown();
+            m_DicLanguageLoader.Clear();
+            m_LanguageChangeEvent = null;
+            m_DicLanguageLoader = null;
+        }
+
+        public void AddLanguageLoader(LanguageType languageType, BaseLanguageLoader loader)
+        {
+            if (m_DicLanguageLoader.ContainsKey(languageType))
+            {
+                Log.LogError("语言读取器已经存在：[", languageType.ToString(), "]");
+            }
+
+            m_DicLanguageLoader.Add(languageType, loader);
+
+            if (m_LanguageType == languageType)
+            {
+                loader.Init();
+            }
         }
 
         public void SetDefaultLanguage(LanguageType languageType)
@@ -57,7 +91,7 @@ namespace GameFrameWork.Localization
                 }
                 else
                 {
-                    Log.LogError("语言读取器不存在：[", m_LanguageType, "]");
+                    Log.LogError("语言读取器不存在：[", m_LanguageType.ToString(), "]");
                     return;
                 }
             }
@@ -67,26 +101,11 @@ namespace GameFrameWork.Localization
                 PlayerPrefs.SetInt(m_CacheKey, (int)languageType);
                 m_LanguageType = languageType;
                 loader.Init();
-                EventMgr.instance.Dispatch(this, GameEventArgs.Create(GameFrameWorkCommonEvent.LanguageChangeEvent));
+                m_LanguageChangeEvent?.Invoke();
             }
             else
             {
-                Log.LogError("语言读取器不存在：[", languageType, "]");
-            }
-        }
-
-        public void AddLanguageLoader(LanguageType languageType, BaseLanguageLoader loader)
-        {
-            if (m_DicLanguageLoader.ContainsKey(languageType))
-            {
-                Log.LogError("语言读取器已经存在：[", languageType, "]");
-            }
-
-            m_DicLanguageLoader.Add(languageType, loader);
-
-            if (m_LanguageType == languageType)
-            {
-                loader.Init();
+                Log.LogError("语言读取器不存在：[", languageType.ToString(), "]");
             }
         }
 
@@ -97,21 +116,14 @@ namespace GameFrameWork.Localization
                 return loader.GetLanguageText(key);
             }
 
-            Log.LogError("语言读取器不存在：[", m_LanguageType, "]");
+            Log.LogError("语言读取器不存在：[", m_LanguageType.ToString(), "]");
 
             return string.Empty;
         }
 
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-            m_DicLanguageLoader.Clear();
-            m_DicLanguageLoader = null;
-        }
-
         private const string m_CacheKey = "_GAME_LANGUAGE_NAME_";
-
         private LanguageType m_LanguageType = LanguageType.None;
         private Dictionary<LanguageType, BaseLanguageLoader> m_DicLanguageLoader = null;
+        private event GameFrameWorkAction m_LanguageChangeEvent = null;
     }
 }

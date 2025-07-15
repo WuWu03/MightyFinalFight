@@ -123,15 +123,15 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public string uiAtlasPath
+        public string uiSpritesPath
         {
             get
             {
-                return m_UIAtlasPath;
+                return m_UISpritesPath;
             }
             set
             {
-                m_UIAtlasPath = value;
+                m_UISpritesPath = value;
                 SaveGameFrameWorkConfig(this);
             }
         }
@@ -162,6 +162,19 @@ namespace GameFrameWork.Editor
             }
         }
 
+        public string assetMapFileName
+        {
+            get
+            {
+                return m_AssetMapFileName;
+            }
+            set
+            {
+                m_AssetMapFileName = value;
+                SaveGameFrameWorkConfig(this);
+            }
+        }
+
         public Color logColor
         {
             get
@@ -175,10 +188,11 @@ namespace GameFrameWork.Editor
             }
         }
 
-        [SerializeField] public string pcBuildPath = string.Empty;
-        [SerializeField] public string androidBuildPath = string.Empty;
-        [SerializeField] public string iosBuildPath = string.Empty;
+        [SerializeField] public string buildPath = string.Empty;
+        [SerializeField] public string uiScenesPath = string.Empty;
+        [SerializeField] public string uiAtlasPath = string.Empty;
         [SerializeField] public string entryScene = string.Empty;
+        [SerializeField] public string languageKeyFilePath = string.Empty;
 
         private void SaveGameFrameWorkConfig(GameFrameWorkConfigWindowData windowData)
         {
@@ -207,32 +221,14 @@ namespace GameFrameWork.Editor
             config.isUseLua = windowData.isUseLua;
             config.isLoadLuaFromAssetBundle = windowData.isLoadLuaFromAssetBundle;
             config.isLuaByteMode = windowData.isLuaByteMode;
-            config.luaPath = GetPathWithoutAssets(windowData.luaPath);
-            config.uiPath = GetPathWithoutAssets(windowData.uiPath);
-            config.uiPrefabsPath = GetPathWithoutAssets(windowData.uiPrefabsPath);
-            config.uiAtlasPath = GetPathWithoutAssets(windowData.uiAtlasPath);
-            config.configDataPath = GetPathWithoutAssets(windowData.configDataPath);
+            config.luaPath = EditorPathUtil.GetPathWithoutAssets(windowData.luaPath);
+            config.uiPrefabsPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiPrefabsPath);
+            config.uiSpritesPath = EditorPathUtil.GetPathWithoutAssets(windowData.m_UISpritesPath);
+            config.configDataPath = EditorPathUtil.GetPathWithoutAssets(windowData.configDataPath);
             config.versionFileName = windowData.versionFileName;
+            config.assetMapFileName = windowData.assetMapFileName;
 
             EditorUtility.SetDirty(config);
-        }
-
-        private string GetPathWithoutAssets(string path)
-        {
-            if (string.IsNullOrEmpty(path) || !path.Contains("Assets"))
-            {
-                return path;
-            }
-
-            path = path.Replace("\\", "/");
-            path = path.Substring(path.IndexOf("Assets") + 6);
-
-            if (path.StartsWith("/"))
-            {
-                path = path.Substring(1);
-            }
-
-            return path;
         }
 
         [SerializeField] private bool m_IsCheckVersion = false;
@@ -245,8 +241,10 @@ namespace GameFrameWork.Editor
         [SerializeField] private string m_UIPath = string.Empty;
         [SerializeField] private string m_UIPrefabsPath = string.Empty;
         [SerializeField] private string m_UIAtlasPath = string.Empty;
+        [SerializeField] private string m_UISpritesPath = string.Empty;
         [SerializeField] private string m_ConfigDataPath = string.Empty;
         [SerializeField] private string m_VersionFileName = string.Empty;
+        [SerializeField] private string m_AssetMapFileName = string.Empty;
         [SerializeField] private Color m_LogColor = Color.white;
     }
 }

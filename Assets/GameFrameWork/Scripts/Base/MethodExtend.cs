@@ -1,6 +1,7 @@
-using GameFrameWork.Assets;
 using GameFrameWork.Pool;
+using GameFrameWork.UI;
 using GameFrameWork.Utils;
+using System;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,14 +10,24 @@ namespace GameFrameWork
 {
     public static class MethodExtend
     {
-        public static void SetActive(this UnityEngine.Component go, bool value)
+        public static void SetActiveSelf (this GameObject gameObject,bool value)
         {
-            if (go == null || go.gameObject == null || go.gameObject.activeSelf == value)
+            if (gameObject == null || gameObject.activeSelf == value)
             {
                 return;
             }
 
-            go.gameObject.SetActive(value);
+            gameObject.SetActive(value);
+        }
+
+        public static void SetActiveSelf(this UnityEngine.Component component, bool value)
+        {
+            if (component == null)
+            {
+                return;
+            }
+
+            component.gameObject.SetActiveSelf(value);
         }
 
         public static T GetOrAddComponent<T>(this Transform transform) where T : UnityEngine.Component
@@ -98,21 +109,24 @@ namespace GameFrameWork
             }
 
             string sritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
-            AssetUnLoader resourceUnLoader = renderer.gameObject.GetOrAddComponent<AssetUnLoader>();
 
-            if (resourceUnLoader.spritePath == sritePath)
+            AssetsPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
+            {
+                renderer.sprite = obj as Sprite;
+            });
+        }
+
+        public static void PutSprite(this Image renderer,string spriteName)
+        {
+            if (renderer == null || renderer.sprite == null)
             {
                 return;
             }
 
-            resourceUnLoader.ResetAssetInfo();
-            resourceUnLoader.spritePath = sritePath;
-
-            AssetsPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
-            {
-                resourceUnLoader.sprite = obj;
-                renderer.sprite = obj as Sprite;
-            });
+            Sprite sprite = renderer.sprite;
+            renderer.sprite = null;
+            string spritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
+            AssetsPool.instance.Put(spritePath, sprite);
         }
 
         public static int ToInt(this string value)
@@ -414,6 +428,31 @@ namespace GameFrameWork
                     k /= 10;
                 }
             } while (k > 0);
+        }
+
+        public static object CreatePanelParam(this IPanel panel, string paramName)
+        {
+            return CreatePanelParam(panel.GetType().Name, paramName);
+        }
+
+        private static object CreatePanelParam(string panelTypeName, string paramName)
+        {
+            string panelParamName = StringUtil.Append(panelTypeName, paramName);
+            Type panelViewType = Type.GetType(panelParamName);
+
+            if (panelViewType == null)
+            {
+                Log.LogError("[", panelParamName, "] 不存在");
+                return null;
+            }
+
+            if (panelViewType != null)
+            {
+                object panelParam = Activator.CreateInstance(panelViewType);
+                return panelParam;
+            }
+
+            return null;
         }
     }
 }

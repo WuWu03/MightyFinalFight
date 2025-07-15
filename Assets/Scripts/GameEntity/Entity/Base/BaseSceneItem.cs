@@ -41,11 +41,11 @@ public class BaseSceneItem : BaseGravityObject
         base.OnLoadAssetComplete(go, param);
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_Owner = null;
         SceneEntityMgr.instance.ReleaseSceneItem(this);
-        base.Release();
     }
 
     protected BaseRole m_Owner = null;

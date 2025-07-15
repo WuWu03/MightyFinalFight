@@ -5,8 +5,49 @@ namespace GameFrameWork.Input
 {
     public class InputMgr : BaseMgr<InputMgr>
     {
-        public GameFrameWorkFloatAction getDirectionEvent;
-        public GameFrameWorkBooleanAction<int> getPreconditonEvent;
+        public event GameFrameWorkFloatAction getDirectionEvent
+        {
+            add
+            {
+                m_GetDirectionEvent += value;
+            }
+            remove
+            {
+                m_GetDirectionEvent -= value;
+            }
+        }
+
+        public event GameFrameWorkBooleanAction<int> getPreConditonEvent
+        {
+            add
+            {
+                m_GetPreConditonEvent += value;
+            }
+            remove
+            {
+                m_GetPreConditonEvent -= value;
+            }
+        }
+
+        public event GameFrameWorkAction inputDeviceChangeEvent
+        {
+            add
+            {
+                m_InputDeviceChangeEvent += value;
+            }
+            remove
+            {
+                m_InputDeviceChangeEvent -= value;
+            }
+        }
+
+        public bool isJoystickInput
+        {
+            get
+            {
+                return m_IsJoystickInput;
+            }
+        }
 
         public bool isRunning
         {
@@ -27,33 +68,104 @@ namespace GameFrameWork.Input
             m_TriggerKey = new List<KeyType>();
             m_QueueKeyDown = new Queue<string>();
             m_DicAfterTriggerEvents = new Dictionary<KeyType, List<GameFrameWorkAction>>();
-   
+
             InputHelper.Init();
         }
 
-        public void AddKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        protected override void OnUpdate()
         {
-            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, false);
+            string[] joystickNames = UnityEngine.Input.GetJoystickNames();
+            bool isConnected = joystickNames.Length > 0 && !string.IsNullOrEmpty(joystickNames[0]);
+
+            if (!isConnected || (m_IsJoystickInput && !AnyJoystickInput() && UnityEngine.Input.anyKeyDown))
+            {
+                m_IsJoystickInput = false;
+                m_InputDeviceChangeEvent?.Invoke();
+            }
+            else if (isConnected && !m_IsJoystickInput && AnyJoystickInput())
+            {
+                m_IsJoystickInput = true;
+                m_InputDeviceChangeEvent?.Invoke();
+            }
+
+            if (m_QueueKeyDown.Count > 0)
+            {
+                lock (m_QueueKeyDown)
+                {
+                    while (m_QueueKeyDown.Count > 0)
+                    {
+                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
+                    }
+                }
+            }
+
+            if (m_AxisDownIndex >= 0)
+            {
+                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
+                m_AxisDownIndex = -1;
+                m_AxisDownType = AxisType.None;
+            }
+
+            CheckCombo();
         }
 
-        public void AddTurboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        protected override void OnShutDown()
         {
-            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, false);
+            base.OnShutDown();
+
+            InputHelper.Dispose();
+            m_DicIsKeyDown.Clear();
+            m_ListComboKey.Clear();
+            m_TriggerKey.Clear();
+            m_ListComboKeyEvent.Clear();
+            m_QueueKeyDown.Clear();
+            m_DicAfterTriggerEvents.Clear();
+            m_IsRunning = false;
         }
 
-        public void AddComboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        public void SetKey(KeyType keyType, string keyName)
         {
-            InputHelper.AddKey(keyType, keyName, replaceKeyType, false, true);
+            InputHelper.SetKey(keyType, keyName);
         }
 
-        public void AddTurboComboKey(KeyType keyType, string keyName, KeyType replaceKeyType = KeyType.None)
+        public void SetKey(KeyType keyType, KeyCode keyCode)
         {
-            InputHelper.AddKey(keyType, keyName, replaceKeyType, true, true);
+            InputHelper.SetKey(keyType, keyCode);
         }
 
-        public void AddAxis(AxisType axisType, string horizontal, string vertical)
+        public void SetKey(KeyType keyType, KeyCode keyCode, bool isTurbo, bool isCheckCombo)
         {
-            InputHelper.AddAxis(axisType, horizontal, vertical);
+            InputHelper.SetKey(keyType, keyCode, isTurbo, isCheckCombo);
+        }
+
+        public void SetKey(KeyType keyType, KeyType replaceKeyType, bool isTurbo, bool isCheckCombo)
+        {
+            InputHelper.SetKey(keyType, replaceKeyType, isTurbo, isCheckCombo);
+        }
+
+        public void SetKey(KeyType keyType, KeyType replaceKeyType, KeyCode keyCode, bool isTurbo, bool isCheckCombo)
+        {
+            InputHelper.SetKey(keyType, replaceKeyType, keyCode, isTurbo, isCheckCombo);
+        }
+
+        public void SetKey(KeyType keyType, string keyName, KeyType replaceKeyType, KeyCode keyCode, bool isTurbo, bool isCheckCombo)
+        {
+            InputHelper.SetKey(keyType, keyName, replaceKeyType, keyCode, isTurbo, isCheckCombo);
+        }
+
+        public void SetAxis(AxisType axisType, string horizontal, string vertical)
+        {
+            InputHelper.SetAxis(axisType, horizontal, vertical);
+        }
+
+        public void SetAxis(AxisType axisType, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
+        {
+            InputHelper.SetAxis(axisType, keyCodeHorizontalPositive, keyCodeHorizontalNegative, keyCodeVerticalPositive, keyCodeVerticalNegative);
+        }
+
+        public void SetAxis(AxisType axisType, string horizontal, string vertical, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
+        {
+            InputHelper.SetAxis(axisType, horizontal, vertical, keyCodeHorizontalPositive, keyCodeHorizontalNegative, keyCodeVerticalPositive, keyCodeVerticalNegative);
         }
 
         public void AddComboKeyEvent(KeyType[] keys, int eventId, GameFrameWorkAction<int, bool> keyEvent)
@@ -76,8 +188,8 @@ namespace GameFrameWork.Input
 
         public void RemoveAllComboKeyEvent()
         {
-            getDirectionEvent = null;
-            getPreconditonEvent = null;
+            m_GetDirectionEvent = null;
+            m_GetPreConditonEvent = null;
             m_ListComboKeyEvent.Clear();
         }
 
@@ -110,26 +222,17 @@ namespace GameFrameWork.Input
             m_DicAfterTriggerEvents.Clear();
         }
 
-        public Vector2 GetAxis(AxisType axisType, bool isOneKey = false)
+        public Vector2 GetAxis(AxisType axisType, bool isTurbo = false, bool checkKeyBoard = true)
         {
-            AxisArgs axisArgs = InputHelper.GetAxis(axisType);
+            Vector2 tempAxis = GetAxis(InputHelper.GetAxis(axisType), checkKeyBoard);
             Vector2 axis = Vector2.zero;
-
-            if (axisArgs == null)
-            {
-                return axis;
-            }
-
-            float x = UnityEngine.Input.GetAxis(axisArgs.horizontal);
-            float y = UnityEngine.Input.GetAxis(axisArgs.vertical);
+            float x = tempAxis.x;
+            float y = tempAxis.y;
             float speed = 1f;
-
-            axis.x = 0f;
-            axis.y = 0f;
 
             if (x != 0 || y != 0)
             {
-                if (isOneKey)
+                if (!isTurbo)
                 {
                     bool prevHorizontal = InputHelper.GetAxisDown(axisType, 0);
                     bool prevVertical = InputHelper.GetAxisDown(axisType, 1);
@@ -157,20 +260,7 @@ namespace GameFrameWork.Input
             return axis;
         }
 
-        //public float GetWheelsAxis(AxisType axisType)
-        //{
-        //    AxisArgs axisArgs = null;
-        //    float axis = 0;
-
-        //    if (!m_DicAxis.TryGetValue(axisType, out axisArgs))
-        //    {
-        //        return axis;
-        //    }
-
-        //    float x = UnityEngine.Input.scro(axisArgs.Horizontal);
-        //}
-
-        public bool GetKeyDown(KeyType keyType, bool isTurbo = false)
+        public bool GetKeyDown(KeyType keyType, bool checkKeyBoard = true)
         {
             KeyArgs key = InputHelper.GetKey(keyType);
 
@@ -179,28 +269,7 @@ namespace GameFrameWork.Input
                 return false;
             }
 
-            return GetKeyDown(key.keyName, isTurbo);
-        }
-
-        protected override void OnUpdate()
-        {
-            if (m_QueueKeyDown.Count > 0)
-            {
-                lock (m_QueueKeyDown)
-                {
-                    while (m_QueueKeyDown.Count > 0)
-                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
-                }
-            }
-
-            if (m_AxisDownIndex >= 0)
-            {
-                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
-                m_AxisDownIndex = -1;
-                m_AxisDownType = AxisType.None;
-            }
-
-            CheckCombo();
+            return GetKeyDown(key, checkKeyBoard);
         }
 
         private void CheckCombo()
@@ -252,13 +321,27 @@ namespace GameFrameWork.Input
         {
             bool keyDown = false;
 
-            Vector2 axis = GetAxis(axisType, true);
-            if (m_CurrDir == 0) m_CurrDir = getDirectionEvent != null ? getDirectionEvent() : 1;
+            Vector2 axis = GetAxis(axisType);
 
-            if (axis.y > 0) m_ListComboKey.Add(KeyType.Up);
-            if (axis.y < 0) m_ListComboKey.Add(KeyType.Down);
-            if (axis.x > 0) m_ListComboKey.Add(m_CurrDir > 0 ? KeyType.Right : KeyType.Left);
-            if (axis.x < 0)
+            if (m_CurrDir == 0)
+            {
+                m_CurrDir = m_GetDirectionEvent != null ? m_GetDirectionEvent() : 1;
+            }
+
+            if (axis.y > 0)
+            {
+                m_ListComboKey.Add(KeyType.Up);
+            }
+            else if (axis.y < 0)
+            {
+                m_ListComboKey.Add(KeyType.Down);
+            }
+
+            if (axis.x > 0)
+            {
+                m_ListComboKey.Add(m_CurrDir > 0 ? KeyType.Right : KeyType.Left);
+            }
+            else if (axis.x < 0)
             {
                 if (m_ListComboKey.Count > 0 && m_ListComboKey[m_ListComboKey.Count - 1] == KeyType.Right)
                 {
@@ -288,7 +371,7 @@ namespace GameFrameWork.Input
                 return isKeyDown;
             }
 
-            if (GetKeyDown(key.keyName, key.isTurbo))
+            if (GetComboKeyDown(key.keyName, key.keyCode, key.isTurbo))
             {
                 KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : key.keyType;
 
@@ -323,8 +406,8 @@ namespace GameFrameWork.Input
                         break;
                     }
                 }
-                
-                if (!isMatch || getPreconditonEvent == null || !getPreconditonEvent(m_ListComboKeyEvent[i].eventId))
+
+                if (!isMatch || m_GetPreConditonEvent == null || !m_GetPreConditonEvent(m_ListComboKeyEvent[i].eventId))
                 {
                     continue;
                 }
@@ -362,9 +445,14 @@ namespace GameFrameWork.Input
             }
         }
 
-        private bool GetKeyDown(string keyName, bool isTurbo = false)
+        private bool GetComboKeyDown(string keyName, KeyCode keyCode, bool isTurbo)
         {
             bool isKeyDown = UnityEngine.Input.GetButton(keyName);
+
+            if (!isKeyDown)
+            {
+                isKeyDown = UnityEngine.Input.GetKey(keyCode);
+            }
 
             if (!m_DicIsKeyDown.TryGetValue(keyName, out bool prev))
             {
@@ -378,7 +466,9 @@ namespace GameFrameWork.Input
                     if (!m_QueueKeyDown.Contains(keyName))
                     {
                         lock (m_QueueKeyDown)
+                        {
                             m_QueueKeyDown.Enqueue(keyName);
+                        }
                     }
 
                     return !prev;
@@ -394,6 +484,94 @@ namespace GameFrameWork.Input
             return false;
         }
 
+        private bool AnyJoystickInput()
+        {
+            AxisArgs[] allAxis = InputHelper.GetAllAxis();
+
+            if (allAxis != null && allAxis.Length > 0)
+            {
+                for (int i = 0; i < allAxis.Length; i++)
+                {
+                    if (GetAxis(allAxis[i], false) != Vector2.zero)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            KeyArgs[] allKeys = InputHelper.GetAllKeys();
+
+            if (allKeys != null && allKeys.Length > 0)
+            {
+                for (int i = 0; i < allKeys.Length; i++)
+                {
+                    if (GetKeyDown(allKeys[i], false))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool GetKeyDown(KeyArgs key, bool checkKeyBoard = true)
+        {
+            bool isKeyDown = UnityEngine.Input.GetButtonDown(key.keyName);
+
+            if (!isKeyDown && checkKeyBoard)
+            {
+                isKeyDown = UnityEngine.Input.GetKeyDown(key.keyCode);
+            }
+
+            return isKeyDown;
+        }
+
+        private Vector2 GetAxis(AxisArgs axis, bool checkKeyBoard)
+        {
+            Vector2 axisValue = Vector2.zero;
+
+            if (axis == null)
+            {
+                return axisValue;
+            }
+
+            float x = UnityEngine.Input.GetAxis(axis.horizontal);
+            float y = UnityEngine.Input.GetAxis(axis.vertical);
+            bool xPositive = checkKeyBoard && UnityEngine.Input.GetKey(axis.keyCodeHorizontalPositive);
+            bool xNegative = checkKeyBoard && UnityEngine.Input.GetKey(axis.keyCodeHorizontalNegative);
+            bool yPositive = checkKeyBoard && UnityEngine.Input.GetKey(axis.keyCodeVerticalPositive);
+            bool yNegative = checkKeyBoard && UnityEngine.Input.GetKey(axis.keyCodeVerticalNegative);
+
+            if (x == 0)
+            {
+                if (xPositive)
+                {
+                    x = 1f;
+                }
+                else if (xNegative)
+                {
+                    x = -1f;
+                }
+            }
+
+            if (y == 0)
+            {
+                if (yPositive)
+                {
+                    y = 1f;
+                }
+                else if (yNegative)
+                {
+                    y = -1f;
+                }
+            }
+
+            axisValue.x = x;
+            axisValue.y = y;
+            return axisValue;
+        }
+
         private void ResetComboKeys()
         {
             m_ListComboKey.Clear();
@@ -402,24 +580,11 @@ namespace GameFrameWork.Input
             m_CurrDir = 0;
         }
 
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-
-            InputHelper.Dispose();
-            m_DicIsKeyDown.Clear();
-            m_ListComboKey.Clear();
-            m_TriggerKey.Clear();
-            m_ListComboKeyEvent.Clear();
-            m_QueueKeyDown.Clear();
-            m_DicAfterTriggerEvents.Clear();
-            m_IsRunning = false;
-        }
-
         private float m_CurrDir = 0;
         private float m_KeyDownTimer = -1f;
         private const float KeyDownTime = 0.05f;
         private bool m_IsRunning = false;
+        private bool m_IsJoystickInput = false;
         private int m_CurrKeyDown = -1;
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
         private AxisType m_AxisDownType = AxisType.None;
@@ -429,5 +594,8 @@ namespace GameFrameWork.Input
         private Queue<string> m_QueueKeyDown = null;
         private List<ComboKeyEventArgs> m_ListComboKeyEvent = null;
         private Dictionary<KeyType, List<GameFrameWorkAction>> m_DicAfterTriggerEvents = null;
+        private event GameFrameWorkFloatAction m_GetDirectionEvent = null;
+        private event GameFrameWorkBooleanAction<int> m_GetPreConditonEvent = null;
+        private event GameFrameWorkAction m_InputDeviceChangeEvent = null;
     }
 }

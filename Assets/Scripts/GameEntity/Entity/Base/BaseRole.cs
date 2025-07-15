@@ -2,6 +2,7 @@ using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Camera;
 using GameFrameWork.Timer;
+using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -170,6 +171,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleAwaken>();
         AddState<RoleSkill>();
         AddState<RoleDefense>();
+        SetDefaultState<RoleIdle>();
 
         if (m_AutoMoveComplete == null)
         {
@@ -194,10 +196,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return m_CurrCtrl as T;
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_AutoMoveComplete.RemoveAllListeners();
-
 
         if (m_CurrCtrl != null)
         {
@@ -229,15 +231,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_DropTrapStateData = null;
         m_CurrCtrl = null;
         m_OnHurtEvent = null;
-
-        base.Release();
+        m_AutoMoveComplete = null;
     }
 
     protected override void OnLoadAssetComplete(GameObject go, object[] param)
     {
         base.OnLoadAssetComplete(go, param);
         m_MoveDir = Vector2.right;
-        m_FSM.Start<RoleIdle>();
 
         if (m_CurrCtrl != null)
         {
@@ -277,12 +277,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         CheckAutoMove();
     }
 
-    protected override void OnBeforeDestroy()
-    {
-        m_AutoMoveComplete = null;
-        base.OnBeforeDestroy();
-    }
-
     public virtual void OnAttackMsg(AttackStateData data, bool forceJumpAttack = false)
     {
         if (data == null)
@@ -308,11 +302,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnMoveMsg(MoveStateData data)
     {
-        if (this.gameObject.name == "TwoP")
-        {
-
-        }
-
         if (data == null)
         {
             return;
@@ -393,7 +382,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         SetStateData<RoleJump>(jumpData);
         ChangeState<RoleJump>();
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.DefaultJump);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
@@ -555,7 +544,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!hurtStatedata.isNotPlayHurtSound)
         {
             string hurtSound = string.IsNullOrEmpty(hurtStatedata.hurtSound) ? SoundName.DefaultHurt : hurtStatedata.hurtSound;
-            AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, hurtSound);
+            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, hurtSound));
         }
 
         m_EntityAttribute.SubHealth(hurtStatedata.attackValue);
@@ -642,7 +631,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (!m_EntityAttribute.IsDie())
             {
                 ChangeDefaultState();
-                AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop);
+                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop));
             }
             else
             {
@@ -701,26 +690,29 @@ public class BaseRole : BaseAvatar, ICanBeHit
             }
             else
             {
-                Timer.Register(0.1f, () => { OnGroundHurtMsg(m_OnGroundHurtStateData); });
+                TimerMgr.instance.Register(0.1f, () => { OnGroundHurtMsg(m_OnGroundHurtStateData); });
             }
         }
 
-        if (m_EntityAttribute.health <= 0)
+        if(m_EntityAttribute != null)
         {
-            m_IsSmoon = false;
-            ChangeState<RoleDead>();
-            return;
-        }
-
-        Timer.Register(1f, () =>
-        {
-            m_IsSmoon = false;
-
-            if (m_EntityAttribute.health > 0)
-                ChangeState<RoleAwaken>();
-            else
+            if (m_EntityAttribute.health <= 0)
+            {
+                m_IsSmoon = false;
                 ChangeState<RoleDead>();
-        });
+                return;
+            }
+
+            TimerMgr.instance.Register(1f, () =>
+            {
+                m_IsSmoon = false;
+
+                if (m_EntityAttribute.health > 0)
+                    ChangeState<RoleAwaken>();
+                else
+                    ChangeState<RoleDead>();
+            });
+        }
     }
 
     private void OnGroundCheck()
@@ -730,11 +722,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckAutoMove()
     {
-        if(this.gameObject.name == "TwoP")
-        {
-
-        }
-
         if (!m_IsAssetLoadComplete || !isInGround || !m_IsAutoMove)
         {
             return;
@@ -764,8 +751,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         SetDefaultState<RoleIdle>();
         ChangeDefaultState();
-        m_AutoMoveComplete.Invoke();
-        m_AutoMoveComplete.RemoveAllListeners();
+
+        m_AutoMoveComplete?.Invoke();
+        m_AutoMoveComplete?.RemoveAllListeners();
         m_IsAutoMove = false;
         m_XArrived = false;
         m_YArrived = false;

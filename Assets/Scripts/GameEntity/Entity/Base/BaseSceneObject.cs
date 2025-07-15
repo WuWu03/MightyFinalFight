@@ -114,16 +114,17 @@ public class BaseSceneObject : BaseEntity
         m_Pos = transform.localPosition;
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         m_OnReleaseEventHandler?.Invoke(m_EntityId);
-   
+
         if (m_Asset != null)
         {
             GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
         }
 
-        if(m_Data != null)
+        if (m_Data != null)
         {
             ReferencePool.ReleaseReference(m_Data);
         }
@@ -139,8 +140,6 @@ public class BaseSceneObject : BaseEntity
         m_Data = null;
         m_EntityAttribute = null;
         m_Asset = null;
-
-        base.Release();
     }
 
     public virtual void SetData(BaseSceneObjectData data)
@@ -322,22 +321,11 @@ public class BaseSceneObject : BaseEntity
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
-    private void OnLoadAssetComplete(string assetPath, UnityEngine.Object obj, object[] param)
+    protected override void Update()
     {
-        m_Asset = obj as GameObject;
-        m_Asset.transform.SetParent(transform, false);
-        m_Asset.transform.localPosition = Vector3.zero;
-        m_Asset.SetActive(true);
-        SetLayer();
-        OnLoadAssetComplete(m_Asset, param);
-        m_IsAssetLoadComplete = true;
-    }
+        base.Update();
 
-    public override void Update(float deltaTime, float unscaledDeltaTime)
-    {
-        base.Update(deltaTime, unscaledDeltaTime);
-
-        if (!IsResComplete())
+        if (!m_IsAssetLoadComplete)
         {
             return;
         }
@@ -345,11 +333,11 @@ public class BaseSceneObject : BaseEntity
         OnUpdate();
     }
 
-    public override void LateUpdate(float deltaTime, float unscaledDeltaTime)
+    protected override void LateUpdate()
     {
-        base.LateUpdate(deltaTime, unscaledDeltaTime);
+        base.LateUpdate();
 
-        if (!IsResComplete())
+        if (!m_IsAssetLoadComplete)
         {
             return;
         }
@@ -357,11 +345,11 @@ public class BaseSceneObject : BaseEntity
         OnLateUpdate();
     }
 
-    public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
+    protected override void FixedUpdate()
     {
-        base.FixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
+        base.FixedUpdate();
 
-        if (!IsResComplete())
+        if (!m_IsAssetLoadComplete)
         {
             return;
         }
@@ -369,20 +357,21 @@ public class BaseSceneObject : BaseEntity
         OnFixedUpdate();
     }
 
-    private bool IsResComplete()
+    private void OnLoadAssetComplete(string assetPath, UnityEngine.Object obj, object[] param)
     {
-        if (!m_IsAssetLoadComplete)
-        {
-            return false;
-        }
-
-        if (m_Asset == null)
+        if (obj == null)
         {
             Release();
-            return false;
+            return;
         }
 
-        return true;
+        m_Asset = obj as GameObject;
+        m_Asset.transform.SetParent(transform, false);
+        m_Asset.transform.localPosition = Vector3.zero;
+        m_Asset.SetActiveSelf(true);
+        SetLayer();
+        OnLoadAssetComplete(m_Asset, param);
+        m_IsAssetLoadComplete = true;
     }
 
     protected virtual void OnUpdate() { }

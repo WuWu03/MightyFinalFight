@@ -92,7 +92,6 @@ public class DoJumpAttack : DoAttack
         }
     }
 
-
     protected override void OnReset()
     {
         base.OnReset();

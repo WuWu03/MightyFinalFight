@@ -1,5 +1,6 @@
 using GameFrameWork.Audio;
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Consume : BaseSceneItem
@@ -41,22 +42,23 @@ public class Consume : BaseSceneItem
         else
         {
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            UIMgr.instance.Get<MainPanel>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
+            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+            mainPanel.SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
 
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Eat);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddExp()
     {
         PlayerMgr.instance.AddExp(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.Eat);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddLife()
     {
         PlayerMgr.instance.AddLife(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.GetRobot);
+        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddMoney()
@@ -64,9 +66,9 @@ public class Consume : BaseSceneItem
         PlayerMgr.instance.AddContinue(m_ConsumeInfo.value);
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
-        base.Release();
+        base.OnRelease();
         m_ConsumeInfo = null;
     }
 

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Serialize;
+using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
 
@@ -48,7 +48,7 @@ namespace GameFrameWork.ConfigData
                 return;
             }
 
-            m_DicFieldName = new Dictionary<string, int>();
+            m_FieldNameDict = new Dictionary<string, int>();
             byte[] buffer = ZlibHelper.DeCompressBytes(bytes);//1解压缩
 
             using (MemoryStreamEx mse = new MemoryStreamEx(buffer))//2解析数据到数组
@@ -68,7 +68,7 @@ namespace GameFrameWork.ConfigData
                         if (i == 0)//表示读取的是字段
                         {
                             m_FieldNames[j] = str;
-                            m_DicFieldName[str] = j;
+                            m_FieldNameDict[str] = j;
                         }
                         else//表示读取的是数据
                         {
@@ -105,7 +105,7 @@ namespace GameFrameWork.ConfigData
                     return string.Empty;
                 }
 
-                return m_Datas[m_CurrRow, m_DicFieldName[fieldName]];
+                return m_Datas[m_CurrRow, m_FieldNameDict[fieldName]];
             }
             catch 
             {
@@ -118,8 +118,8 @@ namespace GameFrameWork.ConfigData
         /// </summary>
         public void Dispose()
         {
-            m_DicFieldName.Clear();
-            m_DicFieldName = null;
+            m_FieldNameDict.Clear();
+            m_FieldNameDict = null;
 
             m_FieldNames = null;
             m_Datas = null;
@@ -143,6 +143,6 @@ namespace GameFrameWork.ConfigData
         /// <summary>
         /// 字段名称字典
         /// </summary>
-        private Dictionary<string, int> m_DicFieldName;
+        private Dictionary<string, int> m_FieldNameDict;
     }
 }

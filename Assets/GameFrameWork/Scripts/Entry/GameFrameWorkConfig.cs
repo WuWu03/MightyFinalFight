@@ -11,11 +11,11 @@ namespace GameFrameWork
         public bool isLoadLuaFromAssetBundle = false;
         public bool isLuaByteMode = false;
         public string luaPath = string.Empty;
-        public string uiPath = string.Empty;
         public string uiPrefabsPath = string.Empty;
-        public string uiAtlasPath = string.Empty;
+        public string uiSpritesPath = string.Empty;
         public string configDataPath = string.Empty;
         public string versionFileName = string.Empty;
+        public string assetMapFileName = string.Empty;
         public Color logColor = Color.white;
     }
 }

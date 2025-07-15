@@ -180,9 +180,9 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 遍历目录及其子目录
         /// </summary>
-        public static void Recursive(string path, List<string> listFiles, List<string> listPaths)
+        public static void Recursive(string path,string searchPattern, List<string> listFiles, List<string> listPaths)
         {
-            string[] files = GetFiles(path);
+            string[] files = GetFiles(path, searchPattern);
             string[] dirs = GetDirectories(path);
 
             if(files != null  && files.Length > 0)
@@ -196,7 +196,7 @@ namespace GameFrameWork.Utils
 
                 foreach (string dir in dirs)
                 {
-                    Recursive(dir, listFiles, listPaths);
+                    Recursive(dir, searchPattern, listFiles, listPaths);
                 }
             }
         }

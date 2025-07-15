@@ -1,4 +1,4 @@
-﻿namespace SRF.UI
+namespace SRF.UI
 {
     using System;
     using UnityEngine;
@@ -28,8 +28,6 @@
                 return;
             }
 
-            //Debug.Log("OnBeginDrag");
-
             _startValue = GetCurrentValue();
             _delta = 0;
         }
@@ -40,8 +38,6 @@
             {
                 return;
             }
-
-            //Debug.Log("OnDrag");
 
             var delta = 0f;
 
@@ -71,8 +67,6 @@
             {
                 return;
             }
-
-            //Debug.Log("OnEndDrag");
 
             SetCurrentValue(Mathf.Max(_startValue + _delta, GetMinSize()));
             _delta = 0;

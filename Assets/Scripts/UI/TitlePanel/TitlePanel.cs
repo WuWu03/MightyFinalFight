@@ -3,22 +3,28 @@
 /**Create By GQY****************************************/
 /*******************************************************/
 using DG.Tweening;
+using GameFrameWork;
 using GameFrameWork.Audio;
+using GameFrameWork.Event;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
 using UnityEngine;
 
-public class TitlePanel : BasePanel
+public class TitlePanel : BasePanel<TitlePanelComponent>
 {
-    protected override void OnInit(object[] param)
+	protected override void OnInit(object[] param)
 	{
-		m_Component = GetPanelComponent<TitlePanelComponent>();
+
 	}
 
 	protected override void OnOpen()
 	{
+		InputMgr.instance.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
+		OnInputDeviceChangeEvent();
 		TitleAnim();
 	}
+
 
 	protected override void OnUpdate()
 	{
@@ -36,26 +42,38 @@ public class TitlePanel : BasePanel
 
 	protected override void OnClose()
 	{
-
+		InputMgr.instance.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
 	}
 
 	protected override void OnDestroy()
 	{
+
+	}
+
+	private void OnInputDeviceChangeEvent()
+	{
+		if (InputMgr.instance.isJoystickInput)
+		{
+			m_Component.txtStart.Append("(START)");
+			m_Component.txtSettings.Append("(SELECT)");
+
+		}
+		else
+		{
+			m_Component.txtStart.Append("(G)");
+			m_Component.txtSettings.Append("(H)");
+		}
 	}
 
 	private void StartGame()
 	{
-		LoadPanel loadPanel = UIMgr.instance.Open<LoadPanel>() as LoadPanel;
-		loadPanel.DOFade(0f, 1f, 0.3f, 0.5f, () =>
-		{
-			UIMgr.instance.Open<RoleSelectPanel>();
-			CloseSelf();
-		});
+		LoadPanelMgr.instance.DOFadeBlack(OnLoadFadeBlackComplete);
+	}
 
-		loadPanel.DOFade(1, 0, 0.3f, 0.1f, () =>
-		{
-			UIMgr.instance.Close<LoadPanel>();
-		});
+	private void OnLoadFadeBlackComplete()
+	{
+		UIMgr.instance.Open(UINames.RoleSelectPanel);
+		CloseSelf();
 	}
 
 	private void TitleAnim()
@@ -67,13 +85,14 @@ public class TitlePanel : BasePanel
 		m_Component.imgLogoBG.fillAmount = 0f;
 		m_Component.imgRetro.fillAmount = 0f;
 
-		m_Component.imgLogoBG.gameObject.SetActive(false);
-		m_Component.imgRetro.gameObject.SetActive(false);
-		m_Component.imgLogo.gameObject.SetActive(false);
-		m_Component.imgStar.gameObject.SetActive(false);
-		m_Component.txtStart.gameObject.SetActive(false);
-		m_Component.txtDeveloper.gameObject.SetActive(false);
-		m_Component.imgCapcom.gameObject.SetActive(true);
+		m_Component.imgLogoBG.gameObject.SetActiveSelf(false);
+		m_Component.imgRetro.gameObject.SetActiveSelf(false);
+		m_Component.imgLogo.gameObject.SetActiveSelf(false);
+		m_Component.imgStar.gameObject.SetActiveSelf(false);
+		m_Component.txtStart.gameObject.SetActiveSelf(false);
+		m_Component.txtSettings.gameObject.SetActiveSelf(false);
+		m_Component.txtDeveloper.gameObject.SetActiveSelf(false);
+		m_Component.imgCapcom.gameObject.SetActiveSelf(true);
 
 		Sequence sequence = DOTween.Sequence();
 		sequence.Append(m_Component.imgCapcom.DOFade(1, 2));
@@ -81,45 +100,45 @@ public class TitlePanel : BasePanel
 		sequence.Append(m_Component.imgCapcom.DOFade(0, 2));
 		sequence.AppendCallback(() =>
 		{
-			m_Component.imgCapcom.gameObject.SetActive(false);
-			m_Component.txtDeveloper.gameObject.SetActive(true);
+			m_Component.imgCapcom.gameObject.SetActiveSelf(false);
+			m_Component.txtDeveloper.gameObject.SetActiveSelf(true);
 		});
 		sequence.Append(m_Component.txtDeveloper.DOFade(1, 2));
 		sequence.AppendInterval(1f);
 		sequence.Append(m_Component.txtDeveloper.DOFade(0, 2));
 		sequence.AppendCallback(() =>
 		{
-			m_Component.txtDeveloper.gameObject.SetActive(false);
-			m_Component.imgLogo.gameObject.SetActive(true);
+			m_Component.txtDeveloper.gameObject.SetActiveSelf(false);
+			m_Component.imgLogo.gameObject.SetActiveSelf(true);
 			m_Component.imgLogo.transform.localScale = Vector3.one * 3;
 		});
 		sequence.Append(m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
 		sequence.InsertCallback(10.2f, () =>
 		{
-			AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.BicycleKick);
+			AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
 		});
 		sequence.AppendCallback(() =>
 		{
-			m_Component.imgLogoBG.gameObject.SetActive(true);
-			m_Component.imgRetro.gameObject.SetActive(true);
+			m_Component.imgLogoBG.gameObject.SetActiveSelf(true);
+			m_Component.imgRetro.gameObject.SetActiveSelf(true);
 			m_Component.imgLogoBG.DOFillAmount(1, 0.2f);
 			m_Component.imgRetro.DOFillAmount(1, 0.2f);
 		});
 		sequence.AppendInterval(0.2f);
 		sequence.AppendCallback(() =>
 		{
-			m_Component.imgStar.gameObject.SetActive(true);
-			AudioMgr.instance.PlayBGM(AssetPathDefine.AudioClipPath, SoundName.Bgm13Title, false);
+			m_Component.imgStar.gameObject.SetActiveSelf(true);
+			AudioMgr.instance.PlayBGM(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm13Title), false);
 		});
 		sequence.AppendInterval(0.1f);
 		sequence.Append(m_Component.imgStar.DOFade(1, 1f));
 		sequence.AppendCallback(() =>
 		{
-			m_Component.txtStart.gameObject.SetActive(true);
+			m_Component.txtStart.gameObject.SetActiveSelf(true);
+			m_Component.txtSettings.gameObject.SetActiveSelf(true);
 			m_CanStart = true;
 		});
 	}
 
-	private TitlePanelComponent m_Component = null;
 	private bool m_CanStart = false;
 }

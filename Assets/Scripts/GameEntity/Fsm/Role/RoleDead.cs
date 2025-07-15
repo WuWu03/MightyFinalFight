@@ -1,7 +1,7 @@
-using DG.Tweening.Plugins.Options;
 using GameFrameWork;
 using GameFrameWork.FSM;
 using UnityEngine;
+
 public class RoleDead : BaseFsmState
 {
     protected override void OnInit(FiniteStateMachine fsm)
@@ -23,7 +23,7 @@ public class RoleDead : BaseFsmState
         {
             if (m_Owner.objectType == ObjectType.Player)
             {
-                PlayerMgr.instance.Rebirth(m_ReBirthPos);              
+                PlayerMgr.instance.Rebirth(m_ReBirthPos);
                 return;
             }
 

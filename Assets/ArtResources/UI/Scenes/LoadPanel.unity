@@ -345,18 +345,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ScriptFolder: Assets/Scripts/UI/LoadPanel/
   m_PanelName: LoadPanel
-  m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
   panelType: 3
   panelPreLoadType: 0
-  panelCloseMode: 1
+  panelCloseMode: 4
   panelLayer: 7
   isCustomLayer: 1
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/LoadPanel/LoadPanel.cs
   panelComponentPath: Assets/Scripts/UI/LoadPanel/LoadPanelComponent.cs
   panelSettingsPath: Assets/Scripts/UI/LoadPanel/LoadPanelSettings.cs
-  panelPrefabPath: Assets/ArtResources/UI/Prefabs/LoadPanel.prefab
 --- !u!4 &772694343
 Transform:
   m_ObjectHideFlags: 0

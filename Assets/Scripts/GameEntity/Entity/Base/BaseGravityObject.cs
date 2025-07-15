@@ -33,7 +33,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public Rigidbody2D rigidbody2D
+    public new Rigidbody2D rigidbody2D
     {
         get
         {
@@ -68,7 +68,6 @@ public class BaseGravityObject : BaseBoundObject
     public override void Init(int id, string name)
     {
         base.Init(id, name);
-
         m_Rigidbody2D = gameObject.GetOrAddComponent<Rigidbody2D>();
         m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
@@ -159,17 +158,17 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public override void Release()
+    protected override void OnRelease()
     {
+        base.OnRelease();
         ResetRigidbody();
 
         m_OnDropEvent.RemoveAllListeners();
         m_OnGroundEvent.RemoveAllListeners();
-
+        m_OnDropEvent = null;
+        m_OnGroundEvent = null;
         m_IsAddGroundForce = false;
         m_Rigidbody2D = null;
-
-        base.Release();
     }
 
     protected virtual void OnDrop() { }
@@ -215,14 +214,6 @@ public class BaseGravityObject : BaseBoundObject
         ResetRigidbody();
         OnGround();
         m_IsAddGroundForce = false;
-    }
-
-    protected override void OnBeforeDestroy()
-    {
-        m_OnDropEvent = null;
-        m_OnGroundEvent = null;
-
-        base.OnBeforeDestroy();
     }
 
     private UnityEvent m_OnDropEvent = null;

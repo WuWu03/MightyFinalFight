@@ -1,5 +1,4 @@
-﻿using GameFrameWork.Camera;
-using System.Collections;
+using GameFrameWork.Camera;
 using System.Collections.Generic;
 using UnityEngine;
 

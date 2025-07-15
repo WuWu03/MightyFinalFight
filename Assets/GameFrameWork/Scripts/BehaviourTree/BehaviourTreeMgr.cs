@@ -10,7 +10,8 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_ListBehaviourTrees = new List<BehaviourTree>();
+            m_UsedBehaviourTreeList = new List<BehaviourTree>();
+            m_UnUsedBehaviourTreeList = new List<BehaviourTree>();
             string dataPath = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, PathUtil.behaviourTreeConfigDataName);
             string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(dataPath).text;
             m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
@@ -21,9 +22,9 @@ namespace GameFrameWork.BehaviourTree
             base.OnUpdate();
 
 
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Update(Time.deltaTime);
+                m_UsedBehaviourTreeList[i].Update(Time.deltaTime);
             }
         }
 
@@ -31,9 +32,9 @@ namespace GameFrameWork.BehaviourTree
         {
             base.OnLateUpdate();
 
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].LateUpate(Time.deltaTime);
+                m_UsedBehaviourTreeList[i].LateUpate(Time.deltaTime);
             }
         }
 
@@ -41,9 +42,9 @@ namespace GameFrameWork.BehaviourTree
         {
             base.OnFixedUpdate();
 
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].FixedUpdate(Time.fixedDeltaTime);
+                m_UsedBehaviourTreeList[i].FixedUpdate(Time.fixedDeltaTime);
             }
         }
 
@@ -52,35 +53,35 @@ namespace GameFrameWork.BehaviourTree
             base.OnShutDown();
             StopAllTrees();
 
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Destroy();
+                m_UsedBehaviourTreeList[i].Destroy();
             }
 
-            m_ListBehaviourTrees.Clear();
-            m_ListBehaviourTrees = null;
+            m_UsedBehaviourTreeList.Clear();
+            m_UsedBehaviourTreeList = null;
         }
 
         public void AddBehaviourTree(object owner, int id)
         {
-            if (m_ListBehaviourTrees == null)
+            if (m_UsedBehaviourTreeList == null)
             {
                 return;
             }
 
             BehaviourTreeData data = m_Config.GetDataById(id);
-            m_ListBehaviourTrees.Add(new BehaviourTree(data, owner));
+            m_UsedBehaviourTreeList.Add(new BehaviourTree(data, owner));
         }
 
         public void RemoveBehaviourTree(object owner, int id)
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                BehaviourTree behaviourTree = m_UsedBehaviourTreeList[i];
                 if (behaviourTree.tree.id == id && behaviourTree.tree.owner == owner)
                 {
                     behaviourTree.Destroy();
-                    m_ListBehaviourTrees.RemoveAt(i);
+                    m_UsedBehaviourTreeList.RemoveAt(i);
                     break;
                 }
             }
@@ -88,17 +89,17 @@ namespace GameFrameWork.BehaviourTree
 
         public void StartAllTrees()
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Start();
+                m_UsedBehaviourTreeList[i].Start();
             }
         }
 
         public void StartTree(object owner, int id)
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                BehaviourTree behaviourTree = m_UsedBehaviourTreeList[i];
 
                 if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
                 {
@@ -110,17 +111,17 @@ namespace GameFrameWork.BehaviourTree
 
         public void StopAllTrees()
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Stop();
+                m_UsedBehaviourTreeList[i].Stop();
             }
         }
 
         public void StopTree(object owner, int id)
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                BehaviourTree behaviourTree = m_UsedBehaviourTreeList[i];
 
                 if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
                 {
@@ -132,17 +133,17 @@ namespace GameFrameWork.BehaviourTree
 
         public void PauseAllTrees()
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Pause();
+                m_UsedBehaviourTreeList[i].Pause();
             }
         }
 
         public void PauseTree(object owner, int id)
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                BehaviourTree behaviourTree = m_UsedBehaviourTreeList[i];
 
                 if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
                 {
@@ -154,17 +155,17 @@ namespace GameFrameWork.BehaviourTree
 
         public void ResumeAllTrees()
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_ListBehaviourTrees[i].Resume();
+                m_UsedBehaviourTreeList[i].Resume();
             }
         }
 
         public void ResumeTree(object owner, int id)
         {
-            for (int i = m_ListBehaviourTrees.Count - 1; i > -1; i--)
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                BehaviourTree behaviourTree = m_ListBehaviourTrees[i];
+                BehaviourTree behaviourTree = m_UsedBehaviourTreeList[i];
 
                 if (behaviourTree.tree.owner == owner && behaviourTree.tree.id == id)
                 {
@@ -174,7 +175,8 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        private List<BehaviourTree> m_ListBehaviourTrees = null;
+        private List<BehaviourTree> m_UsedBehaviourTreeList = null;
+        private List<BehaviourTree> m_UnUsedBehaviourTreeList = null;
         private BehaviourTreeConfig m_Config = null;
     }
 }

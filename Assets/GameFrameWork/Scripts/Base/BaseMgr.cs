@@ -5,13 +5,49 @@ namespace GameFrameWork
 {
     public abstract class BaseMgr<T> : MonoBehaviour where T : BaseMgr<T>, new()
     {
+        public event GameFrameWorkAction<float,float> updateEvent
+        {
+            add
+            {
+                m_UpdateEvent += value;
+            }
+            remove
+            {
+                m_UpdateEvent -= value;
+            }
+        }
+
+        public event GameFrameWorkAction<float, float> lateUpdateEvent
+        {
+            add
+            {
+                m_LateUpdateEvent += value;
+            }
+            remove
+            {
+                m_LateUpdateEvent -= value;
+            }
+        }
+
+        public event GameFrameWorkAction<float, float> fixedUpdateEvent
+        {
+            add
+            {
+                m_FixedUpdateEvent += value;
+            }
+            remove
+            {
+                m_FixedUpdateEvent -= value;
+            }
+        }
+
         public static T instance
         {
             get
             {
                 if (m_Instance == null)
                 {
-                    Log.LogError(StringUtil.Format(typeof(T).Name, "没有实例，请先初始化该实例"));
+                    Log.LogError(StringUtil.Append(typeof(T).Name, "没有实例，请先初始化该实例"));
                     return null;
                 }
 
@@ -23,7 +59,7 @@ namespace GameFrameWork
         {
             if (m_Instance != null)
             {
-                Log.LogError(StringUtil.Format(typeof(T).Name), "实例已经存在，请不要重复实例化");
+                Log.LogError(StringUtil.Append(typeof(T).Name), "实例已经存在，请不要重复实例化");
                 return;
             }
 
@@ -41,6 +77,7 @@ namespace GameFrameWork
         {
             m_Running = false;
             OnShutDown();
+            DestroyImmediate(m_Instance);
         }
 
         private void Awake()
@@ -59,6 +96,8 @@ namespace GameFrameWork
             {
                 OnUpdate();
             }
+
+            m_UpdateEvent?.Invoke(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
         private void LateUpdate()
@@ -67,6 +106,8 @@ namespace GameFrameWork
             {
                 OnLateUpdate();
             }
+
+            m_LateUpdateEvent?.Invoke(Time.deltaTime, Time.unscaledDeltaTime);
         }
 
         private void FixedUpdate()
@@ -75,6 +116,8 @@ namespace GameFrameWork
             {
                 OnFixedUpdate();
             }
+
+            m_FixedUpdateEvent?.Invoke(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime);
         }
 
         protected virtual void OnAwake() { }
@@ -98,6 +141,10 @@ namespace GameFrameWork
 
             ShutDown();
         }
+
+        private event GameFrameWorkAction<float, float> m_UpdateEvent = null;
+        private event GameFrameWorkAction<float, float> m_LateUpdateEvent = null;
+        private event GameFrameWorkAction<float, float> m_FixedUpdateEvent = null;
 
         private bool m_Running = false;
         private static T m_Instance = null;

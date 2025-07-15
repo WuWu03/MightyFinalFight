@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace GameFrameWork.Utils
 {
@@ -12,14 +12,15 @@ namespace GameFrameWork.Utils
     public class SmallList<T>
     {
         /// <summary>
-        /// internal storage of list data
-        /// </summary>
-        public T[] data;
-
-        /// <summary>
         /// The number of elements in the list
         /// </summary>
-        public int Count = 0;
+        public int count
+        {
+            get
+            {
+                return m_Count;
+            }
+        }
 
         /// <summary>
         /// Indexed access to the list items
@@ -30,17 +31,17 @@ namespace GameFrameWork.Utils
         {
             get
             {
-                if (data is null)
+                if (m_Datas is null)
                 {
                     return default(T);
                 }
                 else
                 {
-                    return data[i];
+                    return m_Datas[i];
                 }
             }
 
-            set { data[i] = value; }
+            set { m_Datas[i] = value; }
         }
 
         /// <summary>
@@ -48,17 +49,23 @@ namespace GameFrameWork.Utils
         /// </summary>
         private void ResizeArray()
         {
-            T[] newData;
+            T[] newDatas;
 
-            if (data != null)
-                newData = new T[Mathf.Max(data.Length << 1, 64)];
+            if (m_Datas != null)
+            {
+                newDatas = new T[Mathf.Max(m_Datas.Length << 1, 64)];
+            }
             else
-                newData = new T[64];
+            {
+                newDatas = new T[64];
+            }
 
-            if (data != null && Count > 0)
-                data.CopyTo(newData, 0);
+            if (m_Datas != null && m_Count > 0)
+            {
+                m_Datas.CopyTo(newDatas, 0);
+            }
 
-            data = newData;
+            m_Datas = newDatas;
         }
 
         /// <summary>
@@ -67,7 +74,7 @@ namespace GameFrameWork.Utils
         /// </summary>
         public void Clear()
         {
-            Count = 0;
+            m_Count = 0;
         }
 
         /// <summary>
@@ -76,8 +83,12 @@ namespace GameFrameWork.Utils
         /// <returns></returns>
         public T First()
         {
-            if (data == null || Count == 0) return default(T);
-            return data[0];
+            if (m_Datas == null || count == 0)
+            {
+                return default;
+            }
+
+            return m_Datas[0];
         }
 
         /// <summary>
@@ -86,8 +97,12 @@ namespace GameFrameWork.Utils
         /// <returns></returns>
         public T Last()
         {
-            if (data == null || Count == 0) return default(T);
-            return data[Count - 1];
+            if (m_Datas == null || count == 0)
+            {
+                return default;
+            }
+
+            return m_Datas[count - 1];
         }
 
         /// <summary>
@@ -97,11 +112,26 @@ namespace GameFrameWork.Utils
         /// <param name="item"></param>
         public void Add(T item)
         {
-            if (data == null || Count == data.Length)
+            if (m_Datas == null || count == m_Datas.Length)
+            {
                 ResizeArray();
+            }
+            
+            m_Datas[count] = item;
+            m_Count++;
+        }
 
-            data[Count] = item;
-            Count++;
+        /// <summary>
+        /// Adds a new element to the array, creating more
+        /// memory if necessary
+        /// </summary>
+        /// <param name="item"></param>
+        public void AddRange(T[] items)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                Add(items[i]);
+            }
         }
 
         /// <summary>
@@ -121,16 +151,18 @@ namespace GameFrameWork.Utils
         /// <param name="item"></param>
         public void Insert(T item, int index)
         {
-            if (data == null || Count == data.Length)
-                ResizeArray();
-
-            for (var i = Count; i > index; i--)
+            if (m_Datas == null || count == m_Datas.Length)
             {
-                data[i] = data[i - 1];
+                ResizeArray();
             }
 
-            data[index] = item;
-            Count++;
+            for (var i = count; i > index; i--)
+            {
+                m_Datas[i] = m_Datas[i - 1];
+            }
+
+            m_Datas[index] = item;
+            m_Count++;
         }
 
         /// <summary>
@@ -148,22 +180,22 @@ namespace GameFrameWork.Utils
         /// <returns></returns>
         public T RemoveAt(int index)
         {
-            if (data != null && Count != 0)
+            if (m_Datas != null && count != 0)
             {
-                T val = data[index];
+                T val = m_Datas[index];
 
-                for (var i = index; i < Count - 1; i++)
+                for (var i = index; i < count - 1; i++)
                 {
-                    data[i] = data[i + 1];
+                    m_Datas[i] = m_Datas[i + 1];
                 }
 
-                Count--;
-                data[Count] = default(T);
+                m_Count--;
+                m_Datas[count] = default;
                 return val;
             }
             else
             {
-                return default(T);
+                return default;
             }
         }
 
@@ -174,18 +206,18 @@ namespace GameFrameWork.Utils
         /// <returns></returns>
         public T Remove(T item)
         {
-            if (data != null && Count != 0)
+            if (m_Datas != null && count != 0)
             {
-                for (var i = 0; i < Count; i++)
+                for (var i = 0; i < count; i++)
                 {
-                    if (data[i].Equals(item))
+                    if (m_Datas[i].Equals(item))
                     {
                         return RemoveAt(i);
                     }
                 }
             }
 
-            return default(T);
+            return default;
         }
 
         /// <summary>
@@ -194,17 +226,17 @@ namespace GameFrameWork.Utils
         /// <returns></returns>
         public T RemoveEnd()
         {
-            if (data != null && Count != 0)
+            if (m_Datas != null && count != 0)
             {
-                Count--;
-                T val = data[Count];
-                data[Count] = default(T);
+                m_Count--;
+                T val = m_Datas[count];
+                m_Datas[count] = default;
 
                 return val;
             }
             else
             {
-                return default(T);
+                return default;
             }
         }
 
@@ -215,16 +247,35 @@ namespace GameFrameWork.Utils
         /// <returns>True if the item exists in teh data</returns>
         public bool Contains(T item)
         {
-            if (data == null)
-                return false;
-
-            for (var i = 0; i < Count; i++)
+            if (m_Datas == null)
             {
-                if (data[i].Equals(item))
+                return false;
+            }
+
+
+            for (var i = 0; i < count; i++)
+            {
+                if (m_Datas[i].Equals(item))
+                {
                     return true;
+                }
+
             }
 
             return false;
         }
+
+        public T[] ToArray()
+        {
+            T[] values = new T[m_Count];
+            Array.Copy(m_Datas, values, m_Count);
+            return values;
+        }
+
+        /// <summary>
+        /// internal storage of list data
+        /// </summary>
+        private T[] m_Datas = null;
+        private int m_Count = 0;
     }
 }

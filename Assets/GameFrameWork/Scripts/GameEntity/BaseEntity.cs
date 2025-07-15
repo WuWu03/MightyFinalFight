@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameFrameWork.GameEntity
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : MonoBehaviour
     {
         public string entityName
         {
@@ -20,55 +20,18 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        public string layer 
+        public string layer
         {
-            get 
+            get
             {
                 return m_Layer;
             }
         }
 
-        public GameObject gameObject
-        {
-            get
-            {
-                return m_GameObject;
-            }
-        }
-
-        public Transform transform
-        {
-            get
-            {
-                return m_GameObject.transform;
-            }
-        }
-
         public virtual void Init(int id, string name)
         {
-            m_Id = id;
-            m_EntityName = name;
-            m_GameObject.name = name;
-        }
-
-        public virtual void Update(float deltaTime, float unscaledDeltaTime) { }
-        public virtual void LateUpdate(float deltaTime, float unscaledDeltaTime) { }
-        public virtual void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime) { }
-
-        public virtual void Release()
-        {
-            EntityMgr.instance.PutEntity(this);
-        }
-
-        public void BeforeDestroy()
-        {
-            OnBeforeDestroy();
-        }
-
-        public void SetName(string name)
-        {
-            m_EntityName = name;
-            m_GameObject.name = name;
+            SetID(id);
+            SetName(name);
         }
 
         public void SetID(int id)
@@ -76,15 +39,16 @@ namespace GameFrameWork.GameEntity
             m_Id = id;
         }
 
-        public void SetGameObject(GameObject gameObject)
+        public void SetName(string name)
         {
-            m_GameObject = gameObject;
+            m_EntityName = name;
+            gameObject.name = name;
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
         {
-            m_GameObject.transform.SetParent(parent, worldPossitionStays);
-            m_GameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.SetParent(parent, worldPossitionStays);
+            gameObject.transform.localPosition = Vector3.zero;
         }
 
         public void SetLayer(string layer, bool isChild = true)
@@ -94,32 +58,32 @@ namespace GameFrameWork.GameEntity
                 m_Layer = layer;
             }
 
-            m_GameObject.SetLayer(m_Layer, isChild);
+            gameObject.SetLayer(m_Layer, isChild);
         }
 
-        public void SetActive(bool active)
+        protected virtual void Update() { }
+        protected virtual void LateUpdate() { }
+        protected virtual void FixedUpdate() { }
+
+        public void Release()
         {
-            if (m_GameObject.activeSelf != active)
-            {
-                m_GameObject.SetActive(active);
-            }
+            m_Id = -1;
+            m_EntityName = string.Empty;
+            m_Layer = string.Empty;
+            gameObject.SetActiveSelf(false);
+            OnRelease();
+            EntityMgr.instance.PutEntity(this);
         }
+
+        protected virtual void OnRelease() { }
 
         protected void SetLayer(bool isChild = true)
         {
             SetLayer(m_Layer, isChild);
         }
 
-        protected virtual void OnBeforeDestroy() 
-        {
-            m_Id = 0;
-            m_EntityName = string.Empty;
-            m_Layer = string.Empty;
-        }
-
-        protected int m_Id = 0;
-        protected string m_EntityName = string.Empty;
-        protected string m_Layer = string.Empty;
-        protected GameObject m_GameObject = null;
+        private int m_Id = 0;
+        private string m_EntityName = string.Empty;
+        private string m_Layer = string.Empty;
     }
 }

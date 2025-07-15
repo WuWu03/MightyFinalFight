@@ -103,22 +103,30 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     protected override void OnAwake()
     {
         base.OnAwake();
-        InputMgr.instance.AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical");
-        InputMgr.instance.AddComboKey(KeyType.A, "A");
-        InputMgr.instance.AddComboKey(KeyType.B, "B");
-        InputMgr.instance.AddTurboComboKey(KeyType.X, "X", KeyType.A);
-        InputMgr.instance.AddTurboComboKey(KeyType.Y, "Y", KeyType.B);
-        InputMgr.instance.AddKey(KeyType.Start, "Start");
-        InputMgr.instance.AddKey(KeyType.Select, "Select");
-        InputMgr.instance.AddKey(KeyType.LB, "LB");
-        InputMgr.instance.AddKey(KeyType.RB, "RB");
-        InputMgr.instance.AddKey(KeyType.LT, "LT");
-        InputMgr.instance.AddKey(KeyType.RT, "RT");
+
+        InputMgr.instance.SetAxis(AxisType.LeftAxis, KeyCode.D, KeyCode.A, KeyCode.W, KeyCode.S);
+        InputMgr.instance.SetKey(KeyType.A, KeyCode.J, false, true);
+        InputMgr.instance.SetKey(KeyType.B, KeyCode.K, false, true);
+        InputMgr.instance.SetKey(KeyType.X, KeyType.A, KeyCode.U, true, true);
+        InputMgr.instance.SetKey(KeyType.Y, KeyType.B, KeyCode.I, true, true);
+        InputMgr.instance.SetKey(KeyType.Start, KeyCode.G, false, false);
+        InputMgr.instance.SetKey(KeyType.Select, KeyCode.H, false, false);
 
         InputMgr.instance.AddAfterTriggerEvent(KeyType.A, AfterTriggerAttack);
         InputMgr.instance.AddAfterTriggerEvent(KeyType.X, AfterTriggerAttack);
         InputMgr.instance.AddAfterTriggerEvent(KeyType.B, AfterTriggerJump);
         InputMgr.instance.AddAfterTriggerEvent(KeyType.Y, AfterTriggerJump);
+    }
+
+    protected override void OnShutDown()
+    {
+        base.OnShutDown();
+        m_PlayerCtrl = null;
+        m_RoleConfigData = null;
+        m_Player = null;
+        m_LevelConfigData = null;
+        InputMgr.instance.getDirectionEvent -= GetDirction;
+        InputMgr.instance.getPreConditonEvent -= GetPreCondition;
     }
 
     public void InitPlayer()
@@ -133,8 +141,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Level = 1;
         m_EXP = 0;
 
-        m_RoleConfigData = ConfigData.roleConfigDatas.GetConfigDataById(m_SelectRoleId);
-        m_LevelConfigData = ConfigData.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_SelectRoleId + ",level=" + m_Level);
+        m_RoleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_SelectRoleId);
+        m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("roleId=", m_SelectRoleId.ToString(), ",level=", m_Level.ToString()));
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
@@ -184,15 +192,16 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_CanCtrl = true;
 
         CameraMgr.instance.SetFollowTarget(m_Player.transform);
-        InputMgr.instance.getDirectionEvent = GetDirction;
-        InputMgr.instance.getPreconditonEvent = GetPreCondition;
+        InputMgr.instance.getDirectionEvent += GetDirction;
+        InputMgr.instance.getPreConditonEvent += GetPreCondition;
         InputMgr.instance.isRunning = true;
     }
 
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        UIMgr.instance.Get<MainPanel>().SetPlayerLife(life);
+        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+        mainPanel.SetPlayerLife(life);
 
         if (life < 1)
         {
@@ -217,18 +226,18 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainPanel mainPanel = UIMgr.instance.Get<MainPanel>();
+        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
 
         if (m_EXP >= m_LevelConfigData.exp)
         {
             m_Level++;
             m_EXP -= m_LevelConfigData.exp;
-            m_LevelConfigData = ConfigData.levelConfigDatas.GetSingConfigDataByAttr("roleId=" + m_RoleConfigData.id + ",level=" + m_Level);
+            m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("roleId=", m_RoleConfigData.id.ToString(), ",level=", m_Level.ToString()));
             m_Player.entityAttribute.health = m_LevelConfigData.hpValue;
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
             mainPanel.SetPlayerLevel();
-            AudioMgr.instance.PlaySE(AssetPathDefine.AudioClipPath, SoundName.LevelUp);
+            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.LevelUp));
         }
 
         mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);
@@ -237,7 +246,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddLife(int value)
     {
         m_Life += value;
-        UIMgr.instance.Get<MainPanel>().SetPlayerLife(m_Life);
+        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+        mainPanel.SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)
@@ -278,7 +288,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
+        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
         m_PlayerCtrl.Attack(asix);
     }
 
@@ -289,7 +299,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
+        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
         m_PlayerCtrl.Jump(asix, m_RoleConfigData.id != 1002);
     }
 
@@ -302,21 +312,14 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             return;
         }
 
-        if(m_Player.canMove)
+        if (m_Player.canMove)
         {
-            Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
+            Vector2 leftAsix = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
+            Vector2 crossAsix = InputMgr.instance.GetAxis(AxisType.CrossAxis, true);
+            Vector2 asix = leftAsix != Vector2.zero ? leftAsix : crossAsix;
+
             asix.y *= 0.8f;
             m_PlayerCtrl.Move(asix);
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            float dir = -1;
-            int groundY = -40;
-            int itemId = -1;
-            bool isFloat = false;
-            float moveSpeed = 0;
-            SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -353,44 +356,19 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_IsStopBHT = !m_IsStopBHT;
         }
 
-
+        if (Input.GetKeyDown(KeyCode.Keypad5))
+        {
+            float dir = -1;
+            int groundY = -40;
+            int itemId = -1;
+            bool isFloat = false;
+            float moveSpeed = 0;
+            SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
+        }
     }
 
     private bool m_IsStopBHT = false;
 
-    private bool AfterTrigger()
-    {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
-        {
-            return false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-
-            return false;
-        }
-
-        Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis);
-        bool result = asix.x != 0 || asix.y != 0;
-
-        asix.y *= 0.8f;
-        m_PlayerCtrl.Move(asix);
-
-        if (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X))
-        {
-            m_PlayerCtrl.Attack(asix);
-            result = true;
-        }
-
-        if (InputMgr.instance.GetKeyDown(KeyType.B, true) || InputMgr.instance.GetKeyDown(KeyType.Y))
-        {
-            m_PlayerCtrl.Jump(asix, m_RoleConfigData.id != 1002);
-            result = true;
-        }
-
-        return result;
-    }
 
     private bool GetPreCondition(int id)
     {    

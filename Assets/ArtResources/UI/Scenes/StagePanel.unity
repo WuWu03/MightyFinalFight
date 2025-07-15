@@ -1308,18 +1308,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ScriptFolder: Assets/Scripts/UI/StagePanel/
   m_PanelName: StagePanel
-  m_PrefabFolder: Assets/ArtResources/UI/Prefabs/
   m_ScriptType: 0
   panelType: 2
   panelPreLoadType: 0
-  panelCloseMode: 1
+  panelCloseMode: 2
   panelLayer: 2
   isCustomLayer: 0
   unLoadTime: 0
   panelPath: Assets/Scripts/UI/StagePanel/StagePanel.cs
   panelComponentPath: Assets/Scripts/UI/StagePanel/StagePanelComponent.cs
   panelSettingsPath: Assets/Scripts/UI/StagePanel/StagePanelSettings.cs
-  panelPrefabPath: Assets/ArtResources/UI/Prefabs/StagePanel.prefab
 --- !u!4 &1438736095
 Transform:
   m_ObjectHideFlags: 0

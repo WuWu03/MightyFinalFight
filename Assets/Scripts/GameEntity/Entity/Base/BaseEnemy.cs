@@ -16,6 +16,37 @@ public class BaseEnemy : BaseRole
         base.Init(id, name);
     }
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (m_Rigidbody2D != null && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
+        {
+            float x = m_Rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
+
+            if (!StageMgr.instance.CanMovePosX(x))
+            {
+                SetVelocityX(0);
+            }
+
+            if (m_IsBoss && IsOutVersionX(x))
+            {
+                SetVelocityX(0);
+            }
+        }
+    }
+
+    protected override void OnRelease()
+    {
+        base.OnRelease();
+        PlayerMgr.instance.AddExp(m_SkillExp);
+
+        m_SkillExp = 0;
+        m_HpBarWidth = 0;
+        m_IsBoss = false;
+        m_HurtAnim = null;
+    }
+
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
@@ -54,7 +85,7 @@ public class BaseEnemy : BaseRole
             }
         }
 
-        if(m_IsBeCatch)
+        if (m_IsBeCatch)
         {
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)
             {
@@ -63,23 +94,23 @@ public class BaseEnemy : BaseRole
         }
         else
         {
-            if(isDrop)
+            if (isDrop)
             {
                 data.isSwoon = true;
                 data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
             }
 
-            if(m_HurtAnim != null && m_HurtAnim.Length > 0)
+            if (m_HurtAnim != null && m_HurtAnim.Length > 0)
             {
                 data.hurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
             }
         }
 
-        if(m_EntityAttribute.health - data.attackValue <= 0)
+        if (m_EntityAttribute.health - data.attackValue <= 0)
         {
             m_SkillExp = data.skillExp;
         }
-        
+
         base.OnHurtMsg(data);
     }
 
@@ -87,43 +118,13 @@ public class BaseEnemy : BaseRole
     {
         base.SetCatch(value);
 
-        if(value)
+        if (value)
         {
             ChangeState<RoleIdle>();
         }
     }
 
-    public override void Release()
-    {
-        PlayerMgr.instance.AddExp(m_SkillExp);
 
-        m_SkillExp = 0;
-        m_HpBarWidth = 0;
-        m_IsBoss = false;
-        m_HurtAnim = null;
-
-        base.Release();
-    }
-
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-
-        if (m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
-        {
-            float x = m_Rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
-
-            if (!StageMgr.instance.CanMovePosX(x))
-            {
-                SetVelocityX(0);
-            }
-
-            if (m_IsBoss && IsOutVersionX(x))
-            {
-                SetVelocityX(0);
-            }
-        }
-    }
 
     protected override void OnGroundHurtMsg(HurtStateData data)
     {
@@ -140,7 +141,8 @@ public class BaseEnemy : BaseRole
         {
             HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
-            UIMgr.instance.Get<MainPanel>().SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
+            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+            mainPanel.SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {

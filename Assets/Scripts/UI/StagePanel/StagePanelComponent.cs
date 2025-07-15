@@ -23,9 +23,7 @@ public class StagePanelComponent : BasePanelComponent
 	//heroPos,GameObject
 	public GameObject heroPosGO { get; private set; }
 
-	public StagePanelComponent(UIRefRoot root) : base(root) { }
-
-	protected override void InitComponent(UIRefRoot root)
+	protected override void OnInitComponent(UIRefRoot root)
 	{
 		blue = root.objects[0] as GameObject;
 		red = root.objects[1] as GameObject;

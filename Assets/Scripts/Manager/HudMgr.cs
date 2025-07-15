@@ -3,8 +3,6 @@ using GameFrameWork.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class HudMgr : BaseMgr<HudMgr>
 {
     public enum DamageType
@@ -48,7 +46,7 @@ public class HudMgr : BaseMgr<HudMgr>
     protected override void OnShutDown()
     {
         base.OnShutDown();
-        UIMgr.instance.Close<HudPanel>();
+        UIMgr.instance.Close(UINames.HudPanel);
         m_QueueHudArgs.Clear();
         m_QueueHudArgs = null;
     }
@@ -77,7 +75,7 @@ public class HudMgr : BaseMgr<HudMgr>
     {
         if (m_HudPanel == null)
         {
-            m_HudPanel = UIMgr.instance.Open<HudPanel>();
+            m_HudPanel = UIMgr.instance.Get(UINames.HudPanel) as HudPanel;
         }
     }
 

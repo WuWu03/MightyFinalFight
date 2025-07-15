@@ -1,12 +1,9 @@
-using GameFrameWork.GameEntity;
-using GameFrameWork.Audio;
-using GameFrameWork.Timer;
-using GameFrameWork.Utils;
-using System;
-using UnityEngine;
 using DG.Tweening;
+using GameFrameWork;
+using GameFrameWork.Audio;
+using GameFrameWork.Event;
 using GameFrameWork.UI;
-using GameFrameWork.Scene;
+using UnityEngine;
 
 public class TaskTriggerStory_1002 : BaseTaskTrigger
 {
@@ -22,7 +19,8 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         m_Danmd.SetDir(-1);
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.AutoMoveToPos(new Vector2(3.2f, -0.27f), OnAutoMove1);
-        m_Pit.SetActive(false);
+        m_Pit.gameObject.SetActiveSelf(false);
+        EventMgr.instance.Subscribe(EventDefine.StageEnterStartEvent, OnStageEnterStart);
     }
 
     private void OnAutoMove1()
@@ -42,7 +40,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
 
     private void OnAutoMove2()
     {
-        m_Pit.SetActive(true);
+        m_Pit.gameObject.SetActiveSelf(true);
         m_Danmd.AutoMoveToPos(new Vector2(5.4f, -0.08f), () =>
         {
             m_Danmd.Release();
@@ -53,17 +51,17 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         AudioMgr.instance.FadeBGM(0, 0.3f, 0.7f);
         PlayerMgr.instance.player.transform.DOLocalMoveY(-0.85f, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            SceneMgr.instance.loadSceneSuccessEvent += OnSceneLoaded;
-            PlayerMgr.instance.player.SetActive(false);
             Complete();
         });
     }
 
-    private void OnSceneLoaded(LoadSceneSuccessEventArgs t)
+    private void OnStageEnterStart(object sender, GameEventArgs e)
     {
+        EventMgr.instance.UnSubscribe(EventDefine.StageEnterStartEvent, OnStageEnterStart);
         AudioMgr.instance.PauseBGM();
         AudioMgr.instance.FadeBGM(1, 0, 0.1f);
-        UIMgr.instance.Get<MainPanel>().Hide();
+        UIMgr.instance.Get(UINames.MainPanel).Hide();
+        PlayerMgr.instance.player.gameObject.SetActiveSelf(false);
     }
 
     public override void Trigger()
