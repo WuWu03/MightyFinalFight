@@ -1,9 +1,8 @@
-using DG.DemiEditor;
 using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
+using TMPro;
 using UnityEditor;
 using UnityEditor.U2D;
 using UnityEngine;
@@ -29,7 +28,7 @@ namespace GameFrameWork.Editor
         {
             position = new Rect(0, 0, 500, 300);
 
-            if(m_ListSprites == null)
+            if (m_ListSprites == null)
             {
                 m_ListSprites = new List<Sprite>();
             }
@@ -52,19 +51,34 @@ namespace GameFrameWork.Editor
 
             if (Selection.objects != null && Selection.objects.Length > 0)
             {
-                if (Selection.objects[0] is UnityEditor.DefaultAsset)
+                int defaultAssetIndex = -1;
+
+                for (int i = 0; i < Selection.objects.Length; i++)
                 {
-                    string assetPath = PathUtil.GetAssetFullPath(AssetDatabase.GetAssetPath(Selection.objects[0]));
+                    UnityEngine.Object obj = Selection.objects[i];
+
+                    if (obj is UnityEditor.DefaultAsset)
+                    {
+                        defaultAssetIndex = i;
+                        break;
+                    }
+                }
+
+                if (defaultAssetIndex > -1)
+                {
+                    string assetPath = PathUtil.GetAssetFullPath(AssetDatabase.GetAssetPath(Selection.objects[defaultAssetIndex]));
                     string[] assetFiles = FileUtil.GetFiles(assetPath);
 
-                    if (assetFiles == null || assetFiles.Length == 0)
+                    if (assetFiles != null && assetFiles.Length > 0)
                     {
-                        return;
-                    }
-
-                    for (int i = 0; i < assetFiles.Length; i++)
-                    {
-                        m_ListSprites.Add(AssetDatabase.LoadAssetAtPath<Sprite>(PathUtil.GetAssetPath(assetFiles[i])));
+                        for (int i = 0; i < assetFiles.Length; i++)
+                        {
+                            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(PathUtil.GetAssetPath(assetFiles[i]));
+                            if (sprite != null)
+                            {
+                                m_ListSprites.Add(sprite);
+                            }
+                        }
                     }
                 }
                 else
@@ -72,7 +86,12 @@ namespace GameFrameWork.Editor
                     for (int i = 0; i < Selection.objects.Length; i++)
                     {
                         string assetPath = PathUtil.GetAssetFullPath(AssetDatabase.GetAssetPath(Selection.objects[i]));
-                        m_ListSprites.Add(AssetDatabase.LoadAssetAtPath<Sprite>(PathUtil.GetAssetPath(assetPath)));
+                        Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(PathUtil.GetAssetPath(assetPath));
+
+                        if (sprite != null)
+                        {
+                            m_ListSprites.Add(sprite);
+                        }
                     }
                 }
             }
@@ -87,13 +106,26 @@ namespace GameFrameWork.Editor
                     m_ListAtlas.Add(AssetDatabase.LoadAssetAtPath<SpriteAtlas>(PathUtil.GetAssetPath(atlasFiles[i])));
                     m_ListAtalsNames.Add(m_ListAtlas[i].name);
 
-                    if(m_ListSprites.Count > 0 && m_CurrAtlasIndex == -1)
+                    if (m_ListSprites.Count > 0 && m_CurrAtlasIndex == -1)
                     {
-                        string objPath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(m_ListSprites[0])).Replace("\\", "/");
+                        UnityEngine.Object[] atalsSprites = m_ListAtlas[i].GetPackables();
+                        int count = Math.Max(atalsSprites.Length, m_ListSprites.Count);
 
-                        if (objPath.Contains(m_ListAtlas[i].name))
+                        for (int j = 0; j < count; j++)
                         {
-                            m_CurrAtlasIndex = i;
+                            if (j >= atalsSprites.Length || j >= m_ListSprites.Count || atalsSprites[j] == null || m_ListSprites[j] == null)
+                            {
+                                break;
+                            }
+
+                            string atlasSpritePath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(atalsSprites[j])).Replace("\\", "/");
+                            string spritePath = Path.GetDirectoryName(AssetDatabase.GetAssetPath(m_ListSprites[j])).Replace("\\", "/");
+
+                            if (atlasSpritePath == spritePath)
+                            {
+                                m_CurrAtlasIndex = i;
+                                break;
+                            }
                         }
                     }
                 }
@@ -107,12 +139,6 @@ namespace GameFrameWork.Editor
         private void OnGUI()
         {
             int atlasIndex = EditorGUILayout.Popup("当前图集", m_CurrAtlasIndex, m_DisplayAtlasNames);
-            m_BuildPath = EditorGUILayout.TextField("图集路径", m_BuildPath);
-
-            if (string.IsNullOrEmpty(m_BuildPath))
-            {
-                m_BuildPath = EditorPathUtil.GetUIAtlasPath() + "/";
-            }
 
             if(m_CurrAtlasIndex != atlasIndex)
             {
@@ -120,16 +146,31 @@ namespace GameFrameWork.Editor
                 UpdateSpriteStatus();
             }
 
-            if (GUILayout.Button("Create New Atlas"))
+            string atlasName = EditorGUILayout.TextField("新图集名称", m_NewAtalsName);
+
+            if (string.IsNullOrEmpty(atlasName)) 
+            {
+                atlasName = "NewAtlas";
+            }
+
+            if (atlasName != m_NewAtalsName)
+            {
+                m_NewAtalsName = Path.GetFileNameWithoutExtension(atlasName);
+            }
+
+            if (GUILayout.Button("创建新图集"))
             {
                 CreateNewAtals();
             }
 
-            if (GUILayout.Button("Build Atlas"))
+            if (m_CurrAtlasIndex > -1 && m_ListSprites.Count > 0) 
             {
-                BuildAtals();
+                if (GUILayout.Button("构建所选图集"))
+                {
+                    BuildAtals();
+                }
             }
-
+ 
             pos = EditorGUILayout.BeginScrollView(pos);
             EditorGUILayout.BeginVertical();
 
@@ -139,27 +180,33 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_ListSpriteStatus.Count; i++)
                 {
+                    SpriteStatus spriteStatus = m_ListSpriteStatus[i];
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(13);
-                    EditorGUILayout.LabelField(m_ListSpriteStatus[i].sprite.name);
+                    EditorGUILayout.LabelField(spriteStatus.sprite == null ? "空" : spriteStatus.sprite.name);
 
                     string str = string.Empty;
                     Color strColor = Color.clear;
 
-                    if (m_ListSpriteStatus[i].status == 1)
+                    if (spriteStatus.status == 0)
+                    {
+                        strColor = Color.white;
+                        str = "无变化";
+                    }
+                    else if (spriteStatus.status == 1)
                     {
                         strColor = Color.green;
-                        str = "Add";
+                        str = "新增";
                     }
-                    else if(m_ListSpriteStatus[i].status == 2)
+                    else if (spriteStatus.status == 2)
                     {
                         strColor = Color.yellow;
-                        str = "Update";
+                        str = "更新";
                     }
-                    else if(m_ListSpriteStatus[i].status == 3)
+                    else if (spriteStatus.status == 3)
                     {
                         strColor = Color.red;
-                        str = "Remove";
+                        str = "移除";
                     }
 
                     GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
@@ -176,68 +223,75 @@ namespace GameFrameWork.Editor
         private void UpdateSpriteStatus()
         {
             m_ListSpriteStatus.Clear();
+            m_ListSprites.Sort((a, b) =>
+            {
+                return a.name.CompareTo(b.name);
+            });
 
             if (m_CurrAtlasIndex > -1)
             {
                 UnityEngine.Object[] atlasSprites = SpriteAtlasExtensions.GetPackables(m_ListAtlas[m_CurrAtlasIndex]);
 
-                for (int i = 0; i < atlasSprites.Length; i++)
+                if (m_ListSprites.Count > 0)
                 {
-                    Sprite tempSprite = atlasSprites[i] as Sprite;
-                    Sprite findSprite = null;
+                    List<Sprite> listSprites = new List<Sprite>(m_ListSprites.ToArray());
 
-                    string tempGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(tempSprite));
-
-                    for (int j = 0; j < m_ListSprites.Count; j++)
+                    for (int i = 0; i < atlasSprites.Length; i++)
                     {
-                        string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(m_ListSprites[j]));
-
-                        if (tempGuid.Equals(guid))
+                        if (atlasSprites[i] == null)
                         {
-                            findSprite = m_ListSprites[j];
-                            break;
-                        }
-                    }
-
-                    if (findSprite == null)
-                    {
-                        m_ListSpriteStatus.Add(new SpriteStatus() { sprite = tempSprite, status = 3 });
-                    }
-                    else
-                    {
-                        string md51 = StringUtil.MD5(findSprite.texture.GetRawTextureData());
-                        string md52 = StringUtil.MD5(tempSprite.texture.GetRawTextureData());
-
-                        if (md51 != md52)
-                        {
-                            m_ListSpriteStatus.Add(new SpriteStatus() { sprite = findSprite, status = 2 });
+                            m_ListSpriteStatus.Add(new SpriteStatus() { sprite = null, status = 3 });
                         }
                         else
                         {
-                            m_ListSpriteStatus.Add(new SpriteStatus() { sprite = findSprite, status = 0 });
+                            Sprite atlasSprite = atlasSprites[i] as Sprite;
+                            Sprite tempSprite = null;
+
+                            for (int j = 0; j < listSprites.Count; j++)
+                            {
+                                if (listSprites[j].name == atlasSprite.name)
+                                {
+                                    tempSprite = listSprites[j];
+                                    listSprites.RemoveAt(j);
+                                    break;
+                                }
+                            }
+
+                            if (tempSprite == null)
+                            {
+                                m_ListSpriteStatus.Add(new SpriteStatus() { sprite = atlasSprite, status = 3 });
+                            }
+                            else
+                            {
+                                string md51 = StringUtil.MD5(atlasSprite.texture.GetRawTextureData());
+                                string md52 = StringUtil.MD5(tempSprite.texture.GetRawTextureData());
+
+                                if (md51 != md52)
+                                {
+                                    m_ListSpriteStatus.Add(new SpriteStatus() { sprite = tempSprite, status = 2 });
+                                }
+                                else
+                                {
+                                    m_ListSpriteStatus.Add(new SpriteStatus() { sprite = atlasSprite, status = 0 });
+                                }
+                            }
                         }
+                 
+                    }
+
+                    for (int i = 0; i < listSprites.Count; i++)
+                    {
+                        m_ListSpriteStatus.Add(new SpriteStatus() { sprite = listSprites[i], status = 1 });
                     }
                 }
-
-                for (int i = 0; i < m_ListSprites.Count; i++)
+                else
                 {
-                    Sprite tempSprite = m_ListSprites[i];
-                    Sprite findSprite = null;
-
-                    for (int j = 0; j < atlasSprites.Length; j++)
+                    for (int i = 0; i < atlasSprites.Length; i++)
                     {
-                        if (tempSprite.name.Contains(atlasSprites[j].name))
-                        {
-                            findSprite = atlasSprites[j] as Sprite;
-                            break;
-                        }
-                    }
-
-                    if (findSprite == null)
-                    {
-                        m_ListSpriteStatus.Add(new SpriteStatus() { sprite = tempSprite, status = 1 });
+                        m_ListSpriteStatus.Add(new SpriteStatus() { sprite = atlasSprites[i] as Sprite, status = 0 });
                     }
                 }
+
             }
             else
             {
@@ -246,48 +300,42 @@ namespace GameFrameWork.Editor
                     m_ListSpriteStatus.Add(new SpriteStatus() { sprite = m_ListSprites[i], status = 1 });
                 }
             }
-
-            m_ListSpriteStatus.Sort((a,b)=> 
-            {
-                return a.sprite.name.CompareTo(b.sprite.name);
-            });
         }
 
         private bool CreateNewAtals()
         {
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新图集", "New Atlas", "spriteatlas", "Save Atals as...", PathUtil.GetAssetFullPath(EditorMgr.GetGameFrameWorkConfig().uiAtlasPath));
+            string atlasPath = EditorMgr.GetGameFrameWorkConfig().uiAtlasPath;
+            string atlasCreatePath = PathUtil.FormatPath(atlasPath, m_NewAtalsName + ".spriteatlas");
 
-            if (!string.IsNullOrEmpty(path))
+            if (File.Exists(atlasCreatePath))
             {
-                SpriteAtlas atlas = new SpriteAtlas();
-                atlas.SetIncludeInBuild(true);
-                atlas.SetPackingSettings(new SpriteAtlasPackingSettings()
+                if (!EditorUtility.DisplayDialog("创建图集", "图集 [" + m_NewAtalsName + ".spriteatlas] 已存在，是否进行覆盖？", "确定", "取消"))
                 {
-                    enableAlphaDilation = true,
-                    enableRotation = true,
-                    enableTightPacking = false,
-                    padding = 4,
-                });
-                atlas.GetPlatformSettings(EditorUserBuildSettings.activeBuildTarget.ToString());
-                atlas.SetPlatformSettings(new TextureImporterPlatformSettings
-                {
-                    maxTextureSize = 2048,
-                    textureCompression = TextureImporterCompression.CompressedLQ,
-                    format = TextureImporterFormat.Automatic,
-                });
-
-                AssetDatabase.CreateAsset(atlas, path);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-
-                m_ListAtlas.Add(atlas);
-                m_ListAtalsNames.Add(atlas.name);
-                m_DisplayAtlasNames = m_ListAtalsNames.ToArray();
-                m_CurrAtlasIndex = m_ListAtlas.Count - 1;
-                UpdateSpriteStatus();
+                    return false;
+                }
+            }
+            else if (!EditorUtility.DisplayDialog("创建图集", "是否创建图集 [" + m_NewAtalsName + ".spriteatlas] ？", "确定", "取消"))
+            {
+                return false;
             }
 
-            return !string.IsNullOrEmpty(path);
+            SpriteAtlas atlas = GetNewSpriteAtlas();
+            AssetDatabase.CreateAsset(atlas, atlasCreatePath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            m_ListAtlas.Add(atlas);
+            m_ListAtalsNames.Add(atlas.name);
+            m_DisplayAtlasNames = m_ListAtalsNames.ToArray();
+            m_CurrAtlasIndex = m_ListAtlas.Count - 1;
+            UpdateSpriteStatus();
+
+            if (EditorUtility.DisplayDialog("创建图集", "创建图集 [" + m_NewAtalsName + "] 成功", "确定"))
+            {
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(atlasCreatePath);
+            }
+
+            return true;
         }
 
         private void BuildAtals()
@@ -304,7 +352,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            string atlasPath = PathUtil.GetAssetPath(PathUtil.FormatPath(m_BuildPath, m_ListAtlas[m_CurrAtlasIndex].name));
+            string atlasPath = PathUtil.GetAssetPath(PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiAtlasPath, m_ListAtlas[m_CurrAtlasIndex].name));
             Pack(atlasPath);
         }
 
@@ -321,15 +369,17 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            if(!hasChanged)
+            if (!hasChanged)
             {
-                ShowNotification(new GUIContent("图集未发生变化，无需打包图集"));
+                ShowNotification(new GUIContent("图集未发生变化，无需构建图集"));
                 return;
             }
 
-            UnityEngine.Object[] packables = SpriteAtlasExtensions.GetPackables(m_ListAtlas[m_CurrAtlasIndex]);
-            SpriteAtlasExtensions.Remove(m_ListAtlas[m_CurrAtlasIndex], packables);
+            string atlasName = m_ListAtlas[m_CurrAtlasIndex].name;
+            string atlasPath = EditorMgr.GetGameFrameWorkConfig().uiAtlasPath;
+            string atlasCreatePath = PathUtil.FormatPath(atlasPath, atlasName + ".spriteatlas");
 
+            File.Delete(AssetDatabase.GetAssetPath(m_ListAtlas[m_CurrAtlasIndex]));
             List<Sprite> packList = new List<Sprite>();
 
             for (int i = 0; i < m_ListSpriteStatus.Count; i++)
@@ -340,17 +390,47 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            SpriteAtlasExtensions.Add(m_ListAtlas[m_CurrAtlasIndex], packList.ToArray());
+            SpriteAtlas atlas = GetNewSpriteAtlas();
+            atlas.Add(packList.ToArray());
+
+            AssetDatabase.CreateAsset(atlas, atlasCreatePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            UpdateSpriteStatus();
-            ShowNotification(new GUIContent("图集打包成功"));
+
+            ShowNotification(new GUIContent("图集构建成功"));
+
+            m_ListAtlas[m_CurrAtlasIndex] = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(atlasCreatePath);
             Selection.activeObject = m_ListAtlas[m_CurrAtlasIndex];
+            UpdateSpriteStatus();
         }
 
-        private string m_BuildPath = string.Empty;
+        private SpriteAtlas GetNewSpriteAtlas()
+        {
+            SpriteAtlas atlas = new SpriteAtlas();
+            atlas.SetIncludeInBuild(true);
+            atlas.SetPackingSettings(new SpriteAtlasPackingSettings()
+            {
+                enableAlphaDilation = true,
+                enableRotation = true,
+                enableTightPacking = false,
+                padding = 4,
+            });
+            atlas.GetPlatformSettings(EditorUserBuildSettings.activeBuildTarget.ToString());
+            atlas.SetPlatformSettings(new TextureImporterPlatformSettings
+            {
+                maxTextureSize = 2048,
+                textureCompression = TextureImporterCompression.CompressedHQ,
+                format = TextureImporterFormat.Automatic,
+                crunchedCompression = true,
+                compressionQuality = 100,
+            });
+
+            return atlas;
+        }
+
         private bool m_FoldOut = true;
         private int m_CurrAtlasIndex = -1;
+        private string m_NewAtalsName = string.Empty;
         private List<Sprite> m_ListSprites = null;
         private List<SpriteStatus> m_ListSpriteStatus = null;
         private List<string> m_ListAtalsNames = null;

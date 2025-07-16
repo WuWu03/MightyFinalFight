@@ -157,34 +157,29 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        [MenuItem("GameFrameWork/UI/创建UI场景", false, 101)]
-		public static void NewUIScene()
-		{
-            GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
-            if (config == null || string.IsNullOrEmpty(config.entryScene))
-            {
-                bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI目录，点击确定前往设置", "确定");
-
-                if(result)
-                {
-                    GameFrameWorkStartUp();
-                }
-
-                return;
-			}
-
-			UIEditorInit.NewUIScene();
-		}
-
-
-        [MenuItem("GameFrameWork/UI/UI列表", false, 102)]
+        [MenuItem("GameFrameWork/UI列表 &2", false, 101)]
         public static void OpenUIListWindow()
         {
             EditorWindow window = EditorWindow.GetWindow<UIListWindow>();
             window.Show();
         }
 
-        [MenuItem("GameFrameWork/Tools/切图工具", false, 103)]
+        [MenuItem("GameFrameWork/AssetBundle编辑器 &3", false, 102)]
+        public static void AssetBundleEditor()
+        {
+            Rect wr = new Rect(0, 0, 700, 800);
+            EditorWindow window = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
+            window.Show();
+        }
+
+        [MenuItem("GameFrameWork/行为树编辑器 &4", false, 103)]
+        public static void BehaviourTreeEditor()
+        {
+            EditorWindow window = EditorWindow.GetWindow<BehaviourTreeWindow>();
+            window.Show();
+        }
+
+        [MenuItem("GameFrameWork/工具/切图工具", false, 104)]
 		public static void OpenSpriteSpliterTool()
 		{
 			Rect rect = new Rect(0, 0, 600, 300);
@@ -192,7 +187,7 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-		[MenuItem("GameFrameWork/Tools/PlayerPrefs工具", false, 104)]
+		[MenuItem("GameFrameWork/工具/PlayerPrefs工具", false, 105)]
 		public static void OpenPlayerPrefsTool()
 		{
 			Rect rect = new Rect(0, 0, 600, 300);
@@ -200,29 +195,14 @@ namespace GameFrameWork.Editor
 			window.Show();
 		}
 
-        [MenuItem("GameFrameWork/AssetBundleEditor",false,105)]
-		public static void AssetBundleEditor()
-		{
-			Rect wr = new Rect(0, 0, 700, 800);
-			EditorWindow window = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
-			window.Show();
-		}
-
-		[MenuItem("GameFrameWork/BehaviourTreeEditor",false , 106)]
-		public static void BehaviourTreeEditor()
-		{
-			EditorWindow window = EditorWindow.GetWindow<BehaviourTreeWindow>();
-			window.Show();
-		}
-
-        [MenuItem("GameFrameWork/Build/Build Game",false , 107)]
+        [MenuItem("GameFrameWork/Build/Build Game",false , 106)]
         public static void BuildGame()
         {
             BuildGame(false);
 
         }
 
-        [MenuItem("GameFrameWork/Build/Build Game Log",false , 108)]
+        [MenuItem("GameFrameWork/Build/Build Game Log",false , 107)]
         public static void BuildGameLog()
         {
             BuildGame(true);

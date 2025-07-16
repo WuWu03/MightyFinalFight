@@ -1,5 +1,6 @@
 TitlePanelGameStart
 TitlePanelGameSetting
+RoleSelectPanelTitle
 MainPanelPlayer
 MainPanelEnemy
 MainPanelStage

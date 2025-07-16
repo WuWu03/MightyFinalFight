@@ -27,7 +27,7 @@ public class GameEntry : GameFrameWorkEntry
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "SimplifiedChineseLanguageData.bytes")));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "EnglishLanguageData.bytes")));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "JapaneseLanguageData.bytes")));
-        LocalizationMgr.instance.ChangeLanguage(LanguageType.Japanese);
+        LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
 
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);

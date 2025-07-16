@@ -2,10 +2,12 @@ using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.Editor
@@ -46,27 +48,64 @@ namespace GameFrameWork.Editor
             s_LuaExporter = new LuaExporter();
         }
 
-        public static void NewUIScene()
+        public static bool CanCreateUIScene(string uiName)
         {
-            string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.uiScenesPath);
-            string path = UnityEditor.EditorUtility.SaveFilePanelInProject("创建新的UI场景", "NewPanel", "unity", "Save Scene as...", uiScenesPath);
-
-            if (string.IsNullOrEmpty(path))
-            {
-                return;
-            }
-
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
-                return;
+                return false;
             }
-      
+
+            GameFrameWorkConfigWindowData config = EditorMgr.GetGameFrameWorkConfig();
+
+            if (config == null || string.IsNullOrEmpty(config.entryScene))
+            {
+                if (UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI目录，点击确定前往设置", "确定"))
+                {
+                    EditorMgr.GameFrameWorkStartUp();
+                }
+
+                return false;
+            }
+
+            string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
+
+            if (File.Exists(uiPath))
+            {
+                UnityEngine.SceneManagement.Scene activeScene = EditorSceneManager.GetActiveScene();
+
+                if (activeScene != null && activeScene.path == uiPath)
+                {
+                    EditorUtility.DisplayDialog("新建UI", "当前已位于 [" + uiName + "] 场景中", "确定");
+                }
+                else if (EditorUtility.DisplayDialog("新建UI", "UI [" + uiName + "] 已存在，是否跳转？", "确定", "取消"))
+                {
+                    EditorSceneManager.OpenScene(uiPath);
+                }
+
+                return false;
+            }
+            else
+            {
+                if (!EditorUtility.DisplayDialog("新建UI", "是否创建UI [" + uiName + "]？", "确定", "取消"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static void NewUIScene(string uiName)
+        {
+            GameFrameWorkConfigWindowData config = EditorMgr.GetGameFrameWorkConfig();
+            string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
+
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
             UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootPath));
             root.name = "UIRoot";
 
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
-            settings.panelName = Path.GetFileNameWithoutExtension(path);
+            settings.panelName = Path.GetFileNameWithoutExtension(uiName);
             settings.transform.SetAsLastSibling();
 
             GameObject rootObj = root as GameObject;
@@ -82,7 +121,11 @@ namespace GameFrameWork.Editor
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.SetParent(rootObj.transform.Find("UICanvas"), false);
 
-            EditorSceneManager.SaveScene(scene, path);
+            panel.AddComponent<Canvas>().vertexColorAlwaysGammaSpace = true;
+            panel.AddComponent<GraphicRaycaster>();
+
+            EditorSceneManager.SaveScene(scene, uiPath);
+            AssetDatabase.Refresh();
             Selection.activeGameObject = settings.gameObject;
         }
 
@@ -363,7 +406,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            string path = StringUtil.Append(EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath, s_UIRefSetting.panelName, ".prefab");
+            string path = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath, s_UIRefSetting.panelName + ".prefab");
 
             if (File.Exists(path))
             {

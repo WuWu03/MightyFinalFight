@@ -111,7 +111,7 @@ public class StageMgr : BaseMgr<StageMgr>
             AudioMgr.instance.PlayBGMGroup(bgmInfos, true);
         }
 
-        UIMgr.instance.Open(UINames.MainPanel).Show();
+        UIMgr.instance.Open(UINames.MainPanel);
         SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
         PlayerMgr.instance.InitPlayer();
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
