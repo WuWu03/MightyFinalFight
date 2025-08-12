@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFrameWork.UI
 {
-    public abstract class BasePanel<T> : IPanel where T : BasePanelComponent, new()
+    public abstract class BasePanel<T,P> : IPanel where T : BasePanelComponent, new() where P : BasePanelSettings,new()
     {
         public GameObject gameObject { get; private set; }
 
@@ -15,14 +15,10 @@ namespace GameFrameWork.UI
         {
             get
             {
-                if (m_Settings == null)
-                {
-                    m_Settings = this.CreatePanelParam("Settings") as BasePanelSettings;
-                }
-
                 return m_Settings;
             }
         }
+
 
         public string assetPath
         {
@@ -56,24 +52,24 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void Init(GameObject uiGameObject, string assetPath, object[] param)
+        public BasePanel()
+        {
+            m_Settings = new P();
+            m_Component = new T();
+        }
+
+        public void Init(GameObject uiGameObject, string assetPath, object arg)
         {
             gameObject = uiGameObject;
             transform = gameObject.transform;
             m_AssetPath = assetPath;
-            m_Component = this.CreatePanelParam("Component") as T;
             m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
-
-            if (m_Settings == null)
-            {
-                m_Settings = this.CreatePanelParam("Settings") as BasePanelSettings;
-            }
 
             m_Component.InitComponent(gameObject.GetComponent<UIRefRoot>());
             gameObject.SetLayer(LayerName.UI);
-            transform.SetParent(UIMgr.instance.GetUILayer(m_Settings.panelLayer), false);
+            transform.SetParent(UIMgr.instance.GetPanelLayer(m_Settings.panelLayer), false);
 
-            OnInit(param);
+            OnInit(arg);
             m_IsInit = true;
             Open();
         }
@@ -198,7 +194,7 @@ namespace GameFrameWork.UI
             UIMgr.instance.Close(m_Settings.panelName);
         }
 
-        protected abstract void OnInit(object[] param);
+        protected abstract void OnInit(object arg);
         protected abstract void OnOpen();
         protected abstract void OnUpdate();
         protected abstract void OnClose();

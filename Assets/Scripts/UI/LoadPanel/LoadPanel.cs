@@ -8,18 +8,18 @@ using GameFrameWork.UI;
 using UnityEngine;
 using static LoadPanelMgr;
 
-public class LoadPanel : BasePanel<LoadPanelComponent>
+public class LoadPanel : BasePanel<LoadPanelComponent, LoadPanelSettings>
 {
 
-    protected override void OnInit( object[] param)
+    protected override void OnInit(object arg)
     {
 
     }
 
-	protected override void OnOpen()
-	{
+    protected override void OnOpen()
+    {
 
-	}
+    }
 
     protected override void OnUpdate()
     {
@@ -29,17 +29,17 @@ public class LoadPanel : BasePanel<LoadPanelComponent>
         }
     }
 
-	protected override void OnClose()
-	{
+    protected override void OnClose()
+    {
         m_IsFading = false;
     }
 
-	protected override void OnDestroy()
-	{
+    protected override void OnDestroy()
+    {
 
-	}
+    }
 
-    private void Fade(FadeInfo fadeInfo)
+    private void Fade(FadeArgs fadeInfo)
     {
         if (fadeInfo == null)
         {
@@ -52,7 +52,7 @@ public class LoadPanel : BasePanel<LoadPanelComponent>
         m_Component.imgShade.DOFade(fadeInfo.to, fadeInfo.duration).SetDelay(fadeInfo.delay).OnComplete(() =>
         {
             fadeInfo.onComplete?.Invoke();
-            ReferencePool.ReleaseReference(fadeInfo);
+            fadeInfo.Release();
             m_IsFading = false;
         });
     }

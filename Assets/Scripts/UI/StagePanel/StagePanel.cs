@@ -14,9 +14,9 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StagePanel : BasePanel<StagePanelComponent>
+public class StagePanel : BasePanel<StagePanelComponent, StagePanelSettings>
 {
-    protected override void OnInit(object[] param)
+    protected override void OnInit(object arg)
     {
 
     }
@@ -59,11 +59,11 @@ public class StagePanel : BasePanel<StagePanelComponent>
 
     }
 
-    private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
+    private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
     {
         m_Role = obj as GameObject;
         m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
-        m_Role.gameObject.SetActiveSelf(true);
+        m_Role.SetActiveSelf(true);
         m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
         LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
@@ -74,14 +74,14 @@ public class StagePanel : BasePanel<StagePanelComponent>
         RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
         m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
         m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
         TimerMgr.instance.Register(roleSelectConfig.showTime, OnTimer);
     }
 
-	private void OnTimer()
-	{
-		StageMgr.instance.StageEnterNext();
-	}
+    private void OnTimer()
+    {
+        StageMgr.instance.StageEnterNext();
+    }
 
     private void OnStageEnterStart(object sender, GameEventArgs e)
     {
@@ -90,21 +90,21 @@ public class StagePanel : BasePanel<StagePanelComponent>
 
     private Text GetRoundTxt(int type)
     {
-		GameObject go;
-		m_Component.blue.SetActiveSelf(false);
-		m_Component.green.SetActiveSelf(false);
-		m_Component.red.SetActiveSelf(false);
+        GameObject go;
+        m_Component.blue.SetActiveSelf(false);
+        m_Component.green.SetActiveSelf(false);
+        m_Component.red.SetActiveSelf(false);
 
-		if (type == 1)
-			go = m_Component.blue;
-		else if (type == 2)
-			go = m_Component.green;
-		else
-			go = m_Component.red;
+        if (type == 1)
+            go = m_Component.blue;
+        else if (type == 2)
+            go = m_Component.green;
+        else
+            go = m_Component.red;
 
-		go.SetActiveSelf(true);
-		return go.transform.Find("txtIndex").GetComponent<Text>();
+        go.SetActiveSelf(true);
+        return go.transform.Find("txtIndex").GetComponent<Text>();
     }
 
-	private GameObject m_Role = null;
+    private GameObject m_Role = null;
 }

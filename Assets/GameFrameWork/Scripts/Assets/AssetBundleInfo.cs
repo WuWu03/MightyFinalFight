@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace GameFrameWork.Assets
 {
-    public class AssetBundleInfo :IReference
+    public class AssetBundleInfo : BaseEventArgs
     {
-        public AssetBundle assetBundle;
-        public int referencedCount;
+        public AssetBundle assetBundle { get; set; }
+        public int referencedCount { get; set; }
 
         public static AssetBundleInfo Create(AssetBundle assetBundle)
         {
@@ -15,24 +15,11 @@ namespace GameFrameWork.Assets
             return assetBundleInfo;
         }
 
-        public void Clear()
+        public override void Clear()
         {
+            base.Clear();
             assetBundle = null;
             referencedCount = 0;
-        }
-    }
-
-    public class AssetBundleVersion
-    {
-        public string filePath;
-        public string extendName;
-        public string md5Value;
-
-        public AssetBundleVersion(string filePath, string extendName, string md5Value)
-        {
-            this.filePath = filePath;
-            this.extendName = extendName;
-            this.md5Value = md5Value;
         }
     }
 }

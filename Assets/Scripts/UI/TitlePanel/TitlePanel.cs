@@ -5,15 +5,14 @@
 using DG.Tweening;
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.Event;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
-public class TitlePanel : BasePanel<TitlePanelComponent>
+public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
 {
-	protected override void OnInit(object[] param)
+	protected override void OnInit(object arg)
 	{
 
 	}
@@ -23,10 +22,9 @@ public class TitlePanel : BasePanel<TitlePanelComponent>
 		InputMgr.instance.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
 		OnInputDeviceChangeEvent();
 		TitleAnim();
-	}
+    }
 
-
-	protected override void OnUpdate()
+    protected override void OnUpdate()
 	{
 		if (!m_CanStart)
 		{
@@ -77,15 +75,15 @@ public class TitlePanel : BasePanel<TitlePanelComponent>
 	}
 
 	private void TitleAnim()
-	{
-		m_CanStart = false;
+    {
+        m_CanStart = false;
 		m_Component.imgCapcom.color = new Color(1, 1, 1, 0);
 		m_Component.txtDeveloper.color = new Color(1, 1, 1, 0);
 		m_Component.imgStar.color = new Color(1, 1, 0.3f, 0);
 		m_Component.imgLogoBG.fillAmount = 0f;
 		m_Component.imgRetro.fillAmount = 0f;
 
-		m_Component.imgLogoBG.gameObject.SetActiveSelf(false);
+        m_Component.imgLogoBG.gameObject.SetActiveSelf(false);
 		m_Component.imgRetro.gameObject.SetActiveSelf(false);
 		m_Component.imgLogo.gameObject.SetActiveSelf(false);
 		m_Component.imgStar.gameObject.SetActiveSelf(false);
@@ -115,7 +113,7 @@ public class TitlePanel : BasePanel<TitlePanelComponent>
 		sequence.Append(m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce));
 		sequence.InsertCallback(10.2f, () =>
 		{
-			AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
+			AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
 		});
 		sequence.AppendCallback(() =>
 		{
@@ -128,7 +126,7 @@ public class TitlePanel : BasePanel<TitlePanelComponent>
 		sequence.AppendCallback(() =>
 		{
 			m_Component.imgStar.gameObject.SetActiveSelf(true);
-			AudioMgr.instance.PlayBGM(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm13Title), false);
+			AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm13Title), false);
 		});
 		sequence.AppendInterval(0.1f);
 		sequence.Append(m_Component.imgStar.DOFade(1, 1f));

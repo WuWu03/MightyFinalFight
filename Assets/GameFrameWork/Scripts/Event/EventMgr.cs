@@ -20,14 +20,27 @@ namespace GameFrameWork.Event
             }
         }
 
-        private void Awake()
+        protected override void OnAwake()
         {
-            m_EventPool = new EventPool<GameEventArgs>();
+            base.OnAwake();
+            m_EventPool = new();
         }
 
-        private void Update()
+        protected override void OnUpdate()
         {
             m_EventPool.Update();
+        }
+
+        protected override void OnShutDown()
+        {
+            base.OnShutDown();
+            m_EventPool.ShutDown();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+            m_EventPool = null;
         }
 
         public void Subscribe(int eventId, EventHandler<GameEventArgs> handler)
@@ -58,13 +71,6 @@ namespace GameFrameWork.Event
         public void DispatchNow(object sender, GameEventArgs e)
         {
             m_EventPool.DispatchNow(sender, e);
-        }
-
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-            m_EventPool.ShutDown();
-            m_EventPool = null;
         }
 
         private EventPool<GameEventArgs> m_EventPool = null;

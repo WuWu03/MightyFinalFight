@@ -186,6 +186,11 @@ namespace GameFrameWork.Timer
             return GetWorldTime() - m_LastUpdateTime;
         }
 
+        public void Release()
+        {
+            ReferencePool.Release(this);
+        }
+
         public void Clear()
         {
             m_OnComplete = null;

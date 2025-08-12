@@ -1,104 +1,108 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace GameFrameWork.FSM
+namespace GameFrameWork.Fsm
 {
-    public class FSMMgr : BaseMgr<FSMMgr>
+    public class FsmMgr : BaseMgr<FsmMgr>
     {
         public int fsmCount
         {
             get
             {
-                return m_FSMList.Count;
-            }
-        }
-
-        public int unUsedFSMCount
-        {
-            get
-            {
-                return m_FSMQueue.Count;
+                return m_Fsms.Count;
             }
         }
 
         protected override void OnAwake()
         {
-            base.OnAwake();
-            m_FSMQueue = new Queue<FiniteStateMachine>();
-            m_FSMList = new List<FiniteStateMachine>();
+            m_Fsms = new();
         }
 
         protected override void OnShutDown()
         {
-            for (int i = 0; i < m_FSMList.Count; i++)
+            foreach (KeyValuePair<object, Fsm> fsm in m_Fsms)
             {
-                m_FSMList[i].Release();
+                fsm.Value.Release();
             }
 
-            m_FSMList.Clear();
-            m_FSMQueue.Clear();
-            m_FSMList = null;
-            m_FSMQueue = null;
+            m_Fsms.Clear();
         }
 
-        public FiniteStateMachine CreateFSM(object owner, string name)
+        protected override void OnDestory()
         {
-            FiniteStateMachine fsm = null;
+            m_Fsms = null;
+        }
 
-            if (m_FSMQueue.Count > 0)
+        public Fsm CreateFsm(object owner, string name)
+        {
+            if (owner == null)
             {
-                fsm = m_FSMQueue.Dequeue();
-                fsm.ResetInfo(owner, name);
+                Log.LogError("有限状态机持有者为空");
+                return null;
             }
 
-            if (fsm == null)
+            if (HasFsm(owner))
             {
-                fsm = new FiniteStateMachine(owner, name);
+                Log.LogError("已经存在相同的有限状态机，请勿重复创建");
+                return null;
             }
 
-            m_FSMList.Add(fsm);
+            Fsm fsm = Fsm.Create(owner, name);
+            m_Fsms.Add(owner, fsm);
             return fsm;
         }
 
-        public FiniteStateMachine GetFSM(object owner)
+        public Fsm GetFsm(object owner, string name)
         {
-            for (int i = 0; i < m_FSMList.Count; i++)
+            if (owner == null)
             {
-                if (m_FSMList[i].owner == owner)
-                {
-                    return m_FSMList[i];
-                }
+                Log.LogError("有限状态机持有者为空");
+                return null;
+            }
+
+            if (m_Fsms.TryGetValue(new TypeNamePair(owner.GetType(), name), out Fsm fsm))
+            {
+                return fsm;
             }
 
             return null;
         }
 
-        public bool HasFSM(object owner)
+        public bool HasFsm(object owner)
         {
-            for (int i = 0; i < m_FSMList.Count; i++)
+            if (owner == null)
             {
-                if (m_FSMList[i].owner == owner)
-                {
-                    return true;
-                }
+                Log.LogError("有限状态机持有者为空");
+                return false;
             }
 
-            return false;
+            return m_Fsms.ContainsKey(owner);
         }
 
-        public void ReleaseFSM(FiniteStateMachine fsm)
+        public void ReleaseFsm(object owner)
+        {
+            if (owner == null)
+            {
+                Log.LogError("有限状态机持有者为空");
+                return;
+            }
+
+            if (m_Fsms.TryGetValue(owner, out Fsm fsm))
+            {
+                fsm.Release();
+                m_Fsms.Remove(owner);
+            }
+        }
+
+        public void ReleaseFsm(Fsm fsm)
         {
             if (fsm == null)
             {
                 return;
             }
 
-            fsm.Release();
-            m_FSMQueue.Enqueue(fsm);
-            m_FSMList.Remove(fsm);
+            ReleaseFsm(fsm.owner);
         }
 
-        private List<FiniteStateMachine> m_FSMList = null;
-        private Queue<FiniteStateMachine> m_FSMQueue = null;
+        private Dictionary<object, Fsm> m_Fsms = null;
     }
 }

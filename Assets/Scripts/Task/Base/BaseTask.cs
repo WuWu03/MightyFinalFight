@@ -1,9 +1,7 @@
-﻿using GameFrameWork.Camera;
-using System.Collections;
-using System.Collections.Generic;
+using GameFrameWork.Camera;
 using UnityEngine;
 
-public abstract class BaseTask
+public abstract class BaseTask : ITask
 {
     public TaskConfigData taskData
     {
@@ -30,10 +28,7 @@ public abstract class BaseTask
 
     public virtual void Enter()
     {
-        if (m_Trigger != null)
-        {
-            m_Trigger.Enter();
-        }
+        m_Trigger?.Enter();
     }
 
     public virtual void Update()
@@ -50,17 +45,21 @@ public abstract class BaseTask
     {
         if (!m_IsComplete)
         {
-            if (m_Trigger != null) m_Trigger.Trigger();
+            if (m_Trigger != null)
+            {
+                m_Trigger.Trigger();
+            }
+
             else m_IsComplete = true;
         }
     }
 
-    public virtual bool Exit()
+    public virtual bool CanComplete()
     {
         if (m_TaskData.ExitStartCamera)
         {
             PlayerMgr.instance.canContrl = false;
-            PlayerMgr.instance.SetSpeedZero(true);
+            PlayerMgr.instance.SetSpeedZero();
             CameraMgr.instance.SetFollowMode(FollowMode.Linear);
             CameraMgr.instance.StartFollow(true);
             float cameraX = CameraMgr.instance.cameraRoot.transform.position.x;
@@ -73,6 +72,7 @@ public abstract class BaseTask
                 PlayerMgr.instance.RevertSpeed();
                 CameraMgr.instance.SetFollowMode(FollowMode.Just);
             }
+
             return isDistance;
         }
 
@@ -86,5 +86,5 @@ public abstract class BaseTask
 
     protected TaskConfigData m_TaskData = null;
     private bool m_IsComplete = false;
-    private BaseTaskTrigger m_Trigger = null;
+    private readonly BaseTaskTrigger m_Trigger = null;
 }

@@ -51,22 +51,22 @@ namespace GameFrameWork.UI
             private event UIEventHandle<T> m_UIEventHandle = null;
         }
 
-        public UIEvent<PointerEventData> onClick = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onDoubleClick = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onPress = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onUp = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onDown = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onEnter = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onExit = new UIEvent<PointerEventData>();
-        public UIEvent<BaseEventData> onSelect = new UIEvent<BaseEventData>();
-        public UIEvent<BaseEventData> onUpdateSelect = new UIEvent<BaseEventData>();
-        public UIEvent<BaseEventData> onDeselect = new UIEvent<BaseEventData>();
-        public UIEvent<PointerEventData> onBeginDrag = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onDrag = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onEndDrag = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onDrop = new UIEvent<PointerEventData>();
-        public UIEvent<PointerEventData> onScroll = new UIEvent<PointerEventData>();
-        public UIEvent<AxisEventData> onMove = new UIEvent<AxisEventData>();
+        public UIEvent<PointerEventData> onClick = new();
+        public UIEvent<PointerEventData> onDoubleClick = new();
+        public UIEvent<PointerEventData> onPress = new();
+        public UIEvent<PointerEventData> onUp = new();
+        public UIEvent<PointerEventData> onDown = new();
+        public UIEvent<PointerEventData> onEnter = new();
+        public UIEvent<PointerEventData> onExit = new();
+        public UIEvent<BaseEventData> onSelect = new();
+        public UIEvent<BaseEventData> onUpdateSelect = new();
+        public UIEvent<BaseEventData> onDeselect = new();
+        public UIEvent<PointerEventData> onBeginDrag = new();
+        public UIEvent<PointerEventData> onDrag = new();
+        public UIEvent<PointerEventData> onEndDrag = new();
+        public UIEvent<PointerEventData> onDrop = new();
+        public UIEvent<PointerEventData> onScroll = new();
+        public UIEvent<AxisEventData> onMove = new();
 
         public static UIEventListener Get(GameObject go)
         {

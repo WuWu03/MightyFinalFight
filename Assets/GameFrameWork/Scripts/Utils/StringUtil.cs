@@ -294,6 +294,41 @@ namespace GameFrameWork.Utils
             return m_StringBuilder.ToString();
         }
 
+        public static string FormatSize(ulong bytes)
+        {
+            int counter = 0;
+            double number = bytes;
+
+            // 最大单位就是 PB 了，而 PB 是第 5 级，从 0 开始数
+            // "Bytes", "KB", "MB", "GB", "TB", "PB"
+            const int maxCount = 5;
+
+            while (Math.Round(number / 1024) >= 1)
+            {
+                number /= 1024;
+                counter++;
+
+                if (counter >= maxCount)
+                {
+                    break;
+                }
+            }
+
+            var suffix = counter switch
+            {
+                0 => "B",
+                1 => "KB",
+                2 => "MB",
+                3 => "GB",
+                4 => "TB",
+                5 => "PB",
+                // 通过 maxCount 限制了最大的值就是 5 了
+                _ => throw new ArgumentException("骚年，你是不是忘了更新 maxCount 等级了")
+            };
+
+            return Format("{0:0.00}{1}", number.ToString(), suffix);
+        }
+
         /// <summary>
         /// 计算字符串的MD5值
         /// </summary>
@@ -338,7 +373,7 @@ namespace GameFrameWork.Utils
 
         public static void ClearArgs()
         {
-            if(m_ListArgs != null && m_ListArgs.count > 0)
+            if (m_ListArgs != null && m_ListArgs.count > 0)
             {
                 m_ListArgs.Clear();
             }
@@ -363,6 +398,11 @@ namespace GameFrameWork.Utils
                 string arg = m_ListArgs[i];
                 bool addPath = isPath && !string.IsNullOrEmpty(arg) && !arg.EndsWith("/") && i < m_ListArgs.count - 1;
 
+                if (i == m_ListArgs.count - 2)
+                {
+                    addPath = addPath && !m_ListArgs[i + 1].StartsWith(".");
+                }
+
                 m_StringBuilder.Append(m_ListArgs[i]);
 
                 if (addPath)
@@ -385,30 +425,22 @@ namespace GameFrameWork.Utils
             m_StringBuilder.Clear();
             m_StringBuilder.AppendFormat(format, m_ListArgs.ToArray());
 
-            return string.Format(format, m_ListArgs.ToArray());//m_StringBuilder.ToString();
+            return m_StringBuilder.ToString();
         }
 
         private static string GetRomanStr(int num)
         {
-            switch (num)
+            return num switch
             {
-                case 1:
-                    return "I";
-                case 5:
-                    return "V";
-                case 10:
-                    return "X";
-                case 50:
-                    return "L";
-                case 100:
-                    return "C";
-                case 500:
-                    return "D";
-                case 1000:
-                    return "M";
-            }
-
-            return string.Empty;
+                1 => "I",
+                5 => "V",
+                10 => "X",
+                50 => "L",
+                100 => "C",
+                500 => "D",
+                1000 => "M",
+                _ => string.Empty,
+            };
         }
 
         private static readonly char[] m_ChineseUnit = { default, '十', '百', '千', '万', '亿', '兆', '京' };

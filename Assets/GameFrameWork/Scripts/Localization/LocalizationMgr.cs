@@ -31,13 +31,20 @@ namespace GameFrameWork.Localization
         {
             base.OnAwake();
             m_LanguageType = (LanguageType)PlayerPrefs.GetInt(m_CacheKey, (int)LanguageType.None);
-            m_DicLanguageLoader = new Dictionary<LanguageType, BaseLanguageLoader>();
+            m_DicLanguageLoader = new();
         }
 
         protected override void OnShutDown()
         {
             base.OnShutDown();
+
             m_DicLanguageLoader.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+
             m_LanguageChangeEvent = null;
             m_DicLanguageLoader = null;
         }
@@ -106,6 +113,25 @@ namespace GameFrameWork.Localization
             else
             {
                 Log.LogError("语言读取器不存在：[", languageType.ToString(), "]");
+            }
+        }
+
+        public void ReloadLanguage()
+        {
+            if (m_LanguageType == LanguageType.None)
+            {
+                Log.LogError("未设置语言类型，请先设置默认语言");
+                return;
+            }
+
+            if (m_DicLanguageLoader.TryGetValue(m_LanguageType, out BaseLanguageLoader loader))
+            {
+                loader.Reload();
+                m_LanguageChangeEvent?.Invoke();
+            }
+            else
+            {
+                Log.LogError("语言读取器不存在：[", m_LanguageType.ToString(), "]");
             }
         }
 

@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public interface ITaskTrigger 
 {
+    bool isComplete { get; }
+    void Enter();
     void Trigger();
+    void Complete();
 }

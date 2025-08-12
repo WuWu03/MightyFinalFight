@@ -1,4 +1,4 @@
-﻿namespace GameFrameWork.Event
+namespace GameFrameWork.Event
 {
     public class Event<T> where T : BaseEventArgs
     {
@@ -26,7 +26,7 @@
 
         public static Event<T> Create(object sender, T eventArgs)
         {
-            Event<T> @event = new Event<T>()
+            Event<T> @event = new()
             {
                 m_Sender = sender,
                 m_EventArgs = eventArgs,

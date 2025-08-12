@@ -28,8 +28,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnAttackMsg(attackData);
-
-        ReferencePool.ReleaseReference(attackData);
+        attackData.Release();
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -62,12 +61,12 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         {
             if (m_SkillData.IsInEffectPlaySound)
             {
-                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
+                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
             }
         }
         else
         {
-            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
+            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
         }
     }
 

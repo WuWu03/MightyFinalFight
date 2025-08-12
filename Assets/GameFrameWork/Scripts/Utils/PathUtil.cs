@@ -86,7 +86,7 @@ namespace GameFrameWork.Utils
             return GameFrameWorkEntry.config.uiPrefabsPath;
         }
 
-        public static string GetUIAtlasPath()
+        public static string GetUISpritesPath()
         {
             return GameFrameWorkEntry.config.uiSpritesPath;
         }

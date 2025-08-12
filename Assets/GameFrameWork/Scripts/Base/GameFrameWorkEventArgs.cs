@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GameFrameWork
 {
@@ -9,10 +9,23 @@ namespace GameFrameWork
 
         }
 
-        public abstract void Clear();
-        public virtual GameFrameWorkEventArgs Clone()
+        public void Release()
         {
-            return null;
+            ReferencePool.Release(this);
+        }
+
+        public abstract void Clear();
+
+        public object Clone()
+        {
+            IReference target = ReferencePool.Acquire(this.GetType());
+            Copy(target);
+            return target;
+        }
+
+        protected virtual void Copy(IReference target)
+        {
+
         }
     }
 }

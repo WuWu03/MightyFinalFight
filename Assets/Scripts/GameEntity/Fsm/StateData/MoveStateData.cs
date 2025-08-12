@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using UnityEngine;
 
 public class MoveStateData : BaseEventArgs

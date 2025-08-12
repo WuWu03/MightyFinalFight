@@ -48,7 +48,7 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
         });
 
         PlayerMgr.instance.player.PlayAnimation(AnimName.JumpDown);
-        AudioMgr.instance.FadeBGM(0, 0.3f, 0.7f);
+        AudioMgr.instance.FadeBgm(0, 0.3f, 0.7f);
         PlayerMgr.instance.player.transform.DOLocalMoveY(-0.85f, 1f).SetEase(Ease.Linear).OnComplete(() =>
         {
             Complete();
@@ -58,8 +58,8 @@ public class TaskTriggerStory_1002 : BaseTaskTrigger
     private void OnStageEnterStart(object sender, GameEventArgs e)
     {
         EventMgr.instance.UnSubscribe(EventDefine.StageEnterStartEvent, OnStageEnterStart);
-        AudioMgr.instance.PauseBGM();
-        AudioMgr.instance.FadeBGM(1, 0, 0.1f);
+        AudioMgr.instance.PauseBgm();
+        AudioMgr.instance.FadeBgm(1, 0, 0.1f);
         UIMgr.instance.Get(UINames.MainPanel).Hide();
         PlayerMgr.instance.player.gameObject.SetActiveSelf(false);
     }

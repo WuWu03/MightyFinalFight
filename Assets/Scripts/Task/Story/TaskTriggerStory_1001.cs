@@ -22,7 +22,7 @@ public class TaskTriggerStory_1001 : BaseTaskTrigger
         TimerMgr.instance.Register(1, () =>
         {
             SceneEntityMgr.instance.GetSceneBuildingByName("WoodDoorClose").gameObject.SetActiveSelf(false);
-            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Break));
+            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Break));
         });
 
         TimerMgr.instance.Register(2, () => 

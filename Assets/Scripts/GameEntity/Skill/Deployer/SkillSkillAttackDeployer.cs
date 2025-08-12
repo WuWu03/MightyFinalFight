@@ -1,8 +1,6 @@
 using DragonBones;
-using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Utils;
-using UnityEngine;
 using static SkillConfigData;
 
 public class SkillSkillAttackDeployer : SkillBaseDeployer
@@ -27,14 +25,14 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.OnSkillMsg(skillData);
             base.DeploySkill();
-            ReferencePool.ReleaseReference(skillData);
+            skillData.Release();
             return;
         }
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.OnSkillMsg(skillData);
-        ReferencePool.ReleaseReference(skillData);
+        skillData.Release();
     }
 
     public override bool IsAllComplete()
@@ -67,7 +65,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     public override void Exit()

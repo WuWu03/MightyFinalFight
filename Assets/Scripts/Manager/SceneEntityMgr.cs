@@ -3,25 +3,46 @@ using GameFrameWork.ConfigData;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 {
-    private void Awake()
+    protected override void OnAwake()
     {
-        m_ListDeadEnemies = new List<int>();
-        m_ListBreakBarrels = new List<int>();
-        m_ListEnemies = new List<BaseEnemy>();
-        m_ListSceneBuildings = new List<BaseSceneObject>();
-        m_ListSceneItems = new List<BaseSceneItem>();
-        m_ListBarrels = new List<Barrel>();
+        m_ListDeadEnemies = new();
+        m_ListBreakBarrels = new();
+        m_ListEnemies = new();
+        m_ListSceneBuildings = new();
+        m_ListSceneItems = new();
+        m_ListBarrels = new();
+    }
+
+
+    protected override void OnShutDown()
+    {
+        base.OnShutDown();
+
+        ReleaseAll();
+    }
+
+    protected override void OnDestory()
+    {
+        base.OnDestory();
+
+        m_ListSceneBuildings = null;
+        m_ListEnemies = null;
+        m_ListSceneItems = null;
+        m_ListBarrels = null;
+        m_ListDeadEnemies = null;
+        m_ListBreakBarrels = null;
     }
 
     public void CreateBarrels()
     {
         for (int i = 0; i < 5; i++)
         {
-            Barrel sceneItem = EntityMgr.instance.GetEntity<Barrel>("Barrel");
+            Barrel sceneItem = null;// EntityMgr.instance.GetEntity<Barrel>("Barrel");
             BarrelData barrelData = BarrelData.Create();
             EntityAttribute barrelAttribute = EntityAttribute.Create();
 
@@ -42,14 +63,14 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
             sceneItem.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, "SceneBuilding/Barrel.prefab"));
             sceneItem.SetObjectType(ObjectType.BreakItem);
             sceneItem.SetMapPos(new Vector2Int(-400 + i * 50, -66));
-            sceneItem.SetLayer(LayerName.Unit);
+            //sceneItem.SetLayer(LayerName.Unit);
             m_ListBarrels.Add(sceneItem);
         }
     }
 
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataSheet.roleConfigDatas.GetConfigDataById(sourceId), entityId, 1, attack, defense, hpBarWidth, pos);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataSheet.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
 
         if (enemy == null)
         {
@@ -113,6 +134,11 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         return m_ListEnemies;
     }
 
+    public BaseEnemy GetEnemyById(int entityId)
+    {
+        return m_ListEnemies.Find(x => x.entityId == entityId);
+    }
+
     public List<BaseSceneItem> GetSceneItems()
     {
         return m_ListSceneItems;
@@ -132,7 +158,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     {
         for (int i = 0; i < m_ListSceneBuildings.Count; i++)
         {
-            if (m_ListSceneBuildings[i].entityName == name)
+            if (m_ListSceneBuildings[i].name == name)
             {
                 return m_ListSceneBuildings[i];
             }
@@ -290,11 +316,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         }
     }
 
-    protected override void OnShutDown()
-    {
-        ReleaseAll();
-        base.OnShutDown();
-    }
 
     private List<BaseSceneObject> m_ListSceneBuildings = null;
     private List<BaseEnemy> m_ListEnemies;

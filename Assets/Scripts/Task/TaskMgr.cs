@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using System.Collections.Generic;
 
 public class TaskMgr : BaseMgr<TaskMgr>
@@ -90,7 +90,7 @@ public class TaskMgr : BaseMgr<TaskMgr>
         }
         else
         {
-            if(m_CurrTaskList[m_CurrTaskIndex].Exit())
+            if(m_CurrTaskList[m_CurrTaskIndex].CanComplete())
             {
                 CompleteTask();
             }

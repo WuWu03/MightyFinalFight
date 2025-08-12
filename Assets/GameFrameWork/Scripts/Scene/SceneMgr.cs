@@ -51,7 +51,7 @@ namespace GameFrameWork.Scene
         {
             get
             {
-                return m_ListLoadingScene != null && m_ListLoadingScene.Count > 0;
+                return m_LoadingScenes != null && m_LoadingScenes.Count > 0;
             }
         }
 
@@ -67,16 +67,16 @@ namespace GameFrameWork.Scene
         {
             get
             {
-                return m_ListLoadedScene.Count;
+                return m_LoadedScenes.Count;
             }
         }
 
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_ListLoadingScene = new List<string>();
-            m_ListLoadedScene = new List<string>();
-            m_LoadQueue = new Queue<LoadSceneRequest>();
+            m_LoadingScenes = new();
+            m_LoadedScenes = new();
+            m_LoadRequests = new();
         }
 
         protected override void OnUpdate()
@@ -88,11 +88,11 @@ namespace GameFrameWork.Scene
                 return;
             }
 
-            if (m_LoadQueue.Count > 0)
+            if (m_LoadRequests.Count > 0)
             {
-                lock (m_LoadQueue)
+                lock (m_LoadRequests)
                 {
-                    LoadSceneRequest request = m_LoadQueue.Dequeue();
+                    LoadSceneRequest request = m_LoadRequests.Dequeue();
                     InnerLoadSceneAsync(request);
                 }
             }
@@ -102,48 +102,38 @@ namespace GameFrameWork.Scene
         {
             base.OnShutDown();
 
-            while (m_LoadQueue.Count > 0)
+            while (m_LoadRequests.Count > 0)
             {
-                ReferencePool.ReleaseReference(m_LoadQueue.Dequeue());
+                m_LoadRequests.Dequeue().Release();
             }
 
-            m_LoadQueue.Clear();
-            m_ListLoadingScene.Clear();
-            m_ListLoadedScene.Clear();
-
             m_CurrSceneName = string.Empty;
+            m_LoadingScenes.Clear();
+            m_LoadedScenes.Clear();
+            m_LoadRequests.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+
             m_AsyncOperation = null;
             m_LoadSceneSuccessEvent = null;
             m_LoadSceneFailureEvent = null;
             m_LoadSceneUpdateEvent = null;
         }
 
-        public void LoadSceneAsync(string sceneName)
+        public void LoadSceneAsync(string sceneName, object arg = null)
         {
-            LoadSceneAsync(sceneName, LoadSceneMode.Single, true);
+            LoadSceneAsync(sceneName, LoadSceneMode.Single, true, arg);
         }
 
-        public void LoadSceneAsync(string sceneName, bool isAutoAllowScene)
+        public void LoadSceneAsync(string sceneName, bool isAutoAllowScene, object arg = null)
         {
-            LoadSceneAsync(sceneName, LoadSceneMode.Single, isAutoAllowScene);
+            LoadSceneAsync(sceneName, LoadSceneMode.Single, isAutoAllowScene, arg);
         }
 
-        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene)
-        {
-            LoadSceneAsync(sceneName, mode, isAutoAllowScene, null);
-        }
-
-        public void LoadSceneAsync(string sceneName, object[] args)
-        {
-            LoadSceneAsync(sceneName, LoadSceneMode.Single, true, args);
-        }
-
-        public void LoadSceneAsync(string sceneName, bool isAutoAllowScene, object[] args)
-        {
-            LoadSceneAsync(sceneName, LoadSceneMode.Single, true, args);
-        }
-
-        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object[] args)
+        public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object arg = null)
         {
             if (isLoading)
             {
@@ -159,44 +149,34 @@ namespace GameFrameWork.Scene
 
             m_AsyncOperation = null;
 
-            lock (m_LoadQueue)
+            lock (m_LoadRequests)
             {
-                m_LoadQueue.Enqueue(LoadSceneRequest.Create(sceneName, args, mode, isAutoAllowScene));
+                m_LoadRequests.Enqueue(LoadSceneRequest.Create(sceneName, mode, isAutoAllowScene, arg));
             }
         }
 
-        public void LoadScene(string sceneName)
+        public void LoadScene(string sceneName, object arg = null)
         {
-            LoadScene(sceneName, LoadSceneMode.Single);
+            LoadScene(sceneName, LoadSceneMode.Single, arg);
         }
 
-        public void LoadScene(string sceneName, LoadSceneMode mode)
-        {
-            LoadScene(sceneName, mode, null);
-        }
-
-        public void LoadScene(string sceneName, object[] args)
-        {
-            LoadScene(sceneName, LoadSceneMode.Single, args);
-        }
-
-        public void LoadScene(string sceneName, LoadSceneMode mode, object[] args)
+        public void LoadScene(string sceneName, LoadSceneMode mode, object arg = null)
         {
             if (IsSceneLoading(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.Append("加载失败，场景 : [", sceneName, "] 正在加载"), args);
+                LoadSceneFailure(sceneName, StringUtil.Append("加载失败，场景 : [", sceneName, "] 正在加载"), arg);
                 return;
             }
 
             if (IsSceneLoaded(sceneName))
             {
-                LoadSceneFailure(sceneName, StringUtil.Append("加载失败，场景 : [", sceneName, "] 已加载"), args);
+                LoadSceneFailure(sceneName, StringUtil.Append("加载失败，场景 : [", sceneName, "] 已加载"), arg);
                 return;
             }
 
             try
             {
-                LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = mode };
+                LoadSceneParameters parameters = new() { loadSceneMode = mode };
 #if UNITY_EDITOR
                 if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
                 {
@@ -209,17 +189,17 @@ namespace GameFrameWork.Scene
                     SceneManager.LoadScene(sceneName, mode);
                 }
 
-                LoadSceneSuccess(sceneName, args);
+                LoadSceneSuccess(sceneName, arg);
             }
             catch (Exception e)
             {
-                LoadSceneFailure(sceneName, e.Message, args);
+                LoadSceneFailure(sceneName, e.Message, arg);
             }
         }
 
         public void UnLoadScene(string sceneName, params object[] args)
         {
-            m_ListLoadedScene.Remove(sceneName);
+            m_LoadedScenes.Remove(sceneName);
 
 #if UNITY_EDITOR
             if (GameFrameWorkEntry.config.isLoadFromAssetBundle)
@@ -238,17 +218,17 @@ namespace GameFrameWork.Scene
                 return false;
             }
 
-            return m_ListLoadedScene != null && m_ListLoadedScene.Contains(sceneName);
+            return m_LoadedScenes != null && m_LoadedScenes.Contains(sceneName);
         }
 
         public bool IsSceneLoading(string sceneName)
         {
-            return m_ListLoadingScene != null && m_ListLoadingScene.Contains(sceneName);
+            return m_LoadingScenes != null && m_LoadingScenes.Contains(sceneName);
         }
 
         public void AllowScene()
         {
-            if(m_AsyncOperation != null && !m_AsyncOperation.allowSceneActivation)
+            if (m_AsyncOperation != null && !m_AsyncOperation.allowSceneActivation)
             {
                 m_AsyncOperation.allowSceneActivation = true;
             }
@@ -256,7 +236,7 @@ namespace GameFrameWork.Scene
 
         private void InnerLoadSceneAsync(LoadSceneRequest request)
         {
-            m_ListLoadingScene.Add(request.sceneName);
+            m_LoadingScenes.Add(request.sceneName);
 
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
@@ -266,13 +246,13 @@ namespace GameFrameWork.Scene
             else
 #endif
             {
-                AssetsMgr.instance.LoadAssetAsync(request.sceneName, OnLoadAssetComplete, typeof(UnityEngine.SceneManagement.Scene), request);
+                AssetsMgr.instance.LoadAssetAsync(request.sceneName, typeof(UnityEngine.SceneManagement.Scene), OnLoadAssetComplete, request);
             }
         }
 
-        private void OnLoadAssetComplete(string assetPath, UnityEngine.Object asset, object[] args)
+        private void OnLoadAssetComplete(string assetPath, UnityEngine.Object asset, object arg)
         {
-            LoadSceneRequest request = args[0] as LoadSceneRequest;
+            LoadSceneRequest request = arg as LoadSceneRequest;
             StartCoroutine(OnLoadSceneAsync(request));
         }
 
@@ -280,7 +260,7 @@ namespace GameFrameWork.Scene
         {
             try
             {
-                LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = request.mode };
+                LoadSceneParameters parameters = new() { loadSceneMode = request.mode };
 
 #if UNITY_EDITOR
                 if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
@@ -297,8 +277,8 @@ namespace GameFrameWork.Scene
             }
             catch (Exception e)
             {
-                LoadSceneFailure(request.sceneName, e.Message, request.args);
-                ReferencePool.ReleaseReference(request);
+                LoadSceneFailure(request.sceneName, e.Message, request.arg);
+                request.Release();
                 yield break;
             }
 
@@ -325,17 +305,17 @@ namespace GameFrameWork.Scene
                         yield return null;
                     }
 
-                    LoadSceneSuccess(request.sceneName, request.args);
+                    LoadSceneSuccess(request.sceneName, request.arg);
                 }
 
                 yield return null;
             }
 
-            ReferencePool.ReleaseReference(updateEventArgs);
-            ReferencePool.ReleaseReference(request);
+            updateEventArgs.Release();
+            request.Release();
         }
 
-        private void LoadSceneSuccess(string sceneName, object[] args)
+        private void LoadSceneSuccess(string sceneName, object arg)
         {
             if (m_CurrSceneName == sceneName)
             {
@@ -343,31 +323,31 @@ namespace GameFrameWork.Scene
             }
 
             m_CurrSceneName = sceneName;
-            m_ListLoadingScene.Remove(sceneName);
-            m_ListLoadedScene.Add(sceneName);
+            m_LoadingScenes.Remove(sceneName);
+            m_LoadedScenes.Add(sceneName);
 
-            LoadSceneSuccessEventArgs successEventArgs = LoadSceneSuccessEventArgs.Create(sceneName, args);
+            LoadSceneSuccessEventArgs successEventArgs = LoadSceneSuccessEventArgs.Create(sceneName, arg);
             m_LoadSceneSuccessEvent?.Invoke(successEventArgs);
             m_LoadSceneSuccessEvent = null;
             m_LoadSceneUpdateEvent = null;
             m_LoadSceneFailureEvent = null;
-            ReferencePool.ReleaseReference(successEventArgs);
+            successEventArgs.Release();
         }
 
-        private void LoadSceneFailure(string sceneName, string errorMessage, object[] args)
+        private void LoadSceneFailure(string sceneName, string errorMessage, object arg)
         {
-            LoadSceneFailureEventArgs failureEventArgs = LoadSceneFailureEventArgs.Create(sceneName, errorMessage, args);
+            LoadSceneFailureEventArgs failureEventArgs = LoadSceneFailureEventArgs.Create(sceneName, errorMessage, arg);
             m_LoadSceneSuccessEvent = null;
             m_LoadSceneUpdateEvent = null;
             m_LoadSceneFailureEvent?.Invoke(failureEventArgs);
             m_LoadSceneFailureEvent = null;
-            ReferencePool.ReleaseReference(failureEventArgs);
+            failureEventArgs.Release();
         }
 
         private string m_CurrSceneName = string.Empty;
-        private List<string> m_ListLoadingScene = null;
-        private List<string> m_ListLoadedScene = null;
-        private Queue<LoadSceneRequest> m_LoadQueue = null;
+        private List<string> m_LoadingScenes = null;
+        private List<string> m_LoadedScenes = null;
+        private Queue<LoadSceneRequest> m_LoadRequests = null;
         private AsyncOperation m_AsyncOperation = null;
         private GameFrameWorkAction<LoadSceneSuccessEventArgs> m_LoadSceneSuccessEvent = null;
         private GameFrameWorkAction<LoadSceneFailureEventArgs> m_LoadSceneFailureEvent = null;

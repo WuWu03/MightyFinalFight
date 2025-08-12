@@ -49,27 +49,6 @@ namespace GameFrameWork
             return referencePoolInfos;
         }
 
-        public static void Release()
-        {
-            lock (m_DicReferenceCollection)
-            {
-                m_ListRleaseCollection.Clear();
-
-                foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
-                {
-                    if (kvp.Value.usingReferenceCount < 1)
-                    {
-                        kvp.Value.RemoveAll();
-                        m_ListRleaseCollection.Add(kvp.Key);
-                    }
-                }
-
-                for (int i = 0; i < m_ListRleaseCollection.Count; i++)
-                {
-                    m_DicReferenceCollection.Remove(m_ListRleaseCollection[i]);
-                }
-            }
-        }
 
         public static void ShutDown()
         {
@@ -95,19 +74,6 @@ namespace GameFrameWork
         {
             InternalCheckReferenceType(referenceType);
             return GetReferenceCollection(referenceType).Acquire();
-        }
-
-        public static void ReleaseReference(IReference reference)
-        {
-            if (reference == null)
-            {
-                Log.LogError("对象为空，无法回收");
-                return;
-            }
-
-            Type referenceType = reference.GetType();
-            InternalCheckReferenceType(referenceType);
-            GetReferenceCollection(referenceType).Release(reference, m_EnableStrickCheck);
         }
 
         public static void Add<T>(int count) where T : class, IReference, new()
@@ -141,6 +107,41 @@ namespace GameFrameWork
         {
             InternalCheckReferenceType(referenceType);
             GetReferenceCollection(referenceType).RemoveAll();
+        }
+
+        public static void Release(IReference reference)
+        {
+            if (reference == null)
+            {
+                Log.LogError("对象为空，无法回收");
+                return;
+            }
+
+            Type referenceType = reference.GetType();
+            InternalCheckReferenceType(referenceType);
+            GetReferenceCollection(referenceType).Release(reference, m_EnableStrickCheck);
+        }
+
+        public static void ReleaseAll()
+        {
+            lock (m_DicReferenceCollection)
+            {
+                m_ListRleaseCollection.Clear();
+
+                foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
+                {
+                    if (kvp.Value.usingReferenceCount < 1)
+                    {
+                        kvp.Value.RemoveAll();
+                        m_ListRleaseCollection.Add(kvp.Key);
+                    }
+                }
+
+                for (int i = 0; i < m_ListRleaseCollection.Count; i++)
+                {
+                    m_DicReferenceCollection.Remove(m_ListRleaseCollection[i]);
+                }
+            }
         }
 
         private static void InternalCheckReferenceType(Type referenceType)
@@ -189,8 +190,8 @@ namespace GameFrameWork
             return referenceCollection;
         }
 
-        private static List<Type> m_ListRleaseCollection = new List<Type>();
+        private static List<Type> m_ListRleaseCollection = new();
         private static bool m_EnableStrickCheck = false;
-        private static Dictionary<Type, ReferenceCollection> m_DicReferenceCollection = new Dictionary<Type, ReferenceCollection>();
+        private static Dictionary<Type, ReferenceCollection> m_DicReferenceCollection = new();
     }
 }

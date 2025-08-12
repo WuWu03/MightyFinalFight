@@ -124,15 +124,8 @@ public class BaseSceneObject : BaseEntity
             GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
         }
 
-        if (m_Data != null)
-        {
-            ReferencePool.ReleaseReference(m_Data);
-        }
-
-        if (m_EntityAttribute != null)
-        {
-            ReferencePool.ReleaseReference(m_EntityAttribute);
-        }
+        m_Data?.Release();
+        m_EntityAttribute?.Release();
 
         m_IsAssetLoadComplete = false;
         m_OnReleaseEventHandler = null;
@@ -294,7 +287,7 @@ public class BaseSceneObject : BaseEntity
 
         m_AssetPath = assetPath;
         m_IsAssetLoadComplete = false;
-        GameObjectPoolMgr.instance.GetFromAsset(assetPath, OnLoadAssetComplete);
+        GameObjectPoolMgr.instance.GetFromAsset(assetPath, LoadAssetComplete);
     }
 
     public bool IsOutVersionX(float posX)
@@ -357,7 +350,7 @@ public class BaseSceneObject : BaseEntity
         OnFixedUpdate();
     }
 
-    private void OnLoadAssetComplete(string assetPath, UnityEngine.Object obj, object[] param)
+    private void LoadAssetComplete(string assetPath, UnityEngine.Object obj, object arg)
     {
         if (obj == null)
         {
@@ -370,14 +363,14 @@ public class BaseSceneObject : BaseEntity
         m_Asset.transform.localPosition = Vector3.zero;
         m_Asset.SetActiveSelf(true);
         SetLayer();
-        OnLoadAssetComplete(m_Asset, param);
+        OnLoadAssetComplete(m_Asset, arg);
         m_IsAssetLoadComplete = true;
     }
 
     protected virtual void OnUpdate() { }
     protected virtual void OnLateUpdate() { }
     protected virtual void OnFixedUpdate() { }
-    protected virtual void OnLoadAssetComplete(GameObject go, object[] param) { }
+    protected virtual void OnLoadAssetComplete(GameObject go, object arg) { }
     protected virtual void OnTriggerEnter2D(Collider2D collision) { }
     protected virtual void OnTriggerStay2D(Collider2D collision) { }
     protected virtual void OnTriggerExit2D(Collider2D collision) { }

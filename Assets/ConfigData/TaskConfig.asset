@@ -305,7 +305,7 @@ MonoBehaviour:
     TriggerType: 5
     Targets: []
     TriggerPlayerCantCtrl: 1
-    ExitPlayerCanCtrl: 1
+    ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
     WaitTime: 0
@@ -326,8 +326,8 @@ MonoBehaviour:
     KillAllBarrels: 0
     TriggerType: 4
     Targets: []
-    TriggerPlayerCantCtrl: 1
-    ExitPlayerCanCtrl: 1
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
     TriggerStopCamera: 0
     ExitStartCamera: 0
     WaitTime: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
     Targets:
     - EntityID: 200501
       SourceID: 2005
-      Hp: 2
+      Hp: 500
       AttackValue: 20
       DefenseValue: 20
       HpBarWidth: 300

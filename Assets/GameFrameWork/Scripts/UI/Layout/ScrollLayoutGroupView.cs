@@ -154,7 +154,7 @@ namespace GameFrameWork.UI
         {
             get
             {
-                var scrollPosition = this.scrollPosition;
+                float scrollPosition = this.scrollPosition;
                 return (scrollPosition <= 0 ? 0 : m_ScrollPosition / scrollSize);
             }
         }
@@ -172,7 +172,7 @@ namespace GameFrameWork.UI
             {
                 if (m_Loop != value)
                 {
-                    var originalScrollPosition = m_ScrollPosition;
+                    float originalScrollPosition = m_ScrollPosition;
 
                     m_Loop = value;
                     Resize(false);
@@ -517,15 +517,15 @@ namespace GameFrameWork.UI
             m_LayoutGroup.childControlWidth = true;
             m_LayoutGroup.childControlHeight = true;
 
-            GameObject go = new GameObject("First Padder", typeof(RectTransform), typeof(LayoutElement));
+            GameObject go = new("First Padder", typeof(RectTransform), typeof(LayoutElement));
             go.transform.SetParent(m_Content, false);
             m_FirstPadder = go.GetComponent<LayoutElement>();
 
-            go = new GameObject("Last Padder", typeof(RectTransform), typeof(LayoutElement));
+            go = new("Last Padder", typeof(RectTransform), typeof(LayoutElement));
             go.transform.SetParent(m_Content, false);
             m_LastPadder = go.GetComponent<LayoutElement>();
 
-            go = new GameObject("Recycled Cells", typeof(RectTransform));
+            go = new("Recycled Cells", typeof(RectTransform));
             go.transform.SetParent(m_ScrollRect.transform, false);
             m_RecycledItemsContent = go.GetComponent<RectTransform>();
             m_RecycledItemsContent.gameObject.SetActiveSelf(false);
@@ -660,7 +660,7 @@ namespace GameFrameWork.UI
             bool forceCalculateRange = false)
         {
     
-            var newScrollPosition = 0f;
+            float newScrollPosition = 0f;
 
             if (m_Loop)
             {
@@ -669,17 +669,17 @@ namespace GameFrameWork.UI
                 var set2CellViewIndex = m_LoopFirstCellIndex + dataIndex;
                 var set3CellViewIndex = m_LoopFirstCellIndex + numberOfCells + dataIndex;
 
-                var set1Position = GetScrollPositionByItemIndex(set1CellViewIndex, ItemPositionType.Before);
-                var set2Position = GetScrollPositionByItemIndex(set2CellViewIndex, ItemPositionType.Before);
-                var set3Position = GetScrollPositionByItemIndex(set3CellViewIndex, ItemPositionType.Before);
+                float set1Position = GetScrollPositionByItemIndex(set1CellViewIndex, ItemPositionType.Before);
+                float set2Position = GetScrollPositionByItemIndex(set2CellViewIndex, ItemPositionType.Before);
+                float set3Position = GetScrollPositionByItemIndex(set3CellViewIndex, ItemPositionType.Before);
 
-                var set1Diff = (Mathf.Abs(m_ScrollPosition - set1Position));
-                var set2Diff = (Mathf.Abs(m_ScrollPosition - set2Position));
-                var set3Diff = (Mathf.Abs(m_ScrollPosition - set3Position));
+                float set1Diff = (Mathf.Abs(m_ScrollPosition - set1Position));
+                float set2Diff = (Mathf.Abs(m_ScrollPosition - set2Position));
+                float set3Diff = (Mathf.Abs(m_ScrollPosition - set3Position));
 
-                var currentSet = 0;
-                var currentCellViewIndex = 0;
-                var nextCellViewIndex = 0;
+                float currentSet = 0;
+                float currentCellViewIndex = 0;
+                float nextCellViewIndex = 0;
 
                 if (loopJumpDirection == LoopJumpDirectionEnum.Up || loopJumpDirection == LoopJumpDirectionEnum.Down)
                 {
@@ -946,8 +946,7 @@ namespace GameFrameWork.UI
                 item = Activator.CreateInstance(m_ItemClassType) as ScrollLayoutGroupViewItem;
                 item.Create(go);
                 item.transform.SetParent(m_Content);
-                item.transform.localPosition = Vector3.zero;
-                item.transform.localRotation = Quaternion.identity;
+                item.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             }
 
             return item;
@@ -958,9 +957,9 @@ namespace GameFrameWork.UI
         /// </summary>
         private void Resize(bool keepPosition)
         {
-            var originalScrollPosition = m_ScrollPosition;
+            float originalScrollPosition = m_ScrollPosition;
             m_ItemSizeArray.Clear();
-            var offset = AddItemSizes();
+            float offset = AddItemSizes();
 
             if (m_Loop)
             {
@@ -1037,7 +1036,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private float AddItemSizes()
         {
-            var offset = 0f;
+            float offset = 0f;
             m_SingleLoopGroupSize = 0;
 
             for (var i = 0; i < itemCount; i++)
@@ -1055,7 +1054,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private void DuplicateItemSizes(int numberOfTimes, int cellCount)
         {
-            for (var i = 0; i < numberOfTimes; i++)
+            for (float i = 0; i < numberOfTimes; i++)
             {
                 for (var j = 0; j < cellCount; j++)
                 {
@@ -1070,7 +1069,8 @@ namespace GameFrameWork.UI
         private void CalculateItemOffsets()
         {
             m_ItemOffsetArray.Clear();
-            var offset = 0f;
+            float offset = 0f;
+
             for (var i = 0; i < m_ItemSizeArray.count; i++)
             {
                 offset += m_ItemSizeArray[i];
@@ -1097,14 +1097,11 @@ namespace GameFrameWork.UI
         /// </summary>
         private void ResetVisibleItems()
         {
-            int startIndex;
-            int endIndex;
-
-            CalculateCurrentActiveItemRange(out startIndex, out endIndex);
+            CalculateCurrentActiveItemRange(out int startIndex, out int endIndex);
 
             // go through each previous active cell and recycle it if it no longer falls in the range
             var i = 0;
-            SmallList<int> remainingCellIndices = new SmallList<int>();
+            SmallList<int> remainingCellIndices = new();
 
             while (i < m_ActiveItems.count)
             {
@@ -1240,8 +1237,8 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            var firstSize = m_ItemOffsetArray[m_ActiveItemsStartIndex] - m_ItemSizeArray[m_ActiveItemsStartIndex];
-            var lastSize = m_ItemOffsetArray.Last() - m_ItemOffsetArray[m_ActiveItemsEndIndex];
+            float firstSize = m_ItemOffsetArray[m_ActiveItemsStartIndex] - m_ItemSizeArray[m_ActiveItemsStartIndex];
+            float lastSize = m_ItemOffsetArray.Last() - m_ItemOffsetArray[m_ActiveItemsEndIndex];
 
             if (m_ScrollRect.vertical)
             {
@@ -1264,9 +1261,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private void RefreshActive()
         {
-            int startIndex;
-            int endIndex;
-            var velocity = Vector2.zero;
+            Vector2 velocity = Vector2.zero;
 
             if (m_Loop && !m_IgnoreLoopJump)
             {
@@ -1284,7 +1279,7 @@ namespace GameFrameWork.UI
                 }
             }
 
-            CalculateCurrentActiveItemRange(out startIndex, out endIndex);
+            CalculateCurrentActiveItemRange(out int startIndex, out int endIndex);
 
             if (startIndex == m_ActiveItemsStartIndex && endIndex == m_ActiveItemsEndIndex)
             {
@@ -1299,11 +1294,8 @@ namespace GameFrameWork.UI
         /// </summary>
         private void CalculateCurrentActiveItemRange(out int startIndex, out int endIndex)
         {
-            startIndex = 0;
-            endIndex = 0;
-
-            var startPosition = m_ScrollPosition - lookAheadBefore;
-            var endPosition = m_ScrollPosition + (m_ScrollRect.vertical ? m_ScrollRectTransform.rect.height : m_ScrollRectTransform.rect.width) + lookAheadAfter;
+            float startPosition = m_ScrollPosition - lookAheadBefore;
+            float endPosition = m_ScrollPosition + (m_ScrollRect.vertical ? m_ScrollRectTransform.rect.height : m_ScrollRectTransform.rect.width) + lookAheadAfter;
 
             startIndex = GetItemIndexAtPosition(startPosition);
             endIndex = GetItemIndexAtPosition(endPosition);
@@ -1320,7 +1312,7 @@ namespace GameFrameWork.UI
             }
 
             var middleIndex = (startIndex + endIndex) / 2;
-            var pad = m_ScrollRect.vertical ? m_LayoutGroup.padding.top : m_LayoutGroup.padding.left;
+            float pad = m_ScrollRect.vertical ? m_LayoutGroup.padding.top : m_LayoutGroup.padding.left;
 
             if ((m_ItemOffsetArray[middleIndex] + pad) >= (position + (pad == 0 ? 0 : 1.00001f)))
             {
@@ -1467,7 +1459,6 @@ namespace GameFrameWork.UI
 
                 while (m_TweenTimer < time)
                 {
-
                     scrollPosition = TweenUtil.Tween(tweenType, start, end, m_TweenTimer / time);
                     m_TweenTimer += Time.unscaledDeltaTime;
                     yield return null;

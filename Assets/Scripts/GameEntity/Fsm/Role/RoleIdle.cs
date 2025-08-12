@@ -1,14 +1,14 @@
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 using UnityEngine;
 
 public class RoleIdle : BaseFsmState
 {
-    protected override void OnInit(FiniteStateMachine fsm)
+    protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(FiniteStateMachine fsm)
+    protected override void OnEnter(Fsm fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.SetPos2(m_Owner.pos, true);
@@ -23,13 +23,13 @@ public class RoleIdle : BaseFsmState
         }
     }
 
-    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
+    protected override void OnExit(Fsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Idle);
         m_Owner.StopAnimation(AnimName.Idle_Weapon);
     }
 
-    protected override void OnRelease(FiniteStateMachine fsm)
+    protected override void OnRelease(Fsm fsm)
     {
         m_Owner = null;
     }

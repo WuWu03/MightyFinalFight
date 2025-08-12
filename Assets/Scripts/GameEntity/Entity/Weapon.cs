@@ -38,7 +38,7 @@ public class Weapon : BaseSceneItem
     {
         m_Owner = owner;
         gameObject.SetActiveSelf(false);
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bonus));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bonus));
     }
 
     protected override void OnUpdate()
@@ -55,9 +55,9 @@ public class Weapon : BaseSceneItem
         }
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
         m_HitTrigger = m_Asset.GetComponent<HitTrigger>();
         PlayAnimation(AnimName.Idle);
@@ -83,7 +83,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError(entityName, "[Animator] 组件不存在");
+            Log.LogError(name, "[Animator] 组件不存在");
             return;
         }
 
@@ -107,7 +107,7 @@ public class Weapon : BaseSceneItem
     {
         if (m_Animator == null)
         {
-            Log.LogError(entityName, "[Animator] 组件不存在");
+            Log.LogError(name, "[Animator] 组件不存在");
             return false;
         }
 

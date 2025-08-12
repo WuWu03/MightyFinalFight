@@ -33,6 +33,23 @@ namespace GameFrameWork.UI
             LocalizationMgr.instance.lanuageChangeEvent -= OnLanguageChange;
         }
 
+        public void SetText(string text)
+        {
+            if (!string.IsNullOrEmpty(m_AppendArg))
+            {
+                text = StringUtil.Append(text, m_AppendArg);
+            }
+
+            if (m_TextMesh != null)
+            {
+                m_TextMesh.text = text;
+            }
+            else if (m_Text != null)
+            {
+                m_Text.text = text;
+            }
+        }
+
         public void SetLanguageTextKey(string key)
         {
             if (languageTextKey == key)
@@ -164,23 +181,6 @@ namespace GameFrameWork.UI
             text = StringUtil.Format(text, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
             SetText(text);
-        }
-
-        private void SetText(string text)
-        {
-            if (!string.IsNullOrEmpty(m_AppendArg))
-            {
-                text = StringUtil.Append(text, m_AppendArg);
-            }
-
-            if (m_TextMesh != null)
-            {
-                m_TextMesh.text = text;
-            }
-            else if (m_Text != null)
-            {
-                m_Text.text = text;
-            }
         }
 
         private string m_AppendArg = string.Empty;

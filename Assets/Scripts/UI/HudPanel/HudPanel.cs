@@ -10,9 +10,9 @@ using GameFrameWork.Pool;
 using GameFrameWork.Utils;
 using TMPro;
 
-public class HudPanel : BasePanel<HudPanelComponent>
+public class HudPanel : BasePanel<HudPanelComponent, HudPanelSettings>
 {
-    protected override void OnInit(object[] param)
+    protected override void OnInit(object arg)
     {
         GameObjectPoolMgr.instance.AddPool(m_DamageText, m_Component.txtDamageGO);
     }

@@ -14,9 +14,9 @@ namespace GameFrameWork.Input
             args.keyEvent = keyEvent;
             return args;
         }
-
         public override void Clear()
         {
+            base.Clear();
             keys = null;
             keyEvent = null;
         }

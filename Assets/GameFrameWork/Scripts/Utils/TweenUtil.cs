@@ -41,9 +41,9 @@ namespace GameFrameWork.Utils
             InOutElastic
         }
 
-        public static float Tween(TweenType tweenType,float start,float end,float val)
+        public static float Tween(TweenType tweenType, float start, float end, float val)
         {
-            if(tweenType == TweenType.None)
+            if (tweenType == TweenType.None)
             {
                 return 0f;
             }
@@ -97,7 +97,7 @@ namespace GameFrameWork.Utils
         private static float Spring(float start, float end, float val)
         {
             val = Mathf.Clamp01(val);
-            val = (Mathf.Sin(val * Mathf.PI * (0.2f + 2.5f * val * val * val)) * Mathf.Pow(1f - val, 2.2f) + val) * (1f + (1.2f * (1f - val)));
+            val = Mathf.Sin(val * Mathf.PI * (0.2f + 2.5f * val * val * val) * Mathf.Pow(1f - val, 2.2f) + val) * (1f + (1.2f * (1f - val)));
             return start + (end - start) * val;
         }
 
@@ -117,7 +117,12 @@ namespace GameFrameWork.Utils
         {
             val /= .5f;
             end -= start;
-            if (val < 1) return end / 2 * val * val + start;
+
+            if (val < 1)
+            {
+                return end / 2 * val * val + start;
+            }
+
             val--;
             return -end / 2 * (val * (val - 2) - 1) + start;
         }
@@ -139,7 +144,12 @@ namespace GameFrameWork.Utils
         {
             val /= .5f;
             end -= start;
-            if (val < 1) return end / 2 * val * val * val + start;
+
+            if (val < 1)
+            {
+                return end / 2 * val * val * val + start;
+            }
+
             val -= 2;
             return end / 2 * (val * val * val + 2) + start;
         }
@@ -161,7 +171,12 @@ namespace GameFrameWork.Utils
         {
             val /= .5f;
             end -= start;
-            if (val < 1) return end / 2 * val * val * val * val + start;
+
+            if (val < 1)
+            {
+                return end / 2 * val * val * val * val + start;
+            }
+
             val -= 2;
             return -end / 2 * (val * val * val * val - 2) + start;
         }
@@ -183,7 +198,12 @@ namespace GameFrameWork.Utils
         {
             val /= .5f;
             end -= start;
-            if (val < 1) return end / 2 * val * val * val * val * val + start;
+
+            if (val < 1)
+            {
+                return end / 2 * val * val * val * val * val + start;
+            }
+
             val -= 2;
             return end / 2 * (val * val * val * val * val + 2) + start;
         }
@@ -220,9 +240,14 @@ namespace GameFrameWork.Utils
 
         private static float InOutExpo(float start, float end, float val)
         {
-            val /= .5f;
+            val /= 0.5f;
             end -= start;
-            if (val < 1) return end / 2 * Mathf.Pow(2, 10 * (val - 1)) + start;
+
+            if (val < 1)
+            {
+                return end / 2 * Mathf.Pow(2, 10 * (val - 1)) + start;
+            }
+
             val--;
             return end / 2 * (-Mathf.Pow(2, -10 * val) + 2) + start;
         }
@@ -242,9 +267,14 @@ namespace GameFrameWork.Utils
 
         private static float InOutCirc(float start, float end, float val)
         {
-            val /= .5f;
+            val /= 0.5f;
             end -= start;
-            if (val < 1) return -end / 2 * (Mathf.Sqrt(1 - val * val) - 1) + start;
+
+            if (val < 1)
+            {
+                return -end / 2 * (Mathf.Sqrt(1 - val * val) - 1) + start;
+            }
+
             val -= 2;
             return end / 2 * (Mathf.Sqrt(1 - val * val) + 1) + start;
         }
@@ -294,7 +324,7 @@ namespace GameFrameWork.Utils
             end -= start;
             val /= 1;
             float s = 1.70158f;
-            return end * (val) * val * ((s + 1) * val - s) + start;
+            return end * val * val * ((s + 1) * val - s) + start;
         }
 
         private static float OutBack(float start, float end, float val)
@@ -302,21 +332,24 @@ namespace GameFrameWork.Utils
             float s = 1.70158f;
             end -= start;
             val = (val / 1) - 1;
-            return end * ((val) * val * ((s + 1) * val + s) + 1) + start;
+            return end * (val * val * ((s + 1) * val + s) + 1) + start;
         }
 
         private static float InOutBack(float start, float end, float val)
         {
             float s = 1.70158f;
             end -= start;
-            val /= .5f;
-            if ((val) < 1)
+            val /= 0.5f;
+
+            if (val < 1)
             {
-                s *= (1.525f);
+                s *= 1.525f;
                 return end / 2 * (val * val * (((s) + 1) * val - s)) + start;
             }
+
             val -= 2;
-            s *= (1.525f);
+            s *= 1.525f;
+
             return end / 2 * ((val) * val * (((s) + 1) * val + s) + 2) + start;
         }
 
@@ -329,9 +362,17 @@ namespace GameFrameWork.Utils
             float s = 0;
             float a = 0;
 
-            if (val == 0) return start;
-            val = val / d;
-            if (val == 1) return start + end;
+            if (val == 0)
+            {
+                return start;
+            }
+
+            val /= d;
+
+            if (val == 1)
+            {
+                return start + end;
+            }
 
             if (a == 0f || a < Mathf.Abs(end))
             {
@@ -342,7 +383,8 @@ namespace GameFrameWork.Utils
             {
                 s = p / (2 * Mathf.PI) * Mathf.Asin(end / a);
             }
-            val = val - 1;
+
+            val--;
             return -(a * Mathf.Pow(2, 10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p)) + start;
         }
 
@@ -355,10 +397,17 @@ namespace GameFrameWork.Utils
             float s = 0;
             float a = 0;
 
-            if (val == 0) return start;
+            if (val == 0)
+            {
+                return start;
+            }
 
-            val = val / d;
-            if (val == 1) return start + end;
+            val /= d;
+
+            if (val == 1)
+            {
+                return start + end;
+            }
 
             if (a == 0f || a < Mathf.Abs(end))
             {
@@ -378,14 +427,21 @@ namespace GameFrameWork.Utils
             end -= start;
 
             float d = 1f;
-            float p = d * .3f;
+            float p = d * 0.3f;
             float s = 0;
             float a = 0;
 
-            if (val == 0) return start;
+            if (val == 0)
+            {
+                return start;
+            }
 
-            val = val / (d / 2);
-            if (val == 2) return start + end;
+            val /= (d / 2);
+
+            if (val == 2)
+            {
+                return start + end;
+            }
 
             if (a == 0f || a < Mathf.Abs(end))
             {
@@ -399,10 +455,11 @@ namespace GameFrameWork.Utils
 
             if (val < 1)
             {
-                val = val - 1;
+                val--;
                 return -0.5f * (a * Mathf.Pow(2, 10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p)) + start;
             }
-            val = val - 1;
+
+            val--;
             return a * Mathf.Pow(2, -10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p) * 0.5f + end + start;
         }
     }

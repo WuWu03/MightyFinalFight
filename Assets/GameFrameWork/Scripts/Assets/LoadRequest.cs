@@ -2,33 +2,38 @@ using System;
 
 namespace GameFrameWork.Assets
 {
-    public class LoadRequest : IReference
+    public class LoadRequest : BaseEventArgs
     {
         public string assetPath { get; set; }
         public Type assetType { get; set; }
-        public GameFrameWorkAction<string, UnityEngine.Object, object[]> action { get; set; }
-        public object[] args { get; set; }
+        public GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction { get; set; }
+        public object arg { get; set; }
 
-        public static LoadRequest Create()
+        public static LoadRequest Create(string assetPath, Type assetType, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg)
         {
             LoadRequest loadRequest = ReferencePool.Acquire<LoadRequest>();
+            loadRequest.assetPath = assetPath;
+            loadRequest.assetType = assetType;
+            loadRequest.loadedAction = loadedAction;
+            loadRequest.arg = arg;
             return loadRequest;
         }
 
-        public void Call(UnityEngine.Object go)
+        public void Loaded(UnityEngine.Object go)
         {
-            if (action != null)
+            if (loadedAction != null)
             {
-                action?.Invoke(assetPath, go, args);
+                loadedAction?.Invoke(assetPath, go, arg);
             }
         }
 
-        public void Clear()
+        public override void Clear()
         {
+            base.Clear();
             assetPath = null;
             assetType = null;
-            action = null;
-            args = null;
+            loadedAction = null;
+            arg = null;
         }
     }
 }

@@ -1,15 +1,15 @@
 using GameFrameWork;
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 using UnityEngine;
 
 public class RoleMove : BaseFsmState
 {
-    protected override void OnInit(FiniteStateMachine fsm)
+    protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
     }
 
-    protected override void OnEnter(FiniteStateMachine fsm)
+    protected override void OnEnter(Fsm fsm)
     {
         if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
@@ -21,7 +21,7 @@ public class RoleMove : BaseFsmState
         }
     }
 
-    protected override void OnFixedUpdate(FiniteStateMachine fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
+    protected override void OnFixedUpdate(Fsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
         if (m_Owner.isPause)
         {
@@ -33,7 +33,7 @@ public class RoleMove : BaseFsmState
             m_Owner.SetDir(m_Owner.moveDir.x);
         }
 
-        Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Owner.moveDir.x, m_Owner.moveDir.y) * m_Owner.entityAttribute.moveSpeed * fixedDeltaTime;
+        Vector3 ownerPos = m_Owner.transform.localPosition + fixedDeltaTime * m_Owner.entityAttribute.moveSpeed * new Vector3(m_Owner.moveDir.x, m_Owner.moveDir.y, 0);
         m_Owner.SetPos2(ownerPos);
     }
 
@@ -44,7 +44,7 @@ public class RoleMove : BaseFsmState
         m_CanChangeDir = moveData.canChangeDir;
     }
 
-    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
+    protected override void OnExit(Fsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Move_Catch);
         m_Owner.StopAnimation(AnimName.Move);
@@ -52,7 +52,7 @@ public class RoleMove : BaseFsmState
         m_CanChangeDir = false;
     }
 
-    protected override void OnRelease(FiniteStateMachine fsm)
+    protected override void OnRelease(Fsm fsm)
     {
         base.OnRelease(fsm);
         m_Owner = null;

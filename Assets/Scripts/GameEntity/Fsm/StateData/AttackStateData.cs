@@ -1,6 +1,4 @@
-﻿using GameFrameWork;
-using System;
-using UnityEngine;
+using GameFrameWork;
 
 public class AttackStateData : BaseEventArgs
 {
@@ -24,10 +22,5 @@ public class AttackStateData : BaseEventArgs
         animSpeed = 0;
         dir = 0;
         canChangeDir = false;
-    }
-
-    public override GameFrameWorkEventArgs Clone()
-    {
-        return Activator.CreateInstance<AttackStateData>();
     }
 }

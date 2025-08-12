@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace GameFrameWork.Audio
 {
-    public class SEInfo
+    public class SeInfo
     {
         public AudioSource audioSource { get; set; }
         public string path { get; set; }
         public float playTime { get; set; }
 
-        public SEInfo()
+        public SeInfo()
         {
             audioSource = new GameObject().GetOrAddComponent<AudioSource>();
         }
 
-        public static SEInfo Create()
+        public static SeInfo Create()
         {
-            return new SEInfo();
+            return new SeInfo();
         }
 
         public void Clear()

@@ -142,9 +142,9 @@ namespace GameFrameWork.Editor
 
             sb.Append("\tpublic override string panelName { get { " + string.Format("return \"{0}\"", setting.panelName) + "; } }\r\n");
             sb.Append("\tpublic override float panelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.Type panelType { get { " + string.Format("return UIMgr.Type.{0}", typeName) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.Layer panelLayer { get { " + string.Format("return UIMgr.Layer.{0}", layerName) + "; } }\r\n");
-            sb.Append("\tpublic override UIMgr.CloseMode panelCloseMode { get { " + string.Format("return UIMgr.CloseMode.{0}", closeModeName) + "; } }\r\n");
+            sb.Append("\tpublic override PanelType panelType { get { " + string.Format("return PanelType.{0}", typeName) + "; } }\r\n");
+            sb.Append("\tpublic override PanelLayer panelLayer { get { " + string.Format("return PanelLayer.{0}", layerName) + "; } }\r\n");
+            sb.Append("\tpublic override PanelCloseMode panelCloseMode { get { " + string.Format("return PanelCloseMode.{0}", closeModeName) + "; } }\r\n");
             sb.Append("}");
             FileUtil.VerifyDirectory(setting.scriptFolder);
             FileUtil.CreateTextFile(setting.panelSettingsPath, sb.ToString());
@@ -167,12 +167,11 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0} : BasePanel", setting.panelName);
+            sb.AppendFormat("public class {0} : BasePanel<{1}Component, {2}Settings>", setting.panelName, setting.panelName, setting.panelName);
             sb.AppendLine("\r\n{");
 
-            sb.AppendLine("\tprotected override void OnInit(BasePanelComponent panelComponent, object[] param)");
+            sb.AppendLine("\tprotected override void OnInit(object arg)");
             sb.AppendLine("\t{");
-            sb.AppendFormat("\t\tm_Component = panelComponent as {0}Component;\r\n", setting.panelName);
             sb.AppendLine("\t}");
             sb.AppendLine();
             sb.AppendLine("\tprotected override void OnOpen()");
@@ -190,8 +189,6 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\tprotected override void OnDestroy()");
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
-            sb.AppendLine();
-            sb.AppendFormat("\tprivate {0}Component m_Component = null;\r\n", setting.panelName);
             sb.Append("}");
             FileUtil.VerifyDirectory(setting.scriptFolder);
             FileUtil.CreateTextFile(setting.panelPath, sb.ToString());

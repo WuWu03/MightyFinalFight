@@ -11,11 +11,6 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    public override void Init(int id, string name)
-    {
-        base.Init(id, name);
-    }
-
     protected override void OnUpdate()
     {
         base.OnUpdate();

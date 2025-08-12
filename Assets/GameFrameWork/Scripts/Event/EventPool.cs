@@ -132,8 +132,6 @@ namespace GameFrameWork.Event
         {
             m_Events.Clear();
             m_EventHandlers.Clear();
-            m_Events = null;
-            m_EventHandlers = null;
         }
 
         private void HandleEvent(object sender, T args)
@@ -149,9 +147,11 @@ namespace GameFrameWork.Event
             {
                 eventList[i]?.Invoke(sender, args);
             }
+
+            args.Release();
         }
 
-        private Queue<Event<T>> m_Events = null;
-        private Dictionary<int, List<EventHandler<T>>> m_EventHandlers = null;
+        private readonly Queue<Event<T>> m_Events = null;
+        private readonly Dictionary<int, List<EventHandler<T>>> m_EventHandlers = null;
     }
 }

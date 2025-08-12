@@ -1,8 +1,5 @@
-﻿using GameFrameWork.Scene;
-using GameFrameWork.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
+
 using UnityEngine;
 
 public class TaskTriggerChangeScene : BaseTaskTrigger
@@ -12,6 +9,8 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("进入场景任务");
+        PlayerMgr.instance.canContrl = false;
     }
 
     public override void Trigger()

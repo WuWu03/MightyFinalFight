@@ -4,35 +4,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace GameFrameWork.Assets
 {
-    public class EditorAssetsMgr : Singleton<EditorAssetsMgr>
+    public static class EditorAssetsMgr
     {
-        public EditorAssetsMgr()
-        {
-            m_DicLoadedAssets = new Dictionary<string, UnityEngine.Object>();
-            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-        }
-
-        public UnityEngine.Object LoadAssetSync(string assetPath, Type t = null)
+        public static UnityEngine.Object LoadAssetSync(string assetPath, Type t = null)
         {
             Log.LogInfo("开始加载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>]");
             return OnLoadAssetSync(assetPath, t);
         }
 
-        public void LoadAssetAsync(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> action = null, Type t = null, params object[] args)
+        public static void LoadAssetAsync(MonoBehaviour mono, string assetPath, Type assetType, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg = null)
         {
-            LoadRequest loadRequest = LoadRequest.Create();
-            loadRequest.assetPath = assetPath;
-            loadRequest.action = action;
-            loadRequest.args = args;
+            LoadRequest loadRequest = LoadRequest.Create(assetPath, assetType, loadedAction, arg);
 
-            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> requests))
+            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> requests))
             {
                 requests = new List<LoadRequest>() { loadRequest };
-                m_DicLoadRequests.Add(assetPath, requests);
-                AssetsMgr.instance.StartCoroutine(OnLoadAssetAsync(assetPath, t));
+                m_LoadRequests.Add(assetPath, requests);
+                mono.StartCoroutine(OnLoadAssetAsync(assetPath, assetType));
             }
             else
             {
@@ -40,37 +32,37 @@ namespace GameFrameWork.Assets
             }
         }
 
-        public void UnLoadAssetEditor(string assetPath)
+        public static void UnLoadAssetEditor(string assetPath)
         {
-            Log.LogInfo("开始卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] , ", "卸载前资源数为 : ",m_DicLoadedAssets.Count.ToString());
+            Log.LogInfo("开始卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] , ", "卸载前资源数为 : ", m_LoadedAssets.Count.ToString());
 
-            if (m_DicLoadedAssets.ContainsKey(assetPath))
+            if (m_LoadedAssets.ContainsKey(assetPath))
             {
-                m_DicLoadedAssets.Remove(assetPath);
+                m_LoadedAssets.Remove(assetPath);
             }
 
-            Log.LogInfo("卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_DicLoadedAssets.Count.ToString());
+            Log.LogInfo("卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] 完成 , ", "卸载后资源数为 : ", m_LoadedAssets.Count.ToString());
         }
 
-        public void UnLoadAll()
+        public static void UnLoadAll()
         {
-            List<string> list = m_DicLoadedAssets.Keys.ToList();
+            List<string> list = m_LoadedAssets.Keys.ToList();
 
             for (int i = 0; i < list.Count; i++)
             {
                 UnLoadAssetEditor(list[i]);
             }
 
-            m_DicLoadedAssets.Clear();
-            m_DicLoadedAssets.Clear();
+            m_LoadedAssets.Clear();
+            m_LoadRequests.Clear();
         }
 
         /// <summary>
         /// 加载资源
         /// </summary>
-        private UnityEngine.Object OnLoadAssetSync(string assetPath, Type t)
+        private static UnityEngine.Object OnLoadAssetSync(string assetPath, Type t)
         {
-            if (m_DicLoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
+            if (m_LoadedAssets.TryGetValue(assetPath, out UnityEngine.Object obj))
             {
                 return obj;
             }
@@ -84,38 +76,38 @@ namespace GameFrameWork.Assets
                 return null;
             }
 
-            m_DicLoadedAssets.Add(assetPath, obj);
+            m_LoadedAssets.Add(assetPath, obj);
             return obj;
         }
 
         // 模拟异步加载的行为
-        private IEnumerator OnLoadAssetAsync(string assetPath, Type t = null)
+        private static IEnumerator OnLoadAssetAsync(string assetPath, Type t = null)
         {
             yield return null;
             UnityEngine.Object obj = LoadAssetSync(assetPath, t);
             yield return null;
 
-            if (m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> list))
+            if (m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> list))
             {
                 if (obj != null)
                 {
                     for (int i = 0; i < list.Count; i++)
                     {
-                        if (list[i].action != null)
+                        if (list[i].loadedAction != null)
                         {
-                            list[i].Call(obj);
+                            list[i].Loaded(obj);
                         }
 
-                        ReferencePool.ReleaseReference(list[i]);
+                        list[i].Release();
                     }
                 }
 
-                m_DicLoadRequests.Remove(assetPath);
+                m_LoadRequests.Remove(assetPath);
             }
         }
 
-        private Dictionary<string, UnityEngine.Object> m_DicLoadedAssets = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
+        private static readonly Dictionary<string, UnityEngine.Object> m_LoadedAssets = new();
+        private static readonly Dictionary<string, List<LoadRequest>> m_LoadRequests = new();
     }
 }
 #endif

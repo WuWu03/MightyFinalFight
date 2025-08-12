@@ -25,24 +25,22 @@ namespace SkillNew
 
         protected override void OnGUI()
         {
-            base.OnGUI();
-
             EditorGUILayout.BeginVertical();
 
             DrawField(() => { return m_CurrAudioEventInfo.audioClipName != m_CurrEvent.audioEventInfo.audioClipName; },
-                () => { m_CurrAudioEventInfo.audioClipName = EditorGUILayout.TextField("音频名称", m_CurrAudioEventInfo.audioClipName); },
+                () => { m_CurrAudioEventInfo.audioClipName = EditorGUILayout.TextField("闊抽鍚嶇О", m_CurrAudioEventInfo.audioClipName); },
                 () => { m_CurrEvent.audioEventInfo.audioClipName = m_CurrAudioEventInfo.audioClipName; });
 
             DrawField(() => { return m_CurrAudioEventInfo.audioPlaySpeed != m_CurrEvent.audioEventInfo.audioPlaySpeed; },
-                () => { m_CurrAudioEventInfo.audioPlaySpeed = EditorGUILayout.Slider("播放速度", m_CurrAudioEventInfo.audioPlaySpeed, 0f,1f); },
+                () => { m_CurrAudioEventInfo.audioPlaySpeed = EditorGUILayout.Slider("鎾斁閫熷害", m_CurrAudioEventInfo.audioPlaySpeed, 0f,1f); },
                 () => { m_CurrEvent.audioEventInfo.audioPlaySpeed = m_CurrAudioEventInfo.audioPlaySpeed; });
 
             DrawField(() => { return m_CurrAudioEventInfo.audioPlayVolume != m_CurrEvent.audioEventInfo.audioPlayVolume; },
-                () => { m_CurrAudioEventInfo.audioPlayVolume = EditorGUILayout.Slider("播放音量", m_CurrAudioEventInfo.audioPlayVolume, -3f, 3f); },
+                () => { m_CurrAudioEventInfo.audioPlayVolume = EditorGUILayout.Slider("鎾斁闊抽噺", m_CurrAudioEventInfo.audioPlayVolume, -3f, 3f); },
                 () => { m_CurrEvent.audioEventInfo.audioPlayVolume = m_CurrAudioEventInfo.audioPlayVolume; });
 
             DrawField(() => { return m_CurrAudioEventInfo.audioPlayLoop != m_CurrEvent.audioEventInfo.audioPlayLoop; },
-                () => { m_CurrAudioEventInfo.audioPlayLoop = EditorGUILayout.Toggle("循环播放", m_CurrAudioEventInfo.audioPlayLoop); },
+                () => { m_CurrAudioEventInfo.audioPlayLoop = EditorGUILayout.Toggle("寰幆鎾斁", m_CurrAudioEventInfo.audioPlayLoop); },
                 () => { m_CurrEvent.audioEventInfo.audioPlayLoop = m_CurrAudioEventInfo.audioPlayLoop; });
 
             EditorGUILayout.EndVertical();
@@ -50,8 +48,6 @@ namespace SkillNew
 
         protected override void OnResetEvent()
         {
-            base.OnResetEvent();
-
             m_CurrEvent.audioEventInfo = null;
         }
 

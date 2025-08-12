@@ -48,6 +48,13 @@ public class HudMgr : BaseMgr<HudMgr>
         base.OnShutDown();
         UIMgr.instance.Close(UINames.HudPanel);
         m_QueueHudArgs.Clear();
+
+    }
+
+    protected override void OnDestory()
+    {
+        base.OnDestory();
+
         m_QueueHudArgs = null;
     }
 
@@ -73,10 +80,7 @@ public class HudMgr : BaseMgr<HudMgr>
 
     private void ShowHud()
     {
-        if (m_HudPanel == null)
-        {
-            m_HudPanel = UIMgr.instance.Get(UINames.HudPanel) as HudPanel;
-        }
+        m_HudPanel ??= UIMgr.instance.Get(UINames.HudPanel) as HudPanel;
     }
 
     private Queue<HudArg> m_QueueHudArgs = null;

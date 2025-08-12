@@ -52,7 +52,7 @@ namespace GameFrameWork.Pool
                 {
                     PoolObjectInfo info = m_QueuePool.Dequeue();
                     go = info.poolObject as GameObject;
-                    ReferencePool.ReleaseReference(info);
+                    info.Release();
                 }
             }
 
@@ -115,7 +115,7 @@ namespace GameFrameWork.Pool
                 if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime))
                 {
                     DestoryPoolObject(info);
-                    ReferencePool.ReleaseReference(info);
+                    info.Release();
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace GameFrameWork.Pool
                 if (info != null)
                 {
                     DestoryPoolObject(info);
-                    ReferencePool.ReleaseReference(info);
+                    info.Release();
                 }
             }
 

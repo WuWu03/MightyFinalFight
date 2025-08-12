@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class TaskTriggerCreateTargets : BaseTaskTrigger
 {
@@ -29,7 +29,6 @@ public class TaskTriggerCreateTargets : BaseTaskTrigger
                 int defense = m_TaskData.Targets[i].DefenseValue;
                 int hpBarWidth = m_TaskData.Targets[i].HpBarWidth;
                 SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
-                //break;
             }
         }
 

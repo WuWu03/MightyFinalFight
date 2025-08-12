@@ -97,7 +97,7 @@ namespace SkillNew
                 m_SkillEditorConfig = AssetDatabase.LoadAssetAtPath<SkillEditorConfig>("Assets/Editor/Config/" + fileName + ext);
             }
 
-            m_DicSkillEventGUI = new Dictionary<SkillEditorConfigData.SkillEventType, SkillEventGUI>()
+            m_DicSkillEventGUI = new()
             {
                 {SkillEditorConfigData.SkillEventType.AnimEvent,new SkillAnimEventGUI(window) },
                 {SkillEditorConfigData.SkillEventType.AudioEvent,new SkillAudioEventGUI(window) },
@@ -125,17 +125,15 @@ namespace SkillNew
             m_IndexLabelStyle.fontSize = 18;
             m_IndexLabelStyle.fontStyle = FontStyle.Bold;
             m_IndexLabelStyle.fixedHeight = 20;
- 
+
             m_SelectButtonOnStyle = new GUIStyle("flow node 1");
             m_SelectButtonOnStyle.stretchWidth = true;
             m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
-            m_SelectButtonOnStyle.contentOffset = new Vector2(0, -15f);
             m_SelectButtonOnStyle.fixedHeight = 15f;
 
             m_SelectButtonStyle = new GUIStyle("flow node 0");
             m_SelectButtonStyle.stretchWidth = true;
             m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
-            m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
             m_SelectButtonStyle.fixedHeight = 15f;
         }
 
@@ -193,7 +191,7 @@ namespace SkillNew
 
                 if (!hasName)
                 {
-                    m_SkillEditorConfig.listDatas[i].skillName = "Œ¥√¸√˚";
+                    m_SkillEditorConfig.listDatas[i].skillName = "Êú™ÂëΩÂêç";
                 }
 
                 temp.Add(m_SkillEditorConfig.listDatas[i].skillName);

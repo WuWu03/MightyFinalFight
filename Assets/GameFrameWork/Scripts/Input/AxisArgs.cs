@@ -25,6 +25,7 @@ namespace GameFrameWork.Input
 
         public override void Clear()
         {
+            base.Clear();
             horizontal = null;
             vertical = null;
             keyCodeHorizontalPositive = KeyCode.None;

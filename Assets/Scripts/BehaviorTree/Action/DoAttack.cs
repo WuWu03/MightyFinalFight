@@ -93,6 +93,6 @@ public class DoAttack : Action
     private float m_AttackTimer = -1f;
     private bool m_IsAttacking = false;
 
-    private Regex m_Regex = new Regex(@"(AttackTime:)(-?[0-9]+)");
+    private Regex m_Regex = new(@"(AttackTime:)(-?[0-9]+)");
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

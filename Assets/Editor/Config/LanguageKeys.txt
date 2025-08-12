@@ -7,6 +7,14 @@ MainPanelStage
 MainPanelLife
 MainPanelLevel
 MainPanelExp
+VersionPanelCheckVersion
+VersionPaneCheckVersionError
+VersionPaneCheckVersionComplete
+VersionPanelVersionAnalyze
+VersionPanelVersionAnalyzeError
+VersionPanelVersionAnalyzeComplete
+VersionPanelDownloadFiles
+VersionPanelDownloadFilesError
 RoundClearPanelClear
 RoleNameCody
 RoleNameGuy

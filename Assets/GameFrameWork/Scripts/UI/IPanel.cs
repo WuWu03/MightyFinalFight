@@ -11,7 +11,7 @@ namespace GameFrameWork.UI
         public bool isOpen { get; }
         public bool isInit { get; }
         public float delayTime { get; }
-        public void Init(GameObject uiGameObject, string assetPath, object[] param);
+        public void Init(GameObject uiGameObject, string assetPath, object arg);
         public void Open();
         public void Update();
         public void Close();

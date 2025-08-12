@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listDatas:
   - id: 0
-    skillName: "\u672A\u547D\u540D"
-    skillFrameCount: 5
+    skillName: 1/Cody
+    skillFrameCount: 10
     deployerType: 0
     dicSkillSelectors:
       m_ListValuePair: []
@@ -24,7 +24,7 @@ MonoBehaviour:
       - Key: 1
         Value:
           target:
-          - skillEventType: 10
+          - skillEventType: 7
             animEventInfo:
               animName: 
               animSpeed: 0
@@ -121,8 +121,4 @@ MonoBehaviour:
     skillKey:
       keys: 
       addTrigger: 0
-    skillPrevConditions:
-    - conditionType: 0
-      isRevert: 0
-      hpLimit: 0
-      timeElapsed: 0
+    skillPrevConditions: []

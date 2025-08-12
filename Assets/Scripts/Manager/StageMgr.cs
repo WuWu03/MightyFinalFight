@@ -83,10 +83,10 @@ public class StageMgr : BaseMgr<StageMgr>
         TaskMgr.instance.GiveupTask();
         SceneEntityMgr.instance.ReleaseAll();
         EntityMgr.instance.DestoryAllUnUsedEntities();
-        AudioMgr.instance.ReleaseAuioClips();
+        AudioMgr.instance.ReleaseSeAudioSources();
         GameObjectPoolMgr.instance.CheckRelease();
         AssetsPool.instance.CheckRelease();
-        ReferencePool.Release();
+        ReferencePool.ReleaseAll();
         GC.Collect();
         SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
         SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath, false);
@@ -96,7 +96,7 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         if (m_CurrStageData.BGMs.Length > 0)
         {
-            BGMInfo[] bgmInfos = new BGMInfo[m_CurrStageData.BGMs.Length];
+            BgmInfo[] bgmInfos = new BgmInfo[m_CurrStageData.BGMs.Length];
 
             for (int i = 0; i < m_CurrStageData.BGMs.Length; i++)
             {
@@ -105,10 +105,10 @@ public class StageMgr : BaseMgr<StageMgr>
                 float volume = m_CurrStageData.BGMs[i].Volume;
                 float lerpTime = m_CurrStageData.BGMs[i].LerpTime;
                 string assetPath = PathUtil.FormatPath(AssetPathDefine.AudioClipPath, clipName);
-                bgmInfos[i] = BGMInfo.Create(assetPath, isLoop, volume, lerpTime);
+                bgmInfos[i] = BgmInfo.Create(assetPath, isLoop, volume, lerpTime);
             }
 
-            AudioMgr.instance.PlayBGMGroup(bgmInfos, true);
+            AudioMgr.instance.PlayBgmGroup(bgmInfos, true);
         }
 
         UIMgr.instance.Open(UINames.MainPanel);
@@ -151,19 +151,19 @@ public class StageMgr : BaseMgr<StageMgr>
 
     public bool CanMove(Vector2 pos)
     {
-        Vector2Int posInt = new Vector2Int((int)(pos.x * 100), (int)(pos.y * 100));
+        Vector2Int posInt = new((int)(pos.x * 100), (int)(pos.y * 100));
         return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosX(float posX)
     {
-        Vector2Int posInt = new Vector2Int((int)(posX * 100), m_CurrStageData.MovePoints[0].y);
+        Vector2Int posInt = new((int)(posX * 100), m_CurrStageData.MovePoints[0].y);
         return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 
     public bool CanMovePosY(float posY)
     {
-        Vector2Int posInt = new Vector2Int(m_CurrStageData.MovePoints[0].x, (int)(posY * 100));
+        Vector2Int posInt = new(m_CurrStageData.MovePoints[0].x, (int)(posY * 100));
         return MapUtil.PolygonContainsPoint(m_CurrStageData.MovePoints, posInt);
     }
 

@@ -1,23 +1,23 @@
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 
 public class BarrelIdle : BaseFsmState
 {
-    protected override void OnInit(FiniteStateMachine fsm)
+    protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as Barrel;
     }
 
-    protected override void OnEnter(FiniteStateMachine fsm)
+    protected override void OnEnter(Fsm fsm)
     {
         m_Owner.PlayAnimation(AnimName.Idle);
     }
 
-    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
+    protected override void OnExit(Fsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.Idle);
     }
 
-    protected override void OnRelease(FiniteStateMachine fsm)
+    protected override void OnRelease(Fsm fsm)
     {
         m_Owner = null;
     }

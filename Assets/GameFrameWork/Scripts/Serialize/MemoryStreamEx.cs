@@ -1,12 +1,10 @@
-using UnityEngine;
-using System.Collections;
-using System.IO;
 using System;
+using System.IO;
 using System.Text;
 
 namespace GameFrameWork.Serialize
 {
-    public class MemoryStreamEx : MemoryStream
+    public class MemoryStreamEx : MemoryStream,IReference
     {
         public MemoryStreamEx()
         {
@@ -250,5 +248,16 @@ namespace GameFrameWork.Serialize
             base.Write(arr, 0, arr.Length);
         }
         #endregion
+
+        public void Release()
+        {
+            ReferencePool.Release(this);
+        }
+
+        public void Clear()
+        {
+            SetLength(0);
+            Position = 0;
+        }
     }
 }

@@ -4,14 +4,6 @@ namespace GameFrameWork.GameEntity
 {
     public abstract class BaseEntity : MonoBehaviour
     {
-        public string entityName
-        {
-            get
-            {
-                return m_EntityName;
-            }
-        }
-
         public int id
         {
             get
@@ -28,6 +20,15 @@ namespace GameFrameWork.GameEntity
             }
         }
 
+        protected virtual void Awake() { }
+        protected virtual void Start() { }
+        protected virtual void OnEnable() { }
+        protected virtual void Update() { }
+        protected virtual void LateUpdate() { }
+        protected virtual void FixedUpdate() { }
+        protected virtual void OnDestroy() { }
+        protected virtual void OnRelease() { }
+
         public virtual void Init(int id, string name)
         {
             SetID(id);
@@ -41,8 +42,7 @@ namespace GameFrameWork.GameEntity
 
         public void SetName(string name)
         {
-            m_EntityName = name;
-            gameObject.name = name;
+            this.name = name;
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
@@ -61,10 +61,6 @@ namespace GameFrameWork.GameEntity
             gameObject.SetLayer(m_Layer, isChild);
         }
 
-        protected virtual void Update() { }
-        protected virtual void LateUpdate() { }
-        protected virtual void FixedUpdate() { }
-
         public void Release()
         {
             m_Id = -1;
@@ -74,8 +70,6 @@ namespace GameFrameWork.GameEntity
             OnRelease();
             EntityMgr.instance.PutEntity(this);
         }
-
-        protected virtual void OnRelease() { }
 
         protected void SetLayer(bool isChild = true)
         {

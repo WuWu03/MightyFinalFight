@@ -149,9 +149,9 @@ public class Bullet : BaseAvatar
         m_IsHit = true;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
 
         PlayAnimation(m_BulletData.normalAnim, 0, m_BulletData.normalAnimSpeed);
         SetTrigger(m_BulletData.normalAnim);

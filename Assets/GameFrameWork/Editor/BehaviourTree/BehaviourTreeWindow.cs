@@ -46,10 +46,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            if (!Directory.Exists(EditorPathUtil.editorConfigFullPath))
-            {
-                Directory.CreateDirectory(EditorPathUtil.editorConfigFullPath);
-            }
+            GameFrameWork.Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorConfigFullPath);
 
             if (!File.Exists(EditorPathUtil.behaviourTreeWindowDataFullPath))
             {
@@ -61,47 +58,49 @@ namespace GameFrameWork.Editor
                 m_BehaviourTreeWindowConfig = LitJson.JsonMapper.ToObject<BehaviourTreeWindowConfig>(jsonStr);
             }
 
-            m_DicFreeWindowNode = new Dictionary<int, List<BehaviourTreeWindowNode>>();
-            m_LeftList = new ReorderableList(m_BehaviourTreeWindowConfig.dataList, typeof(BehaviourTreeWindowData), true, false, false, false);
-            m_LeftList.headerHeight = 0;
-            m_LeftList.footerHeight = 0;
-            m_LeftList.elementHeight = 40;
-            m_LeftList.showDefaultBackground = false;
-            m_LeftList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            m_FreeWindowNodes = new();
+            m_LeftList = new(m_BehaviourTreeWindowConfig.dataList, typeof(BehaviourTreeWindowData), true, false, false, false)
             {
-                BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.dataList[index];
-                m_BehaviourTreeWindowConfig.dataList[index].listRect = new WindowRect(rect.x, rect.y, rect.width, rect.height);
-
-                if (m_LeftOperation == 1 && m_CurrSelect == index)
-                    windowData.name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width, 15), windowData.name);
-                else
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y - 10, rect.width, rect.height), windowData.name);
-
-                if (m_LeftOperation == 2 && m_CurrSelect == index)
-                    windowData.id = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.id.ToString()));
-                else
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.id.ToString());
-
-                EditorGUI.DrawRect(new Rect(rect.x, rect.y + 22, rect.width, 1), Color.gray);
-                EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y, rect.width + 25, 1), Color.black);
-
-                if (index > 0)
+                headerHeight = 0,
+                footerHeight = 0,
+                elementHeight = 40,
+                showDefaultBackground = false,
+                drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                 {
-                    EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y + rect.height, rect.width + 25, 1), Color.black);
-                }
-            };
+                    BehaviourTreeWindowData windowData = m_BehaviourTreeWindowConfig.dataList[index];
+                    m_BehaviourTreeWindowConfig.dataList[index].listRect = new WindowRect(rect.x, rect.y, rect.width, rect.height);
 
-            m_LeftList.onSelectCallback = (ReorderableList list) => 
-            {
-                int oldIndex = m_CurrSelect;
-                m_CurrSelect = list.index;
+                    if (m_LeftOperation == 1 && m_CurrSelect == index)
+                        windowData.name = EditorGUI.TextField(new Rect(rect.x, rect.y + 5, rect.width, 15), windowData.name);
+                    else
+                        EditorGUI.LabelField(new Rect(rect.x, rect.y - 10, rect.width, rect.height), windowData.name);
 
-                if (oldIndex != m_CurrSelect)
+                    if (m_LeftOperation == 2 && m_CurrSelect == index)
+                        windowData.id = Convert.ToInt32(EditorGUI.TextField(new Rect(rect.x, rect.y + 22, rect.width, 15), windowData.id.ToString()));
+                    else
+                        EditorGUI.LabelField(new Rect(rect.x, rect.y + 10, rect.width, rect.height), windowData.id.ToString());
+
+                    EditorGUI.DrawRect(new Rect(rect.x, rect.y + 22, rect.width, 1), Color.gray);
+                    EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y, rect.width + 25, 1), Color.black);
+
+                    if (index > 0)
+                    {
+                        EditorGUI.DrawRect(new Rect(rect.x - 20, rect.y + rect.height, rect.width + 25, 1), Color.black);
+                    }
+                },
+
+                onSelectCallback = (ReorderableList list) =>
                 {
-                    SetRightWindowNode(m_BehaviourTreeWindowConfig.dataList[m_CurrSelect]);
-                }
+                    int oldIndex = m_CurrSelect;
+                    m_CurrSelect = list.index;
 
-                m_LeftOperation = -1;
+                    if (oldIndex != m_CurrSelect)
+                    {
+                        SetRightWindowNode(m_BehaviourTreeWindowConfig.dataList[m_CurrSelect]);
+                    }
+
+                    m_LeftOperation = -1;
+                }
             };
         }
 
@@ -175,7 +174,7 @@ namespace GameFrameWork.Editor
         {
             int operation = (int)args;
 
-            switch(operation)
+            switch (operation)
             {
                 case 0:
                     DeleteRootWindowNode();
@@ -208,7 +207,7 @@ namespace GameFrameWork.Editor
                 m_RightWindowNode.OnGUI(e);
             }
 
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
+            if (m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
@@ -218,7 +217,7 @@ namespace GameFrameWork.Editor
 
             EndWindows();
 
-            if(m_IsDrawTransition)
+            if (m_IsDrawTransition)
             {
                 EditorUtil.DrawCurve(m_CurrWindowNode.rect, new Rect(e.mousePosition, Vector2.zero), Color.red);
             }
@@ -234,7 +233,7 @@ namespace GameFrameWork.Editor
                 {
                     m_RightWindowNode.MouseMove(e.mousePosition - m_MouseDownPos);
 
-                    if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
+                    if (m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
                     {
                         for (int i = 0; i < list.Count; i++)
                         {
@@ -246,7 +245,7 @@ namespace GameFrameWork.Editor
                 m_MouseDownPos = e.mousePosition;
             }
 
-            if(e.type == EventType.MouseUp)
+            if (e.type == EventType.MouseUp)
             {
                 m_MouseDownPos = Vector2.zero;
             }
@@ -351,7 +350,7 @@ namespace GameFrameWork.Editor
                 {
                     menu.AddItem(new GUIContent("关联父节点"), false, RightMenuContextCallback, 4);
                 }
-  
+
                 if (isFree)
                 {
                     menu.AddItem(new GUIContent("删除节点"), false, RightMenuContextCallback, 5);
@@ -381,7 +380,7 @@ namespace GameFrameWork.Editor
             int operationSubType = 0;
             int operationIndex = 0;
 
-            if(operation > 10)
+            if (operation > 10)
             {
                 operationIndex = operation % 10 - 1;
 
@@ -393,7 +392,7 @@ namespace GameFrameWork.Editor
                 operationSubType = operation % 10 - 1;
                 operation /= 10;
             }
-            
+
             switch (operation)
             {
                 case 1:
@@ -422,10 +421,10 @@ namespace GameFrameWork.Editor
 
         private void AddFreeWindowNode(string classType)
         {
-            if (!m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
+            if (!m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 list = new List<BehaviourTreeWindowNode>();
-                m_DicFreeWindowNode.Add(m_CurrSelect, list);
+                m_FreeWindowNodes.Add(m_CurrSelect, list);
             }
 
             int id = (m_CurrSelect + 1) * 1000 + list.Count + 1;
@@ -437,7 +436,7 @@ namespace GameFrameWork.Editor
 
         private void ReplaceNodeClassType(string classType)
         {
-            if(m_CurrWindowNode != null)
+            if (m_CurrWindowNode != null)
             {
                 m_CurrWindowNode.UpdateClassType(classType);
             }
@@ -445,7 +444,7 @@ namespace GameFrameWork.Editor
 
         private void DeleteFreeWindowNode()
         {
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
+            if (m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 list.Remove(m_CurrWindowNode);
                 m_CurrWindowNode = null;
@@ -507,7 +506,7 @@ namespace GameFrameWork.Editor
 
         private BehaviourTreeWindowNode GetFreeWindowNode(Vector2 mousePosition)
         {
-            if (m_DicFreeWindowNode.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
+            if (m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
@@ -610,7 +609,7 @@ namespace GameFrameWork.Editor
         private Vector2 m_CurrMousePosition = Vector2.zero;
         private BehaviourTreeWindowNode m_RightWindowNode = null;
         private BehaviourTreeWindowNode m_CurrWindowNode = null;
-        private Dictionary<int,List<BehaviourTreeWindowNode>> m_DicFreeWindowNode = null;
+        private Dictionary<int, List<BehaviourTreeWindowNode>> m_FreeWindowNodes = null;
         private EditorGUISplitView m_HorizontalSplitView = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
         private ReorderableList m_LeftList = null;
         private int m_CurrSelect = -1;

@@ -1,6 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 using GameFrameWork.Utils;
 using UnityEngine;
 
@@ -40,11 +40,11 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
     }
 
-    public FiniteStateMachine barrelFSM
+    public Fsm barrelFSM
     {
         get
         {
-            return m_FSM;
+            return m_Fsm;
         }
     }
 
@@ -85,7 +85,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     public void OnHurtMsg(HurtStateData data)
     {
         m_EntityAttribute.SubHealth(data.attackValue);
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
 
         if (isDead)
         {
@@ -94,7 +94,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, m_MapPos);
         }
 
-        ReferencePool.ReleaseReference(data);
+        ReferencePool.Release(data);
     }
 
     public void SetCatch(bool value) { }
@@ -133,9 +133,9 @@ public class Barrel : BaseAvatar, ICanBeHit
     //    CheckStrike(collision.gameObject);
     //}
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         PlayAnimation(AnimName.Idle, 0);
 
         if (!m_BarrelData.isFloat)
@@ -143,13 +143,13 @@ public class Barrel : BaseAvatar, ICanBeHit
             if (m_BarrelData.moveSpeed >= 0)
             {
                 SetTrigger(AnimName.Move);
-                m_FSM.Start<BarrelMove>();
-                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
+                m_Fsm.Start<BarrelMove>();
+                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
             }
             else
             {
                 SetTrigger(AnimName.Idle);
-                m_FSM.Start<BarrelIdle>();
+                m_Fsm.Start<BarrelIdle>();
             }
         }
         else

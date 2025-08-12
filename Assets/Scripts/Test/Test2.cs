@@ -24,13 +24,18 @@ public class Test2 : MonoBehaviour
         {
             
         }
+
+        public void Release()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
     private void Update()
     {
         A a1 = ReferencePool.Acquire<A>();
-        ReferencePool.ReleaseReference(a1);
+        ReferencePool.Release(a1);
 
         //mask.SetTarget(target, 200f, 200f,GuideMaskImage.MaskType.Circle);
 

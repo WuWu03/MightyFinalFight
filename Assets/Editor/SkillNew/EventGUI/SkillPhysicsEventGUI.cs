@@ -46,8 +46,6 @@ namespace SkillNew
 
         protected override void OnGUI()
         {
-            base.OnGUI();
-
             PhysicsEventInfo currPhysicsEventInfo = null;
             PhysicsEventInfo physicsEventInfo = null;
 
@@ -63,30 +61,28 @@ namespace SkillNew
             }
 
             DrawField(() => { return currPhysicsEventInfo.force != physicsEventInfo.force; },
-                () => { currPhysicsEventInfo.force = EditorGUILayout.Vector2Field("¸½¼ÓÁ¦", currPhysicsEventInfo.force); },
+                () => { currPhysicsEventInfo.force = EditorGUILayout.Vector2Field("é™„åŠ åŠ›", currPhysicsEventInfo.force); },
                 () => { physicsEventInfo.force = currPhysicsEventInfo.force; }, 40);
 
             DrawField(() => { return currPhysicsEventInfo.velocity != physicsEventInfo.velocity; },
-                () => { currPhysicsEventInfo.velocity = EditorGUILayout.Vector2Field("ËÙ¶È", currPhysicsEventInfo.velocity); },
+                () => { currPhysicsEventInfo.velocity = EditorGUILayout.Vector2Field("é€Ÿåº¦", currPhysicsEventInfo.velocity); },
                 () => { physicsEventInfo.velocity = currPhysicsEventInfo.velocity; }, 40);
 
             DrawField(() => { return currPhysicsEventInfo.drag != physicsEventInfo.drag; },
-                () => { currPhysicsEventInfo.drag = EditorGUILayout.FloatField("Ä¦²ÁÁ¦", currPhysicsEventInfo.drag); },
+                () => { currPhysicsEventInfo.drag = EditorGUILayout.FloatField("æ‘©æ“¦åŠ›", currPhysicsEventInfo.drag); },
                 () => { physicsEventInfo.drag = currPhysicsEventInfo.drag; });
 
             DrawField(() => { return currPhysicsEventInfo.gravity != physicsEventInfo.gravity; },
-                () => { currPhysicsEventInfo.gravity = EditorGUILayout.FloatField("ÖØÁ¦", currPhysicsEventInfo.gravity); },
+                () => { currPhysicsEventInfo.gravity = EditorGUILayout.FloatField("é‡åŠ›", currPhysicsEventInfo.gravity); },
                 () => { physicsEventInfo.gravity = currPhysicsEventInfo.gravity; });
 
             DrawField(() => { return currPhysicsEventInfo.distanceLimit != physicsEventInfo.distanceLimit; },
-                () => { currPhysicsEventInfo.distanceLimit = EditorGUILayout.FloatField("¾àÀëÏÞÖÆ", currPhysicsEventInfo.distanceLimit); },
+                () => { currPhysicsEventInfo.distanceLimit = EditorGUILayout.FloatField("è·ç¦»é™åˆ¶", currPhysicsEventInfo.distanceLimit); },
                 () => { physicsEventInfo.distanceLimit = currPhysicsEventInfo.distanceLimit; });
         }
 
         protected override void OnResetEvent()
         {
-            base.ResetEvent();
-
             if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
             {
                 m_CurrEvent.targetPhysicsEventInfo = null;

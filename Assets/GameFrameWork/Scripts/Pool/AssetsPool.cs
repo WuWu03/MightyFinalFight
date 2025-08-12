@@ -13,36 +13,59 @@ namespace GameFrameWork.Pool
             m_PoolRoot = new GameObject("AssetsPool").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
-            m_DicLoadedAssets = new Dictionary<string, PoolObjectInfo>();
-            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_RemoveList = new List<string>();
+            m_LoadedAssets = new();
+            m_LoadRequests = new();
+            m_RemoveList = new();
+        }
+
+        protected override void OnShutDown()
+        {
+            base.OnShutDown();
+
+            foreach (KeyValuePair<string, PoolObjectInfo> kvp in m_LoadedAssets)
+            {
+                AssetsMgr.instance.UnloadAsset(kvp.Value.assetPath);
+            }
+
+            m_RemoveList.Clear();
+            m_LoadedAssets.Clear();
+            m_LoadRequests.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+
+            m_RemoveList = null;
+            m_LoadedAssets = null;
+            m_LoadRequests = null;
         }
 
         public void CheckRelease()
         {
-            if (m_DicLoadedAssets == null || m_DicLoadedAssets.Count < 1)
+            if (m_LoadedAssets == null || m_LoadedAssets.Count < 1)
             {
                 return;
             }
 
             m_RemoveList.Clear();
 
-            foreach (KeyValuePair<string, PoolObjectInfo> kvp in m_DicLoadedAssets)
+            foreach (KeyValuePair<string, PoolObjectInfo> kvp in m_LoadedAssets)
             {
                 PoolObjectInfo info = kvp.Value;
 
                 if (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime)
                 {
-                    
+
                     AssetsMgr.instance.UnloadAsset(info.assetPath, false);
-                    ReferencePool.ReleaseReference(info);
+                    info.Release();
                     m_RemoveList.Add(kvp.Key);
                 }
             }
 
             for (int i = 0; i < m_RemoveList.Count; i++)
             {
-                m_DicLoadedAssets.Remove(m_RemoveList[i]);
+                m_LoadedAssets.Remove(m_RemoveList[i]);
             }
 
             UnityEngine.Resources.UnloadUnusedAssets();
@@ -50,20 +73,20 @@ namespace GameFrameWork.Pool
 
         public void Cache<T>(string assetPath) where T : UnityEngine.Object
         {
-            Get(assetPath, null, typeof(T));
+            Get(assetPath, typeof(T), null);
         }
 
-        public void Cache(string assetPath, Type t)
+        public void Cache(string assetPath, Type assetType)
         {
-            Get(assetPath, null, t);
+            Get(assetPath, assetType, null);
         }
 
-        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args) where T : UnityEngine.Object
+        public void Get<T>(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg = null) where T : UnityEngine.Object
         {
-            Get(assetPath, call, typeof(T), args);
+            Get(assetPath, typeof(T), loadedAction, arg);
         }
 
-        public void Get(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, Type t, params object[] args)
+        public void Get(string assetPath, Type assetType, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg = null)
         {
             if (string.IsNullOrEmpty(assetPath))
             {
@@ -71,26 +94,23 @@ namespace GameFrameWork.Pool
                 return;
             }
 
-            if (m_DicLoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
+            if (m_LoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
             {
                 UnityEngine.Object obj = info.poolObject;
                 info.referenceCount++;
                 info.releaseTime = -1;
-                call?.Invoke(assetPath, obj, args);
+                loadedAction?.Invoke(assetPath, obj, arg);
                 return;
             }
 
-            LoadRequest request = LoadRequest.Create();
-            request.assetPath = assetPath;
-            request.action = call;
-            request.args = args;
+            LoadRequest request = LoadRequest.Create(assetPath, assetType, loadedAction, arg);
 
-            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
                 listLoadRequest = new List<LoadRequest>() { request };
-                m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                AssetsMgr.instance.LoadAssetAsync(assetPath, OnLoaded, t);
-            }   
+                m_LoadRequests.Add(assetPath, listLoadRequest);
+                AssetsMgr.instance.LoadAssetAsync(assetPath, assetType, OnLoaded, arg);
+            }
             else
             {
                 listLoadRequest.Add(request);
@@ -104,10 +124,10 @@ namespace GameFrameWork.Pool
                 return;
             }
 
-            if (!m_DicLoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
+            if (!m_LoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
             {
                 info = PoolObjectInfo.Create(obj, Time.time, false, assetPath);
-                m_DicLoadedAssets.Add(assetPath, info);
+                m_LoadedAssets.Add(assetPath, info);
             }
 
             info.releaseTime = Time.time;
@@ -115,57 +135,40 @@ namespace GameFrameWork.Pool
             info.isReleaseImmediate = false;
         }
 
-        private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
+        private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
         {
-            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
                 Log.LogError(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但加载回调不存在"));
                 return;
             }
 
-            if (!m_DicLoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
+            if (!m_LoadedAssets.TryGetValue(assetPath, out PoolObjectInfo info))
             {
                 info = PoolObjectInfo.Create(obj, -1, false, assetPath);
-                m_DicLoadedAssets.Add(assetPath, info);
+                m_LoadedAssets.Add(assetPath, info);
             }
 
             info.releaseTime = -1;
 
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
-                if (listLoadRequest[i].action != null)
+                if (listLoadRequest[i].loadedAction != null)
                 {
                     info.referenceCount++;
                 }
 
-                listLoadRequest[i].Call(obj);
-                ReferencePool.ReleaseReference(listLoadRequest[i]);
+                listLoadRequest[i].Loaded(obj);
+                listLoadRequest[i].Release();
             }
 
-            m_DicLoadRequests.Remove(assetPath);
+            m_LoadRequests.Remove(assetPath);
         }
 
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-
-            foreach(KeyValuePair<string, PoolObjectInfo> kvp in m_DicLoadedAssets)
-            {
-                AssetsMgr.instance.UnloadAsset(kvp.Value.assetPath);
-            }
-
-            m_DicLoadedAssets.Clear();
-            m_DicLoadRequests.Clear();
-            m_RemoveList.Clear();
-
-            m_DicLoadedAssets = null;
-            m_DicLoadRequests = null;
-            m_RemoveList = null;
-        }
 
         protected Transform m_PoolRoot = null;
         private List<string> m_RemoveList = null;
-        private Dictionary<string, PoolObjectInfo> m_DicLoadedAssets = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
+        private Dictionary<string, PoolObjectInfo> m_LoadedAssets = null;
+        private Dictionary<string, List<LoadRequest>> m_LoadRequests = null;
     }
 }

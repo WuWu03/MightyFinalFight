@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
-using UnityEditor.Build.Reporting;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
@@ -11,19 +10,21 @@ namespace GameFrameWork.Editor
 {
     [InitializeOnLoad]
     public static class EditorMgr
-	{
+    {
+        static EditorMgr() { }
+
         public static GameFrameWorkConfigWindowData GetGameFrameWorkConfig()
         {
             GameFrameWorkConfigWindowData config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.gameFrameWorkConfigWindowDataPath);
             return config;
         }
 
-        [MenuItem("GameFrameWork/Start Up &1", false,0)]
-		public static void GameFrameWorkStartUp()
-		{
+        [MenuItem("GameFrameWork/Start Up &1", false, 0)]
+        public static void GameFrameWorkStartUp()
+        {
             CreateEntryScript();
 
-            Rect rect = new Rect(0, 0, 600, 300);
+            Rect rect = new(0, 0, 600, 300);
             EditorWindow window = EditorWindow.GetWindowWithRect<GameFrameWorkConfigWindow>(rect);
             window.Show();
         }
@@ -37,7 +38,7 @@ namespace GameFrameWork.Editor
 
             if (entryScript == null || entryScript.Length < 1)
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 sb.AppendLine("using GameFrameWork;");
                 sb.AppendLine("using UnityEngine;");
                 sb.AppendLine();
@@ -83,16 +84,16 @@ namespace GameFrameWork.Editor
         }
 
         private static void CheckIsInit()
-		{
-			if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
-			{
-				return;
-			}
+        {
+            if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
+            {
+                return;
+            }
 
             EditorSceneManager.sceneOpened += CheckEntryScene;
             EditorApplication.update -= CheckIsInit;
             CheckEntryScene();
-		}
+        }
 
         private static void CheckEntryScene(UnityEngine.SceneManagement.Scene scene, OpenSceneMode mode)
         {
@@ -112,7 +113,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            if(isShowMainScene == 0)
+            if (isShowMainScene == 0)
             {
                 EditorPrefs.SetInt("unity_editor_show_main_scene", 1);
                 GoToGameFrameWorkEntryScene();
@@ -123,17 +124,17 @@ namespace GameFrameWork.Editor
         /// 跳转到框架启动场景
         /// </summary>
         public static void GoToGameFrameWorkEntryScene()
-		{
+        {
             GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
                 return;
-			}
+            }
 
-			if (!EditorSceneManager.GetActiveScene().path.Equals(config.entryScene))
-			{
+            if (!EditorSceneManager.GetActiveScene().path.Equals(config.entryScene))
+            {
                 EditorSceneManager.OpenScene(config.entryScene);
-			}
+            }
 
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
 
@@ -142,7 +143,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-			GameObject entry = GameObject.Find("GameEntry");
+            GameObject entry = GameObject.Find("GameEntry");
 
             if (entry == null)
             {
@@ -167,7 +168,7 @@ namespace GameFrameWork.Editor
         [MenuItem("GameFrameWork/AssetBundle编辑器 &3", false, 102)]
         public static void AssetBundleEditor()
         {
-            Rect wr = new Rect(0, 0, 700, 800);
+            Rect wr = new(0, 0, 700, 800);
             EditorWindow window = EditorWindow.GetWindowWithRect(typeof(AssetBundleWindow), wr);
             window.Show();
         }
@@ -180,29 +181,29 @@ namespace GameFrameWork.Editor
         }
 
         [MenuItem("GameFrameWork/工具/切图工具", false, 104)]
-		public static void OpenSpriteSpliterTool()
-		{
-			Rect rect = new Rect(0, 0, 600, 300);
-			EditorWindow window = EditorWindow.GetWindowWithRect<SpriteSplitTool>(rect);
-			window.Show();
-		}
+        public static void OpenSpriteSpliterTool()
+        {
+            Rect rect = new(0, 0, 600, 300);
+            EditorWindow window = EditorWindow.GetWindowWithRect<SpriteSplitTool>(rect);
+            window.Show();
+        }
 
-		[MenuItem("GameFrameWork/工具/PlayerPrefs工具", false, 105)]
-		public static void OpenPlayerPrefsTool()
-		{
-			Rect rect = new Rect(0, 0, 600, 300);
-			EditorWindow window = EditorWindow.GetWindowWithRect<PlayerPrefsTool>(rect);
-			window.Show();
-		}
+        [MenuItem("GameFrameWork/工具/PlayerPrefs工具", false, 105)]
+        public static void OpenPlayerPrefsTool()
+        {
+            Rect rect = new(0, 0, 600, 300);
+            EditorWindow window = EditorWindow.GetWindowWithRect<PlayerPrefsTool>(rect);
+            window.Show();
+        }
 
-        [MenuItem("GameFrameWork/Build/Build Game",false , 106)]
+        [MenuItem("GameFrameWork/Build/Build Game", false, 106)]
         public static void BuildGame()
         {
             BuildGame(false);
 
         }
 
-        [MenuItem("GameFrameWork/Build/Build Game Log",false , 107)]
+        [MenuItem("GameFrameWork/Build/Build Game Log", false, 107)]
         public static void BuildGameLog()
         {
             BuildGame(true);
@@ -242,69 +243,69 @@ namespace GameFrameWork.Editor
         }
 
         [MenuItem("GameFrameWork/EditorDemo/Tab", false, 1001)]
-		public static void TabDemoWinow()
-		{
-			Rect wr = new Rect(0, 0, 600, 600);
-			TabDemo window = EditorWindow.GetWindowWithRect<TabDemo>(wr, true, "Unity Tab标签");
-			window.Show();
-		}
+        public static void TabDemoWinow()
+        {
+            Rect wr = new(0, 0, 600, 600);
+            TabDemo window = EditorWindow.GetWindowWithRect<TabDemo>(wr, true, "Unity Tab标签");
+            window.Show();
+        }
 
-		[MenuItem("GameFrameWork/EditorDemo/Styles&Icons", false, 1002)]
-		public static void BuiltInDemo()
-		{
-			BuiltInDemo window = EditorWindow.GetWindow<BuiltInDemo>();
-			window.Show();
-		}
+        [MenuItem("GameFrameWork/EditorDemo/Styles&Icons", false, 1002)]
+        public static void BuiltInDemo()
+        {
+            BuiltInDemo window = EditorWindow.GetWindow<BuiltInDemo>();
+            window.Show();
+        }
 
-		[MenuItem("GameFrameWork/EditorDemo/SplitView")]
-		public static void Init()
-		{
-			EditorWindow window = EditorWindow.GetWindow<SplitViewDemo>();
-			window.Show();
-		}
+        [MenuItem("GameFrameWork/EditorDemo/SplitView")]
+        public static void Init()
+        {
+            EditorWindow window = EditorWindow.GetWindow<SplitViewDemo>();
+            window.Show();
+        }
 
-		[MenuItem("Assets/创建艺术字", false, 0)]
-		public static void CreateFont()
-		{
-			FontMaker.CreateMyFontSprite();
-		}
+        [MenuItem("Assets/创建艺术字", false, 0)]
+        public static void CreateFont()
+        {
+            FontMaker.CreateMyFontSprite();
+        }
 
-		[MenuItem("Assets/创建UI图集", false, 1)]
-		public static void CreateSpriteAtlas()
-		{
-			SpriteAtlasPacker window = EditorWindow.GetWindow<SpriteAtlasPacker>();
-			window.Show();
-		}
+        [MenuItem("Assets/创建UI图集", false, 1)]
+        public static void CreateSpriteAtlas()
+        {
+            SpriteAtlasPacker window = EditorWindow.GetWindow<SpriteAtlasPacker>();
+            window.Show();
+        }
 
-		[MenuItem("Assets/添加场景到打包列表", false, 2)]
-		public static void AddScene()
-		{
-			if (Selection.objects.Length > 0)
-			{
-				List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>();
-				sceneList.AddRange(EditorBuildSettings.scenes);
+        [MenuItem("Assets/添加场景到打包列表", false, 2)]
+        public static void AddScene()
+        {
+            if (Selection.objects.Length > 0)
+            {
+                List<EditorBuildSettingsScene> sceneList = new();
+                sceneList.AddRange(EditorBuildSettings.scenes);
                 bool isExist = false;
 
                 for (int i = 0; i < Selection.objects.Length; i++)
-				{
-					string assetPath = AssetDatabase.GetAssetPath(Selection.objects[i]);
+                {
+                    string assetPath = AssetDatabase.GetAssetPath(Selection.objects[i]);
 
-					if (!Path.GetExtension(assetPath).Equals(".unity")) 
-					{
-						continue; 
-					}
+                    if (!Path.GetExtension(assetPath).Equals(".unity"))
+                    {
+                        continue;
+                    }
 
                     isExist = true;
-                    EditorBuildSettingsScene editorBuildSettings = new EditorBuildSettingsScene(assetPath, true);
-					sceneList.Add(editorBuildSettings);
-				}
+                    EditorBuildSettingsScene editorBuildSettings = new(assetPath, true);
+                    sceneList.Add(editorBuildSettings);
+                }
 
-				if (sceneList.Count > 0)
-				{
-					EditorBuildSettings.scenes = sceneList.ToArray();
+                if (sceneList.Count > 0)
+                {
+                    EditorBuildSettings.scenes = sceneList.ToArray();
                     AssetDatabase.Refresh();
-				}
-                if(isExist)
+                }
+                if (isExist)
                 {
                     UnityEditor.EditorUtility.DisplayDialog("提示", "添加成功", "确定");
                 }
@@ -312,8 +313,8 @@ namespace GameFrameWork.Editor
                 {
                     UnityEditor.EditorUtility.DisplayDialog("提示", "沒有选中任何场景文件，请选择场景文件再进行操作", "确定");
                 }
-			}
-		}
+            }
+        }
 
         [MenuItem("Assets/复制路径", false, 3)]
         private static void CopyAssetsPath()
@@ -337,21 +338,21 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
-			for (int i = 0; i < Selection.gameObjects.Length; i++)
-			{
-				string nodePath = EditorUtil.GetNodePath(Selection.gameObjects[i].transform);
+            for (int i = 0; i < Selection.gameObjects.Length; i++)
+            {
+                string nodePath = EditorUtil.GetNodePath(Selection.gameObjects[i].transform);
 
-				sb.Append("\"");
-				sb.Append(nodePath);
-				sb.Append("\"");
+                sb.Append("\"");
+                sb.Append(nodePath);
+                sb.Append("\"");
 
-				if (i < Selection.gameObjects.Length - 1)
-				{
-					sb.Append("\n");
-				}
-			}
+                if (i < Selection.gameObjects.Length - 1)
+                {
+                    sb.Append("\n");
+                }
+            }
 
             EditorUtil.CopyTextEditor(sb.ToString());
         }

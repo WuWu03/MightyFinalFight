@@ -1,15 +1,15 @@
 using GameFrameWork;
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 using UnityEngine;
 
 public class BarrelDead : BaseFsmState
 {
-    protected override void OnInit(FiniteStateMachine fsm)
+    protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as Barrel;
     }
 
-    protected override void OnEnter(FiniteStateMachine fsm)
+    protected override void OnEnter(Fsm fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 1);
@@ -17,7 +17,7 @@ public class BarrelDead : BaseFsmState
         m_Owner.SetDir(-m_AttackerDir);
     }
 
-    protected override void OnUpdate(FiniteStateMachine fsm, float deltaTime, float unscaleDeltaTime)
+    protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaleDeltaTime)
     {
         if (m_Owner.armatureAnimator.animation.isCompleted)
         {
@@ -32,12 +32,12 @@ public class BarrelDead : BaseFsmState
         m_AttackerDir = hurtData.attackerDir;
     }
 
-    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
+    protected override void OnExit(Fsm fsm, bool isShutdown)
     {
         m_AttackerDir = 0f;
     }
 
-    protected override void OnRelease(FiniteStateMachine fsm)
+    protected override void OnRelease(Fsm fsm)
     {
         m_Owner = null;
     }

@@ -38,14 +38,41 @@ namespace GameFrameWork.Utils
         public static void CreateTextFile(string filePath, string content)
         {
             DeleteFile(filePath);
+            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            using FileStream fs = new(filePath, FileMode.Create);
+            using StreamWriter sw = new(fs);
+            sw.Write(content);
+            sw.Close();
+        }
 
-            using (FileStream fs = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+        /// <summary>
+        /// 写入文本文件
+        /// <param name="filePath">文件路径</param>
+        /// <param name="content">文本内容</param>
+        /// </summary>
+        public static void AppendText(string filePath, string content)
+        {
+            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            File.AppendAllText(filePath, content);
+        }
+
+        /// <summary>
+        /// 创建二进制文件
+        /// <param name="filePath">文件路径</param>
+        /// <param name="content">文本内容</param>
+        /// </summary>
+        public static void CreateBinaryFile(string filePath, byte[] data)
+        {
+            DeleteFile(filePath);
+            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            using FileStream fs = new(filePath, FileMode.Create);
+
+            if(data != null && data.Length > 0)
             {
-                using (StreamWriter sw = new StreamWriter(fs))
-                {
-                    sw.Write(content);
-                }
+                fs.Write(data, 0, data.Length);
             }
+
+            fs.Close();
         }
 
         /// <summary>
@@ -62,11 +89,15 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 验证路径是否存在
         /// </summary>
-        public static bool VerifyDirectory(string dirPath)
+        public static bool VerifyDirectory(string dirPath, bool autoCreate = true)
         {
             if (!Directory.Exists(dirPath))
             {
-                Directory.CreateDirectory(dirPath);
+                if (autoCreate)
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+
                 return false;
             }
 
@@ -97,9 +128,9 @@ namespace GameFrameWork.Utils
                     File.SetAttributes(destDirName, File.GetAttributes(sourceDirName));
                 }
 
-                if (destDirName[destDirName.Length - 1] != Path.DirectorySeparatorChar)
+                if (destDirName[^1] != Path.DirectorySeparatorChar)
                 {
-                    destDirName = destDirName + Path.DirectorySeparatorChar;
+                    destDirName += Path.DirectorySeparatorChar;
                 }
 
                 string[] files = Directory.GetFiles(sourceDirName, "*", SearchOption.TopDirectoryOnly);
@@ -111,7 +142,7 @@ namespace GameFrameWork.Utils
                         continue;
                     }
 
-                    FileInfo fileInfo = new FileInfo(file);
+                    FileInfo fileInfo = new(file);
 
                     if (fileInfo.Extension.Equals(".meta", StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -141,7 +172,7 @@ namespace GameFrameWork.Utils
                 return null;
             }
 
-            List<string> results = new List<string>();
+            List<string> results = new();
             string[] files = Directory.GetFiles(path, searchParttern, searchOption);
 
             foreach (string file in files)
@@ -166,7 +197,7 @@ namespace GameFrameWork.Utils
                 return null;
             }
 
-            List<string> results = new List<string>();
+            List<string> results = new();
             string[] directories = Directory.GetDirectories(path);
 
             foreach (string directory in directories)
@@ -175,6 +206,12 @@ namespace GameFrameWork.Utils
             }
 
             return results.ToArray();
+        }
+
+        public static long GetFileSize(string filePath)
+        {
+            FileInfo fileInfo = new(filePath);
+            return fileInfo.Length;
         }
 
         /// <summary>
@@ -208,21 +245,19 @@ namespace GameFrameWork.Utils
         {
             try
             {
-                using (MD5 md5 = new MD5CryptoServiceProvider())
+                using MD5CryptoServiceProvider md5 = new();
+                using FileStream fs = new(file, FileMode.Open);
+                byte[] retVal = md5.ComputeHash(fs);
+                fs.Close();
+
+                StringBuilder sb = new();
+
+                for (int i = 0; i < retVal.Length; i++)
                 {
-                    FileStream fs = new FileStream(file, FileMode.Open);
-                    byte[] retVal = md5.ComputeHash(fs);
-                    fs.Close();
-
-                    StringBuilder sb = new StringBuilder();
-
-                    for (int i = 0; i < retVal.Length; i++)
-                    {
-                        sb.Append(retVal[i].ToString("x2"));
-                    }
-
-                    return sb.ToString();
+                    sb.Append(retVal[i].ToString("x2"));
                 }
+
+                return sb.ToString();
             }
             catch (Exception ex)
             {
@@ -236,7 +271,7 @@ namespace GameFrameWork.Utils
         public static string MD5Path(string path)
         {
             string[] files = Directory.GetFiles(path);
-            StringBuilder pathMD5SB = new StringBuilder();
+            StringBuilder pathMD5SB = new();
 
             foreach (string filename in files)
             {
@@ -251,19 +286,17 @@ namespace GameFrameWork.Utils
             }
             try
             {
-                using (MD5 md5 = new MD5CryptoServiceProvider())
+                using MD5CryptoServiceProvider md5 = new();
+                byte[] retVal = md5.ComputeHash(Encoding.UTF8.GetBytes(pathMD5SB.ToString()));
+
+                pathMD5SB.Clear();
+
+                for (int i = 0; i < retVal.Length; i++)
                 {
-                    byte[] retVal = md5.ComputeHash(Encoding.UTF8.GetBytes(pathMD5SB.ToString()));
-
-                    pathMD5SB.Clear();
-
-                    for (int i = 0; i < retVal.Length; i++)
-                    {
-                        pathMD5SB.Append(retVal[i].ToString("x2"));
-                    }
-
-                    return pathMD5SB.ToString();
+                    pathMD5SB.Append(retVal[i].ToString("x2"));
                 }
+
+                return pathMD5SB.ToString();
             }
             catch (Exception ex)
             {

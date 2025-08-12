@@ -77,6 +77,11 @@ public class EntityAttribute : IReference
         return health <= 0;
     }
 
+    public void Release()
+    {
+        ReferencePool.Release(this);
+    }
+
     public void Clear()
     {
         health = 0;

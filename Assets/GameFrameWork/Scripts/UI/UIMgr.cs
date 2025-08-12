@@ -10,54 +10,24 @@ namespace GameFrameWork.UI
 {
     public class UIMgr : BaseMgr<UIMgr>
     {
-        public enum Type
-        {
-            Root,//根界面（主界面）
-            Normal,//一般界面
-            Pop,//弹出界面
-        }
-
-        public enum Layer
-        {
-            Layer1,
-            Layer2,
-            Layer3,
-            Layer4,
-            Layer5,
-            Layer6,
-            Layer7,
-            Layer8,
-        }
-
-        public enum CloseMode
-        {
-            Always = 1,         // UI常驻场景, 此类UI关闭达到一定数量后, 会摧毁最先关闭的
-            Destroy = 2,        // 关闭时立即销毁
-            DelayDestroy = 3,   // 延迟一段时间销毁
-            Eternal = 4,        // 总是存于场景中, 除非主动销毁
-        }
-
-        private class WaitLoadPanel : IReference
+        private class OpenPanelArgs : BaseEventArgs
         {
             public IPanel panel;
-            public object[] param;
+            public object arg;
 
-            public static WaitLoadPanel Create(IPanel panel, object[] param)
+            public static OpenPanelArgs Create(IPanel panel, object arg)
             {
-                WaitLoadPanel waitLoadPanel = ReferencePool.Acquire<WaitLoadPanel>();
+                OpenPanelArgs waitLoadPanel = ReferencePool.Acquire<OpenPanelArgs>();
                 waitLoadPanel.panel = panel;
-                waitLoadPanel.param = param;
+                waitLoadPanel.arg = arg;
                 return waitLoadPanel;
             }
 
-            public WaitLoadPanel()
+            public override void Clear()
             {
-            }
-
-            public void Clear()
-            {
+                base.Clear();
                 panel = null;
-                param = null;
+                arg = null;
             }
         }
 
@@ -69,16 +39,15 @@ namespace GameFrameWork.UI
             }
         }
 
-
         protected override void OnAwake()
         {
-            m_ListOpenPanel = new List<IPanel>();
-            m_ListAlways = new List<IPanel>();
-            m_ListDelayDestroy = new List<IPanel>();
-            m_ListPopPanel = new List<IPanel>();
-            m_QueueWaitLoadPanel = new Queue<WaitLoadPanel>();
+            m_ListOpenPanel = new();
+            m_ListAlways = new();
+            m_ListDelayDestroy = new();
+            m_ListPopPanel = new();
+            m_QueueWaitLoadPanel = new();
 
-            m_UIRoot = new GameObject("UIRoot");
+            m_UIRoot = new("UIRoot");
             m_UICanvas = new GameObject("UICanvas").GetOrAddComponent<Canvas>();
             m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
             m_EventSystem = new GameObject("EventSystem").GetOrAddComponent<EventSystem>();
@@ -113,13 +82,13 @@ namespace GameFrameWork.UI
 
             m_UIRoot.SetLayer("UI");
 
-            Array layers = Enum.GetValues(typeof(Layer));
+            Array layers = Enum.GetValues(typeof(PanelLayer));
 
             m_UILayerTransform = new RectTransform[layers.Length];
 
             for (int i = 0; i < layers.Length; i++)
             {
-                GameObject layerGameObject = new GameObject(layers.GetValue(i).ToString());
+                GameObject layerGameObject = new(layers.GetValue(i).ToString());
                 RectTransform layerRectTransform = layerGameObject.AddComponent<RectTransform>();
                 Canvas layerCanvas = layerGameObject.GetOrAddComponent<Canvas>();
 
@@ -135,191 +104,19 @@ namespace GameFrameWork.UI
                 layerCanvas.overrideSorting = true;
                 layerCanvas.sortingOrder = (i + 1) * 1000;
                 layerCanvas.vertexColorAlwaysGammaSpace = true;
-    
+
                 m_UILayerTransform[i] = layerRectTransform;
             }
 
             DontDestroyOnLoad(m_UIRoot);
         }
 
-        public Transform GetUILayer(Layer layer)
-        {
-            return m_UILayerTransform[Convert.ToInt32(layer)];
-        }
-
-        public IPanel Open(string panelTypeName, params object[] args)
-        {
-            return OpenPanel(panelTypeName, args);
-        }
-
-        public IPanel Get(string panelTypeName)
-        {
-            return GetPanel(panelTypeName);
-        }
-
-        public bool IsOpen(string panelTypeName)
-        {
-            IPanel panel = GetPanel(panelTypeName);
-            return panel != null && panel.isOpen;
-        }
-
-        public void Close(string paneTypeName, bool isForceDestroy = false)
-        {
-            ClosePanel(paneTypeName, isForceDestroy);
-        }
-
-        public void Close(IPanel panel, bool isForceDestroy = false)
-        {
-            if (panel == null)
-            {
-                return;
-            }
-
-            ClosePanel(panel.settings.panelName, isForceDestroy);
-        }
-
-        private IPanel OpenPanel(string panelTypeName, object[] args)
-        {
-            System.Type type = GetPanelType(panelTypeName);
-
-            if (type == null)
-            {
-                return null;
-            }
-
-            IPanel panel = GetPanel(panelTypeName) ;
-            bool isNew = panel == null;
-
-            if (isNew)
-            {
-                panel = Activator.CreateInstance(type) as IPanel;
-            }
-
-            if (!m_CanPopPanel && panel.settings.panelType == Type.Root)
-            {
-                m_CanPopPanel = true;
-            }
-
-            if (m_CanPopPanel && panel.settings.panelType != Type.Pop)
-            {
-                if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
-                {
-                    m_ListPopPanel.Add(m_CurrPopPanel);
-                    ClosePanel(m_CurrPopPanel, false, false);
-                }
-
-                m_CurrPopPanel = panel;
-            }
-
-            if (!panel.isInit)
-            {
-                m_QueueWaitLoadPanel.Enqueue(WaitLoadPanel.Create(panel, args));
-            }
-            else if (!panel.isOpen)
-            {
-                panel.Open();
-            }
-
-            if (isNew)
-            {
-                m_ListOpenPanel.Add(panel);
-            }
-
-            m_ListAlways.Remove(panel);
-            m_ListDelayDestroy.Remove(panel);
-
-            return panel;
-        }
-
-        private IPanel GetPanel(string paneTypelName)
-        {
-            System.Type panelType = GetPanelType(paneTypelName);
-
-            if (panelType == null)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < m_ListOpenPanel.Count; i++)
-            {
-                IPanel panel = m_ListOpenPanel[i];
-
-                if (panel.GetType() == panelType)
-                {
-                    return panel;
-                }
-            }
-
-            return null;
-        }
-
-        private void ClosePanel(string panelTypeName, bool isForceDestroy)
-        {
-            IPanel panel = GetPanel(panelTypeName);
-            ClosePanel(panel, isForceDestroy);
-        }
-
-        private void ClosePanel(IPanel panel, bool isForceDestroy, bool checkPopPanel = true)
-        {
-            if (panel == null)
-            {
-                return;
-            }
-
-            panel.Close();
-
-            if (panel.settings.panelCloseMode == CloseMode.Destroy || isForceDestroy)
-            {
-                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
-                panel.Destroy();
-                m_ListOpenPanel.Remove(panel);
-                m_ListPopPanel.Remove(panel);
-
-                if (m_CurrPopPanel == panel)
-                {
-                    m_CurrPopPanel = null;
-                }
-            }
-            else if (panel.settings.panelCloseMode == CloseMode.DelayDestroy)
-            {
-                if (!m_ListDelayDestroy.Contains(panel))
-                {
-                    m_ListDelayDestroy.Add(panel);
-                }
-            }
-            else if (panel.settings.panelCloseMode == CloseMode.Always)
-            {
-                if (!m_ListAlways.Contains(panel))
-                {
-                    m_ListAlways.Add(panel);
-                }
-            }
-
-            if (checkPopPanel && m_CanPopPanel && panel.settings.panelType != Type.Pop && m_ListPopPanel.Count > 0)
-            {
-                IPanel oldPanel = m_ListPopPanel[m_ListPopPanel.Count - 1];
-                oldPanel.Open();
-                m_ListOpenPanel.Add(oldPanel);
-                m_ListAlways.Remove(oldPanel);
-                m_ListDelayDestroy.Remove(oldPanel);
-                m_ListPopPanel.Remove(oldPanel);
-                m_CurrPopPanel = oldPanel;
-            }
-        }
-
-        private void OnLoadComplete(string assetPath, UnityEngine.Object obj, object[] param)
-        {
-            WaitLoadPanel waitLoadPanel = (param[0] as WaitLoadPanel);
-            waitLoadPanel.panel.Init(obj as GameObject, assetPath, waitLoadPanel.param);
-            ReferencePool.ReleaseReference(waitLoadPanel);
-        }
-
         protected override void OnUpdate()
         {
             if (m_QueueWaitLoadPanel.Count > 0)
             {
-                WaitLoadPanel waitLoadPanel = null;
-                Queue<WaitLoadPanel> queue = m_QueueWaitLoadPanel;
+                OpenPanelArgs waitLoadPanel = null;
+                Queue<OpenPanelArgs> queue = m_QueueWaitLoadPanel;
 
                 lock (queue)
                 {
@@ -334,7 +131,7 @@ namespace GameFrameWork.UI
                 for (int i = m_ListDelayDestroy.Count - 1; i >= 0; i++)
                 {
                     IPanel panel = m_ListDelayDestroy[i];
-                    bool isDelayTimeOut = panel.settings.panelCloseMode == CloseMode.DelayDestroy && panel.delayTime > 0f && Time.time - panel.delayTime >= 5f;
+                    bool isDelayTimeOut = panel.settings.panelCloseMode == PanelCloseMode.DelayDestroy && panel.delayTime > 0f && Time.time - panel.delayTime >= 5f;
 
                     if (isDelayTimeOut)
                     {
@@ -375,18 +172,6 @@ namespace GameFrameWork.UI
             }
         }
 
-        private System.Type GetPanelType(string panelTypeName)
-        {
-            System.Type type = System.Type.GetType(panelTypeName);
-
-            if (type == null)
-            {
-                Log.LogError(panelTypeName, "不存在");
-            }
-
-            return type;
-        }
-
         protected override void OnShutDown()
         {
             base.OnShutDown();
@@ -411,10 +196,209 @@ namespace GameFrameWork.UI
                 GameObjectPoolMgr.instance.Put(m_ListAlways[i].assetPath, m_ListAlways[i].gameObject);
             }
 
-            m_ListPopPanel.Clear();
-            m_ListOpenPanel.Clear();
             m_ListDelayDestroy.Clear();
             m_ListAlways.Clear();
+            m_ListPopPanel.Clear();
+            m_ListOpenPanel.Clear();
+            m_QueueWaitLoadPanel.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+
+            m_CanPopPanel = false;
+            m_CurrPopPanel = null;
+            m_ListDelayDestroy = null;
+            m_ListAlways = null;
+            m_ListPopPanel = null;
+            m_ListOpenPanel = null;
+            m_QueueWaitLoadPanel = null;
+        }
+
+        public RectTransform GetPanelLayer(PanelLayer layer)
+        {
+            return m_UILayerTransform[Convert.ToInt32(layer)];
+        }
+
+        public IPanel Open(string uiName, object arg = null)
+        {
+            return OpenPanel(uiName, arg);
+        }
+
+        public IPanel Get(string uiName)
+        {
+            return GetPanel(uiName);
+        }
+
+        public bool IsOpen(string panelName)
+        {
+            IPanel panel = GetPanel(panelName);
+            return panel != null && panel.isOpen;
+        }
+
+        public void Close(string paneTypeName, bool isForceDestroy = false)
+        {
+            ClosePanel(paneTypeName, isForceDestroy);
+        }
+
+        public void Close(IPanel panel, bool isForceDestroy = false)
+        {
+            if (panel == null)
+            {
+                return;
+            }
+
+            ClosePanel(panel.settings.panelName, isForceDestroy);
+        }
+
+        private IPanel OpenPanel(string panelName, object arg)
+        {
+            System.Type panelType = GetPanelType(panelName);
+
+            if (panelType == null)
+            {
+                return null;
+            }
+
+            IPanel panel = GetPanel(panelName);
+            bool isNew = panel == null;
+
+            if (isNew)
+            {
+                panel = Activator.CreateInstance(panelType) as IPanel;
+            }
+
+            if (!m_CanPopPanel && panel.settings.panelType == PanelType.Root)
+            {
+                m_CanPopPanel = true;
+            }
+
+            if (m_CanPopPanel && panel.settings.panelType != PanelType.Pop)
+            {
+                if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
+                {
+                    m_ListPopPanel.Add(m_CurrPopPanel);
+                    ClosePanel(m_CurrPopPanel, false, false);
+                }
+
+                m_CurrPopPanel = panel;
+            }
+
+            if (!panel.isInit)
+            {
+                m_QueueWaitLoadPanel.Enqueue(OpenPanelArgs.Create(panel, arg));
+            }
+            else if (!panel.isOpen)
+            {
+                panel.Open();
+            }
+
+            if (isNew)
+            {
+                m_ListOpenPanel.Add(panel);
+            }
+
+            m_ListAlways.Remove(panel);
+            m_ListDelayDestroy.Remove(panel);
+
+            return panel;
+        }
+
+        private IPanel GetPanel(string panelName)
+        {
+            System.Type panelType = GetPanelType(panelName);
+
+            if (panelType == null)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            {
+                IPanel panel = m_ListOpenPanel[i];
+
+                if (panel.GetType() == panelType)
+                {
+                    return panel;
+                }
+            }
+
+            return null;
+        }
+
+        private void ClosePanel(string panelTypeName, bool isForceDestroy)
+        {
+            IPanel panel = GetPanel(panelTypeName);
+            ClosePanel(panel, isForceDestroy);
+        }
+
+        private void ClosePanel(IPanel panel, bool isForceDestroy, bool checkPopPanel = true)
+        {
+            if (panel == null)
+            {
+                return;
+            }
+
+            PanelType panelType = panel.settings.panelType;
+            panel.Close();
+
+            if (panel.settings.panelCloseMode == PanelCloseMode.Destroy || isForceDestroy)
+            {
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
+                panel.Destroy();
+                m_ListOpenPanel.Remove(panel);
+                m_ListPopPanel.Remove(panel);
+
+                if (m_CurrPopPanel == panel)
+                {
+                    m_CurrPopPanel = null;
+                }
+            }
+            else if (panel.settings.panelCloseMode == PanelCloseMode.DelayDestroy)
+            {
+                if (!m_ListDelayDestroy.Contains(panel))
+                {
+                    m_ListDelayDestroy.Add(panel);
+                }
+            }
+            else if (panel.settings.panelCloseMode == PanelCloseMode.Always)
+            {
+                if (!m_ListAlways.Contains(panel))
+                {
+                    m_ListAlways.Add(panel);
+                }
+            }
+
+            if (checkPopPanel && m_CanPopPanel && panelType != PanelType.Pop && m_ListPopPanel.Count > 0)
+            {
+                IPanel oldPanel = m_ListPopPanel[^1];
+                oldPanel.Open();
+                m_ListOpenPanel.Add(oldPanel);
+                m_ListAlways.Remove(oldPanel);
+                m_ListDelayDestroy.Remove(oldPanel);
+                m_ListPopPanel.Remove(oldPanel);
+                m_CurrPopPanel = oldPanel;
+            }
+        }
+
+        private void OnLoadComplete(string assetPath, UnityEngine.Object obj, object arg)
+        {
+            OpenPanelArgs openPanelArgs = arg as OpenPanelArgs;
+            openPanelArgs.panel.Init(obj as GameObject, assetPath, openPanelArgs.arg);
+            openPanelArgs.Release();
+        }
+
+        private System.Type GetPanelType(string panelName)
+        {
+            System.Type type = System.Type.GetType(panelName);
+
+            if (type == null)
+            {
+                Log.LogError(panelName, "不存在");
+            }
+
+            return type;
         }
 
         private bool m_CanPopPanel = false;
@@ -423,7 +407,7 @@ namespace GameFrameWork.UI
         private List<IPanel> m_ListAlways = null;
         private List<IPanel> m_ListPopPanel = null;
         private List<IPanel> m_ListOpenPanel = null;
-        private Queue<WaitLoadPanel> m_QueueWaitLoadPanel = null;
+        private Queue<OpenPanelArgs> m_QueueWaitLoadPanel = null;
         private RectTransform[] m_UILayerTransform = null;
         private GameObject m_UIRoot = null;
         private Canvas m_UICanvas = null;

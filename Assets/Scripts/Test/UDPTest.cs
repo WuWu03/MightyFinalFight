@@ -1,58 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using client;
+using GameFrameWork.Net;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System;
-using System.Net.Security;
-using GameFrameWork.Net;
-using client;
 
 public class UDPTest : MonoBehaviour 
 {
 	public Button button;
-	public InputField inputField;
-	// Use this for initialization
-	void Start () {
-	
+	public TMP_InputField inputField;
+
+    // Use this for initialization
+    void Start () 
+	{
 		button.onClick.AddListener(onClick);
 		inputField.gameObject.SetActive(false);
 
-		SocketMgr.instance.onConnectSuccessEvent = delegate () 
+		NetMgr.instance.onConnectSuccessEvent += delegate () 
 		{
 			inputField.gameObject.SetActive(true);
-			button.transform.Find("Text").GetComponent<Text>().text = "发送";
+			button.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = "发送";
 		};
 
-		SocketMgr.instance.onDisConnectEvent = delegate ()
+		NetMgr.instance.onDisConnectEvent += delegate ()
 		{
 			inputField.gameObject.SetActive(false);
-			button.transform.Find("Text").GetComponent<Text>().text = "连接";
+			button.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = "连接";
 		};
 
-		SocketMgr.instance.onReceiveEvent = OnReceive;
+        button.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = "连接";
+        TestNetResolver.instance.testReceiveEvent += OnReceive;
 	}
 
-	private void OnReceive(ushort arg1, byte[] arg2)
+	private void OnReceive(test test)
 	{
-
-		inputField.text = arg1 + "," + Encoding.UTF8.GetString(arg2);
-	}
+		Debug.Log("收到服务端消息：" + test.content);
+    }
 
 	private void onClick()
 	{
-		if(!SocketMgr.instance.isConnected)
+		if(!NetMgr.instance.isConnected)
 		{
-			//IPAddress[] address = Dns.GetHostAddresses("st14818931.iask.in");
-			SocketMgr.instance.Connect("127.0.0.1", 8888);
+			NetMgr.instance.Connect("127.0.0.1", 8888);
 			return;
 		}
 
-		client.test sendContent = new client.test();
-		sendContent.content = inputField.text;
-		byte[] buffer = ProtoBufUtil.ObjectToBytes<test>(sendContent);
-		SocketMgr.instance.Send(1, buffer);
+		TestNetResolver.instance.SendTest(inputField.text);
 	}
 }

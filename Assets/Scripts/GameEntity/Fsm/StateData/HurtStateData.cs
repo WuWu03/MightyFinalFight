@@ -27,6 +27,8 @@ public class HurtStateData : BaseEventArgs
 
     public override void Clear()
     {
+        base.Clear();
+        id = 0;
         attackForce = Vector2.zero;
         attackerPos = Vector2.zero;
         attackValue = 0;

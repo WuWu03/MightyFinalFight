@@ -9,7 +9,7 @@ public class LoadPanelSettings : BasePanelSettings
 {
 	public override string panelName { get { return "LoadPanel"; } }
 	public override float panelUnLoadTime { get { return 0f; } }
-	public override UIMgr.Type panelType { get { return UIMgr.Type.Pop; } }
-	public override UIMgr.Layer panelLayer { get { return UIMgr.Layer.Layer8; } }
-	public override UIMgr.CloseMode panelCloseMode { get { return UIMgr.CloseMode.Eternal; } }
+	public override PanelType panelType { get { return PanelType.Pop; } }
+	public override PanelLayer panelLayer { get { return PanelLayer.Layer8; } }
+	public override PanelCloseMode panelCloseMode { get { return PanelCloseMode.Eternal; } }
 }

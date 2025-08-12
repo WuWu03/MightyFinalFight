@@ -21,14 +21,14 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
         m_BossState = false;
         PlayerMgr.instance.canContrl = false;
         PlayerMgr.instance.player.UpdatePosZ(0);
-        AudioMgr.instance.PauseBGM();
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDownHigh));
+        AudioMgr.instance.PauseBgm();
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDownHigh));
         UIMgr.instance.Get(UINames.MainPanel).Hide();
 
         int sourceId = m_TaskData.Targets[0].SourceID;
         int entityId = m_TaskData.Targets[0].EntityID;
         int hp = m_TaskData.Targets[0].Hp;
-        int attack = 30;// m_TaskData.Targets[0].AttackValue;
+        int attack = m_TaskData.Targets[0].AttackValue;
         int defense = m_TaskData.Targets[0].DefenseValue;
         int hpBarWidth = m_TaskData.Targets[0].HpBarWidth;
         Vector2Int pos = m_TaskData.Targets[0].Pos;
@@ -67,7 +67,7 @@ public class TaskTriggerStory_1003 : BaseTaskTrigger
 
     private void MoveTo()
     {
-        AudioMgr.instance.StartBGM();
+        AudioMgr.instance.ResumeBgm();
         PlayerMgr.instance.player.SetPos2(PlayerMgr.instance.player.transform.localPosition);
         PlayerMgr.instance.player.ChangeState<RoleAwaken>();
         GameObject black = GameObject.Find("Black");

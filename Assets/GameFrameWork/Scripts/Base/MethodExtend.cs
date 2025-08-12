@@ -37,9 +37,7 @@ namespace GameFrameWork
 
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
-            T result = go.GetComponent<T>();
-
-            if (result == null)
+            if (!go.TryGetComponent<T>(out T result))
             {
                 result = go.AddComponent<T>();
             }
@@ -66,6 +64,11 @@ namespace GameFrameWork
 
         public static void SetLayer(this GameObject gameObject, string layer, bool isChild = true)
         {
+            if (string.IsNullOrEmpty(layer))
+            {
+                return;
+            }
+
             gameObject.layer = LayerMask.NameToLayer(layer);
 
             if (isChild)
@@ -85,9 +88,7 @@ namespace GameFrameWork
                 return null;
             }
 
-            T comp = gameObject.GetComponent<T>();
-
-            if (comp == null)
+            if (!gameObject.TryGetComponent<T>(out T comp))
             {
                 Transform t = gameObject.transform.parent;
 
@@ -108,9 +109,9 @@ namespace GameFrameWork
                 return;
             }
 
-            string sritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
+            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
 
-            AssetsPool.instance.Get<Sprite>(sritePath, (string assetPath, UnityEngine.Object obj, object[] param) =>
+            AssetsPool.instance.Get<Sprite>(spritePath, (assetPath, obj, param) =>
             {
                 renderer.sprite = obj as Sprite;
             });
@@ -125,7 +126,7 @@ namespace GameFrameWork
 
             Sprite sprite = renderer.sprite;
             renderer.sprite = null;
-            string spritePath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), spriteName);
+            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
             AssetsPool.instance.Put(spritePath, sprite);
         }
 
@@ -142,6 +143,16 @@ namespace GameFrameWork
         public static long ToLong(this string value)
         {
             if (!string.IsNullOrEmpty(value) && long.TryParse(value, out long result))
+            {
+                return result;
+            }
+
+            return 0;
+        }
+
+        public static ulong ToULong(this string value)
+        {
+            if (!string.IsNullOrEmpty(value) && ulong.TryParse(value, out ulong result))
             {
                 return result;
             }

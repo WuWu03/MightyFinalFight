@@ -36,11 +36,6 @@ public class BaseSceneItem : BaseGravityObject
         m_Owner = owner;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
-    {
-        base.OnLoadAssetComplete(go, param);
-    }
-
     protected override void OnRelease()
     {
         base.OnRelease();

@@ -17,9 +17,14 @@ namespace GameFrameWork.Editor
             public BuildTarget target;
         }
 
-        public static void Build(BuildTarget buildTarget,string buildPath)
+        public static void Build(BuildTarget buildTarget, string buildPath)
         {
-            using (AssetBundleBuilder builder = new AssetBundleBuilder())
+            AddBuildTarget(BuildTarget.Android, BuildTargetGroup.Android, ".apk");
+            AddBuildTarget(BuildTarget.iOS, BuildTargetGroup.iOS, ".ipa");
+            AddBuildTarget(BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone, ".exe");
+            AddBuildTarget(BuildTarget.StandaloneWindows64, BuildTargetGroup.Standalone, ".exe");
+
+            using (AssetBundleBuilder builder = new())
             {
                 if (!builder.Build(buildTarget, false))
                 {
@@ -27,16 +32,16 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            BuildConfig buildConfig = m_DicBuildConfig.GetValueOrDefault(buildTarget);
-            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions() 
+            BuildConfig buildConfig = m_BuildConfigs.GetValueOrDefault(buildTarget);
+            BuildPlayerOptions buildPlayerOptions = new()
             {
                 targetGroup = buildConfig.targetGroup,
                 target = buildConfig.target,
             };
-  
+
             if (string.IsNullOrEmpty(buildPath))
             {
-                buildPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
+                buildPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
 
             buildPath += "\\" + Application.productName + "\\" + Application.productName + buildConfig.ext;
@@ -64,45 +69,22 @@ namespace GameFrameWork.Editor
             {
                 Debug.LogError("Build windows error : [" + buildSummary.ToString() + "]");
             }
+
+            m_BuildConfigs.Clear();
+            m_BuildConfigs = null;
         }
 
-        private static Dictionary<BuildTarget, BuildConfig> m_DicBuildConfig = new Dictionary<BuildTarget, BuildConfig>()
+        private static void AddBuildTarget(BuildTarget buildTarget, BuildTargetGroup buildTargetGroup, string extend)
         {
-            { 
-                BuildTarget.Android , new BuildConfig 
-                { 
-                    ext = ".apk" , 
-                    targetGroup = BuildTargetGroup.Android, 
-                    target = BuildTarget.Android,
-                } 
-            },
-
+            m_BuildConfigs ??= new Dictionary<BuildTarget, BuildConfig>();
+            m_BuildConfigs.Add(buildTarget, new BuildConfig
             {
-                BuildTarget.iOS , new BuildConfig
-                {
-                    ext = ".ipa",
-                    targetGroup = BuildTargetGroup.iOS,
-                    target = BuildTarget.iOS,
-                }
-            },
+                ext = extend,
+                targetGroup = buildTargetGroup,
+                target = buildTarget,
+            });
+        }
 
-            {
-                BuildTarget.StandaloneWindows64 , new BuildConfig
-                {
-                    ext = ".exe" ,
-                    targetGroup = BuildTargetGroup.Standalone,
-                    target = BuildTarget.StandaloneWindows64,
-                }
-            },
-
-            {
-                BuildTarget.StandaloneWindows , new BuildConfig
-                {
-                    ext = ".exe" ,
-                    targetGroup = BuildTargetGroup.Standalone,
-                    target = BuildTarget.StandaloneWindows
-                }
-            },
-        };
+        private static Dictionary<BuildTarget, BuildConfig> m_BuildConfigs = null;
     }
 }

@@ -10,14 +10,14 @@ using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
-public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent>
+public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPanelSettings>
 {
-    protected override void OnInit(object[] param)
-    {
-        m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
-        m_Component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
-        m_Component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
-    }
+	protected override void OnInit(object arg)
+	{
+		m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
+		m_Component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
+		m_Component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
+	}
 
 	protected override void OnOpen()
 	{
@@ -26,9 +26,9 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent>
 		m_Component.roleContentGroupView.Update(ConfigDataSheet.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
 		LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
-    }
+	}
 
-    protected override void OnUpdate()
+	protected override void OnUpdate()
 	{
 		if (m_HasSelect)
 		{
@@ -51,7 +51,7 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent>
 			}
 
 			m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-			AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
+			AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
 		}
 
 		if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
@@ -90,27 +90,27 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent>
 		}
 	}
 
-    private void OnFadeWhiteComplete()
+	private void OnFadeWhiteComplete()
 	{
 		m_HasSelect = false;
-		AudioMgr.instance.PlayBGM(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm14Character), true);
-    }
+		AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm14Character), true);
+	}
 
-    private void EnterStage()
+	private void EnterStage()
 	{
-        m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
-		AudioMgr.instance.StopBGM(true);
-		AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
+		m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
+		AudioMgr.instance.StopBgm(true);
+		AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
 		PlayerMgr.instance.selectRoleId = ConfigDataSheet.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
-        LoadPanelMgr.instance.DOFadeBlack(OnFadeBlackComplete);
-    }
+		LoadPanelMgr.instance.DOFadeBlack(OnFadeBlackComplete);
+	}
 
-    private void OnFadeBlackComplete()
-    {
-        CloseSelf();
-        UIMgr.instance.Open(UINames.StagePanel);
-    }
+	private void OnFadeBlackComplete()
+	{
+		CloseSelf();
+		UIMgr.instance.Open(UINames.StagePanel);
+	}
 
-    private bool m_HasSelect = false;
+	private bool m_HasSelect = false;
 	private int m_CurrSelectIndex = -1;
 }

@@ -1,8 +1,13 @@
 using GameFrameWork;
+using GameFrameWork.Assets;
+using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
 using GameFrameWork.Localization;
+using GameFrameWork.Pool;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
+using GameFrameWork.Version;
+using System;
 using UnityEngine;
 
 public class GameEntry : GameFrameWorkEntry
@@ -16,9 +21,6 @@ public class GameEntry : GameFrameWorkEntry
         PlayerMgr.Init(manager);
         HudMgr.Init(manager);
         LoadPanelMgr.Init(manager);
-        StaticConfig.InitConfig();
-        ConfigDataSheet.Init();
-
     }
 
     protected override void OnStartGame()
@@ -28,12 +30,34 @@ public class GameEntry : GameFrameWorkEntry
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "EnglishLanguageData.bytes")));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "JapaneseLanguageData.bytes")));
         LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
+        VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
+        UIMgr.instance.Open(UINames.VersionPanel);
+    }
 
+    private void OnVersionProcessStateChanged(VersionProcessState state, string info, ulong downloadSize, ulong downloadFullSize)
+    {
+        if(state == VersionProcessState.Success || state == VersionProcessState.DontCheckVersion)
+        {
+            StartGame();
+        }
+    }
+
+    private void StartGame()
+    {
+        LocalizationMgr.instance.ReloadLanguage();
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
-
+        UIMgr.instance.Close(UINames.VersionPanel);
+        GameObjectPoolMgr.instance.CheckRelease();
+        AssetsPool.instance.CheckRelease();
+        ReferencePool.ReleaseAll();
+        GC.Collect();
+        AssetsMgr.instance.InitAssetsMap();
+        BehaviourTreeMgr.instance.InitBehaviourTreeData();
+        StaticConfig.InitConfig();
+        ConfigDataSheet.Init();
         UIMgr.instance.Open(UINames.TitlePanel);
     }
 

@@ -16,9 +16,9 @@ public class DBEffect : BaseEffect
         }
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         m_ArmatureAnimator = go.GetComponent<UnityArmatureComponent>();
         m_ArmatureAnimator.animation.Stop();
         m_ArmatureAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
@@ -40,7 +40,7 @@ public class DBEffect : BaseEffect
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;

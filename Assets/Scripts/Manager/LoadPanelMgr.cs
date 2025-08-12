@@ -1,12 +1,11 @@
 using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.UI;
 using System.Collections.Generic;
 
 
 public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
 {
-    public class FadeInfo : IReference
+    public class FadeArgs : BaseEventArgs
     {
         public float from;
         public float to;
@@ -14,9 +13,9 @@ public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
         public float delay;
         public GameFrameWorkAction onComplete;
 
-        public static FadeInfo Create(float from, float to, float duration, float delay, GameFrameWorkAction onComplete)
+        public static FadeArgs Create(float from, float to, float duration, float delay, GameFrameWorkAction onComplete)
         {
-            FadeInfo fadeInfo = ReferencePool.Acquire<FadeInfo>();
+            FadeArgs fadeInfo = ReferencePool.Acquire<FadeArgs>();
             fadeInfo.from = from;
             fadeInfo.to = to;
             fadeInfo.duration = duration;
@@ -25,8 +24,9 @@ public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
             return fadeInfo;
         }
 
-        public void Clear()
+        public override void Clear()
         {
+            base.Clear();
             from = 0;
             to = 0;
             duration = 0;
@@ -54,17 +54,24 @@ public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
     protected override void OnAwake()
     {
         base.OnAwake();
-        m_QueueFade = new Queue<FadeInfo>();
+        m_QueueFade = new Queue<FadeArgs>();
     }
 
     protected override void OnShutDown()
     {
         base.OnShutDown();
+
         m_QueueFade.Clear();
+    }
+
+    protected override void OnDestory()
+    {
+        base.OnDestory();
+
         m_QueueFade = null;
     }
 
-    public FadeInfo GetFadeInfo()
+    public FadeArgs GetFadeInfo()
     {
         if (m_QueueFade.Count > 0)
         {
@@ -92,7 +99,7 @@ public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
 
         lock (m_QueueFade)
         {
-            m_QueueFade.Enqueue(FadeInfo.Create(from, to, duration, delay, onComplete));
+            m_QueueFade.Enqueue(FadeArgs.Create(from, to, duration, delay, onComplete));
         }
 
         UIMgr.instance.Open(UINames.LoadPanel);
@@ -104,5 +111,5 @@ public class LoadPanelMgr : BaseMgr<LoadPanelMgr>
     }
 
     private bool m_IsFadeComplete = false;
-    private Queue<FadeInfo> m_QueueFade = null;
+    private Queue<FadeArgs> m_QueueFade = null;
 }

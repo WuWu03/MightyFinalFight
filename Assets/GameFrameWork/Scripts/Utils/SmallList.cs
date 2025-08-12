@@ -33,7 +33,7 @@ namespace GameFrameWork.Utils
             {
                 if (m_Datas is null)
                 {
-                    return default(T);
+                    return default;
                 }
                 else
                 {

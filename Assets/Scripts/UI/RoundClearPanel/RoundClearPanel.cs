@@ -4,17 +4,17 @@
 /*******************************************************/
 using GameFrameWork.UI;
 
-public class RoundClearPanel : BasePanel<RoundClearPanelComponent>
+public class RoundClearPanel : BasePanel<RoundClearPanelComponent, RoundClearPanelSettings>
 {
-    protected override void OnInit(object[] param)
-    {
+	protected override void OnInit(object arg)
+	{
 
-    }
+	}
 
 	protected override void OnOpen()
 	{
 		m_Component.txtRound.SetLanguageTextParams("1");// StageMgr.instance.currStageData.StageIndex.ToString());
-    }
+	}
 
 	protected override void OnUpdate()
 	{

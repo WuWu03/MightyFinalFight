@@ -184,7 +184,7 @@ namespace GameFrameWork.GameEntity
             {
                 if (m_ListUsingEntities[i].GetType() == type)
                 {
-                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].entityName.Equals(name))
+                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].name.Equals(name))
                     {
                         entityList.Add(m_ListUsingEntities[i] as T);
                     }
@@ -202,7 +202,7 @@ namespace GameFrameWork.GameEntity
             {
                 if (m_ListUsingEntities[i].GetType() == type)
                 {
-                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].entityName.Equals(name))
+                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].name.Equals(name))
                     {
                         return m_ListUsingEntities[i] as T;
                     }

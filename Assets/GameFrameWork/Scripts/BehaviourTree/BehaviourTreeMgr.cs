@@ -10,17 +10,12 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnAwake()
         {
             base.OnAwake();
-            m_UsedBehaviourTreeList = new List<BehaviourTree>();
-            m_UnUsedBehaviourTreeList = new List<BehaviourTree>();
-            string dataPath = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, PathUtil.behaviourTreeConfigDataName);
-            string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(dataPath).text;
-            m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
+            m_UsedBehaviourTreeList = new();
         }
 
         protected override void OnUpdate()
         {
             base.OnUpdate();
-
 
             for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
@@ -59,7 +54,20 @@ namespace GameFrameWork.BehaviourTree
             }
 
             m_UsedBehaviourTreeList.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
             m_UsedBehaviourTreeList = null;
+            m_Config = null;
+        }
+
+        public void InitBehaviourTreeData()
+        {
+            string dataPath = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, PathUtil.behaviourTreeConfigDataName);
+            string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(dataPath).text;
+            m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
         }
 
         public void AddBehaviourTree(object owner, int id)
@@ -176,7 +184,6 @@ namespace GameFrameWork.BehaviourTree
         }
 
         private List<BehaviourTree> m_UsedBehaviourTreeList = null;
-        private List<BehaviourTree> m_UnUsedBehaviourTreeList = null;
         private BehaviourTreeConfig m_Config = null;
     }
 }

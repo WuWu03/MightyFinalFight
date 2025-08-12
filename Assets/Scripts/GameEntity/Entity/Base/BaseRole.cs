@@ -173,10 +173,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleDefense>();
         SetDefaultState<RoleIdle>();
 
-        if (m_AutoMoveComplete == null)
-        {
-            m_AutoMoveComplete = new UnityEvent();
-        }
+        m_AutoMoveComplete ??= new UnityEvent();
     }
 
     public override void SetData(BaseSceneObjectData data)
@@ -201,20 +198,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnRelease();
         m_AutoMoveComplete.RemoveAllListeners();
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.Release();
-        }
-
-        if(m_OnGroundHurtStateData != null)
-        {
-            ReferencePool.ReleaseReference(m_OnGroundHurtStateData);
-        }
-
-        if(m_DropTrapStateData != null)
-        {
-            ReferencePool.ReleaseReference(m_DropTrapStateData);
-        }
+        m_CurrCtrl?.Release();
+        m_OnGroundHurtStateData?.Release();
+        m_DropTrapStateData?.Release();
 
         m_IsSmoon = false;
         m_IsJumpAttack = false;
@@ -234,46 +220,29 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_AutoMoveComplete = null;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         m_MoveDir = Vector2.right;
-
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.Start();
-        }
+        m_CurrCtrl?.Start();
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
-
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.Update();
-        }
+        m_CurrCtrl?.Update();
     }
 
     protected override void OnLateUpdate()
     {
         base.OnLateUpdate();
-
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.LateUpdate();
-        }
+        m_CurrCtrl?.LateUpdate();
     }
 
     protected override void OnFixedUpdate()
     {
         base.OnFixedUpdate();
-
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.FixedUpdate();
-        }
-
+        m_CurrCtrl?.FixedUpdate();
         CheckAutoMove();
     }
 
@@ -342,11 +311,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
-
+        m_CurrCtrl?.ExitSkill();
         m_MoveDir = data.dir;
         SetStateData<RoleMove>(data);
         ChangeState<RoleMove>();
@@ -357,10 +322,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_MoveToPos = pos;
         m_IsAutoMove = true;
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
+        m_CurrCtrl?.ExitSkill();
 
         if (moveComplete != null)
         {
@@ -375,14 +337,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
+        m_CurrCtrl?.ExitSkill();
 
         SetStateData<RoleJump>(jumpData);
         ChangeState<RoleJump>();
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
@@ -398,11 +357,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_OnHurtEvent?.Invoke(hurtStateData);
-
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
+        m_CurrCtrl?.ExitSkill();
 
         if (m_EntityAttribute.health - hurtStateData.attackValue <= 0 && !hurtStateData.isSwoon)
         {
@@ -465,10 +420,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             PlayAnimation(AnimName.JumpDown);
         }
 
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.ExitSkill();
-        }
+        m_CurrCtrl?.ExitSkill();
 
         m_DropTrapStateData = dropTrapStateData;
         m_IsDropTrag = true;
@@ -502,10 +454,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     public virtual void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
-        if (m_CurrCtrl != null)
-        {
-            m_CurrCtrl.SetHitState(isHurtTarget);
-        }
+        m_CurrCtrl?.SetHitState(isHurtTarget);
     }
 
     public virtual void Resume()
@@ -544,7 +493,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         if (!hurtStatedata.isNotPlayHurtSound)
         {
             string hurtSound = string.IsNullOrEmpty(hurtStatedata.hurtSound) ? SoundName.DefaultHurt : hurtStatedata.hurtSound;
-            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, hurtSound));
+            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, hurtSound));
         }
 
         m_EntityAttribute.SubHealth(hurtStatedata.attackValue);
@@ -554,7 +503,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             ChangeState<RoleDead>();
         }
 
-        ReferencePool.ReleaseReference(hurtStatedata);
+        hurtStatedata.Release();
         m_OnGroundHurtStateData = null;
     }
 
@@ -566,7 +515,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             m_IsDropGround = false;
         }
 
-        if (m_FSM == null || !m_FSM.isRunning)
+        if (m_Fsm == null || !m_Fsm.isRunning)
         {
             return;
         }
@@ -604,10 +553,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (!m_IsAddGroundForce)
         {
-            if (m_CurrCtrl != null)
-            {
-                m_CurrCtrl.ExitSkill();
-            }
+            m_CurrCtrl?.ExitSkill();
         }
 
         if (IsAnyState(typeof(RoleSwoon)))
@@ -631,7 +577,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             if (!m_EntityAttribute.IsDie())
             {
                 ChangeDefaultState();
-                AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop));
+                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop));
             }
             else
             {
@@ -672,7 +618,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            ReferencePool.ReleaseReference(m_DropTrapStateData);
+            m_DropTrapStateData.Release();
             m_IsDropTrag = false;
             m_DropTrapStateData = null;
         }
@@ -734,7 +680,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.up * yOffset).normalized;
             OnMoveMsg(data);
-            ReferencePool.ReleaseReference(data);
+            data.Release();
             return;
         }
 
@@ -745,7 +691,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             MoveStateData data = MoveStateData.Create();
             data.dir = (Vector2.right * xOffset).normalized;
             OnMoveMsg(data);
-            ReferencePool.ReleaseReference(data);
+            data.Release();
             return;
         }
 

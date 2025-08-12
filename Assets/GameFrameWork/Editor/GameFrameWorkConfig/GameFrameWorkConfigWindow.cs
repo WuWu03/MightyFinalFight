@@ -31,41 +31,40 @@ namespace GameFrameWork.Editor
         {
             InitConfig();
             m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
-            DrawField(
-                () => m_EditorConfig.isCheckVersion != m_IsCheckVersion, 
-                () => m_IsCheckVersion = EditorGUILayout.Toggle("是否进行版本检查", m_IsCheckVersion), 
-                () => m_EditorConfig.isCheckVersion = m_IsCheckVersion, 20);
+            DrawField(() => { return m_EditorConfig.isCheckVersion != m_IsCheckVersion; },
+                () => { m_IsCheckVersion = EditorGUILayout.Toggle("是否进行版本检查", m_IsCheckVersion); },
+                () => { m_EditorConfig.isCheckVersion = m_IsCheckVersion; }, 20);
 
             DrawField(
-                () => m_EditorConfig.isLoadFromAssetBundle != m_IsLoadFromAssetBundle, 
-                () => m_IsLoadFromAssetBundle = EditorGUILayout.Toggle("是否从AssetBundle加载资源", m_IsLoadFromAssetBundle), 
-                () => m_EditorConfig.isLoadFromAssetBundle = m_IsLoadFromAssetBundle, 20);
+                () => { return m_EditorConfig.isLoadFromAssetBundle != m_IsLoadFromAssetBundle; }, 
+                () => { m_IsLoadFromAssetBundle = EditorGUILayout.Toggle("是否从AssetBundle加载资源", m_IsLoadFromAssetBundle); },
+                () => { m_EditorConfig.isLoadFromAssetBundle = m_IsLoadFromAssetBundle; }, 20);
 
             DrawField(
-                () => m_EditorConfig.isOpenLog != m_IsOpenLog,
-                () => m_IsOpenLog = EditorGUILayout.Toggle("是否开启日志", m_IsOpenLog),
-                () => m_EditorConfig.isOpenLog = m_IsOpenLog, 20);
+                () => { return m_EditorConfig.isOpenLog != m_IsOpenLog; },
+                () => { m_IsOpenLog = EditorGUILayout.Toggle("是否开启日志", m_IsOpenLog); },
+                () => { m_EditorConfig.isOpenLog = m_IsOpenLog; }, 20);
 
             DrawField(
-                () => m_EditorConfig.isUseLua != m_IsUseLua,
-                () => m_IsUseLua = EditorGUILayout.Toggle("是否使用Lua", m_IsUseLua),
-                () => m_EditorConfig.isUseLua = m_IsUseLua, 20);
+                () => { return m_EditorConfig.isUseLua != m_IsUseLua; },
+                () => { m_IsUseLua = EditorGUILayout.Toggle("是否使用Lua", m_IsUseLua); },
+                () => { m_EditorConfig.isUseLua = m_IsUseLua; }, 20);
 
             if (m_IsUseLua)
             {
                 DrawField(
-                    () => m_EditorConfig.isLoadLuaFromAssetBundle != m_IsLoadLuaFromAssetBundle,
-                    () => m_IsLoadLuaFromAssetBundle = EditorGUILayout.Toggle("Lua脚本是否从AssetBundle加载", m_IsLoadLuaFromAssetBundle),
-                    () => m_EditorConfig.isLoadLuaFromAssetBundle = m_IsLoadLuaFromAssetBundle, 20);
+                    () => { return m_EditorConfig.isLoadLuaFromAssetBundle != m_IsLoadLuaFromAssetBundle; },
+                    () => { m_IsLoadLuaFromAssetBundle = EditorGUILayout.Toggle("Lua脚本是否从AssetBundle加载", m_IsLoadLuaFromAssetBundle); },
+                    () => { m_EditorConfig.isLoadLuaFromAssetBundle = m_IsLoadLuaFromAssetBundle; }, 20);
 
                 DrawField(
-                    () => m_EditorConfig.isLuaByteMode != m_IsLuaByteMode,
-                    () => m_IsLuaByteMode = EditorGUILayout.Toggle("Lua脚本是否使用字节模式", m_IsLuaByteMode),
-                    () => m_EditorConfig.isLuaByteMode = m_IsLuaByteMode, 20);
+                    () => { return m_EditorConfig.isLuaByteMode != m_IsLuaByteMode; },
+                    () => { m_IsLuaByteMode = EditorGUILayout.Toggle("Lua脚本是否使用字节模式", m_IsLuaByteMode); },
+                    () => { m_EditorConfig.isLuaByteMode = m_IsLuaByteMode; }, 20);
                 DrawField(
-                    () => m_EditorConfig.luaPath != m_LuaPath,
-                    () => m_LuaPath = EditorGUILayout.TextField("Lua脚本目录", m_LuaPath),
-                    () => m_EditorConfig.luaPath = m_LuaPath, 20);
+                    () => { return m_EditorConfig.luaPath != m_LuaPath; },
+                    () => { m_LuaPath = EditorGUILayout.TextField("Lua脚本目录", m_LuaPath); },
+                    () => { m_EditorConfig.luaPath = m_LuaPath; }, 20);
             }
             else
             {
@@ -79,8 +78,8 @@ namespace GameFrameWork.Editor
             }
 
             DrawField(
-                () => m_EditorConfig.uiPath != m_UIPath,
-                () => m_UIPath = EditorGUILayout.TextField("UI目录", m_UIPath),
+                () => { return m_EditorConfig.uiPath != m_UIPath; },
+                () => { m_UIPath = EditorGUILayout.TextField("UI目录", m_UIPath); },
                 () =>
                 {
                     if (m_UIPath.EndsWith("/"))
@@ -122,8 +121,8 @@ namespace GameFrameWork.Editor
                 }, 20);
 
             DrawField(
-                () => m_EditorConfig.configDataPath != m_ConfigDataPath,
-                () => m_ConfigDataPath = EditorGUILayout.TextField("配置文件目录", m_ConfigDataPath),
+                () => { return m_EditorConfig.configDataPath != m_ConfigDataPath; },
+                () => { m_ConfigDataPath = EditorGUILayout.TextField("配置文件目录", m_ConfigDataPath); },
                 () =>
                 {
                     if (m_ConfigDataPath.EndsWith("/"))
@@ -146,8 +145,8 @@ namespace GameFrameWork.Editor
                 }, 20);
 
             DrawField(
-                () => m_EditorConfig.versionFileName != m_VersionFileName,
-                () => m_VersionFileName = EditorGUILayout.TextField("资源版本文件名称", m_VersionFileName),
+                () => { return m_EditorConfig.versionFileName != m_VersionFileName; },
+                () => { m_VersionFileName = EditorGUILayout.TextField("资源版本文件名称", m_VersionFileName); },
                 () =>
                 {
                     if (string.IsNullOrEmpty(m_VersionFileName))
@@ -164,8 +163,8 @@ namespace GameFrameWork.Editor
                 }, 20);
 
             DrawField(
-                   () => m_EditorConfig.assetMapFileName != m_AssetMapFileName,
-                   () => m_AssetMapFileName = EditorGUILayout.TextField("资源映射文件名称", m_AssetMapFileName),
+                   () => { return m_EditorConfig.assetMapFileName != m_AssetMapFileName; },
+                   () => { m_AssetMapFileName = EditorGUILayout.TextField("资源映射文件名称", m_AssetMapFileName); },
                    () =>
                    {
                        if (string.IsNullOrEmpty(m_AssetMapFileName))
@@ -182,14 +181,14 @@ namespace GameFrameWork.Editor
                    }, 20);
 
             DrawField(
-                () => m_EditorConfig.buildPath != m_BuildPath,
-                () => m_BuildPath = EditorGUILayout.TextField("打包绝对路径", m_BuildPath),
-                () => m_EditorConfig.buildPath = m_BuildPath, 20);
+                () => { return m_EditorConfig.buildPath != m_BuildPath; },
+                () => { m_BuildPath = EditorGUILayout.TextField("打包绝对路径", m_BuildPath); },
+                () => { m_EditorConfig.buildPath = m_BuildPath; }, 20);
 
             DrawField(
-                () => m_EditorConfig.logColor != m_LogColor,
-                () => m_LogColor = EditorGUILayout.ColorField("日志文本颜色", m_LogColor),
-                () => m_EditorConfig.logColor = m_LogColor, 20);
+                () => { return m_EditorConfig.logColor != m_LogColor; },
+                () => { m_LogColor = EditorGUILayout.ColorField("日志文本颜色", m_LogColor); },
+                () => { m_EditorConfig.logColor = m_LogColor; }, 20);
 
             m_LanguageKeyFile = EditorGUILayout.ObjectField("多语言矫正文件", m_LanguageKeyFile, typeof(TextAsset),false);
             m_EditorConfig.languageKeyFilePath = AssetDatabase.GetAssetPath(m_LanguageKeyFile);

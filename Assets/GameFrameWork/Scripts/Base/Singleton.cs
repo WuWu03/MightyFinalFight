@@ -2,20 +2,26 @@ using System;
 
 namespace GameFrameWork
 {
-    public abstract class Singleton<T> where T : Singleton<T>, new()
+    public abstract class Singleton<T> : IDisposable where T : Singleton<T>, new()
     {
-        public static T Instance
+        public static T instance
         {
             get
             {
-                if (m_Instance == null)
-                {
-                    m_Instance = Activator.CreateInstance<T>();
-                }
+                m_Instance ??= Activator.CreateInstance<T>();
                 return m_Instance;
             }
         }
 
-        protected static T m_Instance = null;
+
+        public void Dispose()
+        {
+            m_Instance = null;
+            OnDispose();
+        }
+
+        protected abstract void OnDispose();
+
+        private static T m_Instance = null;
     }
 }

@@ -23,9 +23,9 @@ public class Consume : BaseSceneItem
         Release();
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         ResetRigidbody();
         
         BoxCollider2D bc2 = go.GetComponent<BoxCollider2D>();
@@ -46,19 +46,19 @@ public class Consume : BaseSceneItem
             mainPanel.SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
 
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddExp()
     {
         PlayerMgr.instance.AddExp(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddLife()
     {
         PlayerMgr.instance.AddLife(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddMoney()

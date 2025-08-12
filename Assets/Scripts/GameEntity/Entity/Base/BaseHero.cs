@@ -52,7 +52,7 @@ public class BaseHero : BaseRole
         get
         {
             bool condition = base.canChangeDefaultState || m_Weapon != null || IsAnimation(AnimName.ThrowWeapon);
-            if(HasCatch())
+            if (HasCatch())
             {
                 if (IsAnyState(typeof(RoleAttack)))
                     condition = true;
@@ -161,9 +161,9 @@ public class BaseHero : BaseRole
         }
     }
 
-    protected override void OnLoadAssetComplete(GameObject go,object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         m_Slot1Renderer = go.transform.Find("slot1").GetComponent<Renderer>();
         m_Slot2Renderer = go.transform.Find("slot2").GetComponent<Renderer>();
         m_Slot1Renderer.enabled = true;
@@ -213,9 +213,9 @@ public class BaseHero : BaseRole
         }
     }
 
-    public override void OnAttackMsg(AttackStateData data,bool isForceJumpAttack = false)
+    public override void OnAttackMsg(AttackStateData data, bool isForceJumpAttack = false)
     {
-        if(m_ListCatchTarget != null)
+        if (m_ListCatchTarget != null)
         {
             m_CatchStamp = Time.time;
         }
@@ -250,7 +250,7 @@ public class BaseHero : BaseRole
                 data.isCatch = true;
             }
         }
-           
+
         base.OnJumpMsg(data);
     }
 
@@ -512,7 +512,7 @@ public class BaseHero : BaseRole
 
             BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
 
-            if(target.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken)))
+            if (target.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken)))
             {
                 return;
             }
@@ -539,7 +539,7 @@ public class BaseHero : BaseRole
 
     private void CheckRebirthState()
     {
-        if (!m_IsRebirthState) 
+        if (!m_IsRebirthState)
         {
             return;
         }
@@ -554,7 +554,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if(Time.time - m_RebirthLightTimer >= m_RebirthLightTime)
+        if (Time.time - m_RebirthLightTimer >= m_RebirthLightTime)
         {
             m_RebirthLightTimer = Time.time;
             m_Slot2Renderer.enabled = !m_Slot2Renderer.enabled;
@@ -607,7 +607,7 @@ public class BaseHero : BaseRole
     private float m_RebirthStateTimer = 0;
     private float m_RebirthStateTime = 3.0f;
     private float m_RebirthLightTimer = 0;
-    private float m_RebirthLightTime = 1f/30f;
+    private float m_RebirthLightTime = 1f / 30f;
     private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
     private float m_HurtTimer = 0f;

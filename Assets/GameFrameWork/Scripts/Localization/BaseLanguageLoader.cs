@@ -36,6 +36,12 @@ namespace GameFrameWork.Localization
             OnInit(txt);
         }
 
+        public void Reload()
+        {
+            Release();
+            Init();
+        }
+
         public void Release()
         {
             if (!m_IsInit)

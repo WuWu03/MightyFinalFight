@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using UnityEngine;
 
 public class BaseRoleCtrl : BaseCtrl
@@ -29,7 +29,7 @@ public class BaseRoleCtrl : BaseCtrl
         moveData.canChangeDir = canChangeDir;
         m_Owner.OnMoveMsg(moveData);
 
-        ReferencePool.ReleaseReference(moveData);
+        ReferencePool.Release(moveData);
     }
 
     public void Attack(Vector2 dir)
@@ -124,8 +124,7 @@ public class BaseRoleCtrl : BaseCtrl
         jumpData.dir = jumpDir;
         jumpData.canChangeDir = canChangeDir;
         m_Owner.OnJumpMsg(jumpData);
-
-        ReferencePool.ReleaseReference(jumpData);
+        jumpData.Release();
     }
 
     protected override void OnUpdate()
@@ -164,23 +163,15 @@ public class BaseRoleCtrl : BaseCtrl
     protected override void OnLateUpdate()
     {
         base.OnLateUpdate();
-
-        if (m_SkillManager != null)
-        {
-            m_SkillManager.Update();
-        }
+        m_SkillManager?.Update();
     }
 
     protected override void OnRelease()
     {
-        if (m_RoleData != null)
-        {
-            ReferencePool.ReleaseReference(m_RoleData);
-            m_RoleData = null;
-        }
-
-        m_SkillManager.Release();
+        m_RoleData?.Release();
+        m_SkillManager?.Release();
         m_SkillManager = null;
+        m_RoleData = null;
         base.OnRelease();
     }
 

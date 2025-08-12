@@ -15,10 +15,10 @@ namespace GameFrameWork.Pool
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
 
-            m_DicPool = new Dictionary<string, GameObjectPool>();
-            m_DicLoadRequests = new Dictionary<string, List<LoadRequest>>();
-            m_ListReleasePoolKey = new List<string>();
-            m_ListUnloader = new List<GameObjectUnLoader>();
+            m_Pools = new();
+            m_LoadRequests = new();
+            m_ReleaseKeys = new();
+            m_Unloaders = new();
         }
 
         /// <summary>
@@ -28,13 +28,25 @@ namespace GameFrameWork.Pool
         {
             base.OnShutDown();
 
-            foreach (KeyValuePair<string, GameObjectPool> kvp in m_DicPool)
+            foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
             {
                 kvp.Value.Clear();
             }
 
-            m_DicLoadRequests.Clear();
-            m_DicPool.Clear();
+            m_ReleaseKeys.Clear();
+            m_Pools.Clear();
+            m_LoadRequests.Clear();
+            m_Unloaders.Clear();
+        }
+
+        protected override void OnDestory()
+        {
+            base.OnDestory();
+
+            m_ReleaseKeys = null;
+            m_Pools = null;
+            m_LoadRequests = null;
+            m_Unloaders = null;
         }
 
         /// <summary>
@@ -50,10 +62,10 @@ namespace GameFrameWork.Pool
         /// </summary>
         public void RemovePool(string tag)
         {
-            if (m_DicPool.TryGetValue(tag, out GameObjectPool pool))
+            if (m_Pools.TryGetValue(tag, out GameObjectPool pool))
             {
                 pool.Clear();
-                m_DicPool.Remove(tag);
+                m_Pools.Remove(tag);
             }
         }
 
@@ -62,7 +74,7 @@ namespace GameFrameWork.Pool
         /// </summary>
         public bool HasPool(string tag)
         {
-            return m_DicPool.ContainsKey(tag);
+            return m_Pools.ContainsKey(tag);
         }
 
         /// <summary>
@@ -70,7 +82,7 @@ namespace GameFrameWork.Pool
         /// </summary>
         public GameObject Get(string tag, Transform parent, string layer, bool isActive = true)
         {
-            if (m_DicPool.TryGetValue(tag, out GameObjectPool pool))
+            if (m_Pools.TryGetValue(tag, out GameObjectPool pool))
             {
                 GameObject go = pool.Get(isActive);
 
@@ -86,26 +98,23 @@ namespace GameFrameWork.Pool
         /// <summary>
         /// 从资源中加载一个物体
         /// </summary>
-        public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object[]> call, params object[] args)
+        public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg = null)
         {
             GameObject go = Get(assetPath, null, string.Empty);
 
             if (go != null)
             {
-                call?.Invoke(assetPath, go, args);
+                loadedAction?.Invoke(assetPath, go, arg);
             }
             else
             {
-                LoadRequest request = LoadRequest.Create();
-                request.assetPath = assetPath;
-                request.action = call;
-                request.args = args;
+                LoadRequest request = LoadRequest.Create(assetPath, null, loadedAction, arg);
 
-                if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+                if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
                 {
                     listLoadRequest = new List<LoadRequest>() { request };
-                    m_DicLoadRequests.Add(assetPath, listLoadRequest);
-                    AssetsPool.instance.Get<GameObject>(assetPath, OnLoaded);
+                    m_LoadRequests.Add(assetPath, listLoadRequest);
+                    AssetsPool.instance.Get<GameObject>(assetPath, OnLoaded, arg);
                 }
                 else
                 {
@@ -119,14 +128,14 @@ namespace GameFrameWork.Pool
         /// </summary>
         public void Put(string tag, GameObject go, bool isReleaseImmdiately = false)
         {
-            if (m_DicPool.TryGetValue(tag, out GameObjectPool pool))
+            if (m_Pools.TryGetValue(tag, out GameObjectPool pool))
             {
-                m_ListUnloader.Clear();
-                go.GetComponentsInChildren<GameObjectUnLoader>(true, m_ListUnloader);
+                m_Unloaders.Clear();
+                go.GetComponentsInChildren<GameObjectUnLoader>(true, m_Unloaders);
 
-                for (int i = 0; i < m_ListUnloader.Count; i++)
+                for (int i = 0; i < m_Unloaders.Count; i++)
                 {
-                    GameObjectUnLoader gameObjectUnLoader = m_ListUnloader[i];
+                    GameObjectUnLoader gameObjectUnLoader = m_Unloaders[i];
                     if (gameObjectUnLoader.gameObject != go && !string.IsNullOrEmpty(gameObjectUnLoader.gameObjectPath))
                     {
                         gameObjectUnLoader.Release();
@@ -141,43 +150,43 @@ namespace GameFrameWork.Pool
         {
             base.OnUpdate();
 
-            m_ListReleasePoolKey.Clear();
+            m_ReleaseKeys.Clear();
 
-            foreach (KeyValuePair<string, GameObjectPool> kvp in m_DicPool)
+            foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
             {
                 kvp.Value.CheckRelease();
 
                 if (kvp.Value.count < 1 && kvp.Value.isFromAsset && kvp.Value.usingCount < 1)
                 {
-                    m_ListReleasePoolKey.Add(kvp.Key);
+                    m_ReleaseKeys.Add(kvp.Key);
                 }
             }
 
-            for (int i = 0; i < m_ListReleasePoolKey.Count; i++)
+            for (int i = 0; i < m_ReleaseKeys.Count; i++)
             {
-                m_DicPool[m_ListReleasePoolKey[i]].Clear();
-                m_DicPool.Remove(m_ListReleasePoolKey[i]);
+                m_Pools[m_ReleaseKeys[i]].Clear();
+                m_Pools.Remove(m_ReleaseKeys[i]);
             }
         }
 
         private void AddPool(string tag, GameObject obj, int prefab, bool isFromAsset)
         {
-            if (!m_DicPool.TryGetValue(tag, out GameObjectPool pool))
+            if (!m_Pools.TryGetValue(tag, out _))
             {
-                pool = new GameObjectPool(tag, m_PoolRoot, obj, isFromAsset);
+                GameObjectPool pool = new(tag, m_PoolRoot, obj, isFromAsset);
 
                 for (int i = 0; i < prefab; i++)
                 {
                     pool.Cache();
                 }
 
-                m_DicPool.Add(tag, pool);
+                m_Pools.Add(tag, pool);
             }
         }
 
-        private void OnLoaded(string assetPath, UnityEngine.Object obj, object[] args)
+        private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
         {
-            if (!m_DicLoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
             {
                 Log.LogError(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
                 return;
@@ -187,17 +196,17 @@ namespace GameFrameWork.Pool
 
             for (int i = 0; i < listLoadRequest.Count; i++)
             {
-                listLoadRequest[i].Call(Get(assetPath, null, string.Empty));
-                ReferencePool.ReleaseReference(listLoadRequest[i]);
+                listLoadRequest[i].Loaded(Get(assetPath, null, string.Empty));
+                listLoadRequest[i].Release();
             }
 
-            m_DicLoadRequests.Remove(assetPath);
+            m_LoadRequests.Remove(assetPath);
         }
 
-        private List<string> m_ListReleasePoolKey = null;
+        private List<string> m_ReleaseKeys = null;
         private Transform m_PoolRoot = null;
-        private Dictionary<string, GameObjectPool> m_DicPool = null;
-        private Dictionary<string, List<LoadRequest>> m_DicLoadRequests = null;
-        private List<GameObjectUnLoader> m_ListUnloader = null;
+        private Dictionary<string, GameObjectPool> m_Pools = null;
+        private Dictionary<string, List<LoadRequest>> m_LoadRequests = null;
+        private List<GameObjectUnLoader> m_Unloaders = null;
     }
 }

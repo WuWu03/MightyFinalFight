@@ -11,11 +11,11 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainPanel : BasePanel<MainPanelComponent>
+public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 {
-    protected override void OnInit(object[] param)
+	protected override void OnInit(object arg)
 	{
-        m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
+		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
 	}
 
 	protected override void OnOpen()
@@ -30,13 +30,13 @@ public class MainPanel : BasePanel<MainPanelComponent>
 		SetColor();
 	}
 
-    private void OnStageEnterStartEvent(object sender, GameEventArgs e)
-    {
+	private void OnStageEnterStartEvent(object sender, GameEventArgs e)
+	{
 		SetColor();
-    }
+	}
 
-    protected override void OnUpdate()
-    {
+	protected override void OnUpdate()
+	{
 		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ConstField.EnemyHPBarHideTime)
 		{
 			m_Component.enemyHpBar.gameObject.SetActiveSelf(false);
@@ -47,7 +47,7 @@ public class MainPanel : BasePanel<MainPanelComponent>
 	protected override void OnClose()
 	{
 		m_Component.levelListGroupView.onItemUpdateEvent -= OnItemUpdate;
-    }
+	}
 
 	protected override void OnDestroy()
 	{
@@ -69,8 +69,8 @@ public class MainPanel : BasePanel<MainPanelComponent>
 	{
 		if (width != 0)
 		{
-            m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-        }
+			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		}
 
 		m_Component.playerHpBar.maxValue = max;
 		m_Component.playerHpBar.value = value;
@@ -83,12 +83,12 @@ public class MainPanel : BasePanel<MainPanelComponent>
 			return;
 		}
 
-        m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-        m_Component.enemyHpBar.maxValue = max;
+		m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		m_Component.enemyHpBar.maxValue = max;
 		m_Component.enemyHpBar.value = value;
-        m_Component.enemyHpBar.gameObject.SetActiveSelf(true);
+		m_Component.enemyHpBar.gameObject.SetActiveSelf(true);
 
-        Image image = m_Component.enemyHpBar.GetComponent<Image>();
+		Image image = m_Component.enemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
 
 		if (value == 0)
@@ -97,8 +97,8 @@ public class MainPanel : BasePanel<MainPanelComponent>
 			m_IsEnemyHpBarAnim = true;
 
 			Sequence sequence = DOTween.Sequence();
-            for (int i = 0; i < 7; i++)
-            {
+			for (int i = 0; i < 7; i++)
+			{
 				sequence.Append(image.DOFade(i % 2, 0.2f));
 			}
 			sequence.AppendCallback(() =>
@@ -141,9 +141,9 @@ public class MainPanel : BasePanel<MainPanelComponent>
 
 	private void SetColor()
 	{
-        m_Component.playerHpBarImage.color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
-        m_Component.levelListGroupView.Update(5);
-    }
+		m_Component.playerHpBarImage.color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
+		m_Component.levelListGroupView.Update(5);
+	}
 
 	private bool m_IsEnemyHpBarAnim = false;
 	private float m_EnemyHpBarHideTimer = -1;

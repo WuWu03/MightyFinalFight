@@ -13,9 +13,9 @@ public class Trap : BaseBoundObject
         m_TrapData = info as TrapData;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         SetCollider(m_TrapData.triggerOffest, m_TrapData.triggerSize);
         m_BoxCollider2D.enabled = true;
         m_BoxCollider2D.isTrigger = true;

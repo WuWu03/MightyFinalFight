@@ -80,9 +80,9 @@ public class BaseEffect : BaseSceneObject
         m_PlayEndCallback = null;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go,object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
+        base.OnLoadAssetComplete(go, arg);
         if (m_IsPlaying)
         {
             m_Timer = Time.time;

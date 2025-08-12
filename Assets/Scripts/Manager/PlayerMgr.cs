@@ -4,6 +4,7 @@ using GameFrameWork.Camera;
 using GameFrameWork.ConfigData;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Input;
+using GameFrameWork.Localization;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
@@ -121,12 +122,16 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     protected override void OnShutDown()
     {
         base.OnShutDown();
+    }
+
+    protected override void OnDestory()
+    {
+        base.OnDestory();
+
         m_PlayerCtrl = null;
         m_RoleConfigData = null;
         m_Player = null;
         m_LevelConfigData = null;
-        InputMgr.instance.getDirectionEvent -= GetDirction;
-        InputMgr.instance.getPreConditonEvent -= GetPreCondition;
     }
 
     public void InitPlayer()
@@ -237,7 +242,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
             mainPanel.SetPlayerLevel();
-            AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.LevelUp));
+            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.LevelUp));
         }
 
         mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);
@@ -255,7 +260,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_ContinueCount += value;
     }
 
-    public void SetSpeedZero(bool isZero)
+    public void SetSpeedZero()
     {
         if (m_CurrSpeed == 0)
         {
@@ -307,8 +312,37 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         base.OnUpdate();
 
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (Input.GetKeyDown(KeyCode.Keypad6))
         {
+            m_LanguageIndex++;
+
+            if (m_LanguageIndex > 2)
+            {
+                m_LanguageIndex = 0;
+            }
+
+            if (m_LanguageIndex == 0)
+            {
+                LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
+            }
+            else if (m_LanguageIndex == 1)
+            {
+                LocalizationMgr.instance.ChangeLanguage(LanguageType.English);
+            }
+            else if (m_LanguageIndex == 2)
+            {
+                LocalizationMgr.instance.ChangeLanguage(LanguageType.Japanese);
+            }
+        }
+
+        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0)
+        {
+            return;
+        }
+
+        if (!m_CanCtrl)
+        {
+            m_PlayerCtrl.Move(Vector2.zero);
             return;
         }
 
@@ -326,21 +360,18 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         {
             SceneEntityMgr.instance.CreateSceneItem(1001, m_Player.mapPos);
         }
-
-        if (Input.GetKeyDown(KeyCode.Keypad2))
+        else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-           m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
         }
-
-        if (Input.GetKeyDown(KeyCode.Keypad3))
+        else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             StageMgr.instance.StageEnterNext();
         }
-
-        if (Input.GetKeyDown(KeyCode.Keypad4))
+        else if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             List<BaseEnemy> enemys = SceneEntityMgr.instance.GetEnemies();
- 
+
             foreach (var enemy in enemys)
             {
                 if (m_IsStopBHT)
@@ -355,8 +386,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
             m_IsStopBHT = !m_IsStopBHT;
         }
-
-        if (Input.GetKeyDown(KeyCode.Keypad5))
+        else if (Input.GetKeyDown(KeyCode.Keypad5))
         {
             float dir = -1;
             int groundY = -40;
@@ -367,6 +397,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
+    private int m_LanguageIndex = 0;
     private bool m_IsStopBHT = false;
 
 

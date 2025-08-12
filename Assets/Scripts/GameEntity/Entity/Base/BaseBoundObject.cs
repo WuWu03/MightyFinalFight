@@ -46,9 +46,8 @@ public class BaseBoundObject : BaseSceneObject
         m_BoxCollider2D = null;
     }
 
-    protected override void OnLoadAssetComplete(GameObject go, object[] param)
+    protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
-        base.OnLoadAssetComplete(go, param);
         m_BoxCollider2D.enabled = true;
     }
 
@@ -67,16 +66,16 @@ public class BaseBoundObject : BaseSceneObject
         m_Bound.xMax = transform.localPosition.x + m_BoxCollider2D.offset.x * m_Dir + m_BoxCollider2D.size.x / 2;
         m_Bound.yMin = transform.localPosition.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
         m_Bound.yMax = transform.localPosition.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
-        m_Bound.center = new Vector2(m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
+        m_Bound.center = new (m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
     }
 
     private void OnDrawGizmos()
     {
         //UpdateBound();
-        Vector2 leftTop = new Vector2(bound.min.x, bound.max.y);
-        Vector2 rightTop = new Vector2(bound.max.x, bound.max.y);
-        Vector2 leftBottom = new Vector2(bound.min.x, bound.min.y);
-        Vector2 rightBottom = new Vector2(bound.max.x, bound.min.y);
+        Vector2 leftTop = new (bound.min.x, bound.max.y);
+        Vector2 rightTop = new (bound.max.x, bound.max.y);
+        Vector2 leftBottom = new (bound.min.x, bound.min.y);
+        Vector2 rightBottom = new (bound.max.x, bound.min.y);
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(leftTop, rightTop);
         Gizmos.DrawLine(rightTop, rightBottom);

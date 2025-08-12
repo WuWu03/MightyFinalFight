@@ -8,4 +8,5 @@ public struct UINames
     public const string StagePanel = "StagePanel";
     public const string TalkPanel = "TalkPanel";
     public const string TitlePanel = "TitlePanel";
+    public const string VersionPanel = "VersionPanel";
 }

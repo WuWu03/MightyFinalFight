@@ -75,7 +75,7 @@ namespace GameFrameWork.Input
             }
 
             axisArgs.horizontal = horizontal;
-            axisArgs.vertical = horizontal;
+            axisArgs.vertical = vertical;
         }
 
         public static void SetAxis(AxisType axisType, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
@@ -248,7 +248,7 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
-                ReferencePool.ReleaseReference(m_Axis[i]);
+                m_Axis[i].Release();
             }
 
             for (int i = 0; i < m_Keys.Length; i++)
@@ -258,7 +258,7 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
-                ReferencePool.ReleaseReference(m_Keys[i]);
+                m_Axis[i].Release();
             }
 
             m_Axis = null;

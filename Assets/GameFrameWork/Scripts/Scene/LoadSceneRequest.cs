@@ -4,58 +4,29 @@ namespace GameFrameWork.Scene
 {
     public class LoadSceneRequest : BaseEventArgs
     {
-        public string sceneName
-        {
-            get
-            {
-                return m_SceneName;
-            }
-        }
+        public string sceneName { get; private set; }
 
-        public object[] args
-        {
-            get
-            {
-                return m_Args;
-            }
-        }
+        public object arg { get; private set; }
 
-        public LoadSceneMode mode
-        {
-            get
-            {
-                return m_Mode;
-            }
-        }
+        public LoadSceneMode mode { get; private set; }
 
-        public bool isAutoAllowScene
-        {
-            get
-            {
-                return m_IsAutoAllowScene;
-            }
-        }
+        public bool isAutoAllowScene { get; private set; }
 
-        public static LoadSceneRequest Create(string sceneName, object[] args, LoadSceneMode mode, bool isAutoAllowScene)
+        public static LoadSceneRequest Create(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object arg)
         {
             LoadSceneRequest request = ReferencePool.Acquire<LoadSceneRequest>();
-            request.m_SceneName = sceneName;
-            request.m_Args = args;
-            request.m_Mode = mode;
-            request.m_IsAutoAllowScene = isAutoAllowScene;
+            request.sceneName = sceneName;
+            request.arg = arg;
+            request.mode = mode;
+            request.isAutoAllowScene = isAutoAllowScene;
             return request;
         }
 
         public override void Clear()
         {
-            m_SceneName = string.Empty;
-            m_Args = null;
-            m_IsAutoAllowScene = false;
+            sceneName = string.Empty;
+            arg = null;
+            isAutoAllowScene = false;
         }
-
-        private string m_SceneName = string.Empty;
-        private object[] m_Args = null;
-        private LoadSceneMode m_Mode;
-        private bool m_IsAutoAllowScene = false;
     }
 }

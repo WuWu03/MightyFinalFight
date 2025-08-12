@@ -41,10 +41,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetCatch(false);
         m_Owner.OnAttackMsg(attackData, true);
-
-        ReferencePool.ReleaseReference(attackData);
+        attackData.Release();
     }
-
 
     public override bool IsAllComplete()
     {
@@ -86,7 +84,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySE(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     private void OnDropEvent()

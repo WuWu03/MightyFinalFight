@@ -1,53 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace GameFrameWork.Scene
 {
     public class LoadSceneFailureEventArgs : BaseEventArgs
     {
-        public string sceneName
-        {
-            get
-            {
-                return m_SceneName;
-            }
-        }
+        public string sceneName { get; set; }
 
-        public string errorMessage
-        {
-            get
-            {
-                return m_ErrorMessage;
-            }
-        }
+        public string errorMessage { get; set; }
 
-        public object arg
-        {
-            get
-            {
-                return m_Arg;
-            }
-        }
+        public object arg {  get; set; }
 
         public static LoadSceneFailureEventArgs Create(string sceneName, string errorMessage, object arg)
         {
             LoadSceneFailureEventArgs failureEventArgs = ReferencePool.Acquire<LoadSceneFailureEventArgs>();
-            failureEventArgs.m_SceneName = sceneName;
-            failureEventArgs.m_ErrorMessage = errorMessage;
-            failureEventArgs.m_Arg = arg;
+            failureEventArgs.sceneName = sceneName;
+            failureEventArgs.errorMessage = errorMessage;
+            failureEventArgs.arg = arg;
             return failureEventArgs;
         }
 
         public override void Clear()
         {
-            m_SceneName = string.Empty;
-            m_ErrorMessage = string.Empty;
-            m_Arg = null;
+            base.Clear();
+            sceneName = string.Empty;
+            errorMessage = string.Empty;
+            arg = null;
         }
-
-        private string m_SceneName = string.Empty;
-        private string m_ErrorMessage = string.Empty;
-        private object m_Arg = null;
     }
 }

@@ -24,20 +24,18 @@ namespace SkillNew
 
         protected override void OnGUI()
         {
-            base.OnGUI();
-
             EditorGUILayout.BeginVertical();
 
             DrawField(() => { return m_CurrAnimEventInfo.animName != m_CurrEvent.animEventInfo.animName; },
-                () => { m_CurrAnimEventInfo.animName = EditorGUILayout.TextField("动画名称", m_CurrAnimEventInfo.animName); },
+                () => { m_CurrAnimEventInfo.animName = EditorGUILayout.TextField("鍔ㄧ敾鍚嶇О", m_CurrAnimEventInfo.animName); },
                 () => { m_CurrEvent.animEventInfo.animName = m_CurrAnimEventInfo.animName; });
 
             DrawField(() => { return m_CurrAnimEventInfo.animSpeed != m_CurrEvent.animEventInfo.animSpeed; },
-                () => { m_CurrAnimEventInfo.animSpeed = EditorGUILayout.FloatField("动画速度", m_CurrAnimEventInfo.animSpeed); },
+                () => { m_CurrAnimEventInfo.animSpeed = EditorGUILayout.FloatField("鍔ㄧ敾閫熷害", m_CurrAnimEventInfo.animSpeed); },
                 () => { m_CurrEvent.animEventInfo.animSpeed = m_CurrAnimEventInfo.animSpeed; });
 
             DrawField(() => { return m_CurrAnimEventInfo.animPlayTimes != m_CurrEvent.animEventInfo.animPlayTimes; },
-                () => { m_CurrAnimEventInfo.animPlayTimes = EditorGUILayout.FloatField("播放次数", m_CurrAnimEventInfo.animPlayTimes); },
+                () => { m_CurrAnimEventInfo.animPlayTimes = EditorGUILayout.FloatField("鎾斁娆℃暟", m_CurrAnimEventInfo.animPlayTimes); },
                 () => { m_CurrEvent.animEventInfo.animPlayTimes = m_CurrAnimEventInfo.animPlayTimes; });
 
             EditorGUILayout.EndVertical();
@@ -45,7 +43,6 @@ namespace SkillNew
 
         protected override void OnResetEvent()
         {
-            base.ResetEvent();
             m_CurrEvent.animEventInfo = null;
         }
 

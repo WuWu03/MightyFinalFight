@@ -1,4 +1,4 @@
-﻿using GameFrameWork;
+using GameFrameWork;
 using System;
 using UnityEngine;
 

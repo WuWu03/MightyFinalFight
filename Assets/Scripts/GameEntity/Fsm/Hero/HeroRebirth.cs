@@ -1,4 +1,4 @@
-using GameFrameWork.FSM;
+using GameFrameWork.Fsm;
 using GameFrameWork.Camera;
 using UnityEngine;
 using GameFrameWork;
@@ -13,12 +13,12 @@ public class HeroRebirth : BaseFsmState
         }
     }
 
-    protected override void OnInit(FiniteStateMachine fsm)
+    protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseHero;
     }
 
-    protected override void OnEnter(FiniteStateMachine fsm)
+    protected override void OnEnter(Fsm fsm)
     {
         m_Owner.ResetRigidbody();
         m_Owner.onGroundEvent.AddListener(OnGround);
@@ -47,13 +47,13 @@ public class HeroRebirth : BaseFsmState
         base.OnSetStateData(stateData);
     }
 
-    protected override void OnExit(FiniteStateMachine fsm, bool isShutdown)
+    protected override void OnExit(Fsm fsm, bool isShutdown)
     {
         m_Owner.StopAnimation(AnimName.JumpUp);
         m_ReBirthPos = Vector2.zero;
     }
 
-    protected override void OnRelease(FiniteStateMachine fsm)
+    protected override void OnRelease(Fsm fsm)
     {
         m_Owner = null;
     }

@@ -62,7 +62,7 @@ public class DoBack : Action
 
     private Vector2 m_TargetPos = Vector2.zero;
     private float m_BackDistance = 0;
-    private Regex m_Regex = new Regex(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
+    private Regex m_Regex = new(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
     private new BaseEnemyCtrl m_Owner = null;
 
     private BehaviourTreeState m_State = BehaviourTreeState.None;

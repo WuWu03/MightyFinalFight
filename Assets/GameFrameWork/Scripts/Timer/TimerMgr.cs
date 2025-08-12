@@ -41,12 +41,12 @@ namespace GameFrameWork.Timer
             foreach (Timer timer in m_TimerList)
             {
                 timer.Cancel();
-                ReferencePool.ReleaseReference(timer);
+                timer.Release();
             }
 
             while(m_TimerQueue.Count > 0)
             {
-                ReferencePool.ReleaseReference(m_TimerQueue.Dequeue());
+                m_TimerQueue.Dequeue().Release();
             }
 
             m_TimerList.Clear();
@@ -86,7 +86,7 @@ namespace GameFrameWork.Timer
                 Timer timer = m_TimerList[i];
                 if (timer.isDone)
                 {
-                    ReferencePool.ReleaseReference(timer);
+                    timer.Release();
                     m_TimerList.Remove(timer);
                 }
             }

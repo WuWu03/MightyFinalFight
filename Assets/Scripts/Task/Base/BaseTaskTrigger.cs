@@ -1,7 +1,4 @@
-﻿using GameFrameWork.Camera;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using GameFrameWork.Camera;
 
 public abstract class BaseTaskTrigger : ITaskTrigger
 {
