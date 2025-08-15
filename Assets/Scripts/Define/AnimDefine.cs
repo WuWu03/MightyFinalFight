@@ -1,4 +1,4 @@
-﻿public struct AnimName
+public class AnimName
 {
     public const string Attack1 = "Attack1";
     public const string Attack2 = "Attack2";

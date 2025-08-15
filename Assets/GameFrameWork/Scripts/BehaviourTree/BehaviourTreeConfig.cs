@@ -1,4 +1,4 @@
-﻿namespace GameFrameWork.BehaviourTree
+namespace GameFrameWork.BehaviourTree
 {
     public class BehaviourTreeConfig
     {
@@ -31,11 +31,17 @@
         public string args;
         public int priority;
         public int repeatCount;
+
+    }
+
+    public class BehaviorTreePreConditionData : BehaviorTreeBaseData
+    {
+        public bool isAndCondition;
     }
 
     public class BehaviourTreeData : BehaviorTreeBaseData
     {
         public BehaviourTreeData[] children;
-        public BehaviorTreeBaseData[] preConditions;
+        public BehaviorTreePreConditionData[] preConditions;
     }
 }

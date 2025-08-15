@@ -2,16 +2,16 @@ using GameFrameWork.BehaviourTree;
 
 public class PreIsAnimComplete : PreCondition
 {
-    public PreIsAnimComplete(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public PreIsAnimComplete(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
     {
-        m_PreOwner = base.m_Owner as BaseRoleCtrl;
+        m_Owner = base.m_Owner as BaseRole;
     }
 
     protected override bool OnCheckPreCondition()
     {
-        return m_PreOwner.owner.IsPlayComplete();
+        return m_Owner.IsPlayComplete();
     }
 
-    private BaseRoleCtrl m_PreOwner = null;
+    private new BaseRole m_Owner = null;
 }
 

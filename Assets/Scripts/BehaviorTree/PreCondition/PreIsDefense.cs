@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class PreIsDefense : PreCondition
 {
-    public PreIsDefense(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public PreIsDefense(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
-        m_Owner.owner.onHurtEvent += OnHurtEvent;
+        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner.onHurtEvent += OnHurtEvent;
     }
 
     private void OnHurtEvent(HurtStateData data)
     {
-        if (m_Owner.owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
+        if (m_Owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
         {
             m_IsDefense = false;
             m_HurtTimer = Time.time;
@@ -25,7 +25,7 @@ public class PreIsDefense : PreCondition
         }
 
         m_HurtTimer = -1;
-        m_IsDefense = !m_Owner.owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.owner.isBeCatch && data.canBeDefense;
+        m_IsDefense = !m_Owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.isBeCatch && data.canBeDefense;
         data.isDefense = m_IsDefense;
 
         if (m_IsDefense)
@@ -50,10 +50,10 @@ public class PreIsDefense : PreCondition
 
     protected override void OnDestroy()
     {
-        m_Owner.owner.onHurtEvent -= OnHurtEvent;
+        m_Owner.onHurtEvent -= OnHurtEvent;
     }
 
     private float m_HurtTimer = -1;
     private bool m_IsDefense = false;
-    private new BaseEnemyCtrl m_Owner = null;
+    private new BaseEnemy m_Owner = null;
 }

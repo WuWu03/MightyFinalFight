@@ -63,8 +63,12 @@ namespace GameFrameWork.GameEntity
 
         public void Release()
         {
+            if (m_Id == -1)
+            {
+                return;
+            }
+
             m_Id = -1;
-            m_EntityName = string.Empty;
             m_Layer = string.Empty;
             gameObject.SetActiveSelf(false);
             OnRelease();
@@ -77,7 +81,6 @@ namespace GameFrameWork.GameEntity
         }
 
         private int m_Id = 0;
-        private string m_EntityName = string.Empty;
         private string m_Layer = string.Empty;
     }
 }

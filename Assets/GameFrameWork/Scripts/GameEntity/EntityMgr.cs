@@ -175,44 +175,44 @@ namespace GameFrameWork.GameEntity
             m_DestroyCount = 0;
         }
 
-        public List<T> FindEntities<T>(string name = null) where T : BaseEntity
+        public List<T> FindEntities<T>(string name) where T : BaseEntity
         {
-            List<T> entityList = new List<T>();
-            Type type = typeof(T);
+            List<T> entityList = new();
 
             for (int i = 0; i < m_ListUsingEntities.Count; i++)
             {
-                if (m_ListUsingEntities[i].GetType() == type)
+                BaseEntity entity = m_ListUsingEntities[i];
+
+                if (entity is T && entity.name.Equals(name))
                 {
-                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].name.Equals(name))
-                    {
-                        entityList.Add(m_ListUsingEntities[i] as T);
-                    }
+                    entityList.Add(m_ListUsingEntities[i] as T);
                 }
             }
 
             return entityList;
         }
 
-        public T FindEntity<T>(string name = null) where T : BaseEntity
+        public T FindEntity<T>(string name) where T : BaseEntity
         {
-            Type type = typeof(T);
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
 
             for (int i = 0; i < m_ListUsingEntities.Count; i++)
             {
-                if (m_ListUsingEntities[i].GetType() == type)
+                BaseEntity entity = m_ListUsingEntities[i];
+
+                if (entity is T && entity.name.Equals(name))
                 {
-                    if (string.IsNullOrEmpty(name) || m_ListUsingEntities[i].name.Equals(name))
-                    {
-                        return m_ListUsingEntities[i] as T;
-                    }
+                    return m_ListUsingEntities[i] as T;
                 }
             }
 
             return null;
         }
 
-        public bool HasEntity<T>(string name = null) where T : BaseEntity
+        public bool HasEntity<T>(string name) where T : BaseEntity
         {
             return FindEntity<T>(name) != null;
         }

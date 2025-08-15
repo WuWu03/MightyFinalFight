@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PreIsLockPlayer : PreCondition
 {
-    public PreIsLockPlayer(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)    
+    public PreIsLockPlayer(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)    
     {
+        m_Regex = new(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
+        m_Owner = base.m_Owner as BaseEnemy;
+
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
@@ -15,8 +18,6 @@ public class PreIsLockPlayer : PreCondition
                 m_Distance = float.Parse(m.Groups[2].Value);
             }
         }
-
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
     }
 
     protected override bool OnCheckPreCondition()
@@ -26,11 +27,11 @@ public class PreIsLockPlayer : PreCondition
             return true;
         }
 
-        float distance = Vector2.Distance(PlayerMgr.instance.player.pos, m_Owner.owner.pos);
+        float distance = Vector2.Distance(PlayerMgr.instance.player.pos, m_Owner.pos);
         if (distance <= m_Distance)
         {
             m_IsLockPlayer = true;
-            m_Owner.owner.ChangeState<RoleIdle>();
+            m_Owner.ChangeState<RoleIdle>();
             m_Owner.OppositePlayer();
             return true;
         }
@@ -39,7 +40,7 @@ public class PreIsLockPlayer : PreCondition
     }
 
     private float m_Distance = 0f;
-    private Regex m_Regex = new Regex(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
+    private Regex m_Regex = null;
     private bool m_IsLockPlayer = false;
-    private new BaseEnemyCtrl m_Owner = null;
+    private new BaseEnemy m_Owner = null;
 }

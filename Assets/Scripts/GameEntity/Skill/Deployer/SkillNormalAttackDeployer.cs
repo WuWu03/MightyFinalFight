@@ -1,9 +1,7 @@
 using DragonBones;
-using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SkillNormalAttackDeployer : SkillBaseDeployer
 {
@@ -57,7 +55,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         string soundName = m_QueueSound.Dequeue();
 
-        if (m_Owner.currCtrl.isHitSuccess)
+        if (m_Owner.isHitSuccess)
         {
             if (m_SkillData.IsInEffectPlaySound)
             {

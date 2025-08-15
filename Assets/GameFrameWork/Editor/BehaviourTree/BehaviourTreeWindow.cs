@@ -17,11 +17,6 @@ namespace GameFrameWork.Editor
             titleContent = new GUIContent(this.GetType().Name);
         }
 
-        private void OnEnable()
-        {
-
-        }
-
         private void OnDisable()
         {
             m_BehaviourTreeWindowConfig = null;
@@ -153,7 +148,7 @@ namespace GameFrameWork.Editor
 
         private void ShowLeftMenu(int type)
         {
-            GenericMenu menu = new GenericMenu();
+            GenericMenu menu = new();
             menu.AddSeparator("");
             if (type == 0)
             {
@@ -180,7 +175,7 @@ namespace GameFrameWork.Editor
                     DeleteRootWindowNode();
                     break;
                 case 3:
-                    BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", string.Empty, m_BehaviourTreeWindowConfig.dataList.Count + 1);
+                    BehaviourTreeWindowData data = new("未命名", string.Empty, m_BehaviourTreeWindowConfig.dataList.Count + 1);
                     m_BehaviourTreeWindowConfig.dataList.Add(data);
                     break;
                 default:
@@ -201,12 +196,7 @@ namespace GameFrameWork.Editor
             MouseScroll(e);
 
             BeginWindows();
-
-            if (m_RightWindowNode != null)
-            {
-                m_RightWindowNode.OnGUI(e);
-            }
-
+            m_RightWindowNode?.OnGUI(e);
             if (m_FreeWindowNodes.TryGetValue(m_CurrSelect, out List<BehaviourTreeWindowNode> list))
             {
                 for (int i = 0; i < list.Count; i++)
@@ -214,7 +204,6 @@ namespace GameFrameWork.Editor
                     list[i].OnGUI(e);
                 }
             }
-
             EndWindows();
 
             if (m_IsDrawTransition)
@@ -283,11 +272,7 @@ namespace GameFrameWork.Editor
                 if (m_IsDrawTransition)
                 {
                     BehaviourTreeWindowNode node = GetFreeWindowNode(e.mousePosition);
-
-                    if (node == null)
-                    {
-                        node = GetWindowNode(m_RightWindowNode, e.mousePosition);
-                    }
+                    node ??= GetWindowNode(m_RightWindowNode, e.mousePosition);
 
                     if (node != null)
                     {
@@ -427,9 +412,9 @@ namespace GameFrameWork.Editor
                 m_FreeWindowNodes.Add(m_CurrSelect, list);
             }
 
-            int id = (m_CurrSelect + 1) * 1000 + list.Count + 1;
-            BehaviourTreeWindowData data = new BehaviourTreeWindowData("未命名", classType, id, m_CurrMousePosition.x, m_CurrMousePosition.y);
-            BehaviourTreeWindowNode node = new BehaviourTreeWindowNode(data, false);
+            int id = (m_BehaviourTreeWindowConfig.dataList[m_CurrSelect].id + 1) * 10 + list.Count + 1;
+            BehaviourTreeWindowData data = new("未命名", classType, id, m_CurrMousePosition.x, m_CurrMousePosition.y);
+            BehaviourTreeWindowNode node = new(data, false);
 
             list.Add(node);
         }
@@ -469,7 +454,6 @@ namespace GameFrameWork.Editor
         private void DeleteChildWindowNode()
         {
             m_CurrWindowNode.parent.RemoveChild(m_CurrWindowNode);
-
             m_CurrWindowNode = null;
         }
 
@@ -568,17 +552,18 @@ namespace GameFrameWork.Editor
             outData.args = windowData.args;
             outData.priority = windowData.priority;
             outData.children = new BehaviourTreeData[windowData.children.Count];
-            outData.preConditions = new BehaviorTreeBaseData[windowData.preConditions.Count];
+            outData.preConditions = new BehaviorTreePreConditionData[windowData.preConditions.Count];
 
             for (int i = 0; i < windowData.preConditions.Count; i++)
             {
-                outData.preConditions[i] = new BehaviorTreeBaseData();
+                outData.preConditions[i] = new BehaviorTreePreConditionData();
             }
 
             for (int i = 0; i < windowData.preConditions.Count; i++)
             {
                 outData.preConditions[i].classType = windowData.preConditions[i].classType;
                 outData.preConditions[i].args = windowData.preConditions[i].args;
+                outData.preConditions[i].isAndCondition = windowData.preConditions[i].isAndCondition;
             }
 
             for (int i = 0; i < windowData.children.Count; i++)

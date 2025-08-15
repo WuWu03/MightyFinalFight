@@ -33,8 +33,7 @@ public class EffectMgr : BaseMgr<EffectMgr>
     public T PlayEffect<T>(string effectName, Transform parent, Vector3 pos, Vector3 angles, bool isAutoPlay, bool isAutoRelease, float playTime, float speed, GameFrameWorkAction playEndCallback) where T : BaseEffect, new()
     {
         T effect = EntityMgr.instance.GetEntity<T>(effectName, parent);
-        effect.transform.localPosition = pos;
-        effect.transform.localRotation = Quaternion.Euler(angles);
+        effect.transform.SetLocalPositionAndRotation(pos, Quaternion.Euler(angles));
         effect.playTime = playTime;
         effect.speed = speed;
         effect.onPlayEndEvent = playEndCallback;

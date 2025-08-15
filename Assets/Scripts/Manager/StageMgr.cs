@@ -29,11 +29,6 @@ public class StageMgr : BaseMgr<StageMgr>
         }
     }
 
-    protected override void OnAwake()
-    {
-
-    }
-
     public void StageEnter(int stageId)
     {
         StageConfigData configData = null;
@@ -111,7 +106,15 @@ public class StageMgr : BaseMgr<StageMgr>
             AudioMgr.instance.PlayBgmGroup(bgmInfos, true);
         }
 
-        UIMgr.instance.Open(UINames.MainPanel);
+        if(m_CurrStageData.showMainPanel)
+        {
+            UIMgr.instance.Open(UINames.MainPanel).Show();
+        }
+        else
+        {
+            UIMgr.instance.Open(UINames.MainPanel).Hide();
+        }
+
         SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
         PlayerMgr.instance.InitPlayer();
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);

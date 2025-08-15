@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class TaskKillEnemy : BaseTask
 {
-    public TaskKillEnemy(TaskConfigData data) : base(data) 
+    public TaskKillEnemy(TaskConfigData data) : base(data)
     {
         m_AllConditions = new bool[m_ConditionCount];
         m_Results = new bool[m_ConditionCount];
@@ -12,7 +8,7 @@ public class TaskKillEnemy : BaseTask
 
     public override bool CheckCondition()
     {
-        for (int i = 0;i< m_ConditionCount; i++)
+        for (int i = 0; i < m_ConditionCount; i++)
         {
             m_AllConditions[i] = false;
             m_Results[i] = false;
@@ -60,7 +56,7 @@ public class TaskKillEnemy : BaseTask
             }
         }
 
-        for (int i = 0;i < m_AllConditions.Length; i++)
+        for (int i = 0; i < m_AllConditions.Length; i++)
         {
             if (m_AllConditions[i] && !m_Results[i])
             {

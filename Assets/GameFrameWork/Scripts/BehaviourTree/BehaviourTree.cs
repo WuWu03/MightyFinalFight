@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Linq;
 
 namespace GameFrameWork.BehaviourTree
 {
@@ -100,7 +101,7 @@ namespace GameFrameWork.BehaviourTree
                 {
                     if (root is BaseTask)
                     {
-                        (root as BaseTask).AddPreCondition(GetNodeByClassType(data.preConditions[i].name, data.preConditions[i].id, owner, 0, data.preConditions[i].args, data.preConditions[i].classType));
+                        (root as BaseTask).AddPreCondition(GetPreConditionNodeByClassType(data.preConditions[i].name, data.preConditions[i].id, owner, data.preConditions[i].priority, data.preConditions[i].isAndCondition, data.preConditions[i].args, data.preConditions[i].classType));
                     }
                 }
             }
@@ -121,6 +122,18 @@ namespace GameFrameWork.BehaviourTree
 
         private Node GetNodeByClassType(string name, int id, object owner, int priority, string args, string className)
         {
+            Type t = GetNodeType(name, className);
+            return t == null ? null : (Node)System.Activator.CreateInstance(t, name, id, owner, priority, args);
+        }
+
+        private PreCondition GetPreConditionNodeByClassType(string name, int id, object owner, int priority, bool isAndCondition, string args, string className)
+        {
+            Type t = GetNodeType(name, className);
+            return t == null ? null : (PreCondition)System.Activator.CreateInstance(t, name, id, owner, priority, isAndCondition, args);
+        }
+
+        private Type GetNodeType(string name, string className)
+        {
             Type t = Type.GetType("GameFrameWork.BehaviourTree." + className);
 
             if (t == null)
@@ -131,10 +144,9 @@ namespace GameFrameWork.BehaviourTree
             if (t == null)
             {
                 Log.LogError("行为树数据实例不存在 : " + name);
-                return null;
             }
 
-            return (Node)System.Activator.CreateInstance(t, name, id, owner, priority, args);
+            return t;
         }
 
         private bool m_IsPause = false;

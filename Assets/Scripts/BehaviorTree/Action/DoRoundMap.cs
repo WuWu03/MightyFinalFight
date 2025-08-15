@@ -7,7 +7,7 @@ public class DoRoundMap : Action
 {
     public DoRoundMap(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
         m_ListPos = new List<Vector2>();
     }
 
@@ -20,9 +20,9 @@ public class DoRoundMap : Action
         m_MoveTimer = -1;
         m_MoveTime = Random.Range(4f, 8f);
 
-        float tirggerSize = m_Owner.owner.bound.width / 2f;
+        float tirggerSize = m_Owner.bound.width / 2f;
 
-        Vector2 pos = m_Owner.owner.pos;
+        Vector2 pos = m_Owner.pos;
         Rect vision = CameraMgr.instance.GetVision();
         Rect area = StageMgr.instance.GetMoveArea();
 
@@ -75,7 +75,7 @@ public class DoRoundMap : Action
             return;
         }
 
-        bool isArrive = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.owner.pos) <= 0.02f;
+        bool isArrive = Vector2.Distance(m_ListPos[m_CurrIndex], m_Owner.pos) <= 0.02f;
 
         if (isArrive)
         {
@@ -88,7 +88,7 @@ public class DoRoundMap : Action
         }
         else
         {
-            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.owner.pos).normalized, false);
+            m_Owner.Move((m_ListPos[m_CurrIndex] - m_Owner.pos).normalized, false);
             m_Owner.OppositePlayer();
         }
     }
@@ -115,5 +115,5 @@ public class DoRoundMap : Action
     private int m_CurrIndex = 0;
     private List<Vector2> m_ListPos = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
-    protected new BaseEnemyCtrl m_Owner = null;
+    protected new BaseEnemy m_Owner = null;
 }

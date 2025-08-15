@@ -137,6 +137,7 @@ namespace GameFrameWork.Audio
 
             StopBgm(isForcePlay);
             m_WaitToPlayBGMs.Enqueue(BgmInfo.Create(assetPath, isLoop, volum, lerpTime));
+            AssetsPool.instance.Cache<AudioClip>(assetPath);
         }
 
         public void StopBgm(bool isForceStop = false)
@@ -182,6 +183,7 @@ namespace GameFrameWork.Audio
 
             if (m_BgmAudioSource != null)
             {
+                m_BgmAudioSource.volume = 1f;
                 m_BgmAudioSource.Play();
             }
         }

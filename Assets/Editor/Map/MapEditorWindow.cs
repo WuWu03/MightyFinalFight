@@ -5,42 +5,6 @@ using UnityEngine;
 
 public class MapEditorWindow : EditorWindow
 {
-    private void OnEnable()
-    {
-        MapEditorHelper.InitConfig();
-
-        if (m_ViewAreaPoints == null)
-        {
-            m_ViewAreaPoints = new Vector3[4];
-            for (int i = 0; i < m_ViewAreaPoints.Length; i++)
-            {
-                m_ViewAreaPoints[i] = Vector3.zero;
-            }
-        }
-
-        string[] files = GameFrameWork.Utils.FileUtil.GetFiles(MapEditorHelper.mapPath);
-
-        if (files.Length > 0)
-        {
-            List<string> listMapFile = new List<string>();
-            List<string> listMapName = new List<string>();
-
-            for (int i = 0; i < files.Length; i++)
-            {
-                listMapFile.Add(files[i].Substring(files[i].IndexOf("Assets")));
-                listMapName.Add(Path.GetFileNameWithoutExtension(files[i]));
-            }
-
-            m_MapNames = listMapName.ToArray();
-            m_MapFiles = listMapFile.ToArray();
-            MapEditorHelper.LoadTexture(m_MapFiles[0]);
-            m_CurrMap = 0;;
-
-            SetMapNames();
-            SetWindowSize();
-        }
-    }
-
     private void OnDisable()
     {
         MapEditorHelper.Dispose();
@@ -48,6 +12,8 @@ public class MapEditorWindow : EditorWindow
 
     private void OnGUI()
     {
+        InitData();
+
         if(!MapEditorHelper.HasData())
         {
             return;
@@ -61,6 +27,57 @@ public class MapEditorWindow : EditorWindow
     private void OnInspectorUpdate()
     {
         Repaint();
+    }
+
+    private void InitData()
+    {
+        if (MapEditorHelper.HasData()) 
+        {
+            return;
+        }
+
+        MapEditorHelper.InitConfig();
+
+        if (!MapEditorHelper.HasData())
+        {
+            return;
+        }
+
+        if (m_ViewAreaPoints == null)
+        {
+            m_ViewAreaPoints = new Vector3[4];
+            for (int i = 0; i < m_ViewAreaPoints.Length; i++)
+            {
+                m_ViewAreaPoints[i] = Vector3.zero;
+            }
+        }
+
+        string[] files = GameFrameWork.Utils.FileUtil.GetFiles(MapEditorHelper.mapPath, searchOption: SearchOption.AllDirectories);
+
+        if (files.Length > 0)
+        {
+            List<string> listMapFile = new List<string>();
+            List<string> listMapName = new List<string>();
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (!Path.GetFileName(files[i]).StartsWith("map_"))
+                {
+                    continue;
+                }
+
+                listMapFile.Add(files[i].Substring(files[i].IndexOf("Assets")));
+                listMapName.Add(Path.GetFileNameWithoutExtension(files[i]));
+            }
+
+            m_MapNames = listMapName.ToArray();
+            m_MapFiles = listMapFile.ToArray();
+            MapEditorHelper.LoadTexture(m_MapFiles[0]);
+            m_CurrMap = 0; ;
+
+            SetMapNames();
+            SetWindowSize();
+        }
     }
 
     private void DrawElement()
@@ -131,6 +148,7 @@ public class MapEditorWindow : EditorWindow
         MapEditorHelper.currData.level = EditorGUILayout.IntField("小节", MapEditorHelper.currData.level);
         MapEditorHelper.currData.sceneName = EditorGUILayout.TextField("地图名称", MapEditorHelper.currData.sceneName);
         MapEditorHelper.currData.assetPath = EditorGUILayout.TextField("资源路径", MapEditorHelper.currData.assetPath);
+        MapEditorHelper.currData.showMainPanel = EditorGUILayout.Toggle("显示主界面", MapEditorHelper.currData.showMainPanel);
         EditorGUILayout.FloatField("地图宽", MapEditorHelper.Texture.width);
         EditorGUILayout.FloatField("地图高", MapEditorHelper.Texture.height);
 
@@ -266,6 +284,8 @@ public class MapEditorWindow : EditorWindow
         GUILayout.Space(5);
         GUILayout.Label("场景BGM配置");
 
+        int removeIndex = -1;
+
         for (int i = 0; i < MapEditorHelper.currData.listBGMs.Count; i++)
         {
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
@@ -279,7 +299,7 @@ public class MapEditorWindow : EditorWindow
                 {
                     if (UnityEditor.EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                     {
-                        MapEditorHelper.currData.listBGMs.RemoveAt(i);
+                        removeIndex = i;
                     }
                 }
 
@@ -290,6 +310,12 @@ public class MapEditorWindow : EditorWindow
                 MapEditorHelper.currData.listBGMs[i].LerpTime = EditorGUILayout.FloatField("过渡时间", MapEditorHelper.currData.listBGMs[i].LerpTime);
                 GUILayout.EndVertical();
             });
+        }
+
+        if (removeIndex > 0)
+        {
+            MapEditorHelper.currData.listBGMs.RemoveAt(removeIndex);
+            removeIndex = -1;
         }
 
         if (GUILayout.Button("增加BGM"))

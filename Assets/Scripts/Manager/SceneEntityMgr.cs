@@ -71,6 +71,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
         BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataSheet.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+        Log.LogInfo("创建 Enemy , sourceId : " + sourceId + " , entityId : " + entityId);
 
         if (enemy == null)
         {
@@ -169,6 +170,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void ReleaseEnemies()
     {
+        Log.LogInfo("释放所有敌人");
         m_ListDeadEnemies.Clear();
 
         for (int i = 0; i < m_ListEnemies.Count; i++)

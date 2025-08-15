@@ -1,10 +1,6 @@
 using GameFrameWork.Event;
 using GameFrameWork.UI;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class TaskTriggerTalk : BaseTaskTrigger
 {
@@ -18,7 +14,7 @@ public class TaskTriggerTalk : BaseTaskTrigger
     {
         base.Enter();
         UIMgr.instance.Open(UINames.TalkPanel, m_TaskData.TalkID);
-        PlayerMgr.instance.player.currCtrl.Move(Vector2.zero);
+        PlayerMgr.instance.player.Move(Vector2.zero);
         EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
     }
 

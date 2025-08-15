@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 public class SkillSubHPEffect : SkillBaseEffect
 {
-    public SkillSubHPEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
+    public SkillSubHPEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex)
+    {
+        m_Regex = new(@"(SubHP:)([0-9]+)");
+    }
 
     public override void Effect(ISkillSelector selector)
     {
-        if (!m_Owner.currCtrl.isHitSuccess)
+        if (!m_Owner.isHitSuccess)
         {
             return;
         }
@@ -22,5 +22,5 @@ public class SkillSubHPEffect : SkillBaseEffect
         Complete();
     }
 
-    private Regex m_Regex = new Regex(@"(SubHP:)([0-9]+)");
+    private Regex m_Regex = null;
 }

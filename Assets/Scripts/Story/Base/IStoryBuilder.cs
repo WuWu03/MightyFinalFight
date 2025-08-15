@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-interface IStoryBuilder
+public interface IStoryBuilder
 {
-    void BuildStory(Queue<BaseStory> stories);
+    void BuildStory();
 }

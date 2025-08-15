@@ -2,7 +2,7 @@ using GameFrameWork.BehaviourTree;
 
 public class PreIsPlayerCanBeHit : PreCondition
 {
-    public PreIsPlayerCanBeHit(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public PreIsPlayerCanBeHit(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
     {
     }
 

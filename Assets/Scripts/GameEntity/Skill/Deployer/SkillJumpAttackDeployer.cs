@@ -1,12 +1,6 @@
 using DragonBones;
-using GameFrameWork;
 using GameFrameWork.Audio;
 using GameFrameWork.Utils;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using UnityEngine;
 
 public class SkillJumpAttackDeployer : SkillBaseDeployer
 {
@@ -61,7 +55,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         {
             if (m_CanEffect)
             {
-                if (m_Owner.currCtrl.isHitSuccess)
+                if (m_Owner.isHitSuccess)
                 {
                     m_CanEffect = false;
                     return;
@@ -89,7 +83,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
-        m_Owner.currCtrl.SetHitState(false);
+        m_Owner.SetHitSuccess(false);
         m_CanEffect = true;
     }
 

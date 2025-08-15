@@ -29,6 +29,7 @@ public class SkillBulletEffect : SkillBaseEffect
             bullet.SetLayer(LayerName.Bullet);
             bullet.SetOwner(m_Owner);
             bullet.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_SkillEffect.Bullets[i].AssetName));
+            m_Owner.AddBullet(bullet);
         }
 
         Complete();

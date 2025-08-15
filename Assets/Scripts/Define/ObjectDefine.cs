@@ -11,7 +11,7 @@ public enum ObjectType
     CantBreakItem = 8,//不可破坏物体
 }
 
-public struct SoundName
+public class SoundName
 {
     public const string DefaultHurt = "Sound/OnHit02.ogg";
     public const string DefaultDrop = "Sound/OnDrop.ogg";
@@ -34,7 +34,7 @@ public struct SoundName
     public const string Bgm15Clear = "BGM/bgm15Clear.wav";
 }
 
-public struct LayerName
+public class LayerName
 {
     public const string UI = "UI";
     public const string Map = "Map";
@@ -42,25 +42,25 @@ public struct LayerName
     public const string Bullet = "Bullet";
 }
 
-public struct CameraName
+public class CameraName
 {
     public const string MainCamera = "MainCamera";
     public const string RoleCamera = "RoleCamera";
 }
 
-public struct CameraTag
+public class CameraTag
 {
     public const string MainCamera = "MainCamera";
     public const string Untagged = "Untagged";
 }
 
-public struct CameraDepth
+public class CameraDepth
 {
     public const int MainCamera = 0;
     public const int RoleCamera = 1;
 }
 
-public struct ConstField
+public class ConstField
 {
     public const float CatchTime = 2f;
     public const float CatchAttackTime = 0.3f;

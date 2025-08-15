@@ -5,7 +5,7 @@ public class DoRunAwayPlayer : Action
 {
     public DoRunAwayPlayer(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
     }
 
     public override bool CanExcute()
@@ -29,7 +29,7 @@ public class DoRunAwayPlayer : Action
         base.OnUpdate(deltaTime);
 
         float playerDir = PlayerMgr.instance.player.dir;
-        float ownerDir = m_Owner.owner.dir;
+        float ownerDir = m_Owner.dir;
 
         if (playerDir == ownerDir)
         {
@@ -38,7 +38,7 @@ public class DoRunAwayPlayer : Action
         }
 
         Vector2 playerPos = PlayerMgr.instance.player.pos;
-        Vector2 ownerPos = m_Owner.owner.pos;
+        Vector2 ownerPos = m_Owner.pos;
 
         if (playerPos.x > ownerPos.x)
         {
@@ -57,7 +57,7 @@ public class DoRunAwayPlayer : Action
             }
         }
 
-        if (Vector2.Distance(playerPos, ownerPos) < m_Owner.owner.bound.width * 3)
+        if (Vector2.Distance(playerPos, ownerPos) < m_Owner.bound.width * 3)
         {
             m_Owner.Move((playerPos - ownerPos).normalized, false);
             m_Owner.OppositePlayer();
@@ -73,5 +73,5 @@ public class DoRunAwayPlayer : Action
     }
 
     private BehaviourTreeState m_State = BehaviourTreeState.None;
-    private new BaseEnemyCtrl m_Owner = null;
+    private new BaseEnemy m_Owner = null;
 }

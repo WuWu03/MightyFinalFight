@@ -72,21 +72,19 @@ public static class SceneEntityFactory
     public static BaseEnemy CreateEnemy(RoleConfigData enemyConfigData, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos)
     {
         BaseEnemy enemy = EntityMgr.instance.GetEntity<BaseEnemy>(enemyConfigData.name);
-        BaseEnemyData enemyData = BaseEnemyData.Create();
-        BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
-        EntityAttribute enemyAttribute = ReferencePool.Acquire<EntityAttribute>();
+        enemy.SetObjectType(ObjectType.Enemy);
+        enemy.SetMapPos(pos);
+        enemy.SetLayer(LayerName.Unit);
+        enemy.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, enemyConfigData.assetName));
 
+        BaseEnemyData enemyData = BaseEnemyData.Create();
         enemyData.entityId = entityId;
         enemyData.hurtAnims = enemyConfigData.hurtAnims;
         enemyData.isBoss = enemyConfigData.isBoss;
         enemyData.hpBarWdith = hpBarWidth;
+        enemy.SetData(enemyData);
 
-        enemySkillData.attackIds = enemyConfigData.attactIds;
-        enemySkillData.skillIds = enemyConfigData.skillIds;
-        enemySkillData.attackWait = new float[1] { -1f };
-        enemySkillData.jumpAttackIds = enemyConfigData.jumpAttackIds;
-        enemySkillData.behaviourTreeIds = enemyConfigData.behaviourTreeIds;
-
+        EntityAttribute enemyAttribute = ReferencePool.Acquire<EntityAttribute>();
         enemyAttribute.health = hp;
         enemyAttribute.maxHealth = hp;
         enemyAttribute.jumpForce = enemyConfigData.jumpForce;
@@ -94,14 +92,15 @@ public static class SceneEntityFactory
         enemyAttribute.attackValue = attack;
         enemyAttribute.defenseValue = defense;
         enemyAttribute.moveSpeed = enemyConfigData.moveSpeed;
-
-        enemy.SetData(enemyData);
         enemy.SetAttribute(enemyAttribute);
-        enemy.AddCtrl<BaseEnemyCtrl>().SetData(enemySkillData);
-        enemy.SetObjectType(ObjectType.Enemy);
-        enemy.SetMapPos(pos);
-        enemy.SetLayer(LayerName.Unit);
-        enemy.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, enemyConfigData.assetName));
+
+        BaseEnemySkillData enemySkillData = ReferencePool.Acquire<BaseEnemySkillData>();
+        enemySkillData.attackIds = enemyConfigData.attactIds;
+        enemySkillData.skillIds = enemyConfigData.skillIds;
+        enemySkillData.attackWait = new float[1] { -1f };
+        enemySkillData.jumpAttackIds = enemyConfigData.jumpAttackIds;
+        enemySkillData.behaviourTreeIds = enemyConfigData.behaviourTreeIds;
+        enemy.SetSkillData(enemySkillData);
 
         return enemy;
     }

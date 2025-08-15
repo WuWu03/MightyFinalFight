@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Editor.Config;
+using GameFrameWork.Editor.Config;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
@@ -45,7 +45,6 @@ namespace GameFrameWork.Editor
             }
         }
 
-
         public BehaviourTreeWindowNode(BehaviourTreeWindowData data, bool isParent, BehaviourTreeWindowNode parent = null)
         {
             UpdateData(data, isParent, parent);
@@ -72,7 +71,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            m_PreConditionList.elementHeight = 50;
+            m_PreConditionList.elementHeight = 70;
             m_PreConditionList.drawHeaderCallback = (Rect rect) =>
             {
                 GUI.Label(rect, "PreConditions");
@@ -80,8 +79,8 @@ namespace GameFrameWork.Editor
 
             m_PreConditionList.onAddCallback = (ReorderableList list) =>
             {
-                m_Data.preConditions.Add(new BehaviourTreeWindowPreConditon());
-                m_WindowRect.height += m_Data.preConditions.Count > 1 ? 52 : 0;
+                m_Data.preConditions.Add(new());
+                m_WindowRect.height += m_Data.preConditions.Count > 1 ? 72 : 0;
                 m_Data.windowRect.height = m_WindowRect.height;
                 list.list = m_Data.preConditions;
             };
@@ -89,7 +88,7 @@ namespace GameFrameWork.Editor
             m_PreConditionList.onRemoveCallback = (ReorderableList list) =>
             {
                 m_Data.preConditions.RemoveAt(list.index);
-                m_WindowRect.height -= m_Data.preConditions.Count > 0 ? 52 : 0;
+                m_WindowRect.height -= m_Data.preConditions.Count > 0 ? 72 : 0;
                 m_Data.windowRect.height = m_WindowRect.height;
                 list.list = m_Data.preConditions;
             };
@@ -104,7 +103,8 @@ namespace GameFrameWork.Editor
                 BehaviourTreeWindowPreConditon preConditon = m_Data.preConditions[index];
                 preConditon.selectIndex = EditorGUI.Popup(new Rect(rect.x, rect.y + 5, rect.width, 20), preConditon.selectIndex, preConditionNames);
                 preConditon.classType = preConditionNames[preConditon.selectIndex];
-                preConditon.args = EditorGUI.TextField(new Rect(rect.x, rect.y + 25, rect.width, 20), preConditon.args);
+                preConditon.isAndCondition = EditorGUI.Toggle(new Rect(rect.x, rect.y + 25, rect.width, 20), "并列条件", preConditon.isAndCondition);
+                preConditon.args = EditorGUI.TextField(new Rect(rect.x, rect.y + 45, rect.width, 20), preConditon.args);
             };
 
             m_PreConditionList.onReorderCallback = (ReorderableList list) =>
@@ -141,10 +141,11 @@ namespace GameFrameWork.Editor
 
                 for (int i = 0; i < m_Data.children.Count; i++)
                 {
-                    m_Children.Add(new BehaviourTreeWindowNode(m_Data.children[i],false, this));
+                    m_Children.Add(new BehaviourTreeWindowNode(m_Data.children[i], false, this));
                 }
 
-                m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, data.windowRect.height);
+                float height = (m_Data.preConditions.Count > 0 ? m_Data.preConditions.Count * 72 : 70) + 200;
+                m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, height);
             }
             else
             {
@@ -155,18 +156,15 @@ namespace GameFrameWork.Editor
 
         public void SetParent(BehaviourTreeWindowNode parent)
         {
-            if(m_Parent != null)
-            {
-                m_Parent.RemoveChild(this);
-            }
-
+            m_Parent?.RemoveChild(this);
             parent.AddChild(this);
             m_Parent = parent;
         }
 
         public void AddChild(BehaviourTreeWindowNode node)
         {
-            node.m_Data.id = m_Data.id * 100 + m_Children.Count + 1;
+            node.m_Data.id = m_Data.id * 10 + m_Children.Count + 1;
+            UpdateId(node);
             m_Children.Add(node);
             m_Data.children.Add(node.m_Data);
         }
@@ -246,6 +244,20 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private void UpdateId(BehaviourTreeWindowNode node)
+        {
+            if(node.children == null || node.children.Count < 1)
+            {
+                return;
+            }
+
+            for(int i = 0; i < node.children.Count; i++)
+            {
+                node.children[i].m_Data.id = node.m_Data.id * 10 + i + 1;
+                UpdateId(node.children[i]);
+            }
+        }
+
         private void DrawNodeWindow(int id)
         {
             float width = m_WindowRect.width - 20;
@@ -281,7 +293,7 @@ namespace GameFrameWork.Editor
 
             EditorGUILayout.Space(5);
             m_PreConditionList.DoLayoutList();
-      
+
             GUI.DragWindow();
         }
 

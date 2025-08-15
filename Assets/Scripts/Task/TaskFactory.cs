@@ -1,6 +1,3 @@
-using GameFrameWork.Utils;
-using System;
-
 public static class TaskFactory
 {
     public static BaseTask CreateTask(TaskConfigData data)
@@ -12,7 +9,7 @@ public static class TaskFactory
                 ret = new TaskNone(data);
                 break;
             case TaskConfigData.TaskConditionType.MoveToPos:
-                ret = new TaskMoveToPos(data);
+                ret = new TaskMove(data);
                 break;
             case TaskConfigData.TaskConditionType.KillTarget:
                 ret = new TaskKillEnemy(data);
@@ -36,14 +33,6 @@ public static class TaskFactory
             case TaskConfigData.TaskTriggerType.CreateTargets:
                 ret = new TaskTriggerCreateTargets(data);
                 break;
-            case TaskConfigData.TaskTriggerType.Story:
-                string className = StringUtil.Append("TaskTriggerStory_", data.StoryId.ToString());
-                Type t = Type.GetType(className);
-                if (t != null)
-                {
-                    ret = (BaseTaskTrigger)System.Activator.CreateInstance(t, data);
-                }
-                break;
             case TaskConfigData.TaskTriggerType.Finger:
                 ret = new TaskTriggerFinger(data);
                 break;
@@ -51,13 +40,16 @@ public static class TaskFactory
                 ret = new TaskTriggerChangeScene(data);
                 break;
             case TaskConfigData.TaskTriggerType.AutoMoveToPos:
-                ret = new TaskTriggerAutoMoveToPos(data);
+                ret = new TaskTriggerAutoMove(data);
                 break;
             case TaskConfigData.TaskTriggerType.Talk:
                 ret = new TaskTriggerTalk(data);
                 break;
             case TaskConfigData.TaskTriggerType.RoundClear:
                 ret = new TaskTriggerRoundClear(data);
+                break;
+            case TaskConfigData.TaskTriggerType.Story:
+                ret = new TaskTriggerStory(data);
                 break;
         }
 

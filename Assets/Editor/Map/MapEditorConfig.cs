@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Serialize;
+using GameFrameWork.Serialize;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,6 +36,7 @@ public class MapEditorConfigData : BaseConfigData
     public string assetPath;
     public int stageIndex;
     public int level;
+    public bool showMainPanel;
     public Vector2 currPos = Vector2Int.zero;
     public Vector2 initPos = Vector2Int.zero;
     public int width;

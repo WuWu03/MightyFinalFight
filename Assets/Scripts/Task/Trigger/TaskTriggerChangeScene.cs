@@ -9,7 +9,6 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("进入场景任务");
         PlayerMgr.instance.canContrl = false;
     }
 

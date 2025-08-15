@@ -69,7 +69,7 @@ public class Weapon : BaseSceneItem
     {
         SetPos2(m_Pos);
 
-        if (m_EntityAttribute.IsDie())
+        if (m_EntityAttribute.IsDead())
         {
             Release();
         }

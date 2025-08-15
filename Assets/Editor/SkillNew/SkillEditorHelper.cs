@@ -120,21 +120,27 @@ namespace SkillNew
                 return;
             }
 
-            m_IndexLabelStyle = new GUIStyle(GUI.skin.label);
-            m_IndexLabelStyle.alignment = TextAnchor.MiddleLeft;
-            m_IndexLabelStyle.fontSize = 18;
-            m_IndexLabelStyle.fontStyle = FontStyle.Bold;
-            m_IndexLabelStyle.fixedHeight = 20;
+            m_IndexLabelStyle = new(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontSize = 18,
+                fontStyle = FontStyle.Bold,
+                fixedHeight = 20
+            };
 
-            m_SelectButtonOnStyle = new GUIStyle("flow node 1");
-            m_SelectButtonOnStyle.stretchWidth = true;
-            m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
-            m_SelectButtonOnStyle.fixedHeight = 15f;
+            m_SelectButtonOnStyle = new("flow node 1")
+            {
+                stretchWidth = true,
+                alignment = TextAnchor.MiddleCenter,
+                fixedHeight = 15f
+            };
 
-            m_SelectButtonStyle = new GUIStyle("flow node 0");
-            m_SelectButtonStyle.stretchWidth = true;
-            m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
-            m_SelectButtonStyle.fixedHeight = 15f;
+            m_SelectButtonStyle = new("flow node 0")
+            {
+                stretchWidth = true,
+                alignment = TextAnchor.MiddleCenter,
+                fixedHeight = 15f
+            };
         }
 
         public static void AddData(string name)

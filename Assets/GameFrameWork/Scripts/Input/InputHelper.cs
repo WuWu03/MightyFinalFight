@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace GameFrameWork.Input
 {
@@ -258,7 +256,7 @@ namespace GameFrameWork.Input
                     continue;
                 }
 
-                m_Axis[i].Release();
+                m_Keys[i].Release();
             }
 
             m_Axis = null;

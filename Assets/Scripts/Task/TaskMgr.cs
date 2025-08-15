@@ -19,14 +19,8 @@ public class TaskMgr : BaseMgr<TaskMgr>
             return;
         }
 
-        if (TaskHasFailure(id, true))
-        {
-            m_CompleteTask.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
-        }
-        else
-        {
-            m_CurrTaskList.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
-        }
+        TaskHasFailure(id, true);
+        m_CurrTaskList.Add(TaskFactory.CreateTask(StaticConfig.TaskConfig.GetData(id)));
     }
 
     public bool TaskHasAccepted(int id)
@@ -48,6 +42,28 @@ public class TaskMgr : BaseMgr<TaskMgr>
         {
             if (m_CompleteTask[i].taskData.id.Equals(id))
             {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool TaskHasFailure(int id, bool remove = false)
+    {
+        if (m_FailureIdList == null || m_FailureIdList.Count < 1)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < m_FailureIdList.Count; i++)
+        {
+            if (m_FailureIdList[i].Equals(id))
+            {
+                if (remove)
+                {
+                    m_FailureIdList.RemoveAt(i);
+                }
                 return true;
             }
         }
@@ -151,28 +167,6 @@ public class TaskMgr : BaseMgr<TaskMgr>
                 m_FailureIdList.Add(failureId);
             }
         }
-    }
-
-    private bool TaskHasFailure(int id, bool remove = false)
-    {
-        if(m_FailureIdList == null || m_FailureIdList.Count < 1)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < m_FailureIdList.Count; i++)
-        {
-            if(m_FailureIdList[i].Equals(id))
-            {
-                if (remove)
-                {
-                    m_FailureIdList.RemoveAt(i);
-                }
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private int m_CurrTaskIndex = 0;

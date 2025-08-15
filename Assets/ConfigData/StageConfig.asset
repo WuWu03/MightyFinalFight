@@ -17,6 +17,7 @@ MonoBehaviour:
     Name: Stage1_1
     SceneName: Stage1_1
     assetPath: ArtResources/Scenes/Stage1_1.unity
+    showMainPanel: 1
     StageIndex: 1
     Level: 1
     Width: 1016
@@ -58,6 +59,7 @@ MonoBehaviour:
     Name: Stage1_2
     SceneName: Stage1_2
     assetPath: ArtResources/Scenes/Stage1_2.unity
+    showMainPanel: 1
     StageIndex: 1
     Level: 2
     Width: 1016
@@ -123,13 +125,14 @@ MonoBehaviour:
     Name: Stage1_3
     SceneName: Stage1_3
     assetPath: ArtResources/Scenes/Stage1_3.unity
+    showMainPanel: 0
     StageIndex: 1
     Level: 3
     Width: 504
     Height: 152
     StageColor: 9C9797
     StageShowColor: 1
-    InitPos: {x: -215, y: -53}
+    InitPos: {x: -220, y: 120}
     SceneBuildings:
     - SceneObjType: 2
       Id: 1
@@ -153,15 +156,7 @@ MonoBehaviour:
       TriggerOffest: {x: 0, y: 0}
       AssetName: SceneBuilding/ConveyorBeltLast.prefab
     TaskIDs: f5030000
-    BGMs:
-    - ClipName: BGM/bgm06Boss_Start.ogg
-      IsLoop: 0
-      Volume: 1
-      LerpTime: 0
-    - ClipName: BGM/bgm06Boss_Loop.ogg
-      IsLoop: 1
-      Volume: 1
-      LerpTime: 0
+    BGMs: []
     MovePoints:
     - {x: -252, y: -31}
     - {x: 252, y: -31}
@@ -171,6 +166,7 @@ MonoBehaviour:
     Name: Stage2_1
     SceneName: Stage2_1
     assetPath: ArtResources/Scenes/Stage2_1.unity
+    showMainPanel: 1
     StageIndex: 2
     Level: 1
     Width: 1016
@@ -198,39 +194,10 @@ MonoBehaviour:
     Name: Stage2_2
     SceneName: Stage2_2
     assetPath: 
+    showMainPanel: 0
     StageIndex: 2
     Level: 2
     Width: 1275
-    Height: 152
-    StageColor: 7700FF
-    StageShowColor: 2
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - id: 5001
-    Name: 
-    SceneName: 
-    assetPath: 
-    StageIndex: 0
-    Level: 0
-    Width: 1016
-    Height: 152
-    StageColor: 0
-    StageShowColor: 0
-    InitPos: {x: 0, y: 0}
-    SceneBuildings: []
-    TaskIDs: 
-    BGMs: []
-    MovePoints: []
-  - id: 0
-    Name: 
-    SceneName: 
-    assetPath: 
-    StageIndex: 0
-    Level: 0
-    Width: 504
     Height: 152
     StageColor: 7700FF
     StageShowColor: 2

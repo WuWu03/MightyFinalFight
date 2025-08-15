@@ -5,8 +5,19 @@ namespace GameFrameWork.BehaviourTree
 {
     public abstract class PreCondition : Node
     {
-        public PreCondition(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+        public bool isAndCondition
         {
+            get
+            {
+                return m_IsAndCondition;
+            }
+        }
+
+        public PreCondition(string name, int id, object owner, int priority,bool isAndCondition, string args) : base(name, id, owner, priority, args)
+        {
+            m_IsAndCondition = isAndCondition;
+            m_Regex = new(@"(TheNot:)(true|false)");
+
             if (!string.IsNullOrEmpty(args))
             {
                 Match m = m_Regex.Match(args);
@@ -17,7 +28,7 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public override bool CheckPreCondition()
+        public bool CheckPreCondition()
         {
             if (m_IsNot)
             {
@@ -34,6 +45,7 @@ namespace GameFrameWork.BehaviourTree
         protected abstract bool OnCheckPreCondition();
 
         private bool m_IsNot = false;
-        private Regex m_Regex = new Regex(@"(TheNot:)(true|false)");
+        private bool m_IsAndCondition = false;
+        private Regex m_Regex = null;
     }
 }

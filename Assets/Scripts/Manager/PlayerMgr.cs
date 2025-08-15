@@ -20,14 +20,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    public BaseHeroCtrl playerCtrl
-    {
-        get
-        {
-            return m_PlayerCtrl;
-        }
-    }
-
     public RoleConfigData roleConfigData
     {
         get
@@ -128,7 +120,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         base.OnDestory();
 
-        m_PlayerCtrl = null;
         m_RoleConfigData = null;
         m_Player = null;
         m_LevelConfigData = null;
@@ -136,7 +127,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     public void InitPlayer()
     {
-        if(m_Player != null)
+        if (m_Player != null)
         {
             return;
         }
@@ -145,19 +136,19 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_ContinueCount = 3;
         m_Level = 1;
         m_EXP = 0;
-
+        m_CanCtrl = true;
         m_RoleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_SelectRoleId);
         m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("roleId=", m_SelectRoleId.ToString(), ",level=", m_Level.ToString()));
         m_Player = EntityMgr.instance.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
         m_Player.SetLayer(LayerName.Unit);
-        m_PlayerCtrl = m_Player.AddCtrl<BaseHeroCtrl>();
 
         BaseRoleData roleData = BaseRoleData.Create();
-        BaseHeroSkillData heroSkillData = BaseHeroSkillData.Create();
-        EntityAttribute roleAttribute = EntityAttribute.Create();
+        roleData.isCatchControl = m_RoleConfigData.isCatchControl;
+        m_Player.SetData(roleData);
 
+        EntityAttribute roleAttribute = EntityAttribute.Create();
         roleAttribute.health = m_LevelConfigData.hpValue;
         roleAttribute.maxHealth = m_LevelConfigData.hpValue;
         roleAttribute.attackSpeed = m_RoleConfigData.attackSpeed;
@@ -166,23 +157,19 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         roleAttribute.criticalValue = m_LevelConfigData.criticalValue;
         roleAttribute.jumpForce = m_LevelConfigData.jumpForce;
         roleAttribute.moveSpeed = m_LevelConfigData.moveSpeed;
+        m_Player.SetAttribute(roleAttribute);
 
-        roleData.isCatchControl = m_RoleConfigData.isCatchControl;
-
+        BaseHeroSkillData heroSkillData = BaseHeroSkillData.Create();
         heroSkillData.id = m_RoleConfigData.id;
         heroSkillData.attackIds = m_RoleConfigData.attactIds;
         heroSkillData.jumpAttackIds = m_RoleConfigData.jumpAttackIds;
         heroSkillData.skillIds = m_RoleConfigData.skillIds;
-        heroSkillData.attackWait = new float[3] { 0.2f, 0.4f,1f };//m_RoleConfigData.attackWait;
+        heroSkillData.attackWait = new float[3] { 0.2f, 0.4f, 1f };//m_RoleConfigData.attackWait;
         heroSkillData.catchAttackID = m_RoleConfigData.catchAttackId;
         heroSkillData.throwAttackID = m_RoleConfigData.throwAttackId;
         heroSkillData.weaponAttackID = m_RoleConfigData.weaponAttackId;
         heroSkillData.throwWeaponID = m_RoleConfigData.throwWeaponId;
-
-        m_Player.SetAttribute(roleAttribute);
-        m_Player.SetData(roleData);
-        m_Player.SetObjectType(ObjectType.Player);
-        m_PlayerCtrl.SetData(heroSkillData);
+        m_Player.SetSkillData(heroSkillData);
 
         for (int i = 6; i < m_RoleConfigData.skillIds.Length; i++)
         {
@@ -193,8 +180,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
                 InputMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.id, OnComboKeyEvent);
             }
         }
-
-        m_CanCtrl = true;
 
         CameraMgr.instance.SetFollowTarget(m_Player.transform);
         InputMgr.instance.getDirectionEvent += GetDirction;
@@ -215,7 +200,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
             m_Player.Release();
             m_Player = null;
-            m_PlayerCtrl = null;
             return;
         }
 
@@ -223,9 +207,9 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.OnRebirthMsg(rebirthPos);
     }
 
-    public void Jump(Vector2 dir,bool canChangeDir,bool isForceJump)
+    public void Jump(Vector2 dir, bool canChangeDir, bool isForceJump)
     {
-        m_PlayerCtrl.Jump(dir, canChangeDir, isForceJump);
+        m_Player.Jump(dir, canChangeDir, isForceJump);
     }
 
     public void AddExp(int value)
@@ -288,24 +272,24 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void AfterTriggerAttack()
     {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
 
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
-        m_PlayerCtrl.Attack(asix);
+        m_Player.Attack(asix);
     }
 
     private void AfterTriggerJump()
     {
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
+        if (m_Player == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
         {
             return;
         }
 
         Vector2 asix = InputMgr.instance.GetAxis(AxisType.LeftAxis, true);
-        m_PlayerCtrl.Jump(asix, m_RoleConfigData.id != 1002);
+        m_Player.Jump(asix, m_RoleConfigData.id != 1002);
     }
 
     protected override void OnUpdate()
@@ -335,14 +319,14 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             }
         }
 
-        if (m_Player == null || m_PlayerCtrl == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0)
+        if (m_Player == null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0)
         {
             return;
         }
 
         if (!m_CanCtrl)
         {
-            m_PlayerCtrl.Move(Vector2.zero);
+            m_Player.Move(Vector2.zero);
             return;
         }
 
@@ -353,7 +337,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             Vector2 asix = leftAsix != Vector2.zero ? leftAsix : crossAsix;
 
             asix.y *= 0.8f;
-            m_PlayerCtrl.Move(asix);
+            m_Player.Move(asix);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -376,11 +360,11 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             {
                 if (m_IsStopBHT)
                 {
-                    (enemy.currCtrl as BaseEnemyCtrl).Resume();
+                    enemy.Resume();
                 }
                 else
                 {
-                    (enemy.currCtrl as BaseEnemyCtrl).Pause();
+                    enemy.Pause();
                 }
             }
 
@@ -400,9 +384,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     private int m_LanguageIndex = 0;
     private bool m_IsStopBHT = false;
 
-
     private bool GetPreCondition(int id)
-    {    
+    {
         SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
         bool a = SkillUtil.CheckStatus(skillData.SkillPrevConditions, m_Player);
         return a;
@@ -410,10 +393,9 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
     private void OnComboKeyEvent(int id, bool isTrigger)
     {
-        m_PlayerCtrl.DeploySkill(id);
+        m_Player.DeploySkill(id);
     }
 
-    private BaseHeroCtrl m_PlayerCtrl = null;
     private RoleConfigData m_RoleConfigData = null;
     private BaseHero m_Player = null;
     private LevelConfigData m_LevelConfigData = null;

@@ -6,6 +6,8 @@ public class DoJumpAttack : DoAttack
 {
     public DoJumpAttack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
+        m_Regex = new(@"(Move)");
+
         if (!string.IsNullOrEmpty(args))
         {
             m_IsMoveJump = m_Regex.Match(args).Success;
@@ -27,12 +29,12 @@ public class DoJumpAttack : DoAttack
         m_State = BehaviourTreeState.Running;
 
         m_IsGround = false;
-        m_Owner.owner.onGroundEvent.AddListener(OnGround);
+        m_Owner.onGroundEvent.AddListener(OnGround);
 
-        if (m_Owner.owner.isInGround)
+        if (m_Owner.isInGround)
         {
             m_StartJump = false;
-            m_Owner.owner.onDropEvent.AddListener(OnDrop);
+            m_Owner.onDropEvent.AddListener(OnDrop);
             m_Owner.OppositePlayer();
             m_Owner.Jump(GetJumpDir(), false, true);
         }
@@ -64,7 +66,7 @@ public class DoJumpAttack : DoAttack
 
     protected override void OnUpdate(float deltaTime)
     {
-        if (m_CurrAttackCount >= m_AttackCount && m_Owner.owner.isInGround)
+        if (m_CurrAttackCount >= m_AttackCount && m_Owner.isInGround)
         {
             m_State = BehaviourTreeState.Success;
             return;
@@ -80,14 +82,14 @@ public class DoJumpAttack : DoAttack
         if (m_StartJump)
         {
             m_StartJump = false;
-            m_Owner.owner.onDropEvent.AddListener(OnDrop);
-            m_Owner.owner.onGroundEvent.AddListener(OnGround);
+            m_Owner.onDropEvent.AddListener(OnDrop);
+            m_Owner.onGroundEvent.AddListener(OnGround);
             m_Owner.Jump(GetJumpDir(), false, true);
         }
         else
         {
-            m_Owner.owner.onDropEvent.AddListener(OnDrop);
-            m_Owner.owner.onGroundEvent.AddListener(OnGround);
+            m_Owner.onDropEvent.AddListener(OnDrop);
+            m_Owner.onGroundEvent.AddListener(OnGround);
             m_Owner.Jump(GetJumpDir(), false, true);
         }
     }
@@ -104,12 +106,12 @@ public class DoJumpAttack : DoAttack
             return Vector2.zero;
         }
 
-        return Vector2.right * m_Owner.owner.dir;
+        return Vector2.right * m_Owner.dir;
     }
 
     private bool m_StartJump = false;
     private bool m_IsMoveJump = false;
-    private Regex m_Regex = new Regex(@"(Move)");
+    private Regex m_Regex = null;
     private bool m_IsGround = false;
 
     private BehaviourTreeState m_State = BehaviourTreeState.None;

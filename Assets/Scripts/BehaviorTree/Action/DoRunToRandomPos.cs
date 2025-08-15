@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using GameFrameWork.BehaviourTree;
 using GameFrameWork.Camera;
+using UnityEngine;
 
 public class DoRunToRandomPos : Action
 {
     public DoRunToRandomPos(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
     }
 
     public override BehaviourTreeState Excute()
@@ -24,7 +22,7 @@ public class DoRunToRandomPos : Action
     {
         m_State = BehaviourTreeState.Running;
 
-        Rect ownerBound = m_ActionOwner.owner.bound;
+        Rect ownerBound = m_Owner.bound;
         Rect playerBound = PlayerMgr.instance.player.bound;
         Rect visionRect = CameraMgr.instance.GetVision();
         Vector2 playerPos = PlayerMgr.instance.player.pos;
@@ -49,18 +47,18 @@ public class DoRunToRandomPos : Action
     {
         base.OnUpdate(deltaTime);
 
-        bool isArrive = Mathf.Abs(m_RandomPos.x - m_ActionOwner.owner.pos.x) <= 0.03f && Mathf.Abs(m_RandomPos.y - m_ActionOwner.owner.pos.y) <= 0.03f;
+        bool isArrive = Mathf.Abs(m_RandomPos.x - m_Owner.pos.x) <= 0.03f && Mathf.Abs(m_RandomPos.y - m_Owner.pos.y) <= 0.03f;
 
         if (isArrive)
         {
-            m_ActionOwner.Move(Vector2.zero, false);
-            m_ActionOwner.OppositePlayer();
+            m_Owner.Move(Vector2.zero, false);
+            m_Owner.OppositePlayer();
             m_State = BehaviourTreeState.Success;
         }
         else
         {
-            m_ActionOwner.Move((m_RandomPos - m_ActionOwner.owner.pos).normalized, false);
-            m_ActionOwner.OppositePlayer();
+            m_Owner.Move((m_RandomPos - m_Owner.pos).normalized, false);
+            m_Owner.OppositePlayer();
         }
     }
 
@@ -71,6 +69,6 @@ public class DoRunToRandomPos : Action
     }
 
     private Vector2 m_RandomPos = Vector2.zero;
-    private BaseEnemyCtrl m_ActionOwner = null;
+    private new BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

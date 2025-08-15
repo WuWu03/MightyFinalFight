@@ -7,7 +7,9 @@ public class DoBack : Action
 {
     public DoBack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_Regex = new(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
+        m_Owner = base.m_Owner as BaseEnemy;
+
         if (!string.IsNullOrEmpty(args))
         {
             Match m = m_Regex.Match(args);
@@ -26,10 +28,10 @@ public class DoBack : Action
     protected override void OnEnter()
     {
         m_TargetPos = Vector2.zero;
-        m_TargetPos = m_Owner.owner.pos;
-        m_TargetPos.x += m_BackDistance * -m_Owner.owner.dir;
+        m_TargetPos = m_Owner.pos;
+        m_TargetPos.x += m_BackDistance * -m_Owner.dir;
         Rect visionRect = CameraMgr.instance.GetVision();
-        m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.owner.bound.width, visionRect.xMax - m_Owner.owner.bound.width);
+        m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.bound.width, visionRect.xMax - m_Owner.bound.width);
 
         m_State = BehaviourTreeState.Running;
     }
@@ -38,7 +40,7 @@ public class DoBack : Action
     {
         base.OnUpdate(deltaTime);
 
-        Vector2 enemyPos = m_Owner.owner.pos;
+        Vector2 enemyPos = m_Owner.pos;
         bool isArrived = Mathf.Abs(m_TargetPos.x - enemyPos.x) <= 0.01f && Mathf.Abs(m_TargetPos.y - enemyPos.y) <= 0.01f;
 
         if(isArrived)
@@ -62,8 +64,8 @@ public class DoBack : Action
 
     private Vector2 m_TargetPos = Vector2.zero;
     private float m_BackDistance = 0;
-    private Regex m_Regex = new(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
-    private new BaseEnemyCtrl m_Owner = null;
+    private Regex m_Regex = null;
+    private new BaseEnemy m_Owner = null;
 
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

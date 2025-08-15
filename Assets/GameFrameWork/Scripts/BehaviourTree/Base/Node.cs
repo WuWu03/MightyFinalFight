@@ -97,11 +97,6 @@ namespace GameFrameWork.BehaviourTree
             OnReset();
         }
 
-        public virtual bool CheckPreCondition() 
-        {
-            return true; 
-        }
-
         protected virtual void OnStart() { }
         protected virtual void OnEnter() { }
         protected virtual void OnUpdate(float deltaTime) { }

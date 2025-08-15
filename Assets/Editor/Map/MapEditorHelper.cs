@@ -125,17 +125,19 @@ public static class MapEditorHelper
             }
         }
 
-        m_SelectButtonOnStyle = new GUIStyle("flow node 1");
-        m_SelectButtonOnStyle.stretchWidth = true;
-        m_SelectButtonOnStyle.alignment = TextAnchor.MiddleCenter;
-        m_SelectButtonOnStyle.contentOffset = new Vector2(0, -15f);
-        m_SelectButtonOnStyle.fixedHeight = 15f;
+        m_SelectButtonOnStyle = new("flow node 1")
+        {
+            stretchWidth = true,
+            alignment = TextAnchor.MiddleCenter,
+            fixedHeight = 15f
+        };
 
-        m_SelectButtonStyle = new GUIStyle("flow node 0");
-        m_SelectButtonStyle.stretchWidth = true;
-        m_SelectButtonStyle.alignment = TextAnchor.MiddleCenter;
-        m_SelectButtonStyle.contentOffset = new Vector2(0, -15f);
-        m_SelectButtonStyle.fixedHeight = 15f;
+        m_SelectButtonStyle = new("flow node 0")
+        {
+            stretchWidth = true,
+            alignment = TextAnchor.MiddleCenter,
+            fixedHeight = 15f
+        };
     }
 
     public static void LoadTexture(string path)
@@ -150,12 +152,15 @@ public static class MapEditorHelper
 
         if (m_CurrData == null)
         {
-            m_CurrData = new MapEditorConfigData();
-            m_CurrData.mapPath = path;
-            m_CurrData.listMovePoints = new List<MapEditorConfigData.MoveArea>();
-            m_CurrData.listTaskIds = new List<int>();
-            m_CurrData.listBGMs = new List<StageConfigData.BGM>();
-            m_CurrData.listSceneBuildings = new List<StageConfigData.SceneBuilding>();
+            m_CurrData = new()
+            {
+                mapPath = path,
+                listMovePoints = new(),
+                listTaskIds = new(),
+                listBGMs = new(),
+                listSceneBuildings = new()
+            };
+
             m_MapEditorConfig.AddData(m_CurrData);
         }
 
@@ -318,18 +323,19 @@ public static class MapEditorHelper
     public static void Export()
     {
         string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
-        string configDataFullPath = PathUtil.GetAssetFullPath(configDataPath);
+        string stageConfigPath = PathUtil.FormatPath(configDataPath, "StageConfig.asset");
+        string configDataFullPath = PathUtil.GetAssetFullPath(stageConfigPath);
 
-        if (!File.Exists(configDataFullPath + "StageConfigData.asset"))
+        if (!File.Exists(configDataFullPath))
         {
-            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfigData", ".asset", configDataPath);
+            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfig", ".asset");
         }
 
-        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(configDataPath + "StageConfigData.asset");
+        StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(stageConfigPath);
 
         if(stageConfig.listDatas == null)
         {
-            stageConfig.listDatas = new List<StageConfigData>();
+            stageConfig.listDatas = new();
         }
         else
         {
@@ -341,22 +347,25 @@ public static class MapEditorHelper
         for (int i = 0; i < m_MapEditorConfig.listDatas.Count; i++)
         {
             MapEditorConfigData configData = m_MapEditorConfig.listDatas[i];
-            StageConfigData data = new StageConfigData();
-            data.id = configData.id;
-            data.Name = configData.sceneName;
-            data.SceneName = configData.sceneName;
-            data.assetPath = configData.assetPath;
-            data.StageIndex = configData.stageIndex;
-            data.Level = configData.level;
-            data.Width = configData.width;
-            data.Height = configData.height;
-            data.InitPos = new Vector2Int((int)configData.initPos.x, (int)configData.initPos.y);
-            data.TaskIDs = configData.listTaskIds.ToArray();
-            data.BGMs = configData.listBGMs.ToArray();
-            data.SceneBuildings = configData.listSceneBuildings.ToArray();
-            data.MovePoints = new Vector2Int[configData.listMovePoints.Count];
-            data.StageColor = configData.stageColor;
-            data.StageShowColor = configData.stageShowColor;
+            StageConfigData data = new()
+            {
+                id = configData.id,
+                Name = configData.sceneName,
+                SceneName = configData.sceneName,
+                assetPath = configData.assetPath,
+                showMainPanel = configData.showMainPanel,
+                StageIndex = configData.stageIndex,
+                Level = configData.level,
+                Width = configData.width,
+                Height = configData.height,
+                InitPos = new Vector2Int((int)configData.initPos.x, (int)configData.initPos.y),
+                TaskIDs = configData.listTaskIds.ToArray(),
+                BGMs = configData.listBGMs.ToArray(),
+                SceneBuildings = configData.listSceneBuildings.ToArray(),
+                MovePoints = new Vector2Int[configData.listMovePoints.Count],
+                StageColor = configData.stageColor,
+                StageShowColor = configData.stageShowColor
+            };
 
             for (int j = 0; j < data.MovePoints.Length; j++)
             {
@@ -369,6 +378,7 @@ public static class MapEditorHelper
         }
 
         UnityEditor.EditorUtility.SetDirty(stageConfig);
+        UnityEditor.AssetDatabase.SaveAssets();
         EditorWindow.focusedWindow.ShowNotification(new GUIContent("导出配置成功!"));
     }
 

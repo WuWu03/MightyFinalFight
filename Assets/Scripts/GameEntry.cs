@@ -21,6 +21,7 @@ public class GameEntry : GameFrameWorkEntry
         PlayerMgr.Init(manager);
         HudMgr.Init(manager);
         LoadPanelMgr.Init(manager);
+        StoryMgr.Init(manager);
     }
 
     protected override void OnStartGame()
@@ -30,6 +31,11 @@ public class GameEntry : GameFrameWorkEntry
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "EnglishLanguageData.bytes")));
         LocalizationMgr.instance.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "JapaneseLanguageData.bytes")));
         LocalizationMgr.instance.ChangeLanguage(LanguageType.SimplifiedChinese);
+
+        StoryMgr.instance.AddStoryBuilder<Story1001>(1001);
+        StoryMgr.instance.AddStoryBuilder<Story1002>(1002);
+        StoryMgr.instance.AddStoryBuilder<Story1003>(1003);
+
         VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
         UIMgr.instance.Open(UINames.VersionPanel);
     }
@@ -58,11 +64,12 @@ public class GameEntry : GameFrameWorkEntry
         BehaviourTreeMgr.instance.InitBehaviourTreeData();
         StaticConfig.InitConfig();
         ConfigDataSheet.Init();
-        UIMgr.instance.Open(UINames.TitlePanel);
+        UIMgr.instance.Open(UINames.RoleSelectPanel);
     }
 
     protected override void OnExit()
     {
+        StoryMgr.instance.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();
         StageMgr.instance.ShutDown();

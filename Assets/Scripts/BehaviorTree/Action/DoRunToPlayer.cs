@@ -5,7 +5,7 @@ public class DoRunToPlayer : Action
 {
     public DoRunToPlayer(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
     }
 
     public override BehaviourTreeState Excute()
@@ -36,21 +36,21 @@ public class DoRunToPlayer : Action
         }
 
         Vector2 targetPos = PlayerMgr.instance.player.pos;
-        float distance = PlayerMgr.instance.player.bound.width / 2 + m_ActionOwner.owner.bound.width / 2 - 0.05f;
+        float distance = PlayerMgr.instance.player.bound.width / 2 + m_Owner.bound.width / 2 - 0.05f;
 
-        targetPos.x += distance * (targetPos.x - m_ActionOwner.owner.pos.x > 0 ? -1f : 1f);
-        bool isArravied = Vector2.Distance(targetPos, m_ActionOwner.owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
+        targetPos.x += distance * (targetPos.x - m_Owner.pos.x > 0 ? -1f : 1f);
+        bool isArravied = Vector2.Distance(targetPos, m_Owner.pos) <= 0.01f;// Mathf.Abs(m_TargetPos.x - m_Owner.owner.pos.x) <= 0.03f && Mathf.Abs(m_TargetPos.y - m_Owner.owner.pos.y) <= 0.03f;
 
         if (isArravied)
         {
-            m_ActionOwner.Move(Vector2.zero, false);
-            m_ActionOwner.OppositePlayer();
+            m_Owner.Move(Vector2.zero, false);
+            m_Owner.OppositePlayer();
             m_State = BehaviourTreeState.Success;
         }
         else
         {
-            m_ActionOwner.Move((targetPos - m_ActionOwner.owner.pos).normalized, false);
-            m_ActionOwner.OppositePlayer();
+            m_Owner.Move((targetPos - m_Owner.pos).normalized, false);
+            m_Owner.OppositePlayer();
         }
 
         m_RunTimer = Time.time;
@@ -65,5 +65,5 @@ public class DoRunToPlayer : Action
 
     private float m_RunTimer = -1f;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
-    private BaseEnemyCtrl m_ActionOwner = null;
+    private new BaseEnemy m_Owner = null;
 }

@@ -1,4 +1,4 @@
-﻿using GameFrameWork.Serialize;
+using GameFrameWork.Serialize;
 using System;
 using UnityEngine;
 
@@ -40,6 +40,7 @@ public class StageConfigData : BaseConfigData
     public string Name;
     public string SceneName;
     public string assetPath;
+    public bool showMainPanel;
     public int StageIndex;
     public int Level;
     public int Width;

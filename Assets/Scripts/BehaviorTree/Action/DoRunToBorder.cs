@@ -6,7 +6,7 @@ public class DoRunToBorder : Action
 {
     public DoRunToBorder(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
     }
 
     public override bool CanExcute()
@@ -23,21 +23,21 @@ public class DoRunToBorder : Action
     {
         m_State = BehaviourTreeState.Running;
         Rect vision = CameraMgr.instance.GetVision();
-        Vector2 pos = m_ActionOwner.owner.pos;
+        Vector2 pos = m_Owner.pos;
 
         float leftDistance = Mathf.Abs(pos.x - vision.xMin);
         float rightDistance = Mathf.Abs(pos.x - vision.xMax);
 
         m_BorderPosX = leftDistance < rightDistance ? vision.xMin : vision.xMax;
         m_MoveDir = leftDistance < rightDistance ? -1 : 1;
-        m_ActionOwner.owner.ChangeDefaultState();
+        m_Owner.ChangeDefaultState();
     }
 
     protected override void OnUpdate(float deltaTime)
     {
         base.OnUpdate(deltaTime);
 
-        Rect ownerBound = m_ActionOwner.owner.bound;
+        Rect ownerBound = m_Owner.bound;
         float distance = m_MoveDir > 0 ? Mathf.Abs(ownerBound.xMax - m_BorderPosX) : Mathf.Abs(ownerBound.xMin - m_BorderPosX);
         bool isArrive = distance <= ownerBound.width;
 
@@ -47,8 +47,8 @@ public class DoRunToBorder : Action
         }
         else
         {
-            m_ActionOwner.Move(Vector2.right * m_MoveDir);
-            m_ActionOwner.OppositePlayer();
+            m_Owner.Move(Vector2.right * m_MoveDir);
+            m_Owner.OppositePlayer();
         }
     }
 
@@ -62,6 +62,6 @@ public class DoRunToBorder : Action
 
     private int m_MoveDir = 1;
     private float m_BorderPosX = 0;
-    private BaseEnemyCtrl m_ActionOwner = null;
+    private new BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace GameFrameWork.Editor.Config
 {
@@ -40,6 +40,7 @@ namespace GameFrameWork.Editor.Config
         public string classType;
         public int selectIndex;
         public string args;
+        public bool isAndCondition;
     }
 
     public class WindowRect

@@ -6,7 +6,7 @@ namespace GameFrameWork.BehaviourTree
     {
         protected BaseTask(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
         {
-            m_PreConditions = new List<Node>();
+            m_PreConditions = new List<PreCondition>();
         }
 
         public virtual bool CanExcute()
@@ -19,27 +19,36 @@ namespace GameFrameWork.BehaviourTree
             return BehaviourTreeState.Running;
         }
 
-        public void AddPreCondition(Node node)
+        public void AddPreCondition(PreCondition preCondition)
         {
-            if (node == null || m_PreConditions == null)
+            if (preCondition == null || m_PreConditions == null)
             {
                 return;
             }
 
-            m_PreConditions.Add(node);
+            m_PreConditions.Add(preCondition);
         }
 
-        public override bool CheckPreCondition()
+        public bool CheckPreCondition()
         {
+            bool result = true;
+            bool andCondition = false;
+
             for (int i = 0; i < m_PreConditions.Count; i++)
             {
-                if (!m_PreConditions[i].CheckPreCondition())
+                bool condition = m_PreConditions[i].CheckPreCondition();
+
+                if (m_PreConditions[i].isAndCondition)
                 {
-                    return false;
+                    andCondition = andCondition || condition;
+                }
+                else
+                {
+                    result = result && condition;
                 }
             }
 
-            return true;
+            return result || andCondition;
         }
 
         protected override void OnDestroy()
@@ -52,6 +61,6 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        private List<Node> m_PreConditions = null;
+        private List<PreCondition> m_PreConditions = null;
     }
 }

@@ -5,7 +5,7 @@ public class DoIdle : Action
 {
     public DoIdle(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
     }
 
     public override bool CanExcute()
@@ -20,7 +20,7 @@ public class DoIdle : Action
 
     protected override void OnEnter()
     {
-        float idleTime = 1 / m_Owner.owner.entityAttribute.moveSpeed;
+        float idleTime = 1 / m_Owner.entityAttribute.moveSpeed;
         m_IdleTime = Random.Range(Mathf.Max(idleTime - 0.5f, 0.1f), Mathf.Max(idleTime, 0.2f));
         m_IdleTimer = Time.time;
         m_State = BehaviourTreeState.Running;
@@ -42,7 +42,6 @@ public class DoIdle : Action
 
     private float m_IdleTime = 0f;
     private float m_IdleTimer = 0f;
-    private new BaseEnemyCtrl m_Owner = null;
-
+    private new BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

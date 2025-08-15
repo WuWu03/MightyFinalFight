@@ -1,12 +1,12 @@
 using GameFrameWork.BehaviourTree;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 public class DoSkill : Action
 {
     public DoSkill(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
     {
-        m_ActionOwner = base.m_Owner as BaseEnemyCtrl;
+        m_Owner = base.m_Owner as BaseEnemy;
+        m_Regex = new(@"(SkillId:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
         {
@@ -40,11 +40,11 @@ public class DoSkill : Action
 
         if (!m_HasDeploy)
         {
-            m_ActionOwner.DeploySkill(m_SkllId);
+            m_Owner.DeploySkill(m_SkllId);
             m_HasDeploy = true;
         }
 
-        if (m_ActionOwner.IsSkillComplete(m_SkllId))
+        if (m_Owner.IsSkillComplete(m_SkllId))
         {
             m_State = BehaviourTreeState.Success;
             return;
@@ -60,7 +60,7 @@ public class DoSkill : Action
 
     private int m_SkllId = 0;
     private bool m_HasDeploy = false;
-    private Regex m_Regex = new Regex(@"(SkillId:)(-?[0-9]+)");
-    private BaseEnemyCtrl m_ActionOwner = null;
+    private Regex m_Regex = null;
+    private new BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

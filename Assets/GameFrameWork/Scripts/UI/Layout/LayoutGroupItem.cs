@@ -14,8 +14,14 @@ namespace GameFrameWork.UI
 
         public int itemIndex 
         {
-            get;
-            set;
+            get
+            {
+                return m_ItemIndex;
+            }
+            set
+            {
+                m_ItemIndex = value;
+            }
         }
 
         public bool isActive

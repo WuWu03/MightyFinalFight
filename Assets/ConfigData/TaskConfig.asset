@@ -492,10 +492,10 @@ MonoBehaviour:
       Pos: {x: 0, y: 0}
     KillEnemyIDs: 
     BreakBarrelIDs: 
-    StoryId: 1003
-    KillAllEnemies: 1
+    StoryId: 0
+    KillAllEnemies: 0
     KillAllBarrels: 0
-    TriggerType: 2
+    TriggerType: 1
     Targets:
     - EntityID: 200501
       SourceID: 2005
@@ -516,11 +516,33 @@ MonoBehaviour:
     ExitStartCamera: 0
     WaitTime: 0
     MapID: 0
-    TalkID: 1001
+    TalkID: 0
     PrevID: 0
     NextID: 1014
     FailureID: 0
   - id: 1014
+    ConditionType: 0
+    Position:
+      PosType: 0
+      Pos: {x: 0, y: 0}
+    KillEnemyIDs: 
+    BreakBarrelIDs: 
+    StoryId: 1003
+    KillAllEnemies: 0
+    KillAllBarrels: 0
+    TriggerType: 2
+    Targets: []
+    TriggerPlayerCantCtrl: 0
+    ExitPlayerCanCtrl: 0
+    TriggerStopCamera: 0
+    ExitStartCamera: 0
+    WaitTime: 0
+    MapID: 0
+    TalkID: 0
+    PrevID: 0
+    NextID: 1015
+    FailureID: 0
+  - id: 1015
     ConditionType: 2
     Position:
       PosType: 0
@@ -540,9 +562,9 @@ MonoBehaviour:
     MapID: 0
     TalkID: 0
     PrevID: 0
-    NextID: 1015
+    NextID: 1016
     FailureID: 0
-  - id: 1015
+  - id: 1016
     ConditionType: 0
     Position:
       PosType: 0

@@ -1,4 +1,4 @@
-public struct AssetPathDefine
+public class AssetPathDefine
 {
     public const string PrefabPath = "ArtResources/Prefabs";
     public const string EffectPath = "ArtResources/Prefabs/FX";

@@ -117,9 +117,9 @@ public static class SkillUtil
             return null;
         }
 
-        if (hit is BaseEnemy baseEnemy)//boss¹¥»÷ÓÅÏÈ¼¶¸ü¸ß;
+        if (hit is BaseEnemy baseEnemy)//bossæ”»å‡»ä¼˜å…ˆçº§æ›´é«˜;
         {
-            if (baseEnemy.isBoss && baseEnemy.currCtrl.IsInSkill())
+            if (baseEnemy.isBoss && baseEnemy.IsInSkill())
             {
                 return null;
             }
@@ -187,14 +187,14 @@ public static class SkillUtil
             damage *= criMulity;
         }
 
-        string str = "[»ù´¡ÉËº¦: " + baseDamage + "]" +
-                     "  [×îÖÕÉËº¦£º " + damage + "]" +
-                     "  [¹¥»÷: " + attack + "]" +
-                     "  [·ÀÓù: " + defense + "]" +
-                     "  [±©»÷ÂÊ: " + critical + "]" +
-                     "  [±¶ÂÊ: " + (mulity > 0 ? mulity : 1) + "]" +
-                     "  [Æ«ÒÆ: " + fluctuate + "]" +
-                     "  [ÊÇ·ñ±©»÷£º " + isCri + "]";
+        string str = "[åŸºç¡€ä¼¤å®³: " + baseDamage + "]" +
+                     "  [æœ€ç»ˆä¼¤å®³ï¼š " + damage + "]" +
+                     "  [æ”»å‡»: " + attack + "]" +
+                     "  [é˜²å¾¡: " + defense + "]" +
+                     "  [æš´å‡»ç‡: " + critical + "]" +
+                     "  [å€ç‡: " + (mulity > 0 ? mulity : 1) + "]" +
+                     "  [åç§»: " + fluctuate + "]" +
+                     "  [æ˜¯å¦æš´å‡»ï¼š " + isCri + "]";
 
         Log.LogInfo(Color.red, str);
         isCritical = isCri;
