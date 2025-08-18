@@ -1,7 +1,7 @@
 using GameFrameWork.Assets;
 using GameFrameWork.Utils;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -36,19 +36,34 @@ namespace GameFrameWork.ConfigData
                     index++;
                 }
             }
+
             return t;
         }
 
         public static T GetConfigDataById<T>(this T[] datas, int id) where T : BaseConfigData, new()
         {
-            try
+            int left = 0;
+            int right = datas.Length;
+
+            while (left <= right)
             {
-                return datas.First(data => data.id == id);
+                int mid = (left + right) / 2;
+                if (datas[mid].id == id)
+                {
+                    return datas[mid];
+                }
+
+                if (id > datas[mid].id)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+                }
             }
-            catch
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static T GetSingConfigDataByAttr<T>(this T[] datas, string attr) where T : BaseConfigData, new()
@@ -76,7 +91,7 @@ namespace GameFrameWork.ConfigData
 
             if (match.Success)
             {
-                List<T> values = new List<T>();
+                List<T> values = new();
 
                 for (int i = 0; i < datas.Length; i++)
                 {

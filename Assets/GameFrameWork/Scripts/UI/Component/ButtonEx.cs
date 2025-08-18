@@ -1,26 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static GameFrameWork.UI.UIEventListener;
 
 namespace GameFrameWork.UI
 {
-    public class ButtonEx : Selectable, ISubmitHandler
+    public class ButtonEx : Graphic, IPointerUpHandler, IPointerDownHandler
     {
+        protected override void OnPopulateMesh(VertexHelper vh)
+        {
+            vh.Clear();
+        }
 
         private void Update()
         {
-            if (m_IsPointDown)
+            if (m_IsPointDown && Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)
             {
-                if (Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)
-                {
-                    m_IsPress = true;
-                    m_IsPointDown = false;
-                    m_CurrDonwTime = 0f;
-                    onPress?.Invoke();
-                }
+                onPress.Invoke(gameObject, m_OnDownEventData);
+                m_IsPress = true;
+                m_IsPointDown = false;
+                m_CurrDonwTime = 0f;
+                m_OnDownEventData = null;
             }
 
             if (m_ClickCount < 1)
@@ -30,32 +30,36 @@ namespace GameFrameWork.UI
 
             if (m_ClickCount >= 2)
             {
-                onUp?.Invoke();
-                onDoubleClick?.Invoke();
+                onUp.Invoke(gameObject, m_OnUpEventData);
+                onDoubleClick.Invoke(gameObject, m_OnUpEventData);
                 m_ClickCount = 0;
                 m_CurrDonwTime = 0f;
+                m_OnUpEventData = null;
             }
 
             if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
             {
-                onUp?.Invoke();
-                onClick?.Invoke();
+                onUp.Invoke(gameObject, m_OnUpEventData);
+                onClick.Invoke(gameObject, m_OnUpEventData);
                 m_ClickCount = 0;
                 m_CurrDonwTime = 0f;
+                m_OnUpEventData = null;
             }
         }
 
-        public override void OnPointerDown(PointerEventData eventData)
+        public void OnPointerDown(PointerEventData eventData)
         {
             m_IsPointDown = true;
             m_IsPress = false;
             m_CurrDonwTime = Time.unscaledTime;
-            onDown?.Invoke();
+            m_OnDownEventData = eventData;
+            onDown?.Invoke(gameObject, eventData);
         }
 
-        public override void OnPointerUp(PointerEventData eventData)
+        public void OnPointerUp(PointerEventData eventData)
         {
             m_IsPointDown = false;
+            m_OnUpEventData = eventData;
 
             if (!m_IsPress)
             {
@@ -63,16 +67,14 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void OnSubmit(BaseEventData eventData)
-        {
-            onClick.Invoke();
-        }
+        public UIEvent<PointerEventData> onClick = new();
+        public UIEvent<PointerEventData> onDoubleClick = new();
+        public UIEvent<PointerEventData> onPress = new();
+        public UIEvent<PointerEventData> onUp = new();
+        public UIEvent<PointerEventData> onDown = new();
 
-        public UnityEvent onClick = new UnityEvent();
-        public UnityEvent onDoubleClick = new UnityEvent();
-        public UnityEvent onPress = new UnityEvent();
-        public UnityEvent onDown = new UnityEvent();
-        public UnityEvent onUp = new UnityEvent();
+        private PointerEventData m_OnUpEventData = null;
+        private PointerEventData m_OnDownEventData = null;
 
         private const float DOUBLE_CLICK_TIME = 0.2f;
         private const float PRESS_TIME = 0.5f;

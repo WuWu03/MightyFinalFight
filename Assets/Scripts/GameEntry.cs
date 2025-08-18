@@ -36,13 +36,20 @@ public class GameEntry : GameFrameWorkEntry
         StoryMgr.instance.AddStoryBuilder<Story1002>(1002);
         StoryMgr.instance.AddStoryBuilder<Story1003>(1003);
 
-        VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
-        UIMgr.instance.Open(UINames.VersionPanel);
+        if (config.isCheckVersion)
+        {
+            VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
+            UIMgr.instance.Open(UINames.VersionPanel);
+        }
+        else
+        {
+            StartGame();
+        }
     }
 
     private void OnVersionProcessStateChanged(VersionProcessState state, string info, ulong downloadSize, ulong downloadFullSize)
     {
-        if(state == VersionProcessState.Success || state == VersionProcessState.DontCheckVersion)
+        if (state == VersionProcessState.Success || state == VersionProcessState.DontCheckVersion)
         {
             StartGame();
         }
@@ -50,6 +57,7 @@ public class GameEntry : GameFrameWorkEntry
 
     private void StartGame()
     {
+        VersionMgr.instance.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         LocalizationMgr.instance.ReloadLanguage();
         CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);

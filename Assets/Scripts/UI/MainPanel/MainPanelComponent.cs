@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-07-16 20:13*************************************/
+/**2025-08-16 14:21*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -18,8 +18,8 @@ public class MainPanelComponent : BasePanelComponent
 	public Image playerHpBarImage { get; private set; }
 	//enemy/enemyHpBar,Slider
 	public Slider enemyHpBar { get; private set; }
-	//enemy/enemyHpBar/playerHpBarImage,Image
-	public Image playerHpBarImage1 { get; private set; }
+	//enemy/enemyHpBar/enemyHpBarImage,Image
+	public Image enemyHpBarImage { get; private set; }
 	//stage/txtStage,TextMeshProUGUI
 	public TextMeshProUGUI txtStage { get; private set; }
 	//playerLife/txtPlayerLife,TextMeshProUGUI
@@ -37,7 +37,7 @@ public class MainPanelComponent : BasePanelComponent
 		playerHpBar = root.objects[0] as Slider;
 		playerHpBarImage = root.objects[1] as Image;
 		enemyHpBar = root.objects[2] as Slider;
-		playerHpBarImage1 = root.objects[3] as Image;
+		enemyHpBarImage = root.objects[3] as Image;
 		txtStage = root.objects[4] as TextMeshProUGUI;
 		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
 		levelList = root.objects[6] as GameObject;

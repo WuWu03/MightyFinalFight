@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GameFrameWork.UI
 {
@@ -97,10 +99,15 @@ namespace GameFrameWork.UI
 
             if (item.selectButton != null)
             {
-                item.selectButton.onClick.AddListener(delegate () { SelectItem(index); });
+                item.selectButton.onClick.AddListener(OnClick, item);
             }
 
             m_ListItem.Add(item);
+        }
+
+        private void OnClick(GameObject go, PointerEventData data, object arg)
+        {
+            SelectItem((arg as LayoutGroupViewItem).itemIndex);
         }
 
         private List<T> m_ListItem = null;

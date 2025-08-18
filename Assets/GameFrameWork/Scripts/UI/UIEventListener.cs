@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -5,11 +6,8 @@ namespace GameFrameWork.UI
 {
     public sealed class UIEventListener :
     MonoBehaviour,
-    IPointerClickHandler,
-    IPointerDownHandler,
     IPointerEnterHandler,
     IPointerExitHandler,
-    IPointerUpHandler,
     ISelectHandler,
     IUpdateSelectedHandler,
     IDeselectHandler,
@@ -20,42 +18,45 @@ namespace GameFrameWork.UI
     IScrollHandler,
     IMoveHandler
     {
-        public delegate void UIEventHandle<T>(GameObject go, T eventData, object arg) where T : BaseEventData;
         public class UIEvent<T> where T : BaseEventData
         {
-            public UIEvent() { }
-
-            public void AddListener(UIEventHandle<T> handle, object arg = null)
+            public UIEvent()
             {
-                m_UIEventHandle += handle;
-                m_Arg = arg;
+                m_UIEventHandlers = new();
             }
 
-            public void RemoveListener(UIEventHandle<T> handle)
+            public void AddListener(GameFrameWorkAction<GameObject, T, object> handle, object arg = null)
             {
-                m_UIEventHandle -= handle;
+                if (m_UIEventHandlers.ContainsKey(handle))
+                {
+                    Log.LogError("事件已经存在");
+                    return;
+                }
+
+                m_UIEventHandlers.Add(handle, arg);
+            }
+
+            public void RemoveListener(GameFrameWorkAction<GameObject, T, object> handle)
+            {
+                m_UIEventHandlers.Remove(handle);
             }
 
             public void RemoveAllListeners()
             {
-                m_UIEventHandle -= m_UIEventHandle;
-                m_UIEventHandle = null;
+                m_UIEventHandlers.Clear();
             }
 
             public void Invoke(GameObject go, T eventData)
             {
-                m_UIEventHandle?.Invoke(go, eventData, m_Arg);
+                foreach (var handler in m_UIEventHandlers)
+                {
+                    handler.Key.Invoke(go, eventData, handler.Value);
+                }
             }
 
-            private object m_Arg = null;
-            private event UIEventHandle<T> m_UIEventHandle = null;
+            private Dictionary<GameFrameWorkAction<GameObject, T, object>, object> m_UIEventHandlers = null;
         }
 
-        public UIEvent<PointerEventData> onClick = new();
-        public UIEvent<PointerEventData> onDoubleClick = new();
-        public UIEvent<PointerEventData> onPress = new();
-        public UIEvent<PointerEventData> onUp = new();
-        public UIEvent<PointerEventData> onDown = new();
         public UIEvent<PointerEventData> onEnter = new();
         public UIEvent<PointerEventData> onExit = new();
         public UIEvent<BaseEventData> onSelect = new();
@@ -78,41 +79,6 @@ namespace GameFrameWork.UI
             return go.GetOrAddComponent<UIEventListener>();
         }
 
-        private void Update()
-        {
-            if (m_IsPointDown && Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)
-            {
-                onPress.Invoke(gameObject, m_OnDownEventData);
-                m_IsPress = true;
-                m_IsPointDown = false;
-                m_CurrDonwTime = 0f;
-                m_OnDownEventData = null;
-            }
-
-            if (m_ClickCount < 1)
-            {
-                return;
-            }
-
-            if (m_ClickCount >= 2)
-            {
-                onUp.Invoke(gameObject, m_OnUpEventData);
-                onDoubleClick.Invoke(gameObject, m_OnUpEventData);
-                m_ClickCount = 0;
-                m_CurrDonwTime = 0f;
-                m_OnUpEventData = null;
-            }
-
-            if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
-            {
-                onUp.Invoke(gameObject, m_OnUpEventData);
-                onClick.Invoke(gameObject, m_OnUpEventData);
-                m_ClickCount = 0;
-                m_CurrDonwTime = 0f;
-                m_OnUpEventData = null;
-            }
-        }
-
         private void OnDestroy()
         {
             RemoveAllListeners();
@@ -120,12 +86,8 @@ namespace GameFrameWork.UI
 
         public void RemoveAllListeners()
         {
-            onClick.RemoveAllListeners();
-            onDoubleClick.RemoveAllListeners();
-            onDown.RemoveAllListeners();
             onEnter.RemoveAllListeners();
             onExit.RemoveAllListeners();
-            onUp.RemoveAllListeners();
             onSelect.RemoveAllListeners();
             onUpdateSelect.RemoveAllListeners();
             onDeselect.RemoveAllListeners();
@@ -134,31 +96,6 @@ namespace GameFrameWork.UI
             onDrop.RemoveAllListeners();
             onScroll.RemoveAllListeners();
             onMove.RemoveAllListeners();
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            m_IsPointDown = true;
-            m_IsPress = false;
-            m_CurrDonwTime = Time.unscaledTime;
-            m_OnDownEventData = eventData;
-            onDown?.Invoke(gameObject, eventData);
-        }
-
-        public void OnPointerUp(PointerEventData eventData)
-        {
-            m_IsPointDown = false;
-            m_OnUpEventData = eventData;
-
-            if (!m_IsPress)
-            {
-                m_ClickCount++;
-            }
         }
 
         public void OnPointerEnter(PointerEventData eventData) { onEnter.Invoke(gameObject, eventData); }
@@ -172,15 +109,5 @@ namespace GameFrameWork.UI
         public void OnDrop(PointerEventData eventData) { onDrop.Invoke(gameObject, eventData); }
         public void OnScroll(PointerEventData eventData) { onScroll.Invoke(gameObject, eventData); }
         public void OnMove(AxisEventData eventData) { onMove.Invoke(gameObject, eventData); }
-
-        private const float DOUBLE_CLICK_TIME = 0.2f;
-        private const float PRESS_TIME = 0.5f;
-
-        private float m_CurrDonwTime = 0f;
-        private bool m_IsPointDown = false;
-        private bool m_IsPress = false;
-        private int m_ClickCount = 0;
-        private PointerEventData m_OnUpEventData = null;
-        private PointerEventData m_OnDownEventData = null;
     }
 }

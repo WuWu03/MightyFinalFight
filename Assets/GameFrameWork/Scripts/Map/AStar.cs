@@ -7,9 +7,6 @@ namespace GameFrameWork.Map
 {
     public static class AStar
     {
-        private delegate float GetDistance(Vector2Int a, Vector2Int b);//ªÒ»°h÷µ(æ‡¿Î)
-        private delegate Vector2Int[] GetNeighbors(Vector2Int pos);//ªÒ»°÷‹±ﬂµƒµ„
-
         private class Node : IComparable<Node>
         {
             public Node parent;
@@ -51,224 +48,179 @@ namespace GameFrameWork.Map
         }
 
         /// <summary>
-        /// Àƒ±ﬂ–Œastar
+        /// Áü©ÂΩ¢ÁΩëÊ†º‰∏çÂåÖÂê´ÂØπËßí
         /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="mapTypes"></param>
+        /// <param name="passTypes"></param>
+        /// <returns></returns>
 
         public static List<Vector2Int> Find4(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> mapTypes, List<int> passTypes)
         {
-            GetDistance getDistance = delegate (Vector2Int a, Vector2Int b)
+            static float getDistance(Vector2Int a, Vector2Int b)
             {
                 float xDistance = Mathf.Abs(a.x - b.x);
                 float yDistance = Mathf.Abs(a.y - b.y);
                 return xDistance * xDistance + yDistance * yDistance;
-            };
+            }
 
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
+            static Vector2Int[] getNeighbors(Vector2Int pos)
             {
                 Vector2Int[] neighbors = new Vector2Int[4]
                 {
-                    new Vector2Int(pos.x, pos.y + 1),
-                    new Vector2Int(pos.x, pos.y - 1),
-                    new Vector2Int(pos.x + 1, pos.y),
-                    new Vector2Int(pos.x - 1, pos.y),
+                    new(pos.x, pos.y + 1),
+                    new(pos.x, pos.y - 1),
+                    new(pos.x + 1, pos.y),
+                    new(pos.x - 1, pos.y),
                 };
 
                 return neighbors;
-            };
+            }
+
+            return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, getNeighbors);
+        }
+
+
+        /// <summary>
+        /// ÂÖ≠ËæπÂΩ¢/Ëè±ÂΩ¢ÁΩëÊ†º
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="mapTypes"></param>
+        /// <param name="passTypes"></param>
+        /// <returns></returns>
+        public static List<Vector2Int> Find6(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> mapTypes, List<int> passTypes)
+        {
+            static float getDistance(Vector2Int a, Vector2Int b)
+            {
+                float xDistance = Mathf.Abs(a.x - b.x);
+                float yDistance = Mathf.Abs(a.y - b.y);
+                return xDistance * xDistance + yDistance * yDistance * 3;//Áõ∏ÈÇªÊ≠£ÂÖ≠ËæπÂΩ¢yËΩ¥Ë∑ùÁ¶ª‰∏∫Ê†πÂè∑‰∏âÔºåÊ≠§Â§ÑyDistanceÊòØÊåâÁÖßÁõ∏ÈÇªË∑ùÁ¶ª‰∏∫1ËøõË°åËÆ°ÁÆóÔºåÂõ†Ê≠§Ë¶ÅÊâ©Â§ßÊ†πÂè∑‰∏âÂÄç
+            }
+
+            static Vector2Int[] getNeighbors(Vector2Int pos)
+            {
+                Vector2Int[] neighbors = new Vector2Int[6]
+                {
+                    new(pos.x + 1, pos.y + 1),
+                    new(pos.x - 1, pos.y + 1),
+                    new(pos.x + 1, pos.y - 1),
+                    new(pos.x - 1, pos.y - 1),
+                    new(pos.x - 2, pos.y),
+                    new(pos.x + 2, pos.y),
+                };
+
+                return neighbors;
+            }
 
             return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, getNeighbors);
         }
 
         /// <summary>
-        /// Àƒ±ﬂ–Œastar‘ –Ì∂‘Ω«“∆∂Ø
+        /// Áü©ÂΩ¢ÁΩëÊ†ºÂåÖÂê´ÂØπËßí
         /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="mapTypes"></param>
+        /// <param name="passTypes"></param>
+        /// <returns></returns>
         public static List<Vector2Int> Find8(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> mapTypes, List<int> passTypes)
         {
-            GetDistance getDistance = delegate (Vector2Int a, Vector2Int b)
+            static float getDistance(Vector2Int a, Vector2Int b)
             {
                 float xDistance = Mathf.Abs(a.x - b.x);
                 float yDistance = Mathf.Abs(a.y - b.y);
                 return xDistance * xDistance + yDistance * yDistance;
-            };
+            }
 
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
+            static Vector2Int[] getNeighbors(Vector2Int pos)
             {
                 Vector2Int[] neighbors = new Vector2Int[8]
                 {
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y + 1),
+                    new(pos.x - 1, pos.y + 1),
+                    new(pos.x, pos.y + 1),
+                    new(pos.x + 1, pos.y + 1),
 
-                    new Vector2Int(pos.x + 1, pos.y),
-                    new Vector2Int(pos.x - 1, pos.y),
+                    new(pos.x + 1, pos.y),
+                    new(pos.x - 1, pos.y),
 
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
+                    new(pos.x + 1, pos.y - 1),
+                    new(pos.x, pos.y - 1),
+                    new(pos.x - 1, pos.y - 1),
                 };
 
                 return neighbors;
-            };
+            }
 
             return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, getNeighbors);
-        }
-
-        /*¡˘±ﬂ–Œx÷·≈≈¡–astar
-         * 00    20    40
-         * 
-         *    11    31 
-         *   
-         * 02    22    42    
-         * 
-         *    13    33
-         *    
-         * 04    24    44
-         */
-        public static List<Vector2Int> Find6X(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> mapTypes, List<int> passTypes)
-        {
-            GetDistance getDistance = delegate (Vector2Int a, Vector2Int b)
-            {
-                float xDistance = Mathf.Abs(a.x - b.x);
-                float yDistance = Mathf.Abs(a.y - b.y);
-                return xDistance * xDistance + yDistance * yDistance * 3;//œ‡¡⁄’˝¡˘±ﬂ–Œy÷·æ‡¿ÎŒ™∏˘∫≈»˝£¨¥À¥¶yDistance «∞¥’’œ‡¡⁄æ‡¿ÎŒ™1Ω¯––º∆À„£¨“Ú¥À“™¿©¥Û∏˘∫≈»˝±∂
-            };
-
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
-            {
-                Vector2Int[] neighbors = new Vector2Int[6]
-                {
-                    new Vector2Int(pos.x + 1, pos.y + 1),
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
-                    new Vector2Int(pos.x - 2, pos.y),
-                    new Vector2Int(pos.x + 2, pos.y),
-                };
-
-                return neighbors;
-            };
-
-            return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, getNeighbors);
-        }
-
-        /*¡˘±ﬂ–Œy÷·≈≈¡–astar
-         * 00      20      40
-         *     11      31  
-         * 02      22      42        
-         *     13      33
-         * 04      24      44    
-         */
-        public static List<Vector2Int> Find6Y(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> mapTypes, List<int> passTypes)
-        {
-            GetDistance getDistance = delegate (Vector2Int a, Vector2Int b)
-            {
-                float xDistance = Mathf.Abs(a.x - b.x);
-                float yDistance = Mathf.Abs(a.y - b.y);
-                return xDistance * xDistance * 3 + yDistance * yDistance;//œ‡¡⁄’˝¡˘±ﬂ–Œx÷·æ‡¿ÎŒ™∏˘∫≈»˝£¨¥À¥¶xDistance «∞¥’’œ‡¡⁄æ‡¿ÎŒ™1Ω¯––º∆À„£¨“Ú¥À“™¿©¥Û∏˘∫≈»˝±∂
-            };
-
-            GetNeighbors gn = delegate (Vector2Int pos)
-            {
-                Vector2Int[] neighbors = new Vector2Int[6]
-                {
-                    new Vector2Int(pos.x + 1, pos.y + 1),
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
-                    new Vector2Int(pos.x, pos.y - 2),
-                    new Vector2Int(pos.x, pos.y + 2)
-                };
-
-                return neighbors;
-            };
-
-            return AStarPathFinding(from, to, mapTypes, passTypes, getDistance, gn);
         }
 
         public static List<Vector2Int> CheckRange4(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes)
         {
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
+            static Vector2Int[] getNeighbors(Vector2Int pos)
             {
                 Vector2Int[] neighbors = new Vector2Int[4]
                 {
-                    new Vector2Int(pos.x, pos.y + 1),
-                    new Vector2Int(pos.x, pos.y - 1),
-                    new Vector2Int(pos.x + 1, pos.y),
-                    new Vector2Int(pos.x - 1, pos.y),
+                    new(pos.x, pos.y + 1),
+                    new(pos.x, pos.y - 1),
+                    new(pos.x + 1, pos.y),
+                    new(pos.x - 1, pos.y),
                 };
 
                 return neighbors;
-            };
+            }
+
+            return CheckRange(point, range, map, passTypes, getNeighbors);
+        }
+
+        public static List<Vector2Int> CheckRange6(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes)
+        {
+            static Vector2Int[] getNeighbors(Vector2Int pos)
+            {
+                Vector2Int[] neighbors = new Vector2Int[6]
+                {
+                    new(pos.x + 1, pos.y + 1),
+                    new(pos.x - 1, pos.y + 1),
+                    new(pos.x + 1, pos.y - 1),
+                    new(pos.x - 1, pos.y - 1),
+                    new(pos.x - 2, pos.y),
+                    new(pos.x + 2, pos.y),
+                };
+
+                return neighbors;
+            }
 
             return CheckRange(point, range, map, passTypes, getNeighbors);
         }
 
         public static List<Vector2Int> CheckRange8(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes)
         {
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
+            static Vector2Int[] getNeighbors(Vector2Int pos)
             {
                 Vector2Int[] neighbors = new Vector2Int[8]
                 {
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y + 1),
+                    new(pos.x - 1, pos.y + 1),
+                    new(pos.x, pos.y + 1),
+                    new(pos.x + 1, pos.y + 1),
 
-                    new Vector2Int(pos.x + 1, pos.y),
-                    new Vector2Int(pos.x - 1, pos.y),
+                    new(pos.x + 1, pos.y),
+                    new(pos.x - 1, pos.y),
 
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
+                    new(pos.x + 1, pos.y - 1),
+                    new(pos.x, pos.y - 1),
+                    new(pos.x - 1, pos.y - 1),
                 };
 
                 return neighbors;
-            };
+            }
 
             return CheckRange(point, range, map, passTypes, getNeighbors);
         }
 
-        public static List<Vector2Int> CheckRange6X(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes)
+        private static List<Vector2Int> AStarPathFinding(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFloatAction<Vector2Int, Vector2Int> getDistance, GameFrameWorkTemplateAction<Vector2Int, Vector2Int[]> getNeighbors)
         {
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
-            {
-                Vector2Int[] neighbors = new Vector2Int[6]
-                {
-                    new Vector2Int(pos.x + 1, pos.y + 1),
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
-                    new Vector2Int(pos.x - 2, pos.y),
-                    new Vector2Int(pos.x + 2, pos.y),
-                };
-
-                return neighbors;
-            };
-
-            return CheckRange(point, range, map, passTypes, getNeighbors);
-        }
-
-        public static List<Vector2Int> CheckRange6Y(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes)
-        {
-            GetNeighbors getNeighbors = delegate (Vector2Int pos)
-            {
-                Vector2Int[] neighbors = new Vector2Int[6]
-                {
-                    new Vector2Int(pos.x + 1, pos.y + 1),
-                    new Vector2Int(pos.x - 1, pos.y + 1),
-                    new Vector2Int(pos.x + 1, pos.y - 1),
-                    new Vector2Int(pos.x - 1, pos.y - 1),
-                    new Vector2Int(pos.x, pos.y - 2),
-                    new Vector2Int(pos.x, pos.y + 2)
-                };
-                return neighbors;
-            };
-
-            return CheckRange(point, range, map, passTypes, getNeighbors);
-        }
-
-        private static List<Vector2Int> AStarPathFinding(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> map, List<int> passTypes, GetDistance getDistance, GetNeighbors getNeighbors)
-        {
-            List<Vector2Int> results = new List<Vector2Int>();
+            List<Vector2Int> results = new();
 
             if (from == to)
             {
@@ -276,70 +228,87 @@ namespace GameFrameWork.Map
                 return results;
             }
 
-            Queue<Node> nodes = new Queue<Node>();
-            List<Node> openList = new List<Node>();
-            Node current = null;
+            List<Node> openList = new();
+            List<Node> closeList = new();
+            Node endNode = null;
 
-            nodes.Enqueue(new Node(null, from, getDistance(from, to), 0));
+            openList.Add(new Node(null, from, getDistance(from, to), 0));
 
-            while (nodes.Count > 0)
+            while (openList.Count > 0)
             {
-                current = nodes.Dequeue();
+                Node currNode = openList.Min();
+                Vector2Int[] neigbors = getNeighbors(currNode.pos);
 
-                if (current.pos == to)
+                openList.Remove(currNode);
+                closeList.Add(currNode);
+
+                endNode = closeList.Find(obj => obj.pos == to);
+
+                if (endNode != null)
                 {
                     break;
                 }
 
-                current.open = false;
-
-                if (!openList.Contains(current))
+                for (int i = 0; i < neigbors.Length; i++)
                 {
-                    openList.Add(current);
+                    FindDestNode(neigbors[i], to, currNode, map, passTypes, getDistance, openList, closeList);
                 }
-
-                Vector2Int[] neighbors = getNeighbors(current.pos);
-
-                for (int i = 0; i < neighbors.Length; i++)
-                {
-                    if (!map.ContainsKey(neighbors[i]) || !passTypes.Contains(map[neighbors[i]]))
-                    {
-                        continue;
-                    }
-
-                    Node temp = openList.Find(obj => obj.pos == neighbors[i]);
-
-                    if (temp == null)
-                    {
-                        temp = new Node(current, neighbors[i], getDistance(neighbors[i], to), current.g + 1);
-                        openList.Add(temp);
-                    }
-                    else if (temp.open && temp.g > current.g + 1)
-                    {
-                        temp.g = current.g + 1;
-                        temp.f = temp.h + temp.g;
-                        temp.parent = current;
-                    }
-                }
-
-                nodes.Enqueue(openList.FindAll(obj => obj.open).Min());
             }
 
-            while (current != null)
+            while (endNode != null)
             {
-                results.Add(current.pos);
-                current = current.parent;
+                results.Add(endNode.pos);
+                endNode = endNode.parent;
             }
 
             results.Reverse();
             return results;
         }
 
-        private static List<Vector2Int> CheckRange(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes, GetNeighbors getNeighbors)
+        private static void FindDestNode(Vector2Int from, Vector2Int to, Node currNode, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFloatAction<Vector2Int, Vector2Int> getDistance, List<Node> openList, List<Node> closeList)
         {
-            Queue<Vector2Int> queuePoints = new Queue<Vector2Int>();
-            Queue<int> queueRange = new Queue<int>();
-            List<Vector2Int> results = new List<Vector2Int>();
+            if (!map.TryGetValue(from, out int passType) || !passTypes.Contains(passType))
+            {
+                return;
+            }
+
+            foreach (Node node in closeList)
+            {
+                if (node.pos == from)
+                {
+                    return;
+                }
+            }
+
+            Node temp = null;
+
+            foreach (Node node in openList)
+            {
+                if (node.pos == from)
+                {
+                    temp = node;
+                    break;
+                }
+            }
+
+            if (temp == null)
+            {
+                temp = new Node(currNode, from, currNode.g + 1, getDistance(from, to));
+                openList.Add(temp);
+            }
+            else if (currNode.f > currNode.g + 1 + temp.h)
+            {
+                temp.g = currNode.g + 1;
+                temp.f = temp.g + temp.h;
+            }
+        }
+
+
+        private static List<Vector2Int> CheckRange(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkTemplateAction<Vector2Int, Vector2Int[]> getNeighbors)
+        {
+            Queue<Vector2Int> queuePoints = new();
+            Queue<int> queueRange = new();
+            List<Vector2Int> results = new();
 
             queuePoints.Enqueue(point);
             queueRange.Enqueue(range);
@@ -349,21 +318,17 @@ namespace GameFrameWork.Map
                 Vector2Int currentPoint = queuePoints.Dequeue();
                 int currentRange = queueRange.Dequeue();
 
-                if (!map.ContainsKey(currentPoint) || !passTypes.Contains(map[currentPoint]))
+                if (!map.TryGetValue(currentPoint, out int passType) || !passTypes.Contains(passType))
                 {
                     continue;
                 }
 
-                if (currentRange < 0)
+                if (currentRange < 0 || results.Contains(currentPoint))
                 {
                     continue;
                 }
 
-                if (!results.Contains(currentPoint))
-                {
-                    results.Add(currentPoint);
-                }
-
+                results.Add(currentPoint);
                 Vector2Int[] neighbors = getNeighbors(currentPoint);
 
                 for (int i = 0; i < neighbors.Length; i++)

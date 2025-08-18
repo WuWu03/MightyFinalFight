@@ -1085,7 +1085,8 @@ namespace GameFrameWork.UI
         {
             if (m_RecycledItems != null && m_RecycledItems.count > 0) 
             {
-                var cellView = m_RecycledItems.RemoveAt(0);
+                var cellView = m_RecycledItems[0];
+                m_RecycledItems.RemoveAt(0);
                 return cellView;
             }
 

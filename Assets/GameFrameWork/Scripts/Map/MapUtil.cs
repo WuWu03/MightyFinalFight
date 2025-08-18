@@ -5,50 +5,34 @@ namespace GameFrameWork.Map
     public class MapUtil
     {
         /// <summary>
-        /// 逻辑坐标转世界坐标
+        /// 地图坐标转世界坐标
         /// </summary>
         /// <returns></returns>
-        public static Vector2 LogicPosToWorldPos(Vector2Int hexagonPos, float scaleX, float scaleY)
+        public static Vector2 MapPosToWorldPos(Vector2Int map, float scaleX, float scaleY)
         {
-            return new Vector2(hexagonPos.x * scaleX, hexagonPos.y * scaleY);
+            return new Vector2(map.x * scaleX, map.y * scaleY);
         }
 
         /// <summary>
-        /// 四边形坐标转X轴排列六边形坐标
+        /// 四边形坐标转六边形坐标
         /// </summary>
-        public static Vector2Int SquarePosToHexagonXPos(int x, int y)
+        public static Vector2Int SquarePosToHexagonPos(int x, int y)
         {
             return new Vector2Int(2 * x + y % 2, y);
         }
 
         /// <summary>
-        /// 四边形坐标转X轴排列六边形坐标
-        /// </summary>
-        public static Vector2Int SquarePosToHexagonYPos(int x, int y)
-        {
-            return new Vector2Int(x, 2 * y + x % 2);
-        }
-
-        /// <summary>
-        /// X轴排列六边形坐标转四边形坐标
+        /// 六边形坐标转四边形坐标
         /// </summary>>
-        public static Vector2Int HexagonXPosToSquarePos(int x, int y)
+        public static Vector2Int HexagonPosToSquarePos(int x, int y)
         {
             return new Vector2Int((x - y % 2) / 2, y);
         }
 
         /// <summary>
-        /// Y轴排列六边形坐标转四边形坐标
-        /// </summary>>
-        public static Vector2Int HexagonYPosToSquarePos(int x, int y)
-        {
-            return new Vector2Int(x, (y - x % 2) / 2);
-        }
-
-        /// <summary>
         /// 某点是否在多边形内
         /// </summary>
-        public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int p)
+        public static bool PolygonContainsPoint(Vector2Int[] polyPoints, Vector2Int pos)
         {
             int j = polyPoints.Length - 1;
             bool inside = false;
@@ -58,7 +42,7 @@ namespace GameFrameWork.Map
                 Vector2Int pi = polyPoints[i];
                 Vector2Int pj = polyPoints[j];
 
-                if (((pi.y >= p.y && p.y > pj.y) || (pj.y >= p.y && p.y > pi.y)) && (p.x < (pj.x - pi.x) * (p.y - pi.y) / (pj.y - pi.y) + pi.x))
+                if (((pi.y >= pos.y && pos.y > pj.y) || (pj.y >= pos.y && pos.y > pi.y)) && (pos.x < (pj.x - pi.x) * (pos.y - pi.y) / (pj.y - pi.y) + pi.x))
                     inside = !inside;
             }
 

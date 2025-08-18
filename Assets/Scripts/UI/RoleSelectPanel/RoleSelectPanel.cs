@@ -25,7 +25,15 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 		m_Component.imgSelectRect.gameObject.SetActiveSelf(true);
 		m_Component.roleContentGroupView.Update(ConfigDataSheet.roleSelectConfigDatas.Length);
 		m_Component.roleContentGroupView.SelectItem(0);
-		LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+
+		if (UIMgr.instance.IsOpen(UINames.LoadPanel))
+		{
+			LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+		}
+		else
+		{
+            OnFadeWhiteComplete();
+		}
 	}
 
 	protected override void OnUpdate()
@@ -77,14 +85,14 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 
 		item.txtName.SetLanguageTextKey(roleSelectConfigData.name);
 		item.txtDesc.SetLanguageTextKey(roleSelectConfigData.desc);
-		item.btnRoleIcon.image.SetSprite(roleSelectConfigData.headIcon);
+		item.imgRoleIcon.SetSprite(roleSelectConfigData.headIcon);
 	}
 
 	private void OnItemSelect(RoleSelectPanelComponent.RoleContentItem item, bool isSelect)
 	{
 		if (isSelect)
 		{
-			m_Component.imgSelectRect.SetParent(item.btnRoleIcon.transform, false);
+			m_Component.imgSelectRect.SetParent(item.imgRoleIcon.transform, false);
 			m_Component.imgSelectRect.anchoredPosition = Vector2.zero;
 			m_CurrSelectIndex = item.itemIndex;
 		}

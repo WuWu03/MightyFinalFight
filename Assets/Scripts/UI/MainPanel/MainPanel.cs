@@ -20,7 +20,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	protected override void OnOpen()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent += OnItemUpdate;
+		m_Component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
 		m_Component.enemyHpBar.SetActiveSelf(false);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
@@ -46,7 +46,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	protected override void OnClose()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent -= OnItemUpdate;
+		m_Component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
 	}
 
 	protected override void OnDestroy()
@@ -54,7 +54,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	}
 
-	private void OnItemUpdate(MainPanelComponent.LevelListItem item)
+	private void OnLevelItemUpdate(MainPanelComponent.LevelListItem item)
 	{
 		int stageIndex = StageMgr.instance.currStageData.StageIndex;
 		int playerLevel = PlayerMgr.instance.level;
@@ -141,7 +141,9 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	private void SetColor()
 	{
-		m_Component.playerHpBarImage.color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
+        Color color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
+		m_Component.playerHpBarImage.color = color;
+		m_Component.enemyHpBarImage.color = color;
 		m_Component.levelListGroupView.Update(5);
 	}
 

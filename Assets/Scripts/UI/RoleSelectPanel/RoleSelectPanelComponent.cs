@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-07-16 19:54*************************************/
+/**2025-08-16 13:36*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -30,12 +30,12 @@ public class RoleSelectPanelComponent : BasePanelComponent
 
 	public class RoleContentItem : LayoutGroupViewItem
 	{
-		public ButtonEx btnRoleIcon = null;
+		public Image imgRoleIcon = null;
 		public LanguageText txtName = null;
 		public LanguageText txtDesc = null;
 		protected override void OnCreate(GameObject go)
 		{
-			btnRoleIcon = transform.Find("btnRoleIcon").GetComponent<ButtonEx>();
+			imgRoleIcon = transform.Find("imgRoleIcon").GetComponent<Image>();
 			txtName = transform.Find("txtName").GetComponent<LanguageText>();
 			txtDesc = transform.Find("txtDesc").GetComponent<LanguageText>();
 		}
