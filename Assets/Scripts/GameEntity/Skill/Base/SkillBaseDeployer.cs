@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static SkillConfigData;
@@ -127,8 +127,7 @@ public abstract class SkillBaseDeployer
 
         for (int i = 0; i < m_SkillSelectors.Length; i++)
         {
-            if (m_SkillSelectors[i] != null)
-                m_SkillSelectors[i].Exit();
+            m_SkillSelectors[i]?.Exit();
         }
 
         m_CurrEffectIndex = 0;
@@ -136,7 +135,7 @@ public abstract class SkillBaseDeployer
 
     public virtual void Update()
     {
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal && !m_Owner.isPause)
         {
             JustEffect();
         }

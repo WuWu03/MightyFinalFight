@@ -97,9 +97,9 @@ public class Barrel : BaseAvatar, ICanBeHit
         ReferencePool.Release(data);
     }
 
-    public void SetCatch(bool value) { }
+    public void SetIsBeCatch(bool value) { }
 
-    public void SetThrow(bool value) { }
+    public void SetIsBeThrow(bool value) { }
 
     protected override void OnFixedUpdate()
     {

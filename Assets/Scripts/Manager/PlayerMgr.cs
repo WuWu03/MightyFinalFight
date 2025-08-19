@@ -346,7 +346,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true });
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = false });
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
@@ -378,6 +378,21 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             bool isFloat = false;
             float moveSpeed = 0;
             SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            m_Player.entityAttribute.attackValue = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            if (m_Player.isPause)
+            {
+                m_Player.Resume();
+            }
+            else
+            {
+                m_Player.Pause();
+            }
         }
     }
 

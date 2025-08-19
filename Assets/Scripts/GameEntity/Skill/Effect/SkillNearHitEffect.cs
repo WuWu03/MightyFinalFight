@@ -1,4 +1,5 @@
 using GameFrameWork.Camera;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,119 +16,71 @@ public class SkillNearHitEffect : SkillBaseEffect
             m_Targets = skillSelector.GetTargets();
         }
 
-        if(m_Targets == null || m_Targets.Count < 1)
+        if (m_Targets == null || m_Targets.Count < 1)
         {
             Complete();
             return;
         }
 
-        m_IsPause = m_SkillData.id == 1003006;
+        m_IsPause = m_SkillData.id == 1001004;
+        m_Owner.StartCoroutine(Pause());
+    }
 
-        if (!m_IsPause)
+    private IEnumerator Pause()
+    {
+        for (int i = 0; i < m_Targets.Count; i++)
         {
-            for (int i = 0; i < m_Targets.Count; i++)
-            {
-                if (SkillUtil.SkillHit(m_Targets[i], m_Owner, m_SkillData, m_SkillEffect) && !m_IsHurtTarget)
-                {
-                    m_IsHurtTarget = true;
-                }
-            }
+            HurtTarget(m_Targets[i]);
 
-            if (m_IsHurtTarget)
+            if(m_IsPause)
             {
-                if (m_SkillEffect.IsShakeCamera)
-                {
-                    CameraMgr.instance.Shake(0.3f, 0.1f, 20, 100);
-                }
+                Time.timeScale = 0f;
+                yield return new WaitForSecondsRealtime(0.2f);
+                Time.timeScale = 1f;
             }
-
-            m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
-            Complete();
         }
+
+        Time.timeScale = 1f;
+
+        if (m_IsHurtTarget)
+        {
+            if (m_SkillEffect.IsShakeCamera)
+            {
+                CameraMgr.instance.Shake(0.3f, 0.1f, 20, 100);
+            }
+        }
+
+        m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
+        Complete();
     }
 
     protected override void OnComplete()
     {
         base.OnComplete();
         m_IsHurtTarget = false;
+        m_IsPause = false;
+        m_Owner.StopCoroutine(Pause());
     }
 
     protected override void OnReset()
     {
         base.OnReset();
-        m_OffsetTime = 0f;
-        m_PauseIndex = 0;
-        m_PauseTimer = -1f;
         m_IsHurtTarget = false;
         m_IsPause = false;
         m_Targets = null;
     }
 
-    protected override void OnUpdate(ISkillSelector selector)
+    private bool HurtTarget(ICanBeHit canBeHit)
     {
-        base.OnUpdate(selector);
-
-        if (!m_IsPause)
+        if (SkillUtil.SkillHit(canBeHit, m_Owner, m_SkillData, m_SkillEffect))
         {
-            return;
+            m_IsHurtTarget = true;
+            return true;
         }
 
-        if (m_PauseIndex <= m_Targets.Count)
-        {
-            if (m_PauseTimer < 0f || Time.unscaledTime - m_PauseTimer > m_OffsetTime)
-            {
-                if (Time.timeScale > 0f && m_PauseTimer > 0f)
-                {
-                    Time.timeScale = 0f;
-                    m_PauseTimer = Time.unscaledTime;
-                    m_OffsetTime = 0.1f;
-                    return;
-                }
-
-                if (Time.timeScale < 1f || m_PauseTimer < 0f)
-                {
-                    if (m_PauseIndex < m_Targets.Count)
-                    {
-                        HurtStateData hurtStateData = SkillUtil.GetHurtData(m_Targets[m_PauseIndex], m_Owner, m_SkillData, m_SkillEffect, true);
-
-                        if (hurtStateData != null)
-                        {
-                            if (!m_IsHurtTarget)
-                            {
-                                m_IsHurtTarget = !m_Targets[m_PauseIndex].IsHurtWillDie(hurtStateData.attackValue);
-                            }
-
-                            m_Targets[m_PauseIndex].OnHurtMsg(hurtStateData);
-                            m_OffsetTime = 0.05f;
-                            Time.timeScale = 1f;
-                            m_PauseTimer = Time.unscaledTime;
-                        }
-                    }
-
-                    m_PauseIndex++;
-                }
-            }
-        }
-        else
-        {
-            Time.timeScale = 1f;
-
-            if (m_IsHurtTarget)
-            {
-                if (m_SkillEffect.IsShakeCamera)
-                {
-                    CameraMgr.instance.Shake(0.3f, 0.1f, 20, 100);
-                }
-            }
-
-            m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
-            Complete();
-        }
+        return false;
     }
 
-    private float m_OffsetTime = 0f;
-    private int m_PauseIndex = 0;
-    private float m_PauseTimer = -1f;
     private bool m_IsHurtTarget = false;
     private bool m_IsPause = false;
     private List<ICanBeHit> m_Targets = null;

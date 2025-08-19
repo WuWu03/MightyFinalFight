@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-08-16 14:21*************************************/
+/**2025-08-18 22:03*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -24,13 +24,9 @@ public class MainPanelComponent : BasePanelComponent
 	public TextMeshProUGUI txtStage { get; private set; }
 	//playerLife/txtPlayerLife,TextMeshProUGUI
 	public TextMeshProUGUI txtPlayerLife { get; private set; }
-	//level/levelList,GameObject
-	public GameObject levelList { get; private set; }
-	//level/levelList/item,GameObject
-	public GameObject itemGO { get; private set; }
+	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 	//exp/txtExp,TextMeshProUGUI
 	public TextMeshProUGUI txtExp { get; private set; }
-	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
 
 	protected override void OnInitComponent(UIRefRoot root)
 	{
@@ -40,10 +36,10 @@ public class MainPanelComponent : BasePanelComponent
 		enemyHpBarImage = root.objects[3] as Image;
 		txtStage = root.objects[4] as TextMeshProUGUI;
 		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
-		levelList = root.objects[6] as GameObject;
-		itemGO = root.objects[7] as GameObject;
+		GameObject levelList = root.objects[6] as GameObject;
+		GameObject levelListItem = root.objects[7] as GameObject;
+		levelListGroupView = new LayoutGroupView<LevelListItem>(levelList,levelListItem);
 		txtExp = root.objects[8] as TextMeshProUGUI;
-		levelListGroupView = new LayoutGroupView<LevelListItem>();
 	}
 
 	public class LevelListItem : LayoutGroupViewItem
@@ -55,11 +51,12 @@ public class MainPanelComponent : BasePanelComponent
 		public Image imgLevel5 = null;
 		protected override void OnCreate(GameObject go)
 		{
-			imgLevel1 = transform.Find("imgLevel1").GetComponent<Image>();
-			imgLevel2 = transform.Find("imgLevel2").GetComponent<Image>();
-			imgLevel3 = transform.Find("imgLevel3").GetComponent<Image>();
-			imgLevel4 = transform.Find("imgLevel4").GetComponent<Image>();
-			imgLevel5 = transform.Find("imgLevel5").GetComponent<Image>();
+			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
+			imgLevel1 = uiRefRoot.objects[0] as Image;
+			imgLevel2 = uiRefRoot.objects[1] as Image;
+			imgLevel3 = uiRefRoot.objects[2] as Image;
+			imgLevel4 = uiRefRoot.objects[3] as Image;
+			imgLevel5 = uiRefRoot.objects[4] as Image;
 		}
 	}
 }

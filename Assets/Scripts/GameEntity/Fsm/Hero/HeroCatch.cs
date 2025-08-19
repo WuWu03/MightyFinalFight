@@ -9,6 +9,12 @@ public class HeroCatch : BaseFsmState
 
     protected override void OnEnter(Fsm fsm)
     {
+        m_Owner.SetCanAttack(true);
+        m_Owner.SetCanBeHit(true);
+        m_Owner.SetCanJump(true);
+        m_Owner.SetCanMove(m_Owner.isCatchContrl);
+        m_Owner.SetCanSkill(true);
+
         m_Owner.ResetRigidbody();
         m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
         m_Owner.PlayAnimation(AnimName.Catch, 1);

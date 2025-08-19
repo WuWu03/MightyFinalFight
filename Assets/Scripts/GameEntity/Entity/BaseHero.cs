@@ -5,69 +5,11 @@ using UnityEngine;
 
 public class BaseHero : BaseRole
 {
-    public override bool canMove
-    {
-        get
-        {
-            if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
-            {
-                return false;
-            }
-
-            return (base.canMove || IsAnyState(typeof(HeroCatch))) && (!HasCatch() || m_IsCatchControl);
-        }
-    }
-
-    public override bool canSkill
-    {
-        get
-        {
-            return base.canSkill || IsAnyState(typeof(HeroCatch));
-        }
-    }
-
-    public override bool canAttack
-    {
-        get
-        {
-            if (m_HurtTimer > 0 && Time.time - m_HurtTimer < 0.5f)
-            {
-                return false;
-            }
-
-            return base.canAttack || HasCatch();
-        }
-    }
-
-    public override bool canJump
-    {
-        get
-        {
-            return base.canJump || (HasCatch() && !IsAnimation(AnimName.Throw));
-        }
-    }
-
-    public override bool canChangeDefaultState
-    {
-        get
-        {
-            bool condition = base.canChangeDefaultState || m_Weapon != null || IsAnimation(AnimName.ThrowWeapon);
-            if (HasCatch())
-            {
-                if (IsAnyState(typeof(RoleAttack)))
-                    condition = true;
-                else
-                    condition = condition && !m_IsCatchControl;
-            }
-            return condition;
-        }
-    }
-
     public override bool canBeHit
     {
         get
         {
-            return base.canBeHit && !m_IsRebirthState && !IsAnyState(typeof(HeroPickUp)) && !IsAnimation(AnimName.Throw);
+            return base.canBeHit && !m_IsRebirthState;
         }
     }
 
@@ -152,7 +94,6 @@ public class BaseHero : BaseRole
         m_RebirthLightTime = 1f / 30f;
         m_CatchStamp = 0f;
         m_HitTime = -1f;
-        m_HurtTimer = 0f;
         m_IsDropInGround = false;
         m_CatchAttackCount = 0;
         m_Slot1Renderer = null;
@@ -191,11 +132,7 @@ public class BaseHero : BaseRole
 
         if (skillData.Type == SkillConfigData.SkillType.Skill)//捕捉状态下技能攻击不进行次数累积
         {
-            if (!m_IsCatchControl)
-            {
-                ResetCatch(false);
-            }
-
+            ResetCatch(false, false);
             return;
         }
 
@@ -203,17 +140,19 @@ public class BaseHero : BaseRole
 
         if (m_CatchAttackCount >= 3)
         {
+            ICanBeHit hit = m_ListCatchTarget[0];
+            ResetCatch(false, false);
             HurtStateData hurtStateData = HurtStateData.Create();
             hurtStateData.attackerDir = m_Dir;
             hurtStateData.attackValue = 0;
             hurtStateData.isSwoon = true;
             hurtStateData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
             hurtStateData.isNotPlayHurtSound = true;
-            m_ListCatchTarget[0].OnHurtMsg(hurtStateData);
+            hit.OnHurtMsg(hurtStateData);
         }
     }
 
-    public override void OnAttackMsg(AttackStateData data, bool isForceJumpAttack = false)
+    public override void OnAttackMsg(SkillStateData data, bool isForceJumpAttack = false)
     {
         if (m_ListCatchTarget != null && m_ListCatchTarget.Count > 0)
         {
@@ -299,7 +238,6 @@ public class BaseHero : BaseRole
 
         DropWeaponMsg(data.attackerDir);
         base.OnHurtMsg(data);
-        m_HurtTimer = Time.time;
     }
 
     public override void OnDropTragMsg(DropTrapStateData data)
@@ -406,13 +344,6 @@ public class BaseHero : BaseRole
 
     protected override void OnGroundHurtMsg(HurtStateData data)
     {
-        //if (!data.isGroundHurt)
-        //{
-        //    int dir = data.attackerPos.x > m_Pos.x ? -1 : 1;
-        //    Vector3 pos = new Vector3(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -m_Dir);
-        //    EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
-        //}
-
         Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
 
         if (data.attackValue > 0)
@@ -460,7 +391,7 @@ public class BaseHero : BaseRole
                 m_CatchAttackTimer = 0;
                 SetDir(dir.x);
 
-                OnHitStart()[0].SetThrow(true);
+                OnHitStart()[0].SetIsBeThrow(true);
                 DeploySkill(m_BaseHeroSkillData.throwAttackID);
                 return;
             }
@@ -484,22 +415,15 @@ public class BaseHero : BaseRole
         }
         else if (m_Weapon != null)
         {
-            bool isWeaponAttack = IsCurrSkill(m_BaseHeroSkillData.weaponAttackID);
             if (m_Weapon.entityAttribute.health <= 1)
             {
-                if (!isWeaponAttack && IsPlayComplete())
-                {
-                    DeploySkill(m_BaseHeroSkillData.weaponAttackID);
-                    UseWeaponMsg();
-                }
+                DeploySkill(m_BaseHeroSkillData.throwWeaponID);
+                UseWeaponMsg();
             }
             else
             {
-                if (!isWeaponAttack && IsPlayComplete())
-                {
-                    DeploySkill(m_BaseHeroSkillData.weaponAttackID);
-                    UseWeaponMsg();
-                }
+                DeploySkill(m_BaseHeroSkillData.weaponAttackID);
+                UseWeaponMsg();
             }
 
             return;
@@ -544,21 +468,21 @@ public class BaseHero : BaseRole
             {
                 ResetCatch();
             }
+            else if(m_IsCatchControl)
+            {
+                BaseRole role = m_ListCatchTarget[0] as BaseRole;
+                role.SetPosXYZ(role.pos.x, m_Pos.y, 0);
+                role.SetDepth(m_Pos.y + 0.01f);
+            }
             else
             {
-                m_ListCatchTarget[0].SetCatch(false);
+                m_ListCatchTarget[0].SetIsBeCatch(false);
             }
         }
     }
 
     protected virtual void CheckCatch()
     {
-        if (m_CatchAttackCount >= 3 && IsPlayComplete())
-        {
-            ResetCatch(true);
-            return;
-        }
-
         if (m_ListCatchTarget.Count < 1)
         {
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
@@ -572,7 +496,7 @@ public class BaseHero : BaseRole
             {
                 BaseEnemy target = enemyTargets[i];
 
-                if (target == null || !target.canBeHit || !enemyTargets[i].isInGround)
+                if (target == null || !target.canBeHit || !enemyTargets[i].isInGround || !target.canBeCatch)
                 {
                     continue;
                 }
@@ -588,7 +512,7 @@ public class BaseHero : BaseRole
                     target.SetDir(m_Dir * -1);
                     target.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
                     target.SetDepth(m_Pos.y + 0.05f);
-                    target.SetCatch(true);
+                    target.SetIsBeCatch(true);
                     ChangeState<HeroCatch>();
                     SetDefaultState<HeroCatch>();
                     m_ListCatchTarget.Add(target);
@@ -613,7 +537,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if (m_ListCatchTarget.Count > 0 && m_IsCatchControl && !m_IsDropInGround)
+        if (m_ListCatchTarget.Count > 0 && m_IsCatchControl)
         {
             if (IsCurrState<RoleSkill>() && !isFloat && !isDrop)
             {
@@ -631,8 +555,11 @@ public class BaseHero : BaseRole
             {
                 float distance = GetCatchDistance(target);
                 float offest = target.transform.localScale.y < 0 ? target.GetAnimTriggerSize(AnimName.Idle).y : 0;
-                target.SetPosXY(m_Pos.x + distance * m_Dir, m_Pos.y);
-                target.SetPosZ(currPosZ + offest);
+                if (m_IsDropInGround)
+                {
+
+                }
+                target.SetPosXYZ(m_Pos.x + distance * m_Dir, m_Pos.y, currPosZ + offest);
                 target.SetDepth(m_Pos.y + 0.01f);
             }
         }
@@ -671,34 +598,27 @@ public class BaseHero : BaseRole
         }
     }
 
-    public void ResetCatch(bool changeState = true)
+    public void ResetCatch(bool changeState = true,bool exitSkill = true)
     {
         for (int i = 0; i < m_ListCatchTarget.Count; i++)
         {
-            m_ListCatchTarget[i].SetCatch(false);
+            m_ListCatchTarget[i].SetIsBeCatch(false);
         }
 
         BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
-        target.SetDepth(target.pos.y);
         target.SetScale2(target.dir, 1);
-        target.UpdatePosZ(0);
-
-        if (m_IsDropInGround)
-        {
-            target.SetPosXY(target.pos.x, m_Pos.y, true);
-        }
-
-        if (isDrop)
-        {
-            target.UpdatePosX(target.pos.x);
-            target.SetBodyType(RigidbodyType2D.Dynamic);
-        }
+        target.SetDepth(m_Pos.y + 0.01f);
+        target.SetPosXYZ(target.pos.x + m_Dir * 0.01f, m_Pos.y, 0);
 
         m_ListCatchTarget.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;
         m_IsDropInGround = false;
-        ExitSkill();
+
+        if (exitSkill) 
+        {
+            ExitSkill();
+        }
         SetDefaultState<RoleIdle>();
 
         if (changeState && !m_IsAddGroundForce && isInGround)
@@ -722,7 +642,6 @@ public class BaseHero : BaseRole
     private float m_RebirthLightTime = 1f / 30f;
     private float m_CatchStamp = 0f;
     private float m_HitTime = -1f;
-    private float m_HurtTimer = 0f;
     private bool m_IsDropInGround = false;
     private int m_CatchAttackCount = 0;
     private List<ICanBeHit> m_ListCatchTarget = null;

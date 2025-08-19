@@ -1,6 +1,6 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.UI;
 
 public class UIRef : MonoBehaviour
 {
@@ -104,21 +104,6 @@ public class UIRef : MonoBehaviour
         set
         {
             m_IsLayout = value;
-        }
-    }
-
-    /// <summary>
-    /// 循环列表
-    /// </summary>
-    public bool isScrollLayout
-    {
-        get
-        {
-            return m_IsScrollLayout;
-        }
-        set
-        {
-            m_IsScrollLayout = value;
         }
     }
 

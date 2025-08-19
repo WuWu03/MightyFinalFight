@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,18 +10,12 @@ namespace GameFrameWork.UI
         public event GameFrameWorkAction<T,bool> onItemSelectEvent;
         public event GameFrameWorkAction<T> onItemReleaseEvent;
 
-        public void Init(GameObject parent, GameObject item, int initCount = 1)
+        public LayoutGroupView(GameObject parent, GameObject item)
         {
             m_Item = item;
             m_ItemParent = parent;
             m_Item.SetActiveSelf(false);
-
             m_ListItem = new List<T>();
-
-            for (int i = 0; i < initCount; i++)
-            {
-                GetItem(i);
-            }
         }
 
         public void Update(int count)
@@ -99,15 +92,20 @@ namespace GameFrameWork.UI
 
             if (item.selectButton != null)
             {
-                item.selectButton.onClick.AddListener(OnClick, item);
+                item.selectButton.onClick.AddListener(OnClick, item.itemIndex);
             }
 
             m_ListItem.Add(item);
         }
 
-        private void OnClick(GameObject go, PointerEventData data, object arg)
+        private void OnClick(GameObject go, PointerEventData data, int arg)
         {
-            SelectItem((arg as LayoutGroupViewItem).itemIndex);
+            SelectItem(arg);
+        }
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
         }
 
         private List<T> m_ListItem = null;

@@ -11,6 +11,12 @@ public class RoleMove : BaseFsmState
 
     protected override void OnEnter(Fsm fsm)
     {
+        m_Owner.SetCanAttack(true);
+        m_Owner.SetCanBeHit(true);
+        m_Owner.SetCanJump(true);
+        m_Owner.SetCanMove(true);
+        m_Owner.SetCanSkill(true);
+        m_Owner.SetCanBeCatch(true);
         if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
         {
             m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move_Weapon, -1, m_Owner.entityAttribute.moveSpeed * 0.2f);

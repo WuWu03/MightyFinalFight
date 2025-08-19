@@ -21,21 +21,21 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
-        AttackStateData attackData = AttackStateData.Create();
-        attackData.skillID = m_SkillData.id;
-        attackData.animName = m_SkillData.AnimationName;
-        attackData.animSpeed = m_SkillData.AnimSpeed;
-        attackData.animTime = m_SkillData.AnimTime;
-        attackData.dir = m_Owner.dir;
-        attackData.canChangeDir = false;
+        SkillStateData skillStateData = SkillStateData.Create();
+        skillStateData.skillID = m_SkillData.id;
+        skillStateData.animName = m_SkillData.AnimationName;
+        skillStateData.animSpeed = m_SkillData.AnimSpeed;
+        skillStateData.animTime = m_SkillData.AnimTime;
+        skillStateData.dir = m_Owner.dir;
+        skillStateData.canChangeDir = false;
        
         m_Owner.onGroundEvent.AddListener(OnGroundEvent);
         m_Owner.onDropEvent.AddListener(OnDropEvent);
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.SetCatch(false);
-        m_Owner.OnAttackMsg(attackData, true);
-        attackData.Release();
+        m_Owner.SetIsBeCatch(false);
+        m_Owner.OnAttackMsg(skillStateData, true);
+        skillStateData.Release();
     }
 
     public override bool IsAllComplete()
@@ -51,7 +51,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void Update()
     {
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just && !m_Owner.isPause)
         {
             if (m_CanEffect)
             {
@@ -83,8 +83,10 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
-        m_Owner.SetHitSuccess(false);
-        m_CanEffect = true;
+        if (!m_Owner.isHitSuccess)
+        {
+            m_CanEffect = true;
+        }
     }
 
     private void OnGroundEvent()

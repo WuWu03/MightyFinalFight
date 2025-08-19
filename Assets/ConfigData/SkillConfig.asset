@@ -657,7 +657,7 @@ MonoBehaviour:
       ForceType: 1
       Bullets:
       - Name: Weapon
-        AssetName: Weapon/CodyWeapon
+        AssetName: Weapon/CodyWeapon.prefab
         NormalAnim: Hit
         HitAnim: 
         NormalAnimSpeed: 0
@@ -1883,7 +1883,7 @@ MonoBehaviour:
       MoveDistance: 0
       Gravity: 1
       DamageMulity: 0
-      IsSmoon: 0
+      IsSmoon: 1
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0

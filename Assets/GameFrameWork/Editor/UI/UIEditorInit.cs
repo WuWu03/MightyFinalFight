@@ -1,8 +1,6 @@
 using GameFrameWork.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -44,7 +42,7 @@ namespace GameFrameWork.Editor
             EditorApplication.hierarchyWindowItemOnGUI = null;
             EditorApplication.hierarchyWindowItemOnGUI = HierarchyWindowItemOnGUI;
 
-            s_CSharpExporter = new CSharpExporter();
+            s_CSharpExporter = new CSharpUIScriptsExporter();
             s_LuaExporter = new LuaExporter();
         }
 
@@ -261,17 +259,43 @@ namespace GameFrameWork.Editor
             }
 
             GameObject gameObject = GameObject.Find("UIRoot/UICanvas/Panel");
-            UIRefRoot rootComponent = gameObject.GetComponent<UIRefRoot>();
-            UIRef[] components = gameObject.GetComponentsInChildren<UIRef>(true);
-
+            UIRefRoot[] uiRefRoots = gameObject.GetComponentsInChildren<UIRefRoot>(true);
             List<UIRef> retList = new List<UIRef>();
-            HashSet<string> repeat = new HashSet<string>();
-            List<UnityObject> listComponent = new List<UnityObject>();
 
-            for (int i = 0; i < components.Length; i++)
+            foreach (UIRefRoot uiRefRoot in uiRefRoots)
+            {
+                UIRef rootRef = uiRefRoot.GetComponent<UIRef>();
+                GenUIRefRootObjs(uiRefRoot, rootRef != null && rootRef.isLayoutItem, retList);
+            }
+
+            UnityEditor.EditorUtility.SetDirty(gameObject);
+
+            if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
+            {
+                s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
+            }
+            else
+            {
+                s_LuaExporter.Export(retList.ToArray(), uiRefSetting);
+            }
+
+            return true;
+        }
+
+        private static bool GenUIRefRootObjs(UIRefRoot uiRefRoot, bool isLayoutItem, List<UIRef> uiRefs)
+        {
+            UIRef[] components = uiRefRoot.GetComponentsInChildren<UIRef>(true);
+            HashSet<string> repeat = new();
+            List<UnityObject> listComponent = new();
+            int startIndex = isLayoutItem ? 1 : 0;
+
+            for (int i = startIndex; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                if (component.isCopyRefStr || component.isLayoutItemVariable) continue;
+                if (component.isCopyRefStr || (!isLayoutItem && component.isLayoutItemVariable))
+                {
+                    continue;
+                }
 
                 string name = component.GetName();
                 if (!repeat.Add(name))
@@ -308,27 +332,16 @@ namespace GameFrameWork.Editor
                     listComponent.Add(component.GetComponent(component.componentName));
                 }
 
-                retList.Add(component);
+                uiRefs.Add(component);
             }
 
-            rootComponent.objects = listComponent.ToArray();
-            UnityEditor.EditorUtility.SetDirty(rootComponent);
-
-            if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
-            {
-                s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
-            }
-            else
-            {
-                s_LuaExporter.Export(retList.ToArray(), uiRefSetting);
-            }
-
+            uiRefRoot.objects = listComponent.ToArray();
             return true;
         }
 
         private static bool CopyRefStr()
         {
-            if(!CanExprot())
+            if (!CanExprot())
             {
                 return false;
             }
@@ -348,7 +361,10 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                if (!component.isCopyRefStr) continue;
+                if (!component.isCopyRefStr)
+                {
+                    continue;
+                }
 
                 string name = component.GetName();
                 string path = EditorUtil.GetHierarchy(component.gameObject);
@@ -465,7 +481,7 @@ namespace GameFrameWork.Editor
         }
 
         private static UIRefSetting s_UIRefSetting;
-        private static IExporter s_CSharpExporter = null;
-        private static IExporter s_LuaExporter = null;
+        private static IUIScriptsExporter s_CSharpExporter = null;
+        private static IUIScriptsExporter s_LuaExporter = null;
     }
 }

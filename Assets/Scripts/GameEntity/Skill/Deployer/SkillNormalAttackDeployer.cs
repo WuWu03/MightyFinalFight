@@ -15,18 +15,18 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
 
-        AttackStateData attackData = AttackStateData.Create();
-        attackData.dir = m_Owner.dir;
-        attackData.skillID = m_SkillData.id;
-        attackData.animName = m_SkillData.AnimationName;
-        attackData.animSpeed = m_SkillData.AnimSpeed;
-        attackData.animTime = m_SkillData.AnimTime;
-        attackData.canChangeDir = m_SkillData.CanChangeDir;
+        SkillStateData skillStateData = SkillStateData.Create();
+        skillStateData.dir = m_Owner.dir;
+        skillStateData.skillID = m_SkillData.id;
+        skillStateData.animName = m_SkillData.AnimationName;
+        skillStateData.animSpeed = m_SkillData.AnimSpeed;
+        skillStateData.animTime = m_SkillData.AnimTime;
+        skillStateData.canChangeDir = m_SkillData.CanChangeDir;
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnAttackMsg(attackData);
-        attackData.Release();
+        m_Owner.OnAttackMsg(skillStateData);
+        skillStateData.Release();
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -55,16 +55,9 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         string soundName = m_QueueSound.Dequeue();
 
-        if (m_Owner.isHitSuccess)
+        if (!m_Owner.isHitSuccess || m_SkillData.IsInEffectPlaySound)
         {
-            if (m_SkillData.IsInEffectPlaySound)
-            {
-                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
-            }
-        }
-        else
-        {
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(soundName, ".ogg")));
+            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", soundName, ".ogg"));
         }
     }
 

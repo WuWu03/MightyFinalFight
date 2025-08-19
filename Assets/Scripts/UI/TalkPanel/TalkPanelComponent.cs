@@ -28,7 +28,7 @@ public class TalkPanelComponent : BasePanelComponent
 		txtContent = root.objects[1] as TextMeshProUGUI;
 		talkSelect = root.objects[2] as GameObject;
 		talkSelectItem = root.objects[3] as GameObject;
-		talkSelectGroupView = new LayoutGroupView<TalkSelectItem>();
+		talkSelectGroupView = new LayoutGroupView<TalkSelectItem>(talkSelect, talkSelectItem);
 	}
 
 	public class TalkSelectItem : LayoutGroupViewItem

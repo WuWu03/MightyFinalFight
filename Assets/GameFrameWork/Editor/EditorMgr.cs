@@ -356,6 +356,5 @@ namespace GameFrameWork.Editor
 
             EditorUtil.CopyTextEditor(sb.ToString());
         }
-
     }
 }

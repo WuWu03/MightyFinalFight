@@ -11,22 +11,23 @@ public class RoleSkill : BaseFsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-
-    }
-
-    protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaledDeltaTime)
-    {
-        if (m_CanChangeDir)
-        {
-            m_Owner.SetDir(m_Dir.x);
-        }
+        m_Owner.SetCanAttack(m_Owner.isAttack);
+        m_Owner.SetCanMove(true);
+        m_Owner.SetCanJump(false);
+        m_Owner.SetCanBeCatch(false);
+        m_Owner.SetCanSkill(false);
     }
 
     protected override void OnFixedUpdate(Fsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
     {
+        if (m_CanChangeDir)
+        {
+            m_Owner.SetDir(m_Dir);
+        }
+
         if (m_CanMove)
         {
-            Vector3 ownerPos = m_Owner.transform.localPosition + new Vector3(m_Dir.x, m_Dir.y, 0) * m_Owner.entityAttribute.moveSpeed * fixedDeltaTime;
+            Vector3 ownerPos = m_Owner.transform.localPosition + fixedDeltaTime * m_Owner.entityAttribute.moveSpeed * m_Dir * Vector3.right;
             m_Owner.SetPos2(ownerPos);
         }
     }
@@ -40,28 +41,22 @@ public class RoleSkill : BaseFsmState
             SkillStateData skillData = stateData as SkillStateData;
             m_CanChangeDir = skillData.canChangeDir;
             m_CanMove = skillData.canMove;
+            m_Dir = skillData.dir;
         }
         else if (stateData is MoveStateData)
         {
             MoveStateData moveData = stateData as MoveStateData;
-            m_Dir = moveData.dir;
+            m_Dir = moveData.dir.x;
         }
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
     {
-        m_CanChangeDir = false;
         m_CanMove = false;
-        m_Dir = Vector2.zero;
-    }
-
-    protected override void OnRelease(Fsm fsm)
-    {
-        m_Owner = null;
     }
 
     private bool m_CanMove = false;
     private bool m_CanChangeDir = false;
-    private Vector2 m_Dir = Vector2.zero;
+    private float m_Dir = 0;
     private BaseRole m_Owner = null;
 }

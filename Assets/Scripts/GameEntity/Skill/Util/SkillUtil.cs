@@ -206,6 +206,18 @@ public static class SkillUtil
         return new Vector2(40f * dir, 150f);
     }
 
+    public static Vector2 GetFloatSmoonForce(float dir, Vector2 oriForce)
+    {
+        float maxXForce = Mathf.Min(10f, oriForce.x);
+        return new Vector2(maxXForce * dir, 20);
+    }
+
+    public static Vector2 GetGroundSmoonForce(float dir,Vector2 oriForce)
+    {
+        float maxXForce = Mathf.Min(10f, oriForce.x);
+        return new Vector2(maxXForce * dir, 20);
+    }
+
     private static Regex m_RegexHPMoreThan = new Regex(@"(HPMoreThan:)([0-9]+)");
     private static Regex m_RegexHPLessThan = new Regex(@"(HPLessThan:)([0-9]+)");
 }

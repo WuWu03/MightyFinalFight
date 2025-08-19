@@ -106,7 +106,7 @@ public class Bullet : BaseAvatar
         }
     }
 
-    private void CheckTarget(BaseGravityObject bgo)
+    private void CheckTarget(BaseBoundObject bgo)
     {
         if (bgo == null)
         {
@@ -141,11 +141,7 @@ public class Bullet : BaseAvatar
             PlayAnimation(m_BulletData.hitAnim, 1, m_BulletData.hitAnimSpeed);
         }
 
-        if (m_SkillBulletEffect != null)
-        {
-            m_SkillBulletEffect.BulletEffect(hit);
-        }
-
+        m_SkillBulletEffect?.BulletEffect(hit);
         m_IsHit = true;
     }
 

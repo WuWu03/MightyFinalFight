@@ -11,7 +11,7 @@ public class PreIsDefense : PreCondition
 
     private void OnHurtEvent(HurtStateData data)
     {
-        if (m_Owner.IsAnyState(typeof(RoleHurt), typeof(RoleAttack)) || data.isSwoon)
+        if (m_Owner.IsAnyState(typeof(RoleHurt), typeof(RoleSkill)) || data.isSwoon)
         {
             m_IsDefense = false;
             m_HurtTimer = Time.time;
@@ -25,7 +25,7 @@ public class PreIsDefense : PreCondition
         }
 
         m_HurtTimer = -1;
-        m_IsDefense = !m_Owner.IsAnyState(typeof(RoleAttack)) && !m_Owner.isBeCatch && data.canBeDefense;
+        m_IsDefense = !m_Owner.IsAnyState(typeof(RoleSkill)) && !m_Owner.isBeCatch && data.canBeDefense;
         data.isDefense = m_IsDefense;
 
         if (m_IsDefense)

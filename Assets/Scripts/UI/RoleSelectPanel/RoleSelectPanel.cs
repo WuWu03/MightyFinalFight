@@ -14,7 +14,6 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 {
 	protected override void OnInit(object arg)
 	{
-		m_Component.roleContentGroupView.Init(m_Component.roleContent, m_Component.itemGO, 3);
 		m_Component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
 		m_Component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
 	}
@@ -76,8 +75,9 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 
 	protected override void OnDestroy()
 	{
-
-	}
+        m_Component.roleContentGroupView.onItemUpdateEvent -= OnItemUpdate;
+        m_Component.roleContentGroupView.onItemSelectEvent -= OnItemSelect;
+    }
 
 	private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
 	{

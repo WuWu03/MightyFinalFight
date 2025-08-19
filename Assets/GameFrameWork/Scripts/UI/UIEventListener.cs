@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace GameFrameWork.UI
@@ -18,6 +20,7 @@ namespace GameFrameWork.UI
     IScrollHandler,
     IMoveHandler
     {
+        [Serializable]
         public class UIEvent<T> where T : BaseEventData
         {
             public UIEvent()

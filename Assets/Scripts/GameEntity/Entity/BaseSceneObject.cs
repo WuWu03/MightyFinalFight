@@ -386,15 +386,12 @@ public class BaseSceneObject : BaseEntity
     protected float m_PosZ = 0f;
     protected int m_MapPosZ = 0;
     protected int m_EntityId = 0;
-
-
     protected Vector2 m_Pos = Vector2.zero;
     protected Vector2Int m_MapPos = Vector2Int.zero;
-
     protected ObjectType m_ObjectType = ObjectType.NONE;
-
     protected GameObject m_Asset;
     protected EntityAttribute m_EntityAttribute = null;
+
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
     private IReference m_Data = null;
     private string m_AssetPath = string.Empty;

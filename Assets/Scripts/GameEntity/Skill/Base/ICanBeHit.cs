@@ -1,4 +1,4 @@
-﻿public interface ICanBeHit
+public interface ICanBeHit
 {
     bool canBeHit
     {
@@ -27,6 +27,6 @@
 
     bool IsHurtWillDie(int attackValue);
     void OnHurtMsg(HurtStateData data);
-    void SetCatch(bool value);
-    void SetThrow(bool value);
+    void SetIsBeCatch(bool value);
+    void SetIsBeThrow(bool value);
 }

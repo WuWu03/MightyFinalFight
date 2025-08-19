@@ -16,7 +16,6 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
     protected override void OnInit(object arg)
     {
         m_TalkId = int.Parse(arg.ToString());
-        m_Component.talkSelectGroupView.Init(m_Component.talkSelect, m_Component.talkSelectItem);
         m_Component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;
         m_Component.talkSelectGroupView.onItemSelectEvent += OnItemSelectEvent;
     }
@@ -85,7 +84,6 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
 
     protected override void OnDestroy()
     {
-
         m_Component.talkSelectGroupView.onItemUpdateEvent -= OnItemUpdateEvent;
         m_Component.talkSelectGroupView.onItemSelectEvent -= OnItemSelectEvent;
     }

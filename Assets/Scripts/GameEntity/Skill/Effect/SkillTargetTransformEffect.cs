@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillTargetTransformEffect : SkillBaseEffect
@@ -19,9 +19,8 @@ public class SkillTargetTransformEffect : SkillBaseEffect
 
         if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetPositionEffect)
         {
-            float targetY = target.pos.y;
-            target.SetPosXY(m_Owner.pos.x + m_SkillEffect.MoveTarget.x * m_Owner.dir,m_Owner.pos.y + m_SkillEffect.MoveTarget.y);
-            target.UpdatePosXY(target.pos.x, targetY);
+            target.SetPosXY(m_Owner.pos.x + m_SkillEffect.MoveTarget.x * m_Owner.dir, m_Owner.pos.y + m_SkillEffect.MoveTarget.y, false);
+            //target.UpdatePosXY(target.pos.x, target.pos.y);
         }
         else if (m_SkillEffect.EffectorType == SkillConfigData.SkillEffectorType.TargetScaleEffect)
         {
@@ -38,23 +37,23 @@ public class SkillTargetTransformEffect : SkillBaseEffect
 
     protected override void OnExit()
     {
-        if (m_Owner is BaseHero)
-        {
-            BaseHero owner = m_Owner as BaseHero;
+        //if (m_Owner is BaseHero)
+        //{
+        //    BaseHero owner = m_Owner as BaseHero;
 
-            if (owner.isCatching)
-            {
-                List<ICanBeHit> targets = m_Owner.OnHitStart();
-                BaseRole target = targets[0] as BaseRole;
-                target.SetCatch(false);
+        //    if (owner.isCatching)
+        //    {
+        //        List<ICanBeHit> targets = m_Owner.OnHitStart();
+        //        BaseRole target = targets[0] as BaseRole;
+        //        target.SetIsBeCatch(false);
 
-                if (!m_SkillEffect.IsSmoon)
-                {
-                    target.PlayAnimation(AnimName.Idle);
-                }
+        //        if (!m_SkillEffect.IsSmoon)
+        //        {
+        //            target.PlayAnimation(AnimName.Idle);
+        //        }
 
-                owner.ResetCatch(false);
-            }
-        }
+        //        owner.ResetCatch(false);
+        //    }
+        //}
     }
 }

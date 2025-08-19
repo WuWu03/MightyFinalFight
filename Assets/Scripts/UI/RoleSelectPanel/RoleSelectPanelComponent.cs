@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-08-16 13:36*************************************/
+/**2025-08-18 22:10*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -12,20 +12,16 @@ using GameFrameWork.UI;
 
 public class RoleSelectPanelComponent : BasePanelComponent
 {
-	//roleContent,GameObject
-	public GameObject roleContent { get; private set; }
-	//roleContent/item,GameObject
-	public GameObject itemGO { get; private set; }
+	public LayoutGroupView<RoleContentItem> roleContentGroupView { get; private set; }
 	//imgSelect,RectTransform
 	public RectTransform imgSelectRect { get; private set; }
-	public LayoutGroupView<RoleContentItem> roleContentGroupView { get; private set; }
 
 	protected override void OnInitComponent(UIRefRoot root)
 	{
-		roleContent = root.objects[0] as GameObject;
-		itemGO = root.objects[1] as GameObject;
+		GameObject roleContent = root.objects[0] as GameObject;
+		GameObject item = root.objects[1] as GameObject;
+		roleContentGroupView = new LayoutGroupView<RoleContentItem>(roleContent,item);
 		imgSelectRect = root.objects[2] as RectTransform;
-		roleContentGroupView = new LayoutGroupView<RoleContentItem>();
 	}
 
 	public class RoleContentItem : LayoutGroupViewItem
@@ -35,9 +31,10 @@ public class RoleSelectPanelComponent : BasePanelComponent
 		public LanguageText txtDesc = null;
 		protected override void OnCreate(GameObject go)
 		{
-			imgRoleIcon = transform.Find("imgRoleIcon").GetComponent<Image>();
-			txtName = transform.Find("txtName").GetComponent<LanguageText>();
-			txtDesc = transform.Find("txtDesc").GetComponent<LanguageText>();
+			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
+			imgRoleIcon = uiRefRoot.objects[0] as Image;
+			txtName = uiRefRoot.objects[1] as LanguageText;
+			txtDesc = uiRefRoot.objects[2] as LanguageText;
 		}
 	}
 }

@@ -102,9 +102,9 @@ public class BaseEnemy : BaseRole
         base.SetPos(pos, posZ, caculateZ);
     }
 
-    public override void SetCatch(bool value)
+    public override void SetIsBeCatch(bool value)
     {
-        base.SetCatch(value);
+        base.SetIsBeCatch(value);
 
         if (value)
         {
@@ -116,7 +116,7 @@ public class BaseEnemy : BaseRole
     {
         if (data.isBoss)
         {
-            if (IsAnyState(typeof(RoleAttack)))
+            if (IsAnyState(typeof(RoleSkill)))
             {
                 return;
             }

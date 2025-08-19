@@ -1,17 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using static GameFrameWork.UI.UIEventListener;
 
 namespace GameFrameWork.UI
 {
-    public class ButtonEx : Graphic, IPointerUpHandler, IPointerDownHandler
+    [AddComponentMenu("UI/ButtonEx")]
+    public class ButtonEx : UIBehaviour, IPointerUpHandler, IPointerDownHandler
     {
-        protected override void OnPopulateMesh(VertexHelper vh)
-        {
-            vh.Clear();
-        }
-
         private void Update()
         {
             if (m_IsPointDown && Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)

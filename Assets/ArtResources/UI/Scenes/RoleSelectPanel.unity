@@ -345,8 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseDefaultName: 0
-  m_RefName: ImgSelect
+  m_UseDefaultName: 1
+  m_RefName: imgSelect
   m_ComponentName: RectTransform
   m_Desc: 
   m_IsLayoutItem: 0
@@ -669,6 +669,7 @@ GameObject:
   - component: {fileID: 712527416}
   - component: {fileID: 712527417}
   - component: {fileID: 712527418}
+  - component: {fileID: 712527419}
   m_Layer: 5
   m_Name: item
   m_TagString: Untagged
@@ -739,6 +740,22 @@ MonoBehaviour:
   m_IsLayout: 0
   m_IsScrollLayout: 0
   m_IsCopyRefStr: 0
+--- !u!114 &712527419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712527415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 1669707882}
+  - {fileID: 2043417341}
+  - {fileID: 710926882}
 --- !u!1 &723186175
 GameObject:
   m_ObjectHideFlags: 0

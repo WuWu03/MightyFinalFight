@@ -17,6 +17,7 @@ public class SkillStateData : BaseEventArgs
 
     public override void Clear()
     {
+        base.Clear();
         skillID = 0;
         animName = string.Empty;
         animTime = 0;

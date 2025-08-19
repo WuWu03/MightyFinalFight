@@ -58,7 +58,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
     {
-        if(!HasAnimation(animName))
+        if (!HasAnimation(animName))
         {
             return;
         }

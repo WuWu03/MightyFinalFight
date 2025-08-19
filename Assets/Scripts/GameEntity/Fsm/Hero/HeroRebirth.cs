@@ -20,6 +20,12 @@ public class HeroRebirth : BaseFsmState
 
     protected override void OnEnter(Fsm fsm)
     {
+        m_Owner.SetCanAttack(false);
+        m_Owner.SetCanBeHit(false);
+        m_Owner.SetCanJump(false);
+        m_Owner.SetCanMove(false);
+        m_Owner.SetCanSkill(false);
+
         m_Owner.ResetRigidbody();
         m_Owner.onGroundEvent.AddListener(OnGround);
         m_Owner.SetDir(1);

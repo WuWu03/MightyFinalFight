@@ -11,6 +11,12 @@ public class RoleJump : BaseFsmState
 
     protected override void OnEnter(Fsm fsm)
     {
+        m_Owner.SetCanAttack(true);
+        m_Owner.SetCanBeHit(true);
+        m_Owner.SetCanJump(false);
+        m_Owner.SetCanMove(true);
+        m_Owner.SetCanSkill(true);
+        m_Owner.SetCanBeCatch(false);
         m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, m_Owner.entityAttribute.jumpForce.y);
         m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Catch : AnimName.JumpUp);
         m_HasAddXForce = m_Dir != 0;
@@ -67,6 +73,7 @@ public class RoleJump : BaseFsmState
         m_Dir = 0;
         m_CanChangeDir = false;
         m_HasAddXForce = false;
+        m_Owner.onDropEvent.RemoveListener(OnDrop);
     }
 
     protected override void OnRelease(Fsm fsm)
@@ -77,7 +84,7 @@ public class RoleJump : BaseFsmState
 
     private void OnDrop()
     {
-        if (!m_Owner.isCatching && !m_Owner.IsAnyState(typeof(RoleAttack)))
+        if (!m_Owner.isCatching && !m_Owner.IsAnyState(typeof(RoleSkill)))
         {
             m_Owner.PlayAnimation(AnimName.JumpDown);
         }

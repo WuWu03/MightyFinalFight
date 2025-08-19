@@ -62,7 +62,6 @@ namespace GameFrameWork.Utils
                 newDatas = new T[64];
             }
 
-            List<T> newDatas2 = new List<T>();
             if (m_Datas != null && m_Count > 0)
             {
                 m_Datas.CopyTo(newDatas, 0);

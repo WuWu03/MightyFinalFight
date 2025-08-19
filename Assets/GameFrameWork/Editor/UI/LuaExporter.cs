@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
-    public class LuaExporter : BaseExporter
+    public class LuaExporter : BaseUIScriptsExporter
     {
         public override string CopyRef(UIRef[] uiRefs)
         {

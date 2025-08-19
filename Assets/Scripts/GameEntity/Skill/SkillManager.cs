@@ -51,7 +51,7 @@ public class SkillManager
 
     public void Update()
     {
-        if (m_CurrSkillDeployer == null || m_Owner.isPause)
+        if (m_CurrSkillDeployer == null)
         {
             return;
         }
@@ -61,11 +61,6 @@ public class SkillManager
         if (m_CurrSkillDeployer.IsAllComplete())
         {
             ExitSkill();
-
-            if (m_Owner.canChangeDefaultState && !m_Owner.isAddGroundForce && !m_Owner.isDrop)
-            {
-                m_Owner.ChangeDefaultState();
-            }
         }
     }
 
@@ -101,7 +96,7 @@ public class SkillManager
             return false;
         }
 
-		if (!m_CurrSkillDeployer.skillId.Equals(id))
+        if (!m_CurrSkillDeployer.skillId.Equals(id))
         {
             return false;
         }
@@ -119,6 +114,11 @@ public class SkillManager
         m_CurrSkillDeployer.RemoveEvent();
         m_CurrSkillDeployer.Exit();
         m_CurrSkillDeployer = null;
+
+        if (m_Owner.canChangeDefaultState)
+        {
+            m_Owner.ChangeDefaultState();
+        }
     }
 
     public void Release()

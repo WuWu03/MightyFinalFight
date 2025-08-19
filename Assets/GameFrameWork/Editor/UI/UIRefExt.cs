@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using GameFrameWork.UI;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GameFrameWork.Editor
 {
@@ -14,7 +16,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            List<string> list = new List<string>();
+            List<string> list = new();
             UIRef[] components = uiRefRoot.GetComponentsInChildren<UIRef>(true);
 
             int selfIndex = 0;
@@ -24,18 +26,22 @@ namespace GameFrameWork.Editor
                 UIRef component = components[i];
                 if (component.isCopyRefStr == uiRef.isCopyRefStr)
                 {
-                    if (components[i] == uiRef) selfIndex = i;
+                    if (components[i] == uiRef)
+                    {
+                        selfIndex = i;
+                    }
+
                     list.Add(component.useDefaultName ? component.gameObject.name : component.refName);
                 }
             }
 
-            uiRef.refName = GetUniqueName(name.Trim(), list,selfIndex);
+            uiRef.refName = GetUniqueName(name.Trim(), list, selfIndex);
         }
 
         public static string GetName(this UIRef uiRef, bool isFirstUpper = false)
         {
             string str = string.Empty;
-            if (!uiRef.IsLayoutContent())
+            if (!uiRef.isLayout && !uiRef.isLayoutItem)
             {
                 if (string.IsNullOrEmpty(uiRef.componentName) || uiRef.componentName == typeof(Transform).Name)
                 {
@@ -47,7 +53,7 @@ namespace GameFrameWork.Editor
                 }
                 else if (uiRef.componentName == typeof(GameObject).Name)
                 {
-                    str = "GO";
+                    str = "Go";
                 }
             }
 
@@ -83,7 +89,7 @@ namespace GameFrameWork.Editor
             {
                 if (current == text)
                 {
-                    if(selfIndex == index)
+                    if (selfIndex == index)
                     {
                         string nameParam = findIndex == 0 ? string.Empty : findIndex.ToString();
                         text = string.Format("{0}{1}", name, nameParam);
@@ -97,14 +103,47 @@ namespace GameFrameWork.Editor
             return text;
         }
 
-        public static bool IsLayoutContent(this UIRef uiRef)
+        public static bool IsLayoutGroupView(this UIRef uiRef)
         {
-            return uiRef.componentName.Contains("LayoutGroup") || uiRef.GetComponent<UnityEngine.UI.LayoutGroup>() != null;
+            return uiRef.GetComponent<LayoutGroup>() != null;
         }
 
-        public static bool IsScrollRect(this UIRef uiRef)
+        public static bool IsScollLayoutGroupView(this UIRef uiRef)
         {
-            return uiRef.componentName.Contains("ScrollRect") || uiRef.GetComponent<UnityEngine.UI.ScrollRect>() != null;
+            return uiRef.GetComponent<ScrollLayoutGroupView>() != null;
+        }
+
+        public static bool IsLayoutItemVariable(this UIRef uiRef)
+        {
+            Transform parent = uiRef.transform.parent;
+
+            if(parent != null)
+            {
+                UIRef parentRef = parent.GetComponent<UIRef>();
+                return parentRef != null && parentRef.isLayoutItem;
+            }
+
+            return false;
+        }
+
+        public static bool IsLayoutItem(this UIRef uiRef)
+        {
+            Transform current = uiRef.transform.parent;
+
+            while (current != null)
+            {
+                if (current.TryGetComponent<UIRef>(out UIRef component))
+                {
+                    if (component.isLayout)
+                    {
+                        return true;
+                    }
+                }
+
+                current = current.parent;
+            }
+
+            return false;
         }
     }
 }

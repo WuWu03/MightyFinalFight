@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GameFrameWork.UI
 {
-    public abstract class BasePanel<T,P> : IPanel where T : BasePanelComponent, new() where P : BasePanelSettings,new()
+    public abstract class BasePanel<T, P> : IPanel where T : BasePanelComponent, new() where P : BasePanelSettings, new()
     {
         public GameObject gameObject { get; private set; }
 

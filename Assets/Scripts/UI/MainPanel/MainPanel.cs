@@ -15,12 +15,11 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 {
 	protected override void OnInit(object arg)
 	{
-		m_Component.levelListGroupView.Init(m_Component.levelList, m_Component.itemGO, 5);
-	}
+        m_Component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
+    }
 
 	protected override void OnOpen()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
 		m_Component.enemyHpBar.SetActiveSelf(false);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
@@ -46,13 +45,13 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	protected override void OnClose()
 	{
-		m_Component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
+
 	}
 
 	protected override void OnDestroy()
 	{
-
-	}
+        m_Component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
+    }
 
 	private void OnLevelItemUpdate(MainPanelComponent.LevelListItem item)
 	{
