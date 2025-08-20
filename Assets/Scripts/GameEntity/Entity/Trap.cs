@@ -17,8 +17,8 @@ public class Trap : BaseBoundObject
     {
         base.OnLoadAssetComplete(go, arg);
         SetCollider(m_TrapData.triggerOffest, m_TrapData.triggerSize);
-        m_BoxCollider2D.enabled = true;
-        m_BoxCollider2D.isTrigger = true;
+        boxCollider2D.enabled = true;
+        boxCollider2D.isTrigger = true;
     }
 
     protected override void OnTriggerStay2D(Collider2D collision)
@@ -30,11 +30,11 @@ public class Trap : BaseBoundObject
             return;
         }
 
-        float width = m_BoxCollider2D.size.x;
+        float width = boxCollider2D.size.x;
         float boundsLeft = target.pos.x - 0.1f;
         float boundsRight = target.pos.x + 0.1f;
-        float selfLeft = m_Pos.x - width / 2;
-        float selfRight = m_Pos.x + width / 2;
+        float selfLeft = pos.x - width / 2;
+        float selfRight = pos.x + width / 2;
 
         bool isEnter = boundsLeft >= selfLeft && boundsRight <= selfRight;
 
@@ -45,13 +45,13 @@ public class Trap : BaseBoundObject
 
         Vector2 rebirthPos = Vector2.zero;
 
-        if (target.pos.x < m_Pos.x)
+        if (target.pos.x < pos.x)
         {
-            rebirthPos = new Vector2(m_Pos.x - width - 0.1f, target.pos.y);
+            rebirthPos = new Vector2(pos.x - width - 0.1f, target.pos.y);
         }
         else
         {
-            rebirthPos = new Vector2(m_Pos.x + width + 0.1f, target.pos.y);
+            rebirthPos = new Vector2(pos.x + width + 0.1f, target.pos.y);
         }
 
         DropTrapStateData dropTrapData = DropTrapStateData.Create();

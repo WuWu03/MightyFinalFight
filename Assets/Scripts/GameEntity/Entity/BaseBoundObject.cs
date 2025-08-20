@@ -62,8 +62,8 @@ public class BaseBoundObject : BaseSceneObject
     {
         m_Bound.width = m_BoxCollider2D.size.x;
         m_Bound.height = m_BoxCollider2D.size.y;
-        m_Bound.xMin = transform.localPosition.x + m_BoxCollider2D.offset.x * m_Dir - m_BoxCollider2D.size.x / 2;
-        m_Bound.xMax = transform.localPosition.x + m_BoxCollider2D.offset.x * m_Dir + m_BoxCollider2D.size.x / 2;
+        m_Bound.xMin = transform.localPosition.x + m_BoxCollider2D.offset.x * dir - m_BoxCollider2D.size.x / 2;
+        m_Bound.xMax = transform.localPosition.x + m_BoxCollider2D.offset.x * dir + m_BoxCollider2D.size.x / 2;
         m_Bound.yMin = transform.localPosition.y + m_BoxCollider2D.offset.y - m_BoxCollider2D.size.y / 2;
         m_Bound.yMax = transform.localPosition.y + m_BoxCollider2D.offset.y + m_BoxCollider2D.size.y / 2;
         m_Bound.center = new (m_Bound.xMin + m_Bound.width / 2, m_Bound.yMin + m_Bound.height / 2);
@@ -84,6 +84,6 @@ public class BaseBoundObject : BaseSceneObject
         Gizmos.DrawCube(bound.center, Vector3.one * 0.01f);
     }
 
-    protected Rect m_Bound = Rect.zero;
-    protected BoxCollider2D m_BoxCollider2D = null;
+    private Rect m_Bound = Rect.zero;
+    private BoxCollider2D m_BoxCollider2D = null;
 }

@@ -59,8 +59,8 @@ public class VersionPanel : BasePanel<VersionPanelComponent, VersionPanelSetting
                 m_Component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeComplete");
                 break;
             case VersionProcessState.DownloadFiles:
-                string downloadSizeText = StringUtil.FormatSize(downloadSize);
-                string downloadFullSizeText = StringUtil.FormatSize(downloadFullSize);
+                string downloadSizeText = StringUtil.FormatFileSize(downloadSize);
+                string downloadFullSizeText = StringUtil.FormatFileSize(downloadFullSize);
                 m_Component.txtVersion.SetLanguageTextKey("VersionPanelDownloadFiles");
                 m_Component.txtVersion.SetLanguageTextParams(downloadSizeText, downloadFullSizeText);
                 break;

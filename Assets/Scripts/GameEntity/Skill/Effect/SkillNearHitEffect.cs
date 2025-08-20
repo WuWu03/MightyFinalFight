@@ -30,14 +30,14 @@ public class SkillNearHitEffect : SkillBaseEffect
     {
         for (int i = 0; i < m_Targets.Count; i++)
         {
-            HurtTarget(m_Targets[i]);
-
             if(m_IsPause)
             {
                 Time.timeScale = 0f;
                 yield return new WaitForSecondsRealtime(0.2f);
                 Time.timeScale = 1f;
             }
+
+            HurtTarget(m_Targets[i]);
         }
 
         Time.timeScale = 1f;

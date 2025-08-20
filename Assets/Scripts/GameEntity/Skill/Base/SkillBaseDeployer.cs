@@ -130,12 +130,13 @@ public abstract class SkillBaseDeployer
             m_SkillSelectors[i]?.Exit();
         }
 
+        m_JustEffectTimer = -1f;
         m_CurrEffectIndex = 0;
     }
 
     public virtual void Update()
     {
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal && !m_Owner.isPause)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             JustEffect();
         }
@@ -186,7 +187,14 @@ public abstract class SkillBaseDeployer
                 continue;
             }
 
-            if (!m_SkillData.SkillEffects[i].IsOnGroundEffect)
+            if (m_SkillData.SkillEffects[i].IsOnGroundEffect)
+            {
+                if (!m_Owner.isInGround && !m_ListGroundEffect.Contains(i))
+                {
+                    m_ListGroundEffect.Add(i);
+                }
+            }
+            else if(m_JustEffectTimer < 0 || Time.time - m_JustEffectTimer >= m_SkillData.EnternalTriggerInterval)
             {
                 if (!m_HasAddForce)
                 {
@@ -197,18 +205,14 @@ public abstract class SkillBaseDeployer
                 }
 
                 m_SkillEffects[i].Effect(m_SkillSelectors[i]);
-            }
-            else
-            {
-                if (!m_Owner.isInGround && !m_ListGroundEffect.Contains(i))
-                {
-                    m_ListGroundEffect.Add(i);
-                }
+                m_JustEffectTimer = Time.time;
             }
         }
 
         m_HasAddForce = true;
     }
+
+    private float m_JustEffectTimer = -1f;
 
     private void CheckAddSelfForce(Vector2 addSelfForce, bool isGround = false)
     {

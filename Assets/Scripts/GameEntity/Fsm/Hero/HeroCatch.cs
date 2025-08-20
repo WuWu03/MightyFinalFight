@@ -12,7 +12,7 @@ public class HeroCatch : BaseFsmState
         m_Owner.SetCanAttack(true);
         m_Owner.SetCanBeHit(true);
         m_Owner.SetCanJump(true);
-        m_Owner.SetCanMove(m_Owner.isCatchContrl);
+        m_Owner.SetCanMove(m_Owner.isCatchControl);
         m_Owner.SetCanSkill(true);
 
         m_Owner.ResetRigidbody();

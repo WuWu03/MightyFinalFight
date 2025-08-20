@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEngine;
 
 namespace GameFrameWork.Utils
 {
@@ -294,7 +295,7 @@ namespace GameFrameWork.Utils
             return m_StringBuilder.ToString();
         }
 
-        public static string FormatSize(ulong bytes)
+        public static string FormatFileSize(ulong bytes,int digits = 2)
         {
             int counter = 0;
             double number = bytes;
@@ -314,6 +315,8 @@ namespace GameFrameWork.Utils
                 }
             }
 
+            number = Math.Round(number, digits);
+
             var suffix = counter switch
             {
                 0 => "B",
@@ -326,7 +329,7 @@ namespace GameFrameWork.Utils
                 _ => throw new ArgumentException("骚年，你是不是忘了更新 maxCount 等级了")
             };
 
-            return Format("{0:0.00}{1}", number.ToString(), suffix);
+            return Format("{0}{1}", number.ToString(), suffix);
         }
 
         /// <summary>

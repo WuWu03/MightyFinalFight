@@ -5,6 +5,8 @@ public class HurtStateData : BaseEventArgs
 {
     public Vector2 attackForce { get; set; }
     public Vector2 attackerPos { get; set; }
+    public Vector2 changeVelocity { get; set; }
+    public bool isChangeVelocity { get; set; }
     public int attackValue { get; set; }
     public int attackerId { get; set; }
     public int skillExp { get; set; }
@@ -31,6 +33,8 @@ public class HurtStateData : BaseEventArgs
         id = 0;
         attackForce = Vector2.zero;
         attackerPos = Vector2.zero;
+        changeVelocity = Vector2.zero;
+        isChangeVelocity = false;
         attackValue = 0;
         attackerId = 0;
         skillExp = 0;

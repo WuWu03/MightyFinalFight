@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -140,7 +140,9 @@ public class SkillConfigData : BaseConfigData
     public SkillType Type;//技能类型
     public SkillDeployerType DeployerType;//释放器类型
     public SkillTriggerType TriggerType;//技能触发方式
+    public int JumpTriggerTime;//跳跃攻击出发次数
     public float EnternalTiggerTime;//持续出发时间
+    public float EnternalTriggerInterval;//持续出发间隔
     public SkillKey Key;
     public float AnimSpeed = 0.4f;//动画速度
     public int AnimTime = 1;//动画播放次数

@@ -19,15 +19,15 @@ public class BarrelDead : BaseFsmState
 
     protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (m_Owner.armatureAnimator.animation.isCompleted)
+        if (m_Owner.IsPlayComplete())
         {
             m_Owner.Release();
         }
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
         HurtStateData hurtData = stateData as HurtStateData;
         m_AttackerDir = hurtData.attackerDir;
     }

@@ -43,14 +43,9 @@ public class HeroRebirth : BaseFsmState
             m_Owner.transform.localPosition = new Vector3(m_ReBirthPos.x, m_ReBirthPos.y, m_ReBirthPos.y);
         }
 
-        m_Owner.SetBodyType(RigidbodyType2D.Dynamic);
+        m_Owner.rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Owner.PlayAnimation(AnimName.JumpDown);
         m_Owner.SetRebirthState();
-    }
-
-    protected override void OnSetStateData(BaseEventArgs stateData)
-    {
-        base.OnSetStateData(stateData);
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)

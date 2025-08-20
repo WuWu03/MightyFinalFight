@@ -44,7 +44,7 @@ public class DoSkill : Action
             m_HasDeploy = true;
         }
 
-        if (m_Owner.IsSkillComplete(m_SkllId))
+        if (m_Owner.skillMgr.IsSkillComplete(m_SkllId))
         {
             m_State = BehaviourTreeState.Success;
             return;

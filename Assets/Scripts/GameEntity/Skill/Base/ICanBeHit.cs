@@ -20,6 +20,11 @@ public interface ICanBeHit
         get;
     }
 
+    bool isSwoon
+    {
+        get;
+    }
+
     EntityAttribute entityAttribute
     {
         get;

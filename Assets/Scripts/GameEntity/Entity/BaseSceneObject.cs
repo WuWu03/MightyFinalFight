@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
 {
-
     public ObjectType objectType
     {
         get
@@ -36,6 +35,14 @@ public class BaseSceneObject : BaseEntity
         get
         {
             return m_PosZ;
+        }
+    }
+
+    public int mapPosZ
+    {
+        get
+        {
+            return m_MapPosZ;
         }
     }
     
@@ -198,6 +205,7 @@ public class BaseSceneObject : BaseEntity
 
         UpdatePos(pos, posZ);
         m_Depth = pos.y;
+
         transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
     }
 
@@ -380,18 +388,17 @@ public class BaseSceneObject : BaseEntity
     protected virtual void OnTriggerStay2D(Collider2D collision) { }
     protected virtual void OnTriggerExit2D(Collider2D collision) { }
 
-    protected bool m_IsAssetLoadComplete = false;
-    protected float m_Dir = 1f;
-    protected float m_Depth = 0f;
-    protected float m_PosZ = 0f;
-    protected int m_MapPosZ = 0;
-    protected int m_EntityId = 0;
-    protected Vector2 m_Pos = Vector2.zero;
-    protected Vector2Int m_MapPos = Vector2Int.zero;
-    protected ObjectType m_ObjectType = ObjectType.NONE;
-    protected GameObject m_Asset;
-    protected EntityAttribute m_EntityAttribute = null;
-
+    private bool m_IsAssetLoadComplete = false;
+    private float m_Dir = 1f;
+    private float m_Depth = 0f;
+    private float m_PosZ = 0f;
+    private int m_MapPosZ = 0;
+    private int m_EntityId = 0;
+    private Vector2 m_Pos = Vector2.zero;
+    private Vector2Int m_MapPos = Vector2Int.zero;
+    private ObjectType m_ObjectType = ObjectType.NONE;
+    private GameObject m_Asset;
+    private EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
     private IReference m_Data = null;
     private string m_AssetPath = string.Empty;

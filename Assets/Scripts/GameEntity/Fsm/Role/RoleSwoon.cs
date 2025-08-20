@@ -19,7 +19,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.SetCanSkill(false);
         m_Owner.SetCanBeCatch(false);
         m_Owner.ResetRigidbody();
-        m_Owner.AddForce(m_Force);
+        m_Owner.AddForce(m_AddForce);
         m_Owner.onGroundEvent.AddListener(OnBounce);
         m_Owner.PlayAnimation(AnimName.SwoonUp);
     }
@@ -32,46 +32,52 @@ public class RoleSwoon : BaseFsmState
         }
 
         m_Owner.UpdatePosX(m_Owner.transform.localPosition.x);
-
-        if (m_IsBounce && !m_IsAddGroundEvent)
-        {
-            m_IsBounce = false;
-            m_IsAddGroundEvent = true;
-            m_Owner.onGroundEvent.AddListener(OnGround);
-        }
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
         HurtStateData data = stateData as HurtStateData;
-        m_Force = data.attackForce;
-        m_Owner.AddForce(m_Force);
-        m_IsBounce = true;
-        m_IsAddGroundEvent = false;
+        m_AddForce = data.attackForce;
+
+        if (fsm.currState != this)
+        {
+            return;
+        }
+
+        if (data.isChangeVelocity)
+        {
+            m_Owner.SetVelocity(data.changeVelocity);
+        }
+
+        m_Owner.AddForce(m_AddForce, true);
 
         if (data.isSwoon)
         {
             m_Owner.onGroundEvent.RemoveListener(OnBounce);
             m_Owner.onGroundEvent.AddListener(OnBounce);
-            m_IsBounce = false;
-            m_IsAddGroundEvent = false;
+        }
+        else
+        {
+            m_Owner.onGroundEvent.RemoveListener(OnGround);
+            m_Owner.onGroundEvent.AddListener(OnGround);
         }
     }
 
     private void OnBounce()
     {
-        m_IsBounce = true;
-        m_IsAddGroundEvent = false;
         m_Owner.SetGravityScale(0.8f);
-        m_Owner.SetVelocityY(1.5f);
+        m_Owner.SetVelocityY(1.5f, true);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown);
+        m_Owner.onGroundEvent.RemoveListener(OnBounce);
+        m_Owner.onGroundEvent.AddListener(OnGround);
         GameFrameWork.Audio.AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     private void OnGround()
     {
+        m_Owner.onGroundEvent.RemoveListener(OnGround);
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetIsBeThrow(false);
         GameFrameWork.Audio.AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
@@ -79,9 +85,7 @@ public class RoleSwoon : BaseFsmState
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
     {
-        m_IsBounce = false;
-        m_IsAddGroundEvent = false;
-        m_Force = Vector2.zero;
+        m_AddForce = Vector2.zero;
         m_Owner.StopAnimation(AnimName.SwoonDown);
     }
 
@@ -90,8 +94,6 @@ public class RoleSwoon : BaseFsmState
         m_Owner = null;
     }
 
-    private Vector2 m_Force = Vector2.zero;
-    private bool m_IsAddGroundEvent = false;
-    private bool m_IsBounce = false;
+    private Vector2 m_AddForce = Vector2.zero;
     private BaseRole m_Owner = null;
 }

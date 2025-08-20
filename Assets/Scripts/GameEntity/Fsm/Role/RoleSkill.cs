@@ -32,9 +32,9 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
 
         if (stateData is SkillStateData)
         {

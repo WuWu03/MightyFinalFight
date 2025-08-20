@@ -6,11 +6,11 @@ using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    public UnityArmatureComponent armatureAnimator
+    public Fsm fsm
     {
         get
         {
-            return m_Animator;
+            return m_Fsm;
         }
     }
 
@@ -343,12 +343,11 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    protected string m_CurrAnimName = string.Empty;
-    protected HitTrigger m_HitTrigger = null;
-    protected Fsm m_Fsm = null;
-    protected UnityArmatureComponent m_Animator;
-
-    private float m_LastAnimTimeScale = 1f;
+    private string m_CurrAnimName = string.Empty;
     private string m_LastTriggerAnimName = string.Empty;
+    private float m_LastAnimTimeScale = 1f;
     private int m_LastTriggerFrameIndex = -1;
+    private HitTrigger m_HitTrigger = null;
+    private Fsm m_Fsm = null;
+    private UnityArmatureComponent m_Animator;
 }

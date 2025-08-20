@@ -1,6 +1,5 @@
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.Fsm;
 using GameFrameWork.Utils;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public class Barrel : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !isDead && m_IsAssetLoadComplete;
+            return !isDead && isAssetLoadComplete;
         }
     }
 
@@ -27,24 +26,23 @@ public class Barrel : BaseAvatar, ICanBeHit
     {
         get
         {
-            return m_EntityAttribute.health <= 0;
+            return entityAttribute.health <= 0;
         }
     }
 
+    public bool isSwoon
+    {
+        get
+        {
+            return false;
+        }
+    }
 
     public BarrelData barrelData
     {
         get
         {
             return m_BarrelData;
-        }
-    }
-
-    public Fsm barrelFSM
-    {
-        get
-        {
-            return m_Fsm;
         }
     }
 
@@ -79,19 +77,19 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     public bool IsHurtWillDie(int attackValue)
     {
-        return m_EntityAttribute.health - attackValue <= 0;
+        return entityAttribute.health - attackValue <= 0;
     }
 
     public void OnHurtMsg(HurtStateData data)
     {
-        m_EntityAttribute.SubHealth(data.attackValue);
+        entityAttribute.SubHealth(data.attackValue);
         AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
 
         if (isDead)
         {
             SetTrigger(AnimName.Dead);
             ChangeState<BarrelDead>(data);
-            SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, m_MapPos);
+            SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, mapPos);
         }
 
         ReferencePool.Release(data);
@@ -107,7 +105,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
         if (m_BarrelData != null)
         {
-            bool isOut = m_BarrelData.dir > 0 ? IsOutVersionXRight(m_Pos.x) : IsOutVersionXLeft(m_Pos.x);
+            bool isOut = m_BarrelData.dir > 0 ? IsOutVersionXRight(pos.x) : IsOutVersionXLeft(pos.x);
 
             if (isOut)
             {
@@ -143,19 +141,19 @@ public class Barrel : BaseAvatar, ICanBeHit
             if (m_BarrelData.moveSpeed >= 0)
             {
                 SetTrigger(AnimName.Move);
-                m_Fsm.Start<BarrelMove>();
+                fsm.Start<BarrelMove>();
                 AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
             }
             else
             {
                 SetTrigger(AnimName.Idle);
-                m_Fsm.Start<BarrelIdle>();
+                fsm.Start<BarrelIdle>();
             }
         }
         else
         {
             UpdatePosY(m_BarrelData.groundY / 100f);
-            SetBodyType(RigidbodyType2D.Dynamic);
+            rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         }
     }
 
@@ -167,7 +165,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     private void CheckStrike(GameObject go)
     {
-        if (!m_IsAssetLoadComplete || m_BarrelData.moveSpeed <= 0 || isDead)
+        if (!isAssetLoadComplete || m_BarrelData.moveSpeed <= 0 || isDead)
         {
             return;
         }
@@ -181,13 +179,13 @@ public class Barrel : BaseAvatar, ICanBeHit
           
         bool isInRange = false;
 
-        if (SkillUtil.IsRectangleCollide(player.bound, bound) && player.pos.y >= m_Pos.y)
+        if (SkillUtil.IsRectangleCollide(player.bound, bound) && player.pos.y >= pos.y)
         {
             Vector2 bsoLeftTop = new Vector2(bound.xMin, bound.yMax) - bound.center;
             float selectorAngle = Vector2.Angle(Vector2.left, bsoLeftTop.normalized);
 
-            Vector2 target = (player.pos - m_Pos).normalized;
-            Vector2 normal = m_Dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
+            Vector2 target = (player.pos - pos).normalized;
+            Vector2 normal = dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
             float angle = Vector2.Angle(target, normal);
 
             if (angle <= selectorAngle / 2)
@@ -199,8 +197,8 @@ public class Barrel : BaseAvatar, ICanBeHit
         if (isInRange)
         {
             HurtStateData hurtData = HurtStateData.Create();
-            hurtData.attackerDir = m_Dir;
-            hurtData.attackForce = SkillUtil.GetSmoonForce(m_Dir);
+            hurtData.attackerDir = dir;
+            hurtData.attackForce = SkillUtil.GetSmoonForce(dir);
             hurtData.isSwoon = true;
             player.OnHurtMsg(hurtData);
         }
@@ -208,7 +206,7 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     private void CheckThrow(GameObject go)
     {
-        if (!m_IsAssetLoadComplete || isDead)
+        if (!isAssetLoadComplete || isDead)
         {
             return;
         }
@@ -220,7 +218,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             return;
         }
 
-        if (Mathf.Abs(role.pos.y - m_Pos.y) > 0.1f)
+        if (Mathf.Abs(role.pos.y - pos.y) > 0.1f)
         {
             return;
         }
@@ -228,7 +226,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         HurtStateData hurtData = HurtStateData.Create();
         hurtData.attackerDir = -role.dir;
         hurtData.attackForce = SkillUtil.GetSmoonForce();
-        hurtData.attackerPos = m_Pos;
+        hurtData.attackerPos = pos;
         hurtData.isSwoon = true;
         hurtData.attackerId = id;
         hurtData.attackValue = 1;

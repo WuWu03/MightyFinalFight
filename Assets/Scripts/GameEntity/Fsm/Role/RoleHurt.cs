@@ -33,21 +33,21 @@ public class RoleHurt : BaseFsmState
                     ChangeState<RoleDead>(fsm);
                 }
             }
-            else if(m_HurtTimer < 0)
+            else if (m_HurtTimer < 0)
             {
                 m_HurtTimer = Time.time + (m_Owner.objectType == ObjectType.Player ? 0f : -0.3f);
             }
         }
 
-        if(m_HurtTimer > 0 && Time.time - m_HurtTimer >= 0.2f)
+        if (m_HurtTimer > 0 && Time.time - m_HurtTimer >= 0.2f)
         {
             ChangeState<RoleIdle>(fsm);
         }
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
         HurtStateData hurtData = stateData as HurtStateData;
         m_HurtAnim = hurtData.hurtAnim;
     }

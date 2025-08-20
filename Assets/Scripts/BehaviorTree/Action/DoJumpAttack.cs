@@ -61,6 +61,7 @@ public class DoJumpAttack : DoAttack
 
     private void OnDrop()
     {
+        m_Owner.onDropEvent.RemoveListener(OnDrop);
         m_Owner.Attack(Vector2.zero);
     }
 
@@ -97,6 +98,7 @@ public class DoJumpAttack : DoAttack
     protected override void OnReset()
     {
         base.OnReset();
+        m_Owner.onDropEvent.RemoveListener(OnDrop);
         m_State = BehaviourTreeState.None;
     }
     private Vector2 GetJumpDir()

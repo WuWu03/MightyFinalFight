@@ -29,8 +29,8 @@ public class Consume : BaseSceneItem
         ResetRigidbody();
         
         BoxCollider2D bc2 = go.GetComponent<BoxCollider2D>();
-        m_BoxCollider2D.size = bc2.size;
-        m_BoxCollider2D.offset = bc2.offset;
+        boxCollider2D.size = bc2.size;
+        boxCollider2D.offset = bc2.offset;
     }
 
     private void AddHP()

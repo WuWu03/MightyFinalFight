@@ -12,7 +12,8 @@ public static class SceneEntityFactory
         EntityAttribute attribute = ReferencePool.Acquire<EntityAttribute>();
 
         attribute.moveSpeed = moveSpeed;
-
+        attribute.health = 1;
+        attribute.maxHealth = 1;
         role.SetAttribute(attribute);
         role.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, asset));
         role.SetLayer(LayerName.Unit);

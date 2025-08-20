@@ -149,7 +149,7 @@ namespace GameFrameWork.Fsm
                 Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
             }
 
-            state.SetStateData(stateData);
+            state.SetStateData(this, stateData);
         }
 
         public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
@@ -163,7 +163,7 @@ namespace GameFrameWork.Fsm
             {
                 if (stateData != null)
                 {
-                    m_CurrentState.SetStateData(stateData);
+                    m_CurrentState.SetStateData(this, stateData);
                 }
 
                 return;
@@ -178,7 +178,7 @@ namespace GameFrameWork.Fsm
 
             if (stateData != null)
             {
-                state.SetStateData(stateData);
+                state.SetStateData(this, stateData);
             }
 
             m_CurrentStateTime = Time.time;

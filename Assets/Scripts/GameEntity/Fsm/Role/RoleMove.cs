@@ -43,9 +43,9 @@ public class RoleMove : BaseFsmState
         m_Owner.SetPos2(ownerPos);
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
         MoveStateData moveData = stateData as MoveStateData;
         m_CanChangeDir = moveData.canChangeDir;
     }

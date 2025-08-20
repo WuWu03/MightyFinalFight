@@ -346,10 +346,13 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = false });
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true,attackForce = SkillUtil.GetSmoonForce()});
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true, attackForce = SkillUtil.GetSmoonForce() });
+            m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true, attackForce = SkillUtil.GetSmoonForce() });
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
+            //m_Player.OnHurtMsg(new HurtStateData() { attackerDir = 1, attackerId = 10011, attackValue = 9999, isSwoon = false});
             StageMgr.instance.StageEnterNext();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad4))
@@ -384,6 +387,10 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_Player.entityAttribute.attackValue = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            m_Player.entityAttribute.attackValue = 9999;
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad9))
         {
             if (m_Player.isPause)
             {

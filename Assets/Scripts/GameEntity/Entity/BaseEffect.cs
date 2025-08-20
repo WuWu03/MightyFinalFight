@@ -63,10 +63,10 @@ public class BaseEffect : BaseSceneObject
     {
         m_IsPlaying = true;
 
-        if (m_IsAssetLoadComplete)
+        if (isAssetLoadComplete)
         {
             m_Timer = Time.time;
-            m_Asset.SetActiveSelf(true);
+            asset.SetActiveSelf(true);
         }
     }
 
@@ -86,7 +86,7 @@ public class BaseEffect : BaseSceneObject
         if (m_IsPlaying)
         {
             m_Timer = Time.time;
-            m_Asset.SetActiveSelf(true);
+            asset.SetActiveSelf(true);
         }
     }
 
@@ -94,7 +94,7 @@ public class BaseEffect : BaseSceneObject
     {
         base.OnUpdate();
 
-        if (!m_IsPlaying || m_PlayTime <= 0 || m_Timer < 0 || !m_IsAssetLoadComplete)
+        if (!m_IsPlaying || m_PlayTime <= 0 || m_Timer < 0 || !isAssetLoadComplete)
         {
             return;
         }

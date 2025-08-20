@@ -51,17 +51,17 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
     {
-        base.OnSetStateData(stateData);
+        base.OnSetStateData(fsm, stateData);
 
-        if(stateData is JumpStateData)
+        if (stateData is JumpStateData)
         {
             JumpStateData jumpData = stateData as JumpStateData;
             m_CanChangeDir = !jumpData.isCatch && jumpData.canChangeDir;
             m_Dir = jumpData.dir.x;
         }
-        else if(stateData is MoveStateData)
+        else if (stateData is MoveStateData)
         {
             MoveStateData moveData = stateData as MoveStateData;
             m_Dir = moveData.dir.x;
@@ -84,6 +84,7 @@ public class RoleJump : BaseFsmState
 
     private void OnDrop()
     {
+        m_Owner.onDropEvent.RemoveListener(OnDrop);
         if (!m_Owner.isCatching && !m_Owner.IsAnyState(typeof(RoleSkill)))
         {
             m_Owner.PlayAnimation(AnimName.JumpDown);

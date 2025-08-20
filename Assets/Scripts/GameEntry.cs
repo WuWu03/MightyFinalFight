@@ -72,7 +72,7 @@ public class GameEntry : GameFrameWorkEntry
         BehaviourTreeMgr.instance.InitBehaviourTreeData();
         StaticConfig.InitConfig();
         ConfigDataSheet.Init();
-        UIMgr.instance.Open(UINames.RoleSelectPanel);
+        UIMgr.instance.Open(UINames.TitlePanel);
     }
 
     protected override void OnExit()

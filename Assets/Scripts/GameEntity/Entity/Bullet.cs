@@ -28,7 +28,7 @@ public class Bullet : BaseAvatar
         if (m_BulletData.isPenatrate)
         {
             bool isOutVersion = IsOutVersionX(transform.localPosition.x) || IsOutVersionY(transform.localPosition.y);
-            if (isOutVersion || m_Rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
+            if (isOutVersion || rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
             {
                 Release();
                 return;
@@ -38,7 +38,7 @@ public class Bullet : BaseAvatar
         {
             if (m_IsHit)
             {
-                if (m_Animator.animation.isCompleted)
+                if (IsPlayComplete())
                 {
                     Release();
                     return;
@@ -46,7 +46,7 @@ public class Bullet : BaseAvatar
             }
             else
             {
-                if (m_Rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
+                if (rigidbody2D.linearVelocity.sqrMagnitude <= 0.1 * 0.1)
                 {
                     Release();
                     return;
@@ -60,7 +60,7 @@ public class Bullet : BaseAvatar
 
     private void CheckHit()
     {
-        if (!m_IsAssetLoadComplete)
+        if (!isAssetLoadComplete)
         {
             return;
         }
@@ -123,7 +123,7 @@ public class Bullet : BaseAvatar
 
         if (SkillUtil.IsRectangleCollide(bgo.bound, bound))
         {
-            isInRange = Mathf.Abs(bgo.pos.y - m_Pos.y) < m_BulletData.hitRange;
+            isInRange = Mathf.Abs(bgo.pos.y - pos.y) < m_BulletData.hitRange;
         }
 
         if (!isInRange)

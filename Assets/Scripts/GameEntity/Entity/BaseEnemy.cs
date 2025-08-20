@@ -22,9 +22,9 @@ public class BaseEnemy : BaseRole
     {
         base.OnUpdate();
 
-        if (m_Rigidbody2D != null && m_Rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
+        if (rigidbody2D != null && rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
         {
-            float x = m_Rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
+            float x = rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
 
             if (!StageMgr.instance.CanMovePosX(x))
             {
@@ -68,7 +68,7 @@ public class BaseEnemy : BaseRole
 
     public void OppositePlayer()
     {
-        SetDir(PlayerMgr.instance.player.pos.x - m_Pos.x > 0 ? 1f : -1f);
+        SetDir(PlayerMgr.instance.player.pos.x - pos.x > 0 ? 1f : -1f);
     }
 
     public override void Pause()
@@ -92,11 +92,10 @@ public class BaseEnemy : BaseRole
                 return;
             }
 
-            bool isMapXCanMove = StageMgr.instance.CanMovePosX(m_MoveDir.x > 0 ? bound.xMax : bound.xMin);
+            bool isMapXCanMove = StageMgr.instance.CanMovePosX(moveDir.x > 0 ? bound.xMax : bound.xMin);
             bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
-
-            if (!isMapXCanMove) pos.x = m_Pos.x;
-            if (!isMapYCanMove) pos.y = m_Pos.y;
+            pos.x = isMapXCanMove ? pos.x : this.pos.x;
+            pos.y = isMapYCanMove ? pos.y : this.pos.y;
         }
 
         base.SetPos(pos, posZ, caculateZ);
@@ -122,7 +121,7 @@ public class BaseEnemy : BaseRole
             }
         }
 
-        if (m_IsBeCatch)
+        if (isBeCatch)
         {
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)
             {
@@ -143,7 +142,7 @@ public class BaseEnemy : BaseRole
             }
         }
 
-        if (m_EntityAttribute.health - data.attackValue <= 0)
+        if (entityAttribute.health - data.attackValue <= 0)
         {
             m_SkillExp = data.skillExp;
         }
@@ -155,19 +154,19 @@ public class BaseEnemy : BaseRole
     {
         if (!data.isGroundHurt)
         {
-            int dir = data.attackerPos.x > m_Pos.x ? -1 : 1;
-            Vector3 pos = new(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -m_Dir);
-            EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, pos, Vector3.zero, true, true, 0.1f);
+            int dir = data.attackerPos.x > pos.x ? -1 : 1;
+            Vector3 tempPos = new(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -dir);
+            EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, tempPos, Vector3.zero, true, true, 0.1f);
         }
 
-        Vector3 damagePos = transform.position + Vector3.up * m_BoxCollider2D.size.y / 2f + Vector3.right * m_BoxCollider2D.size.x / 2 * data.attackerDir;
+        Vector3 damagePos = transform.position + Vector3.up * boxCollider2D.size.y / 2f + Vector3.right * boxCollider2D.size.x / 2 * data.attackerDir;
 
         if (data.attackValue > 0)
         {
             HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
             MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-            mainPanel.SetEnemyHP(m_EntityAttribute.health, m_EntityAttribute.maxHealth, m_HpBarWidth);
+            mainPanel.SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {
@@ -192,7 +191,7 @@ public class BaseEnemy : BaseRole
             return;
         }
 
-        if (Mathf.Abs(m_Pos.y - throwTarget.pos.y) > 0.1f)
+        if (Mathf.Abs(pos.y - throwTarget.pos.y) > 0.1f)
         {
             return;
         }
@@ -200,13 +199,13 @@ public class BaseEnemy : BaseRole
         HurtStateData hurtData = HurtStateData.Create();
         hurtData.id = 0;
         hurtData.skillExp = 2;
-        hurtData.attackerDir = -m_Dir;
-        hurtData.attackForce = SkillUtil.GetSmoonForce(-m_Dir);
-        hurtData.attackerPos = m_Pos;
+        hurtData.attackerDir = -dir;
+        hurtData.attackForce = SkillUtil.GetSmoonForce(-dir);
+        hurtData.attackerPos = pos;
         hurtData.canBeDefense = false;
         hurtData.isSwoon = true;
         hurtData.attackerId = id;
-        hurtData.attackValue = Mathf.FloorToInt(m_EntityAttribute.maxHealth * 0.1f);
+        hurtData.attackValue = Mathf.FloorToInt(entityAttribute.maxHealth * 0.1f);
         hurtData.hurtSound = string.Empty;
         hurtData.hurtAnim = string.Empty;
         hurtData.isGroundHurt = true;

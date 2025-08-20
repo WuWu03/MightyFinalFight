@@ -101,8 +101,10 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 	private void OnFadeWhiteComplete()
 	{
 		m_HasSelect = false;
-		AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bgm14Character), true);
-	}
+
+		AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "BGM/bgm14Character_Start.ogg"), false);
+        AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "BGM/bgm14Character_Loop.ogg"), true);
+    }
 
 	private void EnterStage()
 	{

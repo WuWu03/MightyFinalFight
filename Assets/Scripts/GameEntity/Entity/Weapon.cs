@@ -59,17 +59,17 @@ public class Weapon : BaseSceneItem
     {
         base.OnLoadAssetComplete(go, arg);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_HitTrigger = m_Asset.GetComponent<HitTrigger>();
+        m_HitTrigger = asset.GetComponent<HitTrigger>();
         PlayAnimation(AnimName.Idle);
-        SetPos2(m_Pos);
+        SetPos2(pos);
         ResetRigidbody();
     }
 
     protected override void OnGround()
     {
-        SetPos2(m_Pos);
+        SetPos2(pos);
 
-        if (m_EntityAttribute.IsDead())
+        if (entityAttribute.IsDead())
         {
             Release();
         }

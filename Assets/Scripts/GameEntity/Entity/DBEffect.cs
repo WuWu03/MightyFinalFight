@@ -9,7 +9,7 @@ public class DBEffect : BaseEffect
     {
         base.Play();
 
-        if (m_IsAssetLoadComplete)
+        if (isAssetLoadComplete)
         {
             m_ArmatureAnimator.animation.timeScale = m_Speed;
             m_ArmatureAnimator.animation.Play();

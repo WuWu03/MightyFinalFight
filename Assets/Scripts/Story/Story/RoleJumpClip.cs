@@ -72,6 +72,7 @@ public class RoleJumpClip : BaseClip
 
     private void OnDropEvent()
     {
+        m_Role.onDropEvent.RemoveListener(OnDropEvent);
         m_Role.UpdatePosZ(m_PosZ);
     }
 

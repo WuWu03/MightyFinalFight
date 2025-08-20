@@ -24,12 +24,12 @@ public class BaseGravityObject : BaseBoundObject
     {
         get
         {
-            if (m_MapPosZ <= 0)
+            if (mapPosZ <= 0)
             {
                 return currPosZ <= 0f;
             }
 
-            return currPosZ * 100f <= m_MapPosZ;
+            return currPosZ * 100f <= mapPosZ;
         }
     }
 
@@ -63,6 +63,10 @@ public class BaseGravityObject : BaseBoundObject
         {
             return m_IsAddGroundForce;
         }
+        protected set
+        {
+            m_IsAddGroundForce = value;
+        }
     }
 
     public override void Init(int id, string name)
@@ -75,54 +79,52 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
         m_Rigidbody2D.freezeRotation = true;
 
-        if (m_OnDropEvent == null)
-        {
-            m_OnDropEvent = new UnityEvent();
-        }
-
-        if (m_OnGroundEvent == null)
-        {
-            m_OnGroundEvent = new UnityEvent();
-        }
+        m_OnDropEvent ??= new UnityEvent();
+        m_OnGroundEvent ??= new UnityEvent();
     }
 
-    public void AddForce(float x, float y, bool isGroundForce = false)
+    public void AddForceX(float x, bool isAddGroundForce = false)
     {
-        AddForce(new Vector2(x, y), isGroundForce);
+        AddForce(new Vector2(x, 0), isAddGroundForce);
     }
 
-    public void AddForce(Vector2 force, bool isGroundForce = false)
+    public void AddForceY(float y, bool isAddGroundForce = false)
+    {
+        AddForce(new Vector2(0, y), isAddGroundForce);
+    }
+
+    public void AddForce(float x, float y, bool isAddGroundForce = false)
+    {
+        AddForce(new Vector2(x, y), isAddGroundForce);
+    }
+
+    public void AddForce(Vector2 force, bool isAddGroundForce = false)
     {
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.AddForce(force);
-        m_IsAddGroundForce = isGroundForce;
+        m_IsAddGroundForce = isAddGroundForce;
     }
 
-    public void SetBodyType(RigidbodyType2D bodyType)
+    public void SetVelocityX(float x, bool isAddGroundForce = false)
     {
-        m_Rigidbody2D.bodyType = bodyType;
+        SetVelocity(x, m_Rigidbody2D.linearVelocity.y, isAddGroundForce);
     }
 
-    public void SetVelocityX(float x, bool isGroundForce = false)
+    public void SetVelocityY(float y, bool isAddGroundForce = false)
     {
-        SetVelocity(x, m_Rigidbody2D.linearVelocity.y, isGroundForce);
+        SetVelocity(m_Rigidbody2D.linearVelocity.x, y, isAddGroundForce);
     }
 
-    public void SetVelocityY(float y, bool isGroundForce = false)
+    public void SetVelocity(float x, float y, bool isAddGroundForce = false)
     {
-        SetVelocity(m_Rigidbody2D.linearVelocity.x, y, isGroundForce);
+        SetVelocity(new Vector2(x, y), isAddGroundForce);
     }
 
-    public void SetVelocity(float x, float y, bool isGroundForce = false)
-    {
-        SetVelocity(new Vector2(x, y), isGroundForce);
-    }
-
-    public void SetVelocity(Vector2 velocity, bool isGroundForce = false)
+    public void SetVelocity(Vector2 velocity, bool isAddGroundForce = false)
     {
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.linearVelocity = velocity;
-        m_IsAddGroundForce = isGroundForce;
+        m_IsAddGroundForce = isAddGroundForce;
     }
 
     public void SetGravityScale(float gravity)
@@ -212,7 +214,6 @@ public class BaseGravityObject : BaseBoundObject
 
     private UnityEvent m_OnDropEvent = null;
     private UnityEvent m_OnGroundEvent = null;
-
-    protected bool m_IsAddGroundForce = false;
-    protected Rigidbody2D m_Rigidbody2D = null;
+    private bool m_IsAddGroundForce = false;
+    private Rigidbody2D m_Rigidbody2D = null;
 }

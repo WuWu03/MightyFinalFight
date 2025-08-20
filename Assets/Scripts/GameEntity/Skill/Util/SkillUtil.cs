@@ -119,7 +119,7 @@ public static class SkillUtil
 
         if (hit is BaseEnemy baseEnemy)//boss攻击优先级更高;
         {
-            if (baseEnemy.isBoss && baseEnemy.IsInSkill())
+            if (baseEnemy.isBoss && baseEnemy.skillMgr.IsInSkill())
             {
                 return null;
             }
@@ -209,7 +209,7 @@ public static class SkillUtil
     public static Vector2 GetFloatSmoonForce(float dir, Vector2 oriForce)
     {
         float maxXForce = Mathf.Min(10f, oriForce.x);
-        return new Vector2(maxXForce * dir, 20);
+        return new Vector2(0 * dir, 100);
     }
 
     public static Vector2 GetGroundSmoonForce(float dir,Vector2 oriForce)

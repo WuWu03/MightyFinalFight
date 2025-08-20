@@ -65,6 +65,7 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
 
 	private void StartGame()
 	{
+		AudioMgr.instance.FadeBgm(0, 0, 1);
 		LoadPanelMgr.instance.DOFadeBlack(OnLoadFadeBlackComplete);
 	}
 

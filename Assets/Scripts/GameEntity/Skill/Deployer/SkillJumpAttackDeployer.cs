@@ -11,11 +11,6 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void DeploySkill()
     {
-        if (!m_IsOnGround)
-        {
-            return;
-        }
-
         m_IsOnGround = false;
         m_CanEffect = true;
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
@@ -28,7 +23,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         skillStateData.animTime = m_SkillData.AnimTime;
         skillStateData.dir = m_Owner.dir;
         skillStateData.canChangeDir = false;
-       
+
         m_Owner.onGroundEvent.AddListener(OnGroundEvent);
         m_Owner.onDropEvent.AddListener(OnDropEvent);
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
@@ -51,12 +46,13 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void Update()
     {
-        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just && !m_Owner.isPause)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
         {
             if (m_CanEffect)
             {
                 if (m_Owner.isHitSuccess)
                 {
+                    m_TriggerTime++;
                     m_CanEffect = false;
                     return;
                 }
@@ -83,9 +79,12 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
-        if (!m_Owner.isHitSuccess)
+        m_Owner.onDropEvent.RemoveListener(OnDropEvent);
+        m_CanEffect = m_TriggerTime < m_SkillData.JumpTriggerTime;
+
+        if (m_CanEffect)
         {
-            m_CanEffect = true;
+            m_Owner.SetHitSuccess(false);
         }
     }
 
@@ -100,6 +99,9 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     {
         base.Exit();
         m_CanEffect = true;
+        m_TriggerTime = 0;
+        m_Owner.onDropEvent.RemoveListener(OnDropEvent);
+        m_Owner.onGroundEvent.RemoveListener(OnGroundEvent);
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
@@ -111,6 +113,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
 
+    private int m_TriggerTime = 0;
     private bool m_CanEffect = false;
     private bool m_IsOnGround = true;
 }
