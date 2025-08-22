@@ -142,7 +142,7 @@ public class BaseEnemy : BaseRole
             }
         }
 
-        if (entityAttribute.health - data.attackValue <= 0)
+        if (IsHurtWillDie(data.attackValue))
         {
             m_SkillExp = data.skillExp;
         }

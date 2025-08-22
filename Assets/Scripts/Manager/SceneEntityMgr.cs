@@ -170,7 +170,6 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public void ReleaseEnemies()
     {
-        Log.LogInfo("释放所有敌人");
         m_ListDeadEnemies.Clear();
 
         for (int i = 0; i < m_ListEnemies.Count; i++)

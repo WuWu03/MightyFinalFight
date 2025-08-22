@@ -186,7 +186,7 @@ namespace GameFrameWork.Version
             foreach (VersionInfo versionInfo in downloadInfos)
             {
                 string fileUri = PathUtil.FormatPath(m_CheckUri, versionInfo.fileName);
-                DownloadMgr.instance.AddDownloadBinaryFile(fileUri, versionInfo.fileName, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
+                DownloadMgr.instance.AddDownloadFile(fileUri, versionInfo.fileName, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
             }
         }
 
@@ -256,13 +256,12 @@ namespace GameFrameWork.Version
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.Error, errorMsg, 0, 0);
         }
 
-        private void OnDownloadComplete(string uri, string tag, string version, byte[] data, ulong downloadSize)
+        private void OnDownloadComplete(string uri, string tag, string version, ulong downloadSize)
         {
             m_CurrDownloadSize += downloadSize;
             m_CurrDownloadCount++;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize, m_DownloadFullSize);
-            string filePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, tag);
-            FileUtil.CreateBinaryFile(filePath, data);
+
             FileUtil.AppendText(m_DownloadTempFilePath, StringUtil.Append(m_CurrDownloadCount > 1 ? "\n" : string.Empty, tag, "|", version, "|", downloadSize.ToString()));
             Log.LogInfo(m_CurrDownloadCount.ToString(), "[", Path.GetFileName(uri), "]下载完成");
 
@@ -284,10 +283,10 @@ namespace GameFrameWork.Version
             }
         }
 
-        private void OnDownLoadProgress(string uri, string tag, string version, byte[] data, ulong currDownloadSize, ulong downloadFullSize)
+        private void OnDownLoadProgress(string uri, string tag, string version, ulong downloadSize, ulong downloadFullSize)
         {
-            Log.LogInfo("开始下载文件 [", Path.GetFileName(uri), "] 进度：", currDownloadSize.ToString(), "/", downloadFullSize.ToString(), " / ", data.Length.ToString());
-            m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize + currDownloadSize, m_DownloadFullSize);
+            Log.LogInfo("开始下载文件 [", Path.GetFileName(uri), "] 进度：", downloadSize.ToString(), "/", downloadFullSize.ToString());
+            m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize + downloadSize, m_DownloadFullSize);
         }
 
         private void OnDownloadError(string uri, string tag, string version, string errorMsg)

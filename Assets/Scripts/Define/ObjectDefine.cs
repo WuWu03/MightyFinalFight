@@ -29,9 +29,11 @@ public class SoundName
     public const string BicycleKick = "Sound/BicycleKick.ogg";
     public const string Bonus = "Sound/Bonus.ogg";
     public const string OnBlow = "Sound/OnBlow.ogg";
-    public const string Bgm13Title = "BGM/bgm13Title.ogg";
-    public const string Bgm14Character = "BGM/bgm14Character.wav";
-    public const string Bgm15Clear = "BGM/bgm15Clear.wav";
+    public const string BgmOpening = "BGM/bgm08Opening.ogg";
+    public const string BgmTitle = "BGM/bgm09Title.ogg";
+    public const string BgmCharacter_Start = "BGM/bgm10Character_Start.ogg";
+    public const string BgmCharacter_Loop = "BGM/bgm10Character_Loop.ogg";
+    public const string BgmClear = "BGM/bgm11Clear.wav";
 }
 
 public class LayerName

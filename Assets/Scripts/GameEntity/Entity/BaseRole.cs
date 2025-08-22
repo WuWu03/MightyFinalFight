@@ -298,9 +298,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         base.OnLateUpdate();
         m_SkillMgr?.Update();
 
-        if(m_HurtTimer > 0 && Time.time - m_HurtTimer > 0.2f)
+        if (m_HurtTimer > 0 && Time.time - m_HurtTimer > 0.2f)
         {
-            if(m_HurtQueue.Count < 1)
+            if (m_HurtQueue.Count < 1)
             {
                 m_HurtTimer = -1f;
                 return;
@@ -583,7 +583,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        if(m_HurtTimer > 0f && Time.time - m_HurtTimer < 0.1f)
+        if (m_HurtTimer > 0f && Time.time - m_HurtTimer < 0.1f)
         {
             m_HurtQueue.Enqueue(hurtStateData);
             return;
@@ -940,14 +940,18 @@ public class BaseRole : BaseAvatar, ICanBeHit
             }
             else
             {
-                TimerMgr.instance.Register(0.1f, () => { OnGroundHurtMsg(m_OnGroundHurtStateData); });
+                TimerMgr.instance.Register(0.1f, () =>
+                {
+                    if (m_OnGroundHurtStateData != null)
+                        OnGroundHurtMsg(m_OnGroundHurtStateData);
+                });
             }
 
             m_AwakenTimer = Time.time;
         }
         else if (!isDead)
         {
-            if(isSwoon)
+            if (isSwoon)
             {
                 m_AwakenTimer = Time.time;
             }

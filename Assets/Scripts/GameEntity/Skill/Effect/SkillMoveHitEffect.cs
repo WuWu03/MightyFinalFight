@@ -1,11 +1,12 @@
-﻿using GameFrameWork;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillMoveHitEffect : SkillBaseEffect
 {
-    public SkillMoveHitEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) { }
+    public SkillMoveHitEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(deployer, skillData, owner, effectIndex) 
+    {
+        m_HitTargets = new();
+    }
 
     public override void Effect(ISkillSelector selector)
     {
@@ -22,6 +23,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
     {
         base.OnComplete();
         m_Owner.rigidbody2D.linearVelocity = Vector2.zero;
+        m_HitTargets.Clear();
     }
 
     protected override void OnReset()
@@ -60,16 +62,27 @@ public class SkillMoveHitEffect : SkillBaseEffect
         m_Owner.UpdatePosXY(m_Owner.transform.localPosition.x, m_Owner.pos.y);
         List<ICanBeHit> targets = selector.GetTargets();
 
-        for (int i = 0; i < targets.Count; i++)
+        foreach (ICanBeHit hit in targets)
         {
-            if (SkillUtil.SkillHit(targets[i], m_Owner, m_SkillData, m_SkillEffect) && m_SkillEffect.HitOne)
+            if (m_SkillEffect.HitOne)
             {
-                Complete();
-                return;
+                if (SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect))
+                {
+                    Complete();
+                    return;
+                }
             }
+            else if(!m_HitTargets.Contains(hit))
+            {
+                if (SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect))
+                {
+                    m_HitTargets.Add(hit);
+                }
+            }          
         }
     }
 
+    private List<ICanBeHit> m_HitTargets = null;
     private bool m_HasEffect = false;
     private Vector3 m_StartPos = Vector3.zero;
 }

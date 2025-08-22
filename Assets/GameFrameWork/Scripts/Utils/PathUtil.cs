@@ -16,12 +16,10 @@ namespace GameFrameWork.Utils
         {
             get
             {
-#if UNITY_ANDROID
-                return persistentDataPath;
-#elif UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
                 return persistentDataPath;
 #else
-                return streamingAssetsPath;
+                return streamingAssetsPath; 
 #endif
             }
         }

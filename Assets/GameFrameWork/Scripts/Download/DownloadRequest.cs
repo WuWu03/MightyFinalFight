@@ -1,6 +1,4 @@
-using GameFrameWork.Utils;
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Video;
@@ -18,19 +16,19 @@ namespace GameFrameWork.Download
         public bool isDone { get; private set; }
         public bool isError { get; private set; }
 
-        public event GameFrameWorkAction<string, string, string, string, ulong> onDownloadTextFileCompleteEvent
+        public event GameFrameWorkAction<string, string, string, string, ulong> onDownloadScriptCompleteEvent
         {
             add
             {
-                m_OnDownloadTextFileCompleteEvent += value;
+                m_OnDownloadScriptCompleteEvent += value;
             }
             remove
             {
-                m_OnDownloadTextFileCompleteEvent -= value;
+                m_OnDownloadScriptCompleteEvent -= value;
             }
         }
 
-        public event GameFrameWorkAction<string, string, string, byte[], ulong> onDownloadBinaryFileCompleteEvent
+        public event GameFrameWorkAction<string, string, string, ulong> onDownloadBinaryFileCompleteEvent
         {
             add
             {
@@ -89,7 +87,7 @@ namespace GameFrameWork.Download
             }
         }
 
-        public event GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent
+        public event GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent
         {
             add
             {
@@ -138,12 +136,13 @@ namespace GameFrameWork.Download
             isDoing = false;
             isDone = false;
             isError = false;
-            m_OnDownloadTextFileCompleteEvent = null;
+            m_OnDownloadScriptCompleteEvent = null;
             m_OnDownloadBinaryFileCompleteEvent = null;
             m_OnDownloadTextureCompleteEvent = null;
             m_OnDownloadAudioClipCompleteEvent = null;
             m_OnDownloadVideoClipCompleteEvent = null;
             m_OnDownloadAssetBundleCompleteEvent = null;
+            StopDownload();
         }
 
         public void StartDownload()
@@ -169,46 +168,22 @@ namespace GameFrameWork.Download
             isDoing = false;
             isDone = false;
             isError = false;
+
+            if (m_UnityWebRequest != null)
+            {
+                m_UnityWebRequest.Abort();
+                m_UnityWebRequest.downloadHandler.Dispose();
+                m_UnityWebRequest = null;
+            }
+
             m_MonoBehaviour.StopCoroutine(DownloadCoroutine());
         }
 
         private IEnumerator DownloadCoroutine()
         {
-            string fileName = Path.GetFileNameWithoutExtension(uri);
-            string downlaodVersionFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, fileName, ".downloadversion");
-            string downloadTempFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, fileName, ".downloadtemp");
-            long startDownloadBytes = 0;
+            m_UnityWebRequest = CreateWebRequest();
 
-            if (!string.IsNullOrEmpty(this.version))
-            {
-                if (File.Exists(downlaodVersionFilePath))
-                {
-                    string version = File.ReadAllText(downlaodVersionFilePath);
-                    if (this.version == version)
-                    {
-                        startDownloadBytes = GetDownloadBytesLength(downloadTempFilePath);
-                    }
-                    else
-                    {
-                        FileUtil.CreateTextFile(downlaodVersionFilePath, this.version);
-                        FileUtil.DeleteFile(downloadTempFilePath);
-                    }
-                }
-                else
-                {
-                    FileUtil.CreateTextFile(downlaodVersionFilePath, this.version);
-                    FileUtil.DeleteFile(downloadTempFilePath);
-                }
-            }
-            else
-            {
-                FileUtil.DeleteFile(downlaodVersionFilePath);
-                startDownloadBytes = GetDownloadBytesLength(downloadTempFilePath);
-            }
-
-            UnityWebRequest uwr = CreateWebRequest(uri, startDownloadBytes);
-
-            if (uwr == null)
+            if (m_UnityWebRequest == null)
             {
                 isDoing = false;
                 isDone = false;
@@ -217,15 +192,21 @@ namespace GameFrameWork.Download
                 yield break;
             }
 
-            UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = uwr.SendWebRequest();
+            ulong startDownloadLength = 0;
+
+            if (m_UnityWebRequest.downloadHandler is DownloadHandlerFile downloadHandlerFile)
+            {
+                startDownloadLength = downloadHandlerFile.startDownloadLength;
+            }
+
+            UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = m_UnityWebRequest.SendWebRequest();
 
             while (!unityWebRequestAsyncOperation.isDone)
             {
                 try
                 {
-                    Log.LogInfo("当前进度：", uwr.downloadedBytes.ToString());
-                    File.WriteAllBytes(downloadTempFilePath, uwr.downloadHandler.data);
-                    m_OnDownloadProgressEvent?.Invoke(uri, tag, version, uwr.downloadHandler.data, uwr.downloadedBytes, downloadSize);
+                    Log.LogInfo("当前进度：", (startDownloadLength + m_UnityWebRequest.downloadedBytes).ToString());
+                    m_OnDownloadProgressEvent?.Invoke(uri, tag, version, startDownloadLength + m_UnityWebRequest.downloadedBytes, downloadSize);
                 }
                 catch
                 {
@@ -235,33 +216,17 @@ namespace GameFrameWork.Download
                 yield return null;
             }
 
-            if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError || uwr.result == UnityWebRequest.Result.DataProcessingError)
+            if (m_UnityWebRequest.result == UnityWebRequest.Result.ConnectionError || m_UnityWebRequest.result == UnityWebRequest.Result.ProtocolError || m_UnityWebRequest.result == UnityWebRequest.Result.DataProcessingError)
             {
-                OnDownloadError(uwr.error);
+                OnDownloadError(m_UnityWebRequest.error);
             }
-            else if (uwr.result == UnityWebRequest.Result.Success)
+            else if (m_UnityWebRequest.result == UnityWebRequest.Result.Success)
             {
-                OnDownloadComplete(downloadType, uwr);
-                FileUtil.DeleteFile(downlaodVersionFilePath);
-                FileUtil.DeleteFile(downloadTempFilePath);
+                OnDownloadComplete(downloadType, m_UnityWebRequest);
             }
         }
 
-        private long GetDownloadBytesLength(string downloadTempFilePath)
-        {
-            if (File.Exists(downloadTempFilePath))
-            {
-                byte[] downloadBytes = File.ReadAllBytes(downloadTempFilePath);
-                long startDownloadBytes = downloadBytes.LongLength;
-                m_OnDownloadProgressEvent?.Invoke(uri, tag, version, downloadBytes, (ulong)startDownloadBytes, downloadSize);
-                return downloadBytes.LongLength;
-            }
-
-            FileUtil.CreateBinaryFile(downloadTempFilePath, null);
-            return 0;
-        }
-
-        private UnityWebRequest CreateWebRequest(string uri, long startDownloadBytes)
+        private UnityWebRequest CreateWebRequest()
         {
             UnityWebRequest uwr = null;
             DownloadHandler downloadHandler = null;
@@ -272,12 +237,11 @@ namespace GameFrameWork.Download
                     uwr = UnityWebRequestAssetBundle.GetAssetBundle(uri);
                     downloadHandler = new DownloadHandlerAssetBundle(uri, 0);
                     break;
-                case DownloadType.TextFile:
+                case DownloadType.File:
                     uwr = UnityWebRequest.Get(uri);
-                    break;
-                case DownloadType.BinaryFile:
-                    uwr = UnityWebRequest.Get(uri);
-                    downloadHandler = new DownloadHandlerBuffer();
+                    downloadHandler = new DownloadHandlerFile(uri, version);
+                    uwr.SetRequestHeader("Range", "bytes=" + (downloadHandler as DownloadHandlerFile).startDownloadLength.ToString() + "-");
+                    Log.LogInfo("起始进度：", (downloadHandler as DownloadHandlerFile).startDownloadLength.ToString());
                     break;
                 case DownloadType.Texture:
                     uwr = UnityWebRequestTexture.GetTexture(uri);
@@ -293,9 +257,11 @@ namespace GameFrameWork.Download
                     uwr = UnityWebRequest.Get(uri);
                     downloadHandler = new DownloadHandlerScript();
                     break;
+                case DownloadType.Buffer:
+                    uwr = UnityWebRequest.Get(uri);
+                    downloadHandler = new DownloadHandlerBuffer();
+                    break;
             }
-
-            uwr.SetRequestHeader("Range", "bytes=" + startDownloadBytes + "-");
 
             if (downloadHandler != null)
             {
@@ -324,11 +290,8 @@ namespace GameFrameWork.Download
                 case DownloadType.AssetBundle:
                     OnAssetBundleDownloaded(uwr);
                     break;
-                case DownloadType.TextFile:
-                    OnTextFileDownloaded(uwr);
-                    break;
-                case DownloadType.BinaryFile:
-                    OnBinaryFileDownloaded(uwr);
+                case DownloadType.File:
+                    OnFileDownloaded();
                     break;
                 case DownloadType.Texture:
                     OnTextureDownloaded(uwr);
@@ -340,9 +303,14 @@ namespace GameFrameWork.Download
                     //m_OnDownloadVideoClipCompleteEvent?.Invoke(DownloadHan.GetContent(uwr));
                     break;
                 case DownloadType.Script:
-                    OnTextFileDownloaded(uwr);
+                    OnScriptDownloaded(uwr);
                     break;
             }
+        }
+
+        private void OnFileDownloaded()
+        {
+            m_OnDownloadBinaryFileCompleteEvent?.Invoke(uri, tag, version, downloadSize);
         }
 
         private void OnAssetBundleDownloaded(UnityWebRequest uwr)
@@ -351,14 +319,9 @@ namespace GameFrameWork.Download
             m_OnDownloadAssetBundleCompleteEvent?.Invoke(uri, tag, version, assetBundle, downloadSize);
         }
 
-        private void OnTextFileDownloaded(UnityWebRequest uwr)
+        private void OnScriptDownloaded(UnityWebRequest uwr)
         {
-            m_OnDownloadTextFileCompleteEvent?.Invoke(uri, tag, version, uwr.downloadHandler.text, downloadSize);
-        }
-
-        private void OnBinaryFileDownloaded(UnityWebRequest uwr)
-        {
-            m_OnDownloadBinaryFileCompleteEvent?.Invoke(uri, tag, version, uwr.downloadHandler.data, downloadSize);
+            m_OnDownloadScriptCompleteEvent?.Invoke(uri, tag, version, uwr.downloadHandler.text, downloadSize);
         }
 
         private void OnTextureDownloaded(UnityWebRequest uwr)
@@ -373,14 +336,15 @@ namespace GameFrameWork.Download
             m_OnDownloadAudioClipCompleteEvent?.Invoke(uri, tag, version, audioClip, downloadSize);
         }
 
-        private GameFrameWorkAction<string, string, string, string, ulong> m_OnDownloadTextFileCompleteEvent;
-        private GameFrameWorkAction<string, string, string, byte[], ulong> m_OnDownloadBinaryFileCompleteEvent;
+        private GameFrameWorkAction<string, string, string, string, ulong> m_OnDownloadScriptCompleteEvent;
+        private GameFrameWorkAction<string, string, string, ulong> m_OnDownloadBinaryFileCompleteEvent;
         private GameFrameWorkAction<string, string, string, Texture2D, ulong> m_OnDownloadTextureCompleteEvent;
         private GameFrameWorkAction<string, string, string, AudioClip, ulong> m_OnDownloadAudioClipCompleteEvent;
         private GameFrameWorkAction<string, string, string, VideoClip, ulong> m_OnDownloadVideoClipCompleteEvent;
         private GameFrameWorkAction<string, string, string, AssetBundle, ulong> m_OnDownloadAssetBundleCompleteEvent;
-        private GameFrameWorkAction<string, string, string, byte[], ulong, ulong> m_OnDownloadProgressEvent;
+        private GameFrameWorkAction<string, string, string, ulong, ulong> m_OnDownloadProgressEvent;
         private GameFrameWorkAction<string, string, string, string> m_OnDownloadErrorEvent;
         private MonoBehaviour m_MonoBehaviour = null;
+        private UnityWebRequest m_UnityWebRequest = null;
     }
 }

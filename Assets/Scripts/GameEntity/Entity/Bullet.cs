@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class Bullet : BaseAvatar
 {
+    protected override void Awake()
+    {
+        m_TaretHits = new();
+    }
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
@@ -65,11 +69,6 @@ public class Bullet : BaseAvatar
             return;
         }
 
-        if (!m_BulletData.isPenatrate && m_IsHit)
-        {
-            return;
-        }
-
         if (m_Owner.objectType == ObjectType.Player)
         {
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
@@ -123,7 +122,7 @@ public class Bullet : BaseAvatar
 
         if (SkillUtil.IsRectangleCollide(bgo.bound, bound))
         {
-            isInRange = Mathf.Abs(bgo.pos.y - pos.y) < m_BulletData.hitRange;
+            isInRange = Mathf.Abs(bgo.bound.center.y - bound.center.y) < m_BulletData.hitRange;
         }
 
         if (!isInRange)
@@ -141,7 +140,11 @@ public class Bullet : BaseAvatar
             PlayAnimation(m_BulletData.hitAnim, 1, m_BulletData.hitAnimSpeed);
         }
 
-        m_SkillBulletEffect?.BulletEffect(hit);
+        if (!m_TaretHits.Contains(hit) && m_SkillBulletEffect.BulletEffect(hit)) 
+        {
+            m_TaretHits.Add(hit);
+        }
+
         m_IsHit = true;
     }
 
@@ -162,9 +165,11 @@ public class Bullet : BaseAvatar
         m_BulletData = null;
         m_IsHit = false;
         m_SkillBulletEffect = null;
+        m_TaretHits.Clear();
     }
 
     private bool m_IsHit = false;
+    private List<ICanBeHit> m_TaretHits = null;
     private SkillBulletEffect m_SkillBulletEffect = null;
     private BaseRole m_Owner = null;
     private BulletData m_BulletData = null;

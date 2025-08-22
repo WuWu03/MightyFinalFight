@@ -8,6 +8,14 @@ namespace GameFrameWork.Audio
 {
     public class AudioMgr : BaseMgr<AudioMgr>
     {
+        public bool isBgmComplete
+        {
+            get
+            {
+                return m_BgmAudioSource != null && !m_BgmAudioSource.isPlaying && m_BgmAudioSource.clip != null;
+            }
+        }
+
         public event GameFrameWorkAction onBgmFadeCompleteEvent
         {
             add
@@ -75,6 +83,14 @@ namespace GameFrameWork.Audio
 
             GetSe(sePath, volume);
             InnerPlaySe(sePath, volume);
+        }
+
+        public void StopAllSe()
+        {
+            for (int i = m_PlayingSes.Count - 1; i >= 0; i--)
+            {
+                PutSe(m_PlayingSes[i]);
+            }
         }
 
         public void SetSePlaySpeed(float speed)

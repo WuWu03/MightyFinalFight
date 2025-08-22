@@ -17,7 +17,7 @@ MonoBehaviour:
   uiAtlasPath: Assets/ArtResources/UI/Atlas
   entryScene: Assets/Scenes/Main.unity
   languageKeyFilePath: Assets/Editor/Config/LanguageKeys.txt
-  m_IsCheckVersion: 1
+  m_IsCheckVersion: 0
   m_IsLoadFromAssetBundle: 0
   m_IsOpenLog: 1
   m_IsUseLua: 0

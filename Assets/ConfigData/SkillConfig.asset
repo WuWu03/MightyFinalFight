@@ -1491,7 +1491,7 @@ MonoBehaviour:
       IsShakeCamera: 0
       IsOnGroundHurt: 0
       IsOnGroundEffect: 0
-      CanBeDefense: 1
+      CanBeDefense: 0
       HitOne: 0
       Args: HeroAttackEnd
   - id: 1002012
@@ -1524,7 +1524,7 @@ MonoBehaviour:
       ForceType: 1
       Bullets:
       - Name: GuyBullet
-        AssetName: Weapon/GuyWeapon
+        AssetName: Weapon/GuyWeapon.prefab
         NormalAnim: Hit
         HitAnim: 
         NormalAnimSpeed: 0.8
@@ -1532,7 +1532,7 @@ MonoBehaviour:
         Dir: {x: 0, y: 0}
         Pos: {x: 0.2, y: 0.14}
         Velocity: {x: 6, y: 0}
-        HitRange: 0
+        HitRange: 0.1
         Drag: 0
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}
@@ -1592,7 +1592,7 @@ MonoBehaviour:
         Dir: {x: 0, y: 0}
         Pos: {x: 0.2, y: 0.1}
         Velocity: {x: 8, y: 0}
-        HitRange: 0.05
+        HitRange: 0.1
         Drag: 0
         IsPenatrate: 1
       SelectorOffest: {x: 0, y: 0}

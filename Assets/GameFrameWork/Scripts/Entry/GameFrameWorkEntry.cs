@@ -23,6 +23,14 @@ namespace GameFrameWork
 {
     public abstract class GameFrameWorkEntry : MonoBehaviour
     {
+        public static bool isStartUp
+        {
+            get
+            {
+                return s_Config != null;
+            }
+        }
+
         public static GameFrameWorkConfig config
         {
             get

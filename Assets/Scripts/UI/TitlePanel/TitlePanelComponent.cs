@@ -1,5 +1,5 @@
 /*******************************************************/
-/**2025-08-08 14:36*************************************/
+/**2025-08-21 17:16*************************************/
 /**Create By WuWu***************************************/
 /**工具生成，请勿修改************************************/
 /*******************************************************/
@@ -28,6 +28,14 @@ public class TitlePanelComponent : BasePanelComponent
 	public TextMeshProUGUI txtDeveloper { get; private set; }
 	//imgCapcom,Image
 	public Image imgCapcom { get; private set; }
+	//imgIntro1,Image
+	public Image imgIntro1 { get; private set; }
+	//imgIntro2,Image
+	public Image imgIntro2 { get; private set; }
+	//txtIntro,LanguageText
+	public LanguageText txtIntro { get; private set; }
+	//txtIntro,TextMeshProUGUI
+	public TextMeshProUGUI txtIntroTmp { get; private set; }
 
 	protected override void OnInitComponent(UIRefRoot root)
 	{
@@ -39,5 +47,9 @@ public class TitlePanelComponent : BasePanelComponent
 		txtSettings = root.objects[5] as LanguageText;
 		txtDeveloper = root.objects[6] as TextMeshProUGUI;
 		imgCapcom = root.objects[7] as Image;
+		imgIntro1 = root.objects[8] as Image;
+		imgIntro2 = root.objects[9] as Image;
+		txtIntro = root.objects[10] as LanguageText;
+		txtIntroTmp = root.objects[11] as TextMeshProUGUI;
 	}
 }

@@ -22,19 +22,6 @@ SpriteAtlas:
       sRGB: 1
     platformSettings:
     - serializedVersion: 4
-      m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 2048
-      m_ResizeAlgorithm: 0
-      m_TextureFormat: -1
-      m_TextureCompression: 1
-      m_CompressionQuality: 100
-      m_CrunchedCompression: 0
-      m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
-      m_IgnorePlatformSupport: 0
-      m_AndroidETC2FallbackOverride: 0
-      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
-    - serializedVersion: 4
       m_BuildTarget: Standalone
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
@@ -54,7 +41,7 @@ SpriteAtlas:
       m_TextureFormat: 49
       m_TextureCompression: 1
       m_CompressionQuality: 50
-      m_CrunchedCompression: 1
+      m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
       m_Overridden: 1
       m_IgnorePlatformSupport: 0
@@ -76,26 +63,38 @@ SpriteAtlas:
     - {fileID: 21300000, guid: d3292020f7953714f8b9b2e44d126e8b, type: 3}
     - {fileID: 21300000, guid: 8f5abea35bc88a0499938b930e109e81, type: 3}
     - {fileID: 21300000, guid: 9bfafae77a6195943be87b2952549d44, type: 3}
+    - {fileID: 21300000, guid: 59b3da9059508344fa7d4aae99d6fc0e, type: 3}
+    - {fileID: 21300000, guid: 737e66a66e64f3c49ab5eb03856cd8db, type: 3}
+    - {fileID: 21300000, guid: 1b7d1dddf4c97844cb6ae5a8b173ed27, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - d3292020f7953714f8b9b2e44d126e8b: 21300000
+    - 59b3da9059508344fa7d4aae99d6fc0e: 21300000
     - 8f5abea35bc88a0499938b930e109e81: 21300000
+    - 737e66a66e64f3c49ab5eb03856cd8db: 21300000
     - 9bfafae77a6195943be87b2952549d44: 21300000
+    - 1b7d1dddf4c97844cb6ae5a8b173ed27: 21300000
     - 3f24e0de2333e0741840710a51243f19: 21300000
     - 99caa04f32409b74ea497f096bb6908c: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: d3292020f7953714f8b9b2e44d126e8b, type: 3}
+  - {fileID: 21300000, guid: 59b3da9059508344fa7d4aae99d6fc0e, type: 3}
   - {fileID: 21300000, guid: 8f5abea35bc88a0499938b930e109e81, type: 3}
+  - {fileID: 21300000, guid: 737e66a66e64f3c49ab5eb03856cd8db, type: 3}
   - {fileID: 21300000, guid: 9bfafae77a6195943be87b2952549d44, type: 3}
+  - {fileID: 21300000, guid: 1b7d1dddf4c97844cb6ae5a8b173ed27, type: 3}
   - {fileID: 21300000, guid: 3f24e0de2333e0741840710a51243f19, type: 3}
   - {fileID: 21300000, guid: 99caa04f32409b74ea497f096bb6908c, type: 3}
   m_PackedSpriteNamesToIndex:
   - retro
+  - Haggar02
   - star
+  - Intro01
   - Title00
+  - Intro02
   - MightyFinalFight
   - Capcom
   m_RenderDataMap: {}

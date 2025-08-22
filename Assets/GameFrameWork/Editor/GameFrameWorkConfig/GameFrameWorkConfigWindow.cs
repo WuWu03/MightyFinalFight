@@ -197,16 +197,7 @@ namespace GameFrameWork.Editor
             GUILayout.FlexibleSpace();
 
             Color oriColor = GUI.color;
-            if (string.IsNullOrEmpty(m_EditorConfig.entryScene))
-            {
-                GUI.color = Color.red;
-            }
-
-            if (GUILayout.Button("设置当前场景为框架启动场景"))
-            {
-                CheckEntry();
-            }
-
+            CheckEntry();
             GUI.color = oriColor;
         }
 
@@ -214,17 +205,33 @@ namespace GameFrameWork.Editor
         {
             if (string.IsNullOrEmpty(m_EditorConfig.entryScene))
             {
-                m_EditorConfig.entryScene = EditorSceneManager.GetActiveScene().path;
-                EditorMgr.GoToGameFrameWorkEntryScene();
-                UnityEditor.EditorUtility.DisplayDialog("提示", "已设置当前场景为框架启动场景，请继续进框架行相关配置", "确认");
+                GUI.color = Color.red;
+
+                if (GUILayout.Button("设置当前场景为框架启动场景"))
+                {
+                    m_EditorConfig.entryScene = EditorSceneManager.GetActiveScene().path;
+                    EditorMgr.GoToGameFrameWorkEntryScene();
+                    UnityEditor.EditorUtility.DisplayDialog("提示", "已设置当前场景为框架启动场景，请继续进框架行相关配置", "确认");
+                }
                 return;
             }
 
-            bool result = UnityEditor.EditorUtility.DisplayDialog("提示", "已创建过启动场景，是否跳转？", "确认", "取消");
+            GUI.color = Color.green;
 
-            if (result)
+            if (GUILayout.Button("跳转启动场景"))
             {
-                EditorMgr.GoToGameFrameWorkEntryScene();
+                if(m_EditorConfig.entryScene != EditorSceneManager.GetActiveScene().path)
+                {
+                    if (UnityEditor.EditorUtility.DisplayDialog("提示", "是否跳转？", "确认", "取消"))
+                    {
+                        EditorMgr.GoToGameFrameWorkEntryScene();
+                    }
+                }
+                else
+                {
+                    UnityEditor.EditorUtility.DisplayDialog("提示", "当前已是启动场景，无需跳转", "确认");
+                }
+
             }
         }
 

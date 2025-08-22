@@ -5,8 +5,8 @@ namespace GameFrameWork.Download
 {
     public enum DownloadType
     {
-        TextFile,
-        BinaryFile,
+        File,
+        Buffer,
         Script,
         AssetBundle,
         Texture,
@@ -43,6 +43,12 @@ namespace GameFrameWork.Download
         protected override void OnShutDown()
         {
             RemoveAllDownload();
+
+            for (int i = 0; i < m_DownloadRequests.Count; i++) 
+            { 
+                m_DownloadRequests[i].Release(); 
+            }
+
             m_DownloadRequests.Clear();
         }
 
@@ -67,24 +73,12 @@ namespace GameFrameWork.Download
             }
         }
 
-        public void AddDownloadTextFile(string uri, string tag, string version, ulong downloadSize,
-            GameFrameWorkAction<string, string, string, string, ulong> onDownloadTextFileCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
+        public void AddDownloadFile(string uri, string tag, string version, ulong downloadSize,
+            GameFrameWorkAction<string, string, string, ulong> onDownloadBinaryFileCompleteEvent,
+            GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.TextFile, uri, tag, version, downloadSize);
-            downloadRequest.onDownloadTextFileCompleteEvent += onDownloadTextFileCompleteEvent;
-            downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
-            downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
-            m_DownloadRequests.Add(downloadRequest);
-        }
-
-        public void AddDownloadBinaryFile(string uri, string tag, string version, ulong downloadSize,
-            GameFrameWorkAction<string, string, string, byte[], ulong> onDownloadBinaryFileCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
-            GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
-        {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.BinaryFile, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.File, uri, tag, version, downloadSize);
             downloadRequest.onDownloadBinaryFileCompleteEvent += onDownloadBinaryFileCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -93,11 +87,11 @@ namespace GameFrameWork.Download
 
         public void AddDownloadScriptFile(string uri, string tag, string version, ulong downloadSize,
             GameFrameWorkAction<string, string, string, string, ulong> onDownloadTextFileCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
+            GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
             DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.Script, uri, tag, version, downloadSize);
-            downloadRequest.onDownloadTextFileCompleteEvent += onDownloadTextFileCompleteEvent;
+            downloadRequest.onDownloadScriptCompleteEvent += onDownloadTextFileCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
             m_DownloadRequests.Add(downloadRequest);
@@ -105,7 +99,7 @@ namespace GameFrameWork.Download
 
         public void AddDownloadAssetBundle(string uri, string tag, string version, ulong downloadSize,
             GameFrameWorkAction<string, string, string, AssetBundle, ulong> onDownloadTextureCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
+            GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
             DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.AssetBundle, uri, tag, version, downloadSize);
@@ -117,7 +111,7 @@ namespace GameFrameWork.Download
 
         public void AddDownloadTexture(string uri, string tag, string version, ulong downloadSize,
             GameFrameWorkAction<string, string, string, Texture2D, ulong> onDownloadTextureCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
+            GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
             DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.Texture, uri, tag, version, downloadSize);
@@ -130,7 +124,7 @@ namespace GameFrameWork.Download
 
         public void AddDownloadAudioClip(string uri, string tag, string version, ulong downloadSize,
             GameFrameWorkAction<string, string, string, AudioClip, ulong> onDownloadAudioClipCompleteEvent,
-            GameFrameWorkAction<string, string, string, byte[], ulong, ulong> onDownloadProgressEvent,
+            GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
             DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.AudioClip, uri, tag, version, downloadSize);

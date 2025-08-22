@@ -1,3 +1,6 @@
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using GameFrameWork.Localization;
 using GameFrameWork.Utils;
 using TMPro;
@@ -13,36 +16,41 @@ namespace GameFrameWork.UI
 
         private void Awake()
         {
-            if (!TryGetComponent(out m_TextMesh) && !TryGetComponent(out m_Text))
+            if (GameFrameWorkEntry.isStartUp)
             {
-                Log.LogError("文本组件为空，请检查");
-                return;
+                InitComponent();
+                UpdateLanguage();
             }
-
-            UpdateLanguage();
         }
 
         private void OnEnable()
         {
-            LocalizationMgr.instance.lanuageChangeEvent += OnLanguageChange;
-            UpdateLanguage();
+            if (GameFrameWorkEntry.isStartUp)
+            {
+                LocalizationMgr.instance.lanuageChangeEvent += OnLanguageChange;
+                UpdateLanguage();
+            }
         }
 
         private void OnDisable()
         {
-            LocalizationMgr.instance.lanuageChangeEvent -= OnLanguageChange;
+            if (GameFrameWorkEntry.isStartUp)
+            {
+                LocalizationMgr.instance.lanuageChangeEvent -= OnLanguageChange;
+            }
         }
 
         public void SetText(string text)
         {
+            InitComponent();
             if (!string.IsNullOrEmpty(m_AppendArg))
             {
                 text = StringUtil.Append(text, m_AppendArg);
             }
 
-            if (m_TextMesh != null)
+            if (m_TextMeshProUGUI != null)
             {
-                m_TextMesh.text = text;
+                m_TextMeshProUGUI.text = text;
             }
             else if (m_Text != null)
             {
@@ -183,8 +191,22 @@ namespace GameFrameWork.UI
             SetText(text);
         }
 
+        private void InitComponent()
+        {
+            if (m_TextMeshProUGUI != null || m_Text != null)
+            {
+                return;
+            }
+
+            if (!TryGetComponent(out m_TextMeshProUGUI) && !TryGetComponent(out m_Text))
+            {
+                Log.LogError("文本组件为空，请检查");
+                return;
+            }
+        }
+
         private string m_AppendArg = string.Empty;
         private Text m_Text;
-        private TextMeshProUGUI m_TextMesh;
+        private TextMeshProUGUI m_TextMeshProUGUI;
     }
 }
