@@ -1,3 +1,4 @@
+using GameFrameWork.Pool;
 using UnityEngine;
 
 namespace GameFrameWork.GameEntity
@@ -20,29 +21,83 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        protected virtual void Awake() { }
-        protected virtual void Start() { }
-        protected virtual void OnEnable() { }
-        protected virtual void Update() { }
-        protected virtual void LateUpdate() { }
-        protected virtual void FixedUpdate() { }
-        protected virtual void OnDestroy() { }
-        protected virtual void OnRelease() { }
-
-        public virtual void Init(int id, string name)
+        public GameObject asset
         {
-            SetID(id);
-            SetName(name);
+            get
+            {
+                return m_Asset;
+            }
         }
 
-        public void SetID(int id)
+        public bool isAssetLoadComplete
         {
+            get
+            {
+                return m_IsAssetLoadComplete;
+            }
+        }
+
+
+        public void Init(int id, string name)
+        {
+            m_IsAssetLoadComplete = false;
             m_Id = id;
+            this.name = name;
+            OnInit();
         }
 
-        public void SetName(string name)
+        private void Update()
         {
-            this.name = name;
+            if (!m_IsAssetLoadComplete)
+            {
+                return;
+            }
+
+            OnUpdate();
+        }
+
+        private void LateUpdate()
+        {
+
+            if (!m_IsAssetLoadComplete)
+            {
+                return;
+            }
+
+            OnLateUpdate();
+        }
+
+        private void FixedUpdate()
+        {
+
+            if (!m_IsAssetLoadComplete)
+            {
+                return;
+            }
+
+            OnFixedUpdate();
+        }
+
+        public void Release()
+        {
+            if (m_Id == -1)
+            {
+                return;
+            }
+
+            if (m_Asset != null)
+            {
+                GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
+            }
+
+            m_Id = -1;
+            m_Layer = string.Empty;
+            m_IsAssetLoadComplete = false;
+            m_AssetPath = null;
+            m_Asset = null;
+            gameObject.SetActiveSelf(false);
+            OnRelease();
+            EntityMgr.instance.PutEntity(this);
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
@@ -61,18 +116,21 @@ namespace GameFrameWork.GameEntity
             gameObject.SetLayer(m_Layer, isChild);
         }
 
-        public void Release()
+        public void SetAsset(string assetPath)
         {
-            if (m_Id == -1)
+            if (string.IsNullOrEmpty(assetPath))
             {
                 return;
             }
 
-            m_Id = -1;
-            m_Layer = string.Empty;
-            gameObject.SetActiveSelf(false);
-            OnRelease();
-            EntityMgr.instance.PutEntity(this);
+            if (m_AssetPath == assetPath)
+            {
+                return;
+            }
+
+            m_AssetPath = assetPath;
+            m_IsAssetLoadComplete = false;
+            GameObjectPoolMgr.instance.GetFromAsset(assetPath, LoadAssetComplete);
         }
 
         protected void SetLayer(bool isChild = true)
@@ -80,7 +138,34 @@ namespace GameFrameWork.GameEntity
             SetLayer(m_Layer, isChild);
         }
 
+        private void LoadAssetComplete(string assetPath, UnityEngine.Object obj, object arg)
+        {
+            if (obj == null)
+            {
+                Release();
+                return;
+            }
+
+            m_Asset = obj as GameObject;
+            m_Asset.transform.SetParent(transform, false);
+            m_Asset.transform.localPosition = Vector3.zero;
+            m_Asset.SetActiveSelf(true);
+            SetLayer();
+            OnLoadAssetComplete(m_Asset, arg);
+            m_IsAssetLoadComplete = true;
+        }
+
+        protected virtual void OnInit() { }
+        protected virtual void OnLoadAssetComplete(GameObject go, object arg) { }
+        protected virtual void OnUpdate() { }
+        protected virtual void OnLateUpdate() { }
+        protected virtual void OnFixedUpdate() { }
+        protected virtual void OnRelease() { }
+
         private int m_Id = 0;
         private string m_Layer = string.Empty;
+        private bool m_IsAssetLoadComplete = false;
+        private string m_AssetPath = string.Empty;
+        private GameObject m_Asset;
     }
 }

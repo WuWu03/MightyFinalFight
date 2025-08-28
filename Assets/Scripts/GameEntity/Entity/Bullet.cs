@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class Bullet : BaseAvatar
 {
-    protected override void Awake()
+    protected override void OnInit()
     {
-        m_TaretHits = new();
+        base.OnInit();
+        m_TaretHits ??= new();
     }
+
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);

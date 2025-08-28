@@ -93,7 +93,7 @@ namespace GameFrameWork.BehaviourTree
 
         private Node Load(BehaviourTreeData data, object owner)
         {
-            Node root = GetNodeByClassType(data.name, data.id, owner, data.priority, data.args, data.classType);
+            Node root = GetNodeByClassType(data.id, owner, data.priority, data.args, data.classType);
 
             if (data.preConditions != null && data.preConditions.Length > 0)
             {
@@ -101,7 +101,7 @@ namespace GameFrameWork.BehaviourTree
                 {
                     if (root is BaseTask)
                     {
-                        (root as BaseTask).AddPreCondition(GetPreConditionNodeByClassType(data.preConditions[i].name, data.preConditions[i].id, owner, data.preConditions[i].priority, data.preConditions[i].isAndCondition, data.preConditions[i].args, data.preConditions[i].classType));
+                        (root as BaseTask).AddPreCondition(GetPreConditionNodeByClassType(data.preConditions[i].id, owner, data.preConditions[i].priority, data.preConditions[i].isAndCondition, data.preConditions[i].args, data.preConditions[i].classType));
                     }
                 }
             }
@@ -120,19 +120,19 @@ namespace GameFrameWork.BehaviourTree
             return root;
         }
 
-        private Node GetNodeByClassType(string name, int id, object owner, int priority, string args, string className)
+        private Node GetNodeByClassType(int id, object owner, int priority, string args, string className)
         {
-            Type t = GetNodeType(name, className);
-            return t == null ? null : (Node)System.Activator.CreateInstance(t, name, id, owner, priority, args);
+            Type t = GetNodeType(id, className);
+            return t == null ? null : (Node)System.Activator.CreateInstance(t, id, owner, priority, args);
         }
 
-        private PreCondition GetPreConditionNodeByClassType(string name, int id, object owner, int priority, bool isAndCondition, string args, string className)
+        private PreCondition GetPreConditionNodeByClassType(int id, object owner, int priority, bool isAndCondition, string args, string className)
         {
-            Type t = GetNodeType(name, className);
-            return t == null ? null : (PreCondition)System.Activator.CreateInstance(t, name, id, owner, priority, isAndCondition, args);
+            Type t = GetNodeType(id, className);
+            return t == null ? null : (PreCondition)System.Activator.CreateInstance(t, id, owner, priority, isAndCondition, args);
         }
 
-        private Type GetNodeType(string name, string className)
+        private Type GetNodeType(int id, string className)
         {
             Type t = Type.GetType("GameFrameWork.BehaviourTree." + className);
 
@@ -143,7 +143,7 @@ namespace GameFrameWork.BehaviourTree
 
             if (t == null)
             {
-                Log.LogError("行为树数据实例不存在 : " + name);
+                Log.LogError("行为树数据实例不存在 : " + id.ToString());
             }
 
             return t;

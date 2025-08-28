@@ -86,23 +86,6 @@ namespace GameFrameWork.Utils
             }
         }
 
-        public static void SetLayer(GameObject go, int layer, bool isSetChild = false)
-        {
-            if (isSetChild)
-            {
-                Transform[] childs = go.transform.GetComponentsInChildren<Transform>(true);
-                for (int i = 0; i < childs.Length; i++)
-                {
-                    childs[i].gameObject.layer = layer;
-                }
-            }
-
-            else
-            {
-                go.layer = layer;
-            }
-        }
-
         public static bool CompareTo(double d1, double d2)
         {
             double difference = Math.Abs(d1 * 0.0001);

@@ -22,11 +22,6 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public override void Init(int id, string name)
-    {
-        base.Init(id, name);
-    }
-
     public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
     {
         if (m_HitTrigger == null)

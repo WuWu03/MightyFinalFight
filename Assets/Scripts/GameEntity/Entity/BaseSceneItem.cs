@@ -26,11 +26,6 @@ public class BaseSceneItem : BaseGravityObject
         }
     }
 
-    public override void Init(int id, string name)
-    {
-        base.Init(id, name);
-    }
-
     public virtual void SetOwner(BaseRole owner)
     {
         m_Owner = owner;

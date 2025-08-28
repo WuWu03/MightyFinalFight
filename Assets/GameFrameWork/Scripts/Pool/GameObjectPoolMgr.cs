@@ -10,7 +10,7 @@ namespace GameFrameWork.Pool
         protected override void OnAwake()
         {
             base.OnAwake();
-           
+
             m_PoolRoot = new GameObject("GameObjectPool").transform;
             m_PoolRoot.SetParent(transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);

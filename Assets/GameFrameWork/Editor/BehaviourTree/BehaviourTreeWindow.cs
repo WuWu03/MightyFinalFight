@@ -111,6 +111,7 @@ namespace GameFrameWork.Editor
 
             ResetOperation(e);
             SaveConfigGUI();
+            ExportConfigGUI();
         }
 
         private void LeftViewGUI(UnityEngine.Event e)
@@ -121,7 +122,6 @@ namespace GameFrameWork.Editor
             GUILayout.Space(20);
             m_LeftList.DoLayoutList();
             GUILayout.EndVertical();
-
 
             if (e.button == 1 && e.type == EventType.MouseUp)
             {
@@ -304,7 +304,7 @@ namespace GameFrameWork.Editor
                     else
                     {
                         m_CurrWindowNode = GetWindowNode(m_RightWindowNode, e.mousePosition);
-                        ShowRightMenu(false, m_CurrWindowNode != null && m_CurrWindowNode.parent == null);
+                        ShowRightMenu(false, m_CurrWindowNode != null && m_CurrWindowNode.isRoot);
                     }
                 }
             }
@@ -384,7 +384,9 @@ namespace GameFrameWork.Editor
                     AddFreeWindowNode(BehaviourTreeUtil.GetNodeNames()[operationSubType][operationIndex]);
                     break;
                 case 2:
-                    ReplaceNodeClassType(BehaviourTreeUtil.GetNodeNames()[operationSubType][operationIndex]);
+                    bool isRoot = m_CurrWindowNode != null && m_CurrWindowNode.isRoot;
+                    string[][] nodePaths = BehaviourTreeUtil.GetNodePaths(isRoot);
+                    ReplaceNodeClassType(Path.GetFileName(nodePaths[operationSubType][operationIndex]));
                     break;
                 case 3://更改名称
                     m_CurrWindowNode.ChangeName();
@@ -421,10 +423,7 @@ namespace GameFrameWork.Editor
 
         private void ReplaceNodeClassType(string classType)
         {
-            if (m_CurrWindowNode != null)
-            {
-                m_CurrWindowNode.UpdateClassType(classType);
-            }
+            m_CurrWindowNode?.UpdateClassType(classType);
         }
 
         private void DeleteFreeWindowNode()
@@ -439,6 +438,8 @@ namespace GameFrameWork.Editor
         private void DeleteRootWindowNode()
         {
             m_BehaviourTreeWindowConfig.dataList.RemoveAt(m_CurrSelect);
+            m_FreeWindowNodes.Remove(m_CurrSelect);
+
             if (m_CurrSelect < m_BehaviourTreeWindowConfig.dataList.Count)
             {
                 SetRightWindowNode(m_BehaviourTreeWindowConfig.dataList[m_CurrSelect]);
@@ -517,38 +518,56 @@ namespace GameFrameWork.Editor
 
         private void SaveConfigGUI()
         {
+            if (GUILayout.Button("保存配置"))
+            {
+                SaveConfig();
+                ShowNotification(new GUIContent("保存成功"));
+            }
+        }
+
+        private void ExportConfigGUI()
+        {
             if (GUILayout.Button("导出配置"))
             {
-                BehaviourTreeConfig config = new BehaviourTreeConfig();
-                config.datas = new BehaviourTreeData[m_BehaviourTreeWindowConfig.dataList.Count];
-
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
-                {
-                    config.datas[i] = new BehaviourTreeData();
-                }
-
-                for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
-                {
-                    config.datas[i].id = m_BehaviourTreeWindowConfig.dataList[i].id;
-                    ExportConfig(config.datas[i], m_BehaviourTreeWindowConfig.dataList[i]);
-                }
-
-                string jsonStr = LitJson.JsonMapper.ToJson(config);
-                string dataPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().configDataPath, PathUtil.behaviourTreeConfigDataName);
-                File.WriteAllText(dataPath, jsonStr);
-
-                jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
-                File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
-
+                SaveConfig();
+                ExportConfig();
                 ShowNotification(new GUIContent("导出成功"));
             }
+        }
+
+        private void SaveConfig()
+        {
+            string jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
+            File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
+        }
+
+        private void ExportConfig()
+        {
+            BehaviourTreeConfig config = new()
+            {
+                datas = new BehaviourTreeData[m_BehaviourTreeWindowConfig.dataList.Count]
+            };
+
+            for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
+            {
+                config.datas[i] = new BehaviourTreeData();
+            }
+
+            for (int i = 0; i < m_BehaviourTreeWindowConfig.dataList.Count; i++)
+            {
+                config.datas[i].id = m_BehaviourTreeWindowConfig.dataList[i].id;
+                ExportConfig(config.datas[i], m_BehaviourTreeWindowConfig.dataList[i]);
+            }
+
+            string jsonStr = LitJson.JsonMapper.ToJson(config);
+            string dataPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().configDataPath, PathUtil.behaviourTreeConfigDataName);
+            File.WriteAllText(dataPath, jsonStr);
         }
 
         private void ExportConfig(BehaviourTreeData outData, BehaviourTreeWindowData windowData)
         {
             outData.id = windowData.id;
             outData.classType = windowData.classType;
-            outData.name = windowData.name;
             outData.args = windowData.args;
             outData.priority = windowData.priority;
             outData.children = new BehaviourTreeData[windowData.children.Count];
@@ -595,7 +614,7 @@ namespace GameFrameWork.Editor
         private BehaviourTreeWindowNode m_RightWindowNode = null;
         private BehaviourTreeWindowNode m_CurrWindowNode = null;
         private Dictionary<int, List<BehaviourTreeWindowNode>> m_FreeWindowNodes = null;
-        private EditorGUISplitView m_HorizontalSplitView = new EditorGUISplitView(EditorGUISplitView.Direction.Horizontal);
+        private EditorGUISplitView m_HorizontalSplitView = new(EditorGUISplitView.Direction.Horizontal);
         private ReorderableList m_LeftList = null;
         private int m_CurrSelect = -1;
         private int m_LeftOperation = -1;

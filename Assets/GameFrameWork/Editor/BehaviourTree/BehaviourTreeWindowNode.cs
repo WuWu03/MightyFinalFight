@@ -8,11 +8,15 @@ namespace GameFrameWork.Editor
 {
     public class BehaviourTreeWindowNode
     {
-        public bool isParent
+        public bool isRoot
         {
             get
             {
-                return m_IsParent;
+                return m_IsRoot;
+            }
+            set
+            {
+                UpdateData(m_Data, value, m_Parent);
             }
         }
 
@@ -45,9 +49,17 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public BehaviourTreeWindowNode(BehaviourTreeWindowData data, bool isParent, BehaviourTreeWindowNode parent = null)
+        public BehaviourTreeWindowNode(BehaviourTreeWindowData data, bool isRoot, BehaviourTreeWindowNode parent = null)
         {
-            UpdateData(data, isParent, parent);
+            m_TitelLabelStyle = new("AssetLabel")
+            {
+                stretchWidth = true,
+                alignment = TextAnchor.MiddleCenter,
+                fixedHeight = 15f,
+                fontSize = 12,
+            };
+
+            UpdateData(data, isRoot, parent);
 
             string[] preConditionNames = BehaviourTreeUtil.GetPreConditionNames();
 
@@ -113,11 +125,11 @@ namespace GameFrameWork.Editor
             };
         }
 
-        public void UpdateData(BehaviourTreeWindowData data, bool isParent, BehaviourTreeWindowNode parent = null)
+        public void UpdateData(BehaviourTreeWindowData data, bool isRoot, BehaviourTreeWindowNode parent = null)
         {
             m_Data = data;
             m_Parent = parent;
-            m_IsParent = isParent;
+            m_IsRoot = isRoot;
 
             if (m_Data != null)
             {
@@ -145,6 +157,8 @@ namespace GameFrameWork.Editor
                 }
 
                 float height = (m_Data.preConditions.Count > 0 ? m_Data.preConditions.Count * 72 : 70) + 200;
+
+
                 m_WindowRect = new Rect(data.windowRect.x, data.windowRect.y, data.windowRect.width, height);
             }
             else
@@ -180,6 +194,8 @@ namespace GameFrameWork.Editor
             if (m_Data != null)
             {
                 m_WindowRect = GUI.Window(m_Data.id, m_WindowRect, DrawNodeWindow, string.Empty);
+                m_Data.windowRect.x = m_WindowRect.position.x;
+                m_Data.windowRect.y = m_WindowRect.position.y;
 
                 for (int i = 0; i < m_Children.Count; i++)
                 {
@@ -198,8 +214,6 @@ namespace GameFrameWork.Editor
         public void MouseMove(Vector2 delta)
         {
             m_WindowRect.position += delta;
-            m_Data.windowRect.x = m_WindowRect.position.x;
-            m_Data.windowRect.y = m_WindowRect.position.y;
 
             for (int i = 0; i < m_Children.Count; i++)
             {
@@ -212,8 +226,6 @@ namespace GameFrameWork.Editor
             m_WindowRect.width *= scale;
             m_WindowRect.height *= scale;
             m_WindowRect.position *= scale;
-            m_Data.windowRect.x = m_WindowRect.position.x;
-            m_Data.windowRect.y = m_WindowRect.position.y;
 
             for (int i = 0; i < m_Children.Count; i++)
             {
@@ -246,12 +258,12 @@ namespace GameFrameWork.Editor
 
         private void UpdateId(BehaviourTreeWindowNode node)
         {
-            if(node.children == null || node.children.Count < 1)
+            if (node.children == null || node.children.Count < 1)
             {
                 return;
             }
 
-            for(int i = 0; i < node.children.Count; i++)
+            for (int i = 0; i < node.children.Count; i++)
             {
                 node.children[i].m_Data.id = node.m_Data.id * 10 + i + 1;
                 UpdateId(node.children[i]);
@@ -262,7 +274,7 @@ namespace GameFrameWork.Editor
         {
             float width = m_WindowRect.width - 20;
             float height = 20;
-            float x = 20 / 2;
+            float x = 10;
             float y = 5;
 
             if (m_IsChangeName)
@@ -271,8 +283,8 @@ namespace GameFrameWork.Editor
             }
             else
             {
-                string name = m_IsChangeName ? string.Empty : m_Data.name + (m_IsParent ? "(根节点)" : string.Empty);
-                EditorGUI.LabelField(new Rect(x, y, width, height), name);
+                string name = m_IsChangeName ? string.Empty : m_Data.name + (m_IsRoot ? "(根节点)" : string.Empty);
+                EditorGUI.LabelField(new Rect(x, y, width, height), name, m_TitelLabelStyle);
             }
 
             EditorGUILayout.Space(25);
@@ -308,12 +320,13 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private bool m_IsParent = false;
+        private bool m_IsRoot = false;
         private bool m_IsChangeName = false;
         private ReorderableList m_PreConditionList = null;
         private BehaviourTreeWindowNode m_Parent = null;
         private List<BehaviourTreeWindowNode> m_Children = null;
         private BehaviourTreeWindowData m_Data = null;
         private Rect m_WindowRect;
+        private GUIStyle m_TitelLabelStyle = null;
     }
 }

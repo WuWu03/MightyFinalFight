@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -88,8 +88,8 @@ namespace GameFrameWork.Editor
                 Debug.Log(pivot);
                 int offsetY = (int)(pivot + (lineSpace - rect.height) / 2);
 
-                CharacterInfo info = new CharacterInfo();
-                info.index = (int)sprite.name[sprite.name.Length - 1];//设置ascii码，使用切分sprite的最后一个字母
+                CharacterInfo info = new();
+                info.index = (int)sprite.name[^1];//设置ascii码，使用切分sprite的最后一个字母
                 info.uvBottomLeft = new Vector2((float)rect.x / tex.width, (float)(rect.y / tex.height));
                 info.uvBottomRight = new Vector2((float)(rect.x + rect.width) / tex.width, (float)(rect.y) / tex.height);
                 info.uvTopLeft = new Vector2((float)rect.x / tex.width, (float)(rect.y + rect.height) / tex.height);

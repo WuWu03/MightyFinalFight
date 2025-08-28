@@ -54,9 +54,9 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
+        base.OnInit();
         AddState<BarrelIdle>();
         AddState<BarrelMove>();
         AddState<BarrelDrop>();
@@ -115,13 +115,13 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
     }
 
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         CheckThrow(collision.gameObject);
         CheckStrike(collision.gameObject);
     }
 
-    protected override void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         CheckStrike(collision.gameObject);
     }

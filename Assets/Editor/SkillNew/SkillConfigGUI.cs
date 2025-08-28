@@ -1,3 +1,4 @@
+using GameFrameWork.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -173,13 +174,13 @@ namespace SkillNew
 
                                     if (hasSameEvent)
                                     {
-                                        m_EditorWindow.ShowNotification("每种事件类型在同一帧只能出现一次");
+                                        m_EditorWindow.ShowNotification(new GUIContent("每种事件类型在同一帧只能出现一次"));
                                     }
                                     else
                                     {
                                         m_SkillEvents[i].skillEventType = m_SkillEventTypes[i];
                                         SkillEditorHelper.UpdateSKilEventGUI(m_SkillEvents[i]);
-                                        m_EditorWindow.ShowNotification("更改成功");
+                                        m_EditorWindow.ShowNotification(new GUIContent("更改成功"));
                                     }
                                 }
                             }, 20, false);
@@ -229,7 +230,7 @@ namespace SkillNew
                 }
                 else
                 {
-                    m_EditorWindow.ShowNotification("帧索引异常");
+                    m_EditorWindow.ShowNotification(new GUIContent("帧索引异常"));
                 }
             }
 

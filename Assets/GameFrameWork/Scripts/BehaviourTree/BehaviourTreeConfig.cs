@@ -26,7 +26,6 @@ namespace GameFrameWork.BehaviourTree
     public class BehaviorTreeBaseData
     {
         public int id;
-        public string name;
         public string classType;
         public string args;
         public int priority;

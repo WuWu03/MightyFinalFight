@@ -4,7 +4,6 @@ using GameFrameWork.Camera;
 using GameFrameWork.Timer;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -215,9 +214,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
+        base.OnInit();
 
         AddState<RoleIdle>();
         AddState<RoleMove>();

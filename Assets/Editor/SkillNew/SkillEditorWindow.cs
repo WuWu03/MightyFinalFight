@@ -1,3 +1,4 @@
+using GameFrameWork.Editor;
 using GameFrameWork.Utils;
 using System;
 using UnityEditor;
@@ -42,7 +43,7 @@ namespace SkillNew
 
                 if (showMsg)
                 {
-                    this.ShowNotification("更改成功");
+                    this.ShowNotification(new GUIContent("更改成功"));
                 }
             }
 

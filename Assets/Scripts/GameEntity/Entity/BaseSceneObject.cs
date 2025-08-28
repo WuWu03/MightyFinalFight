@@ -1,7 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
-using GameFrameWork.Pool;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
@@ -11,14 +10,6 @@ public class BaseSceneObject : BaseEntity
         get
         {
             return m_ObjectType;
-        }
-    }
-
-    public GameObject asset
-    {
-        get
-        {
-            return m_Asset;
         }
     }
 
@@ -86,14 +77,6 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public bool isAssetLoadComplete
-    {
-        get
-        {
-            return m_IsAssetLoadComplete;
-        }
-    }
-
     public int entityId
     {
         get
@@ -114,31 +97,21 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
-        m_IsAssetLoadComplete = false;
+        base.OnInit();
         m_Pos = transform.localPosition;
     }
 
     protected override void OnRelease()
     {
         m_OnReleaseEventHandler?.Invoke(m_EntityId);
-
-        if (m_Asset != null)
-        {
-            GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
-        }
-
         m_Data?.Release();
         m_EntityAttribute?.Release();
 
-        m_IsAssetLoadComplete = false;
         m_OnReleaseEventHandler = null;
-        m_AssetPath = null;
         m_Data = null;
         m_EntityAttribute = null;
-        m_Asset = null;
     }
 
     public virtual void SetData(BaseSceneObjectData data)
@@ -286,23 +259,6 @@ public class BaseSceneObject : BaseEntity
         return Vector2.Distance(new Vector2(x, y), m_Pos) < 0.03f;
     }
 
-    public void SetAsset(string assetPath)
-    {
-        if (string.IsNullOrEmpty(assetPath))
-        {
-            return;
-        }
-
-        if (m_AssetPath == assetPath)
-        {
-            return;
-        }
-
-        m_AssetPath = assetPath;
-        m_IsAssetLoadComplete = false;
-        GameObjectPoolMgr.instance.GetFromAsset(assetPath, LoadAssetComplete);
-    }
-
     public bool IsOutVersionX(float posX)
     {
         Rect visionRect = CameraMgr.instance.GetVision();
@@ -327,68 +283,7 @@ public class BaseSceneObject : BaseEntity
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 
-    protected override void Update()
-    {
-        base.Update();
 
-        if (!m_IsAssetLoadComplete)
-        {
-            return;
-        }
-
-        OnUpdate();
-    }
-
-    protected override void LateUpdate()
-    {
-        base.LateUpdate();
-
-        if (!m_IsAssetLoadComplete)
-        {
-            return;
-        }
-
-        OnLateUpdate();
-    }
-
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        if (!m_IsAssetLoadComplete)
-        {
-            return;
-        }
-
-        OnFixedUpdate();
-    }
-
-    private void LoadAssetComplete(string assetPath, UnityEngine.Object obj, object arg)
-    {
-        if (obj == null)
-        {
-            Release();
-            return;
-        }
-
-        m_Asset = obj as GameObject;
-        m_Asset.transform.SetParent(transform, false);
-        m_Asset.transform.localPosition = Vector3.zero;
-        m_Asset.SetActiveSelf(true);
-        SetLayer();
-        OnLoadAssetComplete(m_Asset, arg);
-        m_IsAssetLoadComplete = true;
-    }
-
-    protected virtual void OnUpdate() { }
-    protected virtual void OnLateUpdate() { }
-    protected virtual void OnFixedUpdate() { }
-    protected virtual void OnLoadAssetComplete(GameObject go, object arg) { }
-    protected virtual void OnTriggerEnter2D(Collider2D collision) { }
-    protected virtual void OnTriggerStay2D(Collider2D collision) { }
-    protected virtual void OnTriggerExit2D(Collider2D collision) { }
-
-    private bool m_IsAssetLoadComplete = false;
     private float m_Dir = 1f;
     private float m_Depth = 0f;
     private float m_PosZ = 0f;
@@ -397,9 +292,7 @@ public class BaseSceneObject : BaseEntity
     private Vector2 m_Pos = Vector2.zero;
     private Vector2Int m_MapPos = Vector2Int.zero;
     private ObjectType m_ObjectType = ObjectType.NONE;
-    private GameObject m_Asset;
     private EntityAttribute m_EntityAttribute = null;
     private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
     private IReference m_Data = null;
-    private string m_AssetPath = string.Empty;
 }

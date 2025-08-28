@@ -2,11 +2,6 @@ using UnityEngine;
 
 public class Trap : BaseBoundObject
 {
-    public override void Init(int id, string name)
-    {
-        base.Init(id, name);
-    }
-
     public override void SetData(BaseSceneObjectData info)
     {
         base.SetData(info);
@@ -21,7 +16,7 @@ public class Trap : BaseBoundObject
         boxCollider2D.isTrigger = true;
     }
 
-    protected override void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
 

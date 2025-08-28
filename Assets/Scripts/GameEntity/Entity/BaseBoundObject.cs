@@ -25,9 +25,9 @@ public class BaseBoundObject : BaseSceneObject
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
+        base.OnInit();
         m_BoxCollider2D = gameObject.GetOrAddComponent<BoxCollider2D>();
         m_BoxCollider2D.isTrigger = true;
         m_BoxCollider2D.enabled = false;

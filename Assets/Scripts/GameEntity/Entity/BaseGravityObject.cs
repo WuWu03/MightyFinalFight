@@ -69,9 +69,9 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
+        base.OnInit();
         m_Rigidbody2D = gameObject.GetOrAddComponent<Rigidbody2D>();
         m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.bodyType = RigidbodyType2D.Kinematic;

@@ -223,11 +223,6 @@ namespace SkillNew
             }
         }
 
-        public static void ShowNotification(this EditorWindow window, string content)
-        {
-            window.ShowNotification(new GUIContent(content));
-        }
-
         public static void SaveConfig()
         {
             UnityEditor.EditorUtility.SetDirty(m_SkillEditorConfig);

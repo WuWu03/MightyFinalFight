@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameFrameWorkConfig
   m_EditorClassIdentifier: 
   isCheckVersion: 0
-  isLoadFromAssetBundle: 0
+  isLoadFromAssetBundle: 1
   isOpenLog: 1
   isUseLua: 0
   isLoadLuaFromAssetBundle: 0

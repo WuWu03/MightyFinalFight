@@ -349,7 +349,7 @@ namespace GameFrameWork.Editor
 
                     if (showMsg)
                     {
-                        this.ShowNotification("更改成功");
+                        ShowNotification(new GUIContent("更改成功"));
                     }
                 }
             }

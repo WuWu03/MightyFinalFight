@@ -187,9 +187,12 @@ namespace GameFrameWork.Utils
 
         public static string GetChineseNum(decimal num)
         {
+            m_StringBuilder.Clear();
+
             if (num == 0)
             {
-                return new string(new char[] { m_ChineseDigit[0] });
+                m_StringBuilder.Append(m_ChineseDigit[0]);
+                return m_StringBuilder.ToString();
             }
 
             decimal integerNum = Math.Round(num, 0);
@@ -199,8 +202,7 @@ namespace GameFrameWork.Utils
             int prevUnitDigit = 0;
             int lastDigit = 0;
             int[] isUnitDigtsAdd = new int[m_UnitDigits.Length];
-            m_StringBuilder.Clear();
-
+  
             while (tempIntegerNum >= 1)
             {
                 int digit = (int)(tempIntegerNum % 10);

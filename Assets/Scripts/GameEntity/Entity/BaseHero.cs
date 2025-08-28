@@ -37,9 +37,9 @@ public class BaseHero : BaseRole
         }
     }
 
-    public override void Init(int id, string name)
+    protected override void OnInit()
     {
-        base.Init(id, name);
+        base.OnInit();
         AddState<HeroRebirth>();
         AddState<HeroCatch>();
         AddState<HeroPickUp>();
