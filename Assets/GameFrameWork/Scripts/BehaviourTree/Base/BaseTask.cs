@@ -4,7 +4,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public abstract class BaseTask : Node
     {
-        protected BaseTask(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+        protected BaseTask(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_PreConditions = new List<PreCondition>();
         }

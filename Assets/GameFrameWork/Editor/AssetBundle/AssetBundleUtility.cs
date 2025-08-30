@@ -80,22 +80,34 @@ namespace GameFrameWork.Editor
             {
                 for (int i = 0; i < m_AssetBundleConfig.listDatas.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(m_AssetBundleConfig.listDatas[i].assetPath))
+                    if (m_AssetBundleConfig.listDatas[i].assetPaths == null || m_AssetBundleConfig.listDatas[i].assetPaths.Count < 1)
                     {
                         continue;
                     }
 
-                    if (m_AssetBundleConfig.listDatas[i].assetPath.Equals(assetPath) || assetPath.StartsWith(m_AssetBundleConfig.listDatas[i].assetPath))
+                    if (m_AssetBundleConfig.listDatas[i].assetPaths.Contains(assetPath))
                     {
                         m_DicAssetContainer.Add(assetPath, i);
                         assetIndex = i;
                         return AssetFindResult.Success;
                     }
-                    else if (m_AssetBundleConfig.listDatas[i].assetPath.Contains(assetPath))
+                    else
                     {
-                        m_DicAssetContainer.Add(assetPath, -1);
-                        assetIndex = -1;
-                        return AssetFindResult.InSubPath;
+                        foreach (string tempAsetPath in m_AssetBundleConfig.listDatas[i].assetPaths)
+                        {
+                            if(assetPath.StartsWith(tempAsetPath))
+                            {
+                                m_DicAssetContainer.Add(assetPath, i);
+                                assetIndex = i;
+                                return AssetFindResult.Success;
+                            }
+                            else if (tempAsetPath.Contains(assetPath))
+                            {
+                                m_DicAssetContainer.Add(assetPath, -1);
+                                assetIndex = -1;
+                                return AssetFindResult.InSubPath;
+                            }
+                        }
                     }
                 }
 

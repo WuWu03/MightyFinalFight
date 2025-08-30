@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PreIsPlayerDistance : PreCondition
 {
-    public PreIsPlayerDistance(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsPlayerDistance(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
         m_Regex = new(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
 
@@ -21,7 +21,7 @@ public class PreIsPlayerDistance : PreCondition
     protected override bool OnCheckPreCondition()
     {
         Vector2 playerPos = PlayerMgr.instance.player.pos;
-        Vector2 ownerPos = (m_Owner as BaseRole).pos;
+        Vector2 ownerPos = (owner as BaseRole).pos;
 
         float distance = Vector2.Distance(playerPos, ownerPos);
         return distance <= m_Distance;

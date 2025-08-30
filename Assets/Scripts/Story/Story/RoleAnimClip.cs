@@ -20,7 +20,7 @@ public class RoleAnimClip : BaseClip
     {
         if (m_PlayTime > 0)
         {
-            return isPlaying && m_Role != null && m_Role.IsPlayComplete();
+            return isPlaying && m_Role != null && m_Role.IsAllAnimationComplete();
         }
 
         return base.IsComplete();

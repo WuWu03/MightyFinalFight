@@ -13,139 +13,46 @@ MonoBehaviour:
   m_Name: AssetBundleWindowData
   m_EditorClassIdentifier: 
   listDatas:
-  - id: 1
+  - id: 0
     bundleBuildType: 0
-    bundleName: ArtResources/AudioClip/BGM/
+    bundleName: 
     bundleExtend: .assetbundle
     pattern: '*.*'
-    assetPath: Assets/ArtResources/AudioClip/BGM/
-  - id: 2
-    bundleBuildType: 0
-    bundleName: ArtResources/AudioClip/Sound/
+    assetPath: 
+    assetPaths:
+    - Assets/ArtResources/AudioClip
+    - Assets/ArtResources/Materials
+    - Assets/ArtResources/Prefabs
+    - Assets/ArtResources/Scenes
+    - Assets/ArtResources/UI/Prefabs
+    - Assets/ConfigData
+  - id: 0
+    bundleBuildType: 2
+    bundleName: 
     bundleExtend: .assetbundle
     pattern: '*.*'
-    assetPath: Assets/ArtResources/AudioClip/Sound/
-  - id: 3
+    assetPath: 
+    assetPaths:
+    - Assets/ArtResources/Models
+    - Assets/ArtResources/Textures
+    - Assets/ArtResources/UI/Sprites
+  - id: 0
     bundleBuildType: 1
     bundleName: ArtResources/Fonts
     bundleExtend: .assetbundle
     pattern: '*.*'
-    assetPath: Assets/ArtResources/Fonts/
-  - id: 4
-    bundleBuildType: 0
-    bundleName: ArtResources/Materials/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Materials/
-  - id: 5
-    bundleBuildType: 0
-    bundleName: ArtResources/Models/Character/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Character/
-  - id: 6
-    bundleBuildType: 0
-    bundleName: ArtResources/Models/CharacterUI/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/CharacterUI/
-  - id: 7
-    bundleBuildType: 0
-    bundleName: ArtResources/Models/FX/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/FX/
-  - id: 8
-    bundleBuildType: 0
-    bundleName: ArtResources/Models/SceneBuilding/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/SceneBuilding/
-  - id: 9
-    bundleBuildType: 0
-    bundleName: ArtResources/Models/Weapon/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Models/Weapon/
-  - id: 10
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/Character/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/Character/
-  - id: 11
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/CharacterUI/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/CharacterUI/
-  - id: 12
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/FX/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/FX/
-  - id: 13
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/SceneBuilding/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/SceneBuilding/
-  - id: 14
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/SceneItem/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/SceneItem/
-  - id: 15
-    bundleBuildType: 0
-    bundleName: ArtResources/Prefabs/Weapon/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Prefabs/Weapon/
-  - id: 16
-    bundleBuildType: 0
-    bundleName: ArtResources/Scenes/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Scenes/
-  - id: 17
+    assetPath: 
+    assetPaths:
+    - Assets/ArtResources/Fonts
+  - id: 0
     bundleBuildType: 1
     bundleName: ArtResources/Shaders
     bundleExtend: .assetbundle
     pattern: '*.*'
-    assetPath: Assets/ArtResources/Shaders/
-  - id: 18
-    bundleBuildType: 1
-    bundleName: ArtResources/Textures/SceneItem
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Textures/SceneItem/
-  - id: 19
-    bundleBuildType: 0
-    bundleName: ArtResources/Textures/Stage/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/Textures/Stage/
-  - id: 20
-    bundleBuildType: 0
-    bundleName: ArtResources/UI/Prefabs/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Prefabs/
-  - id: 21
-    bundleBuildType: 0
-    bundleName: ArtResources/UI/Sprites/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ArtResources/UI/Sprites/
-  - id: 22
-    bundleBuildType: 0
-    bundleName: ConfigData/
-    bundleExtend: .assetbundle
-    pattern: '*.*'
-    assetPath: Assets/ConfigData/
-  lockConfig: 0
+    assetPath: 
+    assetPaths:
+    - Assets/ArtResources/Shaders
+  lockConfig: 1
   platFormIndex: 11
   assetCopyDir: 
   isCopyAsset: 1

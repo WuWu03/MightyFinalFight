@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoRunToBorder : Action
 {
-    public DoRunToBorder(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoRunToBorder(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
     }
 
     public override bool CanExcute()
@@ -62,6 +62,6 @@ public class DoRunToBorder : Action
 
     private int m_MoveDir = 1;
     private float m_BorderPosX = 0;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

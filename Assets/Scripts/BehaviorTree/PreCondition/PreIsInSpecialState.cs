@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PreIsInSpecialState : PreCondition
 {
-    public PreIsInSpecialState(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsInSpecialState(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
-        m_Owner = base.m_Owner as BaseRole;
+        m_Owner = owner as BaseRole;
         m_Regex = new(@"(ResumeTime:)([0-9]+\.?[0-9]*)");
 
         if (!string.IsNullOrEmpty(args))
@@ -63,7 +63,7 @@ public class PreIsInSpecialState : PreCondition
 
     private float m_Timer = -1f;
     private bool m_IsInState = false;
-    private new BaseRole m_Owner = null;
+    private BaseRole m_Owner = null;
     private float m_ResumeTime = 0.5f;
     private Regex m_Regex = null;
 }

@@ -5,7 +5,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public class PrioritySelector : Composite
     {
-        public PrioritySelector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+        public PrioritySelector(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_ListWeights = new List<int>();
             m_ListIndexes = new List<int>();

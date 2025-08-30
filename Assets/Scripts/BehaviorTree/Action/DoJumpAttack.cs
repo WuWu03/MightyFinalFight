@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoJumpAttack : DoAttack
 {
-    public DoJumpAttack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoJumpAttack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
         m_Regex = new(@"(Move)");
 
@@ -115,6 +115,5 @@ public class DoJumpAttack : DoAttack
     private bool m_IsMoveJump = false;
     private Regex m_Regex = null;
     private bool m_IsGround = false;
-
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

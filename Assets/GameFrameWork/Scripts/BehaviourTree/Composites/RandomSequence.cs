@@ -5,7 +5,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public class RandomSequence : Composite
     {
-        public RandomSequence(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+        public RandomSequence(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
 
         }

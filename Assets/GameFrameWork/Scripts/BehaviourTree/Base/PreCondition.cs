@@ -13,7 +13,7 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public PreCondition(string name, int id, object owner, int priority,bool isAndCondition, string args) : base(name, id, owner, priority, args)
+        public PreCondition(int id, object owner, int priority,bool isAndCondition, string args) : base(id, owner, priority, args)
         {
             m_IsAndCondition = isAndCondition;
             m_Regex = new(@"(TheNot:)(true|false)");

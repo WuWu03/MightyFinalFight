@@ -4,9 +4,9 @@ using GameFrameWork.Camera;
 
 public class DoRunToRoundPos : Action
 {
-    public DoRunToRoundPos(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoRunToRoundPos(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
     }
 
     public override bool CanExcute()
@@ -69,6 +69,6 @@ public class DoRunToRoundPos : Action
 
     private int m_CurrIndex = 0;
     private Vector2[] m_RoundPos = new Vector2[2] { Vector2.zero, Vector2.zero };
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

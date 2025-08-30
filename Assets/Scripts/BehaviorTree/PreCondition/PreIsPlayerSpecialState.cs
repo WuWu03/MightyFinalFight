@@ -2,7 +2,7 @@ using GameFrameWork.BehaviourTree;
 
 public class PreIsPlayerSpecialState : PreCondition
 {
-    public PreIsPlayerSpecialState(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsPlayerSpecialState(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
 
     }

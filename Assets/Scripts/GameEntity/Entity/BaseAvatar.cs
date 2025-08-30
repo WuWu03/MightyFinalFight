@@ -22,7 +22,7 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    public Vector2 GetAnimTriggerSize(string animName,int frame = 0)
+    public Vector2 GetAnimTriggerSize(string animName, int frame = 0)
     {
         if (m_HitTrigger == null)
         {
@@ -41,14 +41,14 @@ public abstract class BaseAvatar : BaseGravityObject
 
     protected override void OnRelease()
     {
-        base.OnRelease();
         m_Animator.animation?.Reset();
         FsmMgr.instance.ReleaseFsm(m_Fsm);
         m_HitTrigger = null;
         m_Animator = null;
-        m_CurrAnimName = string.Empty;
-        m_LastTriggerAnimName = string.Empty;
+        m_CurrAnimationState = null;
+        m_CurrTriggerData = null;
         m_Fsm = null;
+        base.OnRelease();
     }
 
     public void PlayAnimation(string animName, int playTimes = -1, float speed = 1f)
@@ -58,39 +58,19 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if (IsAnimation(animName))
+        if (IsAnimation(animName) && !IsCurrAnimationComplete())
         {
-            if (!m_Animator.animation.isCompleted)
-            {
-                return; 
-            }
-
-            m_CurrAnimName = string.Empty;
+            return;
         }
 
         SetTrigger(animName);
-
-        m_CurrAnimName = animName;
         m_Animator.animation.timeScale = speed;
-        m_Animator.animation.Play(animName, playTimes);
+        m_CurrAnimationState = m_Animator.animation.Play(animName, playTimes);
     }
 
     public bool IsAnimation(string animName)
     {
-        if (m_Animator == null)
-        {
-            Log.LogError(name, "[Animator] 组件不存在");
-            return false;
-        }
-
-        bool result = m_CurrAnimName.Equals(animName);
-
-        if (m_Animator.animation != null && m_Animator.animation.isCompleted)
-        {
-            m_CurrAnimName = string.Empty;
-        }
-
-        return result;
+        return m_CurrAnimationState != null && m_CurrAnimationState.name.Equals(animName);//m_Animator.animation.animationConfig.animation.Equals(animName);
     }
 
     public bool HasAnimation(string animName)
@@ -114,7 +94,7 @@ public abstract class BaseAvatar : BaseGravityObject
         return false;
     }
 
-    public void StopAnimation(string animName = null)
+    public void StopAnimation(string animName)
     {
         if (m_Animator == null)
         {
@@ -129,12 +109,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
         if (string.IsNullOrEmpty(animName))
         {
-            if (string.IsNullOrEmpty(m_CurrAnimName))
-            {
-                return;
-            }
-
-            animName = m_CurrAnimName;
+            return;
         }
 
         m_Animator.animation.Stop(animName);
@@ -148,7 +123,7 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if(m_Animator.animation == null)
+        if (m_Animator.animation == null)
         {
             return;
         }
@@ -165,13 +140,18 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if (m_Animator.animation != null)
+        if (m_Animator.animation != null && m_Animator.animation.timeScale <= 0)
         {
             m_Animator.animation.timeScale = m_LastAnimTimeScale;
         }
     }
 
-    public bool IsPlayComplete()
+    public bool IsCurrAnimationComplete()
+    {
+        return m_CurrAnimationState != null && m_CurrAnimationState.isCompleted;
+    }
+
+    public bool IsAllAnimationComplete()
     {
         if (m_Animator == null)
         {
@@ -279,19 +259,21 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if(m_LastTriggerAnimName == animName && m_LastTriggerFrameIndex == frameIndex)
+        if (m_CurrTriggerData != null && m_CurrTriggerData.animName == animName && m_LastTriggerFrameIndex == frameIndex)
         {
             return;
         }
 
-        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
-
-        if (triggerData != null)
+        if (m_CurrTriggerData == null || m_CurrTriggerData.animName != animName) 
         {
-            SetCollider(triggerData.offestList[frameIndex], triggerData.sizeList[frameIndex]);
+            m_CurrTriggerData = m_HitTrigger.GetTriggerData(animName);
         }
 
-        m_LastTriggerAnimName = animName;
+        if (m_CurrTriggerData != null)
+        {
+            SetCollider(m_CurrTriggerData.offestList[frameIndex], m_CurrTriggerData.sizeList[frameIndex]);
+        }
+
         m_LastTriggerFrameIndex = frameIndex;
     }
 
@@ -299,18 +281,15 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnUpdate();
 
-        if (m_Fsm != null)
-        {
-            m_Fsm.Update(Time.deltaTime, Time.unscaledDeltaTime);
-        }
+        m_Fsm?.Update(Time.deltaTime, Time.unscaledDeltaTime);
 
-        if (m_Animator != null && m_Animator.animation != null && m_Animator.animation.isPlaying)
+        if (m_CurrAnimationState != null && m_CurrAnimationState.isPlaying)
         {
-            int frameCount = (int)m_Animator.animation.animations[m_CurrAnimName].frameCount;
-            float duration = m_Animator.animation.animations[m_CurrAnimName].duration;
-            int frameIndex = (int)(m_Animator.animation.GetState(m_CurrAnimName).currentTime * frameCount / duration);
-
-            SetTrigger(m_CurrAnimName, frameIndex);
+            string animName = m_CurrAnimationState.name;
+            uint frameCount = m_CurrAnimationState._animationData.frameCount;
+            float duration = m_CurrAnimationState._animationData.duration;
+            int frameIndex = (int)(m_CurrAnimationState.currentTime / duration * frameCount);
+            SetTrigger(animName, frameIndex);
         }
     }
 
@@ -338,8 +317,8 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    private string m_CurrAnimName = string.Empty;
-    private string m_LastTriggerAnimName = string.Empty;
+    private DragonBones.AnimationState m_CurrAnimationState = null;
+    private TriggerData m_CurrTriggerData = null;
     private float m_LastAnimTimeScale = 1f;
     private int m_LastTriggerFrameIndex = -1;
     private HitTrigger m_HitTrigger = null;

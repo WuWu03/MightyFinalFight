@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,23 +11,19 @@ namespace GameFrameWork.Editor
     {
         public AssetBundleWindow()
         {
-            titleContent = new GUIContent(this.GetType().Name);
-            m_ListData = new List<AssetBundleData>();
-            m_ListPatternIndex = new List<int>();
-            m_ListBundleExtendIndex = new List<int>();
-            m_ListDataHasRemove = new List<bool>();
-            m_StackRemovedData = new Stack<int>();
+            titleContent = new(this.GetType().Name);
+            m_AssetBundleDatas = new();
+            m_BundlePatternIndexs = new();
+            m_BundleExtendIndexs = new();
+            m_RemoveDatas = new();
+            m_RemovedAssetPaths = new();
         }
 
         private void OnEnable()
         {
-            string[] buildAssetsPath = Directory.GetDirectories("Assets/ArtResources/Fonts/");
 
-            if (buildAssetsPath == null || buildAssetsPath.Length < 1)
-            {
-                buildAssetsPath = Directory.GetFiles("Assets/ArtResources/Fonts/");
-            }
         }
+
         private void OnDisable()
         {
             AssetBundleUtility.RefreshData();
@@ -42,8 +39,6 @@ namespace GameFrameWork.Editor
                 }
             }
         }
-
-
 
         private void OnGUI()
         {
@@ -80,14 +75,13 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < m_AssetBundleConfig.listDatas.Count; i++)
             {
                 AssetBundleData data = m_AssetBundleConfig.listDatas[i].Clone();
-
-                m_ListData.Add(data);
+                m_AssetBundleDatas.Add(data);
 
                 for (int j = 0; j < m_AssetBundleConfig.listPattern.Count; j++)
                 {
-                    if(data.pattern.Equals(m_AssetBundleConfig.listPattern[j]))
+                    if (data.pattern.Equals(m_AssetBundleConfig.listPattern[j]))
                     {
-                        m_ListPatternIndex.Add(j);
+                        m_BundlePatternIndexs.Add(j);
                     }
                 }
 
@@ -95,18 +89,18 @@ namespace GameFrameWork.Editor
                 {
                     if (data.bundleExtend.Equals(m_AssetBundleConfig.listExtendName[j]))
                     {
-                        m_ListBundleExtendIndex.Add(j);
+                        m_BundleExtendIndexs.Add(j);
                     }
                 }
 
-                if(m_ListPatternIndex.Count < m_ListData.Count)
+                if (m_BundlePatternIndexs.Count < m_AssetBundleDatas.Count)
                 {
-                    m_ListPatternIndex.Add(0);
+                    m_BundlePatternIndexs.Add(0);
                 }
 
-                if (m_ListBundleExtendIndex.Count < m_ListData.Count)
+                if (m_BundleExtendIndexs.Count < m_AssetBundleDatas.Count)
                 {
-                    m_ListBundleExtendIndex.Add(0);
+                    m_BundleExtendIndexs.Add(0);
                 }
             }
 
@@ -124,52 +118,58 @@ namespace GameFrameWork.Editor
                     m_AssetBundleConfig.platFormIndex = i;
                 }
             }
-
-            m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
         }
 
         private void SaveConfig()
         {
-            for (int i = m_ListData.Count - 1; i >= 0; i--)
+            for (int i = m_AssetBundleDatas.Count - 1; i >= 0; i--)
             {
-                if (m_ListDataHasRemove[i])
+                if (m_RemoveDatas.Contains(m_AssetBundleDatas[i]))
                 {
-                    m_ListData.RemoveAt(i);
-                    m_ListBundleExtendIndex.RemoveAt(i);
-                    m_ListPatternIndex.RemoveAt(i);
+                    m_AssetBundleDatas.RemoveAt(i);
+                    m_BundleExtendIndexs.RemoveAt(i);
+                    m_BundlePatternIndexs.RemoveAt(i);
                 }
             }
 
-            m_AssetBundleConfig.listDatas = m_ListData;
+            m_AssetBundleConfig.listDatas.Clear();
 
-            m_StackRemovedData.Clear();
-            m_ListDataHasRemove.Clear();
-            m_ListDataHasRemove.AddRange(new bool[m_ListData.Count]);
+            for (int i = 0; i < m_AssetBundleDatas.Count; i++)
+            {
+                m_AssetBundleConfig.listDatas.Add(m_AssetBundleDatas[i].Clone());
+            }
+
+            m_RemoveDatas.Clear();
             EditorUtility.SetDirty(m_AssetBundleConfig);
             AssetBundleUtility.RefreshData();
         }
 
         private void SortConfig()
         {
-            m_ListData.Sort();
-            m_ListPatternIndex.Clear();
-            m_ListBundleExtendIndex.Clear();
+            m_AssetBundleDatas.Sort();
+            foreach (AssetBundleData data in m_AssetBundleDatas) 
+            {
+                data.assetPaths.Sort();
+            }
 
-            for (int i = 0; i < m_ListData.Count; i++)
+            m_BundlePatternIndexs.Clear();
+            m_BundleExtendIndexs.Clear();
+
+            for (int i = 0; i < m_AssetBundleDatas.Count; i++)
             {
                 for (int j = 0; j < m_AssetBundleConfig.listPattern.Count; j++)
                 {
-                    if (m_ListData[i].pattern.Equals(m_AssetBundleConfig.listPattern[j]))
+                    if (m_AssetBundleDatas[i].pattern.Equals(m_AssetBundleConfig.listPattern[j]))
                     {
-                        m_ListPatternIndex.Add(j);
+                        m_BundlePatternIndexs.Add(j);
                     }
                 }
 
                 for (int j = 0; j < m_AssetBundleConfig.listExtendName.Count; j++)
                 {
-                    if (m_ListData[i].bundleExtend.Equals(m_AssetBundleConfig.listExtendName[j]))
+                    if (m_AssetBundleDatas[i].bundleExtend.Equals(m_AssetBundleConfig.listExtendName[j]))
                     {
-                        m_ListBundleExtendIndex.Add(j);
+                        m_BundleExtendIndexs.Add(j);
                     }
                 }
             }
@@ -177,31 +177,30 @@ namespace GameFrameWork.Editor
 
         private bool IsConfigChanged()
         {
-            if (m_StackRemovedData.Count > 0)
+            if (m_RemoveDatas.Count > 0)
             {
                 return true;
             }
 
-            if (m_ListData == null)
+            if (m_AssetBundleDatas == null)
             {
                 return false;
             }
 
-            if (m_ListData.Count != m_AssetBundleConfig.listDatas.Count)
+            if (m_AssetBundleDatas.Count != m_AssetBundleConfig.listDatas.Count)
             {
                 return true;
             }
 
             Func<AssetBundleData, AssetBundleData, bool> equals = (a, b) =>
             a.bundleBuildType == b.bundleBuildType &&
-            string.Equals(a.bundleName, b.bundleName) &&
-            string.Equals(a.bundleExtend, b.bundleExtend) &&
-            string.Equals(a.pattern, b.pattern) &&
-            string.Equals(a.assetPath, b.assetPath);
+            a.bundleName == b.bundleName &&
+            a.pattern == b.pattern &&
+            a.assetPaths.SequenceEqual(b.assetPaths);
 
-            for (int i = 0; i < m_ListData.Count; i++)
+            for (int i = 0; i < m_AssetBundleDatas.Count; i++)
             {
-                if (!equals(m_ListData[i], m_AssetBundleConfig.listDatas[i]))
+                if (!equals(m_AssetBundleDatas[i], m_AssetBundleConfig.listDatas[i]))
                 {
                     return true;
                 }
@@ -212,48 +211,82 @@ namespace GameFrameWork.Editor
 
         private void ClearConfig()
         {
-            m_ListData.Clear();
-            m_ListPatternIndex.Clear();
-            m_ListDataHasRemove.Clear();
-            m_ListBundleExtendIndex.Clear();
-            m_AssetBundleConfig.listDatas = m_ListData;
+            m_AssetBundleDatas.Clear();
+            m_BundlePatternIndexs.Clear();
+            m_RemoveDatas.Clear();
+            m_BundleExtendIndexs.Clear();
+            m_AssetBundleConfig.listDatas = m_AssetBundleDatas;
+        }
+
+        private int HasSameAsset(UnityEngine.Object asset)
+        {
+            string assetPath = AssetDatabase.GetAssetPath(asset);
+            for (int i = 0; i < m_AssetBundleDatas.Count; i++)
+            {
+                if (m_RemoveDatas.Contains(m_AssetBundleDatas[i]))
+                {
+                    continue;
+                }
+
+                AssetBundleData assetBundleData = m_AssetBundleDatas[i];
+                if (assetBundleData.assetPaths != null && assetBundleData.assetPaths.Contains(assetPath))
+                {
+                    return i;
+                }
+
+                for (int j = 0; j < assetBundleData.assetPaths.Count; j++)
+                {
+                    bool isFile = File.Exists(assetBundleData.assetPaths[j]);
+                    if (!isFile)
+                    {
+                        List<string> files = new();
+                        List<string> paths = new();
+                        GameFrameWork.Utils.FileUtil.Recursive(assetBundleData.assetPaths[j], "*", files, paths);
+
+                        if (files.Contains(assetPath) || paths.Contains(assetPath))
+                        {
+                            return i;
+                        }
+                    }
+                }
+            }
+
+            return -1;
         }
 
         Vector2 scrollPosition = Vector2.zero;
-    
+
         private void MainGUI()
         {
-            if (m_AssetBundleConfig.listExtendName == null)
-            {
-                m_AssetBundleConfig.listExtendName = new List<string>();
-            }
-
-            if (m_AssetBundleConfig.listPattern == null)
-            {
-                m_AssetBundleConfig.listPattern = new List<string>();
-            }
+            m_AssetBundleConfig.listExtendName ??= new();
+            m_AssetBundleConfig.listPattern ??= new();
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             GUI.enabled = !m_AssetBundleConfig.lockConfig;
             int index = 0;
-            for (int i = 0; i < m_ListData.Count; i++)
+            for (int i = 0; i < m_AssetBundleDatas.Count; i++)
             {
-                if (m_ListDataHasRemove.Count > 0 && m_ListDataHasRemove[i])
+                AssetBundleData assetBundleData = m_AssetBundleDatas[i];
+                assetBundleData.assetPaths ??= new();
+
+                if (m_RemoveDatas.Count > 0 && m_RemoveDatas.Contains(assetBundleData))
                 {
                     continue;
                 }
 
                 index++;
-                m_ListData[i].id = index;
+                assetBundleData.id = index;
 
-                EditorUtil.GUIBoxScope((Action)(() => 
+                EditorUtil.GUIBoxScope((Action)(() =>
                 {
                     GUILayout.BeginVertical();
                     GUILayout.BeginHorizontal();
-                    GUIStyle style = new GUIStyle(GUI.skin.label);
-                    style.alignment = TextAnchor.MiddleLeft;
-                    style.fontSize = 18;
-                    style.fontStyle = FontStyle.Bold;
+                    GUIStyle style = new(GUI.skin.label)
+                    {
+                        alignment = TextAnchor.MiddleLeft,
+                        fontSize = 18,
+                        fontStyle = FontStyle.Bold
+                    };
                     EditorGUILayout.LabelField(index.ToString(), style);
                     GUILayout.FlexibleSpace();
 
@@ -261,80 +294,95 @@ namespace GameFrameWork.Editor
                     {
                         if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
                         {
-                            m_ListDataHasRemove[i] = true;
-                            m_StackRemovedData.Push(i);
+                            m_RemoveDatas.Add(assetBundleData);
                         }
                     }
                     GUILayout.EndHorizontal();
-                    m_ListData[i].bundleBuildType = (AssetBundleData.BundleBuildType)EditorGUILayout.EnumPopup("包类型：", (Enum)m_ListData[i].bundleBuildType);
-                    m_ListData[i].assetPath = EditorGUILayout.TextField("资源路径：", m_ListData[i].assetPath);
+                    assetBundleData.bundleBuildType = (AssetBundleData.BundleBuildType)EditorGUILayout.EnumPopup("打包方式：", (Enum)assetBundleData.bundleBuildType);
 
-                    if (!string.IsNullOrEmpty(m_ListData[i].assetPath) && !m_ListData[i].assetPath.EndsWith("/"))
+                    if (assetBundleData.bundleBuildType == AssetBundleData.BundleBuildType.Single)
                     {
-                        m_ListData[i].assetPath += "/";
-                    }
+                        assetBundleData.bundleName = EditorGUILayout.TextField("包名称: ", assetBundleData.bundleName);
 
-                    m_ListData[i].bundleName = EditorGUILayout.TextField("包名称: ", m_ListData[i].bundleName);
-
-                    if (m_ListData[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
-                    {
-                        if (!string.IsNullOrEmpty(m_ListData[i].bundleName))
+                        if (!string.IsNullOrEmpty(assetBundleData.bundleName))
                         {
-                            if (!m_ListData[i].bundleName.EndsWith("/"))
+                            if (assetBundleData.bundleName.StartsWith("Assets/"))
                             {
-                                m_ListData[i].bundleName += "/";
+                                assetBundleData.bundleName = assetBundleData.bundleName.Replace("Assets/", string.Empty);
                             }
                         }
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(m_ListData[i].bundleName))
-                        {
-                            if (m_ListData[i].bundleName.EndsWith("/"))
-                            {
-                                m_ListData[i].bundleName = m_ListData[i].bundleName.Substring(0, m_ListData[i].bundleName.Length - 1);
-                            }
-                        }
-                    }
-
-                    if (m_ListData[i].bundleName.StartsWith("Assets/"))
-                    {
-                        m_ListData[i].bundleName = m_ListData[i].bundleName.Replace("Assets/", string.Empty);
+                        assetBundleData.bundleName = string.Empty;
                     }
 
                     if (m_AssetBundleConfig.listExtendName.Count > 0)
                     {
-                        m_ListBundleExtendIndex[i] = EditorGUILayout.Popup("包扩展名：", m_ListBundleExtendIndex[i], m_AssetBundleConfig.listExtendName.ToArray());
-                        m_ListData[i].bundleExtend = m_AssetBundleConfig.listExtendName[m_ListBundleExtendIndex[i]];
+                        m_BundleExtendIndexs[i] = EditorGUILayout.Popup("包扩展名：", m_BundleExtendIndexs[i], m_AssetBundleConfig.listExtendName.ToArray());
+                        assetBundleData.bundleExtend = m_AssetBundleConfig.listExtendName[m_BundleExtendIndexs[i]];
                     }
 
                     if (m_AssetBundleConfig.listPattern.Count > 0)
                     {
-                        m_ListPatternIndex[i] = EditorGUILayout.Popup("文件过滤：", m_ListPatternIndex[i], m_AssetBundleConfig.listPattern.ToArray());
-                        m_ListData[i].pattern = m_AssetBundleConfig.listPattern[m_ListPatternIndex[i]];
+                        m_BundlePatternIndexs[i] = EditorGUILayout.Popup("文件过滤：", m_BundlePatternIndexs[i], m_AssetBundleConfig.listPattern.ToArray());
+                        m_AssetBundleDatas[i].pattern = m_AssetBundleConfig.listPattern[m_BundlePatternIndexs[i]];
                     }
 
-                    GUI.enabled = true;
-
-                    if (GUILayout.Button("选中该资源/路径"))
+                    for (int j = 0; j < assetBundleData.assetPaths.Count; j++)
                     {
-                        string assetPath = m_ListData[i].assetPath.Substring(0, m_ListData[i].assetPath.LastIndexOf("/"));
-                        UnityEngine.Object obj = AssetDatabase.LoadMainAssetAtPath(assetPath);
-                        if (obj != null)
+                        string assetPath = assetBundleData.assetPaths[j];
+                        EditorGUILayout.BeginHorizontal();
+                        UnityEngine.Object currAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+                        UnityEngine.Object temp = EditorGUILayout.ObjectField("资源" + (j + 1), currAsset, typeof(UnityEngine.Object), false);
+
+                        if (temp != currAsset)
                         {
-                            EditorGUIUtility.PingObject(obj);
-                            Selection.activeObject = obj;
+                            int sameIndex = HasSameAsset(temp);
+                            if (sameIndex > -1)
+                            {
+                                EditorUtility.DisplayDialog("警告", "该资源已经存在于包体" + (sameIndex + 1) + "中", "确定");
+                            }
+                            else
+                            {
+                                assetBundleData.assetPaths[j] = AssetDatabase.GetAssetPath(temp);
+                                AssetBundleUtility.RefreshData();
+                            }
                         }
+
+                        if (GUILayout.Button("×", GUILayout.Width(20)))
+                        {
+                            if (EditorUtility.DisplayDialog("提示", "确认移除本条配置吗？", "确认", "取消"))
+                            {
+                                m_RemovedAssetPaths.Add(assetPath);
+                            }
+                        }
+
+                        GUILayout.EndHorizontal();
                     }
 
-                    GUI.enabled = !m_AssetBundleConfig.lockConfig;
+                    if (GUILayout.Button("添加资源"))
+                    {
+                        assetBundleData.assetPaths.Add(string.Empty);
+                    }
+
+                    if (m_RemovedAssetPaths.Count > 0)
+                    {
+                        foreach (string removedAssetPath in m_RemovedAssetPaths) 
+                        {
+                            assetBundleData.assetPaths.Remove(removedAssetPath);
+                        }
+
+                        m_RemovedAssetPaths.Clear();
+                    }
+
                     GUILayout.EndVertical();
                 }));
             }
 
+            GUI.enabled = true;
             GUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
-            GUI.enabled = true;
         }
 
         private void LockConfigGUI()
@@ -342,6 +390,14 @@ namespace GameFrameWork.Editor
             EditorUtil.GUIBoxScope(() =>
             {
                 m_AssetBundleConfig.lockConfig = GUILayout.Toggle(m_AssetBundleConfig.lockConfig, "锁定所有配置", GUI.skin.toggle);
+                if(m_AssetBundleConfig.lockConfig && IsConfigChanged())
+                {
+                    m_AssetBundleConfig.lockConfig = EditorUtility.DisplayDialog("警告", "配置未保存，是否保存？", "保存", "取消");
+                    if (m_AssetBundleConfig.lockConfig)
+                    {
+                        SaveConfig();
+                    }
+                }
             });
         }
 
@@ -411,7 +467,7 @@ namespace GameFrameWork.Editor
             //--------------移除扩展名----------------
             if (GUILayout.Button("  移除扩展名  "))
             {
-                if(m_AssetBundleConfig.listExtendName.Count < 1)
+                if (m_AssetBundleConfig.listExtendName.Count < 1)
                 {
                     ShowNotification(new GUIContent("没有扩展名，请先添加扩展名"));
                     return;
@@ -467,7 +523,7 @@ namespace GameFrameWork.Editor
             //--------------移除过滤器----------------
             if (GUILayout.Button("移除过滤器名"))
             {
-                if(m_AssetBundleConfig.listPattern.Count < 1)
+                if (m_AssetBundleConfig.listPattern.Count < 1)
                 {
                     ShowNotification(new GUIContent("没有过滤器名，请先添加过滤器名"));
                     return;
@@ -488,10 +544,12 @@ namespace GameFrameWork.Editor
         {
             GUI.enabled = !m_AssetBundleConfig.lockConfig;
             GUILayout.BeginHorizontal();
-            GUIStyle style = new GUIStyle(GUI.skin.button);
-            style.fontStyle = FontStyle.Bold;
-            style.alignment = TextAnchor.MiddleCenter;
-            style.fixedWidth = 346;
+            GUIStyle style = new(GUI.skin.button)
+            {
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                fixedWidth = 346
+            };
             GUILayout.Label("打包平台", style);
             m_AssetBundleConfig.platFormIndex = EditorGUILayout.Popup(m_AssetBundleConfig.platFormIndex, m_BuildTargetDisplayNames);
             GUILayout.EndHorizontal();
@@ -503,10 +561,9 @@ namespace GameFrameWork.Editor
             GUI.enabled = !m_AssetBundleConfig.lockConfig;
             if (GUILayout.Button("添加配置"))
             {
-                m_ListData.Add(new AssetBundleData());
-                m_ListPatternIndex.Add(0);
-                m_ListBundleExtendIndex.Add(0);
-                m_ListDataHasRemove.Add(false);
+                m_AssetBundleDatas.Add(new AssetBundleData());
+                m_BundlePatternIndexs.Add(0);
+                m_BundleExtendIndexs.Add(0);
             }
 
             if (GUILayout.Button("清空配置"))
@@ -517,14 +574,13 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            if (m_StackRemovedData.Count> 0)
+            if (m_RemoveDatas.Count > 0)
             {
                 if (GUILayout.Button("还原已经删除配置"))
                 {
                     if (EditorUtility.DisplayDialog("提示", "确认还原吗？", "确认", "取消"))
                     {
-                        int dataIndex = m_StackRemovedData.Pop();
-                        m_ListDataHasRemove[dataIndex] = false;
+                        m_RemoveDatas.Clear();
                     }
                 }
             }
@@ -546,22 +602,19 @@ namespace GameFrameWork.Editor
                 if (EditorUtility.DisplayDialog("提示", "确认开始打包吗？", "确认", "取消"))
                 {
                     SaveConfig();
-
-                    using (AssetBundleBuilder builder = new AssetBundleBuilder())
-                    {
-                        builder.Build(m_BuildTargets[m_AssetBundleConfig.platFormIndex]);
-                    }
+                    using AssetBundleBuilder builder = new();
+                    builder.Build(m_BuildTargets[m_AssetBundleConfig.platFormIndex]);
                 }
             }
         }
 
         private string[] m_BuildTargetDisplayNames = null;
         private BuildTarget[] m_BuildTargets = null;
-        private Stack<int> m_StackRemovedData = null;
-        private List<int> m_ListBundleExtendIndex = null;
-        private List<int> m_ListPatternIndex = null;
-        private List<bool> m_ListDataHasRemove = null;
-        private List<AssetBundleData> m_ListData = null;
+        private List<int> m_BundleExtendIndexs = null;
+        private List<int> m_BundlePatternIndexs = null;
+        private List<AssetBundleData> m_RemoveDatas = null;
+        private List<string> m_RemovedAssetPaths = null;
+        private List<AssetBundleData> m_AssetBundleDatas = null;
         private AssetBundleConfig m_AssetBundleConfig = null;
     }
 }

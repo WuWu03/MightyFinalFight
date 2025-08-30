@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class DoBack : Action
 {
-    public DoBack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoBack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
         m_Regex = new(@"(BackDistance:)(-?[0-9]+\.?[0-9]+)");
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
 
         if (!string.IsNullOrEmpty(args))
         {
@@ -65,7 +65,7 @@ public class DoBack : Action
     private Vector2 m_TargetPos = Vector2.zero;
     private float m_BackDistance = 0;
     private Regex m_Regex = null;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
 
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

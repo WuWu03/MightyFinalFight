@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -378,7 +379,7 @@ namespace GameFrameWork.Utils
 
         public static void ClearArgs()
         {
-            if (m_ListArgs != null && m_ListArgs.count > 0)
+            if (m_ListArgs != null && m_ListArgs.Count > 0)
             {
                 m_ListArgs.Clear();
             }
@@ -386,24 +387,24 @@ namespace GameFrameWork.Utils
 
         public static string Append(bool isPath)
         {
-            if (m_ListArgs == null || m_ListArgs.count < 1)
+            if (m_ListArgs == null || m_ListArgs.Count < 1)
             {
                 return string.Empty;
             }
 
-            if (m_ListArgs.count < 2)
+            if (m_ListArgs.Count < 2)
             {
                 return m_ListArgs[0].ToString();
             }
 
             m_StringBuilder.Clear();
 
-            for (int i = 0; i < m_ListArgs.count; i++)
+            for (int i = 0; i < m_ListArgs.Count; i++)
             {
                 string arg = m_ListArgs[i];
-                bool addPath = isPath && !string.IsNullOrEmpty(arg) && !arg.EndsWith("/") && i < m_ListArgs.count - 1;
+                bool addPath = isPath && !string.IsNullOrEmpty(arg) && !arg.EndsWith("/") && i < m_ListArgs.Count - 1;
 
-                if (i == m_ListArgs.count - 2)
+                if (i == m_ListArgs.Count - 2)
                 {
                     addPath = addPath && !m_ListArgs[i + 1].StartsWith(".");
                 }
@@ -454,7 +455,7 @@ namespace GameFrameWork.Utils
         private static readonly char m_ChineseNegative = '负';
         private static readonly char m_ChineseDot = '点';
 
-        private static readonly SmallList<string> m_ListArgs = new();
+        private static readonly List<string> m_ListArgs = new(7);
         private static readonly StringBuilder m_StringBuilder = new();
     }
 }

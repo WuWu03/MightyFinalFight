@@ -165,7 +165,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && m_CanSkill;
+            return !m_IsDropTrag && !m_IsBeCatch && (m_CanSkill || (m_IsAttack && m_AttackIndex < 4));
         }
     }
 
@@ -198,7 +198,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public SmallList<Bullet> bullets
+    public List<Bullet> bullets
     {
         get
         {
@@ -574,7 +574,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return entityAttribute.health - attackValue <= 0;
     }
 
-
     public virtual void OnHurtMsg(HurtStateData hurtStateData)
     {
         if (hurtStateData == null || !canBeHit)
@@ -594,16 +593,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         bool isSwoon = hurtStateData.isSwoon;
 
-        if (hurtStateData.isSwoon)
+        if (isFloat || isDrop)
         {
-            if (isFloat || isDrop)
-            {
-                hurtStateData.isChangeVelocity = true;
-                hurtStateData.changeVelocity = Vector2.zero;
-                hurtStateData.attackForce = SkillUtil.GetFloatSmoonForce(-dir, hurtStateData.attackForce);
-            }
+            hurtStateData.isChangeVelocity = true;
+            hurtStateData.changeVelocity = Vector2.zero;
         }
-        else
+
+        if (!hurtStateData.isSwoon)
         {
             if (IsHurtWillDie(hurtStateData.attackValue))
             {
@@ -859,7 +855,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         if (m_IsAttack)
         {
-            if (IsPlayComplete() && m_AttackTimer < 0)
+            if (IsCurrAnimationComplete() && m_AttackTimer < 0)
             {
                 m_AttackTimer = Time.time;
             }
@@ -1068,6 +1064,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private BaseRoleSkillData m_SkillData = null;
     private UnityEvent m_AutoMoveComplete = null;
     private Queue<HurtStateData> m_HurtQueue = null;
-    private SmallList<Bullet> m_Bullets = null;
+    private List<Bullet> m_Bullets = null;
     private event GameFrameWorkAction<HurtStateData> m_OnHurtEvent = null;
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PreIsLockPlayer : PreCondition
 {
-    public PreIsLockPlayer(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)    
+    public PreIsLockPlayer(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)    
     {
         m_Regex = new(@"(Distance:)(-?[0-9]+(\.[0-9])?)");
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
 
         if (!string.IsNullOrEmpty(args))
         {
@@ -42,5 +42,5 @@ public class PreIsLockPlayer : PreCondition
     private float m_Distance = 0f;
     private Regex m_Regex = null;
     private bool m_IsLockPlayer = false;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
 }

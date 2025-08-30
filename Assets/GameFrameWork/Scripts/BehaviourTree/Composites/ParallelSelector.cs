@@ -2,7 +2,7 @@ using GameFrameWork.BehaviourTree;
 
 public class ParallelSelector : Composite
 {
-    public ParallelSelector(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public ParallelSelector(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
 
     }

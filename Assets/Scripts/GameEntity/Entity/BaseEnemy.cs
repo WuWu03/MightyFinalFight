@@ -1,5 +1,8 @@
+using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
 using GameFrameWork.UI;
+using GameFrameWork.Utils;
+using System.IO;
 using UnityEngine;
 
 public class BaseEnemy : BaseRole
@@ -130,12 +133,6 @@ public class BaseEnemy : BaseRole
         }
         else
         {
-            if (isDrop)
-            {
-                data.isSwoon = true;
-                data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
-            }
-
             if (m_HurtAnim != null && m_HurtAnim.Length > 0)
             {
                 data.hurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
@@ -176,15 +173,14 @@ public class BaseEnemy : BaseRole
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isBeCatch || collision.gameObject.Equals(gameObject))
+        if (isFloat || isBeCatch || collision.gameObject.Equals(gameObject))
         {
             return;
         }
 
         BaseRole throwTarget = collision.gameObject.GetComponent<BaseRole>();
-        ICanBeHit hit = collision.gameObject.GetComponent<ICanBeHit>();
 
-        if (throwTarget == null || hit == null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
+        if (throwTarget == null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
         {
             return;
         }
@@ -197,9 +193,11 @@ public class BaseEnemy : BaseRole
         HurtStateData hurtData = HurtStateData.Create();
         hurtData.id = 0;
         hurtData.skillExp = 2;
-        hurtData.attackerDir = -dir;
-        hurtData.attackForce = SkillUtil.GetSmoonForce(-dir);
-        hurtData.attackerPos = pos;
+        hurtData.isChangeVelocity = true;
+        hurtData.changeVelocity = Vector2.zero;
+        hurtData.attackerDir = throwTarget.pos.x < pos.x ? 1 : -1;
+        hurtData.attackForce = SkillUtil.GetSmoonForce(hurtData.attackerDir);
+        hurtData.attackerPos = throwTarget.pos;
         hurtData.canBeDefense = false;
         hurtData.isSwoon = true;
         hurtData.attackerId = id;
@@ -207,8 +205,26 @@ public class BaseEnemy : BaseRole
         hurtData.hurtSound = string.Empty;
         hurtData.hurtAnim = string.Empty;
         hurtData.isGroundHurt = true;
-
         OnHurtMsg(hurtData);
+
+        HurtStateData targetHurt = HurtStateData.Create();
+        targetHurt.id = 0;
+        targetHurt.skillExp = 2;
+        targetHurt.isChangeVelocity = true;
+        targetHurt.changeVelocity = Vector2.zero;
+        targetHurt.attackerDir = throwTarget.pos.x < pos.x ? 1 : -1;
+        targetHurt.attackForce = SkillUtil.GetSmoonForce(-hurtData.attackerDir);
+        targetHurt.attackerPos = pos;
+        targetHurt.canBeDefense = false;
+        targetHurt.isSwoon = true;
+        targetHurt.attackerId = id;
+        targetHurt.attackValue = Mathf.FloorToInt(entityAttribute.maxHealth * 0.1f);
+        targetHurt.hurtSound = string.Empty;
+        targetHurt.hurtAnim = string.Empty;
+        targetHurt.isGroundHurt = true;
+        throwTarget.OnHurtMsg(targetHurt);
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnHit02));
+ 
     }
 
     private int m_SkillExp = 0;

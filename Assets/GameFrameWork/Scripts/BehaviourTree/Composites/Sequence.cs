@@ -2,7 +2,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public class Sequence : Composite
     {
-        public Sequence(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args) 
+        public Sequence(int id, object owner, int priority, string args) : base(id, owner, priority, args) 
         {
             m_CurrChildIndex = 0;
         }

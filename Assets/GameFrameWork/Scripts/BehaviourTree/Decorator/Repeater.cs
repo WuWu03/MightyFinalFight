@@ -2,7 +2,7 @@ namespace GameFrameWork.BehaviourTree
 {
     public class Repeater : Decorator
     {
-        public Repeater(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+        public Repeater(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_RepeatCount = 0;
         }

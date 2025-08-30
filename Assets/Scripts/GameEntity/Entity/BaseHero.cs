@@ -436,7 +436,7 @@ public class BaseHero : BaseRole
             return;
         }
 
-        if (!IsAnimation(AnimName.ThrowWeapon) || IsPlayComplete())
+        if (!IsAnimation(AnimName.ThrowWeapon) || IsCurrAnimationComplete())
         {
             base.NormalAttack(dir);
         }
@@ -533,7 +533,7 @@ public class BaseHero : BaseRole
         float catchTime = m_CatchAttackCount >= 3 ? 0.3f : ConstField.CatchTime;
         bool isOutCatchTime = Time.time - m_CatchStamp >= catchTime;
 
-        if ((isOutCatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsPlayComplete()))
+        if ((isOutCatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsAllAnimationComplete()))
         {
             ResetCatch();
             return;

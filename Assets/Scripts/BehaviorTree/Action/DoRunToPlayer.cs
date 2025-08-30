@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class DoRunToPlayer : Action
 {
-    public DoRunToPlayer(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoRunToPlayer(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
     }
 
     public override BehaviourTreeState Excute()
@@ -65,5 +65,5 @@ public class DoRunToPlayer : Action
 
     private float m_RunTimer = -1f;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
 }

@@ -1,4 +1,5 @@
 using GameFrameWork;
+using GameFrameWork.Audio;
 using GameFrameWork.Fsm;
 using GameFrameWork.Utils;
 using UnityEngine;
@@ -72,7 +73,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.PlayAnimation(AnimName.SwoonDown);
         m_Owner.onGroundEvent.RemoveListener(OnBounce);
         m_Owner.onGroundEvent.AddListener(OnGround);
-        GameFrameWork.Audio.AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     private void OnGround()
@@ -80,7 +81,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.onGroundEvent.RemoveListener(OnGround);
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetIsBeThrow(false);
-        GameFrameWork.Audio.AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
+        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)

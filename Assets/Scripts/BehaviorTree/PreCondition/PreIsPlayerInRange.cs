@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PreIsPlayerInRange : PreCondition
 {
-    public PreIsPlayerInRange(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsPlayerInRange(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
         m_Regex = new(@"(Range:)(-?[0-9]+(\.[0-9])?)");
 
@@ -20,8 +20,9 @@ public class PreIsPlayerInRange : PreCondition
 
     protected override bool OnCheckPreCondition()
     {
+        BaseRole role = owner as BaseRole;
         Vector2 playerPos = PlayerMgr.instance.player.pos;
-        Vector2 ownerPos = (m_Owner as BaseRole).pos;
+        Vector2 ownerPos = role.pos;
 
         float xDistance = Mathf.Abs(playerPos.x - ownerPos.x);
         float yDistance = Mathf.Abs(playerPos.y - ownerPos.y);
@@ -31,7 +32,7 @@ public class PreIsPlayerInRange : PreCondition
             return yDistance <= 0.01f && xDistance <= m_Range;
         }
 
-        Rect ownerBound = (m_Owner as BaseRole).bound;
+        Rect ownerBound = role.bound;
         Rect playerBound = PlayerMgr.instance.player.bound;
 
         return yDistance <= 0.01f && xDistance <= playerBound.width / 2 + ownerBound.width / 2 + 0.01f;

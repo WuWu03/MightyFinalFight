@@ -102,7 +102,7 @@ public abstract class SkillBaseDeployer
         }
         else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
-            result = result && m_Owner.IsPlayComplete();
+            result = result && m_Owner.IsAllAnimationComplete();
 
             if (result)
             {

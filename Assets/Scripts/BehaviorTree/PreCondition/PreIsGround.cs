@@ -2,9 +2,9 @@ using GameFrameWork.BehaviourTree;
 
 public class PreIsGround : PreCondition
 {
-    public PreIsGround(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsGround(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
-        m_Owner = base.m_Owner as BaseRole;
+        m_Owner = owner as BaseRole;
     }
 
     protected override bool OnCheckPreCondition()
@@ -12,5 +12,5 @@ public class PreIsGround : PreCondition
         return m_Owner.isInGround;
     }
 
-    private new BaseRole m_Owner = null;
+    private BaseRole m_Owner = null;
 }

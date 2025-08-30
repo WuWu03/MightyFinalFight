@@ -7,17 +7,11 @@ namespace GameFrameWork.Editor
 {
     public class AssetBundleConfig : BaseScriptableObject<AssetBundleData>
     {
-        [SerializeField]
         public bool lockConfig = false;
-        [SerializeField]
         public int platFormIndex = 0;
-        [SerializeField]
         public string assetCopyDir = string.Empty;
-        [SerializeField]
         public bool isCopyAsset = false;
-        [SerializeField]
         public List<string> listExtendName = null;
-        [SerializeField]
         public List<string> listPattern = null;
     }
 
@@ -26,8 +20,9 @@ namespace GameFrameWork.Editor
     {
         public enum BundleBuildType
         {
-            Mulity,//路径下每个资源单独打ab
-            Single,//路径下所有资源打成一个ab
+            Mulity,//包体下每个资源单独打ab
+            Single,//包体下所有资源打成一个ab
+            MulitySingle,//按文件夹打包
         }
 
         public BundleBuildType bundleBuildType;
@@ -35,22 +30,25 @@ namespace GameFrameWork.Editor
         public string bundleExtend;
         public string pattern;
         public string assetPath;
+        public List<string> assetPaths;
 
         public override int CompareTo(object obj)
         {
             AssetBundleData data = obj as AssetBundleData;
-            return string.Compare(this.assetPath, data.assetPath);
+            return string.Compare(this.bundleName, data.bundleName);
         }
 
         public AssetBundleData Clone()
         {
-            AssetBundleData data = new AssetBundleData();
-            data.bundleBuildType = this.bundleBuildType;
-            data.bundleName = this.bundleName;
-            data.bundleExtend = this.bundleExtend;
-            data.pattern = this.pattern;
-            data.assetPath = this.assetPath;
-
+            AssetBundleData data = new()
+            {
+                bundleBuildType = bundleBuildType,
+                bundleName = bundleName,
+                bundleExtend = bundleExtend,
+                pattern = pattern,
+                assetPath = assetPath,
+                assetPaths = assetPaths != null ? new(assetPaths) : null,
+            };
             return data;
         }
     }

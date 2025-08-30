@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PreIsDefense : PreCondition
 {
-    public PreIsDefense(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsDefense(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
         m_Owner.onHurtEvent += OnHurtEvent;
     }
 
@@ -55,5 +55,5 @@ public class PreIsDefense : PreCondition
 
     private float m_HurtTimer = -1;
     private bool m_IsDefense = false;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
 }

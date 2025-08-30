@@ -10,14 +10,6 @@ namespace GameFrameWork.BehaviourTree
 
     public abstract class Node
     {
-        public string name
-        {
-            get
-            {
-                return m_Name;
-            }
-        }
-
         public int id
         {
             get
@@ -42,9 +34,16 @@ namespace GameFrameWork.BehaviourTree
             }
         }
 
-        public Node(string name, int id, object owner, int priority, string args)
+        public string args
         {
-            m_Name = name;
+            get
+            {
+                return m_Args;
+            }
+        }
+
+        public Node(int id, object owner, int priority, string args)
+        {
             m_ID = id;
             m_Owner = owner;
             m_Priority = priority;
@@ -85,8 +84,6 @@ namespace GameFrameWork.BehaviourTree
         public void Destroy()
         {
             OnDestroy();
-
-            m_Name = string.Empty;
             m_Args = string.Empty;
             m_Owner = null;
         }
@@ -105,12 +102,10 @@ namespace GameFrameWork.BehaviourTree
         protected virtual void OnDestroy() { }
         protected virtual void OnReset() { }
 
-        protected string m_Name = string.Empty;
-        protected int m_ID = 0;
-        protected object m_Owner = null;
-        protected int m_Priority = 0;
-        protected string m_Args = string.Empty;
-
+        private int m_ID = 0;
+        private object m_Owner = null;
+        private int m_Priority = 0;
+        private string m_Args = string.Empty;
         private bool m_HasEnter = false;
     }
 }

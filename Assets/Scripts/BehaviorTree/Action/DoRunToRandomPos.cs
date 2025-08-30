@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoRunToRandomPos : Action
 {
-    public DoRunToRandomPos(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoRunToRandomPos(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
     }
 
     public override BehaviourTreeState Excute()
@@ -69,6 +69,6 @@ public class DoRunToRandomPos : Action
     }
 
     private Vector2 m_RandomPos = Vector2.zero;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

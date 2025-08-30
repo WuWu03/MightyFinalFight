@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class DoRoundMap : Action
 {
-    public DoRoundMap(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoRoundMap(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
         m_ListPos = new List<Vector2>();
     }
 
@@ -115,5 +115,5 @@ public class DoRoundMap : Action
     private int m_CurrIndex = 0;
     private List<Vector2> m_ListPos = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
-    protected new BaseEnemy m_Owner = null;
+    protected BaseEnemy m_Owner = null;
 }

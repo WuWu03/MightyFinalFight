@@ -23,17 +23,9 @@ public class RoleHurt : BaseFsmState
 
     protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (m_Owner.IsPlayComplete())
+        if (m_Owner.IsCurrAnimationComplete())
         {
-            if (m_Owner.entityAttribute.health <= 0)
-            {
-                m_HurtTimer = -1f;
-                if (m_Owner.isInGround)
-                {
-                    ChangeState<RoleDead>(fsm);
-                }
-            }
-            else if (m_HurtTimer < 0)
+            if (m_HurtTimer < 0)
             {
                 m_HurtTimer = Time.time + (m_Owner.objectType == ObjectType.Player ? 0f : -0.3f);
             }

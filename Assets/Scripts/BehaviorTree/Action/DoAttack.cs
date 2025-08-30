@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoAttack : Action
 {
-    public DoAttack(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoAttack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
         m_Regex = new(@"(AttackTime:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
@@ -55,7 +55,7 @@ public class DoAttack : Action
             m_IsAttacking = true;
         }
 
-        if (m_Owner.IsPlayComplete())
+        if (m_Owner.IsCurrAnimationComplete())
         {
             if (m_AttackTimer < 0)
             {
@@ -88,12 +88,10 @@ public class DoAttack : Action
 
     protected int m_CurrAttackCount = 0;
     protected int m_AttackCount = 0;
-    protected new BaseEnemy m_Owner = null;
+    protected BaseEnemy m_Owner = null;
     protected bool m_IsRandomAttckCount = false;
-
     private float m_AttackTimer = -1f;
     private bool m_IsAttacking = false;
-
     private Regex m_Regex = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

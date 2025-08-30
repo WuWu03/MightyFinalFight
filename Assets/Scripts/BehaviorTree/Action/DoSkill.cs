@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 public class DoSkill : Action
 {
-    public DoSkill(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoSkill(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
         m_Regex = new(@"(SkillId:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
@@ -61,6 +61,6 @@ public class DoSkill : Action
     private int m_SkllId = 0;
     private bool m_HasDeploy = false;
     private Regex m_Regex = null;
-    private new BaseEnemy m_Owner = null;
+    private BaseEnemy m_Owner = null;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

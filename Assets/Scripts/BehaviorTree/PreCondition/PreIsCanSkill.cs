@@ -2,9 +2,9 @@ using GameFrameWork.BehaviourTree;
 
 public class PreIsCanSkill : PreCondition
 {
-    public PreIsCanSkill(string name, int id, object owner, int priority, bool isAndCondiont, string args) : base(name, id, owner, priority, isAndCondiont, args)
+    public PreIsCanSkill(int id, object owner, int priority, bool isAndCondiont, string args) : base(id, owner, priority, isAndCondiont, args)
     {
-        m_Owner = base.m_Owner as BaseRole;
+        m_Owner = owner as BaseRole;
     }
 
     protected override bool OnCheckPreCondition()
@@ -12,5 +12,5 @@ public class PreIsCanSkill : PreCondition
         return m_Owner.canSkill || m_Owner.IsCurrState<RoleSkill>();
     }
 
-    private new BaseRole m_Owner = null;
+    private BaseRole m_Owner = null;
 }

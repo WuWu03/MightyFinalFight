@@ -2,9 +2,9 @@ using GameFrameWork.BehaviourTree;
 
 public class DoDefense : Action
 {
-    public DoDefense(string name, int id, object owner, int priority, string args) : base(name, id, owner, priority, args)
+    public DoDefense(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = base.m_Owner as BaseEnemy;
+        m_Owner = owner as BaseEnemy;
     }
 
     protected override void OnEnter()
@@ -19,5 +19,5 @@ public class DoDefense : Action
         return BehaviourTreeState.Success;
     }
 
-    protected new BaseEnemy m_Owner = null;
+    protected BaseEnemy m_Owner = null;
 }

@@ -19,7 +19,7 @@ public class BarrelDead : BaseFsmState
 
     protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaleDeltaTime)
     {
-        if (m_Owner.IsPlayComplete())
+        if (m_Owner.IsCurrAnimationComplete())
         {
             m_Owner.Release();
         }

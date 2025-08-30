@@ -100,6 +100,7 @@ public class BaseGravityObject : BaseBoundObject
 
     public void AddForce(Vector2 force, bool isAddGroundForce = false)
     {
+        Debug.Log(name + " 我开始增加力了 " + force);
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.AddForce(force);
         m_IsAddGroundForce = isAddGroundForce;
@@ -147,10 +148,10 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.gravityScale = 0.8f;
         m_Rigidbody2D.linearDamping = 0;
         m_Rigidbody2D.angularDamping = 0;
-      
+
         if (changBodyType)
         {
-            if(m_Rigidbody2D.bodyType != RigidbodyType2D.Static)
+            if (m_Rigidbody2D.bodyType != RigidbodyType2D.Static)
             {
                 m_Rigidbody2D.angularVelocity = 0;
                 m_Rigidbody2D.linearVelocity = Vector2.zero;

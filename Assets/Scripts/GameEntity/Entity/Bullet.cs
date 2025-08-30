@@ -44,7 +44,7 @@ public class Bullet : BaseAvatar
         {
             if (m_IsHit)
             {
-                if (IsPlayComplete())
+                if (IsAllAnimationComplete())
                 {
                     Release();
                     return;
