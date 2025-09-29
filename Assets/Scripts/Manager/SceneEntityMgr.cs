@@ -1,9 +1,7 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SceneEntityMgr : BaseMgr<SceneEntityMgr>

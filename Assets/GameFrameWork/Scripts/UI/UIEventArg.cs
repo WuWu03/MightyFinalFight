@@ -15,7 +15,16 @@ namespace GameFrameWork.UI
         public float floatArg { get; private set; }
         public double doubleArg { get; private set; }
         public bool boolArg { get; private set; }
+        public string stringArg { get; private set; }
         public object objectArg { get; private set; }
+
+        public static UIEventArg<T> Create(GameFrameWorkAction<GameObject, T> call)
+        {
+            UIEventArg<T> uiEventArg = ReferencePool.Acquire<UIEventArg<T>>();
+            uiEventArg.argType = null;
+            uiEventArg.call = call;
+            return uiEventArg;
+        }
 
         public static UIEventArg<T> Create(GameFrameWorkAction<GameObject, T, byte> call, byte arg)
         {
@@ -80,6 +89,15 @@ namespace GameFrameWork.UI
             return uiEventArg;
         }
 
+        public static UIEventArg<T> Create(GameFrameWorkAction<GameObject, T, string> call, string arg)
+        {
+            UIEventArg<T> uiEventArg = ReferencePool.Acquire<UIEventArg<T>>();
+            uiEventArg.argType = typeof(string);
+            uiEventArg.call = call;
+            uiEventArg.stringArg = arg;
+            return uiEventArg;
+        }
+
         public static UIEventArg<T> Create(GameFrameWorkAction<GameObject, T, object> call, object arg)
         {
             UIEventArg<T> uiEventArg = ReferencePool.Acquire<UIEventArg<T>>();
@@ -99,6 +117,7 @@ namespace GameFrameWork.UI
             floatArg = 0;
             doubleArg = 0;
             boolArg = false;
+            stringArg = null;
             objectArg = null;
         }
     }

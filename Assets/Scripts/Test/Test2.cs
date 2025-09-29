@@ -1,49 +1,29 @@
-using GameFrameWork;
 using GameFrameWork.UI;
-using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Test2 : MonoBehaviour
 {
-    public GuideMaskImage mask;
-    public RectTransform target;
-    public Button btn;
-    interface IB
+    public ButtonEx e;
+    private void Awake()
     {
-        public void Updatee();
-    }
-    class A : IReference
-    {
-        public A()
-        {
-            Debug.Log("草泥马");
-        }
-
-        public void Clear()
-        {
-            
-        }
-
-        public void Release()
-        {
-            throw new NotImplementedException();
-        }
+        e.onPress.AddListener(OnPress, 0);
+        e.onClick.AddListener(OnClick, 1);
+        e.onDoubleClick.AddListener(OnDoubleClick, 2);
     }
 
-
-    private void Update()
+    private void OnPress(GameObject t1, PointerEventData t2, int arg)
     {
-        A a1 = ReferencePool.Acquire<A>();
-        ReferencePool.Release(a1);
+        Debug.Log("OnClick" + arg);
+    }
 
-        //mask.SetTarget(target, 200f, 200f,GuideMaskImage.MaskType.Circle);
+    private void OnClick(GameObject t1, PointerEventData t2, int arg)
+    {
+        Debug.Log("OnClick" + arg);
+    }
 
-        //btn.onClick.AddListener(() =>
-        //{
-        //    Debug.Log("穿透了");
-        //});
-
-        //mask._targetBoundsMax = 
+    private void OnDoubleClick(GameObject t1, PointerEventData t2, int arg)
+    {
+        Debug.Log("OnClick" + arg);
     }
 }

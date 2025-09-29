@@ -14,7 +14,7 @@ public class HudPanel : BasePanel<HudPanelComponent, HudPanelSettings>
 {
     protected override void OnInit(object arg)
     {
-        GameObjectPoolMgr.instance.AddPool(m_DamageText, m_Component.txtDamageGO);
+        GameObjectPoolMgr.instance.AddPool(m_DamageText, component.txtDamageGO);
     }
 
     protected override void OnOpen()

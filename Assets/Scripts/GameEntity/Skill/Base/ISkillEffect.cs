@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-
-public interface ISkillEffect
+﻿public interface ISkillEffect
 {
     bool isCompleted { get; }
     void Effect(ISkillSelector selector);

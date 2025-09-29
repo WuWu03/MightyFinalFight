@@ -6,9 +6,6 @@
 //===================================================
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using LitJson;
-using System;
-using System.Collections;
 using UnityEngine;
 
 /// <summary>

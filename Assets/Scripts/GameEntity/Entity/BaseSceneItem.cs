@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class BaseSceneItem : BaseGravityObject
 {
     public BaseRole owner

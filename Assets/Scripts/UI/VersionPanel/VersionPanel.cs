@@ -38,41 +38,41 @@ public class VersionPanel : BasePanel<VersionPanelComponent, VersionPanelSetting
             case VersionProcessState.DontCheckVersion:
                 break;
             case VersionProcessState.CheckVersion:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelCheckVersion");
+                component.txtVersion.SetLanguageTextKey("VersionPanelCheckVersion");
                 break;
             case VersionProcessState.CheckVersionUriError:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
+                component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
                 break;
             case VersionProcessState.CheckVersionFileError:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
+                component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
                 break;
             case VersionProcessState.CheckVersionComplete:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionComplete");
+                component.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionComplete");
                 break;
             case VersionProcessState.VersionAnalyze:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyze");
+                component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyze");
                 break;
             case VersionProcessState.VersionAnalyzeError:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeError");
+                component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeError");
                 break;
             case VersionProcessState.VersionAnalyzeComplete:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeComplete");
+                component.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeComplete");
                 break;
             case VersionProcessState.DownloadFiles:
                 string downloadSizeText = StringUtil.FormatFileSize(downloadSize);
                 string downloadFullSizeText = StringUtil.FormatFileSize(downloadFullSize);
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelDownloadFiles");
-                m_Component.txtVersion.SetLanguageTextParams(downloadSizeText, downloadFullSizeText);
+                component.txtVersion.SetLanguageTextKey("VersionPanelDownloadFiles");
+                component.txtVersion.SetLanguageTextParams(downloadSizeText, downloadFullSizeText);
                 break;
             case VersionProcessState.DownloadFilesError:
-                m_Component.txtVersion.SetLanguageTextKey("VersionPanelDownloadFilesError");
+                component.txtVersion.SetLanguageTextKey("VersionPanelDownloadFilesError");
                 break;
             case VersionProcessState.DownloadFilesComplete:
                 break;
             case VersionProcessState.Success:
                 break;
             case VersionProcessState.Error:
-                m_Component.txtVersion.SetText(info);
+                component.txtVersion.SetText(info);
                 break;
         }
     }

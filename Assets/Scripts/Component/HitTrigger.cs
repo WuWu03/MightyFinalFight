@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
-public class TriggerData
+public class TriggerDatum
 {
     public string animName;
     public Vector2[] offestList;
@@ -12,19 +10,23 @@ public class TriggerData
 
 public class HitTrigger : MonoBehaviour
 {
-    public TriggerData GetTriggerData(string animName)
+    public TriggerDatum GetTriggerData(string animName)
     {
-        if (TriggerDatas == null) return null;
-        for (int i = 0; i < TriggerDatas.Length; i++)
+        if (triggerData == null)
         {
-            if (TriggerDatas[i].animName.Equals(animName))
+            return null;
+        }
+
+        foreach (var triggerDatum in triggerData)
+        {
+            if (triggerDatum.animName.Equals(animName))
             {
-                return TriggerDatas[i];
+                return triggerDatum;
             }
         }
 
         return null;
     }
 
-    public TriggerData[] TriggerDatas = null;
+    public TriggerDatum[] triggerData = null;
 }

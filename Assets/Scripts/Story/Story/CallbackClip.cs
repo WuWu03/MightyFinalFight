@@ -1,5 +1,4 @@
 using GameFrameWork;
-using UnityEngine;
 
 public class CallbackClip : BaseClip
 {

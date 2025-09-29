@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class TaskBreakBarrel : BaseTask
+﻿public class TaskBreakBarrel : BaseTask
 {
     public TaskBreakBarrel(TaskConfigData data) : base(data) { }
     public override bool CheckCondition()

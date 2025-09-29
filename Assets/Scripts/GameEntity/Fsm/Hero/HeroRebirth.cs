@@ -1,7 +1,6 @@
 using GameFrameWork.Fsm;
 using GameFrameWork.Camera;
 using UnityEngine;
-using GameFrameWork;
 
 public class HeroRebirth : BaseFsmState
 {

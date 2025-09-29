@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class UIFrameEffect : MonoBehaviour
 {
@@ -25,14 +23,14 @@ public class UIFrameEffect : MonoBehaviour
     private void OnEnable()
     {
         m_FrameIndex = 0;
-        m_FramteTimer = 0;
+        m_FrameTimer = 0;
         m_ImgSprite.sprite = sprites[0];
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (m_IsStop || sprites == null || sprites.Length < 1)
+        if (!m_IsPlaying || sprites == null || sprites.Length < 1)
         {
             return;
         }
@@ -47,29 +45,31 @@ public class UIFrameEffect : MonoBehaviour
             m_FrameIndex = -1;
         }
 
-        m_FramteTimer += Time.deltaTime;
+        m_FrameTimer += Time.deltaTime;
 
-        if(m_FramteTimer >= m_PreFrameTime)
+        if (m_FrameTimer < m_PreFrameTime)
         {
-            m_FramteTimer = 0;
-            m_FrameIndex++;
-            m_ImgSprite.sprite = sprites[m_FrameIndex];
+            return;
         }
+        
+        m_FrameTimer = 0;
+        m_FrameIndex++;
+        m_ImgSprite.sprite = sprites[m_FrameIndex];
     }
 
     public void StartFrame()
     {
-        m_IsStop = false;
+        m_IsPlaying = false;
     }
 
     public void StopFrame()
     {
-        m_IsStop = true;
+        m_IsPlaying = true;
     }
 
-    private bool m_IsStop = false;
+    private bool m_IsPlaying = false;
     private float m_PreFrameTime = 0;
-    private float m_FramteTimer = 0;
+    private float m_FrameTimer = 0;
     private int m_FrameIndex = 0;
     private Image m_ImgSprite = null;
 }

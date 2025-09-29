@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using GameFrameWork.Serialize;
 
 namespace GameFrameWork.Editor

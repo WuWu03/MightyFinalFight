@@ -1,5 +1,4 @@
-﻿using SRDebugger.Internal;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SRDebugger
 {

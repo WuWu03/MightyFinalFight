@@ -16,14 +16,14 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
     protected override void OnInit(object arg)
     {
         m_TalkId = int.Parse(arg.ToString());
-        m_Component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;
-        m_Component.talkSelectGroupView.onItemSelectEvent += OnItemSelectEvent;
+        component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;
+        component.talkSelectGroupView.onItemSelectEvent += OnItemSelectEvent;
     }
 
     protected override void OnOpen()
     {
-        m_Component.talkSelect.SetActiveSelf(false);
-        m_Component.talkSelectGroupView.SelectItem(0);
+        component.talkSelect.SetActiveSelf(false);
+        component.talkSelectGroupView.SelectItem(0);
         PlayTalk();
     }
 
@@ -33,7 +33,7 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
         {
             if (!m_IsComplete)
             {
-                m_Component.txtContent.DOComplete();
+                component.txtContent.DOComplete();
             }
             else
             {
@@ -42,7 +42,7 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
                 if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
                 {
                     m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
-                    m_Component.talkSelect.SetActiveSelf(false);
+                    component.talkSelect.SetActiveSelf(false);
                 }
                 else
                 {
@@ -84,8 +84,8 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
 
     protected override void OnDestroy()
     {
-        m_Component.talkSelectGroupView.onItemUpdateEvent -= OnItemUpdateEvent;
-        m_Component.talkSelectGroupView.onItemSelectEvent -= OnItemSelectEvent;
+        component.talkSelectGroupView.onItemUpdateEvent -= OnItemUpdateEvent;
+        component.talkSelectGroupView.onItemSelectEvent -= OnItemSelectEvent;
     }
 
     private void PlayTalk()
@@ -100,22 +100,22 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
         }
 
         string content = LocalizationMgr.instance.GetLanguageText(talkConfigData.content);
-        m_Component.txtContent.text = string.Empty;
+        component.txtContent.text = string.Empty;
 
-        m_Component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(() =>
+        component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(() =>
         {
             m_IsComplete = true;
-            m_Component.languageContent.SetLanguageTextKey(talkConfigData.content);
+            component.languageContent.SetLanguageTextKey(talkConfigData.content);
 
             if (talkConfigData.talkSelect != null && talkConfigData.talkSelect.Length > 0)
             {
-                m_Component.talkSelect.SetActiveSelf(true);
-                m_Component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
-                m_Component.talkSelectGroupView.SelectItem(0);
+                component.talkSelect.SetActiveSelf(true);
+                component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
+                component.talkSelectGroupView.SelectItem(0);
             }
             else
             {
-                m_Component.talkSelect.SetActiveSelf(false);
+                component.talkSelect.SetActiveSelf(false);
 
                 if (talkConfigData.nextTalkId == 0)
                 {
@@ -158,7 +158,7 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
             select = 0;
         }
 
-        m_Component.talkSelectGroupView.SelectItem(select);
+        component.talkSelectGroupView.SelectItem(select);
     }
 
     private void SelectPrevious()
@@ -177,7 +177,7 @@ public class TalkPanel : BasePanel<TalkPanelComponent, TalkPanelSettings>
             select = talkConfigData.talkSelect.Length - 1;
         }
 
-        m_Component.talkSelectGroupView.SelectItem(select);
+        component.talkSelectGroupView.SelectItem(select);
     }
 
     private bool m_IsComplete = false;

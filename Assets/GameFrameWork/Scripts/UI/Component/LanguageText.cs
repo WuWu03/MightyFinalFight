@@ -1,6 +1,3 @@
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using GameFrameWork.Localization;
 using GameFrameWork.Utils;
 using TMPro;

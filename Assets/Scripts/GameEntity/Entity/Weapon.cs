@@ -128,11 +128,11 @@ public class Weapon : BaseSceneItem
             return;
         }
 
-        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
+        TriggerDatum triggerDatum = m_HitTrigger.GetTriggerData(animName);
 
-        if (triggerData != null)
+        if (triggerDatum != null)
         {
-            SetCollider(triggerData.offestList[frameIndex], triggerData.sizeList[frameIndex]);
+            SetCollider(triggerDatum.offestList[frameIndex], triggerDatum.sizeList[frameIndex]);
         }
     }
 

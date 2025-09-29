@@ -1,7 +1,5 @@
 
 
-using UnityEngine;
-
 public class TaskTriggerChangeScene : BaseTaskTrigger
 {
     public TaskTriggerChangeScene(TaskConfigData data) : base(data) { }

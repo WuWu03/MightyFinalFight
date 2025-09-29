@@ -15,12 +15,12 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 {
 	protected override void OnInit(object arg)
 	{
-        m_Component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
+        component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
     }
 
 	protected override void OnOpen()
 	{
-		m_Component.enemyHpBar.SetActiveSelf(false);
+		component.enemyHpBar.SetActiveSelf(false);
 		SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
 		SetRound(StageMgr.instance.currStageData.StageIndex);
 		SetPlayerLife(PlayerMgr.instance.life);
@@ -38,7 +38,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 	{
 		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ConstField.EnemyHPBarHideTime)
 		{
-			m_Component.enemyHpBar.gameObject.SetActiveSelf(false);
+			component.enemyHpBar.gameObject.SetActiveSelf(false);
 			m_EnemyHpBarHideTimer = -1;
 		}
 	}
@@ -50,7 +50,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	protected override void OnDestroy()
 	{
-        m_Component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
+        component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
     }
 
 	private void OnLevelItemUpdate(MainPanelComponent.LevelListItem item)
@@ -68,11 +68,11 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 	{
 		if (width != 0)
 		{
-			m_Component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+			component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
 		}
 
-		m_Component.playerHpBar.maxValue = max;
-		m_Component.playerHpBar.value = value;
+		component.playerHpBar.maxValue = max;
+		component.playerHpBar.value = value;
 	}
 
 	public void SetEnemyHP(int value, int max, float width)
@@ -82,12 +82,12 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 			return;
 		}
 
-		m_Component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		m_Component.enemyHpBar.maxValue = max;
-		m_Component.enemyHpBar.value = value;
-		m_Component.enemyHpBar.gameObject.SetActiveSelf(true);
+		component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
+		component.enemyHpBar.maxValue = max;
+		component.enemyHpBar.value = value;
+		component.enemyHpBar.gameObject.SetActiveSelf(true);
 
-		Image image = m_Component.enemyHpBar.GetComponent<Image>();
+		Image image = component.enemyHpBar.GetComponent<Image>();
 		image.DOFade(1, 0);
 
 		if (value == 0)
@@ -102,7 +102,7 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 			}
 			sequence.AppendCallback(() =>
 			{
-				m_Component.enemyHpBar.gameObject.SetActiveSelf(false);
+				component.enemyHpBar.gameObject.SetActiveSelf(false);
 				m_IsEnemyHpBarAnim = false;
 			});
 			return;
@@ -113,24 +113,24 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 
 	public void SetRound(int round)
 	{
-		m_Component.txtStage.text = round.ToString();
+		component.txtStage.text = round.ToString();
 	}
 
 	public void SetPlayerLife(int life)
 	{
-		m_Component.txtPlayerLife.text = life.ToString();
+		component.txtPlayerLife.text = life.ToString();
 	}
 
 	public void SetPlayerExp(int currExp, int maxExp)
 	{
 		string currExpStr = GetExpStr(currExp);
 		string maxExpStr = GetExpStr(maxExp);
-		m_Component.txtExp.text = StringUtil.Append(currExpStr, "/", maxExpStr);
+		component.txtExp.text = StringUtil.Append(currExpStr, "/", maxExpStr);
 	}
 
 	public void SetPlayerLevel()
 	{
-		m_Component.levelListGroupView.Update(5);
+		component.levelListGroupView.Update(5);
 	}
 
 	private string GetExpStr(int exp)
@@ -141,9 +141,9 @@ public class MainPanel : BasePanel<MainPanelComponent, MainPanelSettings>
 	private void SetColor()
 	{
         Color color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
-		m_Component.playerHpBarImage.color = color;
-		m_Component.enemyHpBarImage.color = color;
-		m_Component.levelListGroupView.Update(5);
+		component.playerHpBarImage.color = color;
+		component.enemyHpBarImage.color = color;
+		component.levelListGroupView.Update(5);
 	}
 
 	private bool m_IsEnemyHpBarAnim = false;

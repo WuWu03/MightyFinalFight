@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class SkillBaseEffect : SkillBase, ISkillEffect
+﻿public abstract class SkillBaseEffect : SkillBase, ISkillEffect
 {
     public SkillBaseEffect(SkillBaseDeployer deployer, SkillConfigData skillData, BaseRole owner, int effectIndex) : base(skillData, owner, effectIndex)
     {

@@ -1,6 +1,4 @@
 using GameFrameWork.Fsm;
-using System;
-using UnityEngine;
 
 public class BarrelDrop : BaseFsmState
 {

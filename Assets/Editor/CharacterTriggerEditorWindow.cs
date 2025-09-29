@@ -64,13 +64,13 @@ public class CharacterTriggerEditorWindow : EditorWindow
             }
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
-            m_TriggerDatas = new TriggerData[m_CurrDB.animation.animationNames.Count];
-            TriggerData[] currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas;
+            m_TriggerDatas = new TriggerDatum[m_CurrDB.animation.animationNames.Count];
+            TriggerDatum[] currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData;
 
             if(currTriggerDatas == null)
             {
-                m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas = new TriggerData[0];
-                currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().TriggerDatas;
+                m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData = new TriggerDatum[0];
+                currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData;
             }
 
             int dbIndex = 0;
@@ -101,7 +101,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
                 if (m_TriggerDatas[i] == null || !m_TriggerDatas[i].animName.Equals(m_CurrDB.animation.animationNames[i]))
                 {
-                    m_TriggerDatas[i] = new TriggerData()
+                    m_TriggerDatas[i] = new TriggerDatum()
                     {
                         animName = animationName,
                         offestList = new Vector2[animationFrameCount],
@@ -122,7 +122,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
                     string animationName = m_CurrDB.animation.animationNames[i];
                     int animationFrameCount = GetFrameCount(animationName);
 
-                    m_TriggerDatas[i] = new TriggerData()
+                    m_TriggerDatas[i] = new TriggerDatum()
                     {
                         animName = animationName,
                         offestList = new Vector2[animationFrameCount],
@@ -147,7 +147,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
             return;
         }
 
-        if (m_CurrTriggerData == null)
+        if (m_CurrTriggerDatum == null)
         {
             return;
         }
@@ -178,10 +178,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
             if (GUILayout.Button("粘贴全部"))
             {
-                for (int i = 0; i < m_CurrTriggerData.offestList.Length; i++)
+                for (int i = 0; i < m_CurrTriggerDatum.offestList.Length; i++)
                 {
-                    m_CurrTriggerData.offestList[i] = m_CopyOffest;
-                    m_CurrTriggerData.sizeList[i] = m_CopySize;
+                    m_CurrTriggerDatum.offestList[i] = m_CopyOffest;
+                    m_CurrTriggerDatum.sizeList[i] = m_CopySize;
                 }
 
                 m_CurrCollider.size = m_CopySize;
@@ -213,10 +213,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
         if (GUILayout.Button("保存设置"))
         {
-            m_CurrTriggerData.offestList[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
-            m_CurrTriggerData.sizeList[m_CurrAnimFrame - 1] = m_CurrCollider.size;
+            m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
+            m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1] = m_CurrCollider.size;
 
-            m_CurrDB.GetComponent<HitTrigger>().TriggerDatas = m_TriggerDatas;
+            m_CurrDB.GetComponent<HitTrigger>().triggerData = m_TriggerDatas;
             Component.DestroyImmediate(m_CurrCollider);
 
             PrefabUtility.SaveAsPrefabAsset(m_CurrDB.gameObject, AssetDatabase.GetAssetPath(m_CurrSelectObj), out bool isSuccess);
@@ -227,18 +227,18 @@ public class CharacterTriggerEditorWindow : EditorWindow
             }
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
-            m_CurrCollider.size = m_CurrTriggerData.sizeList[m_CurrAnimFrame - 1];
-            m_CurrCollider.offset = m_CurrTriggerData.offestList[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
         }
 
         if (GUILayout.Button("恢复初始"))
         {
-            m_CurrCollider.offset = m_CurrTriggerData.offestList[m_CurrAnimFrame - 1];
-            m_CurrCollider.size = m_CurrTriggerData.sizeList[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
         }
     }
 
-    private TriggerData GetTriggerData(string name)
+    private TriggerDatum GetTriggerData(string name)
     {
         for (int i = 0; i < m_TriggerDatas.Length; i++)
         {
@@ -253,20 +253,20 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
     private void OnItemSelect()
     {
-        m_CurrTriggerData = GetTriggerData(m_CurrAnimName);
+        m_CurrTriggerDatum = GetTriggerData(m_CurrAnimName);
 
-        if (m_CurrTriggerData != null)
+        if (m_CurrTriggerDatum != null)
         {
-            if (m_CurrTriggerData.sizeList[m_CurrAnimFrame - 1] != Vector2.zero)
+            if (m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1] != Vector2.zero)
             {
-                m_CurrCollider.size = m_CurrTriggerData.sizeList[m_CurrAnimFrame - 1];
+                m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
             }
             else
             {
                 m_CurrCollider.size = Vector2.one;
             }
 
-            m_CurrCollider.offset = m_CurrTriggerData.offestList[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
         }
 
         m_CurrDB.animation.GotoAndStopByFrame(m_CurrAnimName, (uint)(m_CurrAnimFrame - 1));
@@ -289,10 +289,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
     private UnityEngine.Object m_CurrSelectObj = null;
     private UnityArmatureComponent m_CurrDB = null;
     private BoxCollider2D m_CurrCollider = null;
-    private TriggerData m_CurrTriggerData = null;
+    private TriggerDatum m_CurrTriggerDatum = null;
     private string m_CurrAnimName = string.Empty;
     private Vector2 scroll = Vector2.zero;
     private Vector2 m_CopyOffest = Vector2.zero;
     private Vector2 m_CopySize = Vector2.zero;
-    private TriggerData[] m_TriggerDatas = null;
+    private TriggerDatum[] m_TriggerDatas = null;
 }

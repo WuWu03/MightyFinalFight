@@ -5,12 +5,27 @@ using UnityEngine;
 
 namespace GameFrameWork.UI
 {
-    public abstract class BasePanel<T, P> : IPanel where T : BasePanelComponent, new() where P : BasePanelSettings, new()
+    public abstract class BasePanel<C, S> : IPanel where C : BasePanelComponent, new() where S : BasePanelSettings, new()
     {
-        public GameObject gameObject { get; private set; }
+        private GameObject m_GameObject;
+        public GameObject gameObject
+        {
+            get
+            {
+                return m_GameObject;
+            } 
+        }
+        
+        private Transform m_Transform;
+        public Transform transform
+        {
+            get
+            {
+                return m_Transform;
+            }
+        }
 
-        public Transform transform { get; private set; }
-
+        private BasePanelSettings m_Settings;
         public BasePanelSettings settings
         {
             get
@@ -19,7 +34,7 @@ namespace GameFrameWork.UI
             }
         }
 
-
+        private string m_AssetPath;
         public string assetPath
         {
             get
@@ -27,7 +42,8 @@ namespace GameFrameWork.UI
                 return m_AssetPath;
             }
         }
-
+        
+        private bool m_IsOpen = false;
         public bool isOpen
         {
             get
@@ -35,7 +51,8 @@ namespace GameFrameWork.UI
                 return m_IsOpen;
             }
         }
-
+        
+        private bool m_IsInit;
         public bool isInit
         {
             get
@@ -44,6 +61,16 @@ namespace GameFrameWork.UI
             }
         }
 
+        private bool m_IsHide;
+        public bool isHide
+        {
+            get
+            {
+                return m_IsHide;
+            }
+        }
+        
+        private float m_DelayTime;
         public float delayTime
         {
             get
@@ -51,24 +78,38 @@ namespace GameFrameWork.UI
                 return m_DelayTime;
             }
         }
-
-        public BasePanel()
+        
+        private C m_Component;
+        protected C component
         {
-            m_Settings = new P();
-            m_Component = new T();
+            get
+            {
+                return m_Component;
+            }
+        }
+        
+        private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = new();
+        
+        protected BasePanel()
+        {
+            m_AssetPath = string.Empty;
+            m_IsOpen = false;
+            m_IsInit = false;
+            m_DelayTime = 0f;
+            m_IsHide = false;
+            m_Settings = new S();
+            m_Component = new C();
         }
 
         public void Init(GameObject uiGameObject, string assetPath, object arg)
         {
-            gameObject = uiGameObject;
-            transform = gameObject.transform;
+            m_GameObject = uiGameObject;
+            m_Transform = gameObject.transform;
             m_AssetPath = assetPath;
-            m_DicHandler = new Dictionary<int, List<EventHandler<GameEventArgs>>>();
-
             m_Component.InitComponent(gameObject.GetComponent<UIRefRoot>());
-            gameObject.SetLayer(LayerName.UI);
-            transform.SetParent(UIMgr.instance.GetPanelLayer(m_Settings.panelLayer), false);
-
+            m_GameObject.SetLayer(LayerName.UI);
+            m_Transform.SetParent(UIMgr.instance.GetPanelLayer(settings.panelLayer), false);
+            
             OnInit(arg);
             m_IsInit = true;
             Open();
@@ -78,7 +119,7 @@ namespace GameFrameWork.UI
         {
             m_IsOpen = true;
             m_DelayTime = 0;
-            gameObject.SetActiveSelf(!m_IsHide);
+            m_GameObject.SetActiveSelf(!m_IsHide);
             OnOpen();
         }
 
@@ -114,7 +155,7 @@ namespace GameFrameWork.UI
 
             m_IsHide = false;
 
-            if (gameObject != null)
+            if (gameObject is not null)
             {
                 gameObject.SetActiveSelf(true);
             }
@@ -129,7 +170,7 @@ namespace GameFrameWork.UI
 
             m_IsHide = true;
 
-            if (gameObject != null)
+            if (gameObject is not null)
             {
                 gameObject.SetActiveSelf(false);
             }
@@ -199,7 +240,6 @@ namespace GameFrameWork.UI
         protected abstract void OnUpdate();
         protected abstract void OnClose();
         protected abstract void OnDestroy();
-
         protected virtual void OnJoyStickUp() { }
         protected virtual void OnJoyStickLeft() { }
         protected virtual void OnJoyStickDown() { }
@@ -208,16 +248,5 @@ namespace GameFrameWork.UI
         protected virtual void OnButtonB() { }
         protected virtual void OnButtonX() { }
         protected virtual void OnButtonY() { }
-
-        private bool m_IsOpen = false;
-        private bool m_IsInit = false;
-        private bool m_IsHide = false;
-        private float m_DelayTime = 0f;
-        private string m_AssetPath = string.Empty;
-
-        private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = null;
-        private BasePanelSettings m_Settings = null;
-
-        protected T m_Component = null;
     }
 }

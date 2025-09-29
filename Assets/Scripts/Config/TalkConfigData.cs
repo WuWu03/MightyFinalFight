@@ -7,9 +7,6 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
 using LitJson;
-using System;
-using System.Collections;
-using UnityEngine;
 
 /// <summary>
 /// Talk.xlsx数据表

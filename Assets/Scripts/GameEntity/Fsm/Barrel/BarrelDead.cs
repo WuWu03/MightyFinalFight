@@ -1,6 +1,5 @@
 using GameFrameWork;
 using GameFrameWork.Fsm;
-using UnityEngine;
 
 public class BarrelDead : BaseFsmState
 {

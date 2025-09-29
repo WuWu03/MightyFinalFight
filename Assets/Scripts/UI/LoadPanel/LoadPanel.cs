@@ -48,9 +48,9 @@ public class LoadPanel : BasePanel<LoadPanelComponent, LoadPanelSettings>
 
         m_IsFading = true;
         m_OnComplete = fadeInfo.onComplete;
-        m_Component.imgShade.DOKill();
-        m_Component.imgShade.color = new Color(0, 0, 0, fadeInfo.from);
-        m_Component.imgShade.DOFade(fadeInfo.to, fadeInfo.duration).SetDelay(fadeInfo.delay).OnComplete(OnFadeComplete);
+        component.imgShade.DOKill();
+        component.imgShade.color = new Color(0, 0, 0, fadeInfo.from);
+        component.imgShade.DOFade(fadeInfo.to, fadeInfo.duration).SetDelay(fadeInfo.delay).OnComplete(OnFadeComplete);
         fadeInfo.Release();
     }
 

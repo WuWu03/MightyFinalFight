@@ -33,7 +33,7 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
         {
             if (InputMgr.instance.GetKeyDown(KeyType.Start))
             {
-                m_Component.txtIntroTmp.DOKill(true);
+                component.txtIntroTmp.DOKill(true);
                 m_AnimSequence.Kill();
                 m_AnimSequence = DOTween.Sequence();
                 StartAnim();
@@ -67,14 +67,14 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
     {
         if (InputMgr.instance.isJoystickInput)
         {
-            m_Component.txtStart.Append("(START)");
-            m_Component.txtSettings.Append("(SELECT)");
+            component.txtStart.Append("(START)");
+            component.txtSettings.Append("(SELECT)");
 
         }
         else
         {
-            m_Component.txtStart.Append("(G)");
-            m_Component.txtSettings.Append("(H)");
+            component.txtStart.Append("(G)");
+            component.txtSettings.Append("(H)");
         }
     }
 
@@ -94,40 +94,40 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
     {
         m_CanStart = false;
         m_CanSkipOpening = false;
-        m_Component.imgCapcom.color = new Color(1, 1, 1, 0);
-        m_Component.txtDeveloper.color = new Color(1, 1, 1, 0);
-        m_Component.imgStar.color = new Color(1, 1, 0.3f, 0);
-        m_Component.imgLogoBG.fillAmount = 0f;
-        m_Component.imgRetro.fillAmount = 0f;
+        component.imgCapcom.color = new Color(1, 1, 1, 0);
+        component.txtDeveloper.color = new Color(1, 1, 1, 0);
+        component.imgStar.color = new Color(1, 1, 0.3f, 0);
+        component.imgLogoBG.fillAmount = 0f;
+        component.imgRetro.fillAmount = 0f;
 
-        m_Component.imgLogoBG.gameObject.SetActiveSelf(false);
-        m_Component.imgRetro.gameObject.SetActiveSelf(false);
-        m_Component.imgLogo.gameObject.SetActiveSelf(false);
-        m_Component.imgStar.gameObject.SetActiveSelf(false);
-        m_Component.txtStart.gameObject.SetActiveSelf(false);
-        m_Component.txtSettings.gameObject.SetActiveSelf(false);
-        m_Component.txtDeveloper.gameObject.SetActiveSelf(false);
-        m_Component.imgCapcom.gameObject.SetActiveSelf(true);
-        m_Component.txtIntro.gameObject.SetActiveSelf(false);
-        m_Component.imgIntro1.gameObject.SetActiveSelf(false);
-        m_Component.imgIntro2.gameObject.SetActiveSelf(false);
-        m_Component.txtIntro.SetText(string.Empty);
+        component.imgLogoBG.gameObject.SetActiveSelf(false);
+        component.imgRetro.gameObject.SetActiveSelf(false);
+        component.imgLogo.gameObject.SetActiveSelf(false);
+        component.imgStar.gameObject.SetActiveSelf(false);
+        component.txtStart.gameObject.SetActiveSelf(false);
+        component.txtSettings.gameObject.SetActiveSelf(false);
+        component.txtDeveloper.gameObject.SetActiveSelf(false);
+        component.imgCapcom.gameObject.SetActiveSelf(true);
+        component.txtIntro.gameObject.SetActiveSelf(false);
+        component.imgIntro1.gameObject.SetActiveSelf(false);
+        component.imgIntro2.gameObject.SetActiveSelf(false);
+        component.txtIntro.SetText(string.Empty);
 
-        m_AnimSequence.Append(m_Component.imgCapcom.DOFade(1, 2));
+        m_AnimSequence.Append(component.imgCapcom.DOFade(1, 2));
         m_AnimSequence.AppendInterval(1f);
-        m_AnimSequence.Append(m_Component.imgCapcom.DOFade(0, 2));
+        m_AnimSequence.Append(component.imgCapcom.DOFade(0, 2));
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgCapcom.gameObject.SetActiveSelf(false);
-            m_Component.txtDeveloper.gameObject.SetActiveSelf(true);
+            component.imgCapcom.gameObject.SetActiveSelf(false);
+            component.txtDeveloper.gameObject.SetActiveSelf(true);
         });
-        m_AnimSequence.Append(m_Component.txtDeveloper.DOFade(1, 2));
+        m_AnimSequence.Append(component.txtDeveloper.DOFade(1, 2));
         m_AnimSequence.AppendInterval(1f);
-        m_AnimSequence.Append(m_Component.txtDeveloper.DOFade(0, 2));
+        m_AnimSequence.Append(component.txtDeveloper.DOFade(0, 2));
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.txtDeveloper.gameObject.SetActiveSelf(false);
-            m_Component.txtIntro.gameObject.SetActiveSelf(true);
+            component.txtDeveloper.gameObject.SetActiveSelf(false);
+            component.txtIntro.gameObject.SetActiveSelf(true);
             m_CanSkipOpening = true;
         });
     }
@@ -137,62 +137,62 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
         DoOpeningText(0, 4);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
+            component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
             AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound/Phone.wav"));
         });
         m_AnimSequence.AppendInterval(8f);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgIntro1.gameObject.SetActiveSelf(true);
-            m_Component.imgIntro1.color = new Color(1, 1, 1, 0);
-            m_Component.imgIntro1.DOFade(1, 1f).SetEase(Ease.Linear);
-            m_Component.txtIntro.SetText(string.Empty);
-            m_Component.txtIntroTmp.color = Color.white;
+            component.imgIntro1.gameObject.SetActiveSelf(true);
+            component.imgIntro1.color = new Color(1, 1, 1, 0);
+            component.imgIntro1.DOFade(1, 1f).SetEase(Ease.Linear);
+            component.txtIntro.SetText(string.Empty);
+            component.txtIntroTmp.color = Color.white;
             AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmOpening), false);
         });
         m_AnimSequence.AppendInterval(1f);
         DoOpeningText(5, 6);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgIntro1.DOFade(0, 1f).SetEase(Ease.Linear);
-            m_Component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
+            component.imgIntro1.DOFade(0, 1f).SetEase(Ease.Linear);
+            component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
         });
 
         m_AnimSequence.AppendInterval(1f);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgIntro1.gameObject.SetActiveSelf(false);
-            m_Component.txtIntroTmp.DOKill(true);
-            m_Component.txtIntro.SetText(string.Empty);
-            m_Component.txtIntroTmp.color = Color.white;
+            component.imgIntro1.gameObject.SetActiveSelf(false);
+            component.txtIntroTmp.DOKill(true);
+            component.txtIntro.SetText(string.Empty);
+            component.txtIntroTmp.color = Color.white;
         });
         DoOpeningText(7, 7);
         m_AnimSequence.AppendInterval(2);
-        m_AnimSequence.Append(m_Component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear));
+        m_AnimSequence.Append(component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear));
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgIntro2.gameObject.SetActiveSelf(true);
-            m_Component.imgIntro2.color = new Color(1, 1, 1, 0);
-            m_Component.imgIntro2.DOFade(1, 1f).SetEase(Ease.Linear);
-            m_Component.txtIntroTmp.DOKill(true);
-            m_Component.txtIntro.SetText(string.Empty);
-            m_Component.txtIntroTmp.color = Color.white;
+            component.imgIntro2.gameObject.SetActiveSelf(true);
+            component.imgIntro2.color = new Color(1, 1, 1, 0);
+            component.imgIntro2.DOFade(1, 1f).SetEase(Ease.Linear);
+            component.txtIntroTmp.DOKill(true);
+            component.txtIntro.SetText(string.Empty);
+            component.txtIntroTmp.color = Color.white;
         });
         m_AnimSequence.AppendInterval(1f);
         DoOpeningText(8, 11);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgIntro2.color = Color.white;
-            m_Component.imgIntro2.DOFade(0, 1f).SetEase(Ease.Linear);
-            m_Component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
+            component.imgIntro2.color = Color.white;
+            component.imgIntro2.DOFade(0, 1f).SetEase(Ease.Linear);
+            component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
         });
 
         m_AnimSequence.AppendInterval(1f);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.txtIntroTmp.DOKill(true);
-            m_Component.txtIntro.SetText(string.Empty);
-            m_Component.txtIntroTmp.color = Color.white;
+            component.txtIntroTmp.DOKill(true);
+            component.txtIntro.SetText(string.Empty);
+            component.txtIntroTmp.color = Color.white;
         });
 
         DoOpeningText(12, 12);
@@ -206,12 +206,12 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
         {
             m_CanSkipOpening = false;
             AudioMgr.instance.StopAllSe();
-            m_Component.txtIntro.gameObject.SetActiveSelf(false);
-            m_Component.imgIntro1.gameObject.SetActiveSelf(false);
-            m_Component.imgIntro2.gameObject.SetActiveSelf(false);
-            m_Component.imgLogo.gameObject.SetActiveSelf(true);
-            m_Component.imgLogo.transform.localScale = Vector3.one * 3;
-            m_Component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce);
+            component.txtIntro.gameObject.SetActiveSelf(false);
+            component.imgIntro1.gameObject.SetActiveSelf(false);
+            component.imgIntro2.gameObject.SetActiveSelf(false);
+            component.imgLogo.gameObject.SetActiveSelf(true);
+            component.imgLogo.transform.localScale = Vector3.one * 3;
+            component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce);
         });
         m_AnimSequence.AppendInterval(0.45f);
         m_AnimSequence.AppendCallback(() =>
@@ -220,23 +220,23 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
         });
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgLogoBG.gameObject.SetActiveSelf(true);
-            m_Component.imgRetro.gameObject.SetActiveSelf(true);
-            m_Component.imgLogoBG.DOFillAmount(1, 0.2f);
-            m_Component.imgRetro.DOFillAmount(1, 0.2f);
+            component.imgLogoBG.gameObject.SetActiveSelf(true);
+            component.imgRetro.gameObject.SetActiveSelf(true);
+            component.imgLogoBG.DOFillAmount(1, 0.2f);
+            component.imgRetro.DOFillAmount(1, 0.2f);
         });
         m_AnimSequence.AppendInterval(0.2f);
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.imgStar.gameObject.SetActiveSelf(true);
+            component.imgStar.gameObject.SetActiveSelf(true);
             AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmTitle), false, 1, 0);
         });
         m_AnimSequence.AppendInterval(0.1f);
-        m_AnimSequence.Append(m_Component.imgStar.DOFade(1, 1f));
+        m_AnimSequence.Append(component.imgStar.DOFade(1, 1f));
         m_AnimSequence.AppendCallback(() =>
         {
-            m_Component.txtStart.gameObject.SetActiveSelf(true);
-            m_Component.txtSettings.gameObject.SetActiveSelf(true);
+            component.txtStart.gameObject.SetActiveSelf(true);
+            component.txtSettings.gameObject.SetActiveSelf(true);
             m_CanStart = true;
         });
     }
@@ -251,8 +251,8 @@ public class TitlePanel : BasePanel<TitlePanelComponent, TitlePanelSettings>
                 string key = StringUtil.Append("TitlePanelStory", storyIndex.ToString());
                 string content = LocalizationMgr.instance.GetLanguageText(key);
 
-                m_Component.txtIntro.SetText(string.Empty);
-                m_Component.txtIntroTmp.DOText(content, 1.8f).SetEase(Ease.Linear).OnUpdate(() =>
+                component.txtIntro.SetText(string.Empty);
+                component.txtIntroTmp.DOText(content, 1.8f).SetEase(Ease.Linear).OnUpdate(() =>
                 {
                     if (m_TextTimer < 0 || Time.time - m_TextTimer > 0.1f)
                     {

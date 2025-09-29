@@ -1,4 +1,3 @@
-using GameFrameWork.Camera;
 using UnityEngine;
 
 public class TaskTriggerWait : BaseTaskTrigger

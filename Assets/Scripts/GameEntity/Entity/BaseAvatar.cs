@@ -29,11 +29,11 @@ public abstract class BaseAvatar : BaseGravityObject
             return Vector2.zero;
         }
 
-        TriggerData triggerData = m_HitTrigger.GetTriggerData(animName);
+        TriggerDatum triggerDatum = m_HitTrigger.GetTriggerData(animName);
 
-        if (triggerData != null)
+        if (triggerDatum != null)
         {
-            return triggerData.sizeList[frame];
+            return triggerDatum.sizeList[frame];
         }
 
         return Vector2.zero;
@@ -46,7 +46,7 @@ public abstract class BaseAvatar : BaseGravityObject
         m_HitTrigger = null;
         m_Animator = null;
         m_CurrAnimationState = null;
-        m_CurrTriggerData = null;
+        m_CurrTriggerDatum = null;
         m_Fsm = null;
         base.OnRelease();
     }
@@ -259,19 +259,19 @@ public abstract class BaseAvatar : BaseGravityObject
             return;
         }
 
-        if (m_CurrTriggerData != null && m_CurrTriggerData.animName == animName && m_LastTriggerFrameIndex == frameIndex)
+        if (m_CurrTriggerDatum != null && m_CurrTriggerDatum.animName == animName && m_LastTriggerFrameIndex == frameIndex)
         {
             return;
         }
 
-        if (m_CurrTriggerData == null || m_CurrTriggerData.animName != animName) 
+        if (m_CurrTriggerDatum == null || m_CurrTriggerDatum.animName != animName) 
         {
-            m_CurrTriggerData = m_HitTrigger.GetTriggerData(animName);
+            m_CurrTriggerDatum = m_HitTrigger.GetTriggerData(animName);
         }
 
-        if (m_CurrTriggerData != null)
+        if (m_CurrTriggerDatum != null)
         {
-            SetCollider(m_CurrTriggerData.offestList[frameIndex], m_CurrTriggerData.sizeList[frameIndex]);
+            SetCollider(m_CurrTriggerDatum.offestList[frameIndex], m_CurrTriggerDatum.sizeList[frameIndex]);
         }
 
         m_LastTriggerFrameIndex = frameIndex;
@@ -318,7 +318,7 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
     private DragonBones.AnimationState m_CurrAnimationState = null;
-    private TriggerData m_CurrTriggerData = null;
+    private TriggerDatum m_CurrTriggerDatum = null;
     private float m_LastAnimTimeScale = 1f;
     private int m_LastTriggerFrameIndex = -1;
     private HitTrigger m_HitTrigger = null;

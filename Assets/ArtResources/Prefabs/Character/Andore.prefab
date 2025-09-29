@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec2c4bcbc176fe142b7e1f553ce8536d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerDatas:
+  triggerData:
   - animName: Idle
     offestList:
     - {x: -0.0015611649, y: 0.20607793}

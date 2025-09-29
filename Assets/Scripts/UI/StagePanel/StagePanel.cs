@@ -29,10 +29,10 @@ public class StagePanel : BasePanel<StagePanelComponent, StagePanelSettings>
 
         for (int i = 1; i < 6; i++)
         {
-            m_Component.imgMapGO.transform.Find("pos" + i).gameObject.SetActiveSelf(false);
+            component.imgMapGO.transform.Find("pos" + i).gameObject.SetActiveSelf(false);
         }
 
-        m_Component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
+        component.imgMapGO.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
 
         int characterId = PlayerMgr.instance.selectRoleId;
         RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
@@ -62,7 +62,7 @@ public class StagePanel : BasePanel<StagePanelComponent, StagePanelSettings>
     private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
     {
         m_Role = obj as GameObject;
-        m_Role.transform.SetParent(m_Component.heroPosGO.transform, false);
+        m_Role.transform.SetParent(component.heroPosGO.transform, false);
         m_Role.SetActiveSelf(true);
         m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
         LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
@@ -91,16 +91,16 @@ public class StagePanel : BasePanel<StagePanelComponent, StagePanelSettings>
     private Text GetRoundTxt(int type)
     {
         GameObject go;
-        m_Component.blue.SetActiveSelf(false);
-        m_Component.green.SetActiveSelf(false);
-        m_Component.red.SetActiveSelf(false);
+        component.blue.SetActiveSelf(false);
+        component.green.SetActiveSelf(false);
+        component.red.SetActiveSelf(false);
 
         if (type == 1)
-            go = m_Component.blue;
+            go = component.blue;
         else if (type == 2)
-            go = m_Component.green;
+            go = component.green;
         else
-            go = m_Component.red;
+            go = component.red;
 
         go.SetActiveSelf(true);
         return go.transform.Find("txtIndex").GetComponent<Text>();

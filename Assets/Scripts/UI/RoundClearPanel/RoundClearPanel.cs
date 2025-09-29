@@ -13,7 +13,7 @@ public class RoundClearPanel : BasePanel<RoundClearPanelComponent, RoundClearPan
 
 	protected override void OnOpen()
 	{
-		m_Component.txtRound.SetLanguageTextParams("1");// StageMgr.instance.currStageData.StageIndex.ToString());
+		component.txtRound.SetLanguageTextParams("1");// StageMgr.instance.currStageData.StageIndex.ToString());
 	}
 
 	protected override void OnUpdate()

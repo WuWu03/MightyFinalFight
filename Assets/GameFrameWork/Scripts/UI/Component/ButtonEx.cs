@@ -6,6 +6,16 @@ namespace GameFrameWork.UI
     [AddComponentMenu("UI/ButtonEx")]
     public class ButtonEx : UIBehaviour, IPointerUpHandler, IPointerDownHandler
     {
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            onClick.RemoveAllListeners();
+            onDoubleClick.RemoveAllListeners();
+            onPress.RemoveAllListeners();
+            onUp.RemoveAllListeners();
+            onDown.RemoveAllListeners();
+        }
+
         private void Update()
         {
             if (m_IsPointDown && Time.unscaledTime - m_CurrDonwTime >= PRESS_TIME)
@@ -24,7 +34,6 @@ namespace GameFrameWork.UI
 
             if (m_ClickCount >= 2)
             {
-                onUp.Invoke(gameObject, m_OnUpEventData);
                 onDoubleClick.Invoke(gameObject, m_OnUpEventData);
                 m_ClickCount = 0;
                 m_CurrDonwTime = 0f;
@@ -33,8 +42,6 @@ namespace GameFrameWork.UI
 
             if (Time.unscaledTime - m_CurrDonwTime >= DOUBLE_CLICK_TIME)
             {
-                onUp.Invoke(gameObject, m_OnUpEventData);
-                onClick.Invoke(gameObject, m_OnUpEventData);
                 m_ClickCount = 0;
                 m_CurrDonwTime = 0f;
                 m_OnUpEventData = null;
@@ -52,13 +59,17 @@ namespace GameFrameWork.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_IsPointDown = false;
-            m_OnUpEventData = eventData;
+            onUp.Invoke(gameObject, eventData);
+            onClick.Invoke(gameObject, eventData);
 
             if (!m_IsPress)
             {
                 m_ClickCount++;
             }
+
+            m_IsPointDown = false;
+            m_OnUpEventData = eventData;
+            m_IsPress = false;
         }
 
         public UIEvent<PointerEventData> onClick = new();

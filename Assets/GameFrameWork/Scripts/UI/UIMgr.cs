@@ -115,12 +115,11 @@ namespace GameFrameWork.UI
         {
             if (m_QueueWaitLoadPanel.Count > 0)
             {
-                OpenPanelArgs waitLoadPanel = null;
                 Queue<OpenPanelArgs> queue = m_QueueWaitLoadPanel;
 
                 lock (queue)
                 {
-                    waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
+                    OpenPanelArgs waitLoadPanel = m_QueueWaitLoadPanel.Dequeue();
                     string prefabName = StringUtil.Append(waitLoadPanel.panel.settings.panelName, ".prefab");
                     GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), prefabName), OnLoadComplete, waitLoadPanel);
                 }
@@ -133,17 +132,19 @@ namespace GameFrameWork.UI
                     IPanel panel = m_ListDelayDestroy[i];
                     bool isDelayTimeOut = panel.settings.panelCloseMode == PanelCloseMode.DelayDestroy && panel.delayTime > 0f && Time.time - panel.delayTime >= 5f;
 
-                    if (isDelayTimeOut)
+                    if (!isDelayTimeOut)
                     {
-                        GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
-                        panel.Destroy();
-                        m_ListDelayDestroy.Remove(panel);
-                        m_ListPopPanel.Remove(panel);
+                        continue;
+                    }
+                    
+                    GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject, true);
+                    panel.Destroy();
+                    m_ListDelayDestroy.Remove(panel);
+                    m_ListPopPanel.Remove(panel);
 
-                        if (m_CurrPopPanel == panel)
-                        {
-                            m_CurrPopPanel = null;
-                        }
+                    if (m_CurrPopPanel == panel)
+                    {
+                        m_CurrPopPanel = null;
                     }
                 }
             }
@@ -162,9 +163,8 @@ namespace GameFrameWork.UI
                 }
             }
 
-            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            foreach (var panel in m_ListOpenPanel)
             {
-                IPanel panel = m_ListOpenPanel[i];
                 if (panel.isOpen)
                 {
                     panel.Update();
@@ -176,24 +176,24 @@ namespace GameFrameWork.UI
         {
             base.OnShutDown();
 
-            for (int i = 0; i < m_ListPopPanel.Count; i++)
+            foreach (var panel in m_ListPopPanel)
             {
-                GameObjectPoolMgr.instance.Put(m_ListPopPanel[i].assetPath, m_ListPopPanel[i].gameObject);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            foreach (var panel in m_ListOpenPanel)
             {
-                GameObjectPoolMgr.instance.Put(m_ListOpenPanel[i].assetPath, m_ListOpenPanel[i].gameObject);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            for (int i = 0; i < m_ListDelayDestroy.Count; i++)
+            foreach (var panel in m_ListDelayDestroy)
             {
-                GameObjectPoolMgr.instance.Put(m_ListDelayDestroy[i].assetPath, m_ListDelayDestroy[i].gameObject);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            for (int i = 0; i < m_ListAlways.Count; i++)
+            foreach (var panel in m_ListAlways)
             {
-                GameObjectPoolMgr.instance.Put(m_ListAlways[i].assetPath, m_ListAlways[i].gameObject);
+                GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
             m_ListDelayDestroy.Clear();
@@ -269,12 +269,12 @@ namespace GameFrameWork.UI
                 panel = Activator.CreateInstance(panelType) as IPanel;
             }
 
-            if (!m_CanPopPanel && panel.settings.panelType == PanelType.Root)
+            if (!m_CanPopPanel && panel != null && panel.settings.panelType == PanelType.Root)
             {
                 m_CanPopPanel = true;
             }
 
-            if (m_CanPopPanel && panel.settings.panelType != PanelType.Pop)
+            if (m_CanPopPanel && panel != null && panel.settings.panelType != PanelType.Pop)
             {
                 if (m_CurrPopPanel != null && m_CurrPopPanel != panel)
                 {
@@ -284,12 +284,12 @@ namespace GameFrameWork.UI
 
                 m_CurrPopPanel = panel;
             }
-
-            if (!panel.isInit)
+            
+            if (panel is { isInit: false })
             {
                 m_QueueWaitLoadPanel.Enqueue(OpenPanelArgs.Create(panel, arg));
             }
-            else if (!panel.isOpen)
+            else if (panel is { isOpen: false })
             {
                 panel.Open();
             }
@@ -314,10 +314,8 @@ namespace GameFrameWork.UI
                 return null;
             }
 
-            for (int i = 0; i < m_ListOpenPanel.Count; i++)
+            foreach (var panel in m_ListOpenPanel)
             {
-                IPanel panel = m_ListOpenPanel[i];
-
                 if (panel.GetType() == panelType)
                 {
                     return panel;
@@ -384,7 +382,11 @@ namespace GameFrameWork.UI
 
         private void OnLoadComplete(string assetPath, UnityEngine.Object obj, object arg)
         {
-            OpenPanelArgs openPanelArgs = arg as OpenPanelArgs;
+            if (arg is not OpenPanelArgs openPanelArgs)
+            {
+                return;
+            }
+            
             openPanelArgs.panel.Init(obj as GameObject, assetPath, openPanelArgs.arg);
             openPanelArgs.Release();
         }

@@ -14,16 +14,16 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 {
     protected override void OnInit(object arg)
     {
-        m_Component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
-        m_Component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
+        component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
+        component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
     }
 
     protected override void OnOpen()
     {
         m_HasSelect = true;
-        m_Component.imgSelectRect.gameObject.SetActiveSelf(true);
-        m_Component.roleContentGroupView.Update(ConfigDataSheet.roleSelectConfigDatas.Length);
-        m_Component.roleContentGroupView.SelectItem(0);
+        component.imgSelectRect.gameObject.SetActiveSelf(true);
+        component.roleContentGroupView.Update(ConfigDataSheet.roleSelectConfigDatas.Length);
+        component.roleContentGroupView.SelectItem(0);
 
         if (UIMgr.instance.IsOpen(UINames.LoadPanel))
         {
@@ -57,7 +57,7 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
                 if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataSheet.roleSelectConfigDatas.Length - 1;
             }
 
-            m_Component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
+            component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
             AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
         }
 
@@ -75,8 +75,8 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 
     protected override void OnDestroy()
     {
-        m_Component.roleContentGroupView.onItemUpdateEvent -= OnItemUpdate;
-        m_Component.roleContentGroupView.onItemSelectEvent -= OnItemSelect;
+        component.roleContentGroupView.onItemUpdateEvent -= OnItemUpdate;
+        component.roleContentGroupView.onItemSelectEvent -= OnItemSelect;
     }
 
     private void OnItemUpdate(RoleSelectPanelComponent.RoleContentItem item)
@@ -92,8 +92,8 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
     {
         if (isSelect)
         {
-            m_Component.imgSelectRect.SetParent(item.imgRoleIcon.transform, false);
-            m_Component.imgSelectRect.anchoredPosition = Vector2.zero;
+            component.imgSelectRect.SetParent(item.imgRoleIcon.transform, false);
+            component.imgSelectRect.anchoredPosition = Vector2.zero;
             m_CurrSelectIndex = item.itemIndex;
         }
     }
@@ -108,7 +108,7 @@ public class RoleSelectPanel : BasePanel<RoleSelectPanelComponent, RoleSelectPan
 
     private void EnterStage()
     {
-        m_Component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
+        component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
         AudioMgr.instance.StopBgm(true);
         AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
         PlayerMgr.instance.selectRoleId = ConfigDataSheet.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
