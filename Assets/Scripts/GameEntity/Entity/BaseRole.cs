@@ -89,11 +89,11 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public bool isDropTrag
+    public bool IsDropTrap
     {
         get
         {
-            return m_IsDropTrag;
+            return m_IsDropTrap;
         }
     }
 
@@ -141,7 +141,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsAutoMove && !m_IsDropTrag && !m_IsBeCatch && m_CanMove;
+            return !m_IsAutoMove && !m_IsDropTrap && !m_IsBeCatch && m_CanMove;
         }
     }
 
@@ -149,7 +149,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsJumpAttack && !m_IsBeCatch && m_CanAttack;
+            return !m_IsDropTrap && !m_IsJumpAttack && !m_IsBeCatch && m_CanAttack;
         }
     }
 
@@ -157,7 +157,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && isInGround && m_CanJump;
+            return !m_IsDropTrap && !m_IsBeCatch && isInGround && m_CanJump;
         }
     }
 
@@ -165,7 +165,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     {
         get
         {
-            return !m_IsDropTrag && !m_IsBeCatch && (m_CanSkill || (m_IsAttack && m_AttackIndex < 4));
+            return !m_IsDropTrap && !m_IsBeCatch && (m_CanSkill || (m_IsAttack && m_AttackIndex < 4));
         }
     }
 
@@ -249,7 +249,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_SkillData?.Release();
         m_SkillMgr?.Release();
 
-        while (m_HurtQueue != null && m_HurtQueue.Count > 0)
+        while (m_HurtQueue is { Count: > 0 })
         {
             m_HurtQueue.Dequeue().Release();
         }
@@ -258,7 +258,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_SkillData = null;
         m_SkillMgr = null;
         m_IsJumpAttack = false;
-        m_IsDropTrag = false;
+        m_IsDropTrap = false;
         m_IsBeCatch = false;
         m_IsBeThrow = false;
         m_IsCatchControl = false;
@@ -687,7 +687,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ExitSkill();
 
         m_DropTrapStateData = dropTrapStateData;
-        m_IsDropTrag = true;
+        m_IsDropTrap = true;
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
 
@@ -828,7 +828,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         CheckDropTrag();
 
-        if (!isInGround || m_IsDropTrag)
+        if (!isInGround || m_IsDropTrap)
         {
             return;
         }
@@ -885,7 +885,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     protected virtual void CheckDropTrag()
     {
-        if (!m_IsDropTrag)
+        if (!m_IsDropTrap)
         {
             return;
         }
@@ -916,7 +916,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             }
 
             m_DropTrapStateData.Release();
-            m_IsDropTrag = false;
+            m_IsDropTrap = false;
             m_DropTrapStateData = null;
         }
     }
@@ -933,14 +933,14 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 OnGroundHurtMsg(m_OnGroundHurtStateData);
                 return;
             }
-            else
+
+            TimerMgr.instance.Register(0.1f, () =>
             {
-                TimerMgr.instance.Register(0.1f, () =>
+                if (m_OnGroundHurtStateData != null)
                 {
-                    if (m_OnGroundHurtStateData != null)
-                        OnGroundHurtMsg(m_OnGroundHurtStateData);
-                });
-            }
+                    OnGroundHurtMsg(m_OnGroundHurtStateData);
+                }
+            });
 
             m_AwakenTimer = Time.time;
         }
@@ -983,7 +983,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckAutoMove()
     {
-        if (!isAssetLoadComplete || !isInGround || !m_IsAutoMove || m_IsDropTrag || m_IsBeCatch)
+        if (!isAssetLoadComplete || !isInGround || !m_IsAutoMove || m_IsDropTrap || m_IsBeCatch)
         {
             return;
         }
@@ -1028,7 +1028,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private bool m_IsAttack = false;
     private bool m_IsJumpAttack = false;
-    private bool m_IsDropTrag = false;
+    private bool m_IsDropTrap = false;
     private bool m_IsBeCatch = false;
     private bool m_IsBeThrow = false;
     private bool m_IsCatchControl = false;

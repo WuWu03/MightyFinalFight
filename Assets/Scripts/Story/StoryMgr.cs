@@ -33,9 +33,8 @@ public class StoryMgr : BaseMgr<StoryMgr>
 
         foreach (KeyValuePair<int, List<BaseClip>> kvp in m_Storys)
         {
-            for (int i = 0; i < kvp.Value.Count; i++)
+            foreach (var clip in kvp.Value)
             {
-                BaseClip clip = kvp.Value[i];
                 clip.Play();
 
                 if (m_IsPause)
@@ -86,7 +85,7 @@ public class StoryMgr : BaseMgr<StoryMgr>
         if (m_StoryBuilders.TryGetValue(storyId, out Type builderType))
         {
             IStoryBuilder storyBuilder = Activator.CreateInstance(builderType) as IStoryBuilder;
-            storyBuilder.BuildStory();
+            storyBuilder?.BuildStory();
         }
 
         m_IsPlaying = true;

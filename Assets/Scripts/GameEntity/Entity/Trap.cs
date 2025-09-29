@@ -20,7 +20,7 @@ public class Trap : BaseBoundObject
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
 
-        if (target == null || target.isDropTrag)
+        if (target == null || target.IsDropTrap)
         {
             return;
         }
