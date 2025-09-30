@@ -162,7 +162,7 @@ namespace GameFrameWork.Camera
 
         public Vector3 WorldPosToScreenPos(Vector3 worldPos)
         {
-            if (m_MainCamera == null)
+            if (m_MainCamera is null)
             {
                 Log.LogError("主相机不存在，请初始化主相机");
                 return Vector3.zero;

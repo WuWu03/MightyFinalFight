@@ -42,8 +42,8 @@ public class Consume : BaseSceneItem
         else
         {
             m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-            mainPanel.SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
+            MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+            mainView.SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
         }
 
         AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));

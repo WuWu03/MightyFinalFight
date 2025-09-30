@@ -441,9 +441,9 @@ namespace GameFrameWork
             } while (k > 0);
         }
 
-        public static object CreatePanelParam(this IPanel panel, string paramName)
+        public static object CreatePanelParam(this IView view, string paramName)
         {
-            return CreatePanelParam(panel.GetType().Name, paramName);
+            return CreatePanelParam(view.GetType().Name, paramName);
         }
 
         private static object CreatePanelParam(string panelTypeName, string paramName)

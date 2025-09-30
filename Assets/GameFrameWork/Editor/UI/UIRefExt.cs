@@ -110,7 +110,7 @@ namespace GameFrameWork.Editor
 
         public static bool IsScollLayoutGroupView(this UIRef uiRef)
         {
-            return uiRef.GetComponent<ScrollLayoutGroupView>() != null;
+            return uiRef.GetComponent<ScrollList>() != null;
         }
 
         public static bool IsLayoutItemVariable(this UIRef uiRef)

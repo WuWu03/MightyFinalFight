@@ -161,8 +161,8 @@ public class BaseEnemy : BaseRole
         {
             HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
-            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-            mainPanel.SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
+            MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+            mainView.SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {

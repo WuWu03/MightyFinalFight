@@ -1,15 +1,60 @@
+using System;
 using GameFrameWork.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public class TestItem : ScrollListItem
+{
+    public TextMeshProUGUI text = null;
+
+    protected override void OnCreate(GameObject go)
+    {
+        text = go.transform.Find("text").GetComponent<TextMeshProUGUI>();
+    }
+
+    public override void OnUpdate()
+    {
+        text.text = itemIndex.ToString();
+    }
+}
+
 public class Test2 : MonoBehaviour
 {
-    public ButtonEx e;
+    public ScrollList view;
+    public GameObject go;
+    private int count = 100;
     private void Awake()
     {
-        e.onPress.AddListener(OnPress, 0);
-        e.onClick.AddListener(OnClick, 1);
-        e.onDoubleClick.AddListener(OnDoubleClick, 2);
+        view.getDataCountEvent += GetDataCount;
+        view.getItemSizeEvent += ItemSize;
+         view.Init<TestItem>();
+    }
+
+    private void OnScrolled()
+    {
+        // if (view.normalizedScrollPosition <= 0)
+        // {
+        //     count += 10;
+        //     view.RefreshData(true);
+        // }
+    }
+
+    private float ItemSize(int t)
+    {
+        return 50;
+    }
+
+    private void Start()
+    {
+     
+        view.RefreshData();
+        //view.SetScrollPositionImmediately(view.scrollSize);
+    }
+
+    private int GetDataCount()
+    {
+        return count;
     }
 
     private void OnPress(GameObject t1, PointerEventData t2, int arg)

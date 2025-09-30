@@ -190,8 +190,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-        mainPanel.SetPlayerLife(life);
+        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+        mainView.SetPlayerLife(life);
 
         if (life < 1)
         {
@@ -215,7 +215,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
+        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
 
         if (m_EXP >= m_LevelConfigData.exp)
         {
@@ -224,19 +224,19 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("roleId=", m_RoleConfigData.id.ToString(), ",level=", m_Level.ToString()));
             m_Player.entityAttribute.health = m_LevelConfigData.hpValue;
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
-            mainPanel.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
-            mainPanel.SetPlayerLevel();
+            mainView.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
+            mainView.SetPlayerLevel();
             AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.LevelUp));
         }
 
-        mainPanel.SetPlayerExp(m_EXP, m_LevelConfigData.exp);
+        mainView.SetPlayerExp(m_EXP, m_LevelConfigData.exp);
     }
 
     public void AddLife(int value)
     {
         m_Life += value;
-        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-        mainPanel.SetPlayerLife(m_Life);
+        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+        mainView.SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)

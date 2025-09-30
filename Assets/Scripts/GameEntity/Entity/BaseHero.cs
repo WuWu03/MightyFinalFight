@@ -285,8 +285,8 @@ public class BaseHero : BaseRole
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-        mainPanel.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+        mainView.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
     }
 
     public void SetRebirthState()
@@ -357,8 +357,8 @@ public class BaseHero : BaseRole
         {
             HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
             base.OnGroundHurtMsg(data);
-            MainPanel mainPanel = UIMgr.instance.Get(UINames.MainPanel) as MainPanel;
-            mainPanel.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+            MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+            mainView.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
         }
         else
         {

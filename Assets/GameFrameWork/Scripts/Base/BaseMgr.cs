@@ -9,7 +9,7 @@ namespace GameFrameWork
         {
             get
             {
-                if (s_Instance == null)
+                if (s_Instance is null)
                 {
                     Log.LogError(StringUtil.Append(typeof(T).Name, "没有实例，请先初始化该实例"));
                     return null;
@@ -21,13 +21,13 @@ namespace GameFrameWork
 
         public static void Init(GameObject manager)
         {
-            if (s_Instance != null)
+            if (s_Instance is not null)
             {
                 Log.LogError(StringUtil.Append(typeof(T).Name), "实例已经存在，请不要重复实例化");
                 return;
             }
 
-            if (manager == null)
+            if (manager is null)
             {
                 Log.LogError("管理器为空");
                 return;
