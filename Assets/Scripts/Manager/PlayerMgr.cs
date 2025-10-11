@@ -190,9 +190,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
-        mainView.SetPlayerLife(life);
-
+        UIMgr.instance.Get<MainView>().SetPlayerLife(life);
+        
         if (life < 1)
         {
             CameraMgr.instance.EndFollow();
@@ -215,7 +214,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_EXP += value;
-        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
+        MainView mainView = UIMgr.instance.Get<MainView>();
 
         if (m_EXP >= m_LevelConfigData.exp)
         {
@@ -235,8 +234,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddLife(int value)
     {
         m_Life += value;
-        MainView mainView = UIMgr.instance.Get(UINames.MainPanel) as MainView;
-        mainView.SetPlayerLife(m_Life);
+        UIMgr.instance.Get<MainView>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using GameFrameWork.UI;
 using TMPro;
 using UnityEngine;
@@ -26,9 +27,7 @@ public class Test2 : MonoBehaviour
     private int count = 100;
     private void Awake()
     {
-        view.getDataCountEvent += GetDataCount;
-        view.getItemSizeEvent += ItemSize;
-         view.Init<TestItem>();
+        Debug.Log(Path.GetExtension(".abs"));
     }
 
     private void OnScrolled()
@@ -48,7 +47,7 @@ public class Test2 : MonoBehaviour
     private void Start()
     {
      
-        view.RefreshData();
+       // view.RefreshData();
         //view.SetScrollPositionImmediately(view.scrollSize);
     }
 

@@ -1,15 +1,21 @@
 using GameFrameWork.Pool;
-using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace GameFrameWork.UI
 {
     public class UIMgr : BaseMgr<UIMgr>
     {
+        private Canvas m_UICanvas = null;
+        public Canvas uiCanvas
+        {
+            get
+            {
+                return m_UICanvas;
+            }
+        }
+        
         private UnityEngine.Camera m_UICamera = null;
         public UnityEngine.Camera uiCamera
         {
@@ -21,81 +27,29 @@ namespace GameFrameWork.UI
 
         private bool m_CanPopPanel = false;
         private IView m_CurrPopView = null;
-        private List<IView> m_DelayDestroyPanels = null;
-        private List<IView> m_AlwaysPanels = null;
-        private List<IView> m_PopPanels = null;
-        private List<IView> m_OpenPanels = null;
+        private List<IView> m_DelayDestroyUIs = null;
+        private List<IView> m_AlwaysUIs = null;
+        private List<IView> m_PopViews = null;
+        private List<IView> m_OpenViews = null;
         private RectTransform[] m_UILayers = null;
         private GameObject m_UIRoot = null;
-        private Canvas m_UICanvas = null;
-        private EventSystem m_EventSystem = null;
         
         protected override void OnAwake()
         {
-            m_OpenPanels = new();
-            m_AlwaysPanels = new();
-            m_DelayDestroyPanels = new();
-            m_PopPanels = new();
+            m_OpenViews = new();
+            m_AlwaysUIs = new();
+            m_DelayDestroyUIs = new();
+            m_PopViews = new();
 
-            m_UIRoot = new("UIRoot");
-            m_UICanvas = new GameObject("UICanvas").GetOrAddComponent<Canvas>();
-            m_UICamera = new GameObject("UICamera").GetOrAddComponent<UnityEngine.Camera>();
-            m_EventSystem = new GameObject("EventSystem").GetOrAddComponent<EventSystem>();
+            m_UIRoot = GameObject.Find("UIRoot");
+            m_UICanvas = m_UIRoot.transform.Find("UICanvas").GetOrAddComponent<Canvas>();
+            m_UICamera = m_UIRoot.transform.Find("UICamera").GetOrAddComponent<UnityEngine.Camera>();
+            
+            m_UILayers = new RectTransform[(int)UILayer.Load + 1];
 
-            CanvasScaler canvasScaler = m_UICanvas.gameObject.GetOrAddComponent<CanvasScaler>();
-            UICanvasScaleAdapt canvasScaleAdapt = m_UICanvas.gameObject.GetOrAddComponent<UICanvasScaleAdapt>();
-            StandaloneInputModule inputModule = m_EventSystem.gameObject.GetOrAddComponent<StandaloneInputModule>();
-
-            m_UICamera.transform.SetParent(m_UIRoot.transform, false);
-            m_UICanvas.transform.SetParent(m_UIRoot.transform, false);
-            m_EventSystem.transform.SetParent(m_UIRoot.transform, false);
-
-            m_UICamera.clearFlags = CameraClearFlags.Depth;
-            m_UICamera.backgroundColor = Color.black;
-            m_UICamera.cullingMask = LayerMask.GetMask("UI");
-            m_UICamera.orthographic = true;
-            m_UICamera.orthographicSize = 5;
-            m_UICamera.nearClipPlane = -1000;
-            m_UICamera.farClipPlane = 1000;
-            m_UICamera.depth = 100;
-
-            m_UICanvas.renderMode = RenderMode.ScreenSpaceCamera;
-            m_UICanvas.worldCamera = m_UICamera;
-            m_UICanvas.planeDistance = 100;
-            m_UICanvas.vertexColorAlwaysGammaSpace = true;
-
-            canvasScaler.referenceResolution = new Vector2(1920, 1080);
-            canvasScaler.referencePixelsPerUnit = 100f;
-            canvasScaleAdapt.ScalerType = UICanvasScaleAdapt.Type.WidthOrHeight;
-            inputModule.submitButton = "A";
-            inputModule.cancelButton = "B";
-
-            m_UIRoot.SetLayer("UI");
-
-            Array layers = Enum.GetValues(typeof(UILayer));
-
-            m_UILayers = new RectTransform[layers.Length];
-
-            for (int i = 0; i < layers.Length; i++)
+            for (int i = 0; i < m_UILayers.Length; i++)
             {
-                GameObject layerGameObject = new(layers.GetValue(i).ToString());
-                RectTransform layerRectTransform = layerGameObject.AddComponent<RectTransform>();
-                Canvas layerCanvas = layerGameObject.GetOrAddComponent<Canvas>();
-
-                layerRectTransform.anchoredPosition = Vector3.zero;
-                layerRectTransform.sizeDelta = Vector2.zero;
-                layerRectTransform.anchorMin = new Vector2(0, 0);
-                layerRectTransform.anchorMax = new Vector2(1, 1);
-                layerRectTransform.pivot = new Vector2(0.5f, 0.5f);
-                layerRectTransform.SetParent(m_UICanvas.transform, false);
-
-                layerGameObject.SetLayer("UI");
-
-                layerCanvas.overrideSorting = true;
-                layerCanvas.sortingOrder = (i + 1) * 1000;
-                layerCanvas.vertexColorAlwaysGammaSpace = true;
-
-                m_UILayers[i] = layerRectTransform;
+                m_UILayers[i] = m_UICanvas.transform.GetChild(i).GetComponent<RectTransform>();
             }
 
             DontDestroyOnLoad(m_UIRoot);
@@ -103,16 +57,16 @@ namespace GameFrameWork.UI
 
         protected override void OnUpdate()
         {
-            if (m_DelayDestroyPanels.Count > 0)
+            if (m_DelayDestroyUIs.Count > 0)
             {
-                for (int i = m_DelayDestroyPanels.Count - 1; i >= 0; i++)
+                for (int i = m_DelayDestroyUIs.Count - 1; i >= 0; i++)
                 {
-                    IView view = m_DelayDestroyPanels[i];
+                    IView view = m_DelayDestroyUIs[i];
                     bool isDelayTimeOut = false;
 
-                    if (view.settings.CloseMode == UICloseMode.DelayDestroy && view.delayTime > 0f)
+                    if (view.settings.destroyMode == UIDestroyMode.Delay && view.delayTime > 0f)
                     {
-                        isDelayTimeOut = Time.time - view.delayTime >= view.settings.unLoadTime;
+                        isDelayTimeOut = Time.unscaledTime - view.delayTime >= view.settings.delayDestroyTime;
                     }
 
                     if (!isDelayTimeOut)
@@ -122,8 +76,8 @@ namespace GameFrameWork.UI
 
                     GameObjectPoolMgr.instance.Put(view.assetPath, view.gameObject, true);
                     view.Destroy();
-                    m_DelayDestroyPanels.Remove(view);
-                    m_PopPanels.Remove(view);
+                    m_DelayDestroyUIs.Remove(view);
+                    m_PopViews.Remove(view);
 
                     if (m_CurrPopView == view)
                     {
@@ -132,13 +86,13 @@ namespace GameFrameWork.UI
                 }
             }
 
-            if (m_AlwaysPanels.Count > 1)
+            if (m_AlwaysUIs.Count > 1)
             {
-                IView view = m_AlwaysPanels[0];
+                IView view = m_AlwaysUIs[0];
                 GameObjectPoolMgr.instance.Put(view.assetPath, view.gameObject, true);
                 view.Destroy();
-                m_AlwaysPanels.Remove(view);
-                m_PopPanels.Remove(view);
+                m_AlwaysUIs.Remove(view);
+                m_PopViews.Remove(view);
 
                 if (m_CurrPopView == view)
                 {
@@ -146,11 +100,12 @@ namespace GameFrameWork.UI
                 }
             }
 
-            foreach (var panel in m_OpenPanels)
+            for (int i = 0; i < m_OpenViews.Count; i++)
             {
-                if (panel.isOpen)
+                IView view = m_OpenViews[i];
+                if (view.isOpen)
                 {
-                    panel.Update();
+                    view.Update();
                 }
             }
         }
@@ -159,30 +114,30 @@ namespace GameFrameWork.UI
         {
             base.OnShutDown();
 
-            foreach (var panel in m_PopPanels)
+            foreach (var panel in m_PopViews)
             {
                 GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            foreach (var panel in m_OpenPanels)
+            foreach (var panel in m_OpenViews)
             {
                 GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            foreach (var panel in m_DelayDestroyPanels)
+            foreach (var panel in m_DelayDestroyUIs)
             {
                 GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            foreach (var panel in m_AlwaysPanels)
+            foreach (var panel in m_AlwaysUIs)
             {
                 GameObjectPoolMgr.instance.Put(panel.assetPath, panel.gameObject);
             }
 
-            m_DelayDestroyPanels.Clear();
-            m_AlwaysPanels.Clear();
-            m_PopPanels.Clear();
-            m_OpenPanels.Clear();
+            m_DelayDestroyUIs.Clear();
+            m_AlwaysUIs.Clear();
+            m_PopViews.Clear();
+            m_OpenViews.Clear();
         }
 
         protected override void OnDestory()
@@ -191,10 +146,10 @@ namespace GameFrameWork.UI
 
             m_CanPopPanel = false;
             m_CurrPopView = null;
-            m_DelayDestroyPanels = null;
-            m_AlwaysPanels = null;
-            m_PopPanels = null;
-            m_OpenPanels = null;
+            m_DelayDestroyUIs = null;
+            m_AlwaysUIs = null;
+            m_PopViews = null;
+            m_OpenViews = null;
         }
 
         public RectTransform GetPanelLayer(UILayer layer)
@@ -202,61 +157,42 @@ namespace GameFrameWork.UI
             return m_UILayers[Convert.ToInt32(layer)];
         }
 
-        public IView Open(string uiName, object arg = null)
+        public IView Open(string viewName, object arg = null)
         {
-            return OpenPanel(uiName, arg);
+            Type viewType = GetViewType(viewName);
+            return Open(viewType, arg);
         }
 
-        public IView Get(string uiName)
+        public T Open<T>(object arg = null) where T : class, IView, new()
         {
-            return GetPanel(uiName);
+            return Open(typeof(T), arg) as T;
         }
-
-        public bool IsOpen(string panelName)
+        
+        public IView Open(Type panelType, object arg = null)
         {
-            IView view = GetPanel(panelName);
-            return view != null && view.isOpen;
-        }
-
-        public void Close(string paneTypeName, bool isForceDestroy = false)
-        {
-            ClosePanel(paneTypeName, isForceDestroy);
-        }
-
-        public void Close(IView view, bool isForceDestroy = false)
-        {
-            if (view == null)
-            {
-                return;
-            }
-
-            ClosePanel(view.settings.name, isForceDestroy);
-        }
-
-        private IView OpenPanel(string panelName, object arg)
-        {
-            System.Type panelType = GetPanelType(panelName);
-
             if (panelType == null)
             {
                 return null;
             }
 
-            IView view = GetPanel(panelName);
- 
-            if (view == null)
+            IView view = Get(panelType);
+            
+            if (view != null)
             {
-                view = Activator.CreateInstance(panelType) as IView;
+                view.Open(arg);
+                return view;
             }
-
+            
+            view = Activator.CreateInstance(panelType) as IView;
+            
             if (view == null)
             {
                 return null;
             }
             
-            m_OpenPanels.Add(view);
-            m_AlwaysPanels.Remove(view);
-            m_DelayDestroyPanels.Remove(view);
+            m_OpenViews.Add(view);
+            m_AlwaysUIs.Remove(view);
+            m_DelayDestroyUIs.Remove(view);
             
             if (!m_CanPopPanel && view != null && view.settings.canPopUp)
             {
@@ -267,8 +203,8 @@ namespace GameFrameWork.UI
             {
                 if (m_CurrPopView != null && m_CurrPopView != view)
                 {
-                    m_PopPanels.Add(m_CurrPopView);
-                    ClosePanel(m_CurrPopView, false, false);
+                    m_PopViews.Add(m_CurrPopView);
+                    Close(m_CurrPopView, false, false);
                 }
 
                 m_CurrPopView = view;
@@ -277,34 +213,73 @@ namespace GameFrameWork.UI
             view.Open(arg);
             return view;
         }
-
-        private IView GetPanel(string panelName)
+        
+        public IView Get(string viewName)
         {
-            System.Type panelType = GetPanelType(panelName);
+            System.Type viewType = GetViewType(viewName);
+            return Get(viewType);
+        }
 
-            if (panelType == null)
+        public T Get<T>() where T : class, IView, new()
+        {
+            return Get(typeof(T)) as T;
+        }
+        
+        public IView Get(Type viewType)
+        {
+            if (viewType == null)
             {
                 return null;
             }
 
-            foreach (var panel in m_OpenPanels)
+            foreach (IView view in m_OpenViews)
             {
-                if (panel.GetType() == panelType)
+                if (view.GetType() == viewType)
                 {
-                    return panel;
+                    return view;
                 }
             }
 
             return null;
         }
-
-        private void ClosePanel(string panelTypeName, bool isForceDestroy)
+        
+        public bool IsOpen(string viewName)
         {
-            IView view = GetPanel(panelTypeName);
-            ClosePanel(view, isForceDestroy);
+            IView view = Get(viewName);
+            return view is { isOpen: true };
         }
 
-        private void ClosePanel(IView view, bool isForceDestroy, bool checkPopPanel = true)
+        public bool IsOpen<T>() where T : class, IView, new()
+        {
+            IView view = Get<T>();
+            return view is { isOpen: true };
+        }
+
+        public bool IsOpen(Type viewType)
+        {
+            IView view = Get(viewType);
+            return view is { isOpen: true };
+        }
+        
+        public void Close(string viewName, bool isForceDestroy = false)
+        {
+            IView view = Get(viewName);
+            Close(view, isForceDestroy);
+        }
+
+        public void Close<T>(bool isForceDestroy = false) where T : class, IView, new()
+        {
+            IView view = Get<T>();
+            Close(view, isForceDestroy);
+        }
+        
+        public void Close(Type viewType, bool isForceDestroy = false)
+        {
+            IView view = Get(viewType);
+            Close(view, isForceDestroy);
+        }
+        
+        public void Close(IView view, bool isForceDestroy = false, bool checkPopPanel = true)
         {
             if (view == null)
             {
@@ -313,57 +288,61 @@ namespace GameFrameWork.UI
 
             view.Close();
 
-            if (view.settings.CloseMode == UICloseMode.Destroy || isForceDestroy)
+            if (checkPopPanel && m_CanPopPanel && !view.settings.canPopUp && m_PopViews.Count > 0)
+            {
+                IView oldView = m_PopViews[^1];
+                oldView.Open(null);
+                m_OpenViews.Add(oldView);
+                m_AlwaysUIs.Remove(oldView);
+                m_DelayDestroyUIs.Remove(oldView);
+                m_PopViews.Remove(oldView);
+                m_CurrPopView = oldView;
+            }
+            
+            if (view.settings.destroyMode == UIDestroyMode.Immediately || isForceDestroy)
             {
                 GameObjectPoolMgr.instance.Put(view.assetPath, view.gameObject, true);
                 view.Destroy();
-                m_OpenPanels.Remove(view);
-                m_PopPanels.Remove(view);
+                m_OpenViews.Remove(view);
+                m_PopViews.Remove(view);
 
                 if (m_CurrPopView == view)
                 {
                     m_CurrPopView = null;
                 }
             }
-            else if (view.settings.CloseMode == UICloseMode.DelayDestroy)
+            else if (view.settings.destroyMode == UIDestroyMode.Delay)
             {
-                if (!m_DelayDestroyPanels.Contains(view))
+                if (!m_DelayDestroyUIs.Contains(view))
                 {
-                    m_DelayDestroyPanels.Add(view);
+                    m_DelayDestroyUIs.Add(view);
                 }
             }
-            else if (view.settings.CloseMode == UICloseMode.Always)
+            else if (view.settings.destroyMode == UIDestroyMode.Always)
             {
-                if (!m_AlwaysPanels.Contains(view))
+                if (!m_AlwaysUIs.Contains(view))
                 {
-                    m_AlwaysPanels.Add(view);
+                    m_AlwaysUIs.Add(view);
                 }
+            }
+        }
+
+        public static void ResgistViewType<T>(string viewName) where T : class, IView, new()
+        {
+            s_ViewTypes.Add(viewName, typeof(T));
+        }
+
+        private System.Type GetViewType(string viewName)
+        {
+            if (s_ViewTypes.TryGetValue(viewName, out Type viewType))
+            {
+                return viewType;
             }
 
-            if (checkPopPanel && m_CanPopPanel && !view.settings.canPopUp && m_PopPanels.Count > 0)
-            {
-                IView oldView = m_PopPanels[^1];
-                oldView.Open(null);
-                m_OpenPanels.Add(oldView);
-                m_AlwaysPanels.Remove(oldView);
-                m_DelayDestroyPanels.Remove(oldView);
-                m_PopPanels.Remove(oldView);
-                m_CurrPopView = oldView;
-            }
+            Log.LogError(viewName, "不存在,请使用ResgistViewType方法进行类型注册");
+            return null;
         }
         
-        private System.Type GetPanelType(string panelName)
-        {
-            System.Type type = System.Type.GetType(panelName);
-
-            if (type == null)
-            {
-                Log.LogError(panelName, "不存在");
-            }
-
-            return type;
-        }
-
-
+        private static Dictionary<string,Type> s_ViewTypes = new Dictionary<string, Type>();
     }
 }

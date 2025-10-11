@@ -12,9 +12,10 @@ namespace GameFrameWork.Editor
         public static string streamingAssetsFullPath = applicationDataFullPath + "StreamingAssets/";
 
         public const string editorUIRootPath = applicationDataPath + "GameFrameWork/UI/UIRoot.prefab";
+        public const string editorUIRootScenePath = applicationDataPath + "GameFrameWork/UI/UIRootScene.prefab";
 
-        public const string editorConfigPath = applicationDataPath +  "GameFrameWork/Editor/Config/";
-        public static string editorConfigFullPath = applicationDataFullPath + "GameFrameWork/Editor/Config/";
+        public const string editorConfigPath = applicationDataPath +  "Editor/Config/";
+        public static string editorConfigFullPath = applicationDataFullPath + "Editor/Config/";
 
         public const string editorResourcesPath = applicationDataPath + "Resources/";
         public static string editorResourcesFullPath = applicationDataFullPath + "Resources/";
@@ -41,6 +42,7 @@ namespace GameFrameWork.Editor
         public static string entryScriptFullPath = editorScriptFullPath + entryScriptName + entryScriptExtend;
 
         public const string defaultUIPath = "UI";
+        public const string defaultUIScriptsPath = "Scripts/UI";
         public const string defaultConfigDataPath = "ConfigData";
 
         public const string uiPrefabsPath = "Prefabs";

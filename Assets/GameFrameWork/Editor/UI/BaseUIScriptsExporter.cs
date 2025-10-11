@@ -44,6 +44,14 @@ namespace GameFrameWork.Editor
             }
         }
 
+        protected string second
+        {
+            get
+            {
+                return DateTime.Now.Second.ToString().PadLeft(2, '0');
+            }
+        }
+
         public abstract string CopyRef(UIRef[] uiRefs);
 
         public abstract void Export(UIRef[] uiRefs, UIRefSetting setting);

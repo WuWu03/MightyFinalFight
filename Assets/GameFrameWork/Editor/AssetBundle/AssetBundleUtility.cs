@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
+using GameFrameWork.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,16 +10,23 @@ namespace GameFrameWork.Editor
     {
         enum AssetFindResult
         {
-            Failure = 1,//失败
-            Success = 2,//成功
-            InSubPath = 3,//子目录有资源
+            Failure = 1, //失败
+            Success = 2, //成功
+            InSubPath = 3, //子目录有资源
+        }
+
+        struct AssetInfo
+        {
+            public int bundleIndex;
+            public int assetIndex;
+            public AssetBundleData.BundleBuildType bundleBuildType;
         }
 
         static AssetBundleUtility()
         {
             EditorApplication.projectWindowItemOnGUI += ProjectWindowItemGUI;
             m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
-            m_DicAssetContainer = new Dictionary<string, string>();
+            m_DicAssetContainer = new();
         }
 
         public static void RefreshData()
@@ -32,57 +39,74 @@ namespace GameFrameWork.Editor
         {
             string assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
-            if (string.IsNullOrEmpty(assetPath) || !assetPath.Contains("Assets"))
+            if (string.IsNullOrEmpty(assetPath) || !assetPath.StartsWith("Assets"))
             {
                 return;
             }
 
-            if (string.IsNullOrEmpty(Path.GetExtension(assetPath)) && !assetPath.EndsWith("/"))
-            {
-                assetPath = assetPath + "/";
-            }
-
-            AssetFindResult result = GetAssetBuildMapIndex(assetPath, out string assetIndex);
+            assetPath = PathUtil.FormatPath(assetPath);
+            AssetFindResult result = GetAssetBuildMapIndex(assetPath, out AssetInfo assetInfo);
 
             if (result == AssetFindResult.Failure)
             {
                 return;
             }
 
-            GUIStyle labelStyle = new("AssetLabel")
-            {
-                alignment = TextAnchor.MiddleCenter
-            };
-            labelStyle.normal.textColor = Color.green;
-            labelStyle.focused.textColor = Color.green;
-            float width = 40f;
-            float height = selectionRect.height;
-            float x = selectionRect.x + selectionRect.width - width;
-            float y = selectionRect.y;
-     
+            string text = string.Empty;
+            string styleName = string.Empty;
+
             if (result == AssetFindResult.Success)
             {
-                GUI.Label(new Rect(x, y, width, height), assetIndex, labelStyle);
+                styleName = GetAssetBuildTypeColor(assetInfo.bundleBuildType);
+                text = $"{assetInfo.bundleIndex + 1}_{assetInfo.assetIndex + 1}";
             }
             else if (result == AssetFindResult.InSubPath)
             {
-                GUI.Label(new Rect(x, y, width, height), "*", labelStyle);
+                styleName = "sv_label_0";
+                text = "*";
             }
+
+            GUIStyle labelStyle = new(styleName)
+            {
+                alignment = TextAnchor.MiddleCenter
+            };
+
+            float width = 30f;
+            float height = selectionRect.height;
+            float x = selectionRect.x + selectionRect.width - width;
+            float y = selectionRect.y;
+            GUI.Label(new Rect(x, y, width, height), text, labelStyle);
         }
 
-        private static AssetFindResult GetAssetBuildMapIndex(string assetPath, out string assetIndex)
+        private static string GetAssetBuildTypeColor(AssetBundleData.BundleBuildType bundleBuildType)
+        {
+            return bundleBuildType switch
+            {
+                AssetBundleData.BundleBuildType.Single => "sv_label_6",
+                AssetBundleData.BundleBuildType.MulitySingle => "sv_label_4",
+                AssetBundleData.BundleBuildType.Mulity => "sv_label_3",
+                _ => "sv_label_0"
+            };
+        }
+
+        private static AssetFindResult GetAssetBuildMapIndex(string assetPath, out AssetInfo assetInfo)
         {
             if (m_AssetBundleConfig == null)
             {
-                assetIndex = string.Empty;
+                assetInfo = new AssetInfo()
+                {
+                    bundleIndex = -1,
+                    assetIndex = -1,
+                };
                 return AssetFindResult.Failure;
             }
 
-            if (!m_DicAssetContainer.TryGetValue(assetPath, out string result))
+            if (!m_DicAssetContainer.TryGetValue(assetPath, out AssetInfo result))
             {
                 for (int i = 0; i < m_AssetBundleConfig.listDatas.Count; i++)
                 {
-                    if (m_AssetBundleConfig.listDatas[i].assetPaths == null || m_AssetBundleConfig.listDatas[i].assetPaths.Count < 1)
+                    if (m_AssetBundleConfig.listDatas[i].assetPaths == null ||
+                        m_AssetBundleConfig.listDatas[i].assetPaths.Count < 1)
                     {
                         continue;
                     }
@@ -90,42 +114,56 @@ namespace GameFrameWork.Editor
                     int index = m_AssetBundleConfig.listDatas[i].assetPaths.IndexOf(assetPath);
                     if (index >= 0)
                     {
-                        assetIndex = (i + 1).ToString() + "_" + (index + 1).ToString();
-                        m_DicAssetContainer.Add(assetPath, assetIndex);
+                        assetInfo = new()
+                        {
+                            bundleIndex = i,
+                            assetIndex = index,
+                            bundleBuildType = m_AssetBundleConfig.listDatas[i].bundleBuildType
+                        };
+
+                        m_DicAssetContainer.Add(assetPath, assetInfo);
                         return AssetFindResult.Success;
                     }
-                    else
+
+                    for (int j = 0; j < m_AssetBundleConfig.listDatas[i].assetPaths.Count; j++)
                     {
-                        for (int j = 0; j < m_AssetBundleConfig.listDatas[i].assetPaths.Count; j++)
+                        string tempAsetPath = m_AssetBundleConfig.listDatas[i].assetPaths[j];
+
+                        if (assetPath.StartsWith(tempAsetPath))
                         {
-                            string tempAsetPath = m_AssetBundleConfig.listDatas[i].assetPaths[j];
-
-                            if (assetPath.StartsWith(tempAsetPath))
+                            assetInfo = new()
                             {
-                                assetIndex = (i + 1).ToString() + "_" + (j + 1).ToString();
-                                m_DicAssetContainer.Add(assetPath, assetIndex);
+                                bundleIndex = i,
+                                assetIndex = j,
+                                bundleBuildType = m_AssetBundleConfig.listDatas[i].bundleBuildType
+                            };
 
-                                return AssetFindResult.Success;
-                            }
-                            else if (tempAsetPath.Contains(assetPath))
+                            m_DicAssetContainer.Add(assetPath, assetInfo);
+                            return AssetFindResult.Success;
+                        }
+
+                        if (tempAsetPath.Contains(assetPath))
+                        {
+                            assetInfo = new()
                             {
-                                assetIndex = string.Empty;
-                                m_DicAssetContainer.Add(assetPath, assetIndex);
-                                return AssetFindResult.InSubPath;
-                            }
+                                bundleIndex = -1,
+                                assetIndex = -1,
+                            };
+                            m_DicAssetContainer.Add(assetPath, assetInfo);
+                            return AssetFindResult.InSubPath;
                         }
                     }
                 }
 
-                assetIndex = string.Empty;
+                assetInfo = default;
                 return AssetFindResult.Failure;
             }
 
-            assetIndex = result;
-            return string.IsNullOrEmpty(result) ? AssetFindResult.InSubPath : AssetFindResult.Success;
+            assetInfo = result;
+            return result.bundleIndex == -1 ? AssetFindResult.InSubPath : AssetFindResult.Success;
         }
 
-        private static Dictionary<string, string> m_DicAssetContainer = null;
+        private static Dictionary<string, AssetInfo> m_DicAssetContainer = null;
         private static AssetBundleConfig m_AssetBundleConfig = null;
     }
 }

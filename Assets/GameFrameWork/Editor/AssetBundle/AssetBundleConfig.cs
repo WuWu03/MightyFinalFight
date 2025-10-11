@@ -17,7 +17,7 @@ namespace GameFrameWork.Editor
     [Serializable]
     public class AssetBundleData : BaseConfigData
     {
-        public enum BundleBuildType
+        public enum BundleBuildType : byte
         {
             Mulity,//包体下每个资源单独打ab
             Single,//包体下所有资源打成一个ab

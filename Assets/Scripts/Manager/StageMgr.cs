@@ -69,7 +69,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
         PlayerMgr.instance.canContrl = false;
         CameraMgr.instance.EndFollow();  
-        LoadPanelMgr.instance.DOFadeBlack(OnFadeBlackComplete);
+        LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
 
     private void OnFadeBlackComplete()
@@ -108,11 +108,11 @@ public class StageMgr : BaseMgr<StageMgr>
 
         if(m_CurrStageData.showMainPanel)
         {
-            UIMgr.instance.Open(UINames.MainPanel).Show();
+            UIMgr.instance.Open<MainView>();
         }
         else
         {
-            UIMgr.instance.Open(UINames.MainPanel).Hide();
+            UIMgr.instance.Close<MainView>();
         }
 
         SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
@@ -121,12 +121,12 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.canContrl = false;
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
         SceneMgr.instance.AllowScene();
-        LoadPanelMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+        LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
 
     private void OnFadeWhiteComplete()
     {
-        LoadPanelMgr.instance.CloseLoadPanel();
+        LoadMgr.instance.CloseLoadPanel();
         EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
         CameraMgr.instance.StartFollow();
         PlayerMgr.instance.canContrl = true;

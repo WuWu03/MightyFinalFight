@@ -21,7 +21,7 @@ MonoBehaviour:
   luaPath: 
   uiPrefabsPath: ArtResources/UI/Prefabs
   uiSpritesPath: ArtResources/UI/Sprites
-  configDataPath: ConfigData
+  configDataPath: ConfigData/
   versionFileName: Version.txt
   assetMapFileName: AssetMap.txt
   logColor: {r: 1, g: 1, b: 1, a: 1}

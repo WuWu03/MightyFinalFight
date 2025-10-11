@@ -11,11 +11,11 @@ public class TestNetResolver : Singleton<TestNetResolver>
     {
         add
         {
-            m_TestReceiveEvent = value;
+            m_TestReceiveEvent += value;
         }
         remove
         {
-            m_TestReceiveEvent = null;
+            m_TestReceiveEvent -= value;;
         }
     }
 
@@ -60,6 +60,6 @@ public class TestNetResolver : Singleton<TestNetResolver>
         m_TestProto = null;
     }
 
-    private GameFrameWorkAction<test> m_TestReceiveEvent = null;
+    private event GameFrameWorkAction<test> m_TestReceiveEvent = null;
     private test m_TestProto = null;
 }

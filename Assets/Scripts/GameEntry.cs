@@ -20,7 +20,7 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.Init(manager);
         PlayerMgr.Init(manager);
         HudMgr.Init(manager);
-        LoadPanelMgr.Init(manager);
+        LoadMgr.Init(manager);
         StoryMgr.Init(manager);
     }
 
@@ -39,7 +39,7 @@ public class GameEntry : GameFrameWorkEntry
         if (config.isCheckVersion)
         {
             VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
-            UIMgr.instance.Open(UINames.VersionPanel);
+            UIMgr.instance.Open<VersionView>();
         }
         else
         {
@@ -63,7 +63,7 @@ public class GameEntry : GameFrameWorkEntry
         CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);
         CameraMgr.instance.AllowAxisFollow(true, false);
         CameraMgr.instance.SetFollowMode(FollowMode.Just);
-        UIMgr.instance.Close(UINames.VersionPanel);
+        UIMgr.instance.Close<VersionView>();
         GameObjectPoolMgr.instance.CheckRelease();
         AssetsPool.instance.CheckRelease();
         ReferencePool.ReleaseAll();
@@ -72,7 +72,7 @@ public class GameEntry : GameFrameWorkEntry
         BehaviourTreeMgr.instance.InitBehaviourTreeData();
         StaticConfig.InitConfig();
         ConfigDataSheet.Init();
-        UIMgr.instance.Open(UINames.TitlePanel);
+        UIMgr.instance.Open<TitleView>();
     }
 
     protected override void OnExit()
@@ -84,7 +84,7 @@ public class GameEntry : GameFrameWorkEntry
         SceneEntityMgr.instance.ShutDown();
         PlayerMgr.instance.ShutDown();
         HudMgr.instance.ShutDown();
-        LoadPanelMgr.instance.ShutDown();
+        LoadMgr.instance.ShutDown();
         StaticConfig.ShutDown();
         ConfigDataSheet.ShutDown();
     }

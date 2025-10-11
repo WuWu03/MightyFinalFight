@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -390,27 +391,27 @@ namespace GameFrameWork.Utils
             {
                 return string.Empty;
             }
-
-            if (m_ListArgs.Count < 2)
-            {
-                return m_ListArgs[0].ToString();
-            }
-
+            
             m_StringBuilder.Clear();
-
-            for (int i = 0; i < m_ListArgs.Count; i++)
+            
+            for (int i = 0;i < m_ListArgs.Count;i++)
             {
                 string arg = m_ListArgs[i];
-                bool addPath = isPath && !string.IsNullOrEmpty(arg) && !arg.EndsWith("/") && i < m_ListArgs.Count - 1;
-
-                if (i == m_ListArgs.Count - 2)
+                bool canAddPath = false;
+                
+                if (isPath)
                 {
-                    addPath = addPath && !m_ListArgs[i + 1].StartsWith(".");
+                    canAddPath = string.IsNullOrEmpty(Path.GetExtension(arg)) && !arg.EndsWith("/");
+                    
+                    if (canAddPath && m_ListArgs.Count > 1 && i == m_ListArgs.Count - 2)
+                    {
+                        canAddPath = !m_ListArgs[i + 1].StartsWith(".");
+                    }
                 }
+                
+                m_StringBuilder.Append(arg);
 
-                m_StringBuilder.Append(m_ListArgs[i]);
-
-                if (addPath)
+                if (canAddPath)
                 {
                     m_StringBuilder.Append('/');
                 }

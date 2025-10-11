@@ -45,58 +45,6 @@ namespace GameFrameWork.Editor
             }
         }
 
-        public bool isUseLua
-        {
-            get
-            {
-                return m_IsUseLua;
-            }
-            set
-            {
-                m_IsUseLua = value;
-                SaveGameFrameWorkConfig(this);
-            }
-        }
-
-        public bool isLoadLuaFromAssetBundle
-        {
-            get
-            {
-                return m_IsLoadLuaFromAssetBundle;
-            }
-            set
-            {
-                m_IsLoadLuaFromAssetBundle = value;
-                SaveGameFrameWorkConfig(this);
-            }
-        }
-
-        public bool isLuaByteMode
-        {
-            get
-            {
-                return m_IsLuaByteMode;
-            }
-            set
-            {
-                m_IsLuaByteMode = value;
-                SaveGameFrameWorkConfig(this);
-            }
-        }
-
-        public string luaPath
-        {
-            get
-            {
-                return m_LuaPath;
-            }
-            set
-            {
-                m_LuaPath = value;
-                SaveGameFrameWorkConfig(this);
-            }
-        }
-
         public string uiPath
         {
             get
@@ -135,7 +83,7 @@ namespace GameFrameWork.Editor
                 SaveGameFrameWorkConfig(this);
             }
         }
-
+        
         public string configDataPath
         {
             get
@@ -191,6 +139,7 @@ namespace GameFrameWork.Editor
         [SerializeField] public string buildPath = string.Empty;
         [SerializeField] public string uiScenesPath = string.Empty;
         [SerializeField] public string uiAtlasPath = string.Empty;
+        [SerializeField] public string uiScriptsPath = string.Empty;
         [SerializeField] public string entryScene = string.Empty;
         [SerializeField] public string languageKeyFilePath = string.Empty;
 
@@ -218,10 +167,6 @@ namespace GameFrameWork.Editor
             config.isCheckVersion = windowData.isCheckVersion;
             config.isLoadFromAssetBundle = windowData.isLoadFromAssetBundle;
             config.isOpenLog = windowData.isOpenLog;
-            config.isUseLua = windowData.isUseLua;
-            config.isLoadLuaFromAssetBundle = windowData.isLoadLuaFromAssetBundle;
-            config.isLuaByteMode = windowData.isLuaByteMode;
-            config.luaPath = EditorPathUtil.GetPathWithoutAssets(windowData.luaPath);
             config.uiPrefabsPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiPrefabsPath);
             config.uiSpritesPath = EditorPathUtil.GetPathWithoutAssets(windowData.m_UISpritesPath);
             config.configDataPath = EditorPathUtil.GetPathWithoutAssets(windowData.configDataPath);
@@ -234,13 +179,8 @@ namespace GameFrameWork.Editor
         [SerializeField] private bool m_IsCheckVersion = false;
         [SerializeField] private bool m_IsLoadFromAssetBundle = false;
         [SerializeField] private bool m_IsOpenLog = false;
-        [SerializeField] private bool m_IsUseLua = false;
-        [SerializeField] private bool m_IsLoadLuaFromAssetBundle = false;
-        [SerializeField] private bool m_IsLuaByteMode = false;
-        [SerializeField] private string m_LuaPath = string.Empty;
         [SerializeField] private string m_UIPath = string.Empty;
         [SerializeField] private string m_UIPrefabsPath = string.Empty;
-        [SerializeField] private string m_UIAtlasPath = string.Empty;
         [SerializeField] private string m_UISpritesPath = string.Empty;
         [SerializeField] private string m_ConfigDataPath = string.Empty;
         [SerializeField] private string m_VersionFileName = string.Empty;

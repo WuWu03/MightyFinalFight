@@ -35,8 +35,18 @@ namespace GameFrameWork
             return GetOrAddComponent<T>(transform.gameObject);
         }
 
+        public static T GetOrAddComponent<T>(this Component component) where T : Component
+        {
+            return GetOrAddComponent<T>(component.gameObject);
+        }
+        
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
+            if (go is null)
+            {
+                return null;
+            }
+            
             if (!go.TryGetComponent<T>(out T result))
             {
                 result = go.AddComponent<T>();
@@ -44,7 +54,7 @@ namespace GameFrameWork
 
             return result;
         }
-
+        
         public static T GetOrAddComponentInChildren<T>(this GameObject go,string path) where T : Component
         {
             T result = go.GetComponentInChildren<T>(true);

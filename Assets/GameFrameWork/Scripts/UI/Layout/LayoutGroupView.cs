@@ -41,6 +41,11 @@ namespace GameFrameWork.UI
             }
         }
 
+        public void SetActive(bool active)
+        {
+            m_ItemParent.SetActiveSelf(active);
+        }
+
         public void SelectItem(int index)
         {
             if (m_ListItem == null || m_ListItem.Count < 1 || index < 0 || index >= m_ListItem.Count)
@@ -48,7 +53,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            if (m_CurrSelectIndex > -1 && m_ListItem[m_CurrSelectIndex] != null)
+            if (m_CurrSelectIndex > -1 && m_CurrSelectIndex < m_ListItem.Count && m_ListItem[m_CurrSelectIndex] != null)
             {
                 onItemSelectEvent?.Invoke(m_ListItem[m_CurrSelectIndex], false);
             }
@@ -89,23 +94,12 @@ namespace GameFrameWork.UI
             T item = new T();
             item.Create(go);
             item.itemIndex = index;
-
-            if (item.selectButton != null)
-            {
-                item.selectButton.onClick.AddListener(OnClick, item.itemIndex);
-            }
-
             m_ListItem.Add(item);
-        }
-
-        private void OnClick(GameObject go, PointerEventData data, int arg)
-        {
-            SelectItem(arg);
         }
 
         public void Clear()
         {
-            throw new System.NotImplementedException();
+
         }
 
         private List<T> m_ListItem = null;

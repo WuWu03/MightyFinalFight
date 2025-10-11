@@ -56,9 +56,9 @@ namespace GameFrameWork.Editor
                 m_UIRef.SetName(name);
             }
 
-            int currIndex = m_ListCompName.IndexOf(m_UIRef.componentName);
-            if (currIndex < 0) currIndex = 0;
+            int currIndex = Mathf.Max(m_ListCompName.IndexOf(m_UIRef.componentName), 0);
             int index = EditorGUILayout.Popup("引用的组件", currIndex, m_ListCompName.ToArray(), new GUILayoutOption[0]);
+            
             if (currIndex != index)
             {
                 UnityEditor.EditorUtility.SetDirty(m_UIRef);

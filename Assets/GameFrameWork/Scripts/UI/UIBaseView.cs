@@ -18,7 +18,7 @@ namespace GameFrameWork.UI
                 return m_GameObject;
             } 
         }
-        
+         
         private Transform m_Transform;
         public Transform transform
         {
@@ -84,6 +84,7 @@ namespace GameFrameWork.UI
         
         private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = new();
         private object m_Arg = null;
+        private bool m_IsLoading = false;
         protected UIBaseView()
         {
             m_AssetPath = string.Empty;
@@ -96,6 +97,11 @@ namespace GameFrameWork.UI
 
         public void Open(object arg)
         {
+            if (m_IsLoading)
+            {
+                return;
+            }
+            
             if (m_IsOpen)
             {
                 Show();
@@ -106,10 +112,9 @@ namespace GameFrameWork.UI
             {
                 m_Arg = arg;
             }
-            
-            m_IsOpen = true;
-            string prefabName = StringUtil.Append(m_Settings.name, ".prefab");
-            GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), prefabName), OnLoadComplete);
+
+            m_IsLoading = true;
+            GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), m_Settings.prefabName), OnLoadComplete);
         }
 
         public void Update()
@@ -187,13 +192,15 @@ namespace GameFrameWork.UI
         {
             m_GameObject = uiGameObject as GameObject;
             m_AssetPath = assetPath;
+            m_IsOpen = true;
+            m_IsLoading = false;
             
             if (m_GameObject is not null)
             {
                 m_Transform = m_GameObject.transform;
                 m_Component.InitComponent(m_GameObject.GetComponent<UIRefRoot>());
                 m_GameObject.SetLayer(LayerName.UI);
-                m_Transform.SetParent(UIMgr.instance.GetPanelLayer(settings.Layer), false);
+                m_Transform.SetParent(UIMgr.instance.GetPanelLayer(settings.layer), false);
             }
             
             OnOpen(m_Arg);
@@ -243,7 +250,7 @@ namespace GameFrameWork.UI
 
         protected void CloseSelf()
         {
-            UIMgr.instance.Close(m_Settings.name);
+            UIMgr.instance.Close(this);
         }
         
         protected abstract void OnOpen(object arg);

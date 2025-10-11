@@ -25,7 +25,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
         if (m_PlayTimer > 0 && Time.time - m_PlayTimer >= 3.76)
         {
             m_PlayTimer = -1;
-            LoadPanelMgr.instance.DOFadeBlack(OnLoadFadeComplete);
+            LoadMgr.instance.DOFadeBlack(OnLoadFadeComplete);
         }
     }
 

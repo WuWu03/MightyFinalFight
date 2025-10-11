@@ -1,12 +1,13 @@
+using System;
 using GameFrameWork;
 using GameFrameWork.UI;
 
 public class UIShowHideClip : BaseClip
 {
-    public static UIShowHideClip Create(string uiName, bool isActive)
+    public static UIShowHideClip Create(Type uiType, bool isActive)
     {
         UIShowHideClip clip = ReferencePool.Acquire<UIShowHideClip>();
-        clip.m_UIName = uiName;
+        clip.m_UIType = uiType;
         clip.m_IsActive = isActive;
         return clip;
     }
@@ -25,11 +26,11 @@ public class UIShowHideClip : BaseClip
     {
         if (m_IsActive) 
         {
-            UIMgr.instance.Get(m_UIName).Show();
+            UIMgr.instance.Get(m_UIType).Show();
         }
         else
         {
-            UIMgr.instance.Get(m_UIName).Hide();
+            UIMgr.instance.Get(m_UIType).Hide();
         }
 
         Complete();
@@ -40,6 +41,6 @@ public class UIShowHideClip : BaseClip
 
     }
 
-    private string m_UIName = string.Empty;
+    private Type m_UIType = null;
     private bool m_IsActive = false;
 }

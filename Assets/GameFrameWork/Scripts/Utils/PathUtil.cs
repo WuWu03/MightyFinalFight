@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace GameFrameWork.Utils
@@ -71,9 +72,9 @@ namespace GameFrameWork.Utils
         {
             StringUtil.ClearArgs();
 
-            for(int i = 0; i < args.Length; i++)
+            foreach (string arg in args)
             {
-                StringUtil.AddArg(args[i]);
+                StringUtil.AddArg(arg);
             }
 
             return StringUtil.Append(true);
@@ -91,19 +92,13 @@ namespace GameFrameWork.Utils
 
         public static string GetAssetPath(string path)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || path == "Assets")
             {
                 return "Assets/";
             }
 
-            int assetIndex = path.IndexOf("Assets");
-
-            if (assetIndex < 0)
-            {
-                return FormatPath("Assets", path);
-            }
-
-            return path.Substring(assetIndex);
+            int assetIndex = path.IndexOf("Assets/", StringComparison.Ordinal);
+            return assetIndex < 0 ? FormatPath("Assets", path) : FormatPath(path[assetIndex..]);
         }
 
         public static string GetAssetFullPath(string assetPath)
@@ -113,11 +108,11 @@ namespace GameFrameWork.Utils
                 return appDataPath;
             }
 
-            int assetIndex = assetPath.IndexOf("Assets/");
+            int assetIndex = assetPath.IndexOf("Assets/", StringComparison.Ordinal);
 
             if (assetIndex > -1)
             {
-                assetPath = assetPath.Substring(assetIndex + 7);
+                assetPath = assetPath[(assetIndex + 7)..];
             }
 
             return FormatPath(appDataPath, assetPath);

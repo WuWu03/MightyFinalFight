@@ -12,7 +12,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public int itemIndex 
+        public int itemIndex
         {
             get
             {
@@ -29,14 +29,6 @@ namespace GameFrameWork.UI
             get
             {
                 return m_IsActive;
-            }
-        }
-
-        public ButtonEx selectButton
-        {
-            get
-            {
-                return m_SelectButton;
             }
         }
 

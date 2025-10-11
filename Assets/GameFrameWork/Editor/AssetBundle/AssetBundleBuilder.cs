@@ -40,26 +40,7 @@ namespace GameFrameWork.Editor
             }
 
             FileUtil.VerifyDirectory(EditorPathUtil.streamingAssetsFullPath);
-
-            if (EditorMgr.GetGameFrameWorkConfig().isUseLua)
-            {
-                if (EditorMgr.GetGameFrameWorkConfig().isLoadLuaFromAssetBundle)
-                {
-                    HandleLuaBundle();
-                }
-                else
-                {
-                    HandleLuaFile();
-                }
-            }
-
             BuildPipeline.BuildAssetBundles(EditorPathUtil.streamingAssetsPath, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
-
-            if (EditorMgr.GetGameFrameWorkConfig().isUseLua)
-            {
-                //FileUtil.DeleteDirectory(EditorPathUtil.luaPath);
-            }
-
             AssetDatabase.Refresh();
 
             if (config.isCopyAsset && !string.IsNullOrEmpty(config.assetCopyDir))

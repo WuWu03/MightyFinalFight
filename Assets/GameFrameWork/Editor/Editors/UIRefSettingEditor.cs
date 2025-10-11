@@ -1,4 +1,6 @@
+using System;
 using System.Text;
+using GameFrameWork.Utils;
 using UnityEditor;
 
 namespace GameFrameWork.Editor
@@ -9,7 +11,7 @@ namespace GameFrameWork.Editor
         private void OnEnable()
         {
             m_UIRefSetting = target as UIRefSetting;
-            m_UIRefSetting.RefreshScriptFolder();
+            RefreshPath(m_UIRefSetting.moduleName, m_UIRefSetting.viewName);
         }
 
         public override void OnInspectorGUI()
@@ -17,40 +19,56 @@ namespace GameFrameWork.Editor
             m_SBHelp.Length = 0;
             serializedObject.Update();
 
-            string panelName = EditorGUILayout.TextField("Panel Name", m_UIRefSetting.panelName);
-            if (m_UIRefSetting.panelName != panelName)
+            string viewName = EditorGUILayout.TextField("View Name", m_UIRefSetting.viewName);
+            string moduleName = EditorGUILayout.TextField("Module Name", m_UIRefSetting.moduleName);
+
+            if (m_UIRefSetting.viewName != viewName)
             {
-                EditorUtil.RegisterUndo(target, "Change UIRefSetting Panel Name");
-                m_UIRefSetting.panelName = panelName;
+                EditorUtil.RegisterUndo(target, "设置改变：View Name");
+                switch (m_UIRefSetting.uiType)
+                {
+                    case UIRefSetting.UIType.Panel:
+                        viewName = viewName.EndsWith("Panel") ? viewName : viewName + "Panel";
+                        break;
+                    case UIRefSetting.UIType.View:
+                        viewName = viewName.EndsWith("View") ? viewName : viewName + "View";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                m_UIRefSetting.viewName = viewName;
+                RefreshPath(moduleName, viewName);
             }
 
-            string scriptFolder = EditorGUILayout.TextField("Script Folder", m_UIRefSetting.scriptFolder);
-            if (m_UIRefSetting.scriptFolder != scriptFolder)
+            if (m_UIRefSetting.moduleName != moduleName)
             {
-                EditorUtil.RegisterUndo(target, "Change UIRefSetting Folder Name");
-                m_UIRefSetting.scriptFolder = scriptFolder;
+                EditorUtil.RegisterUndo(target, "设置改变：Module Name");
+                m_UIRefSetting.moduleName = moduleName;
+                RefreshPath(moduleName, viewName);
             }
 
-            UIRefSetting.ExoprtScriptType scriptType = (UIRefSetting.ExoprtScriptType)EditorGUILayout.EnumPopup("Script Type", m_UIRefSetting.scriptType);
-            if (m_UIRefSetting.scriptType != scriptType)
+            UIRefSetting.UILayer uiLayer = (UIRefSetting.UILayer)EditorGUILayout.EnumPopup("UI Layer", m_UIRefSetting.uiLayer);
+            if (m_UIRefSetting.uiLayer != uiLayer)
             {
-                EditorUtil.RegisterUndo(target, "Change UIRefSetting Script Type");
-                m_UIRefSetting.scriptType = scriptType;
+                EditorUtil.RegisterUndo(target, "设置改变：UI Layer");
+                m_UIRefSetting.uiLayer = uiLayer;
             }
 
-            UIRefSetting.Type panelType = (UIRefSetting.Type)EditorGUILayout.EnumPopup("Panel Type", m_UIRefSetting.panelType);
-            if (m_UIRefSetting.panelType != panelType)
+            UIRefSetting.UIType uiType =
+                (UIRefSetting.UIType)EditorGUILayout.EnumPopup("UI Type", m_UIRefSetting.uiType);
+            if (m_UIRefSetting.uiType != uiType)
             {
-                EditorUtil.RegisterUndo(target, "Change UIRefSetting Panel Type");
-                m_UIRefSetting.panelType = panelType;
+                EditorUtil.RegisterUndo(target, "设置改变：UI Type");
+                m_UIRefSetting.uiType = uiType;
             }
 
-            if (!string.IsNullOrEmpty(panelName))
+            if (!string.IsNullOrEmpty(viewName))
             {
                 m_SBHelp.AppendLine("1.脚本创建路径:");
-                m_SBHelp.AppendLine("        UI逻辑脚本" + m_UIRefSetting.panelPath);
-                m_SBHelp.AppendLine("        UI视图脚本" + m_UIRefSetting.panelComponentPath);
-                m_SBHelp.AppendLine("        UI设置脚本" + m_UIRefSetting.panelSettingsPath);
+                m_SBHelp.AppendLine("        UI逻辑脚本" + m_UIRefSetting.viewPath);
+                m_SBHelp.AppendLine("        UI视图脚本" + m_UIRefSetting.componentPath);
+                m_SBHelp.AppendLine("        UI设置脚本" + m_UIRefSetting.settingsPath);
                 m_SBHelp.AppendLine("2.预制体创建路径:");
                 m_SBHelp.AppendLine("        " + EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath);
                 m_SBHelp.AppendLine();
@@ -60,73 +78,57 @@ namespace GameFrameWork.Editor
                 EditorGUILayout.HelpBox("Empty Panel Name", MessageType.Error);
             }
 
-            if (panelType != UIRefSetting.Type.Root)
+            m_SBHelp.AppendLine("UI Layer: " + m_UIRefSetting.uiLayer);
+
+            UIRefSetting.UIDestroyMode uiDestroyMode =
+                (UIRefSetting.UIDestroyMode)EditorGUILayout.EnumPopup("Destroy Mode", m_UIRefSetting.uiDestroyMode);
+            if (m_UIRefSetting.uiDestroyMode != uiDestroyMode)
             {
-                EditorGUILayout.BeginHorizontal();
-                bool isCustomLayer = EditorGUILayout.Toggle("Custom Layer", m_UIRefSetting.isCustomLayer);
+                EditorUtil.RegisterUndo(target, "设置改变： Destroy Mode");
+                m_UIRefSetting.uiDestroyMode = uiDestroyMode;
+            }
 
-                if(m_UIRefSetting.isCustomLayer != isCustomLayer)
+            m_SBHelp.AppendLine("Destroy Mode: " + m_UIRefSetting.uiDestroyMode);
+
+            if (m_UIRefSetting.uiDestroyMode == UIRefSetting.UIDestroyMode.Delay)
+            {
+                if (m_UIRefSetting.delayDestroyTime == 0)
                 {
-                    m_UIRefSetting.isCustomLayer = isCustomLayer;
+                    m_UIRefSetting.delayDestroyTime = 10f;
                 }
 
-                if(m_UIRefSetting.isCustomLayer)
-                {
-                    UIRefSetting.Layer panelLayer = (UIRefSetting.Layer)EditorGUILayout.EnumPopup(m_UIRefSetting.panelLayer);
-                    if (m_UIRefSetting.panelLayer != panelLayer)
-                    {
-                        EditorUtil.RegisterUndo(target, "Change UIRefSetting Panel Type");
-                        m_UIRefSetting.panelLayer = panelLayer;
-                    }
-                }
-                else
-                {
-                    if (panelType == UIRefSetting.Type.Normal) m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer3;
-                    if (panelType == UIRefSetting.Type.Pop) m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer4;
-                }
-                EditorGUILayout.EndHorizontal();
-
-                m_SBHelp.AppendLine("Panel Layer: " + m_UIRefSetting.panelLayer);
-
-                UIRefSetting.CloseMode closeMode = (UIRefSetting.CloseMode)EditorGUILayout.EnumPopup("Close Mode", m_UIRefSetting.panelCloseMode);
-                if (m_UIRefSetting.panelCloseMode != closeMode)
-                {
-                    EditorUtil.RegisterUndo(target, "Change UIRefSetting Close Mode");
-                    m_UIRefSetting.panelCloseMode = closeMode;
-                }
-
-                EditorUtil.DrawProperty("PreLoad Type", serializedObject, "panelPreLoadType");
-
-                m_SBHelp.AppendLine("PreLoad Type: " + m_UIRefSetting.panelPreLoadType);
-                m_SBHelp.AppendLine("Close Mode: " + m_UIRefSetting.panelCloseMode);
-
-                if (m_UIRefSetting.panelCloseMode == UIRefSetting.CloseMode.DelayDestroy)
-                {
-                    if (m_UIRefSetting.unLoadTime == 0) m_UIRefSetting.unLoadTime = 10f;
-                    SerializedProperty unLoadTime = EditorUtil.DrawProperty("UnLoad Time", serializedObject, "unLoadTime");
-                    m_SBHelp.Append("UnLoad Time: " + m_UIRefSetting.unLoadTime);
-                }
-                else
-                {
-                    m_UIRefSetting.unLoadTime = 0f;
-                }
+                EditorGUILayout.FloatField("Delay Destroy Time", m_UIRefSetting.delayDestroyTime);
+                m_SBHelp.Append("Delay Destroy Time: " + m_UIRefSetting.delayDestroyTime);
             }
             else
             {
-                m_SBHelp.AppendLine("UI Layer: MainPanel");
-                m_SBHelp.AppendLine("Pre Load: True");
-                m_SBHelp.Append("Close Mode: Eternal");
-                m_UIRefSetting.panelCloseMode = UIRefSetting.CloseMode.Eternal;
-                m_UIRefSetting.panelLayer = UIRefSetting.Layer.Layer2;
-                m_UIRefSetting.unLoadTime = 0f;
+                m_UIRefSetting.delayDestroyTime = 0f;
             }
 
             EditorGUILayout.HelpBox(m_SBHelp.ToString(), MessageType.None);
             serializedObject.ApplyModifiedProperties();
         }
 
-        private StringBuilder m_SBHelp = new StringBuilder();
+        private void RefreshPath(string moduleName, string viewName)
+        {
+            GameFrameWorkConfigWindowData windowData = GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig();
+            
+            if (string.IsNullOrEmpty(moduleName))
+            {
+                m_UIRefSetting.moduleName = "Module";
+            }
+            
+            if (string.IsNullOrEmpty(viewName))
+            {
+                m_UIRefSetting.viewName = "View";    
+            }
+            
+            m_UIRefSetting.viewPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName, ".cs");
+            m_UIRefSetting.componentPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Component", ".cs");
+            m_UIRefSetting.settingsPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Settings", ".cs");
+        }
 
+        private StringBuilder m_SBHelp = new();
         private UIRefSetting m_UIRefSetting;
     }
 }

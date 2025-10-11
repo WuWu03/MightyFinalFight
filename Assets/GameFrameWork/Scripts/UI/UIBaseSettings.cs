@@ -2,7 +2,6 @@ namespace GameFrameWork.UI
 {
     public enum UILayer : byte
     {
-        Panel,
         Scene,
         Bg,
         MainWindow,
@@ -15,24 +14,24 @@ namespace GameFrameWork.UI
         Load,
     }
 
-    public enum UICloseMode : byte
+    public enum UIDestroyMode : byte
     {
-        Always,// UI常驻场景, 此类UI关闭达到一定数量后, 会摧毁最先关闭的
-        Destroy,// 关闭时立即销毁
-        DelayDestroy,// 延迟一段时间销毁
-        Eternal,// 总是存于场景中, 除非主动销毁
+        Always, //UI常驻场景, 此类UI关闭达到一定数量后, 会摧毁最先打开的
+        Immediately, //关闭时立即销毁
+        Delay, //延迟一段时间销毁
+        Eternal, //总是存于场景中, 除非主动销毁
     }
 
     public abstract class UIBaseSettings
     {
-        public abstract string name { get; }
+        public abstract string prefabName { get; }
 
-        public abstract float unLoadTime { get; }
+        public abstract float delayDestroyTime { get; }
         
-        public bool canPopUp { get; }//是否可以回弹
+        public virtual bool canPopUp { get; }//是否可以回弹
         
-        public abstract UILayer Layer { get; }
+        public abstract UILayer layer { get; }
 
-        public abstract UICloseMode CloseMode { get; }
+        public abstract UIDestroyMode destroyMode { get; }
     }
 }

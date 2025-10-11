@@ -61,22 +61,24 @@ namespace GameFrameWork.Editor
             {
                 string filePath = m_UISceneFiles[i];
                 string uiName = Path.GetFileNameWithoutExtension(filePath);
-
+                int index = i;
                 EditorGUILayout.BeginHorizontal();
-
                 EditorUtil.GUIBoxScope(() =>
                 {
-                    EditorGUILayout.LabelField((i + 1).ToString() + "." + uiName);
+                    EditorGUILayout.LabelField((index + 1) + "." + uiName);
                     if (GUILayout.Button("打开"))
                     {
-                        EditorSceneManager.OpenScene(filePath);
+                        if (EditorUtility.DisplayDialog("提示", "是否打开？", "确定", "取消"))
+                        {
+                            EditorSceneManager.OpenScene(filePath);
+                        }
                     }
 
                     if (GUILayout.Button("删除"))
                     {
                         if (EditorUtility.DisplayDialog("删除UI", "确定删除 [" + uiName + "] 吗?", "确定", "取消"))
                         {
-                            m_DeleteIndex = i;
+                            m_DeleteIndex = index;
                         }
                     }
                 });

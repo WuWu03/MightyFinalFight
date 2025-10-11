@@ -12,8 +12,8 @@ namespace GameFrameWork.Editor
         public override void Export(UIRef[] uiRefs, UIRefSetting setting)
         {
             ExportComponent(uiRefs, setting);
-            ExportPanelSettings(setting);
-            ExportPanel(setting);
+            ExportViewSettings(setting);
+            ExportView(setting);
         }
 
         public override string CopyRef(UIRef[] uiRefs)
@@ -37,11 +37,13 @@ namespace GameFrameWork.Editor
         {
             StringBuilder sb = new();
 
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}*************************************/\r\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By WuWu***************************************/");
-            sb.AppendLine("/**工具生成，请勿修改************************************/");
-            sb.AppendLine("/*******************************************************/");
+            sb.AppendLine("/*");
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面数据\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
+            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" * @Note: 工具生成，请勿修改");
+            sb.AppendLine(" */");
+            sb.AppendLine();
             sb.AppendLine("using System.Collections;");
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine("using TMPro;");
@@ -50,7 +52,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
 
-            sb.AppendFormat("public class {0}Component : BasePanelComponent", setting.panelName);
+            sb.AppendFormat("public class {0}Component : UIBaseComponent", setting.viewName);
             sb.AppendLine("\r\n{");
 
             List<UIRef> layoutRefList = new List<UIRef>();
@@ -184,68 +186,83 @@ namespace GameFrameWork.Editor
             }
 
             sb.Append("}");
-            FileUtil.VerifyDirectory(setting.scriptFolder);
-            FileUtil.CreateTextFile(setting.panelComponentPath, sb.ToString());
+            FileUtil.CreateTextFile(setting.componentPath, sb.ToString());
         }
 
-        private void ExportPanelSettings(UIRefSetting setting)
+        private void ExportViewSettings(UIRefSetting setting)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
-            string layerName = Enum.GetName(typeof(UIRefSetting.Layer), setting.panelLayer);
-            string closeModeName = Enum.GetName(typeof(UIRefSetting.CloseMode), setting.panelCloseMode);
-            string typeName = Enum.GetName(typeof(UIRefSetting.Type), setting.panelType);
-            float unLoadTime = setting.unLoadTime;
+            string layerName = Enum.GetName(typeof(UIRefSetting.UILayer), setting.uiLayer);
+            string destroyModeName = Enum.GetName(typeof(UIRefSetting.UIDestroyMode), setting.uiDestroyMode);
+            string canPopUp = "false";
+            float delayDestroyTime = setting.delayDestroyTime;
 
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}*************************************/\r\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By WuWu***************************************/");
-            sb.AppendLine("/**工具生成，请勿修改************************************/");
-            sb.AppendLine("/*******************************************************/");
+            if (setting.uiType == UIRefSetting.UIType.View)
+            {
+                canPopUp = setting.uiLayer switch
+                {
+                    UIRefSetting.UILayer.MainWindow => "true",
+                    UIRefSetting.UILayer.Window1 => "true",
+                    UIRefSetting.UILayer.Window2 => "true",
+                    _ => "false"
+                };
+            }
+
+            sb.AppendLine("/*");
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面组件\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
+            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" * @Note: 工具生成，请勿修改");
+            sb.AppendLine(" */");
+            sb.AppendLine();
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
-
-            sb.AppendFormat("public class {0}Settings : BasePanelSettings", setting.panelName);
+            sb.AppendFormat("public class {0}Settings : UIBaseSettings", setting.viewName);
             sb.AppendLine("\r\n{");
 
-            sb.Append("\tpublic override string panelName { get { " + string.Format("return \"{0}\"", setting.panelName) + "; } }\r\n");
-            sb.Append("\tpublic override float panelUnLoadTime { get { " + string.Format("return {0}f", unLoadTime) + "; } }\r\n");
-            sb.Append("\tpublic override PanelType panelType { get { " + string.Format("return PanelType.{0}", typeName) + "; } }\r\n");
-            sb.Append("\tpublic override PanelLayer panelLayer { get { " + string.Format("return PanelLayer.{0}", layerName) + "; } }\r\n");
-            sb.Append("\tpublic override PanelCloseMode panelCloseMode { get { " + string.Format("return PanelCloseMode.{0}", closeModeName) + "; } }\r\n");
+            sb.Append("\tpublic override string prefabName { get { " + $"return \"{setting.viewName}\".prefab" + "; } }\r\n");
+            sb.Append("\tpublic override float delayDestroyTime { get { " + $"return {delayDestroyTime}f" + "; } }\r\n");
+            sb.Append("\tpublic override bool canPopUp { get { " + $"return {canPopUp}" + "; } }\r\n");
+            sb.Append("\tpublic override UILayer layer { get { " + $"return UILayer.{layerName}" + "; } }\r\n");
+            sb.Append("\tpublic override UIDestroyMode destroyMode { get { " + $"return UIDestroyMode.{destroyModeName}" + "; } }\r\n");
             sb.Append("}");
-            FileUtil.VerifyDirectory(setting.scriptFolder);
-            FileUtil.CreateTextFile(setting.panelSettingsPath, sb.ToString());
+            FileUtil.CreateTextFile(setting.settingsPath, sb.ToString());
         }
 
-        private void ExportPanel(UIRefSetting setting)
+        private void ExportView(UIRefSetting setting)
         {
-            if (File.Exists(setting.panelPath))
+            if (File.Exists(setting.viewPath))
             {
                 return;
             }
 
-            StringBuilder sb = new StringBuilder();
-
-            sb.Clear();
-            sb.AppendLine("/*******************************************************/");
-            sb.AppendFormat("/**{0}-{1}-{2} {3}:{4}****************************************/\r\n", year, month, day, hour, minute);
-            sb.AppendLine("/**Create By GQY****************************************/");
-            sb.AppendLine("/*******************************************************/");
+            StringBuilder sb = new();
+            
+            sb.AppendLine("/*");
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面视图\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
+            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" */");
+            sb.AppendLine();
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0} : BasePanel<{1}Component, {2}Settings>", setting.panelName, setting.panelName, setting.panelName);
+            sb.AppendFormat("public class {0} : UIBaseView<{1}Component, {2}Settings>", setting.viewName, setting.viewName, setting.viewName);
             sb.AppendLine("\r\n{");
-            sb.AppendLine("\tprotected override void OnInit(object arg)");
+            sb.AppendLine("\tprotected override void OnOpen(object arg)");
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
             sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnOpen()");
+            sb.AppendLine("\tprotected override void OnShow(object arg)");
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
             sb.AppendLine();
             sb.AppendLine("\tprotected override void OnUpdate()");
+            sb.AppendLine("\t{");
+            sb.AppendLine("\t}");
+            sb.AppendLine();
+            sb.AppendLine("\tprotected override void OnHide()");
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
             sb.AppendLine();
@@ -257,8 +274,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
             sb.Append("}");
-            FileUtil.VerifyDirectory(setting.scriptFolder);
-            FileUtil.CreateTextFile(setting.panelPath, sb.ToString());
+            FileUtil.CreateTextFile(setting.viewPath, sb.ToString());
         }
 
         private void ExportLayout(UIRef uiRef, StringBuilder sb)
@@ -301,6 +317,7 @@ namespace GameFrameWork.Editor
                 {
                     continue;
                 }
+                
                 sb.AppendFormat("\t\tpublic {0} {1} = null;\r\n", childrenItemRefs[i].componentName, childrenItemRefs[i].GetName());
             }
 

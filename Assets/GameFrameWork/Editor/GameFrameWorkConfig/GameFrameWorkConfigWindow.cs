@@ -43,54 +43,13 @@ namespace GameFrameWork.Editor
                 () => { return m_EditorConfig.isOpenLog != m_IsOpenLog; },
                 () => { m_IsOpenLog = EditorGUILayout.Toggle("是否开启日志", m_IsOpenLog); },
                 () => { m_EditorConfig.isOpenLog = m_IsOpenLog; }, 20);
-
-            DrawField(
-                () => { return m_EditorConfig.isUseLua != m_IsUseLua; },
-                () => { m_IsUseLua = EditorGUILayout.Toggle("是否使用Lua", m_IsUseLua); },
-                () => { m_EditorConfig.isUseLua = m_IsUseLua; }, 20);
-
-            if (m_IsUseLua)
-            {
-                DrawField(
-                    () => { return m_EditorConfig.isLoadLuaFromAssetBundle != m_IsLoadLuaFromAssetBundle; },
-                    () => { m_IsLoadLuaFromAssetBundle = EditorGUILayout.Toggle("Lua脚本是否从AssetBundle加载", m_IsLoadLuaFromAssetBundle); },
-                    () => { m_EditorConfig.isLoadLuaFromAssetBundle = m_IsLoadLuaFromAssetBundle; }, 20);
-
-                DrawField(
-                    () => { return m_EditorConfig.isLuaByteMode != m_IsLuaByteMode; },
-                    () => { m_IsLuaByteMode = EditorGUILayout.Toggle("Lua脚本是否使用字节模式", m_IsLuaByteMode); },
-                    () => { m_EditorConfig.isLuaByteMode = m_IsLuaByteMode; }, 20);
-                DrawField(
-                    () => { return m_EditorConfig.luaPath != m_LuaPath; },
-                    () => { m_LuaPath = EditorGUILayout.TextField("Lua脚本目录", m_LuaPath); },
-                    () => { m_EditorConfig.luaPath = m_LuaPath; }, 20);
-            }
-            else
-            {
-                m_IsLoadLuaFromAssetBundle = false;
-                m_IsLuaByteMode = false;
-                m_LuaPath = string.Empty;
-
-                m_EditorConfig.isLoadLuaFromAssetBundle = false;
-                m_EditorConfig.isLuaByteMode = false;
-                m_EditorConfig.luaPath = string.Empty;
-            }
-
+            
             DrawField(
                 () => { return m_EditorConfig.uiPath != m_UIPath; },
-                () => { m_UIPath = EditorGUILayout.TextField("UI目录", m_UIPath); },
+                () => { m_UIPath = EditorGUILayout.TextField("UI资源目录", m_UIPath); },
                 () =>
                 {
-                    if (m_UIPath.EndsWith("/"))
-                    {
-                        m_UIPath = m_UIPath.Substring(0, m_UIPath.Length - 1);
-                    }
-
-                    if (m_UIPath == "Assets")
-                    {
-                        m_UIPath += "/UI";
-                    }
-
+                    m_UIPath = PathUtil.GetAssetPath(m_UIPath);
                     string uiPath = PathUtil.GetAssetPath(m_UIPath);
                     string uiPrefabsPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiPrefabsPath);
                     string uiAtlasPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiAtlasPath);
@@ -124,23 +83,20 @@ namespace GameFrameWork.Editor
                 () => { m_ConfigDataPath = EditorGUILayout.TextField("配置文件目录", m_ConfigDataPath); },
                 () =>
                 {
-                    if (m_ConfigDataPath.EndsWith("/"))
-                    {
-                        m_ConfigDataPath = m_ConfigDataPath.Substring(0, m_ConfigDataPath.Length - 1);
-                    }
-
-                    if (m_ConfigDataPath == "Assets")
-                    {
-                        m_ConfigDataPath += "/ConfigData";
-                    }
-
-                    string configDataPath = PathUtil.GetAssetPath(m_ConfigDataPath);
-                    string configDataFullPath = PathUtil.GetAssetFullPath(m_ConfigDataPath);
-
-                    Utils.FileUtil.VerifyDirectory(configDataFullPath);
-
+                    m_ConfigDataPath =  PathUtil.GetAssetPath(m_ConfigDataPath);
+                    Utils.FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(m_ConfigDataPath));
                     AssetDatabase.Refresh();
-                    m_EditorConfig.configDataPath = configDataPath;
+                    m_EditorConfig.configDataPath = m_ConfigDataPath;
+                }, 20);
+            DrawField(
+                () => { return m_EditorConfig.uiScriptsPath != m_UIScriptsPath; },
+                () => { m_UIScriptsPath = EditorGUILayout.TextField("UI脚本目录", m_UIScriptsPath); },
+                () =>
+                {
+                    m_UIScriptsPath =  PathUtil.GetAssetFullPath(m_ConfigDataPath);
+                    Utils.FileUtil.VerifyDirectory(PathUtil.GetAssetFullPath(m_UIScriptsPath));
+                    AssetDatabase.Refresh();
+                    m_EditorConfig.uiScriptsPath = m_UIScriptsPath;
                 }, 20);
 
             DrawField(
@@ -230,7 +186,6 @@ namespace GameFrameWork.Editor
                 {
                     UnityEditor.EditorUtility.DisplayDialog("提示", "当前已是启动场景，无需跳转", "确认");
                 }
-
             }
         }
 
@@ -245,10 +200,6 @@ namespace GameFrameWork.Editor
             m_IsCheckVersion = m_EditorConfig.isCheckVersion;
             m_IsLoadFromAssetBundle = m_EditorConfig.isLoadFromAssetBundle;
             m_IsOpenLog = m_EditorConfig.isOpenLog;
-            m_IsUseLua = m_EditorConfig.isUseLua;
-            m_IsLoadLuaFromAssetBundle = m_EditorConfig.isLoadLuaFromAssetBundle;
-            m_IsLuaByteMode = m_EditorConfig.isLuaByteMode;
-            m_LuaPath = m_EditorConfig.luaPath;
             m_UIPath = m_EditorConfig.uiPath;
             m_ConfigDataPath = m_EditorConfig.configDataPath;
             m_AssetMapFileName = m_EditorConfig.assetMapFileName;
@@ -282,13 +233,19 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(m_UIPath))
             {
-                m_UIPath = "Assets/" + EditorPathUtil.defaultUIPath;
+                m_UIPath = PathUtil.GetAssetPath(EditorPathUtil.defaultUIPath);
                 m_EditorConfig.uiPath = m_UIPath;
             }
 
+            if (string.IsNullOrEmpty(m_UIScriptsPath))
+            {
+                m_UIScriptsPath = PathUtil.GetAssetPath(EditorPathUtil.defaultUIScriptsPath);
+                m_EditorConfig.uiScriptsPath = m_UIScriptsPath;
+            }
+            
             if (string.IsNullOrEmpty(m_ConfigDataPath))
             {
-                m_ConfigDataPath = "Assets/" + EditorPathUtil.defaultConfigDataPath;
+                m_ConfigDataPath = PathUtil.GetAssetPath(EditorPathUtil.defaultConfigDataPath);
                 m_EditorConfig.configDataPath = m_ConfigDataPath;
             }
 
@@ -359,11 +316,8 @@ namespace GameFrameWork.Editor
         private bool m_IsCheckVersion = false;
         private bool m_IsLoadFromAssetBundle = false;
         private bool m_IsOpenLog = false;
-        private bool m_IsUseLua = false;
-        private bool m_IsLoadLuaFromAssetBundle = false;
-        private bool m_IsLuaByteMode = false;
-        private string m_LuaPath = string.Empty;
         private string m_UIPath = string.Empty;
+        private string m_UIScriptsPath = string.Empty;
         private string m_ConfigDataPath = string.Empty;
         private string m_VersionFileName = string.Empty;
         private string m_AssetMapFileName = string.Empty;

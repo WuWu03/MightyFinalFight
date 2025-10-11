@@ -6,8 +6,7 @@ public class UIFrameEffect : MonoBehaviour
     public Sprite[] sprites;
     public bool isLoop = true;
     public int frameRate = 24;
-  
-
+    
     private void Awake()
     {
         if(sprites == null || sprites.Length < 1)
@@ -25,6 +24,7 @@ public class UIFrameEffect : MonoBehaviour
         m_FrameIndex = 0;
         m_FrameTimer = 0;
         m_ImgSprite.sprite = sprites[0];
+        StartFrame();
     }
 
     // Update is called once per frame
@@ -59,12 +59,12 @@ public class UIFrameEffect : MonoBehaviour
 
     public void StartFrame()
     {
-        m_IsPlaying = false;
+        m_IsPlaying = true;
     }
 
     public void StopFrame()
     {
-        m_IsPlaying = true;
+        m_IsPlaying = false;
     }
 
     private bool m_IsPlaying = false;

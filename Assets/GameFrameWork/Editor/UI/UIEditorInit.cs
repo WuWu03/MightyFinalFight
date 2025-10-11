@@ -99,11 +99,11 @@ namespace GameFrameWork.Editor
             string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
 
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
-            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootPath));
+            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootScenePath));
             root.name = "UIRoot";
 
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
-            settings.panelName = Path.GetFileNameWithoutExtension(uiName);
+            settings.viewName = Path.GetFileNameWithoutExtension(uiName);
             settings.transform.SetAsLastSibling();
 
             GameObject rootObj = root as GameObject;
@@ -251,7 +251,7 @@ namespace GameFrameWork.Editor
                 return false;
             }
 
-            if (string.IsNullOrEmpty(uiRefSetting.panelName) || uiRefSetting.panelName.Contains("/"))
+            if (string.IsNullOrEmpty(uiRefSetting.viewName) || uiRefSetting.viewName.Contains("/"))
             {
                 UnityEngine.Debug.LogError("界面名字未设置正确");
                 Selection.activeGameObject = uiRefSetting.gameObject;
@@ -269,16 +269,7 @@ namespace GameFrameWork.Editor
             }
 
             UnityEditor.EditorUtility.SetDirty(gameObject);
-
-            if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
-            {
-                s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
-            }
-            else
-            {
-                s_LuaExporter.Export(retList.ToArray(), uiRefSetting);
-            }
-
+            s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
             return true;
         }
 
@@ -383,17 +374,8 @@ namespace GameFrameWork.Editor
                 listRef.Add(components[i]);
             }
 
-            string value = string.Empty;
-
-            if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.CSharp)
-            {
-                value = s_CSharpExporter.CopyRef(listRef.ToArray());
-            }
-            else if (uiRefSetting.scriptType == UIRefSetting.ExoprtScriptType.Lua)
-            {
-                value = s_LuaExporter.CopyRef(listRef.ToArray());
-            }
-
+            string value = s_CSharpExporter.CopyRef(listRef.ToArray());
+            
             if (string.IsNullOrEmpty(value))
             {
                 UnityEngine.Debug.LogWarning("没有需要导出到剪切板的对象");
@@ -422,7 +404,7 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            string path = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath, s_UIRefSetting.panelName + ".prefab");
+            string path = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath, s_UIRefSetting.viewName, ".prefab");
 
             if (File.Exists(path))
             {

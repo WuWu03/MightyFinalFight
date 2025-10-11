@@ -1,6 +1,7 @@
 using DG.Tweening;
 using GameFrameWork;
 using UnityEngine;
+using System;
 
 public abstract class BaseStoryBuilder : IStoryBuilder
 {
@@ -84,9 +85,9 @@ public abstract class BaseStoryBuilder : IStoryBuilder
         StoryMgr.instance.AddClip(track, clip);
     }
 
-    public void UIShowHide(int track, string uiName, bool isActive)
+    public void UIShowHide(int track, Type uiType, bool isActive)
     {
-        UIShowHideClip clip = UIShowHideClip.Create(uiName, isActive);
+        UIShowHideClip clip = UIShowHideClip.Create(uiType, isActive);
         StoryMgr.instance.AddClip(track, clip);
     }
 

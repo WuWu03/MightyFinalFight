@@ -38,7 +38,7 @@ namespace GameFrameWork.Utils
         public static void CreateTextFile(string filePath, string content)
         {
             DeleteFile(filePath);
-            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            VerifyDirectory(Path.GetDirectoryName(filePath));
             using FileStream fs = new(filePath, FileMode.Create);
             using StreamWriter sw = new(fs);
             sw.Write(content);
@@ -52,7 +52,7 @@ namespace GameFrameWork.Utils
         /// </summary>
         public static void AppendText(string filePath, string content)
         {
-            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            VerifyDirectory(Path.GetDirectoryName(filePath));
             File.AppendAllText(filePath, content);
         }
 
@@ -64,10 +64,10 @@ namespace GameFrameWork.Utils
         public static void CreateBinaryFile(string filePath, byte[] data)
         {
             DeleteFile(filePath);
-            VerifyDirectory(Path.GetDirectoryName(filePath), true);
+            VerifyDirectory(Path.GetDirectoryName(filePath));
             using FileStream fs = new(filePath, FileMode.Create);
 
-            if(data != null && data.Length > 0)
+            if(data is { Length: > 0 })
             {
                 fs.Write(data, 0, data.Length);
             }
@@ -89,13 +89,13 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 验证路径是否存在
         /// </summary>
-        public static bool VerifyDirectory(string dirPath, bool autoCreate = true)
+        public static bool VerifyDirectory(string directory, bool autoCreate = true)
         {
-            if (!Directory.Exists(dirPath))
+            if (!Directory.Exists(directory))
             {
                 if (autoCreate)
                 {
-                    Directory.CreateDirectory(dirPath);
+                    Directory.CreateDirectory(directory);
                 }
 
                 return false;

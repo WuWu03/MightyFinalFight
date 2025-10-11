@@ -5,6 +5,7 @@ using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.Editor
 {
@@ -144,11 +145,16 @@ namespace GameFrameWork.Editor
             }
 
             GameObject entry = GameObject.Find("GameEntry");
-
             if (entry == null)
             {
                 entry = new GameObject("GameEntry");
-                entry.AddComponent(entryTypes[0]);
+                entry.AddComponent(entryTypes[0]); 
+            }
+
+            GameObject uiRoot = GameObject.Find("UIRoot");
+            if (uiRoot == null)
+            {
+                UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.editorUIRootPath));
             }
         }
 
