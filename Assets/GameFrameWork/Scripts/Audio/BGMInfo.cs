@@ -1,6 +1,6 @@
 namespace GameFrameWork.Audio
 {
-    public class BgmInfo : BaseEventArgs
+    public class BgmInfo : GameFrameWorkEventArg
     {
         public string assetPath { get; set; }
         public bool isLoop { get; set; }
@@ -19,7 +19,6 @@ namespace GameFrameWork.Audio
 
         public override void Clear()
         {
-            base.Clear();
             assetPath = string.Empty;
             isLoop = false;
             volume = 0;

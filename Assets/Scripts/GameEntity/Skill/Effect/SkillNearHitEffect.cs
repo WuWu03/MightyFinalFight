@@ -27,7 +27,7 @@ public class SkillNearHitEffect : SkillBaseEffect
             }
         }
         
-        m_Owner.OnHitEnd(m_SkillData, m_IsHurtTarget);
+        m_Owner.OnHitEnd(mSkillData, m_IsHurtTarget);
         Complete();
     }
     
@@ -46,7 +46,7 @@ public class SkillNearHitEffect : SkillBaseEffect
 
     private bool HurtTarget(ICanBeHit canBeHit)
     {
-        return SkillUtil.SkillHit(canBeHit, m_Owner, m_SkillData, m_SkillEffect);
+        return SkillUtil.SkillHit(canBeHit, m_Owner, mSkillData, m_SkillEffect);
     }
 
     private bool m_IsHurtTarget = false;

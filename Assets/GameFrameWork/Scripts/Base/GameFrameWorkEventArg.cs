@@ -2,13 +2,8 @@ using System;
 
 namespace GameFrameWork
 {
-    public abstract class GameFrameWorkEventArgs : EventArgs, IReference
+    public abstract class GameFrameWorkEventArg : EventArgs, IReference
     {
-        public GameFrameWorkEventArgs()
-        {
-
-        }
-
         public void Release()
         {
             ReferencePool.Release(this);

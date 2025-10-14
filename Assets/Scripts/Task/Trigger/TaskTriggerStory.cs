@@ -9,7 +9,7 @@ public class TaskTriggerStory : BaseTaskTrigger
     {
         PlayerMgr.instance.canContrl = false;
         StoryMgr.instance.onPlayCompleteEvent += OnStoryComplete;
-        StoryMgr.instance.Play(m_TaskData.StoryId);
+        StoryMgr.instance.Play(mTaskData.StoryId);
     }
 
     private void OnStoryComplete()

@@ -20,7 +20,7 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 {
     protected override void OnOpen(object arg)
     {
-
+        
     }
 
     protected override void OnShow(object arg)
@@ -40,7 +40,7 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
         RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
         GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
 
-        AddEvent(EventDefine.StageEnterStartEvent, OnStageEnterStart);
+        AddEvent(EventId.StageEnterStartEvent, OnStageEnterStart);
     }
 
     protected override void OnUpdate()
@@ -90,7 +90,7 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
         StageMgr.instance.StageEnterNext();
     }
 
-    private void OnStageEnterStart(object sender, GameEventArgs e)
+    private void OnStageEnterStart(object sender, GameEventArg e)
     {
         CloseSelf();
     }

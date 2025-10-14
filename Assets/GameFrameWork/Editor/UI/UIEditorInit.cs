@@ -1,6 +1,7 @@
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using System.IO;
+using GameFrameWork.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -35,6 +36,9 @@ namespace GameFrameWork.Editor
             }
         }
 
+        private static UIRefSetting s_UIRefSetting;
+        private static IUIScriptsExporter s_CSharpExporter = null;
+        
         static UIEditorInit()
         {
             SceneView.duringSceneGui -= DuringSceneGUI;
@@ -43,7 +47,6 @@ namespace GameFrameWork.Editor
             EditorApplication.hierarchyWindowItemOnGUI = HierarchyWindowItemOnGUI;
 
             s_CSharpExporter = new CSharpUIScriptsExporter();
-            s_LuaExporter = new LuaExporter();
         }
 
         public static bool CanCreateUIScene(string uiName)
@@ -461,9 +464,5 @@ namespace GameFrameWork.Editor
 
             return true;
         }
-
-        private static UIRefSetting s_UIRefSetting;
-        private static IUIScriptsExporter s_CSharpExporter = null;
-        private static IUIScriptsExporter s_LuaExporter = null;
     }
 }

@@ -1,6 +1,6 @@
 namespace GameFrameWork.Audio
 {
-    public class AudioSourceInfo : BaseEventArgs
+    public class AudioSourceInfo : GameFrameWorkEventArg
     {
         public float volume { get; set; }
         public float fadeTime { get; set; }
@@ -17,7 +17,6 @@ namespace GameFrameWork.Audio
 
         public override void Clear()
         {
-            base.Clear();
             volume = 0;
             fadeTime = 0;
             isLoop = false;

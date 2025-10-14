@@ -2,6 +2,7 @@ using DG.Tweening;
 using GameFrameWork.Pool;
 using System.Collections.Generic;
 using System.IO;
+using GameFrameWork.Event;
 using UnityEngine;
 
 namespace GameFrameWork.Audio

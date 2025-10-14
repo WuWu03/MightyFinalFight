@@ -4,6 +4,7 @@ using GameFrameWork.Camera;
 using GameFrameWork.Timer;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 using UnityEngine;
 using UnityEngine.Events;
 

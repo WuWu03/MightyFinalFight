@@ -102,7 +102,7 @@ namespace SkillNew
                         () => { m_CurrType = EditorGUILayout.TextField("类别", m_CurrType); },
                         () =>
                         {
-                            SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                            SkillEditorHelper.CurrConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
                             SkillEditorHelper.SetShowNames();
                             m_CurrType = SkillEditorHelper.currShowType;
                         }, 20);
@@ -114,7 +114,7 @@ namespace SkillNew
                         () => { m_CurrName = EditorGUILayout.TextField("名称", m_CurrName); },
                         () =>
                         {
-                            SkillEditorHelper.currConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                            SkillEditorHelper.CurrConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
                             SkillEditorHelper.SetShowNames();
                             m_CurrName = SkillEditorHelper.currShowName;
                         }, 20);
@@ -122,9 +122,9 @@ namespace SkillNew
 
                 GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
                 {
-                    DrawField(() => { return m_CurrId != SkillEditorHelper.currConfigData.id; },
+                    DrawField(() => { return m_CurrId != SkillEditorHelper.CurrConfigData.id; },
                         () => { m_CurrId = EditorGUILayout.IntField("Id", m_CurrId); },
-                        () => { SkillEditorHelper.currConfigData.id = m_CurrId; }, 20);
+                        () => { SkillEditorHelper.CurrConfigData.id = m_CurrId; }, 20);
 
                 });
 
@@ -157,7 +157,7 @@ namespace SkillNew
 
             m_CurrName = SkillEditorHelper.currShowName;
             m_CurrType = SkillEditorHelper.currShowType;
-            m_CurrId = SkillEditorHelper.currConfigData.id;
+            m_CurrId = SkillEditorHelper.CurrConfigData.id;
         }
 
         private int m_CurrPage = 0;

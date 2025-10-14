@@ -24,19 +24,19 @@ namespace GameFrameWork.Editor
         public static void GameFrameWorkStartUp()
         {
             CreateEntryScript();
-
+        
             Rect rect = new(0, 0, 600, 300);
             EditorWindow window = EditorWindow.GetWindowWithRect<GameFrameWorkConfigWindow>(rect);
             window.Show();
         }
-
+        
         /// <summary>
         /// 创建框架启动脚本
         /// </summary>
         private static void CreateEntryScript()
         {
             string[] entryScript = EditorUtil.GetAssemblyTypeNames("GameFrameWork.GameFrameWorkEntry", true, "GameFrameWorkEntry");
-
+        
             if (entryScript == null || entryScript.Length < 1)
             {
                 StringBuilder sb = new();
@@ -61,13 +61,13 @@ namespace GameFrameWork.Editor
                 sb.AppendLine("\t}");
                 sb.AppendLine();
                 sb.Append("}");
-
+        
                 Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorScriptFullPath);
                 File.WriteAllText(EditorPathUtil.entryScriptFullPath, sb.ToString());
                 AssetDatabase.Refresh();
             }
         }
-
+        
         /// <summary>
         /// 主要用于第一次启动Unity编辑器和编译完成后，检查是否已经设置框架启动场景
         /// </summary>
@@ -75,52 +75,52 @@ namespace GameFrameWork.Editor
         private static void OnScriptReload()
         {
             int isShowMainScene = EditorPrefs.GetInt("unity_editor_show_main_scene", 0);
-
+        
             if (isShowMainScene == 0)
             {
                 EditorApplication.update += CheckIsInit;
             }
-
+        
             EditorApplication.wantsToQuit += ApplicationWantsToQuit;
         }
-
+        
         private static void CheckIsInit()
         {
             if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
             {
                 return;
             }
-
+        
             EditorSceneManager.sceneOpened += CheckEntryScene;
             EditorApplication.update -= CheckIsInit;
             CheckEntryScene();
         }
-
+        
         private static void CheckEntryScene(UnityEngine.SceneManagement.Scene scene, OpenSceneMode mode)
         {
             EditorSceneManager.sceneOpened -= CheckEntryScene;
             CheckEntryScene();
         }
-
+        
         private static void CheckEntryScene()
         {
             GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
             int isShowMainScene = EditorPrefs.GetInt("unity_editor_show_main_scene", 0);
-
+        
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
                 EditorPrefs.SetInt("unity_editor_show_main_scene", 1);
                 GameFrameWorkStartUp();
                 return;
             }
-
+        
             if (isShowMainScene == 0)
             {
                 EditorPrefs.SetInt("unity_editor_show_main_scene", 1);
                 GoToGameFrameWorkEntryScene();
             }
         }
-
+        
         /// <summary>
         /// 跳转到框架启动场景
         /// </summary>
@@ -131,33 +131,33 @@ namespace GameFrameWork.Editor
             {
                 return;
             }
-
+        
             if (!EditorSceneManager.GetActiveScene().path.Equals(config.entryScene))
             {
                 EditorSceneManager.OpenScene(config.entryScene);
             }
-
+        
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("GameFrameWork.GameFrameWorkEntry", "GameFrameWorkEntry");
-
+        
             if (entryTypes == null || entryTypes.Length < 1)
             {
                 return;
             }
-
+        
             GameObject entry = GameObject.Find("GameEntry");
             if (entry == null)
             {
                 entry = new GameObject("GameEntry");
                 entry.AddComponent(entryTypes[0]); 
             }
-
+            
             GameObject uiRoot = GameObject.Find("UIRoot");
             if (uiRoot == null)
             {
                 UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.editorUIRootPath));
             }
         }
-
+        
         private static bool ApplicationWantsToQuit()
         {
             EditorPrefs.SetInt("unity_editor_show_main_scene", 0);

@@ -56,7 +56,7 @@ public static class SceneEntityFactory
         }
 
         SceneItemData sceneItemData = SceneItemData.Create();
-        sceneItemData.id = sceneItemConfigData.id;
+        sceneItemData.entityId = sceneItemConfigData.id;
         sceneItemData.itemType = sceneItemConfigData.type;
         sceneItemData.value = sceneItemConfigData.value;
         sceneItemData.canDrop = sceneItemConfigData.canDrop;

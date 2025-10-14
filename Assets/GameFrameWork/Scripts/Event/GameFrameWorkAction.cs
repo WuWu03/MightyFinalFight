@@ -1,4 +1,4 @@
-namespace GameFrameWork
+namespace GameFrameWork.Event
 {
     /// <summary>
     /// 无参GameFrameWorkBooleanAction

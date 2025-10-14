@@ -1,7 +1,8 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
 
-public class JumpStateData : BaseEventArgs
+public class JumpStateData : GameFrameWorkEventArg
 {
     public bool canChangeDir { get; set; }
     public Vector2 dir { get; set; }

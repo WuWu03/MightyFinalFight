@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using GameFrameWork.UI;
 using UnityEngine;
 
 namespace GameFrameWork.Editor
@@ -195,7 +196,7 @@ namespace GameFrameWork.Editor
 
             string layerName = Enum.GetName(typeof(UIRefSetting.UILayer), setting.uiLayer);
             string destroyModeName = Enum.GetName(typeof(UIRefSetting.UIDestroyMode), setting.uiDestroyMode);
-            string canPopUp = "false";
+            string canPopUp = string.Empty;
             float delayDestroyTime = setting.delayDestroyTime;
 
             if (setting.uiType == UIRefSetting.UIType.View)

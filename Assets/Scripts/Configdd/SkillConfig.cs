@@ -8,7 +8,7 @@ public class SkillConfig : BaseScriptableObject<SkillConfigData>
 }
 
 [Serializable]
-public class SkillConfigData : BaseConfigData
+public class SkillConfigData : BaseScriptableConfigData
 {
     public enum SkillSelectorType
     {

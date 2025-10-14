@@ -3,7 +3,7 @@ using GameFrameWork.Serialize;
 
 namespace GameFrameWork.Editor
 {
-    public abstract class ConfigDataEditor<T, P> : UnityEditor.Editor where T : BaseScriptableObject<P> where P : BaseConfigData
+    public abstract class ConfigDataEditor<T, P> : UnityEditor.Editor where T : BaseScriptableObject<P> where P : BaseScriptableConfigData
     {
         T Config;
 

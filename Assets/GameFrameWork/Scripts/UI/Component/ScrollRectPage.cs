@@ -14,6 +14,7 @@ namespace GameFrameWork.UI
         [Min(0f)] public float autoFlipTime = 0f;
         [Range(0f, 0.4f)] public float additiveSensitivity;//翻页灵敏度修正
         [Min(0.1f)] public float moveSpeed;
+        
         private void Awake()
         {
             m_ScrollRect = GetComponent<ScrollRect>();
@@ -149,7 +150,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        private void OnBeginDrag(GameObject go, PointerEventData eventData, object arg)
+        private void OnBeginDrag(PointerEventData eventData)
         {
             if (m_ScrollRect.vertical)
             {
@@ -161,7 +162,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        private void OnEndDrag(GameObject go, PointerEventData eventData, object arg)
+        private void OnEndDrag(PointerEventData eventData)
         {
             float posAdditive;
             if (m_ScrollRect.vertical)

@@ -1,6 +1,8 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Input
 {
-    public class ComboKeyEventArgs : BaseEventArgs
+    public class ComboKeyEventArgs : GameFrameWorkEventArg
     {
         public KeyType[] keys { get; set; }
         public int eventId { get; set; }
@@ -16,7 +18,6 @@ namespace GameFrameWork.Input
         }
         public override void Clear()
         {
-            base.Clear();
             keys = null;
             keyEvent = null;
         }

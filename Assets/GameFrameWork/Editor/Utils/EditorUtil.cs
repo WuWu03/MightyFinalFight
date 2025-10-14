@@ -105,7 +105,7 @@ namespace GameFrameWork.Editor
 			return GetNodePath(current.parent, path, endParttern);
 		}
 
-        public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseConfigData
+        public static void CreateConfigData<T, P>(string name, string ext, string dir = null) where T : BaseScriptableObject<P> where P : BaseScriptableConfigData
 		{
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
@@ -114,8 +114,7 @@ namespace GameFrameWork.Editor
 		{
 			CreateScriptableObject(typeof(T), name, ext, dir);
 		}
-
-
+        
 		private static void CreateScriptableObject(Type type, string name, string ext, string dir = null)
 		{
 			string directory = string.Empty;

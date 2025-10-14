@@ -1,6 +1,8 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Scene
 {
-    public class LoadSceneFailureEventArgs : BaseEventArgs
+    public class LoadSceneFailureEventArgs : GameFrameWorkEventArg
     {
         public string sceneName { get; set; }
 
@@ -19,7 +21,6 @@ namespace GameFrameWork.Scene
 
         public override void Clear()
         {
-            base.Clear();
             sceneName = string.Empty;
             errorMessage = string.Empty;
             arg = null;

@@ -23,12 +23,12 @@ namespace SkillNew
         {
             base.OnGUI();
 
-            if (SkillEditorHelper.currConfigData.skillPrevConditions != null)
+            if (SkillEditorHelper.CurrConfigData.skillPrevConditions != null)
             {
                 EditorGUILayout.Space(10f);
                 m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
                 int removeIndex = -1;
-                SkillPrevCondition[] skillPrevConditions = SkillEditorHelper.currConfigData.skillPrevConditions;
+                SkillPrevCondition[] skillPrevConditions = SkillEditorHelper.CurrConfigData.skillPrevConditions;
 
                 for (int i = 0; i < skillPrevConditions.Length; i++)
                 {
@@ -71,7 +71,7 @@ namespace SkillNew
                 if (removeIndex >= 0)
                 {
                     m_ListPrevCondition.RemoveAt(removeIndex);
-                    SkillEditorHelper.currConfigData.skillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.currConfigData.skillPrevConditions, removeIndex);
+                    SkillEditorHelper.CurrConfigData.skillPrevConditions = CommonUtil.DeleteElement(SkillEditorHelper.CurrConfigData.skillPrevConditions, removeIndex);
                     removeIndex = -1;
                 }
 
@@ -83,20 +83,20 @@ namespace SkillNew
             if (GUILayout.Button("增加前置条件"))
             {
                 m_ListPrevCondition.Add(new SkillPrevCondition());
-                SkillEditorHelper.currConfigData.skillPrevConditions = CommonUtil.AddElement(SkillEditorHelper.currConfigData.skillPrevConditions, new SkillPrevCondition());
+                SkillEditorHelper.CurrConfigData.skillPrevConditions = CommonUtil.AddElement(SkillEditorHelper.CurrConfigData.skillPrevConditions, new SkillPrevCondition());
             }
         }
 
         private void CloneConditions()
         {
-            if (SkillEditorHelper.currConfigData == null || SkillEditorHelper.currConfigData.skillPrevConditions == null)
+            if (SkillEditorHelper.CurrConfigData == null || SkillEditorHelper.CurrConfigData.skillPrevConditions == null)
             {
                 return;
             }
 
             m_ListPrevCondition.Clear();
 
-            SkillPrevCondition[] skillPrevConditions = SkillEditorHelper.currConfigData.skillPrevConditions;
+            SkillPrevCondition[] skillPrevConditions = SkillEditorHelper.CurrConfigData.skillPrevConditions;
             for (int i = 0; i < skillPrevConditions.Length; i++)
             {
                 m_ListPrevCondition.Add(Clone(skillPrevConditions[i]));

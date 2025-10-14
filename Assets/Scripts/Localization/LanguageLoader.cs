@@ -8,7 +8,6 @@ public class LanguageLoader : BaseLanguageLoader
 {
     public LanguageLoader(string dataPath) : base(dataPath)
     {
-        m_DataPath = dataPath;
         m_LanguageDict = new Dictionary<string, string>();
     }
 
@@ -42,7 +41,6 @@ public class LanguageLoader : BaseLanguageLoader
     {
         m_LanguageDict.Clear();
     }
-
-    private string m_DataPath = string.Empty;
+    
     private Dictionary<string, string> m_LanguageDict = null;
 }

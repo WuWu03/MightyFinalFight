@@ -1,6 +1,6 @@
 ﻿using GameFrameWork;
 
-public abstract class BaseSceneObjectData : BaseEventArgs
+public abstract class BaseSceneObjectData : GameFrameWorkEventArg
 {
     public int entityId { get; set; }
 

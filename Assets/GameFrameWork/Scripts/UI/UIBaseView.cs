@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GameFrameWork.Pool;
 using GameFrameWork.Utils;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.UI
 {
@@ -82,7 +82,7 @@ namespace GameFrameWork.UI
             }
         }
         
-        private Dictionary<int, List<EventHandler<GameEventArgs>>> m_DicHandler = new();
+        private Dictionary<uint, List<EventHandler<GameEventArg>>> m_DicHandler = new();
         private object m_Arg = null;
         private bool m_IsLoading = false;
         protected UIBaseView()
@@ -127,9 +127,9 @@ namespace GameFrameWork.UI
             m_IsOpen = false;
             m_DelayTime = Time.unscaledTime;
 
-            foreach (KeyValuePair<int, List<EventHandler<GameEventArgs>>> kvp in m_DicHandler)
+            foreach (KeyValuePair<uint, List<EventHandler<GameEventArg>>> kvp in m_DicHandler)
             {
-                foreach (EventHandler<GameEventArgs> handler in kvp.Value)
+                foreach (EventHandler<GameEventArg> handler in kvp.Value)
                 {
                     EventMgr.instance.UnSubscribe(kvp.Key, handler);
                 }
@@ -188,7 +188,7 @@ namespace GameFrameWork.UI
             m_Arg = null;
         }
         
-        private void OnLoadComplete(string assetPath, Object uiGameObject, object arg)
+        private void OnLoadComplete(string assetPath, UnityObject uiGameObject, object arg)
         {
             m_GameObject = uiGameObject as GameObject;
             m_AssetPath = assetPath;
@@ -207,7 +207,7 @@ namespace GameFrameWork.UI
             Show();
         }
 
-        protected void AddEvent(int eventId, EventHandler<GameEventArgs> handler)
+        protected void AddEvent(uint eventId, EventHandler<GameEventArg> handler)
         {
             if (handler == null)
             {
@@ -215,7 +215,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArgs>> list))
+            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArg>> list))
             {
                 if (list.Contains(handler))
                 {
@@ -227,7 +227,7 @@ namespace GameFrameWork.UI
             }
             else
             {
-                list = new List<EventHandler<GameEventArgs>>
+                list = new List<EventHandler<GameEventArg>>
                 {
                     handler
                 };
@@ -238,16 +238,16 @@ namespace GameFrameWork.UI
             EventMgr.instance.Subscribe(eventId, handler);
         }
 
-        protected void RemoveEvent(int eventId, EventHandler<GameEventArgs> handler)
+        protected void RemoveEvent(uint eventId, EventHandler<GameEventArg> handler)
         {
-            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArgs>> list))
+            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArg>> list))
             {
                 list.Remove(handler);
             }
             
             EventMgr.instance.UnSubscribe(eventId, handler);
         }
-
+        
         protected void CloseSelf()
         {
             UIMgr.instance.Close(this);

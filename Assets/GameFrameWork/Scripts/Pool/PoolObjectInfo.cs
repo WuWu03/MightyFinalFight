@@ -1,6 +1,8 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Pool
 {
-    public class PoolObjectInfo : BaseEventArgs
+    public class PoolObjectInfo : GameFrameWorkEventArg
     {
         public UnityEngine.Object poolObject;
         public float releaseTime;
@@ -23,7 +25,6 @@ namespace GameFrameWork.Pool
 
         public override void Clear()
         {
-            base.Clear();
             poolObject = null;
             releaseTime = -1;
             isReleaseImmediate = false;

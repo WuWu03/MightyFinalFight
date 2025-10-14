@@ -126,7 +126,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
                 if (talkConfigData.nextTalkId == 0)
                 {
-                    EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.TalkEndEvent));
+                    EventMgr.instance.Dispatch(this, EventArg.Create(EventId.TalkEndEvent));
                     CloseSelf();
                 }
             }

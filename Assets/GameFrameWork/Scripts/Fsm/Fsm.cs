@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 using UnityEngine;
 
 namespace GameFrameWork.Fsm
@@ -140,7 +141,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
+        public void SetStateData<T>(GameFrameWorkEventArg stateData) where T : BaseFsmState
         {
             BaseFsmState state = GetState<T>();
 
@@ -152,7 +153,7 @@ namespace GameFrameWork.Fsm
             state.SetStateData(this, stateData);
         }
 
-        public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
+        public void ChangeState<T>(GameFrameWorkEventArg stateData = null) where T : BaseFsmState
         {
             if (!isRunning)
             {

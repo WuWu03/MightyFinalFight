@@ -1,73 +1,35 @@
-using System;
-using System.IO;
 using GameFrameWork.UI;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TestItem : ScrollListItem
-{
-    public TextMeshProUGUI text = null;
-
-    protected override void OnCreate(GameObject go)
-    {
-        text = go.transform.Find("text").GetComponent<TextMeshProUGUI>();
-    }
-
-    public override void OnUpdate()
-    {
-        text.text = itemIndex.ToString();
-    }
-}
-
 public class Test2 : MonoBehaviour
-{
+{        
     public ScrollList view;
-    public GameObject go;
-    private int count = 100;
+    public ButtonEx btn;
+ 
     private void Awake()
     {
-        Debug.Log(Path.GetExtension(".abs"));
+        btn.onClick.AddListener(delegate(GameObject go)
+        {
+            this.OnClick(go, 3);
+        });
+        
+        btn.onDoubleClick.AddListener(OnDoubleClick);
+        btn.onPress.AddListener(OnPress);
     }
-
-    private void OnScrolled()
+    
+    private void OnPress(GameObject t1)
     {
-        // if (view.normalizedScrollPosition <= 0)
-        // {
-        //     count += 10;
-        //     view.RefreshData(true);
-        // }
+        Debug.Log("OnPress");
     }
 
-    private float ItemSize(int t)
-    {
-        return 50;
-    }
-
-    private void Start()
-    {
-     
-       // view.RefreshData();
-        //view.SetScrollPositionImmediately(view.scrollSize);
-    }
-
-    private int GetDataCount()
-    {
-        return count;
-    }
-
-    private void OnPress(GameObject t1, PointerEventData t2, int arg)
+    private void OnClick(GameObject t1, int arg)
     {
         Debug.Log("OnClick" + arg);
     }
 
-    private void OnClick(GameObject t1, PointerEventData t2, int arg)
+    private void OnDoubleClick(GameObject t1)
     {
-        Debug.Log("OnClick" + arg);
-    }
-
-    private void OnDoubleClick(GameObject t1, PointerEventData t2, int arg)
-    {
-        Debug.Log("OnClick" + arg);
+        Debug.Log("OnDoubleClick");
     }
 }

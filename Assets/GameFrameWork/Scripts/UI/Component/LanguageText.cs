@@ -198,7 +198,6 @@ namespace GameFrameWork.UI
             if (!TryGetComponent(out m_TextMeshProUGUI) && !TryGetComponent(out m_Text))
             {
                 Log.LogError("文本组件为空，请检查");
-                return;
             }
         }
 

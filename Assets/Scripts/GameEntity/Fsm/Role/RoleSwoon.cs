@@ -1,5 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.Audio;
+using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using GameFrameWork.Utils;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class RoleSwoon : BaseFsmState
         m_Owner.UpdatePosX(m_Owner.transform.localPosition.x);
     }
 
-    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
     {
         base.OnSetStateData(fsm, stateData);
         HurtStateData data = stateData as HurtStateData;

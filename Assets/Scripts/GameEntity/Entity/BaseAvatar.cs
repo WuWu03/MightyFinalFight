@@ -2,6 +2,7 @@ using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Fsm;
 using System;
+using GameFrameWork.Event;
 using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
@@ -224,12 +225,12 @@ public abstract class BaseAvatar : BaseGravityObject
         return m_Fsm.GetState<T>();
     }
 
-    protected void SetStateData<T>(BaseEventArgs stateData) where T : BaseFsmState
+    protected void SetStateData<T>(GameFrameWorkEventArg stateData) where T : BaseFsmState
     {
         m_Fsm.SetStateData<T>(stateData);
     }
 
-    public void ChangeState<T>(BaseEventArgs stateData = null) where T : BaseFsmState
+    public void ChangeState<T>(GameFrameWorkEventArg stateData = null) where T : BaseFsmState
     {
         m_Fsm.ChangeState<T>(stateData);
     }

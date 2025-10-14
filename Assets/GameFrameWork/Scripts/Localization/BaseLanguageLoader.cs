@@ -5,7 +5,7 @@ namespace GameFrameWork.Localization
 {
     public abstract class BaseLanguageLoader
     {
-        public BaseLanguageLoader(string dataPath)
+        protected BaseLanguageLoader(string dataPath)
         {
             m_DataPath = dataPath;
             m_IsInit = false;

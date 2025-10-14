@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GameFrameWork.Event
 {
-    public class EventPool<T> where T : BaseEventArgs
+    public class EventPool<T> where T : GameEventArg
     {
         public int currEventCount
         {
@@ -23,12 +23,11 @@ namespace GameFrameWork.Event
 
         public EventPool()
         {
-            m_Events = new Queue<Event<T>>();
-            m_EventHandlers = new Dictionary<int, List<EventHandler<T>>>();
+            m_Events = new();
+            m_EventHandlers = new();
         }
-
-
-        public int Count(int id)
+        
+        public int Count(uint id)
         {
             if (m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
@@ -44,13 +43,14 @@ namespace GameFrameWork.Event
             {
                 lock (m_Events)
                 {
-                    Event<T> @event = m_Events.Dequeue();
-                    HandleEvent(@event.sender, @event.eventArgs);
+                    EventSender<T> eventSender = m_Events.Dequeue();
+                    HandleEvent(eventSender.sender, eventSender.eventArg);
+                    eventSender.Release();
                 }
             }
         }
 
-        public void Subscribe(int eventId, EventHandler<T> handler)
+        public void Subscribe(uint eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
@@ -73,7 +73,7 @@ namespace GameFrameWork.Event
             eventList.Add(handler);
         }
 
-        public void UnSubscibe(int eventId, EventHandler<T> handler)
+        public void UnSubscibe(uint eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
@@ -98,7 +98,7 @@ namespace GameFrameWork.Event
             }
         }
 
-        public bool Check(int eventId, EventHandler<T> handler)
+        public bool Check(uint eventId, EventHandler<T> handler)
         {
             if (handler == null)
             {
@@ -113,19 +113,19 @@ namespace GameFrameWork.Event
             return eventList.Contains(handler);
         }
 
-        public void Dispatch(object sender, T args)
+        public void Dispatch(object sender, T arg)
         {
-            Event<T> item = Event<T>.Create(sender, args);
+            EventSender<T> eventSender = EventSender<T>.Create(sender, arg);
 
             lock (m_Events)
             {
-                m_Events.Enqueue(item);
+                m_Events.Enqueue(eventSender);
             }
         }
 
-        public void DispatchNow(object sender, T args)
+        public void DispatchNow(object sender, T arg)
         {
-            HandleEvent(sender, args);
+            HandleEvent(sender, arg);
         }
 
         public void ShutDown()
@@ -134,9 +134,9 @@ namespace GameFrameWork.Event
             m_EventHandlers.Clear();
         }
 
-        private void HandleEvent(object sender, T args)
+        private void HandleEvent(object sender, T arg)
         {
-            int id = args.id;
+            uint id = arg.id;
 
             if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
             {
@@ -145,13 +145,13 @@ namespace GameFrameWork.Event
 
             for (int i = eventList.Count - 1; i >= 0; i--)
             {
-                eventList[i]?.Invoke(sender, args);
+                eventList[i]?.Invoke(sender, arg);
             }
 
-            args.Release();
+            arg.Release();
         }
 
-        private readonly Queue<Event<T>> m_Events = null;
-        private readonly Dictionary<int, List<EventHandler<T>>> m_EventHandlers = null;
+        private readonly Queue<EventSender<T>> m_Events = null;
+        private readonly Dictionary<uint, List<EventHandler<T>>> m_EventHandlers = null;
     }
 }

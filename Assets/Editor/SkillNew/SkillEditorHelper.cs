@@ -1,6 +1,9 @@
+using System;
 using GameFrameWork.Serialize;
 using System.Collections.Generic;
 using System.IO;
+using GameFrameWork.Input;
+using GameFrameWork.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ namespace SkillNew
 {
     public static class SkillEditorHelper
     {
-        public static SkillEditorConfigData currConfigData
+        public static SkillEditorConfigData CurrConfigData
         {
             get
             {
@@ -145,13 +148,18 @@ namespace SkillNew
 
         public static void AddData(string name)
         {
-            SkillEditorConfigData skillConfigData = new SkillEditorConfigData();
-            skillConfigData.skillName = name;
-            skillConfigData.skillKey = new SkillEditorConfigData.SkillKey();
-            skillConfigData.skillKey.keys = new GameFrameWork.Input.KeyType[0];
-            skillConfigData.dicSkillSelectors = new SerializableDictionary<int, SkillEditorConfigData.SkillSelector>();
-            skillConfigData.dicSkillEvents = new SerializableDictionary<int, SerializableList<SkillEditorConfigData.SkillEvent>>();
-            skillConfigData.skillPrevConditions = new SkillEditorConfigData.SkillPrevCondition[0];
+            SkillEditorConfigData skillConfigData = new()
+            {
+                skillName = name,
+                skillKey = new()
+                {
+                    keys = Array.Empty<KeyType>(),
+                },
+                dicSkillSelectors = new(),
+                dicSkillEvents = new(),
+                skillPrevConditions = Array.Empty<SkillEditorConfigData.SkillPrevCondition>()
+            };
+            
             m_SkillEditorConfig.AddData(skillConfigData);
             m_CurrSelectIndex = m_SkillEditorConfig.listDatas.Count - 1;
             SetShowNames();

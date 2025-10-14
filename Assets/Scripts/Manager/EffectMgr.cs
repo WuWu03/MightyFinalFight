@@ -1,5 +1,6 @@
 using GameFrameWork;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Event;
 using GameFrameWork.Utils;
 using UnityEngine;
 

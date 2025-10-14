@@ -2,6 +2,7 @@ using GameFrameWork.Assets;
 using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 using UnityEngine;
 
 namespace GameFrameWork.Pool

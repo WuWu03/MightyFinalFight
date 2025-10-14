@@ -1,6 +1,8 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Scene
 {
-    public class UnLoadSceneFailureEventArgs : BaseEventArgs
+    public class UnLoadSceneFailureEventArgs : GameFrameWorkEventArg
     {
         public string sceneName
         {

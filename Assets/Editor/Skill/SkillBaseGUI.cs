@@ -12,19 +12,19 @@ public class SkillBaseGUI : SkillGUI
     protected override void OnUpdateData()
     {
         m_ListKey.Clear();
-        m_CurrId = SkillEditorHelper.currConfigData.id;
+        m_CurrId = SkillEditorHelper.CurrConfigData.id;
         m_CurrName = SkillEditorHelper.currShowName;
-        m_CurrLevel = SkillEditorHelper.currConfigData.Level;
-        m_CurrAnimName = SkillEditorHelper.currConfigData.AnimationName;
-        m_CurrHurtSound = SkillEditorHelper.currConfigData.HurtSound;
-        m_EnternalTriggerTime = SkillEditorHelper.currConfigData.EnternalTiggerTime;
-        m_AnimSpeed = SkillEditorHelper.currConfigData.AnimSpeed;
-        m_AnimTime = SkillEditorHelper.currConfigData.AnimTime;
-        m_Exp = SkillEditorHelper.currConfigData.EXP;
+        m_CurrLevel = SkillEditorHelper.CurrConfigData.Level;
+        m_CurrAnimName = SkillEditorHelper.CurrConfigData.AnimationName;
+        m_CurrHurtSound = SkillEditorHelper.CurrConfigData.HurtSound;
+        m_EnternalTriggerTime = SkillEditorHelper.CurrConfigData.EnternalTiggerTime;
+        m_AnimSpeed = SkillEditorHelper.CurrConfigData.AnimSpeed;
+        m_AnimTime = SkillEditorHelper.CurrConfigData.AnimTime;
+        m_Exp = SkillEditorHelper.CurrConfigData.EXP;
 
-        if (SkillEditorHelper.currConfigData.Key.Keys != null)
+        if (SkillEditorHelper.CurrConfigData.Key.Keys != null)
         {
-            m_ListKey.AddRange(SkillEditorHelper.currConfigData.Key.Keys);
+            m_ListKey.AddRange(SkillEditorHelper.CurrConfigData.Key.Keys);
         }
     }
 
@@ -42,7 +42,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.Name = m_CurrName;
+                SkillEditorHelper.CurrConfigData.Name = m_CurrName;
                 SkillEditorHelper.SetShowNames();
                 ShowNotification("更改成功");
             }
@@ -56,7 +56,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.id = m_CurrId;
+                SkillEditorHelper.CurrConfigData.id = m_CurrId;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -69,7 +69,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.Level = m_CurrLevel;
+                SkillEditorHelper.CurrConfigData.Level = m_CurrLevel;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -82,7 +82,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.AnimationName = m_CurrAnimName;
+                SkillEditorHelper.CurrConfigData.AnimationName = m_CurrAnimName;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -95,7 +95,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.HurtSound = m_CurrHurtSound;
+                SkillEditorHelper.CurrConfigData.HurtSound = m_CurrHurtSound;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -108,7 +108,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.EnternalTiggerTime = m_EnternalTriggerTime;
+                SkillEditorHelper.CurrConfigData.EnternalTiggerTime = m_EnternalTriggerTime;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -121,7 +121,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.AnimSpeed = m_AnimSpeed;
+                SkillEditorHelper.CurrConfigData.AnimSpeed = m_AnimSpeed;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -134,7 +134,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.AnimTime = m_AnimTime;
+                SkillEditorHelper.CurrConfigData.AnimTime = m_AnimTime;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -147,7 +147,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("更改", GUILayout.Width(100)))
             {
-                SkillEditorHelper.currConfigData.EXP = m_Exp;
+                SkillEditorHelper.CurrConfigData.EXP = m_Exp;
                 ShowNotification("更改成功");
             }
             EditorGUILayout.EndHorizontal();
@@ -155,46 +155,46 @@ public class SkillBaseGUI : SkillGUI
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.Type = (SkillConfigData.SkillType)EditorGUILayout.EnumPopup("SkillType", SkillEditorHelper.currConfigData.Type);
+            SkillEditorHelper.CurrConfigData.Type = (SkillConfigData.SkillType)EditorGUILayout.EnumPopup("SkillType", SkillEditorHelper.CurrConfigData.Type);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.DeployerType = (SkillConfigData.SkillDeployerType)EditorGUILayout.EnumPopup("SkillDeployerType", SkillEditorHelper.currConfigData.DeployerType);
+            SkillEditorHelper.CurrConfigData.DeployerType = (SkillConfigData.SkillDeployerType)EditorGUILayout.EnumPopup("SkillDeployerType", SkillEditorHelper.CurrConfigData.DeployerType);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.TriggerType = (SkillConfigData.SkillTriggerType)EditorGUILayout.EnumPopup("SkillTriggerType", SkillEditorHelper.currConfigData.TriggerType);
+            SkillEditorHelper.CurrConfigData.TriggerType = (SkillConfigData.SkillTriggerType)EditorGUILayout.EnumPopup("SkillTriggerType", SkillEditorHelper.CurrConfigData.TriggerType);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.IsInEffectPlaySound = EditorGUILayout.Toggle("EffectPlaySound", SkillEditorHelper.currConfigData.IsInEffectPlaySound);
+            SkillEditorHelper.CurrConfigData.IsInEffectPlaySound = EditorGUILayout.Toggle("EffectPlaySound", SkillEditorHelper.CurrConfigData.IsInEffectPlaySound);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.CanChangeDir = EditorGUILayout.Toggle("CanChangeDir", SkillEditorHelper.currConfigData.CanChangeDir);
+            SkillEditorHelper.CurrConfigData.CanChangeDir = EditorGUILayout.Toggle("CanChangeDir", SkillEditorHelper.CurrConfigData.CanChangeDir);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
-            SkillEditorHelper.currConfigData.CanMove = EditorGUILayout.Toggle("CanMove", SkillEditorHelper.currConfigData.CanMove);
+            SkillEditorHelper.CurrConfigData.CanMove = EditorGUILayout.Toggle("CanMove", SkillEditorHelper.CurrConfigData.CanMove);
         });
 
         GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
         {
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("SkillKey");
-            SkillEditorHelper.currConfigData.Key.AddTrigger = EditorGUILayout.Toggle("AddTrigger", SkillEditorHelper.currConfigData.Key.AddTrigger);
+            SkillEditorHelper.CurrConfigData.Key.AddTrigger = EditorGUILayout.Toggle("AddTrigger", SkillEditorHelper.CurrConfigData.Key.AddTrigger);
 
             int removeKeyIndex = -1;
 
-            for (int i = 0; i < SkillEditorHelper.currConfigData.Key.Keys.Length; i++)
+            for (int i = 0; i < SkillEditorHelper.CurrConfigData.Key.Keys.Length; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                SkillEditorHelper.currConfigData.Key.Keys[i] = (GameFrameWork.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.currConfigData.Key.Keys[i]);
+                SkillEditorHelper.CurrConfigData.Key.Keys[i] = (GameFrameWork.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.Key.Keys[i]);
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
                     removeKeyIndex = i;
@@ -206,14 +206,14 @@ public class SkillBaseGUI : SkillGUI
             if(removeKeyIndex >= 0)
             {
                 m_ListKey.RemoveAt(removeKeyIndex);
-                SkillEditorHelper.currConfigData.Key.Keys = m_ListKey.ToArray();
+                SkillEditorHelper.CurrConfigData.Key.Keys = m_ListKey.ToArray();
                 removeKeyIndex = -1;
             }
 
             if (GUILayout.Button("增加按键"))
             {
                 m_ListKey.Add(GameFrameWork.Input.KeyType.A);
-                SkillEditorHelper.currConfigData.Key.Keys = m_ListKey.ToArray();
+                SkillEditorHelper.CurrConfigData.Key.Keys = m_ListKey.ToArray();
             }
 
             if (GUILayout.Button("默认重力"))

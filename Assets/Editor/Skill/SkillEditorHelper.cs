@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class SkillEditorHelper
 {
-    public static SkillConfigData currConfigData
+    public static SkillConfigData CurrConfigData
     {
         get
         {

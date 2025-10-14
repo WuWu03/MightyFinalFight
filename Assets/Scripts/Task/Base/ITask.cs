@@ -1,6 +1,6 @@
 public interface ITask
 {
-    TaskConfigData taskData { get; }
+    TaskConfigData TaskData { get; }
 
     public bool isComplete { get; }
 

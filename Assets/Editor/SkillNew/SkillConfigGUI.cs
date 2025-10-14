@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GameFrameWork.Utils;
 using UnityEditor;
 using UnityEngine;
 using static SkillEditorConfigData;
@@ -23,14 +24,14 @@ namespace SkillNew
                 return;
             }
 
-            m_SkillFrameCount = SkillEditorHelper.currConfigData.skillFrameCount;
+            m_SkillFrameCount = SkillEditorHelper.CurrConfigData.skillFrameCount;
             m_CurrFrame = Mathf.Min(1, m_SkillFrameCount);
 
             m_SkillEvents = null;
 
             if (m_CurrFrame > 0)
             {
-                if (SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
+                if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
                 {
                     m_SkillEvents = list.ToList();
                 }
@@ -69,20 +70,20 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                DrawField(() => { return m_SkillFrameCount != SkillEditorHelper.currConfigData.skillFrameCount; },
+                DrawField(() => { return m_SkillFrameCount != SkillEditorHelper.CurrConfigData.skillFrameCount; },
                     () => { m_SkillFrameCount = EditorGUILayout.IntField("技能帧数", m_SkillFrameCount); },
                     () =>
                     {
-                        SkillEditorHelper.currConfigData.skillFrameCount = m_SkillFrameCount;
+                        SkillEditorHelper.CurrConfigData.skillFrameCount = m_SkillFrameCount;
                         SkillEditorHelper.SetShowNames();
-                        int[] deletes = SkillEditorHelper.currConfigData.dicSkillEvents.Keys.Where(x => x > m_SkillFrameCount).ToArray();
+                        int[] deletes = SkillEditorHelper.CurrConfigData.dicSkillEvents.Keys.Where(x => x > m_SkillFrameCount).ToArray();
 
                         foreach (int delete in deletes)
                         {
-                            SkillEditorHelper.currConfigData.dicSkillEvents.Remove(delete);
+                            SkillEditorHelper.CurrConfigData.dicSkillEvents.Remove(delete);
                         }
 
-                        if (SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
+                        if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
                         {
                             m_SkillEvents = list.ToList();
                         }
@@ -95,10 +96,10 @@ namespace SkillNew
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
             {
-                int frameIndex = EditorGUILayout.IntSlider("当前帧", m_CurrFrame, Mathf.Min(1, SkillEditorHelper.currConfigData.skillFrameCount), SkillEditorHelper.currConfigData.skillFrameCount);
+                int frameIndex = EditorGUILayout.IntSlider("当前帧", m_CurrFrame, Mathf.Min(1, SkillEditorHelper.CurrConfigData.skillFrameCount), SkillEditorHelper.CurrConfigData.skillFrameCount);
                 if (frameIndex != m_CurrFrame)
                 {
-                    if (SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(frameIndex, out var list))
+                    if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(frameIndex, out var list))
                     {
                         m_SkillEvents = list.ToList();
                     }
@@ -206,7 +207,7 @@ namespace SkillNew
 
                     if (m_SkillEvents.Count < 1)
                     {
-                        SkillEditorHelper.currConfigData.dicSkillEvents.Remove(m_CurrFrame);
+                        SkillEditorHelper.CurrConfigData.dicSkillEvents.Remove(m_CurrFrame);
                         m_SkillEvents = null;
                     }
                 }
@@ -216,11 +217,11 @@ namespace SkillNew
             {
                 if (m_CurrFrame > 0)
                 {
-                    if (!SkillEditorHelper.currConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
+                    if (!SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
                     {
-                        list = new SerializableList<SkillEditorConfigData.SkillEvent>();
+                        list = new();
                         m_SkillEvents = list.ToList();
-                        SkillEditorHelper.currConfigData.dicSkillEvents.Add(m_CurrFrame, list);
+                        SkillEditorHelper.CurrConfigData.dicSkillEvents.Add(m_CurrFrame, list);
                     }
 
                     m_SkillEvents.Add(new SkillEditorConfigData.SkillEvent());
@@ -242,14 +243,14 @@ namespace SkillNew
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.LabelField("技能按键");
 
-                if (SkillEditorHelper.currConfigData.skillKey != null)
+                if (SkillEditorHelper.CurrConfigData.skillKey != null)
                 {
-                    SkillEditorHelper.currConfigData.skillKey.addTrigger = EditorGUILayout.Toggle("加入触发", SkillEditorHelper.currConfigData.skillKey.addTrigger);
+                    SkillEditorHelper.CurrConfigData.skillKey.addTrigger = EditorGUILayout.Toggle("加入触发", SkillEditorHelper.CurrConfigData.skillKey.addTrigger);
 
-                    for (int i = 0; i < SkillEditorHelper.currConfigData.skillKey.keys.Length; i++)
+                    for (int i = 0; i < SkillEditorHelper.CurrConfigData.skillKey.keys.Length; i++)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        SkillEditorHelper.currConfigData.skillKey.keys[i] = (GameFrameWork.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.currConfigData.skillKey.keys[i]);
+                        SkillEditorHelper.CurrConfigData.skillKey.keys[i] = (GameFrameWork.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.skillKey.keys[i]);
                         if (GUILayout.Button("x", GUILayout.Width(20)))
                         {
                             removeKeyIndex = i;
@@ -262,7 +263,7 @@ namespace SkillNew
                 if (GUILayout.Button("增加按键"))
                 {
                     m_ListKey.Add(GameFrameWork.Input.KeyType.A);
-                    SkillEditorHelper.currConfigData.skillKey.keys = m_ListKey.ToArray();
+                    SkillEditorHelper.CurrConfigData.skillKey.keys = m_ListKey.ToArray();
                 }
 
                 EditorGUILayout.EndVertical();
@@ -271,7 +272,7 @@ namespace SkillNew
             if (removeKeyIndex >= 0)
             {
                 m_ListKey.RemoveAt(removeKeyIndex);
-                SkillEditorHelper.currConfigData.skillKey.keys = m_ListKey.ToArray();
+                SkillEditorHelper.CurrConfigData.skillKey.keys = m_ListKey.ToArray();
                 removeKeyIndex = -1;
             }
 

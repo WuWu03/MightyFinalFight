@@ -12,7 +12,7 @@ public class TaskTriggerWait : BaseTaskTrigger
 
     public override void Trigger()
     {
-        if(Time.time - m_WaitTimer >= m_TaskData.WaitTime)
+        if(Time.time - m_WaitTimer >= mTaskData.WaitTime)
         {
             Complete();
         }

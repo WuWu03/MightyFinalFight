@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameFrameWork.Assets
 {
-    public class AssetBundleInfo : BaseEventArgs
+    public class AssetBundleInfo : GameFrameWorkEventArg
     {
         public AssetBundle assetBundle { get; set; }
         public int referencedCount { get; set; }
@@ -17,7 +17,6 @@ namespace GameFrameWork.Assets
 
         public override void Clear()
         {
-            base.Clear();
             assetBundle = null;
             referencedCount = 0;
         }

@@ -1,4 +1,7 @@
-﻿public class UIRefRoot : UnityEngine.MonoBehaviour
+﻿using System;
+using UnityObject = UnityEngine.Object;
+
+public class UIRefRoot : UnityEngine.MonoBehaviour
 {
-    public UnityEngine.Object[] objects = new UnityEngine.Object[0];
+    public UnityObject[] objects = Array.Empty<UnityObject>();
 }

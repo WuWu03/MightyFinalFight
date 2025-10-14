@@ -15,7 +15,7 @@ namespace GameFrameWork.Editor
     }
 
     [Serializable]
-    public class AssetBundleData : BaseConfigData
+    public class AssetBundleData : BaseScriptableConfigData
     {
         public enum BundleBuildType : byte
         {

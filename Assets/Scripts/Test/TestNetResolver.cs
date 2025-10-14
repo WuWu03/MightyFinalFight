@@ -2,6 +2,7 @@ using client;
 using GameFrameWork;
 using GameFrameWork.Net;
 using GameFrameWork.Pool;
+using GameFrameWork.Event;
 using GameFrameWork.Serialize;
 using ProtoBuf;
 

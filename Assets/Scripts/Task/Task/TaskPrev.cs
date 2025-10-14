@@ -4,6 +4,6 @@ public class TaskPrev : BaseTask
 
     public override bool CheckCondition()
     {
-        return TaskMgr.instance.TaskHasCompleted(m_TaskData.PrevID);
+        return TaskMgr.instance.TaskHasCompleted(mTaskData.PrevID);
     }
 }

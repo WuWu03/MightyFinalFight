@@ -20,21 +20,21 @@ public class TaskMove : BaseTask
 
         if (!m_XArrived)
         {
-            float xOffest = (float)m_TaskData.Position.Pos.x / 100 - pos.x;
+            float xOffest = (float)mTaskData.Position.Pos.x / 100 - pos.x;
             m_XArrived = Mathf.Abs(xOffest) <= 0.05f;
         }
 
         if (!m_YArrived)
         {
-            float yOffest = (float)m_TaskData.Position.Pos.y / 100 - pos.y;
+            float yOffest = (float)mTaskData.Position.Pos.y / 100 - pos.y;
             m_YArrived = Mathf.Abs(yOffest) <= 0.05f;
         }
     }
 
     public override bool CheckCondition()
     {
-        if (m_TaskData.Position.PosType == TaskConfigData.TaskPosType.X) return m_XArrived;
-        if (m_TaskData.Position.PosType == TaskConfigData.TaskPosType.Y) return m_YArrived;
+        if (mTaskData.Position.PosType == TaskConfigData.TaskPosType.X) return m_XArrived;
+        if (mTaskData.Position.PosType == TaskConfigData.TaskPosType.Y) return m_YArrived;
         return m_XArrived && m_YArrived;
     }
 

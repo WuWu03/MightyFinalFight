@@ -11,7 +11,7 @@ namespace GameFrameWork.Editor
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			// Rely on the default inspector GUI
-			EditorGUI.BeginChangeCheck();
+			EditorGUI.BeginChangeCheck();   
 			EditorGUI.PropertyField(position, property, label);
 
 			// Update only when necessary

@@ -2,6 +2,7 @@ using DG.Tweening;
 using GameFrameWork;
 using UnityEngine;
 using System;
+using GameFrameWork.Event;
 
 public abstract class BaseStoryBuilder : IStoryBuilder
 {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GameFrameWork.Serialize
 {
-    public abstract class BaseScriptableObject<T> : ScriptableObject where T : BaseConfigData
+    public abstract class BaseScriptableObject<T> : ScriptableObject where T : BaseScriptableConfigData
     {
         public BaseScriptableObject()
         {
@@ -58,21 +58,6 @@ namespace GameFrameWork.Serialize
         public T Clone()
         {
             return Activator.CreateInstance<T>();
-        }
-    }
-
-    [Serializable]
-    public abstract class BaseConfigData : IComparable
-    {
-        public int id;
-
-        public virtual int CompareTo(object obj)
-        {
-            BaseConfigData data = obj as BaseConfigData;
-            if (data.id < this.id)
-                return 1;
-            else
-                return -1;
         }
     }
 }

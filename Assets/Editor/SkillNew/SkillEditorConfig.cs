@@ -1,5 +1,6 @@
 using GameFrameWork.Serialize;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -9,8 +10,9 @@ public class SkillEditorConfig : BaseScriptableObject<SkillEditorConfigData>
 }
 
 [Serializable]
-public class SkillEditorConfigData : BaseConfigData
+public class SkillEditorConfigData : BaseScriptableConfigData
 {
+    [Serializable]
     public enum SkillSelectorType
     {
         None,
@@ -18,6 +20,7 @@ public class SkillEditorConfigData : BaseConfigData
         BulletSelector,
     }
 
+    [Serializable]
     public enum SkillDeployerType
     {
         None,
@@ -26,6 +29,7 @@ public class SkillEditorConfigData : BaseConfigData
         SkillAttack,
     }
 
+    [Serializable]
     public enum SkillEventType
     {
         None,
@@ -41,6 +45,7 @@ public class SkillEditorConfigData : BaseConfigData
         BuffEvent,
     }
 
+    [Serializable]
     public enum SkillConditionType
     {
         None,
@@ -122,7 +127,6 @@ public class SkillEditorConfigData : BaseConfigData
             public Vector2 velocity;
             public float drag;
             public float gravity;
-
             public float distanceLimit;
         }
 
@@ -161,7 +165,7 @@ public class SkillEditorConfigData : BaseConfigData
             public bool hitFinish;//击中任意敌人就结束事件
         }
 
-        public HurtEventInfo hurtEventInfo = null;
+        [SerializeField] public HurtEventInfo hurtEventInfo = null;
 
         //特效事件
         [Serializable]
@@ -173,14 +177,15 @@ public class SkillEditorConfigData : BaseConfigData
             public Vector3 scale;//缩放
         }
 
+        public EffectEventInfo effectEventInfo = null;
+        
+        [Serializable]
         public class WaitEventInfo
         {
             public SkillConditionType conditionType;
             public float timeElapsed;
         }
-
-        public EffectEventInfo effectEventInfo = null;
-
+        
         public bool continuous;//持续检测事件触发
         public int nextSkill;//技能结束后连接下一个技能
     }
@@ -209,7 +214,7 @@ public class SkillEditorConfigData : BaseConfigData
     public int skillFrameCount;
     public SkillDeployerType deployerType;//释放器类型
     public SerializableDictionary<int, SkillSelector> dicSkillSelectors = null;
-    public SerializableDictionary<int, SerializableList<SkillEvent>> dicSkillEvents = null;
+    public SerializableDictionary<int, List<SkillEvent>> dicSkillEvents = null;
     public SkillKey skillKey;
     public SkillPrevCondition[] skillPrevConditions;//释放技能的前置条件
 }

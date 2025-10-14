@@ -1,3 +1,5 @@
+using GameFrameWork.UI;
+
 namespace GameFrameWork.Editor
 {
     public interface IUIScriptsExporter

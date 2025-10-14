@@ -8,7 +8,7 @@ public class TaskConfig : BaseScriptableObject<TaskConfigData>
 }
 
 [Serializable]
-public class TaskConfigData : BaseConfigData
+public class TaskConfigData : BaseScriptableConfigData
 {
     [Serializable]
     public enum TaskConditionType

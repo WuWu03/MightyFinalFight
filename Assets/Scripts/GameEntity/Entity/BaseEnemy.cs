@@ -189,7 +189,6 @@ public class BaseEnemy : BaseRole
         }
 
         HurtStateData hurtData = HurtStateData.Create();
-        hurtData.id = 0;
         hurtData.skillExp = 2;
         hurtData.isChangeVelocity = true;
         hurtData.changeVelocity = Vector2.zero;
@@ -206,7 +205,6 @@ public class BaseEnemy : BaseRole
         OnHurtMsg(hurtData);
 
         HurtStateData targetHurt = HurtStateData.Create();
-        targetHurt.id = 0;
         targetHurt.skillExp = 2;
         targetHurt.isChangeVelocity = true;
         targetHurt.changeVelocity = Vector2.zero;

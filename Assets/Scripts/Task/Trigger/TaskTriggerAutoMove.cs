@@ -10,8 +10,8 @@ public class TaskTriggerAutoMove : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        float x = (float)m_TaskData.Position.Pos.x / 100f;
-        float y = (float)m_TaskData.Position.Pos.y / 100f;
+        float x = (float)mTaskData.Position.Pos.x / 100f;
+        float y = (float)mTaskData.Position.Pos.y / 100f;
         PlayerMgr.instance.player.AutoMove(new Vector2(x, y));
     }
 

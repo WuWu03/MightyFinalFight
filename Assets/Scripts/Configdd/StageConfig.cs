@@ -7,7 +7,7 @@ public class StageConfig : BaseScriptableObject<StageConfigData>
 }
 
 [Serializable]
-public class StageConfigData : BaseConfigData
+public class StageConfigData : BaseScriptableConfigData
 {
     [Serializable]
     public class BGM

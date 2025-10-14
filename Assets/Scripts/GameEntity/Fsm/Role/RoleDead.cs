@@ -1,4 +1,5 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ public class RoleDead : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
     {
         base.OnSetStateData(fsm, stateData);
         DropTrapStateData trapData = stateData as DropTrapStateData;

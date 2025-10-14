@@ -64,7 +64,7 @@ public class HudView : UIBaseView<HudViewComponent, HudViewSettings>
 
         text.color = damageType == HudMgr.DamageType.Player ? 
             Color.white : // 绿色为玩家伤害
-            Color.red; //红色为敌人伤害 
+            Color.red; //红色为敌人伤害
 
         Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
         Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, gameObject.GetComponent<RectTransform>(), UIMgr.instance.uiCamera);

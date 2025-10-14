@@ -1,8 +1,9 @@
 using System;
+using GameFrameWork.Event;
 
 namespace GameFrameWork.Assets
 {
-    public class LoadRequest : BaseEventArgs
+    public class LoadRequest : GameFrameWorkEventArg
     {
         public string assetPath { get; set; }
         public Type assetType { get; set; }
@@ -29,7 +30,6 @@ namespace GameFrameWork.Assets
 
         public override void Clear()
         {
-            base.Clear();
             assetPath = null;
             assetType = null;
             loadedAction = null;

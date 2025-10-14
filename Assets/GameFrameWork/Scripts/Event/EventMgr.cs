@@ -43,36 +43,36 @@ namespace GameFrameWork.Event
             m_EventPool = null;
         }
 
-        public void Subscribe(int eventId, EventHandler<GameEventArgs> handler)
+        public void Subscribe(uint eventId, EventHandler<GameEventArg> handler)
         {
             m_EventPool.Subscribe(eventId, handler);
         }
 
-        public void UnSubscribe(int eventId, EventHandler<GameEventArgs> handler)
+        public void UnSubscribe(uint eventId, EventHandler<GameEventArg> handler)
         {            
             m_EventPool.UnSubscibe(eventId, handler);
         }
 
-        public bool Check(int eventId, EventHandler<GameEventArgs> handler)
+        public bool Check(uint eventId, EventHandler<GameEventArg> handler)
         {
             return m_EventPool.Check(eventId, handler);
         }
 
-        public int Count(int eventId)
+        public int Count(uint eventId)
         {
             return m_EventPool.Count(eventId);
         }
 
-        public void Dispatch(object sender, GameEventArgs e)
+        public void Dispatch(object sender, GameEventArg arg)
         {
-            m_EventPool.Dispatch(sender, e);
+            m_EventPool.Dispatch(sender, arg);
         }
 
-        public void DispatchNow(object sender, GameEventArgs e)
+        public void DispatchNow(object sender, GameEventArg arg)
         {
-            m_EventPool.DispatchNow(sender, e);
+            m_EventPool.DispatchNow(sender, arg);
         }
 
-        private EventPool<GameEventArgs> m_EventPool = null;
+        private EventPool<GameEventArg> m_EventPool = null;
     }
 }

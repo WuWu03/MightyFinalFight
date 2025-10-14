@@ -12,7 +12,7 @@ public abstract class BaseTaskTrigger : ITaskTrigger
 
     public BaseTaskTrigger(TaskConfigData data)
     {
-        m_TaskData = data;
+        mTaskData = data;
     }
 
     public virtual void Enter()
@@ -22,12 +22,12 @@ public abstract class BaseTaskTrigger : ITaskTrigger
 
     public virtual void Trigger()
     {
-        if(m_TaskData.TriggerPlayerCantCtrl)
+        if(mTaskData.TriggerPlayerCantCtrl)
         {
             PlayerMgr.instance.canContrl = false;
         }
 
-        if (m_TaskData.TriggerStopCamera)
+        if (mTaskData.TriggerStopCamera)
         {
             CameraMgr.instance.EndFollow(true);
         }
@@ -39,5 +39,5 @@ public abstract class BaseTaskTrigger : ITaskTrigger
     }
 
     private bool m_IsComplete = false;
-    protected TaskConfigData m_TaskData = null;
+    protected TaskConfigData mTaskData = null;
 }

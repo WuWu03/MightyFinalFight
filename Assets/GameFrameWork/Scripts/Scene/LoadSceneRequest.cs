@@ -1,8 +1,9 @@
+using GameFrameWork.Event;
 using UnityEngine.SceneManagement;
 
 namespace GameFrameWork.Scene
 {
-    public class LoadSceneRequest : BaseEventArgs
+    public class LoadSceneRequest : GameFrameWorkEventArg
     {
         public string sceneName { get; private set; }
 

@@ -1,6 +1,7 @@
 using GameFrameWork;
 using System;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 
 public class StoryMgr : BaseMgr<StoryMgr>
 {

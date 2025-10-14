@@ -22,7 +22,7 @@ public class MapEditorConfig : BaseScriptableObject<MapEditorConfigData>
 }
 
 [Serializable]
-public class MapEditorConfigData : BaseConfigData
+public class MapEditorConfigData : BaseScriptableConfigData
 {
     [Serializable]
     public class MoveArea 

@@ -23,13 +23,13 @@ public class TalkClip : BaseClip
 
     protected override void OnPlay()
     {
-        EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
-        UIMgr.instance.Open(UINames.TalkPanel, m_TalkId);
+        EventMgr.instance.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
+        UIMgr.instance.Open<TalkView>(m_TalkId);
     }
 
-    private void OnTalkEnd(object sender, GameEventArgs e)
+    private void OnTalkEnd(object sender, GameEventArg e)
     {
-        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
+        EventMgr.instance.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
         Complete();
     }
 

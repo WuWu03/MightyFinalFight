@@ -17,9 +17,10 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 {
     protected override void OnOpen(object arg)
     {
-
+        
     }
 
+    
     protected override void OnShow(object arg)
     {
         InputMgr.instance.inputDeviceChangeEvent += OnInputDeviceChangeEvent;

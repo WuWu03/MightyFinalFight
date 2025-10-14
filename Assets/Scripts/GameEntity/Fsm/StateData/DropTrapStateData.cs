@@ -1,7 +1,8 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
 
-public class DropTrapStateData : BaseEventArgs
+public class DropTrapStateData : GameFrameWorkEventArg
 {
     public int attackValue { get; set; }
     public Vector2 rebirthPos { get; set; }

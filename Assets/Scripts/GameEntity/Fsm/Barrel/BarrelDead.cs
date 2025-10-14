@@ -1,4 +1,5 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 
 public class BarrelDead : BaseFsmState
@@ -24,7 +25,7 @@ public class BarrelDead : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, BaseEventArgs stateData)
+    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
     {
         base.OnSetStateData(fsm, stateData);
         HurtStateData hurtData = stateData as HurtStateData;

@@ -1,6 +1,7 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 
-public class SkillStateData : BaseEventArgs
+public class SkillStateData : GameFrameWorkEventArg
 {
     public int skillID { get; set; }
     public string animName { get; set; }
@@ -17,7 +18,6 @@ public class SkillStateData : BaseEventArgs
 
     public override void Clear()
     {
-        base.Clear();
         skillID = 0;
         animName = string.Empty;
         animTime = 0;

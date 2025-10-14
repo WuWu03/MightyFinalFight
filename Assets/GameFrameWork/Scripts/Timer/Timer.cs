@@ -1,3 +1,4 @@
+using GameFrameWork.Event;
 using UnityEngine;
 
 namespace GameFrameWork.Timer

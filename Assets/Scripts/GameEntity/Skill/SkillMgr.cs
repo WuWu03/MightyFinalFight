@@ -34,7 +34,7 @@ public class SkillMgr
         {
             RemoveAllEvent();
 
-            if (!SkillUtil.CheckStatus(deployer.skillData.SkillPrevConditions, m_Owner))
+            if (!SkillUtil.CheckStatus(deployer.SkillData.SkillPrevConditions, m_Owner))
             {
                 return;
             }

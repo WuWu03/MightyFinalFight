@@ -66,7 +66,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
         {
             if (m_SkillEffect.HitOne)
             {
-                if (SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect))
+                if (SkillUtil.SkillHit(hit, m_Owner, mSkillData, m_SkillEffect))
                 {
                     Complete();
                     return;
@@ -74,7 +74,7 @@ public class SkillMoveHitEffect : SkillBaseEffect
             }
             else if(!m_HitTargets.Contains(hit))
             {
-                if (SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect))
+                if (SkillUtil.SkillHit(hit, m_Owner, mSkillData, m_SkillEffect))
                 {
                     m_HitTargets.Add(hit);
                 }

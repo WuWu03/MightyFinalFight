@@ -1,3 +1,5 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Fsm
 {
     public abstract class BaseFsmState
@@ -37,7 +39,7 @@ namespace GameFrameWork.Fsm
             OnRelease(fsm);
         }
 
-        public void SetStateData(Fsm fsm, BaseEventArgs stateData)
+        public void SetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
         {
             OnSetStateData(fsm, stateData);
         }
@@ -50,9 +52,9 @@ namespace GameFrameWork.Fsm
         protected abstract void OnExit(Fsm fsm, bool isShutdown);
         protected virtual void OnRelease(Fsm fsm) { }
 
-        protected virtual void OnSetStateData(Fsm fsm, BaseEventArgs stateData) { }
+        protected virtual void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData) { }
 
-        protected void ChangeState<T>(Fsm fsm, BaseEventArgs stateData = null) where T : BaseFsmState
+        protected void ChangeState<T>(Fsm fsm, GameFrameWorkEventArg stateData = null) where T : BaseFsmState
         {
             if (fsm == null)
             {

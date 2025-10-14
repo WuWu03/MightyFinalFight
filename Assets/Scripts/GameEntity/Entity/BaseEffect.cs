@@ -1,4 +1,5 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
 
 public class BaseEffect : BaseSceneObject

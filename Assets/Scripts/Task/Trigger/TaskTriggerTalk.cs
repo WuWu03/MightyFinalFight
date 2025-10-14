@@ -13,24 +13,19 @@ public class TaskTriggerTalk : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        UIMgr.instance.Open(UINames.TalkPanel, m_TaskData.TalkID);
+        UIMgr.instance.Open<TalkView>(mTaskData.TalkID);
         PlayerMgr.instance.player.Move(Vector2.zero);
-        EventMgr.instance.Subscribe(EventDefine.TalkEndEvent, OnTalkEnd);
+        EventMgr.instance.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
     }
 
-    private void OnTalkEnd(object sender, GameEventArgs e)
+    private void OnTalkEnd(object sender, GameEventArg e)
     {
         Complete();
-    }
-
-    public override void Trigger()
-    {
-        base.Trigger();
     }
 
     public override void Complete()
     {
         base.Complete();
-        EventMgr.instance.UnSubscribe(EventDefine.TalkEndEvent, OnTalkEnd);
+        EventMgr.instance.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
     }
 }

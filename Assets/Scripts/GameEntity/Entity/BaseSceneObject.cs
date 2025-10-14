@@ -1,6 +1,7 @@
 using GameFrameWork;
 using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
+using GameFrameWork.Event;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity

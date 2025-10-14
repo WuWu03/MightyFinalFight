@@ -1,8 +1,9 @@
+using GameFrameWork.Event;
 using UnityEngine;
 
 namespace GameFrameWork.Input
 {
-    public class AxisArgs : BaseEventArgs
+    public class AxisArgs : GameFrameWorkEventArg
     {
         public string horizontal { get; set; }
         public string vertical { get; set; }
@@ -25,7 +26,6 @@ namespace GameFrameWork.Input
 
         public override void Clear()
         {
-            base.Clear();
             horizontal = null;
             vertical = null;
             keyCodeHorizontalPositive = KeyCode.None;

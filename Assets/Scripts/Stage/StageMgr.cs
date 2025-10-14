@@ -13,7 +13,7 @@ using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
-    public StageConfigData currStageData
+    public StageConfigData CurrStageData
     {
         get
         {
@@ -71,10 +71,10 @@ public class StageMgr : BaseMgr<StageMgr>
         CameraMgr.instance.EndFollow();  
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
-
+    
     private void OnFadeBlackComplete()
     {
-        EventMgr.instance.DispatchNow(this, GameEventArgs.Create(EventDefine.StageEnterStartEvent));
+        EventMgr.instance.DispatchNow(this, EventArg.Create(EventId.StageEnterStartEvent));
         TaskMgr.instance.GiveupTask();
         SceneEntityMgr.instance.ReleaseAll();
         EntityMgr.instance.DestoryAllUnUsedEntities();
@@ -123,11 +123,11 @@ public class StageMgr : BaseMgr<StageMgr>
         SceneMgr.instance.AllowScene();
         LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
-
+    
     private void OnFadeWhiteComplete()
     {
         LoadMgr.instance.CloseLoadPanel();
-        EventMgr.instance.Dispatch(this, GameEventArgs.Create(EventDefine.StageEnterEndEvent));
+        EventMgr.instance.Dispatch(this, EventArg.Create(EventId.StageEnterEndEvent));
         CameraMgr.instance.StartFollow();
         PlayerMgr.instance.canContrl = true;
         for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)

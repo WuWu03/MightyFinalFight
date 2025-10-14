@@ -13,7 +13,7 @@ public class TaskTriggerChangeScene : BaseTaskTrigger
     public override void Trigger()
     {
         base.Trigger();
-        StageMgr.instance.StageEnter(m_TaskData.MapID);
+        StageMgr.instance.StageEnter(mTaskData.MapID);
         Complete();
     }
 }

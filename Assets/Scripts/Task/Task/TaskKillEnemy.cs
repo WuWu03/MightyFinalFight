@@ -14,26 +14,26 @@ public class TaskKillEnemy : BaseTask
             m_Results[i] = false;
         }
 
-        if (m_TaskData.KillAllEnemies)
+        if (mTaskData.KillAllEnemies)
         {
             m_AllConditions[0] = true;
             m_Results[0] = SceneEntityMgr.instance.IsAllEnemyDead();
         }
 
-        if (m_TaskData.KillAllBarrels)
+        if (mTaskData.KillAllBarrels)
         {
             m_AllConditions[1] = true;
             m_Results[1] = SceneEntityMgr.instance.IsAllBarrelsBreak();
         }
 
-        if (m_TaskData.KillEnemyIDs.Length > 0)
+        if (mTaskData.KillEnemyIDs.Length > 0)
         {
             m_AllConditions[2] = true;
             m_Results[2] = true;
 
-            for (int i = 0; i < m_TaskData.KillEnemyIDs.Length; i++)
+            for (int i = 0; i < mTaskData.KillEnemyIDs.Length; i++)
             {
-                if (!SceneEntityMgr.instance.IsEnemyDead(m_TaskData.KillEnemyIDs[i]))
+                if (!SceneEntityMgr.instance.IsEnemyDead(mTaskData.KillEnemyIDs[i]))
                 {
                     m_Results[2] = false;
                     break;
@@ -41,14 +41,14 @@ public class TaskKillEnemy : BaseTask
             }
         }
 
-        if (m_TaskData.BreakBarrelIDs.Length > 0)
+        if (mTaskData.BreakBarrelIDs.Length > 0)
         {
             m_AllConditions[3] = true;
             m_Results[3] = true;
 
-            for (int i = 0; i < m_TaskData.BreakBarrelIDs.Length; i++)
+            for (int i = 0; i < mTaskData.BreakBarrelIDs.Length; i++)
             {
-                if (!SceneEntityMgr.instance.IsBarrelBreak(m_TaskData.BreakBarrelIDs[i]))
+                if (!SceneEntityMgr.instance.IsBarrelBreak(mTaskData.BreakBarrelIDs[i]))
                 {
                     m_Results[3] = false;
                     break;

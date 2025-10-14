@@ -1,7 +1,8 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
 
-public class HurtStateData : BaseEventArgs
+public class HurtStateData : GameFrameWorkEventArg
 {
     public Vector2 attackForce { get; set; }
     public Vector2 attackerPos { get; set; }
@@ -29,8 +30,6 @@ public class HurtStateData : BaseEventArgs
 
     public override void Clear()
     {
-        base.Clear();
-        id = 0;
         attackForce = Vector2.zero;
         attackerPos = Vector2.zero;
         changeVelocity = Vector2.zero;

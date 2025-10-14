@@ -14,7 +14,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
         base.Enter();
         AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmClear), false, 1, 0.3f, true);
         PlayerMgr.instance.player.Move(Vector2.zero);
-        UIMgr.instance.Open(UINames.RoundClearPanel);
+        UIMgr.instance.Open<RoundClearView>();
         m_PlayTimer = Time.time;
     }
 
@@ -32,8 +32,8 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     private void OnLoadFadeComplete()
     {
         Complete();
-        UIMgr.instance.Close(UINames.RoundClearPanel);
-        UIMgr.instance.Open(UINames.StagePanel);
+        UIMgr.instance.Close<RoundClearView>();
+        UIMgr.instance.Open<StageView>();
     }
 
     private float m_PlayTimer = 0f;

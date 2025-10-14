@@ -1,11 +1,12 @@
 using GameFrameWork;
 using GameFrameWork.UI;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 
 
 public class LoadMgr : BaseMgr<LoadMgr>
 {
-    public class FadeArgs : BaseEventArgs
+    public class FadeArgs : GameFrameWorkEventArg
     {
         public float from;
         public float to;
@@ -26,7 +27,6 @@ public class LoadMgr : BaseMgr<LoadMgr>
 
         public override void Clear()
         {
-            base.Clear();
             from = 0;
             to = 0;
             duration = 0;

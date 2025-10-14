@@ -1,6 +1,8 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.Input
 {
-    public class KeyArgs : BaseEventArgs
+    public class KeyArgs : GameFrameWorkEventArg
     {
         public string keyName { get; set; }
         public KeyType keyType { get; set; }

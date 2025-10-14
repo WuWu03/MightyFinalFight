@@ -1,7 +1,8 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
 
-public class MoveStateData : BaseEventArgs
+public class MoveStateData : GameFrameWorkEventArg
 {
     public Vector2 dir { get; set; }
     public bool canChangeDir { get; set; }

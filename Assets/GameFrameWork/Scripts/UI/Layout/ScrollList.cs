@@ -2,6 +2,7 @@ using GameFrameWork.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameFrameWork.Event;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -943,11 +944,7 @@ namespace GameFrameWork.UI
                 float posY = m_Content.rect.height / 2 - height;
                 item.rectTransform.anchoredPosition = new Vector2(0, posY);
             }
-            else
-            {
-                // layoutElement.minWidth = m_ItemSizeArray[itemIndex] - (itemIndex > 0 ? spacing : 0);
-            }
-
+            
             if (listPosition == ListPositionType.First)
             {
                 m_ActiveItems.Insert(0, item);

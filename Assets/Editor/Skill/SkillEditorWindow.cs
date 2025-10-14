@@ -68,7 +68,7 @@ public class SkillEditorWindow : EditorWindow
             return;
         }
 
-        if (SkillEditorHelper.currConfigData != null)
+        if (SkillEditorHelper.CurrConfigData != null)
         {
             m_SkillGUIs[m_CurrPage].Draw();
         }

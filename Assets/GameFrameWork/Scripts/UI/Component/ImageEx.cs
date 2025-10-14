@@ -223,7 +223,7 @@ namespace GameFrameWork.UI
         {
             get
             {
-                return m_OverrideSprite == null ? sprite : m_OverrideSprite;
+                return m_OverrideSprite ?? sprite;
             }
             set
             {
@@ -243,7 +243,7 @@ namespace GameFrameWork.UI
         {
             get
             {
-                return overrideSprite == null ? s_WhiteTexture : overrideSprite.texture;
+                return overrideSprite is null ? s_WhiteTexture : overrideSprite.texture;
             }
         }
 

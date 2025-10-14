@@ -24,14 +24,14 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
     {
         component.enemyHpBar.SetActiveSelf(false);
         SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
-        SetRound(StageMgr.instance.currStageData.StageIndex);
+        SetRound(StageMgr.instance.CurrStageData.StageIndex);
         SetPlayerLife(PlayerMgr.instance.life);
         SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
-        AddEvent(EventDefine.StageEnterStartEvent, OnStageEnterStartEvent);
+        AddEvent(EventId.StageEnterStartEvent, OnStageEnterStartEvent);
         SetColor();
     }
 
-	private void OnStageEnterStartEvent(object sender, GameEventArgs e)
+	private void OnStageEnterStartEvent(object sender, GameEventArg e)
 	{
 		SetColor();
 	}
@@ -62,7 +62,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	private void OnLevelItemUpdate(MainViewComponent.LevelListItem item)
 	{
-		int stageIndex = StageMgr.instance.currStageData.StageIndex;
+		int stageIndex = StageMgr.instance.CurrStageData.StageIndex;
 		int playerLevel = PlayerMgr.instance.level;
 		item.imgLevel1.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
 		item.imgLevel2.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
@@ -147,7 +147,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	private void SetColor()
 	{
-        Color color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
+        Color color = CommonUtil.HexToRGB(StageMgr.instance.CurrStageData.StageColor);
 		component.playerHpBarImage.color = color;
 		component.enemyHpBarImage.color = color;
 		component.levelListGroupView.Update(5);

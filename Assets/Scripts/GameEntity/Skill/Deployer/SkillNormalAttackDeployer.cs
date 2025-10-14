@@ -17,11 +17,11 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         SkillStateData skillStateData = SkillStateData.Create();
         skillStateData.dir = m_Owner.dir;
-        skillStateData.skillID = m_SkillData.id;
-        skillStateData.animName = m_SkillData.AnimationName;
-        skillStateData.animSpeed = m_SkillData.AnimSpeed;
-        skillStateData.animTime = m_SkillData.AnimTime;
-        skillStateData.canChangeDir = m_SkillData.CanChangeDir;
+        skillStateData.skillID = mSkillData.id;
+        skillStateData.animName = mSkillData.AnimationName;
+        skillStateData.animSpeed = mSkillData.AnimSpeed;
+        skillStateData.animTime = mSkillData.AnimTime;
+        skillStateData.canChangeDir = mSkillData.CanChangeDir;
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
@@ -55,7 +55,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         string soundName = m_QueueSound.Dequeue();
 
-        if (!m_Owner.isHitSuccess || m_SkillData.IsInEffectPlaySound)
+        if (!m_Owner.isHitSuccess || mSkillData.IsInEffectPlaySound)
         {
             AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", soundName, ".ogg"));
         }

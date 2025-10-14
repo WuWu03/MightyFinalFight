@@ -3,11 +3,11 @@ using UnityEngine;
 
 public abstract class BaseTask : ITask
 {
-    public TaskConfigData taskData
+    public TaskConfigData TaskData
     {
         get
         {
-            return m_TaskData;
+            return mTaskData;
         }
     }
 
@@ -21,7 +21,7 @@ public abstract class BaseTask : ITask
 
     public BaseTask(TaskConfigData data)
     {
-        m_TaskData = data;
+        mTaskData = data;
         m_IsComplete = false;
         m_Trigger = TaskFactory.CreateTaskTrigger(data);
     }
@@ -56,7 +56,7 @@ public abstract class BaseTask : ITask
 
     public virtual bool CanComplete()
     {
-        if (m_TaskData.ExitStartCamera)
+        if (mTaskData.ExitStartCamera)
         {
             PlayerMgr.instance.canContrl = false;
             PlayerMgr.instance.SetSpeedZero();
@@ -76,7 +76,7 @@ public abstract class BaseTask : ITask
             return isDistance;
         }
 
-        if (m_TaskData.ExitPlayerCanCtrl)
+        if (mTaskData.ExitPlayerCanCtrl)
         {
             PlayerMgr.instance.canContrl = true;
         }
@@ -84,7 +84,7 @@ public abstract class BaseTask : ITask
         return true;
     }
 
-    protected TaskConfigData m_TaskData = null;
+    protected TaskConfigData mTaskData = null;
     private bool m_IsComplete = false;
     private readonly BaseTaskTrigger m_Trigger = null;
 }
