@@ -289,10 +289,9 @@ MonoBehaviour:
   m_RefName: txtExp
   m_ComponentName: TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &154107360
 MonoBehaviour:
@@ -560,10 +559,9 @@ MonoBehaviour:
   m_RefName: PlayerHpBar
   m_ComponentName: Slider
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &329774498
 GameObject:
@@ -976,10 +974,9 @@ MonoBehaviour:
   m_RefName: enemyHpBarImage
   m_ComponentName: Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &512961586
 GameObject:
@@ -1222,12 +1219,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: imgLevel3
-  m_ComponentName: Image
+  m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &575058722
 GameObject:
@@ -1530,7 +1526,7 @@ MonoBehaviour:
   - {fileID: 504768931}
   - {fileID: 1160052226}
   - {fileID: 1193886234}
-  - {fileID: 1746242803}
+  - {fileID: 1746242808}
   - {fileID: 2006755757}
   - {fileID: 154107360}
 --- !u!223 &743783147
@@ -1898,12 +1894,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: imgLevel2
-  m_ComponentName: Image
+  m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1073889339
 GameObject:
@@ -1995,12 +1990,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: imgLevel5
-  m_ComponentName: Image
+  m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1160052222
 GameObject:
@@ -2056,10 +2050,9 @@ MonoBehaviour:
   m_RefName: txtStage
   m_ComponentName: TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1160052226
 MonoBehaviour:
@@ -2365,10 +2358,9 @@ MonoBehaviour:
   m_RefName: txtPlayerLife
   m_ComponentName: TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1193886234
 MonoBehaviour:
@@ -2560,12 +2552,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: imgLevel1
-  m_ComponentName: Image
+  m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1746242803
 GameObject:
@@ -2579,6 +2570,7 @@ GameObject:
   - component: {fileID: 1746242807}
   - component: {fileID: 1746242806}
   - component: {fileID: 1746242805}
+  - component: {fileID: 1746242808}
   m_Layer: 5
   m_Name: levelList
   m_TagString: Untagged
@@ -2620,12 +2612,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: levelList
-  m_ComponentName: GameObject
+  m_ComponentName: StaticList
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 1
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 1
   m_IsCopyRefStr: 0
 --- !u!114 &1746242806
 MonoBehaviour:
@@ -2667,6 +2658,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1746242808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746242803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
 --- !u!1 &1970342131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2971,10 +2974,9 @@ MonoBehaviour:
   m_RefName: levelListItem
   m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 1
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 1
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2006755760
 MonoBehaviour:
@@ -3027,11 +3029,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 1655960279}
-  - {fileID: 1007864715}
-  - {fileID: 562871414}
-  - {fileID: 2115285214}
-  - {fileID: 1073889341}
+  - {fileID: 1655960277}
+  - {fileID: 1007864713}
+  - {fileID: 562871412}
+  - {fileID: 2115285212}
+  - {fileID: 1073889339}
 --- !u!1 &2032371813
 GameObject:
   m_ObjectHideFlags: 0
@@ -3124,10 +3126,9 @@ MonoBehaviour:
   m_RefName: playerHpBarImage
   m_ComponentName: Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2038030244
 GameObject:
@@ -3480,10 +3481,9 @@ MonoBehaviour:
   m_RefName: EnemyHpBar
   m_ComponentName: Slider
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2115285212
 GameObject:
@@ -3575,12 +3575,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: imgLevel4
-  m_ComponentName: Image
+  m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

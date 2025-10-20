@@ -237,6 +237,7 @@ public class GameEntry : GameFrameWorkEntry
         HudMgr.Init(manager);
         LoadMgr.Init(manager);
         StoryMgr.Init(manager);
+        CameraMgr.Init(manager);
     }
 
     protected override void OnStartGame()
@@ -293,6 +294,7 @@ public class GameEntry : GameFrameWorkEntry
 
     protected override void OnExit()
     {
+        CameraMgr.instance.ShutDown();
         StoryMgr.instance.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();

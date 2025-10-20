@@ -21,14 +21,14 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
     protected override void OnOpen(object arg)
     {
         m_TalkId = int.Parse(arg.ToString());
-        component.talkSelectGroupView.onItemUpdateEvent += OnItemUpdateEvent;
-        component.talkSelectGroupView.onItemSelectEvent += OnItemSelectEvent;
+        component.talkSelectList.onItemUpdateEvent += OnItemUpdateEvent;
+        component.talkSelectList.onItemSelectEvent += OnItemSelectEvent;
     }
 
     protected override void OnShow(object arg)
     {
-        component.talkSelectGroupView.SetActive(false);
-        component.talkSelectGroupView.SelectItem(0);
+        component.talkSelectList.SetActive(false);
+        component.talkSelectList.SelectItem(0);
         PlayTalk();
     }
 
@@ -46,8 +46,11 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
                 if (talkConfigData.talkSelect is { Length: > 0 })
                 {
-                    m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
-                    component.talkSelectGroupView.SetActive(false);
+                    if (m_SelectIndex > 0)
+                    {
+                        m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
+                        component.talkSelectList.SetActive(false);
+                    }
                 }
                 else
                 {
@@ -94,8 +97,8 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     protected override void OnDestroy()
     {
-        component.talkSelectGroupView.onItemUpdateEvent -= OnItemUpdateEvent;
-        component.talkSelectGroupView.onItemSelectEvent -= OnItemSelectEvent;
+        component.talkSelectList.onItemUpdateEvent -= OnItemUpdateEvent;
+        component.talkSelectList.onItemSelectEvent -= OnItemSelectEvent;
     }
 
     private void PlayTalk()
@@ -118,13 +121,13 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             
             if (talkConfigData.talkSelect is { Length: > 0 })
             {
-                component.talkSelectGroupView.SetActive(true);
-                component.talkSelectGroupView.Update(talkConfigData.talkSelect.Length);
-                component.talkSelectGroupView.SelectItem(0);
+                component.talkSelectList.SetActive(true);
+                component.talkSelectList.RefreshItems(talkConfigData.talkSelect.Length);
+                component.talkSelectList.SelectItem(0);
             }
             else
             {
-                component.talkSelectGroupView.SetActive(false);
+                component.talkSelectList.SetActive(false);
 
                 if (talkConfigData.nextTalkId == 0)
                 {
@@ -135,20 +138,22 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
         });
     }
 
-    private void OnItemUpdateEvent(TalkViewComponent.TalkSelectItem item)
+    private void OnItemUpdateEvent(StaticListItem item)
     {
-        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-        item.languageSelect.SetLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
+        if (item is TalkViewComponent.TalkSelectListItem talkSelectItem)
+        {
+            TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
+            talkSelectItem.txtSelect.SetLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
+        }
     }
 
-    private void OnItemSelectEvent(TalkViewComponent.TalkSelectItem item, bool isSelect)
+    private void OnItemSelectEvent(StaticListItem item, bool isSelect)
     {
-        if (isSelect)
+        if (isSelect && item is TalkViewComponent.TalkSelectListItem talkSelectItem)
         {
             m_SelectIndex = item.itemIndex;
+            talkSelectItem.selectGo.SetActiveSelf(isSelect);
         }
-
-        item.selectGo.SetActiveSelf(isSelect);
     }
 
     private void SelectNext()
@@ -167,7 +172,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             select = 0;
         }
 
-        component.talkSelectGroupView.SelectItem(select);
+        component.talkSelectList.SelectItem(select);
     }
 
     private void SelectPrevious()
@@ -186,6 +191,6 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             select = talkConfigData.talkSelect.Length - 1;
         }
 
-        component.talkSelectGroupView.SelectItem(select);
+        component.talkSelectList.SelectItem(select);
     }
 }

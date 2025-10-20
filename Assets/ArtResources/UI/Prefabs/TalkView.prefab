@@ -205,7 +205,7 @@ MonoBehaviour:
   objects:
   - {fileID: 7847948427997836847}
   - {fileID: 1510415882775948204}
-  - {fileID: 5657874019544076674}
+  - {fileID: 2860523884996589527}
   - {fileID: 8867318502796825573}
 --- !u!223 &6187158319069513126
 Canvas:
@@ -583,6 +583,7 @@ GameObject:
   - component: {fileID: 1230274570239773077}
   - component: {fileID: 7627299558228694014}
   - component: {fileID: 8981303334736681964}
+  - component: {fileID: 2860523884996589527}
   m_Layer: 0
   m_Name: talkSelect
   m_TagString: Untagged
@@ -662,6 +663,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc31639b0a648dd4fbd1f3808d196f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2860523884996589527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5657874019544076674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
 --- !u!1 &8867318502796825573
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5199717968076966129}
   - component: {fileID: 2456089270703898834}
+  - component: {fileID: 2034734379116563260}
   m_Layer: 0
   m_Name: talkSelectItem
   m_TagString: Untagged
@@ -726,3 +740,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2034734379116563260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8867318502796825573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
+  objects:
+  - {fileID: 7722473821638957319}
+  - {fileID: 5485437433624530023}

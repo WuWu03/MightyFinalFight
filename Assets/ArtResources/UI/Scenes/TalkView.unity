@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 161920221}
   - component: {fileID: 161920220}
   - component: {fileID: 161920219}
+  - component: {fileID: 161920223}
   m_Layer: 0
   m_Name: talkSelect
   m_TagString: Untagged
@@ -173,12 +174,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: talkSelect
-  m_ComponentName: GameObject
+  m_ComponentName: StaticList
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 1
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 1
   m_IsCopyRefStr: 0
 --- !u!114 &161920220
 MonoBehaviour:
@@ -232,6 +232,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &161920223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161920217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
 --- !u!1 &173809237
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +334,6 @@ GameObject:
   - component: {fileID: 273504480}
   - component: {fileID: 273504479}
   - component: {fileID: 273504478}
-  - component: {fileID: 273504477}
   m_Layer: 0
   m_Name: txtSelect
   m_TagString: Untagged
@@ -349,7 +360,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &273504477
+--- !u!114 &273504478
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -363,33 +374,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
   m_RefName: txtSelect
-  m_ComponentName: TextMeshProUGUI
-  m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
-  m_IsCopyRefStr: 0
---- !u!114 &273504478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273504475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91fddb808e7fd4443b759422838f223a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UseDefaultName: 0
-  m_RefName: languageSelect
   m_ComponentName: LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &273504479
 MonoBehaviour:
@@ -677,10 +666,9 @@ MonoBehaviour:
   m_RefName: txtContent
   m_ComponentName: TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &647808735
 MonoBehaviour:
@@ -698,10 +686,9 @@ MonoBehaviour:
   m_RefName: languageContent
   m_ComponentName: LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &647808736
 MonoBehaviour:
@@ -871,10 +858,9 @@ MonoBehaviour:
   m_RefName: select
   m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1116311663
 MonoBehaviour:
@@ -1109,7 +1095,7 @@ MonoBehaviour:
   objects:
   - {fileID: 647808736}
   - {fileID: 647808737}
-  - {fileID: 161920217}
+  - {fileID: 161920223}
   - {fileID: 1617518070}
 --- !u!114 &1605887881
 MonoBehaviour:
@@ -1162,6 +1148,7 @@ GameObject:
   - component: {fileID: 1617518071}
   - component: {fileID: 1617518072}
   - component: {fileID: 1617518073}
+  - component: {fileID: 1617518074}
   m_Layer: 0
   m_Name: talkSelectItem
   m_TagString: Untagged
@@ -1206,10 +1193,9 @@ MonoBehaviour:
   m_RefName: talkSelectItem
   m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 1
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 1
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1617518073
 MonoBehaviour:
@@ -1237,6 +1223,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1617518074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617518070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
+  objects:
+  - {fileID: 273504479}
+  - {fileID: 1116311660}
 --- !u!1 &1865802014
 GameObject:
   m_ObjectHideFlags: 0

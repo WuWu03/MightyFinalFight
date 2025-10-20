@@ -8,7 +8,7 @@ public class DoRunAwayPlayer : Action
         m_Owner = owner as BaseEnemy;
     }
 
-    public override bool CanExcute()
+    public override bool CanExecute()
     {
         return m_State != BehaviourTreeState.Success;
     }

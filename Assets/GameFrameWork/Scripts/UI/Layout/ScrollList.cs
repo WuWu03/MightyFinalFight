@@ -277,7 +277,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public int itemCount
         {
-            get { return (getDataCountEvent != null ? getDataCountEvent.Invoke() : 0); }
+            get { return getDataCountEvent?.Invoke() ?? 0; }
         }
 
         /// <summary>
@@ -383,10 +383,7 @@ namespace GameFrameWork.UI
 
         private void Awake()
         {
-            if (m_ScrollRect is null)
-            {
-                m_ScrollRect = GetComponent<ScrollRect>();
-            }
+            m_ScrollRect ??= GetComponent<ScrollRect>();
         }
 
         public void Init<T>() where T : ScrollListItem, new()
@@ -447,11 +444,9 @@ namespace GameFrameWork.UI
                 m_Scrollbar = m_ScrollRect.horizontalScrollbar;
             }
 
-            m_RecycledItemsContent =
-                new GameObject("Recycled Cells", typeof(RectTransform)).GetComponent<RectTransform>();
+            m_RecycledItemsContent = new GameObject("Recycled Cells", typeof(RectTransform)).GetComponent<RectTransform>();
             m_RecycledItemsContent.transform.SetParent(m_ScrollRect.transform, false);
             m_RecycledItemsContent.gameObject.SetActiveSelf(false);
-
             m_LastScrollbarVisibility = m_ScrollbarVisibility;
             m_ItemClassType = typeof(T);
             m_ItemSizeArray = new();
@@ -469,7 +464,7 @@ namespace GameFrameWork.UI
         /// 刷新列表
         /// </summary>
         /// <param name="keepPosition">是否保持位置不变</param>
-        public void RefreshData(bool keepPosition = false)
+        public void RefreshItems(bool keepPosition = false)
         {
             RecycleAllItems();
             Resize();
@@ -517,14 +512,7 @@ namespace GameFrameWork.UI
             {
                 return 0.5f;
             }
-
-            if (m_ChildAlignment == TextAnchor.LowerLeft ||
-                m_ChildAlignment == TextAnchor.LowerCenter ||
-                m_ChildAlignment == TextAnchor.LowerRight)
-            {
-                return 0f;
-            }
-
+            
             return 0f;
         }
 
@@ -725,11 +713,11 @@ namespace GameFrameWork.UI
         /// </summary>
         public ScrollListItem GetItemByDataIndex(int dataIndex)
         {
-            for (var i = 0; i < m_ActiveItems.Count; i++)
+            foreach (var activeItem in m_ActiveItems)
             {
-                if (m_ActiveItems[i].dataIndex == dataIndex)
+                if (activeItem.dataIndex == dataIndex)
                 {
-                    return m_ActiveItems[i];
+                    return activeItem;
                 }
             }
 
@@ -863,7 +851,6 @@ namespace GameFrameWork.UI
             {
                 for (i = startIndex; i <= endIndex; i++)
                 {
-                    
                     AddItem(i, ListPositionType.Last);
                 }
             }

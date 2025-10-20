@@ -14,7 +14,7 @@ public class DoJumpAttack : DoAttack
         }
     }
 
-    public override bool CanExcute()
+    public override bool CanExecute()
     {
         return m_State != BehaviourTreeState.Success;
     }
@@ -101,6 +101,7 @@ public class DoJumpAttack : DoAttack
         m_Owner.onDropEvent.RemoveListener(OnDrop);
         m_State = BehaviourTreeState.None;
     }
+    
     private Vector2 GetJumpDir()
     {
         if (!m_IsMoveJump)

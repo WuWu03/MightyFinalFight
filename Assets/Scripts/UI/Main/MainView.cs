@@ -17,7 +17,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 {
 	protected override void OnOpen(object arg)
 	{
-        component.levelListGroupView.onItemUpdateEvent += OnLevelItemUpdate;
+        component.levelList.onItemUpdateEvent += OnLevelItemUpdate;
     }
 
     protected override void OnShow(object arg)
@@ -57,18 +57,21 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	protected override void OnDestroy()
 	{
-        component.levelListGroupView.onItemUpdateEvent -= OnLevelItemUpdate;
+        component.levelList.onItemUpdateEvent -= OnLevelItemUpdate;
     }
 
-	private void OnLevelItemUpdate(MainViewComponent.LevelListItem item)
+	private void OnLevelItemUpdate(StaticListItem item)
 	{
-		int stageIndex = StageMgr.instance.CurrStageData.StageIndex;
-		int playerLevel = PlayerMgr.instance.level;
-		item.imgLevel1.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
-		item.imgLevel2.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
-		item.imgLevel3.gameObject.SetActiveSelf(stageIndex == 3 && playerLevel >= item.id);
-		item.imgLevel4.gameObject.SetActiveSelf(stageIndex == 4 && playerLevel >= item.id);
-		item.imgLevel5.gameObject.SetActiveSelf(stageIndex == 5 && playerLevel >= item.id);
+        if (item is MainViewComponent.LevelListItem levelListItem)
+        {
+            int stageIndex = StageMgr.instance.CurrStageData.StageIndex;
+            int playerLevel = PlayerMgr.instance.level;
+            levelListItem.imgLevel1Go.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
+            levelListItem.imgLevel2Go.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
+            levelListItem.imgLevel3Go.gameObject.SetActiveSelf(stageIndex == 3 && playerLevel >= item.id);
+            levelListItem.imgLevel4Go.gameObject.SetActiveSelf(stageIndex == 4 && playerLevel >= item.id);
+            levelListItem.imgLevel5Go.gameObject.SetActiveSelf(stageIndex == 5 && playerLevel >= item.id); 
+        }
 	}
 
 	public void SetPlayerHP(int value, int max, float width = 0f)
@@ -137,7 +140,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	public void SetPlayerLevel()
 	{
-		component.levelListGroupView.Update(5);
+		component.levelList.RefreshItems(5);
 	}
 
 	private string GetExpStr(int exp)
@@ -150,7 +153,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
         Color color = CommonUtil.HexToRGB(StageMgr.instance.CurrStageData.StageColor);
 		component.playerHpBarImage.color = color;
 		component.enemyHpBarImage.color = color;
-		component.levelListGroupView.Update(5);
+		component.levelList.RefreshItems(5);
 	}
 
 	private bool m_IsEnemyHpBarAnim = false;

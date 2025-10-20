@@ -17,16 +17,16 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     
     protected override void OnOpen(object arg)
     {
-        component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
-        component.roleContentGroupView.onItemSelectEvent += OnItemSelect;
+        component.roleSelectList.onItemUpdateEvent += OnItemUpdate;
+        component.roleSelectList.onItemSelectEvent += OnItemSelect;
     }
 
     protected override void OnShow(object arg)
     {
         m_HasSelect = true;
         component.imgSelectRect.gameObject.SetActiveSelf(true);
-        component.roleContentGroupView.Update(ConfigDataSheet.roleSelectConfigDatas.Length);
-        component.roleContentGroupView.SelectItem(0);
+        component.roleSelectList.RefreshItems(ConfigDataSheet.roleSelectConfigDatas.Length);
+        component.roleSelectList.SelectItem(0);
         LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
 
@@ -52,7 +52,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
                 if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataSheet.roleSelectConfigDatas.Length - 1;
             }
 
-            component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
+            component.roleSelectList.SelectItem(m_CurrSelectIndex);
             GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
         }
 
@@ -75,23 +75,26 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
 
     protected override void OnDestroy()
     {
-        component.roleContentGroupView.onItemUpdateEvent -= OnItemUpdate;
-        component.roleContentGroupView.onItemSelectEvent -= OnItemSelect;
+        component.roleSelectList.onItemUpdateEvent -= OnItemUpdate;
+        component.roleSelectList.onItemSelectEvent -= OnItemSelect;
     }
 
-    private void OnItemUpdate(RoleSelectViewComponent.RoleContentItem item)
+    private void OnItemUpdate(StaticListItem item)
     {
-        RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas[item.itemIndex];
-        item.txtName.SetLanguageTextKey(roleSelectConfigData.name);
-        item.txtDesc.SetLanguageTextKey(roleSelectConfigData.desc);
-        item.imgRoleIcon.spriteName = roleSelectConfigData.headIcon;
-    }
-
-    private void OnItemSelect(RoleSelectViewComponent.RoleContentItem item, bool isSelect)
-    {
-        if (isSelect)
+        if (item is RoleSelectViewComponent.RoleSelectListItem roleSelectListItem)
         {
-            component.imgSelectRect.SetParent(item.imgRoleIcon.transform, false);
+            RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas[item.itemIndex];
+            roleSelectListItem.txtName.SetLanguageTextKey(roleSelectConfigData.name);
+            roleSelectListItem.txtDesc.SetLanguageTextKey(roleSelectConfigData.desc);
+            roleSelectListItem.imgRoleIcon.spriteName = roleSelectConfigData.headIcon;
+        }
+    }
+
+    private void OnItemSelect(StaticListItem item, bool isSelect)
+    {
+        if (isSelect && item is RoleSelectViewComponent.RoleSelectListItem roleSelectListItem)
+        {
+            component.imgSelectRect.SetParent(roleSelectListItem.imgRoleIcon.transform, false);
             component.imgSelectRect.anchoredPosition = Vector2.zero;
             m_CurrSelectIndex = item.itemIndex;
         }

@@ -8,16 +8,29 @@ namespace GameFrameWork.Editor
     [CustomEditor(typeof(UIRef))]
     public class UIRefEditor : UnityEditor.Editor
     {
+        private readonly List<string> m_CompNames = new();
+        private UIRef m_UIRef;
+        
         public void OnEnable()
         {
-            m_ListCompName.Clear();
-            m_UIRef = (target as UIRef);
-            Component[] components = m_UIRef.GetComponents<Component>();
-            m_ListCompName.Add(typeof(GameObject).Name);
-            for (int i = 0; i < components.Length; i++)
+            m_CompNames.Clear();
+            m_UIRef = target as UIRef;
+            m_CompNames.Add(nameof(GameObject));
+
+            if (m_UIRef is null)
             {
-                if (components[i] is UIRef) continue;
-                m_ListCompName.Add(components[i].GetType().Name);
+                throw new GameFrameWorkException("UIRef组件为空");
+            }
+
+            Component[] components = m_UIRef.GetComponents<Component>();
+
+            if (components is { Length: > 0 })
+            {
+                foreach (var component in components)
+                {
+                    if (component is UIRef) continue;
+                    m_CompNames.Add(component.GetType().Name);
+                }
             }
         }
 
@@ -47,23 +60,23 @@ namespace GameFrameWork.Editor
                     m_UIRef.SetName(m_UIRef.gameObject.name);
                 }
 
-                string name = EditorGUILayout.TextField("字段名称", m_UIRef.refName, new GUILayoutOption[0]);
+                string refName = EditorGUILayout.TextField("字段名称", m_UIRef.refName, new GUILayoutOption[0]);
 
-                if (m_UIRef.refName != name)
+                if (m_UIRef.refName != refName)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
                 }
 
-                m_UIRef.SetName(name);
+                m_UIRef.SetName(refName);
             }
 
-            int currIndex = Mathf.Max(m_ListCompName.IndexOf(m_UIRef.componentName), 0);
-            int index = EditorGUILayout.Popup("引用的组件", currIndex, m_ListCompName.ToArray(), new GUILayoutOption[0]);
+            int currIndex = Mathf.Max(m_CompNames.IndexOf(m_UIRef.componentName), 0);
+            int index = EditorGUILayout.Popup("引用的组件", currIndex, m_CompNames.ToArray(), new GUILayoutOption[0]);
             
             if (currIndex != index)
             {
                 UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                m_UIRef.componentName = m_ListCompName[index];
+                m_UIRef.componentName = m_CompNames[index];
             }
 
             string desc = EditorGUILayout.TextField("描述", m_UIRef.desc, new GUILayoutOption[0]);
@@ -73,26 +86,26 @@ namespace GameFrameWork.Editor
                 m_UIRef.desc = desc;
             }
 
-            if (m_UIRef.IsLayoutGroupView() || m_UIRef.IsScollLayoutGroupView())
+            if (m_UIRef.IsStaticList() || m_UIRef.IsScrollList())
             {
-                SerializedProperty isLayout = EditorUtil.DrawProperty("列表", serializedObject, "m_IsLayout", new GUILayoutOption[0]);
-                if (m_UIRef.isLayout != isLayout.boolValue)
+                SerializedProperty isList = EditorUtil.DrawProperty("列表", serializedObject, "m_IsList", new GUILayoutOption[0]);
+                if (m_UIRef.IsList != isList.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.isLayout = isLayout.boolValue;
+                    m_UIRef.IsList = isList.boolValue;
 
-                    if (!m_UIRef.isLayout)
+                    if (!m_UIRef.IsList)
                     {
                         UIRef[] childrenRefs = m_UIRef.GetComponentsInChildren<UIRef>(true);
                         for (int i = 1; i < childrenRefs.Length; i++)
                         {
                             UIRef child1 = childrenRefs[i];
-                            child1.isLayoutItem = false;
+                            child1.isListItem = false;
                             UIRef[] childrenRefs2 = child1.GetComponentsInChildren<UIRef>(true);
                             for (int j = 1; j < childrenRefs2.Length; j++)
                             {
                                 UIRef child2 = childrenRefs2[i];
-                                child2.isLayoutItemVariable = false;
+                                child2.IsListItemVariable = false;
                             }
                         }
                     }
@@ -100,30 +113,30 @@ namespace GameFrameWork.Editor
             }
             else
             {
-                m_UIRef.isLayout = false;
+                m_UIRef.IsList = false;
                 UIRef[] childrenRefs = m_UIRef.GetComponentsInChildren<UIRef>(true);
                 for (int i = 1; i < childrenRefs.Length; i++)
                 {
                     UIRef child1 = childrenRefs[i];
-                    child1.isLayoutItem = false;
+                    child1.isListItem = false;
                     UIRef[] childrenRefs2 = child1.GetComponentsInChildren<UIRef>(true);
                     for (int j = 1; j < childrenRefs2.Length; j++)
                     {
                         UIRef child2 = childrenRefs2[i];
-                        child2.isLayoutItemVariable = false;
+                        child2.IsListItemVariable = false;
                     }
                 }
             }
 
-            if (m_UIRef.IsLayoutItem() && !m_UIRef.IsLayoutItemVariable())
+            if (m_UIRef.IsListItem() && !m_UIRef.IsListItemVariable())
             {
-                SerializedProperty isLayoutItem = EditorUtil.DrawProperty("列表格子", serializedObject, "m_IsLayoutItem", new GUILayoutOption[0]);
-                if (m_UIRef.isLayoutItem != isLayoutItem.boolValue)
+                SerializedProperty isListItem = EditorUtil.DrawProperty("列表格子", serializedObject, "m_IsListItem", new GUILayoutOption[0]);
+                if (m_UIRef.isListItem != isListItem.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.isLayoutItem = isLayoutItem.boolValue;
+                    m_UIRef.isListItem = isListItem.boolValue;
 
-                    if (m_UIRef.isLayoutItem)
+                    if (m_UIRef.isListItem)
                     {
                         m_UIRef.gameObject.GetOrAddComponent<UIRefRoot>();
                     }
@@ -133,7 +146,7 @@ namespace GameFrameWork.Editor
                         for (int i = 1; i < childrenRefs.Length; i++)
                         {
                             UIRef child1 = childrenRefs[i];
-                            child1.isLayoutItemVariable = false;
+                            child1.IsListItemVariable = false;
                         }
 
                         if (m_UIRef.gameObject.TryGetComponent<UIRefRoot>(out var uiRefRoot))
@@ -145,12 +158,12 @@ namespace GameFrameWork.Editor
             }
             else
             {
-                m_UIRef.isLayoutItem = false;
+                m_UIRef.isListItem = false;
                 UIRef[] childrenRefs = m_UIRef.GetComponentsInChildren<UIRef>(true);
                 for (int i = 1; i < childrenRefs.Length; i++)
                 {
                     UIRef child1 = childrenRefs[i];
-                    child1.isLayoutItemVariable = false;
+                    child1.IsListItemVariable = false;
                 }
                 if (m_UIRef.gameObject.TryGetComponent<UIRefRoot>(out var uiRefRoot))
                 {
@@ -158,21 +171,21 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            if (m_UIRef.IsLayoutItemVariable())
+            if (m_UIRef.IsListItemVariable())
             {
-                SerializedProperty isLayoutItemVariable = EditorUtil.DrawProperty("列表格子成员", serializedObject, "m_IsLayoutItemVariable", new GUILayoutOption[0]);
-                if (m_UIRef.isLayoutItemVariable != isLayoutItemVariable.boolValue)
+                SerializedProperty isListItemVariable = EditorUtil.DrawProperty("列表格子成员", serializedObject, "m_IsListItemVariable", new GUILayoutOption[0]);
+                if (m_UIRef.IsListItemVariable != isListItemVariable.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.isLayoutItemVariable = isLayoutItemVariable.boolValue;
+                    m_UIRef.IsListItemVariable = isListItemVariable.boolValue;
                 }
             }
             else
             {
-                m_UIRef.isLayoutItemVariable = false;
+                m_UIRef.IsListItemVariable = false;
             }
 
-            if (!m_UIRef.isLayoutItemVariable)
+            if (!m_UIRef.IsListItemVariable)
             {
                 SerializedProperty isCopyRefStr = EditorUtil.DrawProperty("复制引用", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
                 if (m_UIRef.isCopyRefStr != isCopyRefStr.boolValue)
@@ -194,8 +207,5 @@ namespace GameFrameWork.Editor
             UIRef[] ret = uiref.gameObject.GetComponents<UIRef>();
             return ret;
         }
-
-        private List<string> m_ListCompName = new List<string>();
-        private UIRef m_UIRef;
     }
 }

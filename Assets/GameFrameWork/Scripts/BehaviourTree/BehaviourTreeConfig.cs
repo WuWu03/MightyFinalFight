@@ -10,7 +10,7 @@ namespace GameFrameWork.BehaviourTree
             {
                 return null;
             }
-
+            
             for (int i = 0; i < datas.Length; i++)
             {
                 if(datas[i].id == id)
@@ -30,7 +30,6 @@ namespace GameFrameWork.BehaviourTree
         public string args;
         public int priority;
         public int repeatCount;
-
     }
 
     public class BehaviorTreePreConditionData : BehaviorTreeBaseData

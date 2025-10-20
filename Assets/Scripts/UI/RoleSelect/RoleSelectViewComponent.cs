@@ -1,6 +1,6 @@
 /*
- * @Desc: RoleSelect 模块 RoleSelectView 界面数据
- * @Date: 2025-10-16 14:14:28
+ * @Desc: RoleSelect 模块 RoleSelectView 界面组件
+ * @Date: 2025-10-20 21:18:58
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -14,23 +14,27 @@ using GameFrameWork.UI;
 
 public class RoleSelectViewComponent : UIBaseComponent
 {
-	public LayoutGroupView<RoleContentItem> roleContentGroupView { get; private set; }
+	//roleSelect,StaticList
+	public StaticList roleSelectList { get; private set; }
 	//imgSelect,RectTransform
 	public RectTransform imgSelectRect { get; private set; }
 
 	protected override void OnInitComponent(UIRefRoot root)
 	{
-		GameObject roleContent = root.objects[0] as GameObject;
-		GameObject item = root.objects[1] as GameObject;
-		roleContentGroupView = new LayoutGroupView<RoleContentItem>(roleContent,item);
+		roleSelectList = root.objects[0] as StaticList;
+		GameObject roleSelectListItem = root.objects[1] as GameObject;
+		roleSelectList.Init<RoleSelectListItem>(roleSelectList.gameObject , roleSelectListItem);
 		imgSelectRect = root.objects[2] as RectTransform;
 	}
 
-	public class RoleContentItem : LayoutGroupViewItem
+	public class RoleSelectListItem : StaticListItem
 	{
-		public ImageEx imgRoleIcon = null;
-		public LanguageText txtName = null;
-		public LanguageText txtDesc = null;
+		//roleSelect/roleSelectListItem/imgRoleIcon,ImageEx
+		public ImageEx imgRoleIcon {get; private set;}
+		//roleSelect/roleSelectListItem/txtName,LanguageText
+		public LanguageText txtName {get; private set;}
+		//roleSelect/roleSelectListItem/txtDesc,LanguageText
+		public LanguageText txtDesc {get; private set;}
 		protected override void OnCreate(GameObject go)
 		{
 			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();

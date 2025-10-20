@@ -21,14 +21,14 @@ namespace GameFrameWork.BehaviourTree
             return BehaviourTreeState.Running;
         }
 
-        public override bool CanExcute()
+        public override bool CanExecute()
         {
             return m_CurrChildIndex < GetChildCount() && m_State != BehaviourTreeState.Success;
         }
 
-        protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
+        protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
-            base.OnChildExcuteResult(childIndex, state);
+            base.OnChildExecuteResult(childIndex, state);
 
             m_CurrChildIndex++;
             m_State = state;

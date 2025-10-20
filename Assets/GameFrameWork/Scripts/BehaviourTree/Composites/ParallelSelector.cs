@@ -12,7 +12,7 @@ public class ParallelSelector : Composite
         return m_State;
     }
 
-    public override bool CanExcute()
+    public override bool CanExecute()
     {
         return m_State != BehaviourTreeState.Running;
     }
@@ -34,7 +34,7 @@ public class ParallelSelector : Composite
         m_State = BehaviourTreeState.Running;
     }
 
-    protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
+    protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
     {
         m_ChildrenState[childIndex] = state;
         bool isAllFailure = true;

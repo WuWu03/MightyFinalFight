@@ -1,29 +1,38 @@
+using System;
 using System.Collections.Generic;
 using GameFrameWork.Event;
+using GameFrameWork.Utils;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace GameFrameWork.UI
 {
-    public class LayoutGroupView<T> where T : LayoutGroupViewItem, new()
+    [AddComponentMenu("UI/StaticList")]
+    public class StaticList : MonoBehaviour
     {
-        public event GameFrameWorkAction<T> onItemUpdateEvent;
-        public event GameFrameWorkAction<T,bool> onItemSelectEvent;
-        public event GameFrameWorkAction<T> onItemReleaseEvent;
+        private List<StaticListItem> m_ListItem;
+        private GameObject m_ItemParent;
+        private GameObject m_Item;
+        private int m_CurrSelectIndex = -1;
 
-        public LayoutGroupView(GameObject parent, GameObject item)
+        public event GameFrameWorkAction<StaticListItem> onItemUpdateEvent;
+        public event GameFrameWorkAction<StaticListItem, bool> onItemSelectEvent;
+        public event GameFrameWorkAction<StaticListItem> onItemReleaseEvent;
+        private Type m_ItemClassType = null;
+
+        public void Init<T>(GameObject parent, GameObject item) where T : StaticListItem, new()
         {
             m_Item = item;
             m_ItemParent = parent;
             m_Item.SetActiveSelf(false);
-            m_ListItem = new List<T>();
+            m_ItemClassType = typeof(T);
+            m_ListItem = new();
         }
 
-        public void Update(int count)
+        public void RefreshItems(int count)
         {
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                if(i < m_ListItem.Count)
+                if (i < m_ListItem.Count)
                 {
                     m_ListItem[i].SetActiveSelf(true);
                     onItemUpdateEvent?.Invoke(m_ListItem[i]);
@@ -66,7 +75,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public T GetItemByIndex(int index)
+        public StaticListItem GetItemByIndex(int index)
         {
             if (m_ListItem == null || m_ListItem.Count < 1 || index < 1 || index >= m_ListItem.Count)
             {
@@ -78,35 +87,29 @@ namespace GameFrameWork.UI
 
         public void Release()
         {
-            for (int i = 0; i < m_ListItem.Count; i++)
+            foreach (var item in m_ListItem)
             {
-                m_ListItem[i].SetActiveSelf(false);
-                onItemReleaseEvent?.Invoke(m_ListItem[i]);
+                onItemReleaseEvent?.Invoke(item);
+                item.SetActiveSelf(false);
+                item.Release();
             }
         }
-            
+
         private void GetItem(int index)
         {
-            GameObject go = GameObject.Instantiate(m_Item);
-            go.transform.SetParent(m_ItemParent.transform, false);
+            GameObject go = Instantiate(m_Item, m_ItemParent.transform, false);
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
+            StaticListItem item = Activator.CreateInstance(m_ItemClassType) as StaticListItem;
 
-            T item = new T();
+            if (item == null)
+            {
+                throw new GameFrameWorkException(StringUtil.Append("创建 [", m_ItemClassType.FullName, "] 实例失败"));
+            }
+
             item.Create(go);
             item.itemIndex = index;
             m_ListItem.Add(item);
         }
-
-        public void Clear()
-        {
-
-        }
-
-        private List<T> m_ListItem = null;
-        private GameObject m_ItemParent = null;
-        private GameObject m_Item = null;
-
-        private int m_CurrSelectIndex = -1;
     }
 }

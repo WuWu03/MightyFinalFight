@@ -1,6 +1,6 @@
 namespace GameFrameWork.UI
 {
-    public abstract class ScrollListItem : LayoutGroupViewItem
+    public abstract class ScrollListItem : BaseListItem
     {
         public override int id
         {
@@ -18,9 +18,8 @@ namespace GameFrameWork.UI
 
         public abstract void OnUpdate();
 
-        public override void ReleaseItem()
+        protected override void OnReleaseItem()
         {
-            base.ReleaseItem();
             dataIndex = 0;
         }
     }

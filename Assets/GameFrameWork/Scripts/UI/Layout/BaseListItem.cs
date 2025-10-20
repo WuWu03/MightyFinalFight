@@ -2,8 +2,14 @@ using UnityEngine;
 
 namespace GameFrameWork.UI
 {
-    public abstract class LayoutGroupViewItem
+    public abstract class BaseListItem
     {
+        private int m_ItemIndex;
+        private bool m_IsActive;
+        private GameObject m_GameObject;
+        private Transform m_Transform;
+        private RectTransform m_RectTransform;
+        
         public virtual int id
         {
             get
@@ -65,39 +71,33 @@ namespace GameFrameWork.UI
             OnCreate(go);
         }
 
+        public void Select(bool isSelected)
+        {
+            OnSelect(isSelected);
+        }
+
         public void SetActiveSelf(bool isAcitve)
         {
             m_IsActive = isAcitve;
 
-            if (m_GameObject != null)
+            if (m_GameObject is not null)
             {
                 m_GameObject.SetActiveSelf(isAcitve);
             }
         }
 
-        public virtual void ReleaseItem()
+        public void Release()
         {
             m_GameObject = null;
             m_Transform = null;
             m_RectTransform = null;
             m_ItemIndex = 0;
             m_IsActive = false;
-
-            if (m_SelectButton != null)
-            {
-                m_SelectButton.onClick.RemoveAllListeners();
-                m_SelectButton = null;
-            }
+            OnReleaseItem();
         }
 
-        protected abstract void OnCreate(GameObject go);
-
-        private int m_ItemIndex = 0;
-        private bool m_IsActive = false;
-
-        private GameObject m_GameObject;
-        private Transform m_Transform;
-        private RectTransform m_RectTransform;
-        protected ButtonEx m_SelectButton = null;
+        protected virtual void OnCreate(GameObject go) { }
+        protected virtual void OnSelect(bool isSelected) { }
+        protected virtual void OnReleaseItem() { }
     }
 }

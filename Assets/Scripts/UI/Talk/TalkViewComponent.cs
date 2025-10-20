@@ -1,6 +1,6 @@
 /*
- * @Desc: Talk 模块 TalkView 界面数据
- * @Date: 2025-10-11 12:28:19
+ * @Desc: Talk 模块 TalkView 界面组件
+ * @Date: 2025-10-20 20:49:38
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -18,28 +18,29 @@ public class TalkViewComponent : UIBaseComponent
 	public LanguageText languageContent { get; private set; }
 	//bottom/txtContent,TextMeshProUGUI
 	public TextMeshProUGUI txtContent { get; private set; }
-	public LayoutGroupView<TalkSelectItem> talkSelectGroupView { get; private set; }
+	//bottom/talkSelect,StaticList
+	public StaticList talkSelectList { get; private set; }
 
 	protected override void OnInitComponent(UIRefRoot root)
 	{
 		languageContent = root.objects[0] as LanguageText;
 		txtContent = root.objects[1] as TextMeshProUGUI;
-		GameObject talkSelect = root.objects[2] as GameObject;
-		GameObject talkSelectItem = root.objects[3] as GameObject;
-		talkSelectGroupView = new LayoutGroupView<TalkSelectItem>(talkSelect,talkSelectItem);
+        talkSelectList = root.objects[2] as StaticList;
+		GameObject talkSelectListItem = root.objects[3] as GameObject;
+		talkSelectList.Init<TalkSelectListItem>(talkSelectList.gameObject , talkSelectListItem);
 	}
 
-	public class TalkSelectItem : LayoutGroupViewItem
+	public class TalkSelectListItem : StaticListItem
 	{
-		public LanguageText languageSelect = null;
-		public TextMeshProUGUI txtSelect = null;
-		public GameObject selectGo = null;
+		//bottom/talkSelect/talkSelectItem/txtSelect,LanguageText
+		public LanguageText txtSelect {get; private set;}
+		//bottom/talkSelect/talkSelectItem/select,GameObject
+		public GameObject selectGo {get; private set;}
 		protected override void OnCreate(GameObject go)
 		{
 			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
-			languageSelect = uiRefRoot.objects[0] as LanguageText;
-			txtSelect = uiRefRoot.objects[1] as TextMeshProUGUI;
-			selectGo = uiRefRoot.objects[2] as GameObject;
+			txtSelect = uiRefRoot.objects[0] as LanguageText;
+			selectGo = uiRefRoot.objects[1] as GameObject;
 		}
 	}
 }

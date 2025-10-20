@@ -2,29 +2,33 @@ namespace GameFrameWork.BehaviourTree
 {
     public class Repeater : Decorator
     {
+        private int m_CurrExecuteCount;
+        private int m_CurrRepeatCount;
+        private readonly int m_RepeatCount;
+        
         public Repeater(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_RepeatCount = 0;
         }
 
-        public override bool CanExcute()
+        public override bool CanExecute()
         {
             return m_RepeatCount == 0 || m_CurrRepeatCount <= m_RepeatCount;
         }
 
-        protected override void OnExcuteResult(BehaviourTreeState state)
+        protected override void OnExecuteResult(BehaviourTreeState state)
         {
-            base.OnExcuteResult(state);
+            base.OnExecuteResult(state);
             Reset();
         }
 
-        protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
+        protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
-            base.OnChildExcuteResult(childIndex, state);
+            base.OnChildExecuteResult(childIndex, state);
 
-            m_CurrExuteCount++;
+            m_CurrExecuteCount++;
 
-            if (m_CurrExuteCount >= GetChildCount())
+            if (m_CurrExecuteCount >= GetChildCount())
             {
                 if (m_RepeatCount == 0)
                 {
@@ -39,13 +43,9 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnReset()
         {
             base.OnReset();
-            m_CurrExuteCount = 0;
+            m_CurrExecuteCount = 0;
             m_CurrRepeatCount = 0;
         }
-
-        private int m_CurrExuteCount = 0;
-        private int m_CurrRepeatCount = 0;
-        private int m_RepeatCount = 0;
     }
 }
 

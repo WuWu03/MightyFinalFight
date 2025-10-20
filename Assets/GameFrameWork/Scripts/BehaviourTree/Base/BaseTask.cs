@@ -9,7 +9,7 @@ namespace GameFrameWork.BehaviourTree
             m_PreConditions = new List<PreCondition>();
         }
 
-        public virtual bool CanExcute()
+        public virtual bool CanExecute()
         {
             return true;
         }

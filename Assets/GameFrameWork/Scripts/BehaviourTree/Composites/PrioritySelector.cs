@@ -11,7 +11,7 @@ namespace GameFrameWork.BehaviourTree
             m_ListIndexes = new List<int>();
         }
 
-        public override bool CanExcute()
+        public override bool CanExecute()
         {
             return m_ListWeights.Count > 0 && m_State != BehaviourTreeState.Success;
         }
@@ -35,7 +35,7 @@ namespace GameFrameWork.BehaviourTree
             return m_CurrChildIndex;
         }
 
-        protected override void OnChildExcuteResult(int childIndex, BehaviourTreeState state)
+        protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
             m_State = state;
 

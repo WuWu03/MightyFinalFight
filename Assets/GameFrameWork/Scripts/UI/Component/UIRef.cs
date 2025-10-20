@@ -45,25 +45,25 @@ namespace GameFrameWork.UI
         /// <summary>
         /// 列表格子
         /// </summary>
-        public bool isLayoutItem
+        public bool isListItem
         {
-            get { return m_IsLayoutItem; }
-            set { m_IsLayoutItem = value; }
+            get { return m_IsListItem; }
+            set { m_IsListItem = value; }
         }
 
         /// <summary>
         /// 列表格子成员
         /// </summary>
-        public bool isLayoutItemVariable
+        public bool IsListItemVariable
         {
-            get { return m_IsLayoutItemVariable; }
-            set { m_IsLayoutItemVariable = value; }
+            get { return m_IsListItemVariable; }
+            set { m_IsListItemVariable = value; }
         }
 
-        public bool isLayout
+        public bool IsList
         {
-            get { return m_IsLayout; }
-            set { m_IsLayout = value; }
+            get { return m_IsList; }
+            set { m_IsList = value; }
         }
 
         /// <summary>
@@ -79,10 +79,9 @@ namespace GameFrameWork.UI
         [SerializeField] private string m_RefName;
         [SerializeField] private string m_ComponentName;
         [SerializeField] private string m_Desc;
-        [SerializeField] private bool m_IsLayoutItem;
-        [SerializeField] private bool m_IsLayoutItemVariable;
-        [SerializeField] private bool m_IsLayout;
-        [SerializeField] private bool m_IsScrollLayout;
+        [SerializeField] private bool m_IsListItem;
+        [SerializeField] private bool m_IsListItemVariable;
+        [SerializeField] private bool m_IsList;
         [SerializeField] private bool m_IsCopyRefStr;
     }
 }

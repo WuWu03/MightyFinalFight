@@ -1,6 +1,6 @@
 /*
- * @Desc: Main 模块 MainView 界面数据
- * @Date: 2025-10-11 12:12:10
+ * @Desc: Main 模块 MainView 界面组件
+ * @Date: 2025-10-20 20:57:12
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -26,7 +26,8 @@ public class MainViewComponent : UIBaseComponent
 	public TextMeshProUGUI txtStage { get; private set; }
 	//playerLife/txtPlayerLife,TextMeshProUGUI
 	public TextMeshProUGUI txtPlayerLife { get; private set; }
-	public LayoutGroupView<LevelListItem> levelListGroupView { get; private set; }
+	//level/levelList,StaticList
+	public StaticList levelList { get; private set; }
 	//exp/txtExp,TextMeshProUGUI
 	public TextMeshProUGUI txtExp { get; private set; }
 
@@ -38,27 +39,32 @@ public class MainViewComponent : UIBaseComponent
 		enemyHpBarImage = root.objects[3] as Image;
 		txtStage = root.objects[4] as TextMeshProUGUI;
 		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
-		GameObject levelList = root.objects[6] as GameObject;
+        levelList = root.objects[6] as StaticList;
 		GameObject levelListItem = root.objects[7] as GameObject;
-		levelListGroupView = new LayoutGroupView<LevelListItem>(levelList,levelListItem);
+		levelList.Init<LevelListItem>(levelList.gameObject , levelListItem);
 		txtExp = root.objects[8] as TextMeshProUGUI;
 	}
 
-	public class LevelListItem : LayoutGroupViewItem
+	public class LevelListItem : StaticListItem
 	{
-		public Image imgLevel1 = null;
-		public Image imgLevel2 = null;
-		public Image imgLevel3 = null;
-		public Image imgLevel4 = null;
-		public Image imgLevel5 = null;
+		//level/levelList/levelListItem/imgLevel1,GameObject
+		public GameObject imgLevel1Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel2,GameObject
+		public GameObject imgLevel2Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel3,GameObject
+		public GameObject imgLevel3Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel4,GameObject
+		public GameObject imgLevel4Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel5,GameObject
+		public GameObject imgLevel5Go {get; private set;}
 		protected override void OnCreate(GameObject go)
 		{
 			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
-			imgLevel1 = uiRefRoot.objects[0] as Image;
-			imgLevel2 = uiRefRoot.objects[1] as Image;
-			imgLevel3 = uiRefRoot.objects[2] as Image;
-			imgLevel4 = uiRefRoot.objects[3] as Image;
-			imgLevel5 = uiRefRoot.objects[4] as Image;
+			imgLevel1Go = uiRefRoot.objects[0] as GameObject;
+			imgLevel2Go = uiRefRoot.objects[1] as GameObject;
+			imgLevel3Go = uiRefRoot.objects[2] as GameObject;
+			imgLevel4Go = uiRefRoot.objects[3] as GameObject;
+			imgLevel5Go = uiRefRoot.objects[4] as GameObject;
 		}
 	}
 }

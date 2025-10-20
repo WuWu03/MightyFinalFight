@@ -12,7 +12,7 @@ public class DoRunToRandomPos : Action
     {
         return m_State;
     }
-    public override bool CanExcute()
+    public override bool CanExecute()
     {
         return m_State != BehaviourTreeState.Success;
     }

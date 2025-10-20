@@ -49,7 +49,7 @@ public class DoRoundMap : Action
         }
     }
 
-    public override bool CanExcute()
+    public override bool CanExecute()
     {
         return m_State != BehaviourTreeState.Success;
     }

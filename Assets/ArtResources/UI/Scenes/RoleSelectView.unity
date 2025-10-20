@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 767242336}
+  - {fileID: 767242342}
   - {fileID: 712527415}
   - {fileID: 472813151}
 --- !u!114 &209631948
@@ -349,10 +349,9 @@ MonoBehaviour:
   m_RefName: imgSelect
   m_ComponentName: RectTransform
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &482470323
 GameObject:
@@ -549,10 +548,9 @@ MonoBehaviour:
   m_RefName: txtDesc
   m_ComponentName: LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &710926882
 MonoBehaviour:
@@ -672,7 +670,7 @@ GameObject:
   - component: {fileID: 712527418}
   - component: {fileID: 712527419}
   m_Layer: 5
-  m_Name: item
+  m_Name: roleSelectListItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -733,13 +731,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: item
+  m_RefName: roleSelectListItem
   m_ComponentName: GameObject
   m_Desc: 
-  m_IsLayoutItem: 1
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 1
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &712527419
 MonoBehaviour:
@@ -845,8 +842,9 @@ GameObject:
   - component: {fileID: 767242340}
   - component: {fileID: 767242339}
   - component: {fileID: 767242338}
+  - component: {fileID: 767242342}
   m_Layer: 5
-  m_Name: roleContent
+  m_Name: roleSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -885,13 +883,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UseDefaultName: 1
-  m_RefName: roleContent
-  m_ComponentName: GameObject
+  m_RefName: roleSelect
+  m_ComponentName: StaticList
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 1
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 1
   m_IsCopyRefStr: 0
 --- !u!114 &767242339
 MonoBehaviour:
@@ -945,6 +942,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &767242342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767242336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
 --- !u!1 &1137125393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,10 +1530,9 @@ MonoBehaviour:
   m_RefName: imgRoleIcon
   m_ComponentName: ImageEx
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1669707885
 MonoBehaviour:
@@ -1547,6 +1555,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1882403930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1678,10 +1695,9 @@ MonoBehaviour:
   m_RefName: txtName
   m_ComponentName: LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 1
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 1
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2043417341
 MonoBehaviour:

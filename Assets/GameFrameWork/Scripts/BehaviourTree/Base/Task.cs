@@ -103,7 +103,7 @@ namespace GameFrameWork.BehaviourTree
 
         private void ParallelChlidren(float deltaTime)
         {
-            if (!CheckPreCondition() || !CanExcute())
+            if (!CheckPreCondition() || !CanExecute())
             {
                 BehaviourTreeState state = Excute();
                 ExcuteResult(state);
@@ -119,7 +119,7 @@ namespace GameFrameWork.BehaviourTree
 
         private void SingleChild(float deltaTime)
         {
-            if (!CheckPreCondition() || !CanExcute())
+            if (!CheckPreCondition() || !CanExecute())
             {
                 BehaviourTreeState state = Excute();
                 ExcuteResult(state);
@@ -139,7 +139,7 @@ namespace GameFrameWork.BehaviourTree
         {
             child.Enter();
 
-            if (child.CanExcute() && child.CheckPreCondition())
+            if (child.CanExecute() && child.CheckPreCondition())
             {
                 child.Update(deltaTime);
                 BehaviourTreeState childState = child.Excute();
@@ -157,16 +157,16 @@ namespace GameFrameWork.BehaviourTree
 
         private void ExcuteResult(BehaviourTreeState state)
         {
-            OnExcuteResult(state);
+            OnExecuteResult(state);
         }
 
         private void ChildExcuteResult(int childIndex, BehaviourTreeState state)
         {
-            OnChildExcuteResult(childIndex, state);
+            OnChildExecuteResult(childIndex, state);
         }
 
-        protected virtual void OnExcuteResult(BehaviourTreeState state) { }
-        protected virtual void OnChildExcuteResult(int childIndex, BehaviourTreeState state) { }
+        protected virtual void OnExecuteResult(BehaviourTreeState state) { }
+        protected virtual void OnChildExecuteResult(int childIndex, BehaviourTreeState state) { }
 
         private List<BaseTask> m_Children = null;
     }

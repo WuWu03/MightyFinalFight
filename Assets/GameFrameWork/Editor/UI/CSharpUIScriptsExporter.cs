@@ -1,6 +1,5 @@
 using GameFrameWork.Utils;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using GameFrameWork.UI;
@@ -19,7 +18,7 @@ namespace GameFrameWork.Editor
 
         public override string CopyRef(UIRef[] uiRefs)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int i = 0; i < uiRefs.Length; i++)
             {
                 if (!uiRefs[i].isCopyRefStr)
@@ -39,7 +38,7 @@ namespace GameFrameWork.Editor
             StringBuilder sb = new();
 
             sb.AppendLine("/*");
-            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面数据\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面组件\r\n", setting.moduleName, setting.viewName);
             sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
             sb.AppendLine(" * @Author: WuWu");
             sb.AppendLine(" * @Note: 工具生成，请勿修改");
@@ -52,52 +51,18 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
-
             sb.AppendFormat("public class {0}Component : UIBaseComponent", setting.viewName);
             sb.AppendLine("\r\n{");
-
-            List<UIRef> layoutRefList = new List<UIRef>();
-            List<UIRef> normalRefList = new List<UIRef>();
-
-            for (int i = 0; i < uiRefs.Length; i++)
+            
+            foreach (var uiRef in uiRefs)
             {
-                if (uiRefs[i].isLayout)
-                {
-                    layoutRefList.Add(uiRefs[i]);
-                }
-                else if (!uiRefs[i].isLayoutItem && !uiRefs[i].isLayoutItemVariable)
-                {
-                    normalRefList.Add(uiRefs[i]);
-                }
-            }
-
-            for (int i = 0; i < uiRefs.Length; i++)
-            {
-                UIRef uiRef = uiRefs[i];
-
-                if (uiRef.isLayout)
-                {
-                    if (uiRef.IsScollLayoutGroupView())
-                    {
-                        string layoutGroupName = uiRef.GetName() + "GroupView";
-                        sb.AppendFormat("\tpublic ScrollLayoutGroupView {0}", layoutGroupName);
-                        sb.Append(" { get; private set; }\r\n");
-                    }
-                    else if(uiRef.IsLayoutGroupView())
-                    {
-                        string layoutItemName = uiRef.GetName(true) + "Item";
-                        string layoutGroupName = uiRef.GetName() + "GroupView";
-                        sb.AppendFormat("\tpublic LayoutGroupView<{0}> {1}", layoutItemName, layoutGroupName);
-                        sb.Append(" { get; private set; }\r\n");
-                    }
-                }
-                else if (!uiRef.isLayoutItem && !uiRef.isLayoutItemVariable)
+                if (!uiRef.isListItem && !uiRef.IsListItemVariable)
                 {
                     sb.Append("\t//").Append(GetComment(uiRef));
                     sb.AppendLine();
                     sb.AppendFormat("\tpublic {0} {1}", uiRef.componentName, uiRef.GetName());
                     sb.Append(" { get; private set; }\r\n");
-                } 
+                }
             }
 
             sb.AppendLine();
@@ -108,19 +73,16 @@ namespace GameFrameWork.Editor
             {
                 UIRef uiRef = uiRefs[i];
 
-                if(uiRef.isLayout)
+                if(uiRef.IsList)
                 {
-                    if (uiRef.IsScollLayoutGroupView())
+                    if (uiRef.IsScrollList())
                     {
-                        string layoutGroupName = uiRef.GetName() + "GroupView";
-                        string layoutItemNameUpper = uiRef.GetName(true) + "Item";
-                        string layoutItemNameLower = uiRef.GetName(false) + "Item";
                         int itemIndex = -1;
                         UIRef itemUIRef = null;
 
                         for (int j = 0; j < uiRefs.Length; j++)
                         {
-                            if (uiRefs[j].isLayoutItem)
+                            if (uiRefs[j].isListItem)
                             {
                                 Transform current = uiRefs[j].transform.parent;
 
@@ -141,22 +103,19 @@ namespace GameFrameWork.Editor
                                 break;
                             }
                         }
-
-                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, itemUIRef.GetName(), itemIndex, itemUIRef.componentName);
-                        sb.AppendFormat("\t\t{0} = root.objects[{1}] as ScrollLayoutGroupView;\r\n", layoutGroupName, i, layoutItemNameUpper);
-                        sb.AppendFormat("\t\t{0}.Init<{1}>({2});\r\n", layoutGroupName, layoutItemNameUpper, itemUIRef.GetName());
+                        
+                        sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
+                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, uiRef.GetName() + "Item", itemIndex, itemUIRef.componentName);
+                        sb.AppendFormat("\t\t{0}.Init<{1}>({2});\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item", uiRef.GetName() + "Item");
                     }
-                    else if (uiRef.IsLayoutGroupView())
+                    else if (uiRef.IsStaticList())
                     {
-                        string layoutGroupName = uiRef.GetName() + "GroupView";
-                        string layoutItemNameUpper = uiRef.GetName(true) + "Item";
-                        string layoutItemNameLower = uiRef.GetName(false) + "Item";
                         int itemIndex = -1;
                         UIRef itemUIRef = null;
 
                         for (int j = 0; j < uiRefs.Length; j++)
                         {
-                            if (uiRefs[j].isLayoutItem && uiRefs[j].transform.parent == uiRef.transform)
+                            if (uiRefs[j].isListItem && uiRefs[j].transform.parent == uiRef.transform)
                             {
                                 itemUIRef = uiRefs[j];
                                 itemIndex = j;
@@ -164,12 +123,12 @@ namespace GameFrameWork.Editor
                             }
                         }
 
-                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", uiRef.componentName, uiRef.GetName(), i, uiRef.componentName);
-                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, itemUIRef.GetName(), itemIndex, itemUIRef.componentName);
-                        sb.AppendFormat("\t\t{0} = new LayoutGroupView<{1}>({2},{3});\r\n", layoutGroupName, layoutItemNameUpper, uiRef.GetName(), itemUIRef.GetName());
+                        sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
+                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, uiRef.GetName() + "Item", itemIndex, itemUIRef.componentName);
+                        sb.AppendFormat("\t\t{0}.Init<{1}>({2}.gameObject , {3});\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item", uiRef.GetName(), uiRef.GetName() + "Item");
                     }
                 }
-                else if (!uiRef.isLayoutItem && !uiRef.isLayoutItemVariable)
+                else if (!uiRef.isListItem && !uiRef.IsListItemVariable)
                 {
                     sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
                 }
@@ -177,10 +136,9 @@ namespace GameFrameWork.Editor
 
             sb.AppendLine("\t}");
 
-            for (int i = 0; i < uiRefs.Length; i++)
+            foreach (var uiRef in uiRefs)
             {
-                UIRef uiRef = uiRefs[i];
-                if (uiRef.isLayout)
+                if (uiRef.IsList)
                 {
                     ExportLayout(uiRef, sb);
                 }
@@ -280,46 +238,48 @@ namespace GameFrameWork.Editor
 
         private void ExportLayout(UIRef uiRef, StringBuilder sb)
         {
-            UIRef[] childrenItemRefs = uiRef.GetComponentsInChildren<UIRef>(true);
-            UIRef itemRef = null;
+            UIRef[] itemUIRefs = uiRef.GetComponentsInChildren<UIRef>(true);
+            UIRef tempUIRef = null;
 
-            for (int i = 0; i < childrenItemRefs.Length; i++)
+            foreach (var itemUIRef in itemUIRefs)
             {
-                if (childrenItemRefs[i].isLayoutItem)
+                if (itemUIRef.isListItem)
                 {
-                    itemRef = childrenItemRefs[i];
+                    tempUIRef = itemUIRef;
                     break;
                 }
             }
 
-            if(itemRef == null)
+            if(tempUIRef == null)
             {
                 return;
             }
 
-            string layoutViewItemClassName = string.Empty;
+            string listItemClassName = string.Empty;
 
-            if (uiRef.IsScollLayoutGroupView())
+            if (uiRef.IsScrollList())
             {
-                layoutViewItemClassName = "ScrollLayoutGroupViewItem";
+                listItemClassName = "ScrollListItem";
             }
-            else if (uiRef.IsLayoutGroupView())
+            else if (uiRef.IsStaticList())
             {
-                layoutViewItemClassName = "LayoutGroupViewItem";
+                listItemClassName = "StaticListItem";
             }
 
             sb.AppendLine();
-            sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", layoutViewItemClassName);
+            sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", listItemClassName);
             sb.AppendLine("\t{");
 
-            for (int i = 0; i < childrenItemRefs.Length; i++)
+            foreach (var variableUIRef in itemUIRefs)
             {
-                if (!childrenItemRefs[i].isLayoutItemVariable)
+                if (!variableUIRef.IsListItemVariable)
                 {
                     continue;
                 }
                 
-                sb.AppendFormat("\t\tpublic {0} {1} = null;\r\n", childrenItemRefs[i].componentName, childrenItemRefs[i].GetName());
+                sb.AppendFormat("\t\t//{0}\r\n",GetComment(variableUIRef));
+                sb.AppendFormat("\t\tpublic {0} {1} ", variableUIRef.componentName, variableUIRef.GetName());
+                sb.Append("{get; private set;}\r\n");
             }
 
             sb.AppendLine("\t\tprotected override void OnCreate(GameObject go)");
@@ -327,14 +287,15 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\t\t\tUIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();");
 
             int itemIndex = 0;
-            for (int i = 0; i < childrenItemRefs.Length; i++)
+            
+            foreach (var itemUIRef in itemUIRefs)
             {
-                if (!childrenItemRefs[i].isLayoutItemVariable)
+                if (!itemUIRef.IsListItemVariable)
                 {
                     continue;
                 }
-
-                sb.AppendFormat("\t\t\t{0} = uiRefRoot.objects[{1}] as {2};\r\n", childrenItemRefs[i].GetName(), itemIndex, childrenItemRefs[i].componentName);
+                
+                sb.AppendFormat("\t\t\t{0} = uiRefRoot.objects[{1}] as {2};\r\n", itemUIRef.GetName(), itemIndex, itemUIRef.componentName);
                 itemIndex++;
             }
 
@@ -346,7 +307,7 @@ namespace GameFrameWork.Editor
         {
             string objPath = EditorUtil.GetHierarchy(uiRef.gameObject);
             string comment = objPath.Substring("UIRoot/UICanvas/Panel".Length + 1).Replace("\\", "/") + "," + uiRef.componentName;
-
+            
             if (!string.IsNullOrEmpty(uiRef.desc))
             {
                 comment = comment + "[" + uiRef.desc + "]";
