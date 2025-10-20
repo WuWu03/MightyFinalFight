@@ -5,17 +5,17 @@ namespace GameFrameWork.Event
     public abstract class GameFrameWorkBaseEvent<T, A> where T : GameFrameWorkBaseCall<A>, new()
     {
         private readonly List<T> m_Calls;
-        private readonly List<T> m_PresisttentCalls;
+        private readonly List<T> m_PersistentCalls;
         private bool m_IsCallDirty;
         protected List<T> calls
         {
-            get { return m_PresisttentCalls; }
+            get { return m_PersistentCalls; }
         }
 
         public GameFrameWorkBaseEvent()
         {
             m_Calls = new();
-            m_PresisttentCalls = new();
+            m_PersistentCalls = new();
         }
 
         public void AddListener(A action)
@@ -68,21 +68,13 @@ namespace GameFrameWork.Event
             }
 
             m_IsCallDirty = false;
-            m_PresisttentCalls.Clear();
-            m_PresisttentCalls.AddRange(m_Calls);
+            m_PersistentCalls.Clear();
+            m_PersistentCalls.AddRange(m_Calls);
         }
         
         private T GetListener(A action)
         {
-            foreach (T selfCall in m_Calls)
-            {
-                if (selfCall.action.Equals(action))
-                {
-                    return selfCall;
-                }
-            }
-
-            return null;
+            return m_Calls.Find(call => call.action.Equals(action));
         }
     }
 }
