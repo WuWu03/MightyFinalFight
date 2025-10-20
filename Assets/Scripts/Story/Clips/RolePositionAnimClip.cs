@@ -1,12 +1,19 @@
 using DG.Tweening;
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class RolePositionAnimClip : BaseClip
 {
+    private int m_RoleId = -1;
+    private int m_AnimType;
+    private Vector3 m_EndPos = Vector3.zero;
+    private float m_Duration;
+    private Ease m_Ease;
+    private Tweener m_Tweener;
+    private BaseRole m_Role;
+    
     public static RolePositionAnimClip Create(int roleId, int animType, Vector3 endPos, float duration, Ease ease)
     {
         RolePositionAnimClip clip = ReferencePool.Acquire<RolePositionAnimClip>();
@@ -48,12 +55,12 @@ public class RolePositionAnimClip : BaseClip
         {
             m_Role = SceneEntityMgr.instance.GetEnemyById(m_RoleId);
 
-            if (m_Role == null)
+            if (m_Role is null)
             {
                 string roleName = StringUtil.Append("StoryRole_", m_RoleId.ToString());
-                m_Role = EntityMgr.instance.FindEntity<BaseRole>(roleName);
+                m_Role = GameEntry.entityMgr.FindEntity<BaseRole>(roleName);
 
-                if (m_Role == null)
+                if (m_Role is null)
                 {
                     RoleConfigData roleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_RoleId);
                     m_Role = SceneEntityFactory.CreateRole(roleName, roleConfigData.assetName, 1f, Vector2.zero);
@@ -85,12 +92,4 @@ public class RolePositionAnimClip : BaseClip
     {
         m_Tweener.Restart();
     }
-
-    private int m_RoleId = -1;
-    private int m_AnimType = 0;
-    private Vector3 m_EndPos = Vector3.zero;
-    private float m_Duration = 0f;
-    private Ease m_Ease;
-    private Tweener m_Tweener = null;
-    private BaseRole m_Role;
 }

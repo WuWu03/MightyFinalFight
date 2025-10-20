@@ -1,11 +1,30 @@
 using System;
 using System.Collections.Generic;
+using GameFrameWork.Pool;
 using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.GameEntity
 {
-    public class EntityMgr : BaseMgr<EntityMgr>
+    public class EntityMgr : GameFrameWorkModule, IEntityMgr
     {
+        private readonly List<BaseEntity> m_UsingEntities;
+        private readonly List<BaseEntity> m_TempEntities;
+        private readonly Dictionary<Type, List<BaseEntity>> m_DicUnUsedEntity;
+        private Transform m_PoolRoot;
+        private IGameObjectPoolMgr m_GameObjectPoolMgr;
+        private int m_AcquireCount;
+        private int m_CreateCount ;
+        private int m_ReleaseCount;
+        private int m_DestroyCount;
+        
+        public EntityMgr()
+        {
+            m_UsingEntities = new List<BaseEntity>();
+            m_TempEntities =  new List<BaseEntity>();
+            m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
+        }
+        
         public int acquireCount
         {
             get
@@ -43,7 +62,7 @@ namespace GameFrameWork.GameEntity
         {
             get
             {
-                return m_ListUsingEntities.Count;
+                return m_UsingEntities.Count;
             }
         }
 
@@ -55,16 +74,31 @@ namespace GameFrameWork.GameEntity
             }
         }
 
-        protected override void OnAwake()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            m_PoolRoot = new GameObject("EntityMgr").transform;
-            m_PoolRoot.SetParent(transform, false);
-            m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);
-            m_ListUsingEntities = new List<BaseEntity>();
-            m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
+
         }
 
-        public T GetEntity<T>(string name = null, Transform parent = null) where T : BaseEntity, new()
+        public override void Shutdown()
+        {
+            DestroyAll();
+            m_UsingEntities.Clear();
+            m_DicUnUsedEntity.Clear();
+            m_AcquireCount = 0;
+            m_CreateCount = 0;
+            m_ReleaseCount = 0;
+            m_DestroyCount = 0;
+        }
+
+        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr, Transform poolRoot)
+        {
+            m_GameObjectPoolMgr = gameObjectPoolMgr;
+            m_PoolRoot = new GameObject("EntityPool").transform;
+            m_PoolRoot.SetParent(poolRoot, false);
+            m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);
+        }
+
+        public T GetEntity<T>(string entityName = null, Transform parent = null) where T : BaseEntity, new()
         {
             T entity = null;
             Type type = typeof(T);
@@ -79,47 +113,44 @@ namespace GameFrameWork.GameEntity
                 }
             }
 
-            if (entity == null)
+            if (entity is null)
             {
                 entity = new GameObject().GetOrAddComponent<T>();
-                DontDestroyOnLoad(entity);
+                UnityObject.DontDestroyOnLoad(entity);
                 m_CreateCount++;
             }
 
             m_AcquireCount++;
-
-            entity.Init(m_AcquireCount, name);
-            entity.SetParent(parent, false);
+            entity.Init(m_AcquireCount, entityName, this, m_GameObjectPoolMgr);
+            entity.SetParent(parent);
             entity.gameObject.SetActiveSelf(true);
-            m_ListUsingEntities.Add(entity);
-
+            m_UsingEntities.Add(entity);
             return entity;
         }
 
         public void PutEntities(BaseEntity[] entities)
         {
-            for (int i = 0; i < entities.Length; i++)
+            foreach (var entity in entities)
             {
-                PutEntity(entities[i]);
+                PutEntity(entity);
             }
         }
 
         public void PutEntity(BaseEntity entity)
         {
             entity.gameObject.SetActiveSelf(false);
-            entity.SetParent(m_PoolRoot, false);
-
+            entity.SetParent(m_PoolRoot);
             Type key = entity.GetType();
             GetUnUsedList(key).Add(entity);
-            m_ListUsingEntities.Remove(entity);
+            m_UsingEntities.Remove(entity);
             m_ReleaseCount++;
         }
 
         public void DestroyEntities(BaseEntity[] entities)
         {
-            for (int i = 0; i < entities.Length; i++)
+            foreach (var entity in entities)
             {
-                DestroyEntity(entities[i]);
+                DestroyEntity(entity);
             }
         }
 
@@ -138,18 +169,18 @@ namespace GameFrameWork.GameEntity
                 }
             }
 
-            m_ListUsingEntities.Remove(entity);
-            GameObject.Destroy(entity.gameObject);
+            m_UsingEntities.Remove(entity);
+            UnityObject.Destroy(entity.gameObject);
             m_DestroyCount++;
         }
 
-        public void DestoryAllUnUsedEntities()
+        public void DestroyAllUnUsedEntities()
         {
             foreach (KeyValuePair<Type, List<BaseEntity>> kvp in m_DicUnUsedEntity)
             {
-                for (int i = 0; i < kvp.Value.Count; i++)
+                foreach (var entity in kvp.Value)
                 {
-                    GameObject.Destroy(kvp.Value[i].gameObject);
+                    UnityObject.Destroy(entity.gameObject);
                     m_ReleaseCount++;
                     m_DestroyCount++;
                 }
@@ -160,61 +191,67 @@ namespace GameFrameWork.GameEntity
 
         public void DestroyAll()
         {
-            for (int i = 0; i < m_ListUsingEntities.Count; i++)
+            m_TempEntities.AddRange(m_UsingEntities);
+            foreach (var entity in m_TempEntities)
             {
-                m_ListUsingEntities[i].Release();
+                entity.Release();
             }
 
-            m_ListUsingEntities.Clear();
-            DestoryAllUnUsedEntities();
-
-            m_ListUsingEntities.Clear();
+            m_TempEntities.Clear();
+            m_UsingEntities.Clear();
+            DestroyAllUnUsedEntities();
             m_AcquireCount = 0;
             m_CreateCount = 0;
             m_ReleaseCount = 0;
             m_DestroyCount = 0;
         }
 
-        public List<T> FindEntities<T>(string name) where T : BaseEntity
+        public List<T> FindEntities<T>(string entityName) where T : BaseEntity
         {
-            List<T> entityList = new();
-
-            for (int i = 0; i < m_ListUsingEntities.Count; i++)
-            {
-                BaseEntity entity = m_ListUsingEntities[i];
-
-                if (entity is T && entity.name.Equals(name))
-                {
-                    entityList.Add(m_ListUsingEntities[i] as T);
-                }
-            }
-
-            return entityList;
+            List<T> entities = new();
+            FindEntities(entityName, entities);
+            return entities;
         }
 
-        public T FindEntity<T>(string name) where T : BaseEntity
+        public void FindEntities<T>(string entityName, List<T> entityList) where T : BaseEntity
         {
-            if (string.IsNullOrEmpty(name))
+            if (entityList == null)
+            {
+                throw new GameFrameWorkException("实体列表为空");
+            }
+
+            entityList.Clear();
+
+            foreach (var entity in m_UsingEntities)
+            {
+                if (entity is T baseEntity && baseEntity.name.Equals(entityName))
+                {
+                    entityList.Add(baseEntity);
+                }
+            }
+        }
+
+        public T FindEntity<T>(string entityName) where T : BaseEntity
+        {
+            if (string.IsNullOrEmpty(entityName))
             {
                 return null;
             }
 
-            for (int i = 0; i < m_ListUsingEntities.Count; i++)
+            foreach (var entity in m_UsingEntities)
             {
-                BaseEntity entity = m_ListUsingEntities[i];
-
-                if (entity is T && entity.name.Equals(name))
+                if (entity is T baseEntity && baseEntity.name.Equals(entityName))
                 {
-                    return m_ListUsingEntities[i] as T;
+                    return baseEntity;
                 }
             }
 
             return null;
         }
 
-        public bool HasEntity<T>(string name) where T : BaseEntity
+        public bool HasEntity<T>(string entityName) where T : BaseEntity
         {
-            return FindEntity<T>(name) != null;
+            return FindEntity<T>(entityName) is not null;
         }
 
         private List<BaseEntity> GetUnUsedList(Type type)
@@ -227,24 +264,5 @@ namespace GameFrameWork.GameEntity
 
             return unUsedList;
         }
-
-        protected override void OnShutDown()
-        {
-            DestroyAll();
-            m_ListUsingEntities.Clear();
-            m_DicUnUsedEntity.Clear();
-            m_AcquireCount = 0;
-            m_CreateCount = 0;
-            m_ReleaseCount = 0;
-            m_DestroyCount = 0;
-        }
-
-        private int m_AcquireCount = 0;
-        private int m_CreateCount = 0;
-        private int m_ReleaseCount = 0;
-        private int m_DestroyCount = 0;
-        private Transform m_PoolRoot = null;
-        private List<BaseEntity> m_ListUsingEntities = null;
-        private Dictionary<Type, List<BaseEntity>> m_DicUnUsedEntity = null;
     }
 }

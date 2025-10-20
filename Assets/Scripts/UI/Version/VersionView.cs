@@ -12,12 +12,12 @@ public class VersionView : UIBaseView<VersionViewComponent, VersionViewSettings>
 {
 	protected override void OnOpen(object arg)
 	{
-        VersionMgr.instance.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
+        GameEntry.versionMgr.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
     }
 
 	protected override void OnShow(object arg)
 	{
-        VersionMgr.instance.SetCheckVersionUri("http://localhost/StreamingAssets/");
+        GameEntry.versionMgr.SetCheckVersionUri("http://localhost/StreamingAssets/");
     }
 
 	protected override void OnUpdate()

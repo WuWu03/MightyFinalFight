@@ -1,5 +1,4 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
 
 public class ResumeBgmClip : BaseClip
 {
@@ -20,7 +19,7 @@ public class ResumeBgmClip : BaseClip
 
     protected override void OnPlay()
     {
-        AudioMgr.instance.ResumeBgm();
+        GameEntry.soundMgr.ResumeBgm();
         Complete();
     }
 
@@ -28,5 +27,4 @@ public class ResumeBgmClip : BaseClip
     {
 
     }
-
 }

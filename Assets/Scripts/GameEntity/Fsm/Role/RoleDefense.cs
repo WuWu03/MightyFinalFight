@@ -1,7 +1,7 @@
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleDefense : BaseFsmState
+public class RoleDefense : FsmState
 {
     protected override void OnInit(Fsm fsm)
     {

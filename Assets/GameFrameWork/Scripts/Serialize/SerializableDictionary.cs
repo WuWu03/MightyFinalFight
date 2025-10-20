@@ -8,10 +8,10 @@ namespace GameFrameWork.Serialize
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         [SerializeField]
-        private List<TKey> keys = new List<TKey>();
+        private List<TKey> keys = new();
 
         [SerializeField]
-        private List<TValue> values = new List<TValue>();
+        private List<TValue> values = new();
 
         // 序列化回调，用于在序列化时填充keys和values
         public void OnBeforeSerialize()

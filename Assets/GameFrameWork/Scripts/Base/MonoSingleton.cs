@@ -1,14 +1,16 @@
+using GameFrameWork.Utils;
 using UnityEngine;
 
 namespace GameFrameWork
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
+        protected static T s_Instance;
         public static T instance
         {
             get
             {
-                if (m_Instance == null)
+                if (s_Instance == null)
                 {
 
                     T[] instances = Object.FindObjectsByType<T>(FindObjectsSortMode.None);
@@ -17,29 +19,24 @@ namespace GameFrameWork
                     {
                         if (instances.Length > 1)
                         {
-                            Log.LogError(typeof(T).Name, "实例超过一个 , 请不要重复实例化");
-                            return null;
+                            throw new GameFrameWorkException(StringUtil.Append(typeof(T).Name, "实例超过一个 , 请不要重复实例化"));
                         }
-                        else
-                        {
-                            m_Instance = instances[0];
-                        }
+                        
+                        s_Instance = instances[0];
                     }
                     else
                     {
-                        m_Instance = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
+                        s_Instance = new GameObject(typeof(T).Name).GetOrAddComponent<T>();
 
                         if(Application.isPlaying)
                         {
-                            DontDestroyOnLoad(m_Instance.gameObject);
+                            DontDestroyOnLoad(s_Instance.gameObject);
                         }
                     }
                 }
 
-                return m_Instance;
+                return s_Instance;
             }
         }
-
-        protected static T m_Instance;
     }
 }

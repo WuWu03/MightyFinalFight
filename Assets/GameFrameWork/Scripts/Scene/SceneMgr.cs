@@ -10,8 +10,25 @@ using UnityEngine.SceneManagement;
 
 namespace GameFrameWork.Scene
 {
-    public class SceneMgr : BaseMgr<SceneMgr>
+    public class SceneMgr : GameFrameWorkModule, ISceneMgr
     {
+        private event GameFrameWorkAction<LoadSceneSuccessEventArgs> m_LoadSceneSuccessEvent;
+        private event GameFrameWorkAction<LoadSceneFailureEventArgs> m_LoadSceneFailureEvent;
+        private event GameFrameWorkAction<LoadSceneUpdateEventArgs> m_LoadSceneUpdateEvent;
+        private readonly List<string> m_LoadingScenes;
+        private readonly List<string> m_LoadedScenes;
+        private readonly Queue<LoadSceneRequest> m_LoadRequests;
+        private string m_CurrSceneName;
+        private IResourceMgr m_ResourceMgr;
+        private AsyncOperation m_AsyncOperation;
+        
+        public SceneMgr()
+        {
+            m_LoadingScenes = new();
+            m_LoadedScenes = new();
+            m_LoadRequests = new();
+        }
+
         public event GameFrameWorkAction<LoadSceneSuccessEventArgs> loadSceneSuccessEvent
         {
             add
@@ -72,18 +89,8 @@ namespace GameFrameWork.Scene
             }
         }
 
-        protected override void OnAwake()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            base.OnAwake();
-            m_LoadingScenes = new();
-            m_LoadedScenes = new();
-            m_LoadRequests = new();
-        }
-
-        protected override void OnUpdate()
-        {
-            base.OnUpdate();
-
             if (isLoading)
             {
                 return;
@@ -99,10 +106,8 @@ namespace GameFrameWork.Scene
             }
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
-            base.OnShutDown();
-
             while (m_LoadRequests.Count > 0)
             {
                 m_LoadRequests.Dequeue().Release();
@@ -114,14 +119,9 @@ namespace GameFrameWork.Scene
             m_LoadRequests.Clear();
         }
 
-        protected override void OnDestory()
+        public void SetResourceMgr(IResourceMgr resourceMgr)
         {
-            base.OnDestory();
-
-            m_AsyncOperation = null;
-            m_LoadSceneSuccessEvent = null;
-            m_LoadSceneFailureEvent = null;
-            m_LoadSceneUpdateEvent = null;
+            m_ResourceMgr = resourceMgr;
         }
 
         public void LoadSceneAsync(string sceneName, object arg = null)
@@ -149,11 +149,7 @@ namespace GameFrameWork.Scene
             }
 
             m_AsyncOperation = null;
-
-            lock (m_LoadRequests)
-            {
-                m_LoadRequests.Enqueue(LoadSceneRequest.Create(sceneName, mode, isAutoAllowScene, arg));
-            }
+            m_LoadRequests.Enqueue(LoadSceneRequest.Create(sceneName, mode, isAutoAllowScene, arg));
         }
 
         public void LoadScene(string sceneName, object arg = null)
@@ -181,12 +177,13 @@ namespace GameFrameWork.Scene
 #if UNITY_EDITOR
                 if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
                 {
-                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName), parameters);
+                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName),
+                        parameters);
                 }
                 else
 #endif
                 {
-                    AssetsMgr.instance.LoadAssetSync(sceneName, typeof(UnityEngine.SceneManagement.Scene));
+                    m_ResourceMgr.Load(sceneName, typeof(UnityEngine.SceneManagement.Scene));
                     SceneManager.LoadScene(sceneName, mode);
                 }
 
@@ -206,7 +203,7 @@ namespace GameFrameWork.Scene
             if (GameFrameWorkEntry.config.isLoadFromAssetBundle)
 #endif
             {
-                AssetsMgr.instance.UnloadAsset(sceneName);
+                m_ResourceMgr.Unload(sceneName);
             }
         }
 
@@ -214,7 +211,7 @@ namespace GameFrameWork.Scene
         {
             UnityEngine.SceneManagement.Scene scene = SceneManager.GetSceneByName(Path.GetFileNameWithoutExtension(sceneName));
 
-            if (scene == null || !scene.isLoaded || !scene.IsValid())
+            if (!scene.isLoaded || !scene.IsValid())
             {
                 return false;
             }
@@ -229,7 +226,7 @@ namespace GameFrameWork.Scene
 
         public void AllowScene()
         {
-            if (m_AsyncOperation != null && !m_AsyncOperation.allowSceneActivation)
+            if (m_AsyncOperation is { allowSceneActivation: false })
             {
                 m_AsyncOperation.allowSceneActivation = true;
             }
@@ -242,19 +239,19 @@ namespace GameFrameWork.Scene
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
-                StartCoroutine(OnLoadSceneAsync(request));
+                MonoBehaviourMgr.instance.StartCoroutine(OnLoadSceneAsync(request));
             }
             else
 #endif
             {
-                AssetsMgr.instance.LoadAssetAsync(request.sceneName, typeof(UnityEngine.SceneManagement.Scene), OnLoadAssetComplete, request);
+                m_ResourceMgr.LoadAsync(request.sceneName, typeof(UnityEngine.SceneManagement.Scene), OnLoadAssetComplete, request);
             }
         }
 
         private void OnLoadAssetComplete(string assetPath, UnityEngine.Object asset, object arg)
         {
             LoadSceneRequest request = arg as LoadSceneRequest;
-            StartCoroutine(OnLoadSceneAsync(request));
+            MonoBehaviourMgr.instance.StartCoroutine(OnLoadSceneAsync(request));
         }
 
         private IEnumerator OnLoadSceneAsync(LoadSceneRequest request)
@@ -287,15 +284,7 @@ namespace GameFrameWork.Scene
 
             while (!m_AsyncOperation.isDone)
             {
-                if (m_AsyncOperation.progress < 0.9f)
-                {
-                    updateEventArgs.progress = m_AsyncOperation.progress;
-                }
-                else
-                {
-                    updateEventArgs.progress = 1.0f;
-                }
-
+                updateEventArgs.progress = m_AsyncOperation.progress < 0.9f ? m_AsyncOperation.progress : 1.0f;
                 m_LoadSceneUpdateEvent?.Invoke(updateEventArgs);
 
                 if (updateEventArgs.progress >= 0.9)
@@ -344,14 +333,5 @@ namespace GameFrameWork.Scene
             m_LoadSceneFailureEvent = null;
             failureEventArgs.Release();
         }
-
-        private string m_CurrSceneName = string.Empty;
-        private List<string> m_LoadingScenes = null;
-        private List<string> m_LoadedScenes = null;
-        private Queue<LoadSceneRequest> m_LoadRequests = null;
-        private AsyncOperation m_AsyncOperation = null;
-        private GameFrameWorkAction<LoadSceneSuccessEventArgs> m_LoadSceneSuccessEvent = null;
-        private GameFrameWorkAction<LoadSceneFailureEventArgs> m_LoadSceneFailureEvent = null;
-        private GameFrameWorkAction<LoadSceneUpdateEventArgs> m_LoadSceneUpdateEvent = null;
     }
 }

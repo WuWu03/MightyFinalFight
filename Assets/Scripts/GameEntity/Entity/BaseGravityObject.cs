@@ -1,9 +1,14 @@
 using GameFrameWork;
+using GameFrameWork.Event;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BaseGravityObject : BaseBoundObject
 {
+    private GameFrameWorkEvent m_OnDropEvent;
+    private GameFrameWorkEvent m_OnGroundEvent;
+    private bool m_IsAddGroundForce;
+    private Rigidbody2D m_Rigidbody2D;
+    
     public bool isFloat
     {
         get
@@ -41,7 +46,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public UnityEvent onDropEvent
+    public GameFrameWorkEvent onDropEvent
     {
         get
         {
@@ -49,7 +54,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public UnityEvent onGroundEvent
+    public GameFrameWorkEvent onGroundEvent
     {
         get
         {
@@ -78,9 +83,8 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.linearVelocity = Vector2.zero;
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
         m_Rigidbody2D.freezeRotation = true;
-
-        m_OnDropEvent ??= new UnityEvent();
-        m_OnGroundEvent ??= new UnityEvent();
+        m_OnDropEvent ??= new GameFrameWorkEvent();
+        m_OnGroundEvent ??= new GameFrameWorkEvent();
     }
 
     public void AddForceX(float x, bool isAddGroundForce = false)
@@ -100,7 +104,6 @@ public class BaseGravityObject : BaseBoundObject
 
     public void AddForce(Vector2 force, bool isAddGroundForce = false)
     {
-        Debug.Log(name + " 我开始增加力了 " + force);
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.AddForce(force);
         m_IsAddGroundForce = isAddGroundForce;
@@ -212,9 +215,4 @@ public class BaseGravityObject : BaseBoundObject
         OnGround();
         m_IsAddGroundForce = false;
     }
-
-    private UnityEvent m_OnDropEvent = null;
-    private UnityEvent m_OnGroundEvent = null;
-    private bool m_IsAddGroundForce = false;
-    private Rigidbody2D m_Rigidbody2D = null;
 }

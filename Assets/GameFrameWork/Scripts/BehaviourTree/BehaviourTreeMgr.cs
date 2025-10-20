@@ -5,47 +5,43 @@ using UnityEngine;
 
 namespace GameFrameWork.BehaviourTree
 {
-    public class BehaviourTreeMgr : BaseMgr<BehaviourTreeMgr>
+    public class BehaviourTreeMgr : GameFrameWorkModule,IBehaviourTreeMgr
     {
-        protected override void OnAwake()
+        private readonly List<BehaviourTree> m_UsedBehaviourTreeList;
+        private BehaviourTreeConfig m_Config;
+        private IResourceMgr m_ResourceMgr;
+        
+        public BehaviourTreeMgr()
         {
-            base.OnAwake();
             m_UsedBehaviourTreeList = new();
         }
 
-        protected override void OnUpdate()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            base.OnUpdate();
-
             for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_UsedBehaviourTreeList[i].Update(Time.deltaTime);
+                m_UsedBehaviourTreeList[i].Update(deltaTime);
             }
         }
 
-        protected override void OnLateUpdate()
+        public override void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            base.OnLateUpdate();
-
             for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
             {
-                m_UsedBehaviourTreeList[i].LateUpate(Time.deltaTime);
+                m_UsedBehaviourTreeList[i].LateUpate(deltaTime);
+            }
+        }
+        
+        public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
+        {
+            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
+            {
+                m_UsedBehaviourTreeList[i].FixedUpdate(fixedDeltaTime);
             }
         }
 
-        protected override void OnFixedUpdate()
+        public override void Shutdown()
         {
-            base.OnFixedUpdate();
-
-            for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
-            {
-                m_UsedBehaviourTreeList[i].FixedUpdate(Time.fixedDeltaTime);
-            }
-        }
-
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
             StopAllTrees();
 
             for (int i = m_UsedBehaviourTreeList.Count - 1; i > -1; i--)
@@ -56,17 +52,15 @@ namespace GameFrameWork.BehaviourTree
             m_UsedBehaviourTreeList.Clear();
         }
 
-        protected override void OnDestory()
+        public void SetResourceMgr(IResourceMgr resourceMgr)
         {
-            base.OnDestory();
-            m_UsedBehaviourTreeList = null;
-            m_Config = null;
+            m_ResourceMgr = resourceMgr;
         }
 
         public void InitBehaviourTreeData()
         {
             string dataPath = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, PathUtil.behaviourTreeConfigDataName);
-            string jsonStr = AssetsMgr.instance.LoadAssetSync<TextAsset>(dataPath).text;
+            string jsonStr = m_ResourceMgr.Load<TextAsset>(dataPath).text;
             m_Config = LitJson.JsonMapper.ToObject<BehaviourTreeConfig>(jsonStr);
         }
 
@@ -182,8 +176,5 @@ namespace GameFrameWork.BehaviourTree
                 }
             }
         }
-
-        private List<BehaviourTree> m_UsedBehaviourTreeList = null;
-        private BehaviourTreeConfig m_Config = null;
     }
 }

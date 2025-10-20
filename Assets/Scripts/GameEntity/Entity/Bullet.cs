@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class Bullet : BaseAvatar
 {
+    private bool m_IsHit;
+    private List<ICanBeHit> m_TargetHits;
+    private SkillBulletEffect m_SkillBulletEffect;
+    private BaseRole m_Owner;
+    private BulletData m_BulletData;
+    
     protected override void OnInit()
     {
         base.OnInit();
-        m_TaretHits ??= new();
+        m_TargetHits ??= new();
     }
 
     public override void SetData(BaseSceneObjectData data)
@@ -79,25 +85,25 @@ public class Bullet : BaseAvatar
 
             if (enemyTargets != null)
             {
-                for (int i = 0; i < enemyTargets.Count; i++)
+                foreach (var enemyTarget in enemyTargets)
                 {
-                    CheckTarget(enemyTargets[i]);
+                    CheckTarget(enemyTarget);
                 }
             }
 
             if (sceneItemTargets != null)
             {
-                for (int i = 0; i < sceneItemTargets.Count; i++)
+                foreach (var sceneItemTarget in sceneItemTargets)
                 {
-                    CheckTarget(sceneItemTargets[i]);
+                    CheckTarget(sceneItemTarget);
                 }
             }
 
             if (barrelTargets != null)
             {
-                for (int i = 0; i < barrelTargets.Count; i++)
+                foreach (var barrelTarget in barrelTargets)
                 {
-                    CheckTarget(barrelTargets[i]);
+                    CheckTarget(barrelTarget);
                 }
             }
         }
@@ -109,7 +115,7 @@ public class Bullet : BaseAvatar
 
     private void CheckTarget(BaseBoundObject bgo)
     {
-        if (bgo == null)
+        if (bgo is null)
         {
             return;
         }
@@ -142,9 +148,9 @@ public class Bullet : BaseAvatar
             PlayAnimation(m_BulletData.hitAnim, 1, m_BulletData.hitAnimSpeed);
         }
 
-        if (!m_TaretHits.Contains(hit) && m_SkillBulletEffect.BulletEffect(hit)) 
+        if (!m_TargetHits.Contains(hit) && m_SkillBulletEffect.BulletEffect(hit)) 
         {
-            m_TaretHits.Add(hit);
+            m_TargetHits.Add(hit);
         }
 
         m_IsHit = true;
@@ -167,12 +173,6 @@ public class Bullet : BaseAvatar
         m_BulletData = null;
         m_IsHit = false;
         m_SkillBulletEffect = null;
-        m_TaretHits.Clear();
+        m_TargetHits.Clear();
     }
-
-    private bool m_IsHit = false;
-    private List<ICanBeHit> m_TaretHits = null;
-    private SkillBulletEffect m_SkillBulletEffect = null;
-    private BaseRole m_Owner = null;
-    private BulletData m_BulletData = null;
 }

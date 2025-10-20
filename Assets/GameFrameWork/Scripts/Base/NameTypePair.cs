@@ -69,7 +69,7 @@ namespace GameFrameWork
             }
 
             string typeName = m_Type.FullName;
-            return string.IsNullOrEmpty(m_Name) ? typeName : StringUtil.Format("{0}.{1}", typeName, m_Name);
+            return (string.IsNullOrEmpty(m_Name) ? typeName : StringUtil.Format("{0}.{1}", typeName, m_Name)) ?? string.Empty;
         }
 
         /// <summary>

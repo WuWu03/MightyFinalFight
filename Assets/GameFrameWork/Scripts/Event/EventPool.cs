@@ -3,8 +3,17 @@ using System.Collections.Generic;
 
 namespace GameFrameWork.Event
 {
-    public class EventPool<T> where T : GameEventArg
+    public class EventPool<T> where T : EventArg
     {
+        private readonly Queue<EventSender<T>> m_Events;
+        private readonly Dictionary<uint, List<EventHandler<T>>> m_EventHandlers;
+        
+        public EventPool()
+        {
+            m_Events = new();
+            m_EventHandlers = new();
+        }
+        
         public int currEventCount
         {
             get
@@ -19,12 +28,6 @@ namespace GameFrameWork.Event
             {
                 return m_EventHandlers.Count;
             }
-        }
-
-        public EventPool()
-        {
-            m_Events = new();
-            m_EventHandlers = new();
         }
         
         public int Count(uint id)
@@ -150,8 +153,5 @@ namespace GameFrameWork.Event
 
             arg.Release();
         }
-
-        private readonly Queue<EventSender<T>> m_Events = null;
-        private readonly Dictionary<uint, List<EventHandler<T>>> m_EventHandlers = null;
     }
 }

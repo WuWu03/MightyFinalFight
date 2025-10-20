@@ -3,25 +3,25 @@ using GameFrameWork.Event;
 
 namespace GameFrameWork.Timer
 {
-    public class TimerMgr : BaseMgr<TimerMgr>
+    public class TimerMgr : GameFrameWorkModule,ITimerMgr
     {
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-            m_TimerList = new List<Timer>();
-            m_TimerQueue = new Queue<Timer>();
-        }
+        private readonly List<Timer> m_TimerList;
+        private readonly Queue<Timer> m_TimerQueue;
 
-        protected override void OnUpdate()
+        public TimerMgr()
+        {
+            m_TimerList = new();
+            m_TimerQueue = new();
+        }
+        
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
             UpdateAllTimers();
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
             CancelAllTimers();
-            m_TimerList = null;
-            m_TimerQueue = null;
         }
 
         public Timer Register(float duration, GameFrameWorkAction onComplete, GameFrameWorkAction<float> onUpdate = null, bool isLooped = false, bool useRealTime = false)
@@ -91,8 +91,5 @@ namespace GameFrameWork.Timer
                 }
             }
         }
-
-        private List<Timer> m_TimerList = null;
-        private Queue<Timer> m_TimerQueue = null;
     }
 }

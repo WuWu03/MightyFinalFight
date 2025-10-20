@@ -1,4 +1,3 @@
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 
 public class SkillBulletEffect : SkillBaseEffect
@@ -9,7 +8,7 @@ public class SkillBulletEffect : SkillBaseEffect
     {
         for (int i = 0; i < m_SkillEffect.Bullets.Length; i++)
         {
-            Bullet bullet = EntityMgr.instance.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
+            Bullet bullet = GameEntry.entityMgr.GetEntity<Bullet>(m_SkillEffect.Bullets[i].Name);
             BulletData bulletData = BulletData.Create();
             bulletData.bulletIndex = i;
             bulletData.normalAnim = m_SkillEffect.Bullets[i].NormalAnim;
@@ -22,7 +21,6 @@ public class SkillBulletEffect : SkillBaseEffect
             bulletData.hitRange = m_SkillEffect.Bullets[i].HitRange;
             bulletData.drag = m_SkillEffect.Bullets[i].Drag;
             bulletData.isPenatrate = m_SkillEffect.Bullets[i].IsPenatrate;
-
             bullet.SetSkillEffect(this);
             bullet.SetData(bulletData);
             bullet.SetObjectType(ObjectType.CantBreakItem);
@@ -33,12 +31,7 @@ public class SkillBulletEffect : SkillBaseEffect
 
         Complete();
     }
-
-    protected override void OnUpdate(ISkillSelector selector)
-    {
-        base.OnUpdate(selector);
-
-    }
+    
     public bool BulletEffect(ICanBeHit hit)
     {
         return SkillUtil.SkillHit(hit, m_Owner, mSkillData, m_SkillEffect);

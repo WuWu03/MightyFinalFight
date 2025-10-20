@@ -1,3 +1,4 @@
+using System;
 using GameFrameWork.Localization;
 using GameFrameWork.Utils;
 using TMPro;
@@ -10,7 +11,10 @@ namespace GameFrameWork.UI
     public class LanguageText : MonoBehaviour
     {
         public string languageTextKey;
-
+        private string m_AppendArg = string.Empty;
+        private Text m_Text;
+        private TextMeshProUGUI m_TextMeshProUGUI;
+        private static ILocalizationMgr m_LocalizationMgr;
         private void Awake()
         {
             if (GameFrameWorkEntry.isStartUp)
@@ -24,7 +28,7 @@ namespace GameFrameWork.UI
         {
             if (GameFrameWorkEntry.isStartUp)
             {
-                LocalizationMgr.instance.lanuageChangeEvent += OnLanguageChange;
+                m_LocalizationMgr.lanuageChangeEvent += OnLanguageChange;
                 UpdateLanguage();
             }
         }
@@ -33,10 +37,15 @@ namespace GameFrameWork.UI
         {
             if (GameFrameWorkEntry.isStartUp)
             {
-                LocalizationMgr.instance.lanuageChangeEvent -= OnLanguageChange;
+                m_LocalizationMgr.lanuageChangeEvent -= OnLanguageChange;
             }
         }
 
+        public static void SetLocalizationMgr(ILocalizationMgr localizationMgr)
+        {
+            m_LocalizationMgr = localizationMgr;
+        }
+        
         public void SetText(string text)
         {
             InitComponent();
@@ -171,7 +180,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            string text = LocalizationMgr.instance.GetLanguageText(languageTextKey);
+            string text = m_LocalizationMgr.GetLanguageText(languageTextKey);
             SetText(text);
         }
 
@@ -182,7 +191,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            string text = LocalizationMgr.instance.GetLanguageText(languageTextKey);
+            string text = m_LocalizationMgr.GetLanguageText(languageTextKey);
             text = StringUtil.Format(text, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
             SetText(text);
@@ -200,9 +209,5 @@ namespace GameFrameWork.UI
                 Log.LogError("文本组件为空，请检查");
             }
         }
-
-        private string m_AppendArg = string.Empty;
-        private Text m_Text;
-        private TextMeshProUGUI m_TextMeshProUGUI;
     }
 }

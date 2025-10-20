@@ -1,3 +1,4 @@
+using System;
 using GameFrameWork.Assets;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
@@ -9,50 +10,51 @@ namespace GameFrameWork.ConfigData
 {
     public static class ConfigDataHelper
     {
+        private static IResourceMgr m_ResourceMgr;
+        public static void SetResourcesMgr(IResourceMgr resourceMgr)
+        {
+            m_ResourceMgr = resourceMgr;
+        }
+        
         public static T[] LoadConfigData<T>(string fileName) where T : BaseConfigData, new()
         {
             string path = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, fileName);
+            TextAsset txt = m_ResourceMgr.Load<TextAsset>(path);
 
-            T[] t = null;
-
-            TextAsset txt = AssetsMgr.instance.LoadAssetSync<TextAsset>(path);
-
-            if (txt == null || txt.bytes == null)
+            if (txt?.bytes == null)
             {
-                Log.LogError("读取配置文件失败 : ", path);
-                return null;
+                throw new Exception(StringUtil.Append("读取配置文件失败 : ", path));
             }
 
-            using (ConfigDataParser parser = new ConfigDataParser(txt.bytes))
+            using ConfigDataParser parser = new(txt.bytes);
+            T[] data = new T[parser.row - 1];
+            int index = 0;
+            
+            while (!parser.eof)
             {
-                t = new T[parser.row - 1];
-                int index = 0;
-                while (!parser.eof)
-                {
-                    t[index] = new T();
-                    t[index].Read(parser);
-                    parser.Next();
-                    index++;
-                }
+                data[index] = new T();
+                data[index].Read(parser);
+                parser.Next();
+                index++;
             }
 
-            return t;
+            return data;
         }
 
-        public static T GetConfigDataById<T>(this T[] datas, int id) where T : BaseConfigData, new()
+        public static T GetConfigDataById<T>(this T[] data, int id) where T : BaseConfigData, new()
         {
             int left = 0;
-            int right = datas.Length;
+            int right = data.Length;
 
             while (left <= right)
             {
                 int mid = (left + right) / 2;
-                if (datas[mid].id == id)
+                if (data[mid].id == id)
                 {
-                    return datas[mid];
+                    return data[mid];
                 }
 
-                if (id > datas[mid].id)
+                if (id > data[mid].id)
                 {
                     left = mid + 1;
                 }
@@ -65,9 +67,9 @@ namespace GameFrameWork.ConfigData
             return null;
         }
 
-        public static T GetSingConfigDataByAttr<T>(this T[] datas, string attr) where T : BaseConfigData, new()
+        public static T GetSingConfigDataByAttr<T>(this T[] data, string attr) where T : BaseConfigData, new()
         {
-            T[] result = GetConfigDataByAttr(datas, attr, true);
+            T[] result = GetConfigDataByAttr(data, attr, true);
 
             if (result != null && result.Length > 0)
             {
@@ -76,23 +78,22 @@ namespace GameFrameWork.ConfigData
 
             return null;
         }
-
-        public static T[] GetConfigDatasByAttr<T>(this T[] datas, string attr) where T : BaseConfigData, new()
+        
+        private static T[] GetConfigDataByAttr<T>(T[] data, string attr, bool isSingle = false) where T : BaseConfigData, new()
         {
-            return GetConfigDataByAttr(datas, attr);
-        }
+            if (string.IsNullOrEmpty(attr) || !attr.StartsWith("{") || !attr.EndsWith("}"))
+            {
+                throw new GameFrameWorkException("查询格式串错误");
+            }
+            
+            attr = attr.Replace(" ", string.Empty);
 
-        private static T[] GetConfigDataByAttr<T>(T[] datas, string attr, bool isSingle = false) where T : BaseConfigData, new()
-        {
-            attr = attr.Replace("{", string.Empty).Replace("}", string.Empty).Replace(" ", string.Empty);
-
-            Match match = Regex.Match(attr, "[^,]+");
-
+            Match match = Regex.Match(attr, @"((\w)+=(\w)+)");
             if (match.Success)
             {
                 List<T> values = new();
 
-                for (int i = 0; i < datas.Length; i++)
+                foreach (var datum in data)
                 {
                     bool isMatch = true;
                     Match tempMatch = match;
@@ -100,9 +101,9 @@ namespace GameFrameWork.ConfigData
                     while (tempMatch.Success)
                     {
                         string[] condition = tempMatch.Value.Split("=");
-                        PropertyInfo property = datas[i].GetType().GetProperty(condition[0]);
+                        PropertyInfo property = datum.GetType().GetProperty(condition[0]);
 
-                        if (property == null || !property.GetValue(datas[i]).ToString().Equals(condition[1]))
+                        if (property == null || !property.GetValue(datum).ToString().Equals(condition[1]))
                         {
                             isMatch = false;
                             break;
@@ -113,7 +114,7 @@ namespace GameFrameWork.ConfigData
 
                     if (isMatch)
                     {
-                        values.Add(datas[i]);
+                        values.Add(datum);
 
                         if (isSingle)
                         {

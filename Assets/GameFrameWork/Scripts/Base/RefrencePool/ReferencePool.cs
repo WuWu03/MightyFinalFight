@@ -5,6 +5,10 @@ namespace GameFrameWork
 {
     public static class ReferencePool
     {
+        private static readonly List<Type> m_ReleasedCollection = new();
+        private static readonly Dictionary<Type, ReferenceCollection> m_DicReferenceCollection = new();
+        private static bool m_EnableStrickCheck;
+        
         public static bool enableStrickCheck
         {
             get
@@ -50,7 +54,7 @@ namespace GameFrameWork
         }
 
 
-        public static void ShutDown()
+        public static void Shutdown()
         {
             lock (m_DicReferenceCollection)
             {
@@ -61,8 +65,6 @@ namespace GameFrameWork
 
                 m_DicReferenceCollection.Clear();
             }
-
-            m_DicReferenceCollection = null;
         }
 
         public static T Acquire<T>() where T : class, IReference, new()
@@ -113,8 +115,7 @@ namespace GameFrameWork
         {
             if (reference == null)
             {
-                Log.LogError("对象为空，无法回收");
-                return;
+                throw new GameFrameWorkException("对象为空，无法回收");
             }
 
             Type referenceType = reference.GetType();
@@ -126,20 +127,20 @@ namespace GameFrameWork
         {
             lock (m_DicReferenceCollection)
             {
-                m_ListRleaseCollection.Clear();
+                m_ReleasedCollection.Clear();
 
                 foreach (KeyValuePair<Type, ReferenceCollection> kvp in m_DicReferenceCollection)
                 {
                     if (kvp.Value.usingReferenceCount < 1)
                     {
                         kvp.Value.RemoveAll();
-                        m_ListRleaseCollection.Add(kvp.Key);
+                        m_ReleasedCollection.Add(kvp.Key);
                     }
                 }
 
-                for (int i = 0; i < m_ListRleaseCollection.Count; i++)
+                foreach (var releaseCollection in m_ReleasedCollection)
                 {
-                    m_DicReferenceCollection.Remove(m_ListRleaseCollection[i]);
+                    m_DicReferenceCollection.Remove(releaseCollection);
                 }
             }
         }
@@ -153,19 +154,17 @@ namespace GameFrameWork
 
             if (referenceType == null)
             {
-                Log.LogError("引用类型为空");
-                return;
+                throw new GameFrameWorkException("引用类型为空");
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                Log.LogError("引用类型错误");
-                return;
+                throw new GameFrameWorkException("引用类型错误");
             }
 
             if (!referenceType.IsAssignableFrom(typeof(IReference)))
             {
-                Log.LogError("未实现 [IRefenece] 接口");
+                throw new GameFrameWorkException("未实现 [IRefenece] 接口");
             }
         }
 
@@ -173,11 +172,11 @@ namespace GameFrameWork
         {
             if (type == null)
             {
-                Log.LogError("引用类型为空.");
-                return null;
+                throw new GameFrameWorkException("引用类型为空.");
             }
 
-            ReferenceCollection referenceCollection = null;
+            ReferenceCollection referenceCollection;
+            
             lock (m_DicReferenceCollection)
             {
                 if (!m_DicReferenceCollection.TryGetValue(type, out referenceCollection))
@@ -189,9 +188,5 @@ namespace GameFrameWork
 
             return referenceCollection;
         }
-
-        private static List<Type> m_ListRleaseCollection = new();
-        private static bool m_EnableStrickCheck = false;
-        private static Dictionary<Type, ReferenceCollection> m_DicReferenceCollection = new();
     }
 }

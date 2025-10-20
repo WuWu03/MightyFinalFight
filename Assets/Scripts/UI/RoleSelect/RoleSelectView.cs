@@ -5,7 +5,6 @@
  */
 
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
@@ -13,6 +12,9 @@ using UnityEngine;
 
 public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectViewSettings>
 {
+    private bool m_HasSelect;
+    private int m_CurrSelectIndex = -1;
+    
     protected override void OnOpen(object arg)
     {
         component.roleContentGroupView.onItemUpdateEvent += OnItemUpdate;
@@ -35,7 +37,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
             return;
         }
 
-        Vector2 axis = InputMgr.instance.GetAxis(AxisType.LeftAxis);
+        Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis);
 
         if (axis.y != 0)
         {
@@ -51,10 +53,10 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
             }
 
             component.roleContentGroupView.SelectItem(m_CurrSelectIndex);
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
+            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
         }
 
-        if (m_CurrSelectIndex != -1 && (InputMgr.instance.GetKeyDown(KeyType.A, true) || InputMgr.instance.GetKeyDown(KeyType.X, true)))
+        if (m_CurrSelectIndex != -1 && (GameEntry.inputMgr.GetKeyDown(KeyType.A, true) || GameEntry.inputMgr.GetKeyDown(KeyType.X, true)))
         {
             m_HasSelect = true;
             EnterStage();
@@ -80,10 +82,9 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     private void OnItemUpdate(RoleSelectViewComponent.RoleContentItem item)
     {
         RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas[item.itemIndex];
-
         item.txtName.SetLanguageTextKey(roleSelectConfigData.name);
         item.txtDesc.SetLanguageTextKey(roleSelectConfigData.desc);
-        item.imgRoleIcon.SetSprite(roleSelectConfigData.headIcon);
+        item.imgRoleIcon.spriteName = roleSelectConfigData.headIcon;
     }
 
     private void OnItemSelect(RoleSelectViewComponent.RoleContentItem item, bool isSelect)
@@ -99,15 +100,15 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     private void OnFadeWhiteComplete()
     {
         m_HasSelect = false;
-        AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Start), false);
-        AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Loop), true);
+        GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Start), false);
+        GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Loop), true);
     }
 
     private void EnterStage()
     {
         component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
-        AudioMgr.instance.StopBgm(true);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
+        GameEntry.soundMgr.StopBgm(true);
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
         PlayerMgr.instance.selectRoleId = ConfigDataSheet.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
@@ -115,9 +116,6 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     private void OnFadeBlackComplete()
     {
         CloseSelf();
-        UIMgr.instance.Open<StageView>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<StageView>();
     }
-
-    private bool m_HasSelect = false;
-    private int m_CurrSelectIndex = -1;
 }

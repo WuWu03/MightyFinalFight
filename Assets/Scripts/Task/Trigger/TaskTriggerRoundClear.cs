@@ -1,10 +1,9 @@
-using GameFrameWork.Audio;
-using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class TaskTriggerRoundClear : BaseTaskTrigger
-{
+{    
+    private float m_PlayTimer;
     public TaskTriggerRoundClear(TaskConfigData data) : base(data)
     {
     }
@@ -12,9 +11,9 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmClear), false, 1, 0.3f, true);
+        GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmClear), false, 1, 0.3f, true);
         PlayerMgr.instance.player.Move(Vector2.zero);
-        UIMgr.instance.Open<RoundClearView>();
+        GameEntry.uiMgr.Open<RoundClearView>();
         m_PlayTimer = Time.time;
     }
 
@@ -32,9 +31,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     private void OnLoadFadeComplete()
     {
         Complete();
-        UIMgr.instance.Close<RoundClearView>();
-        UIMgr.instance.Open<StageView>();
+        GameEntry.uiMgr.Close<RoundClearView>();
+        GameEntry.uiMgr.Open<StageView>();
     }
-
-    private float m_PlayTimer = 0f;
 }

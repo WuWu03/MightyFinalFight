@@ -1,3 +1,4 @@
+using System;
 using GameFrameWork.Download;
 using GameFrameWork.Utils;
 using GameFrameWork.WebRequest;
@@ -10,25 +11,28 @@ using UnityEngine.Networking;
 
 namespace GameFrameWork.Version
 {
-    public enum VersionProcessState
+    public class VersionMgr : GameFrameWorkModule,IVersionMgr
     {
-        DontCheckVersion,
-        CheckVersion,
-        CheckVersionUriError,
-        CheckVersionFileError,
-        CheckVersionComplete,
-        VersionAnalyze,
-        VersionAnalyzeError,
-        VersionAnalyzeComplete,
-        DownloadFiles,
-        DownloadFilesError,
-        DownloadFilesComplete,
-        Success,
-        Error,
-    }
-
-    public class VersionMgr : BaseMgr<VersionMgr>
-    {
+        private readonly WaitForSeconds m_DownloadWait;
+        private IDownloadMgr m_DownloadMgr;
+        private IWebRequestMgr m_WebRequestMgr;
+        
+        private ulong m_CurrDownloadSize;
+        private ulong m_DownloadFullSize;
+        private int m_CurrDownloadCount;
+        private int m_DownloadFullCount;
+        private string m_VersionFilePath;
+        private string m_VersionFileContent;
+        private string m_DownloadTempFilePath;
+        private string m_CheckUri;
+        
+        public VersionMgr()
+        {
+            m_DownloadWait = new WaitForSeconds(0.5f);
+        }
+        
+        private event GameFrameWorkAction<VersionProcessState, string, ulong, ulong> m_OnVersionProcessStateChangedEvent;
+        
         public event GameFrameWorkAction<VersionProcessState, string, ulong, ulong> onVersionProcessStateChangedEvent
         {
             add
@@ -41,6 +45,16 @@ namespace GameFrameWork.Version
             }
         }
 
+        public override void Shutdown()
+        {
+            
+        }
+
+        public void SetMgr(IDownloadMgr downloadMgr, IWebRequestMgr webRequestMgr)
+        {
+            m_DownloadMgr =  downloadMgr;
+        }
+        
         public void SetCheckVersionUri(string uri)
         {
             m_CheckUri = uri;
@@ -51,51 +65,47 @@ namespace GameFrameWork.Version
         {
             if (!GameFrameWorkEntry.config.isCheckVersion)
             {
-                Log.LogInfo("框架未开启本版更新功能，不进行版本验证");
                 m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DontCheckVersion, string.Empty, 0, 0);
-                return;
+                throw new Exception("框架未开启本版更新功能，不进行版本验证");
             }
 
             if (string.IsNullOrEmpty(m_CheckUri))
             {
-                Log.LogError("版本验证地址错误，请检查");
                 m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersionUriError, string.Empty, 0, 0);
-                return;
+                throw new Exception("版本验证地址错误，请检查");
             }
 
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersion, string.Empty, 0, 0);
-            WebRequestMgr.instance.AddWebRequest(PathUtil.FormatPath(m_CheckUri, GameFrameWorkEntry.config.versionFileName), "CheckVersionFile", OnRequestVersionFileComplete, OnRequestVersionFileProgress, OnRequestVersionFileError);
+            m_WebRequestMgr.AddWebRequest(PathUtil.FormatPath(m_CheckUri, GameFrameWorkEntry.config.versionFileName), "CheckVersionFile", OnRequestVersionFileComplete, OnRequestVersionFileProgress, OnRequestVersionFileError);
         }
 
         private void OnRequestVersionFileComplete(UnityWebRequest unityWebRequest)
         {
-            StartCoroutine(ReadyToDownload(unityWebRequest));
+            MonoBehaviourMgr.instance.StartCoroutine(ReadyToDownload(unityWebRequest));
         }
 
         private IEnumerator ReadyToDownload(UnityWebRequest unityWebRequest)
         {
             if (unityWebRequest == null || unityWebRequest.downloadHandler == null || string.IsNullOrEmpty(unityWebRequest.downloadHandler.text))
             {
-                Log.LogError("版本文件为空");
                 m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersionFileError, string.Empty, 0, 0);
-                yield break;
+                throw new Exception("版本文件为空");
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return m_DownloadWait;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersionComplete, string.Empty, 0, 0);
-            yield return new WaitForSeconds(0.5f);
+            yield return m_DownloadWait;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.VersionAnalyze, string.Empty, 0, 0);
             m_VersionFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, GameFrameWorkEntry.config.versionFileName);
             m_VersionFileContent = unityWebRequest.downloadHandler.text.Trim();
-            m_DownloadTempFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, "VersionMgrDownloadTemp.downloadtemp");
+            m_DownloadTempFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, "VersionMgrDownloadTemp.downloadTemp");
 
             VersionInfo[] newVersionInfos = GetVersionInfos(m_VersionFileContent);
 
             if (newVersionInfos == null || newVersionInfos.Length < 1)
             {
-                Log.LogError("版本文件解析失败，请检查");
                 m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.VersionAnalyzeError, string.Empty, 0, 0);
-                yield break;
+                throw new Exception("版本文件解析失败，请检查");
             }
 
             VersionInfo[] versionInfos = null;
@@ -109,11 +119,10 @@ namespace GameFrameWork.Version
                 string versionFile = File.ReadAllText(m_VersionFilePath);
                 versionInfos = GetVersionInfos(versionFile);
 
-                if (versionInfos == null || newVersionInfos == null)
+                if (versionInfos == null)
                 {
-                    Log.LogError("版本文件解析失败，请检查");
                     m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.VersionAnalyzeError, string.Empty, 0, 0);
-                    yield break;
+                    throw new Exception("版本文件解析失败，请检查");
                 }
             }
 
@@ -121,8 +130,8 @@ namespace GameFrameWork.Version
 
             if (File.Exists(m_DownloadTempFilePath))
             {
-                string downlaodTempFile = File.ReadAllText(m_DownloadTempFilePath);
-                downloadTempVersionInfos = GetVersionInfos(downlaodTempFile);
+                string downloadTempFile = File.ReadAllText(m_DownloadTempFilePath);
+                downloadTempVersionInfos = GetVersionInfos(downloadTempFile);
             }
 
             List<VersionInfo> downloadInfos = new();
@@ -151,9 +160,9 @@ namespace GameFrameWork.Version
                 downloadInfos.Add(newVersionInfos[i]);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return m_DownloadWait;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.VersionAnalyzeComplete, string.Empty, 0, 0);
-            yield return new WaitForSeconds(0.5f);
+            yield return m_DownloadWait;
             DownloadFiles(downloadInfos);
         }
 
@@ -187,7 +196,7 @@ namespace GameFrameWork.Version
             foreach (VersionInfo versionInfo in downloadInfos)
             {
                 string fileUri = PathUtil.FormatPath(m_CheckUri, versionInfo.fileName);
-                DownloadMgr.instance.AddDownloadFile(fileUri, versionInfo.fileName, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
+                m_DownloadMgr.AddDownloadFile(fileUri, versionInfo.fileName, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
             }
         }
 
@@ -201,14 +210,14 @@ namespace GameFrameWork.Version
             string[] versionContents = versionFile.Split('\n');
             List<VersionInfo> versionInfos = new();
 
-            for (int i = 0; i < versionContents.Length; i++)
+            foreach (var versionContent in versionContents)
             {
-                if (string.IsNullOrEmpty(versionContents[i]))
+                if (string.IsNullOrEmpty(versionContent))
                 {
                     continue;
                 }
 
-                string[] versionInfoParts = versionContents[i].Split('|');
+                string[] versionInfoParts = versionContent.Split('|');
 
                 if (versionInfoParts == null || versionInfoParts.Length != 3)
                 {
@@ -226,23 +235,24 @@ namespace GameFrameWork.Version
             return versionInfos.ToArray();
         }
 
-        private bool TryFindVersionInfo(VersionInfo[] versionInfos, string fileName, out VersionInfo versionInfo)
+        private bool TryFindVersionInfo(VersionInfo[] versionInfos, string fileName, out VersionInfo result)
         {
-            versionInfo = default;
+            result = default;
+            
             if (versionInfos == null || versionInfos.Length == 0 || string.IsNullOrEmpty(fileName))
             {
                 return false;
             }
 
-            for (int i = 0; i < versionInfos.Length; i++)
+            foreach (VersionInfo versionInfo in versionInfos)
             {
-                if (versionInfos[i].fileName == fileName)
+                if (versionInfo.fileName == fileName)
                 {
-                    versionInfo = versionInfos[i];
+                    result = versionInfo;
                     return true;
                 }
             }
-
+            
             return false;
         }
 
@@ -253,8 +263,8 @@ namespace GameFrameWork.Version
 
         private void OnRequestVersionFileError(string errorMsg)
         {
-            Log.LogError("版本验证请求失败，错误信息：", errorMsg);
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.Error, errorMsg, 0, 0);
+            throw new Exception(StringUtil.Append("版本验证请求失败，错误信息：", errorMsg));
         }
 
         private void OnDownloadComplete(string uri, string tag, string version, ulong downloadSize)
@@ -262,7 +272,6 @@ namespace GameFrameWork.Version
             m_CurrDownloadSize += downloadSize;
             m_CurrDownloadCount++;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize, m_DownloadFullSize);
-
             FileUtil.AppendText(m_DownloadTempFilePath, StringUtil.Append(m_CurrDownloadCount > 1 ? "\n" : string.Empty, tag, "|", version, "|", downloadSize.ToString()));
             Log.LogInfo(m_CurrDownloadCount.ToString(), "[", Path.GetFileName(uri), "]下载完成");
 
@@ -280,7 +289,7 @@ namespace GameFrameWork.Version
                 m_VersionFileContent = string.Empty;
                 m_DownloadTempFilePath = string.Empty;
                 m_OnVersionProcessStateChangedEvent = null;
-                DownloadMgr.instance.RemoveAllDownload();
+                m_DownloadMgr.RemoveAllDownload();
             }
         }
 
@@ -292,18 +301,8 @@ namespace GameFrameWork.Version
 
         private void OnDownloadError(string uri, string tag, string version, string errorMsg)
         {
-            Log.LogError("下载文件 [", uri, "] 失败，错误信息：", errorMsg);
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFilesError, errorMsg, 0, 0);
+            throw new Exception(StringUtil.Append("下载文件 [", uri, "] 失败，错误信息：", errorMsg));
         }
-
-        private ulong m_CurrDownloadSize = 0;
-        private ulong m_DownloadFullSize = 0;
-        private int m_CurrDownloadCount = 0;
-        private int m_DownloadFullCount = 0;
-        private string m_VersionFilePath = string.Empty;
-        private string m_VersionFileContent = string.Empty;
-        private string m_DownloadTempFilePath = string.Empty;
-        private string m_CheckUri = string.Empty;
-        private event GameFrameWorkAction<VersionProcessState, string, ulong, ulong> m_OnVersionProcessStateChangedEvent = null;
     }
 }

@@ -5,14 +5,16 @@ namespace GameFrameWork
 {
     public abstract class BaseMgr<T> : MonoBehaviour where T : BaseMgr<T>, new()
     {
+        private bool m_Running;
+        private static T s_Instance;
+        
         public static T instance
         {
             get
             {
                 if (s_Instance is null)
                 {
-                    Log.LogError(StringUtil.Append(typeof(T).Name, "没有实例，请先初始化该实例"));
-                    return null;
+                    throw new GameFrameWorkException(StringUtil.Append("[",typeof(T).Name, "] 没有实例，请先初始化该实例"));
                 }
 
                 return s_Instance;
@@ -23,14 +25,12 @@ namespace GameFrameWork
         {
             if (s_Instance is not null)
             {
-                Log.LogError(StringUtil.Append(typeof(T).Name), "实例已经存在，请不要重复实例化");
-                return;
+                throw new GameFrameWorkException(StringUtil.Append("[", typeof(T).Name, "] 实例已经存在，请不要重复实例化"));
             }
 
             if (manager is null)
             {
-                Log.LogError("管理器为空");
-                return;
+                throw new GameFrameWorkException("管理器为空");
             }
 
             s_Instance = manager.GetOrAddComponent<T>();
@@ -100,8 +100,5 @@ namespace GameFrameWork
             ShutDown();
             OnDestory();
         }
-
-        private bool m_Running = false;
-        private static T s_Instance = null;
     }
 }

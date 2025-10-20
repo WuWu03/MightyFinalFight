@@ -1,8 +1,10 @@
 using GameFrameWork;
-using GameFrameWork.GameEntity;
 
 public class SceneObjectActiveClip : BaseClip
 {
+    private string m_ObjectName = string.Empty;
+    private bool m_IsActive;
+    
     public static SceneObjectActiveClip Create(string objectName, bool isActive)
     {
         SceneObjectActiveClip sceneObjectActiveClip = ReferencePool.Acquire<SceneObjectActiveClip>();
@@ -24,9 +26,9 @@ public class SceneObjectActiveClip : BaseClip
 
     protected override void OnPlay()
     {
-        BaseSceneObject sceneObject = EntityMgr.instance.FindEntity<BaseSceneObject>(m_ObjectName);
+        BaseSceneObject sceneObject = GameEntry.entityMgr.FindEntity<BaseSceneObject>(m_ObjectName);
 
-        if (sceneObject != null) 
+        if (sceneObject is not null) 
         {
             sceneObject.SetActiveSelf(m_IsActive);
         }
@@ -38,7 +40,4 @@ public class SceneObjectActiveClip : BaseClip
     {
 
     }
-
-    private string m_ObjectName = string.Empty;
-    private bool m_IsActive = false;
 }

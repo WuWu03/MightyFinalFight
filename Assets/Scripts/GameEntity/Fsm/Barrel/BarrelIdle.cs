@@ -1,7 +1,9 @@
 using GameFrameWork.Fsm;
 
-public class BarrelIdle : BaseFsmState
+public class BarrelIdle : FsmState
 {
+    private Barrel m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as Barrel;
@@ -21,6 +23,4 @@ public class BarrelIdle : BaseFsmState
     {
         m_Owner = null;
     }
-
-    private Barrel m_Owner = null;
 }

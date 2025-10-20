@@ -1,10 +1,10 @@
 using DragonBones;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 
 public class SkillNormalAttackDeployer : SkillBaseDeployer
 {
+    private readonly Queue<string> m_QueueSound;
     public SkillNormalAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {
         m_QueueSound = new Queue<string>();
@@ -14,19 +14,17 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
     {
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-
-        SkillStateData skillStateData = SkillStateData.Create();
-        skillStateData.dir = m_Owner.dir;
-        skillStateData.skillID = mSkillData.id;
-        skillStateData.animName = mSkillData.AnimationName;
-        skillStateData.animSpeed = mSkillData.AnimSpeed;
-        skillStateData.animTime = mSkillData.AnimTime;
-        skillStateData.canChangeDir = mSkillData.CanChangeDir;
-
+        SkillStateArg skillStateArg = SkillStateArg.Create();
+        skillStateArg.dir = m_Owner.dir;
+        skillStateArg.skillID = mSkillData.id;
+        skillStateArg.animName = mSkillData.AnimationName;
+        skillStateArg.animSpeed = mSkillData.AnimSpeed;
+        skillStateArg.animTime = mSkillData.AnimTime;
+        skillStateArg.canChangeDir = mSkillData.CanChangeDir;
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnAttackMsg(skillStateData);
-        skillStateData.Release();
+        m_Owner.OnAttackMsg(skillStateArg);
+        skillStateArg.Release();
     }
 
     private void SkillEvent(string type, EventObject eventObject)
@@ -57,7 +55,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         if (!m_Owner.isHitSuccess || mSkillData.IsInEffectPlaySound)
         {
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", soundName, ".ogg"));
+            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", soundName, ".ogg"));
         }
     }
 
@@ -74,6 +72,4 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
-
-    private Queue<string> m_QueueSound = null;
 }

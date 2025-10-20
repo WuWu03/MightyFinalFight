@@ -1,8 +1,10 @@
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class BarrelMove : BaseFsmState
+public class BarrelMove : FsmState
 {
+    private Barrel m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as Barrel;
@@ -24,6 +26,4 @@ public class BarrelMove : BaseFsmState
     {
         m_Owner.StopAnimation(AnimName.Move);
     }
-
-    private Barrel m_Owner = null;
 }

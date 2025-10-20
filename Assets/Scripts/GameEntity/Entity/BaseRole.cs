@@ -1,15 +1,53 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
-using GameFrameWork.Camera;
 using GameFrameWork.Timer;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using GameFrameWork.Event;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
+    private event GameFrameWorkAction<HurtStateArg> m_OnHurtEvent;
+    private bool m_IsAttack;
+    private bool m_IsJumpAttack;
+    private bool m_IsDropTrap;
+    private bool m_IsBeCatch;
+    private bool m_IsBeThrow;
+    private bool m_IsCatchControl;
+    private bool m_IsAutoMove;
+    private int m_CurrSkillID;
+    private int m_AttackIndex;
+    private float m_AttackTimer = -1;
+    private float m_AwakenTimer = -1f;
+    private float m_HurtTimer = -1f;
+    private bool m_IsHitSuccess;
+    private bool m_CanCombo = true;
+    private bool m_CanMove;
+    private bool m_CanAttack;
+    private bool m_CanBeHit;
+    private bool m_CanJump;
+    private bool m_CanSkill;
+    private bool m_CanBeCatch;
+    private bool m_XArrived;
+    private bool m_YArrived;
+    private bool m_IsDropGround;
+    private bool m_IsPause;
+    private float m_DropGroundTime;
+    private float m_PrevGravityScale;
+    private float m_PrevLinearDamping;
+    private float m_PrevAngularDamping;
+    private Vector2 m_PrevVelocity = Vector2.zero;
+    private Vector2 m_MoveToPos = Vector2.zero;
+    private Vector2 m_MoveDir = Vector2.zero;
+    private RigidbodyType2D m_PrevBodyType = RigidbodyType2D.Static;
+    private SkillMgr m_SkillMgr;
+    private HurtStateArg m_OnGroundHurtStateArg;
+    private DropTrapStateArg m_DropTrapStateArg;
+    private BaseRoleSkillData m_SkillData;
+    private GameFrameWorkEvent m_AutoMoveComplete;
+    private Queue<HurtStateArg> m_HurtQueue;
+    private List<Bullet> m_Bullets;
+    
     public Vector2 moveToPos
     {
         get
@@ -187,7 +225,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     }
 
 
-    public event GameFrameWorkAction<HurtStateData> onHurtEvent
+    public event GameFrameWorkAction<HurtStateArg> onHurtEvent
     {
         add
         {
@@ -238,15 +276,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
-        m_IsCatchControl = (data as BaseRoleData).isCatchControl;
+
+        if (data is BaseRoleData baseRoleData)
+        {
+            m_IsCatchControl = baseRoleData.isCatchControl;  
+        }
     }
 
     protected override void OnRelease()
     {
         base.OnRelease();
         m_AutoMoveComplete.RemoveAllListeners();
-        m_OnGroundHurtStateData?.Release();
-        m_DropTrapStateData?.Release();
+        m_OnGroundHurtStateArg?.Release();
+        m_DropTrapStateArg?.Release();
         m_SkillData?.Release();
         m_SkillMgr?.Release();
 
@@ -268,9 +310,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_YArrived = false;
         m_IsDropGround = false;
         m_IsPause = false;
-        m_DropGourndTime = 0f;
-        m_OnGroundHurtStateData = null;
-        m_DropTrapStateData = null;
+        m_DropGroundTime = 0f;
+        m_OnGroundHurtStateArg = null;
+        m_DropTrapStateArg = null;
         m_OnHurtEvent = null;
         m_AutoMoveComplete = null;
     }
@@ -343,15 +385,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        MoveStateData moveData = MoveStateData.Create();
-        moveData.dir = dir;
-        moveData.canChangeDir = canChangeDir;
-        OnMoveMsg(moveData);
+        MoveStateArg moveArg = MoveStateArg.Create();
+        moveArg.dir = dir;
+        moveArg.canChangeDir = canChangeDir;
+        OnMoveMsg(moveArg);
 
-        ReferencePool.Release(moveData);
+        ReferencePool.Release(moveArg);
     }
 
-    public virtual void AutoMove(Vector2 pos, UnityAction moveComplete = null)
+    public virtual void AutoMove(Vector2 pos, GameFrameWorkAction moveComplete = null)
     {
         m_MoveToPos = pos;
         m_IsAutoMove = true;
@@ -364,34 +406,34 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public virtual void OnMoveMsg(MoveStateData data)
+    public virtual void OnMoveMsg(MoveStateArg arg)
     {
-        if (data == null)
+        if (arg == null)
         {
             return;
         }
 
         if (IsAnyState(typeof(RoleJump)))
         {
-            SetStateData<RoleJump>(data);
+            SetStateData<RoleJump>(arg);
             return;
         }
 
         if (IsAnyState(typeof(RoleSkill)))
         {
-            SetStateData<RoleSkill>(data);
+            SetStateData<RoleSkill>(arg);
             return;
         }
 
-        if (data.dir == Vector2.zero)
+        if (arg.dir == Vector2.zero)
         {
             ChangeDefaultState();
             return;
         }
 
         ExitSkill();
-        m_MoveDir = data.dir;
-        SetStateData<RoleMove>(data);
+        m_MoveDir = arg.dir;
+        SetStateData<RoleMove>(arg);
         ChangeState<RoleMove>();
     }
 
@@ -412,16 +454,16 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public virtual void OnAttackMsg(SkillStateData data, bool forceJumpAttack = false)
+    public virtual void OnAttackMsg(SkillStateArg skillStateArg, bool forceJumpAttack = false)
     {
-        if (data == null)
+        if (skillStateArg == null)
         {
             return;
         }
 
         m_IsJumpAttack = IsAnyState(typeof(RoleJump)) || forceJumpAttack;
-        ChangeState<RoleSkill>(data);
-        PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + entityAttribute.attackSpeed));
+        ChangeState<RoleSkill>(skillStateArg);
+        PlayAnimation(skillStateArg.animName, skillStateArg.animTime, skillStateArg.animSpeed * (1 + entityAttribute.attackSpeed));
     }
 
     public void DeploySkill(int skillID)
@@ -449,9 +491,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        for (int i = 0; i < m_SkillData.attackIds.Length; i++)
+        foreach (var attackId in m_SkillData.attackIds)
         {
-            if (m_CurrSkillID == m_SkillData.attackIds[i])
+            if (m_CurrSkillID == attackId)
             {
                 m_IsHitSuccess = false;
                 m_IsAttack = false;
@@ -531,15 +573,15 @@ public class BaseRole : BaseAvatar, ICanBeHit
         SetHitSuccess(isHitSuccess);
     }
 
-    public virtual void OnSkillMsg(SkillStateData data)
+    public virtual void OnSkillMsg(SkillStateArg arg)
     {
-        if (data == null)
+        if (arg == null)
         {
             return;
         }
 
-        ChangeState<RoleSkill>(data);
-        PlayAnimation(data.animName, data.animTime, data.animSpeed * (1 + entityAttribute.attackSpeed));
+        ChangeState<RoleSkill>(arg);
+        PlayAnimation(arg.animName, arg.animTime, arg.animSpeed * (1 + entityAttribute.attackSpeed));
     }
 
     public void Jump(Vector2 jumpDir, bool canChangeDir, bool isForceJump = false)
@@ -549,25 +591,25 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        JumpStateData jumpData = JumpStateData.Create();
-        jumpData.dir = jumpDir;
-        jumpData.canChangeDir = canChangeDir;
-        OnJumpMsg(jumpData);
-        jumpData.Release();
+        JumpStateArg jumpArg = JumpStateArg.Create();
+        jumpArg.dir = jumpDir;
+        jumpArg.canChangeDir = canChangeDir;
+        OnJumpMsg(jumpArg);
+        jumpArg.Release();
     }
 
-    public virtual void OnJumpMsg(JumpStateData jumpData)
+    public virtual void OnJumpMsg(JumpStateArg jumpArg)
     {
-        if (jumpData == null)
+        if (jumpArg == null)
         {
             return;
         }
 
         ExitSkill();
 
-        SetStateData<RoleJump>(jumpData);
+        SetStateData<RoleJump>(jumpArg);
         ChangeState<RoleJump>();
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
     }
 
     public virtual bool IsHurtWillDie(int attackValue)
@@ -575,89 +617,89 @@ public class BaseRole : BaseAvatar, ICanBeHit
         return entityAttribute.health - attackValue <= 0;
     }
 
-    public virtual void OnHurtMsg(HurtStateData hurtStateData)
+    public virtual void OnHurtMsg(HurtStateArg hurtStateArg)
     {
-        if (hurtStateData == null || !canBeHit)
+        if (hurtStateArg == null || !canBeHit)
         {
             return;
         }
 
         if (m_HurtTimer > 0f && Time.time - m_HurtTimer < 0.1f)
         {
-            m_HurtQueue.Enqueue(hurtStateData);
+            m_HurtQueue.Enqueue(hurtStateArg);
             return;
         }
 
         m_HurtTimer = Time.time;
-        m_OnHurtEvent?.Invoke(hurtStateData);
+        m_OnHurtEvent?.Invoke(hurtStateArg);
         ExitSkill();
 
-        bool isSwoon = hurtStateData.isSwoon;
+        bool isSwoon = hurtStateArg.isSwoon;
 
         if (isFloat || isDrop)
         {
-            hurtStateData.isChangeVelocity = true;
-            hurtStateData.changeVelocity = Vector2.zero;
+            hurtStateArg.isChangeVelocity = true;
+            hurtStateArg.changeVelocity = Vector2.zero;
         }
 
-        if (!hurtStateData.isSwoon)
+        if (!hurtStateArg.isSwoon)
         {
-            if (IsHurtWillDie(hurtStateData.attackValue))
+            if (IsHurtWillDie(hurtStateArg.attackValue))
             {
                 isSwoon = true;
 
                 if (IsAnyState(typeof(RoleSwoon)) && isInGround)
                 {
-                    hurtStateData.attackForce = SkillUtil.GetGroundSmoonForce(-dir, hurtStateData.attackForce);
+                    hurtStateArg.attackForce = SkillUtil.GetGroundSmoonForce(-dir, hurtStateArg.attackForce);
                 }
                 else
                 {
-                    hurtStateData.attackForce = SkillUtil.GetSmoonForce(hurtStateData.attackerDir);
+                    hurtStateArg.attackForce = SkillUtil.GetSmoonForce(hurtStateArg.attackerDir);
                 }
             }
             else if (isFloat || isDrop)
             {
                 isSwoon = true;
-                hurtStateData.isChangeVelocity = true;
-                hurtStateData.changeVelocity = Vector2.zero;
-                hurtStateData.attackForce = SkillUtil.GetFloatSmoonForce(-dir, hurtStateData.attackForce);
+                hurtStateArg.isChangeVelocity = true;
+                hurtStateArg.changeVelocity = Vector2.zero;
+                hurtStateArg.attackForce = SkillUtil.GetFloatSmoonForce(-dir, hurtStateArg.attackForce);
             }
             else if (IsAnyState(typeof(RoleSwoon)) && isInGround)
             {
                 isSwoon = true;
-                hurtStateData.attackForce = SkillUtil.GetGroundSmoonForce(-dir, hurtStateData.attackForce);
+                hurtStateArg.attackForce = SkillUtil.GetGroundSmoonForce(-dir, hurtStateArg.attackForce);
             }
         }
 
-        if (hurtStateData.attackForce.y > 0)
+        if (hurtStateArg.attackForce.y > 0)
         {
             m_AwakenTimer = -1;
         }
 
-        if (string.IsNullOrEmpty(hurtStateData.hurtAnim))
+        if (string.IsNullOrEmpty(hurtStateArg.hurtAnim))
         {
-            hurtStateData.hurtAnim = AnimName.Hurt;
+            hurtStateArg.hurtAnim = AnimName.Hurt;
         }
 
-        if (!hurtStateData.isDefense)
+        if (!hurtStateArg.isDefense)
         {
             if (isSwoon)
             {
-                ChangeState<RoleSwoon>(hurtStateData);
+                ChangeState<RoleSwoon>(hurtStateArg);
             }
             else
             {
-                ChangeState<RoleHurt>(hurtStateData);
+                ChangeState<RoleHurt>(hurtStateArg);
             }
         }
 
-        if (hurtStateData.isGroundHurt && hurtStateData.attackForce.y > 0)
+        if (hurtStateArg.isGroundHurt && hurtStateArg.attackForce.y > 0)
         {
-            m_OnGroundHurtStateData = hurtStateData;
+            m_OnGroundHurtStateArg = hurtStateArg;
         }
         else
         {
-            OnGroundHurtMsg(hurtStateData);
+            OnGroundHurtMsg(hurtStateArg);
         }
     }
 
@@ -668,9 +710,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeState<RoleDefense>();
     }
 
-    public virtual void OnDropTragMsg(DropTrapStateData dropTrapStateData)
+    public virtual void OnDropTrapMsg(DropTrapStateArg dropTrapStateArg)
     {
-        if (dropTrapStateData == null)
+        if (dropTrapStateArg == null)
         {
             return;
         }
@@ -687,7 +729,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         ExitSkill();
 
-        m_DropTrapStateData = dropTrapStateData;
+        m_DropTrapStateArg = dropTrapStateArg;
         m_IsDropTrap = true;
         rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
@@ -780,24 +822,24 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_SkillMgr.DeploySkill(m_CurrSkillID);
     }
 
-    protected virtual void OnGroundHurtMsg(HurtStateData hurtStateData)
+    protected virtual void OnGroundHurtMsg(HurtStateArg hurtStateArg)
     {
-        if (!hurtStateData.isNotPlayHurtSound)
+        if (!hurtStateArg.isNotPlayHurtSound)
         {
-            string hurtSound = string.IsNullOrEmpty(hurtStateData.hurtSound) ? SoundName.DefaultHurt : hurtStateData.hurtSound;
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, hurtSound));
+            string hurtSound = string.IsNullOrEmpty(hurtStateArg.hurtSound) ? SoundName.DefaultHurt : hurtStateArg.hurtSound;
+            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, hurtSound));
         }
 
-        entityAttribute.SubHealth(hurtStateData.attackValue);
-        hurtStateData.Release();
-        m_OnGroundHurtStateData = null;
+        entityAttribute.SubHealth(hurtStateArg.attackValue);
+        hurtStateArg.Release();
+        m_OnGroundHurtStateArg = null;
     }
 
     protected override void CheckGround()
     {
-        if (m_IsDropGround && m_DropGourndTime > 0 && Time.time - m_DropGourndTime > 0.05f)
+        if (m_IsDropGround && m_DropGroundTime > 0 && Time.time - m_DropGroundTime > 0.05f)
         {
-            m_DropGourndTime = 0f;
+            m_DropGroundTime = 0f;
             m_IsDropGround = false;
         }
 
@@ -826,8 +868,8 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         rigidbody2D.linearDamping = 0;
         onDropEvent.Invoke();
-
-        CheckDropTrag();
+        onDropEvent.RemoveAllListeners();
+        CheckDropTrap();
 
         if (!isInGround || m_IsDropTrap)
         {
@@ -835,8 +877,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         m_IsDropGround = true;
-        m_DropGourndTime = Time.time;
+        m_DropGroundTime = Time.time;
         onGroundEvent.Invoke();
+        onGroundEvent.RemoveAllListeners();
         OnGround();
 
         m_IsJumpAttack = false;
@@ -884,7 +927,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    protected virtual void CheckDropTrag()
+    protected virtual void CheckDropTrap()
     {
         if (!m_IsDropTrap)
         {
@@ -897,16 +940,16 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             if (objectType == ObjectType.Player)
             {
-                entityAttribute.SubHealth(m_DropTrapStateData.attackValue);
+                entityAttribute.SubHealth(m_DropTrapStateArg.attackValue);
 
                 if (entityAttribute.IsDead())
                 {
-                    SetStateData<RoleDead>(m_DropTrapStateData);
+                    SetStateData<RoleDead>(m_DropTrapStateArg);
                     ChangeState<RoleDead>();
                 }
                 else
                 {
-                    SetPos2(m_DropTrapStateData.rebirthPos);
+                    SetPos2(m_DropTrapStateArg.rebirthPos);
                     ChangeState<RoleIdle>();
                     CameraMgr.instance.StartFollow();
                 }
@@ -916,9 +959,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 Release();
             }
 
-            m_DropTrapStateData.Release();
+            m_DropTrapStateArg.Release();
             m_IsDropTrap = false;
-            m_DropTrapStateData = null;
+            m_DropTrapStateArg = null;
         }
     }
 
@@ -927,19 +970,19 @@ public class BaseRole : BaseAvatar, ICanBeHit
         onDropEvent.RemoveAllListeners();
         onGroundEvent.RemoveAllListeners();
 
-        if (m_OnGroundHurtStateData != null)
+        if (m_OnGroundHurtStateArg != null)
         {
-            if (IsHurtWillDie(m_OnGroundHurtStateData.attackValue))
+            if (IsHurtWillDie(m_OnGroundHurtStateArg.attackValue))
             {
-                OnGroundHurtMsg(m_OnGroundHurtStateData);
+                OnGroundHurtMsg(m_OnGroundHurtStateArg);
                 return;
             }
 
-            TimerMgr.instance.Register(0.1f, () =>
+            GameFrameWorkMgr.GetModule<ITimerMgr>().Register(0.1f, () =>
             {
-                if (m_OnGroundHurtStateData != null)
+                if (m_OnGroundHurtStateArg != null)
                 {
-                    OnGroundHurtMsg(m_OnGroundHurtStateData);
+                    OnGroundHurtMsg(m_OnGroundHurtStateArg);
                 }
             });
 
@@ -955,7 +998,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             {
                 m_AwakenTimer = -1f;
                 ChangeDefaultState();
-                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop));
+                GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultDrop));
             }
         }
     }
@@ -998,10 +1041,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             float yOffset = Mathf.Abs(m_MoveToPos.y - pos.y);
             m_YArrived = yOffset <= 0.02f;
-            MoveStateData data = MoveStateData.Create();
-            data.dir = (Vector2.up * yOffset).normalized;
-            OnMoveMsg(data);
-            data.Release();
+            MoveStateArg arg = MoveStateArg.Create();
+            arg.dir = (Vector2.up * yOffset).normalized;
+            OnMoveMsg(arg);
+            arg.Release();
             return;
         }
 
@@ -1009,10 +1052,10 @@ public class BaseRole : BaseAvatar, ICanBeHit
         {
             float xOffset = Mathf.Abs(m_MoveToPos.x - pos.x);
             m_XArrived = xOffset <= 0.02f;
-            MoveStateData data = MoveStateData.Create();
-            data.dir = (Vector2.right * xOffset).normalized;
-            OnMoveMsg(data);
-            data.Release();
+            MoveStateArg arg = MoveStateArg.Create();
+            arg.dir = (Vector2.right * xOffset).normalized;
+            OnMoveMsg(arg);
+            arg.Release();
             return;
         }
 
@@ -1026,45 +1069,4 @@ public class BaseRole : BaseAvatar, ICanBeHit
         m_YArrived = false;
         m_MoveToPos = Vector2.zero;
     }
-
-    private bool m_IsAttack = false;
-    private bool m_IsJumpAttack = false;
-    private bool m_IsDropTrap = false;
-    private bool m_IsBeCatch = false;
-    private bool m_IsBeThrow = false;
-    private bool m_IsCatchControl = false;
-    private bool m_IsAutoMove = false;
-    private int m_CurrSkillID = 0;
-    private int m_AttackIndex = 0;
-    private float m_AttackTimer = -1;
-    private float m_AwakenTimer = -1f;
-    private float m_HurtTimer = -1f;
-    private bool m_IsHitSuccess = false;
-    private bool m_CanCombo = true;
-    private bool m_CanMove = false;
-    private bool m_CanAttack = false;
-    private bool m_CanBeHit = false;
-    private bool m_CanJump = false;
-    private bool m_CanSkill = false;
-    private bool m_CanBeCatch = false;
-    private bool m_XArrived = false;
-    private bool m_YArrived = false;
-    private bool m_IsDropGround = false;
-    private bool m_IsPause = false;
-    private float m_DropGourndTime = 0f;
-    private float m_PrevGravityScale = 0f;
-    private float m_PrevLinearDamping = 0f;
-    private float m_PrevAngularDamping = 0f;
-    private Vector2 m_PrevVelocity = Vector2.zero;
-    private Vector2 m_MoveToPos = Vector2.zero;
-    private Vector2 m_MoveDir = Vector2.zero;
-    private RigidbodyType2D m_PrevBodyType = RigidbodyType2D.Static;
-    private SkillMgr m_SkillMgr = null;
-    private HurtStateData m_OnGroundHurtStateData = null;
-    private DropTrapStateData m_DropTrapStateData = null;
-    private BaseRoleSkillData m_SkillData = null;
-    private UnityEvent m_AutoMoveComplete = null;
-    private Queue<HurtStateData> m_HurtQueue = null;
-    private List<Bullet> m_Bullets = null;
-    private event GameFrameWorkAction<HurtStateData> m_OnHurtEvent = null;
 }

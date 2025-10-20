@@ -1,11 +1,15 @@
-using GameFrameWork.Audio;
-using GameFrameWork.BehaviourTree;
-using GameFrameWork.UI;
+using GameFrameWork;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class BaseEnemy : BaseRole
 {
+    private int m_SkillExp;
+    private int m_HpBarWidth;
+    private bool m_IsBoss;
+    private string[] m_HurtAnim;
+    private BaseEnemySkillData m_BaseEnemySkillData;
+    
     public bool isBoss
     {
         get
@@ -17,14 +21,14 @@ public class BaseEnemy : BaseRole
     protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
         base.OnLoadAssetComplete(go, arg);
-        BehaviourTreeMgr.instance.StartTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.StartTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
     }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
 
-        if (rigidbody2D != null && rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
+        if (rigidbody2D is not null && rigidbody2D.bodyType == RigidbodyType2D.Dynamic)
         {
             float x = rigidbody2D.linearVelocity.x > 0 ? bound.xMax : bound.xMin;
 
@@ -43,7 +47,7 @@ public class BaseEnemy : BaseRole
     protected override void OnRelease()
     {
         PlayerMgr.instance.AddExp(m_SkillExp);
-        BehaviourTreeMgr.instance.RemoveBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.RemoveBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
         m_SkillExp = 0;
         m_HpBarWidth = 0;
         m_IsBoss = false;
@@ -56,6 +60,13 @@ public class BaseEnemy : BaseRole
     {
         base.SetData(data);
         BaseEnemyData enemyData = data as BaseEnemyData;
+
+        if (enemyData == null)
+        {
+            Log.LogError("敌人数据为空");
+            return;
+        }
+        
         m_HurtAnim = enemyData.hurtAnims;
         m_HpBarWidth = enemyData.hpBarWdith;
         m_IsBoss = enemyData.isBoss;
@@ -65,7 +76,14 @@ public class BaseEnemy : BaseRole
     {
         base.SetSkillData(skilldata);
         m_BaseEnemySkillData = skilldata as BaseEnemySkillData;
-        BehaviourTreeMgr.instance.AddBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+
+        if (m_BaseEnemySkillData == null)
+        {
+            Log.LogError("敌人技能数据为空");
+            return;
+        }
+        
+        GameEntry.behaviourTreeMgr.AddBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
     }
 
     public void OppositePlayer()
@@ -76,16 +94,16 @@ public class BaseEnemy : BaseRole
     public override void Pause()
     {
         base.Pause();
-        BehaviourTreeMgr.instance.PauseTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.PauseTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
     }
 
     public override void Resume()
     {
         base.Resume();
-        BehaviourTreeMgr.instance.ResumeTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.ResumeTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
     }
 
-    public override void SetPos(Vector2 pos, float posZ, bool caculateZ = false)
+    public override void SetPos(Vector2 pos, float posZ, bool calculateZ = false)
     {
         if (IsAnyState(typeof(RoleMove)))
         {
@@ -100,7 +118,7 @@ public class BaseEnemy : BaseRole
             pos.y = isMapYCanMove ? pos.y : this.pos.y;
         }
 
-        base.SetPos(pos, posZ, caculateZ);
+        base.SetPos(pos, posZ, calculateZ);
     }
 
     public override void SetIsBeCatch(bool value)
@@ -113,9 +131,9 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    public override void OnHurtMsg(HurtStateData data)
+    public override void OnHurtMsg(HurtStateArg arg)
     {
-        if (data.isBoss)
+        if (arg.isBoss)
         {
             if (IsAnyState(typeof(RoleSkill)))
             {
@@ -125,47 +143,47 @@ public class BaseEnemy : BaseRole
 
         if (isBeCatch)
         {
-            if (m_HurtAnim != null && m_HurtAnim.Length > 0)
+            if (m_HurtAnim is { Length: > 0 })
             {
-                data.hurtAnim = m_HurtAnim[0];
+                arg.hurtAnim = m_HurtAnim[0];
             }
         }
         else
         {
-            if (m_HurtAnim != null && m_HurtAnim.Length > 0)
+            if (m_HurtAnim is { Length: > 0 })
             {
-                data.hurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
+                arg.hurtAnim = m_HurtAnim[Random.Range(0, m_HurtAnim.Length)];
             }
         }
 
-        if (IsHurtWillDie(data.attackValue))
+        if (IsHurtWillDie(arg.attackValue))
         {
-            m_SkillExp = data.skillExp;
+            m_SkillExp = arg.skillExp;
         }
 
-        base.OnHurtMsg(data);
+        base.OnHurtMsg(arg);
     }
 
-    protected override void OnGroundHurtMsg(HurtStateData data)
+    protected override void OnGroundHurtMsg(HurtStateArg arg)
     {
-        if (!data.isGroundHurt)
+        if (!arg.isGroundHurt)
         {
-            int dir = data.attackerPos.x > pos.x ? -1 : 1;
-            Vector3 tempPos = new(dir > 0 ? 0 : 0, bound.size.y / 2, 0.1f * -dir);
+            int dir = arg.attackerPos.x > pos.x ? -1 : 1;
+            Vector3 tempPos = new(0, bound.size.y / 2, 0.1f * -dir);
             EffectMgr.instance.PlayDBEffect(PlayerMgr.instance.roleConfigData.hitEffect, transform, tempPos, Vector3.zero, true, true, 0.1f);
         }
 
-        Vector3 damagePos = transform.position + Vector3.up * boxCollider2D.size.y / 2f + Vector3.right * boxCollider2D.size.x / 2 * data.attackerDir;
+        Vector3 damagePos = transform.position + Vector3.up * boxCollider2D.size.y / 2f + Vector3.right * boxCollider2D.size.x / 2 * arg.attackerDir;
 
-        if (data.attackValue > 0)
+        if (arg.attackValue > 0)
         {
-            HudMgr.instance.ShowPlayerDamage(data.attackValue, damagePos);
-            base.OnGroundHurtMsg(data);
-            UIMgr.instance.Get<MainView>().SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
+            HudMgr.instance.ShowPlayerDamage(arg.attackValue, damagePos);
+            base.OnGroundHurtMsg(arg);
+            GameEntry.uiMgr.Get<MainView>().SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {
-            base.OnGroundHurtMsg(data);
+            base.OnGroundHurtMsg(arg);
         }
     }
 
@@ -178,7 +196,7 @@ public class BaseEnemy : BaseRole
 
         BaseRole throwTarget = collision.gameObject.GetComponent<BaseRole>();
 
-        if (throwTarget == null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
+        if (throwTarget is null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
         {
             return;
         }
@@ -188,44 +206,37 @@ public class BaseEnemy : BaseRole
             return;
         }
 
-        HurtStateData hurtData = HurtStateData.Create();
-        hurtData.skillExp = 2;
-        hurtData.isChangeVelocity = true;
-        hurtData.changeVelocity = Vector2.zero;
-        hurtData.attackerDir = throwTarget.pos.x < pos.x ? 1 : -1;
-        hurtData.attackForce = SkillUtil.GetSmoonForce(hurtData.attackerDir);
-        hurtData.attackerPos = throwTarget.pos;
-        hurtData.canBeDefense = false;
-        hurtData.isSwoon = true;
-        hurtData.attackerId = id;
-        hurtData.attackValue = Mathf.FloorToInt(entityAttribute.maxHealth * 0.1f);
-        hurtData.hurtSound = string.Empty;
-        hurtData.hurtAnim = string.Empty;
-        hurtData.isGroundHurt = true;
-        OnHurtMsg(hurtData);
+        HurtStateArg hurtArg = HurtStateArg.Create();
+        hurtArg.skillExp = 2;
+        hurtArg.isChangeVelocity = true;
+        hurtArg.changeVelocity = Vector2.zero;
+        hurtArg.attackerDir = throwTarget.pos.x < pos.x ? 1 : -1;
+        hurtArg.attackForce = SkillUtil.GetSmoonForce(hurtArg.attackerDir);
+        hurtArg.attackerPos = throwTarget.pos;
+        hurtArg.canBeDefense = false;
+        hurtArg.isSwoon = true;
+        hurtArg.attackerId = entityID;
+        hurtArg.attackValue = Mathf.FloorToInt(entityAttribute.maxHealth * 0.1f);
+        hurtArg.hurtSound = string.Empty;
+        hurtArg.hurtAnim = string.Empty;
+        hurtArg.isGroundHurt = true;
+        OnHurtMsg(hurtArg);
 
-        HurtStateData targetHurt = HurtStateData.Create();
+        HurtStateArg targetHurt = HurtStateArg.Create();
         targetHurt.skillExp = 2;
         targetHurt.isChangeVelocity = true;
         targetHurt.changeVelocity = Vector2.zero;
         targetHurt.attackerDir = throwTarget.pos.x < pos.x ? 1 : -1;
-        targetHurt.attackForce = SkillUtil.GetSmoonForce(-hurtData.attackerDir);
+        targetHurt.attackForce = SkillUtil.GetSmoonForce(-hurtArg.attackerDir);
         targetHurt.attackerPos = pos;
         targetHurt.canBeDefense = false;
         targetHurt.isSwoon = true;
-        targetHurt.attackerId = id;
+        targetHurt.attackerId = entityID;
         targetHurt.attackValue = Mathf.FloorToInt(entityAttribute.maxHealth * 0.1f);
         targetHurt.hurtSound = string.Empty;
         targetHurt.hurtAnim = string.Empty;
         targetHurt.isGroundHurt = true;
         throwTarget.OnHurtMsg(targetHurt);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnHit02));
- 
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnHit02));
     }
-
-    private int m_SkillExp = 0;
-    private int m_HpBarWidth = 0;
-    private bool m_IsBoss = false;
-    private string[] m_HurtAnim = null;
-    private BaseEnemySkillData m_BaseEnemySkillData = null;
 }

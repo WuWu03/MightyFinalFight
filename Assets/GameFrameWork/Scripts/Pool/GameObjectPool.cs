@@ -6,6 +6,27 @@ namespace GameFrameWork.Pool
 {
     public class GameObjectPool
     {
+        private readonly Queue<PoolObjectInfo> m_QueuePool;
+        private GameObject m_Prefab;
+        private Transform m_Root;
+        private int m_UsingCount;
+        private string m_Tag;
+        private bool m_IsFromAsset;
+        private IResourcePoolMgr m_ResourcePoolMgr;
+        
+        public GameObjectPool(IResourcePoolMgr resourcePoolMgr,string tag, Transform poolRoot, GameObject prefab, bool isFromAsset)
+        {
+            GameObject root = new(tag);
+            root.transform.SetParent(poolRoot, false);
+            root.SetActiveSelf(false);
+            m_Root = root.transform;
+            m_Prefab = prefab;
+            m_Tag = tag;
+            m_IsFromAsset = isFromAsset;
+            m_QueuePool = new Queue<PoolObjectInfo>();
+            m_ResourcePoolMgr = resourcePoolMgr;
+        }
+        
         public int count
         {
             get
@@ -29,19 +50,7 @@ namespace GameFrameWork.Pool
                 return m_IsFromAsset;
             }
         }
-
-        public GameObjectPool(string tag, Transform poolRoot, GameObject prefab, bool isFromAsset)
-        {
-            GameObject root = new GameObject(tag);
-            root.transform.SetParent(poolRoot, false);
-            root.SetActiveSelf(false);
-            m_Root = root.transform;
-            m_Prefab = prefab;
-            m_Tag = tag;
-            m_IsFromAsset = isFromAsset;
-            m_QueuePool = new Queue<PoolObjectInfo>();
-        }
-
+        
         public GameObject Get(bool isActive = true)
         {
             GameObject go = null;
@@ -58,7 +67,7 @@ namespace GameFrameWork.Pool
 
             if (go == null)
             {
-                go = GameObject.Instantiate(m_Prefab, null, false);
+                go = Object.Instantiate(m_Prefab, null, false);
             }
 
             if (m_IsFromAsset)
@@ -104,17 +113,17 @@ namespace GameFrameWork.Pool
 
         public void CheckRelease()
         {
-            int count = m_QueuePool.Count;
+            int poolCount = m_QueuePool.Count;
 
-            while (count > 0)
+            while (poolCount > 0)
             {
-                count--;
+                poolCount--;
 
                 PoolObjectInfo info = m_QueuePool.Dequeue();
 
                 if (info.isReleaseImmediate || (info.releaseTime > 0 && Time.time - info.releaseTime >= ConstField.CollectTime))
                 {
-                    DestoryPoolObject(info);
+                    DestroyPoolObject(info);
                     info.Release();
                 }
                 else
@@ -132,33 +141,27 @@ namespace GameFrameWork.Pool
 
                 if (info != null)
                 {
-                    DestoryPoolObject(info);
+                    DestroyPoolObject(info);
                     info.Release();
                 }
             }
 
             if (m_IsFromAsset)
             {
-                AssetsPool.instance.Put(m_Tag, m_Prefab);
+                m_ResourcePoolMgr.Put(m_Tag, m_Prefab);
             }
 
+            Object.DestroyImmediate(m_Root.gameObject);
             m_QueuePool.Clear();
             m_Prefab = null;
+            m_Root = null;
             m_Tag = string.Empty;
             m_IsFromAsset = false;
-            GameObject.Destroy(m_Root.gameObject);
         }
 
-        private void DestoryPoolObject(PoolObjectInfo info)
+        private void DestroyPoolObject(PoolObjectInfo info)
         {
-            GameObject.Destroy(info.poolObject);
+            Object.DestroyImmediate(info.poolObject);
         }
-
-        private GameObject m_Prefab = null;
-        private Transform m_Root = null;
-        private Queue<PoolObjectInfo> m_QueuePool = null;
-        private int m_UsingCount = 0;
-        private string m_Tag = string.Empty;
-        private bool m_IsFromAsset = false;
     }
 }

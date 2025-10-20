@@ -6,11 +6,8 @@
 
 using DragonBones;
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.ConfigData;
 using GameFrameWork.Event;
-using GameFrameWork.Pool;
-using GameFrameWork.Timer;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
@@ -18,6 +15,7 @@ using UnityEngine.UI;
 
 public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 {
+    private GameObject m_Role;
     protected override void OnOpen(object arg)
     {
         
@@ -35,11 +33,9 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
         }
 
         component.imgMapGo.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
-
         int characterId = PlayerMgr.instance.selectRoleId;
         RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
-        GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
-
+        GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
         AddEvent(EventId.StageEnterStartEvent, OnStageEnterStart);
     }
 
@@ -57,7 +53,7 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
     {
         int characterId = PlayerMgr.instance.selectRoleId;
         RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
-        GameObjectPoolMgr.instance.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
+        GameEntry.gameObjectPoolMgr.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
         m_Role = null;
     }
 
@@ -66,13 +62,16 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 
     }
 
-    private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
+    private void OnLoaded(string assetPath, Object obj, object arg)
     {
-        m_Role = obj as GameObject;
-        m_Role.transform.SetParent(component.heroPosGo.transform, false);
-        m_Role.SetActiveSelf(true);
-        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
-        LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+        if (obj is GameObject gameObject)
+        {
+            m_Role = gameObject;
+            m_Role.transform.SetParent(component.heroPosGo.transform, false);
+            m_Role.SetActiveSelf(true);
+            m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
+            LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
+        }
     }
 
     private void OnFadeWhiteComplete()
@@ -81,8 +80,8 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
         RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
         m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
         m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
-        TimerMgr.instance.Register(roleSelectConfig.showTime, OnTimer);
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
+        GameEntry.timerMgr.Register(roleSelectConfig.showTime, OnTimer);
     }
 
     private void OnTimer()
@@ -112,6 +111,4 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
         go.SetActiveSelf(true);
         return go.transform.Find("txtIndex").GetComponent<Text>();
     }
-
-    private GameObject m_Role = null;
 }

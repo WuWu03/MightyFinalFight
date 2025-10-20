@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using GameFrameWork.Event;
 using UnityEngine;
@@ -7,6 +8,9 @@ namespace GameFrameWork.WebRequest
 {
     public class WebRequest : IReference
     {
+        private GameFrameWorkAction<UnityWebRequest> m_RequestCompleteEvent;
+        private GameFrameWorkAction<float> m_RequestProgressEvent;
+        private GameFrameWorkAction<string> m_RequestErrorEvent;
         public string uri { get; private set; }
         public string tag { get; private set; }
         public WWWForm postData { get; private set; }
@@ -18,11 +22,11 @@ namespace GameFrameWork.WebRequest
         {
             add
             {
-                m_OnRequestCompleteEvent += value;
+                m_RequestCompleteEvent += value;
             }
             remove
             {
-                m_OnRequestCompleteEvent -= value;
+                m_RequestCompleteEvent -= value;
             }
         }
 
@@ -30,11 +34,11 @@ namespace GameFrameWork.WebRequest
         {
             add
             {
-                m_OnRequesProgressEvent += value;
+                m_RequestProgressEvent += value;
             }
             remove
             {
-                m_OnRequesProgressEvent -= value;
+                m_RequestProgressEvent -= value;
             }
         }
 
@@ -42,18 +46,17 @@ namespace GameFrameWork.WebRequest
         {
             add
             {
-                m_OnRequestErrorEvent += value;
+                m_RequestErrorEvent += value;
             }
             remove
             {
-                m_OnRequestErrorEvent -= value;
+                m_RequestErrorEvent -= value;
             }
         }
 
-        public static WebRequest Create(MonoBehaviour monoBehaviour, string uri, string tag, WWWForm postData)
+        public static WebRequest Create(string uri, string tag, WWWForm postData)
         {
             WebRequest webRequest = ReferencePool.Acquire<WebRequest>();
-            webRequest.m_MonoBehaviour = monoBehaviour;
             webRequest.uri = uri;
             webRequest.tag = tag;
             webRequest.postData = postData;
@@ -70,15 +73,14 @@ namespace GameFrameWork.WebRequest
             uri = null;
             tag = null;
             postData = null;
-            m_OnRequesProgressEvent = null;
-            m_OnRequestErrorEvent = null;
-            m_OnRequestCompleteEvent = null;
-            m_MonoBehaviour = null;
+            m_RequestProgressEvent = null;
+            m_RequestErrorEvent = null;
+            m_RequestCompleteEvent = null;
         }
 
         public void StartRequest()
         {
-            if (m_MonoBehaviour == null || isDoing || isDone || isError)
+            if (isDoing || isDone || isError)
             {
                 return;
             }
@@ -86,17 +88,17 @@ namespace GameFrameWork.WebRequest
             isDoing = true;
             isDone = false;
             isError = false;
-            m_MonoBehaviour.StartCoroutine(RequestCoroutine());
+            MonoBehaviourMgr.instance.StartCoroutine(RequestCoroutine());
         }
 
         public void StopRequest()
         {
-            if (m_MonoBehaviour == null || !isDoing)
+            if (!isDoing)
             {
                 return;
             }
 
-            m_MonoBehaviour.StopCoroutine(RequestCoroutine());
+            MonoBehaviourMgr.instance.StopCoroutine(RequestCoroutine());
             isDoing = false;
             isDone = false;
             isError = true;
@@ -104,24 +106,15 @@ namespace GameFrameWork.WebRequest
 
         private IEnumerator RequestCoroutine()
         {
-            UnityWebRequest uwr = null;
-
-            if (postData != null)
-            {
-                uwr = UnityWebRequest.Post(uri, postData);
-            }
-            else
-            {
-                uwr = UnityWebRequest.Get(uri);
-            }
+            UnityWebRequest uwr = postData != null ? UnityWebRequest.Post(uri, postData) : UnityWebRequest.Get(uri);
 
             if (uwr == null)
             {
                 isDoing = false;
                 isDone = false;
                 isError = true;
-                m_OnRequestErrorEvent?.Invoke("请求失败，请检查链接是否正确");
-                yield break;
+                m_RequestErrorEvent?.Invoke("请求失败，请检查链接是否正确");
+                throw new Exception("请求失败，请检查链接是否正确");
             }
 
             uwr.timeout = 15;
@@ -129,32 +122,29 @@ namespace GameFrameWork.WebRequest
 
             while (!unityWebRequestAsyncOperation.isDone)
             {
-                m_OnRequesProgressEvent?.Invoke(unityWebRequestAsyncOperation.progress);
+                m_RequestProgressEvent?.Invoke(unityWebRequestAsyncOperation.progress);
                 yield return null;
             }
-
-            if (uwr.result == UnityWebRequest.Result.ConnectionError || uwr.result == UnityWebRequest.Result.ProtocolError || uwr.result == UnityWebRequest.Result.DataProcessingError)
+            
+            switch (uwr.result)
             {
-                isDoing = false;
-                isDone = false;
-                isError = true;
-                m_OnRequestErrorEvent?.Invoke(uwr.error);
-            }
-            else if (uwr.result == UnityWebRequest.Result.Success)
-            {
-                m_OnRequesProgressEvent?.Invoke(1);
-                yield return null;
-
-                isDoing = false;
-                isDone = true;
-                isError = false;
-                m_OnRequestCompleteEvent?.Invoke(uwr);
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.ProtocolError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    isDoing = false;
+                    isDone = false;
+                    isError = true;
+                    m_RequestErrorEvent?.Invoke(uwr.error);
+                    break;
+                case UnityWebRequest.Result.Success:
+                    m_RequestProgressEvent?.Invoke(1);
+                    yield return null;
+                    isDoing = false;
+                    isDone = true;
+                    isError = false;
+                    m_RequestCompleteEvent?.Invoke(uwr);
+                    break;
             }
         }
-
-        private GameFrameWorkAction<UnityWebRequest> m_OnRequestCompleteEvent;
-        private GameFrameWorkAction<float> m_OnRequesProgressEvent;
-        private GameFrameWorkAction<string> m_OnRequestErrorEvent;
-        private MonoBehaviour m_MonoBehaviour = null;
     }
 }

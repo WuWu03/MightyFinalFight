@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class BaseBoundObject : BaseSceneObject
 {
+    private Rect m_Bound = Rect.zero;
+    private BoxCollider2D m_BoxCollider2D;
+    
     public BoxCollider2D boxCollider2D
     {
         get
@@ -83,7 +86,4 @@ public class BaseBoundObject : BaseSceneObject
         Gizmos.DrawLine(leftBottom, leftTop);
         Gizmos.DrawCube(bound.center, Vector3.one * 0.01f);
     }
-
-    private Rect m_Bound = Rect.zero;
-    private BoxCollider2D m_BoxCollider2D = null;
 }

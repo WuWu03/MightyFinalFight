@@ -1,20 +1,22 @@
+using System;
 using System.Collections.Generic;
 
 namespace GameFrameWork.Pool
 {
-    public class ArrayPool<T> : Singleton<ArrayPool<T>> where T : struct
+    public class ArrayPool<T> : Singleton<ArrayPool<T>>
     {
+        private readonly Dictionary<int, Queue<T[]>> m_Pools;
         public ArrayPool() 
         {
-            m_ArrayPools = new();
+            m_Pools = new();
         }
 
         public T[] Get(int length)
         {
-            if (!m_ArrayPools.TryGetValue(length, out Queue<T[]> pool))
+            if (!m_Pools.TryGetValue(length, out Queue<T[]> pool))
             {
                 pool = new Queue<T[]>();
-                m_ArrayPools.Add(length, pool);
+                m_Pools.Add(length, pool);
             }
 
             if (pool.Count > 0)
@@ -29,30 +31,21 @@ namespace GameFrameWork.Pool
         {
             if(array == null)
             {
-                Log.LogError("数组为空，无法进行回收");
-                return;
+                throw new Exception("数组为空，无法进行回收");
             }
 
-            if (!m_ArrayPools.TryGetValue(array.Length, out Queue<T[]> pool))
+            if (!m_Pools.TryGetValue(array.Length, out Queue<T[]> pool))
             {
                 pool = new Queue<T[]>();
-                m_ArrayPools.Add(array.Length, pool);
+                m_Pools.Add(array.Length, pool);
             }
 
             pool.Enqueue(array);
         }
-
-        public void Release()
-        {
-            m_ArrayPools.Clear();
-        }
-
+        
         protected override void OnDispose()
         {
-            Release();
-            m_ArrayPools = null;
+            m_Pools.Clear();
         }
-
-        private Dictionary<int, Queue<T[]>> m_ArrayPools = null;
     }
 }

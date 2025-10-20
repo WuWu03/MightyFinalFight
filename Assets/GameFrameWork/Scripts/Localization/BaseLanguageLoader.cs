@@ -5,13 +5,16 @@ namespace GameFrameWork.Localization
 {
     public abstract class BaseLanguageLoader
     {
+        private readonly string m_DataPath;
+        private bool m_IsInit;
+        
         protected BaseLanguageLoader(string dataPath)
         {
             m_DataPath = dataPath;
             m_IsInit = false;
         }
 
-        public void Init()
+        public void Init(IResourceMgr resourceMgr)
         {
             if (m_IsInit)
             {
@@ -24,7 +27,7 @@ namespace GameFrameWork.Localization
                 return;
             }
 
-            TextAsset txt = AssetsMgr.instance.LoadAssetSync<TextAsset>(m_DataPath);
+            TextAsset txt = resourceMgr.Load<TextAsset>(m_DataPath);
 
             if(txt == null)
             {
@@ -36,20 +39,20 @@ namespace GameFrameWork.Localization
             OnInit(txt);
         }
 
-        public void Reload()
+        public void Reload(IResourceMgr resourceMgr)
         {
-            Release();
-            Init();
+            Release(resourceMgr);
+            Init(resourceMgr);
         }
 
-        public void Release()
+        public void Release(IResourceMgr resourceMgr)
         {
             if (!m_IsInit)
             {
                 return;
             }
 
-            AssetsMgr.instance.UnloadAsset(m_DataPath);
+            resourceMgr.Unload(m_DataPath);
             m_IsInit = false;
             OnRelease();
         }
@@ -59,8 +62,5 @@ namespace GameFrameWork.Localization
         public abstract string GetLanguageText(string key);
 
         protected abstract void OnRelease();
-
-        private bool m_IsInit = false;
-        private string m_DataPath = string.Empty;
     }
 }

@@ -1,6 +1,6 @@
-public sealed class EventId : GameFrameWork.Event.EventId
+public struct EventId
 {
-    public static readonly uint TalkEndEvent = GetEventId();
-    public static readonly uint StageEnterStartEvent = GetEventId();
-    public static readonly uint StageEnterEndEvent = GetEventId();
+    public const uint TalkEndEvent = 1001;
+    public const uint StageEnterStartEvent = 1002;
+    public const uint StageEnterEndEvent = 1003;
 }

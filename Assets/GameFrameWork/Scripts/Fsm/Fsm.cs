@@ -1,12 +1,20 @@
 using System;
 using System.Collections.Generic;
-using GameFrameWork.Event;
+using GameFrameWork.Utils;
 using UnityEngine;
 
 namespace GameFrameWork.Fsm
 {
     public class Fsm : IReference
     {
+        private readonly Dictionary<Type, FsmState> m_FsmStates;
+        private FsmState m_CurrentState;
+        private FsmState m_DefaultState;
+        private string m_Name = string.Empty;
+        private object m_Owner;
+        private float m_CurrentStateTime;
+        private bool m_IsPaused;
+        
         public string name
         {
             get
@@ -47,7 +55,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public BaseFsmState currState
+        public FsmState currState
         {
             get
             {
@@ -78,7 +86,7 @@ namespace GameFrameWork.Fsm
 
         public Fsm()
         {
-            m_FsmStates = new Dictionary<Type, BaseFsmState>();
+            m_FsmStates = new();
         }
 
         public static Fsm Create(object owner, string name)
@@ -93,9 +101,9 @@ namespace GameFrameWork.Fsm
         /// <summary>
         /// 以指定状态运行状态机
         /// </summary>
-        public void Start<T>() where T : BaseFsmState
+        public void Start<T>() where T : FsmState
         {
-            BaseFsmState fsmState = this.GetState<T>();
+            FsmState fsmState = this.GetState<T>();
 
             if (fsmState == null)
             {
@@ -123,7 +131,7 @@ namespace GameFrameWork.Fsm
             m_IsPaused = false;
         }
 
-        public void AddState<T>() where T : BaseFsmState, new()
+        public void AddState<T>() where T : FsmState, new()
         {
             if (!m_FsmStates.ContainsKey(typeof(T)))
             {
@@ -133,7 +141,7 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public void RemoveState<T>() where T : BaseFsmState
+        public void RemoveState<T>() where T : FsmState
         {
             if (m_FsmStates.ContainsKey(typeof(T)))
             {
@@ -141,26 +149,26 @@ namespace GameFrameWork.Fsm
             }
         }
 
-        public void SetStateData<T>(GameFrameWorkEventArg stateData) where T : BaseFsmState
+        public void SetStateData<T>(FsmStateArg stateData) where T : FsmState
         {
-            BaseFsmState state = GetState<T>();
+            FsmState state = GetState<T>();
 
             if (state == null)
             {
-                Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
+                throw new Exception(StringUtil.Append("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             state.SetStateData(this, stateData);
         }
 
-        public void ChangeState<T>(GameFrameWorkEventArg stateData = null) where T : BaseFsmState
+        public void ChangeState<T>(FsmStateArg stateData = null) where T : FsmState
         {
             if (!isRunning)
             {
-                Log.LogError("有限状态机没有启动，调用Start方法启动");
+                throw new Exception("有限状态机没有启动，调用Start方法启动");
             }
 
-            if (m_CurrentState.GetType().Equals(typeof(T)))
+            if (m_CurrentState is T)
             {
                 if (stateData != null)
                 {
@@ -170,11 +178,11 @@ namespace GameFrameWork.Fsm
                 return;
             }
 
-            BaseFsmState state = GetState<T>();
+            FsmState state = GetState<T>();
 
             if (state == null)
             {
-                Log.LogError("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态");
+                throw new Exception(StringUtil.Append("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             if (stateData != null)
@@ -188,13 +196,13 @@ namespace GameFrameWork.Fsm
             m_CurrentState.Enter(this);
         }
 
-        public void SetDefaultState<T>() where T : BaseFsmState
+        public void SetDefaultState<T>() where T : FsmState
         {
-            BaseFsmState state = this.GetState<T>();
+            FsmState state = this.GetState<T>();
 
             if (state == null)
             {
-                Log.LogError("状态 [", typeof(T).Name, "] 不存在，调用AddState方法添加该状态");
+                throw new Exception(StringUtil.Append("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
             }
 
             m_DefaultState = state;
@@ -204,12 +212,12 @@ namespace GameFrameWork.Fsm
         {
             if (m_CurrentState == null)
             {
-                Log.LogError("有限状态机没有启动，调用Start方法启动");
+                throw new Exception("有限状态机没有启动，调用Start方法启动");
             }
 
             if (m_DefaultState == null)
             {
-                Log.LogError("默认状态不存在，调用SetDefaultState方法设置默认状态");
+                throw new Exception("默认状态不存在，调用SetDefaultState方法设置默认状态");
             }
 
             if (m_CurrentState == m_DefaultState)
@@ -223,9 +231,9 @@ namespace GameFrameWork.Fsm
             m_CurrentState.Enter(this);
         }
 
-        public T GetState<T>() where T : BaseFsmState
+        public T GetState<T>() where T : FsmState
         {
-            if (!m_FsmStates.TryGetValue(typeof(T), out BaseFsmState result))
+            if (!m_FsmStates.TryGetValue(typeof(T), out FsmState result))
             {
                 return null;
             }
@@ -233,14 +241,14 @@ namespace GameFrameWork.Fsm
             return result as T;
         }
 
-        public BaseFsmState[] GetAllStates()
+        public FsmState[] GetAllStates()
         {
-            BaseFsmState[] results = new BaseFsmState[m_FsmStates.Count];
+            FsmState[] results = new FsmState[m_FsmStates.Count];
             m_FsmStates.Values.CopyTo(results, 0);
             return results;
         }
 
-        public bool HasState<T>() where T : BaseFsmState
+        public bool HasState<T>() where T : FsmState
         {
             return m_FsmStates.ContainsKey(typeof(T));
         }
@@ -266,6 +274,7 @@ namespace GameFrameWork.Fsm
             {
                 return;
             }
+            
             m_CurrentState.LateUpdate(this, deltaTime, unscaledDeltaTime);
         }
 
@@ -286,7 +295,7 @@ namespace GameFrameWork.Fsm
 
         public void Clear()
         {
-            foreach (KeyValuePair<Type, BaseFsmState> kvp in m_FsmStates)
+            foreach (KeyValuePair<Type, FsmState> kvp in m_FsmStates)
             {
                 kvp.Value.Release(this);
             }
@@ -300,33 +309,22 @@ namespace GameFrameWork.Fsm
             m_DefaultState = null;
         }
 
-        private void Start(BaseFsmState fsmState)
+        private void Start(FsmState fsmState)
         {
             if (isRunning)
             {
-                Log.LogError("有限状态机已经启动，不要重复启动");
+                throw new Exception("有限状态机已经启动，不要重复启动");
             }
 
             if (fsmState == null)
             {
-                Log.LogError("默认状态不存在，调用AddState方法添加该状态");
+                throw new Exception("默认状态不存在，调用AddState方法添加该状态");
             }
 
             m_CurrentStateTime = Time.time;
             m_CurrentState = fsmState;
-
             m_DefaultState ??= fsmState;
-
             fsmState.Enter(this);
         }
-
-        private string m_Name = string.Empty;
-        private object m_Owner = null;
-        private float m_CurrentStateTime;
-        private bool m_IsPaused = false;
-
-        private BaseFsmState m_CurrentState;
-        private BaseFsmState m_DefaultState;
-        private Dictionary<Type, BaseFsmState> m_FsmStates;
     }
 }

@@ -1,9 +1,14 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 
 public class PlayBgmClip : BaseClip
 {
+    private string m_AssetPath = string.Empty;
+    private bool m_IsLoop;
+    private float m_Volume = 1;
+    private float m_LerpTime;
+    private bool m_IsForcePlay;
+    
     public static PlayBgmClip Create(string assetPath, bool isLoop, float volume, float lerpTime, bool isForcePlay)
     {
         PlayBgmClip playBgmStory = ReferencePool.Acquire<PlayBgmClip>();
@@ -31,7 +36,7 @@ public class PlayBgmClip : BaseClip
 
     protected override void OnPlay()
     {
-        AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, m_AssetPath), m_IsLoop, m_Volume, m_LerpTime, m_IsForcePlay);
+        GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, m_AssetPath), m_IsLoop, m_Volume, m_LerpTime, m_IsForcePlay);
         Complete();
     }
 
@@ -39,10 +44,4 @@ public class PlayBgmClip : BaseClip
     {
 
     }
-
-    private string m_AssetPath = string.Empty;
-    private bool m_IsLoop = false;
-    private float m_Volume = 1;
-    private float m_LerpTime = 0;
-    private bool m_IsForcePlay = false;
 }

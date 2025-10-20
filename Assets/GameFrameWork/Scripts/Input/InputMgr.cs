@@ -4,8 +4,36 @@ using UnityEngine;
 
 namespace GameFrameWork.Input
 {
-    public class InputMgr : BaseMgr<InputMgr>
+    public class InputMgr : GameFrameWorkModule , IInputMgr
     {
+        private event GameFrameWorkFloatAction m_GetDirectionEvent;
+        private event GameFrameWorkBooleanAction<int> m_GetPreConditionEvent;
+        private event GameFrameWorkAction m_InputDeviceChangeEvent;
+        private readonly Dictionary<string, bool> m_DicIsKeyDown;
+        private readonly List<KeyType> m_ComboKeys;
+        private readonly Queue<string> m_QueueKeyDown;
+        private readonly List<ComboKeyEventArgs> m_ComboKeyEvents;
+        private readonly Dictionary<KeyType, List<GameFrameWorkAction>> m_DicAfterTriggerEvents;
+        
+        private float m_CurrDir;
+        private float m_KeyDownTimer = -1f;
+        private bool m_IsRunning;
+        private bool m_IsJoystickInput;
+        private int m_CurrKeyDown = -1;
+        private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
+        private AxisType m_AxisDownType = AxisType.None;
+        private const float KeyDownTime = 0.05f;
+        
+        public InputMgr()
+        {
+            m_DicIsKeyDown = new();
+            m_ComboKeys = new();
+            m_QueueKeyDown = new();
+            m_ComboKeyEvents = new();
+            m_DicAfterTriggerEvents = new();
+            InputHelper.Init();
+        }
+        
         public event GameFrameWorkFloatAction getDirectionEvent
         {
             add
@@ -22,11 +50,11 @@ namespace GameFrameWork.Input
         {
             add
             {
-                m_GetPreConditonEvent += value;
+                m_GetPreConditionEvent += value;
             }
             remove
             {
-                m_GetPreConditonEvent -= value;
+                m_GetPreConditionEvent -= value;
             }
         }
 
@@ -62,19 +90,18 @@ namespace GameFrameWork.Input
             }
         }
 
-        protected override void OnAwake()
+        public override void Shutdown()
         {
-            m_DicIsKeyDown = new();
-            m_ListComboKeyEvent = new();
-            m_ListComboKey = new();
-            m_TriggerKey = new();
-            m_QueueKeyDown = new();
-            m_DicAfterTriggerEvents = new();
-
-            InputHelper.Init();
+            InputHelper.Dispose();
+            m_DicIsKeyDown.Clear();
+            m_ComboKeys.Clear();
+            m_QueueKeyDown.Clear();
+            m_ComboKeyEvents.Clear();
+            m_DicAfterTriggerEvents.Clear();
+            m_IsRunning = false;
         }
 
-        protected override void OnUpdate()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
             string[] joystickNames = UnityEngine.Input.GetJoystickNames();
             bool isConnected = joystickNames.Length > 0 && !string.IsNullOrEmpty(joystickNames[0]);
@@ -84,7 +111,7 @@ namespace GameFrameWork.Input
                 m_IsJoystickInput = false;
                 m_InputDeviceChangeEvent?.Invoke();
             }
-            else if (isConnected && !m_IsJoystickInput && AnyJoystickInput())
+            else if (!m_IsJoystickInput && AnyJoystickInput())
             {
                 m_IsJoystickInput = true;
                 m_InputDeviceChangeEvent?.Invoke();
@@ -110,33 +137,7 @@ namespace GameFrameWork.Input
 
             CheckCombo();
         }
-
-        protected override void OnShutDown()
-        {
-            base.OnShutDown();
-
-            InputHelper.Dispose();
-            m_DicIsKeyDown.Clear();
-            m_ListComboKey.Clear();
-            m_TriggerKey.Clear();
-            m_ListComboKeyEvent.Clear();
-            m_QueueKeyDown.Clear();
-            m_DicAfterTriggerEvents.Clear();
-            m_IsRunning = false;
-        }
-
-        protected override void OnDestory()
-        {
-            base.OnDestory();
-            m_DicIsKeyDown = null;
-            m_ListComboKey = null;
-            m_TriggerKey = null;
-            m_ListComboKeyEvent = null;
-            m_QueueKeyDown = null;
-            m_DicAfterTriggerEvents = null;
-            m_IsRunning = false;
-        }
-
+        
         public void SetKey(KeyType keyType, string keyName)
         {
             InputHelper.SetKey(keyType, keyName);
@@ -184,17 +185,17 @@ namespace GameFrameWork.Input
 
         public void AddComboKeyEvent(KeyType[] keys, int eventId, GameFrameWorkAction<int, bool> keyEvent)
         {
-            m_ListComboKeyEvent.Add(ComboKeyEventArgs.Create(keys, eventId, keyEvent));
+            m_ComboKeyEvents.Add(ComboKeyEventArgs.Create(keys, eventId, keyEvent));
         }
 
         public void RemoveComboKeyEvent(int eventID)
         {
-            for (int i = m_ListComboKeyEvent.Count - 1; i >= 0; i--)
+            for (int i = m_ComboKeyEvents.Count - 1; i >= 0; i--)
             {
-                if (m_ListComboKeyEvent[i].eventId.Equals(eventID))
+                if (m_ComboKeyEvents[i].eventId.Equals(eventID))
                 {
-                    m_ListComboKeyEvent[i].Release();
-                    m_ListComboKeyEvent.RemoveAt(i);
+                    m_ComboKeyEvents[i].Release();
+                    m_ComboKeyEvents.RemoveAt(i);
                     break;
                 }
             }
@@ -203,8 +204,8 @@ namespace GameFrameWork.Input
         public void RemoveAllComboKeyEvent()
         {
             m_GetDirectionEvent = null;
-            m_GetPreConditonEvent = null;
-            m_ListComboKeyEvent.Clear();
+            m_GetPreConditionEvent = null;
+            m_ComboKeyEvents.Clear();
         }
 
         public void AddAfterTriggerEvent(KeyType keyType, GameFrameWorkAction afterTriggerEvent)
@@ -250,7 +251,6 @@ namespace GameFrameWork.Input
                 {
                     bool prevHorizontal = InputHelper.GetAxisDown(axisType, 0);
                     bool prevVertical = InputHelper.GetAxisDown(axisType, 1);
-
                     m_AxisDownIndex = x != 0 ? 0 : 1;
                     m_AxisDownType = axisType;
 
@@ -262,8 +262,6 @@ namespace GameFrameWork.Input
                     axis.x = x != 0 ? speed * (x > 0 ? 1 : -1) : 0;
                     axis.y = y != 0 ? speed * (y > 0 ? 1 : -1) : 0;
                 }
-
-                return axis;
             }
             else
             {
@@ -288,7 +286,7 @@ namespace GameFrameWork.Input
 
         private void CheckCombo()
         {
-            if (!m_IsRunning || m_ListComboKeyEvent == null || m_ListComboKeyEvent.Count < 1)
+            if (!m_IsRunning || m_ComboKeyEvents == null || m_ComboKeyEvents.Count < 1)
             {
                 return;
             }
@@ -318,11 +316,11 @@ namespace GameFrameWork.Input
                 {
                     KeyType keyType = allKeys[m_CurrKeyDown].replaceKeyType != KeyType.None ? allKeys[m_CurrKeyDown].replaceKeyType : allKeys[m_CurrKeyDown].keyType;
 
-                    if (m_DicAfterTriggerEvents.TryGetValue(keyType, out List<GameFrameWorkAction> eventList))
+                    if (m_DicAfterTriggerEvents.TryGetValue(keyType, out List<GameFrameWorkAction> triggerEvents))
                     {
-                        for (int i = 0; i < eventList.Count; i++)
+                        foreach (var triggerEvent in triggerEvents)
                         {
-                            eventList[i]?.Invoke();
+                            triggerEvent?.Invoke();
                         }
                     }
                 }
@@ -333,65 +331,61 @@ namespace GameFrameWork.Input
 
         private bool CheckComboAxis(AxisType axisType)
         {
-            bool keyDown = false;
-
             Vector2 axis = GetAxis(axisType);
 
             if (m_CurrDir == 0)
             {
-                m_CurrDir = m_GetDirectionEvent != null ? m_GetDirectionEvent() : 1;
+                m_CurrDir = m_GetDirectionEvent?.Invoke() ?? 1;
             }
 
             if (axis.y > 0)
             {
-                m_ListComboKey.Add(KeyType.Up);
+                m_ComboKeys.Add(KeyType.Up);
             }
             else if (axis.y < 0)
             {
-                m_ListComboKey.Add(KeyType.Down);
+                m_ComboKeys.Add(KeyType.Down);
             }
 
             if (axis.x > 0)
             {
-                m_ListComboKey.Add(m_CurrDir > 0 ? KeyType.Right : KeyType.Left);
+                m_ComboKeys.Add(m_CurrDir > 0 ? KeyType.Right : KeyType.Left);
             }
             else if (axis.x < 0)
             {
-                if (m_ListComboKey.Count > 0 && m_ListComboKey[^1] == KeyType.Right)
+                if (m_ComboKeys.Count > 0 && m_ComboKeys[^1] == KeyType.Right)
                 {
-                    m_ListComboKey[^1] = KeyType.Left;
-                    m_ListComboKey.Add(KeyType.Right);
+                    m_ComboKeys[^1] = KeyType.Left;
+                    m_ComboKeys.Add(KeyType.Right);
                 }
                 else
                 {
-                    if (m_CurrDir > 0) m_ListComboKey.Add(KeyType.Left);
-                    if (m_CurrDir < 0) m_ListComboKey.Add(KeyType.Right);
+                    if (m_CurrDir > 0) m_ComboKeys.Add(KeyType.Left);
+                    if (m_CurrDir < 0) m_ComboKeys.Add(KeyType.Right);
                 }
             }
 
             bool isX = axis.x > 0 || axis.x < 0;
             bool isY = axis.y > 0 || axis.y < 0;
-            keyDown = isX || isY;
-
-            return keyDown;
+            return isX || isY;
         }
 
         private bool CheckComboKey(KeyArgs key)
         {
-            bool isKeyDown = false;
-
             if (key == null)
             {
-                return isKeyDown;
+                return false;
             }
-
+            
+            bool isKeyDown = false;
+            
             if (GetComboKeyDown(key.keyName, key.keyCode, key.isTurbo))
             {
                 KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : key.keyType;
 
-                if (m_ListComboKey.Count < 1 || m_ListComboKey[^1] != replaceKeyType)
+                if (m_ComboKeys.Count < 1 || m_ComboKeys[^1] != replaceKeyType)
                 {
-                    m_ListComboKey.Add(replaceKeyType);
+                    m_ComboKeys.Add(replaceKeyType);
                     isKeyDown = true;
                 }
             }
@@ -401,33 +395,27 @@ namespace GameFrameWork.Input
 
         private bool TriggerKeyEvent()
         {
-            if (m_ListComboKey.Count < 2)
+            if (m_ComboKeys.Count < 2)
             {
                 return false;
             }
 
-            for (int i = 0; i < m_ListComboKeyEvent.Count; i++)
+            foreach (var comboKeyEvent in m_ComboKeyEvents)
             {
-                if (m_ListComboKeyEvent[i].keys.Length < 1 || m_ListComboKey.Count < m_ListComboKeyEvent[i].keys.Length) continue;
-
-                bool isMatch = false;
-
-                for (int j = 0; j < m_ListComboKeyEvent[i].keys.Length; j++)
+                if (comboKeyEvent.keys.Length < 1 || m_ComboKeys.Count < comboKeyEvent.keys.Length)
                 {
-                    if (IsMatch(m_ListComboKeyEvent[i].keys, m_ListComboKey))
-                    {
-                        isMatch = true;
-                        break;
-                    }
+                    continue;
                 }
 
-                if (!isMatch || m_GetPreConditonEvent == null || !m_GetPreConditonEvent(m_ListComboKeyEvent[i].eventId))
+                bool isMatch = IsMatch(comboKeyEvent.keys, m_ComboKeys);
+                
+                if (!isMatch || m_GetPreConditionEvent == null || !m_GetPreConditionEvent(comboKeyEvent.eventId))
                 {
                     continue;
                 }
 
                 ResetComboKeys();
-                m_ListComboKeyEvent[i].keyEvent?.Invoke(m_ListComboKeyEvent[i].eventId, true);
+                comboKeyEvent.keyEvent?.Invoke(comboKeyEvent.eventId, true);
                 return true;
             }
 
@@ -451,12 +439,10 @@ namespace GameFrameWork.Input
 
                 return IsMatch(origin, input, originIndex, inputIndex);
             }
-            else
-            {
-                inputIndex++;
-                originIndex++;
-                return IsMatch(origin, input, originIndex, inputIndex);
-            }
+            
+            inputIndex++;
+            originIndex++;
+            return IsMatch(origin, input, originIndex, inputIndex);
         }
 
         private bool GetComboKeyDown(string keyName, KeyCode keyCode, bool isTurbo)
@@ -488,25 +474,22 @@ namespace GameFrameWork.Input
                     return !prev;
                 }
 
-                return isKeyDown;
+                return true;
             }
-            else
-            {
-                m_DicIsKeyDown[keyName] = false;
-            }
-
+            
+            m_DicIsKeyDown[keyName] = false;
             return false;
         }
 
         private bool AnyJoystickInput()
         {
-            AxisArgs[] allAxis = InputHelper.GetAllAxis();
+            AxisArgs[] allAxes = InputHelper.GetAllAxis();
 
-            if (allAxis != null && allAxis.Length > 0)
+            if (allAxes is { Length: > 0 })
             {
-                for (int i = 0; i < allAxis.Length; i++)
+                foreach (var axis in allAxes)
                 {
-                    if (GetAxis(allAxis[i], false) != Vector2.zero)
+                    if (GetAxis(axis, false) != Vector2.zero)
                     {
                         return true;
                     }
@@ -515,11 +498,11 @@ namespace GameFrameWork.Input
 
             KeyArgs[] allKeys = InputHelper.GetAllKeys();
 
-            if (allKeys != null && allKeys.Length > 0)
+            if (allKeys is { Length: > 0 })
             {
-                for (int i = 0; i < allKeys.Length; i++)
+                foreach (var key in allKeys)
                 {
-                    if (GetKeyDown(allKeys[i], false))
+                    if (GetKeyDown(key, false))
                     {
                         return true;
                     }
@@ -588,28 +571,10 @@ namespace GameFrameWork.Input
 
         private void ResetComboKeys()
         {
-            m_ListComboKey.Clear();
+            m_ComboKeys.Clear();
             m_KeyDownTimer = -1f;
             m_CurrKeyDown = -1;
             m_CurrDir = 0;
         }
-
-        private float m_CurrDir = 0;
-        private float m_KeyDownTimer = -1f;
-        private const float KeyDownTime = 0.05f;
-        private bool m_IsRunning = false;
-        private bool m_IsJoystickInput = false;
-        private int m_CurrKeyDown = -1;
-        private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
-        private AxisType m_AxisDownType = AxisType.None;
-        private Dictionary<string, bool> m_DicIsKeyDown = null;
-        private List<KeyType> m_ListComboKey = null;
-        private List<KeyType> m_TriggerKey = null;
-        private Queue<string> m_QueueKeyDown = null;
-        private List<ComboKeyEventArgs> m_ListComboKeyEvent = null;
-        private Dictionary<KeyType, List<GameFrameWorkAction>> m_DicAfterTriggerEvents = null;
-        private event GameFrameWorkFloatAction m_GetDirectionEvent = null;
-        private event GameFrameWorkBooleanAction<int> m_GetPreConditonEvent = null;
-        private event GameFrameWorkAction m_InputDeviceChangeEvent = null;
     }
 }

@@ -222,7 +222,7 @@ namespace GameFrameWork.Editor
             sb.AppendFormat("public class {0}Settings : UIBaseSettings", setting.viewName);
             sb.AppendLine("\r\n{");
 
-            sb.Append("\tpublic override string prefabName { get { " + $"return \"{setting.viewName}\".prefab" + "; } }\r\n");
+            sb.Append("\tpublic override string prefabName { get { " + $"return \"{setting.viewName}.prefab\"" + "; } }\r\n");
             sb.Append("\tpublic override float delayDestroyTime { get { " + $"return {delayDestroyTime}f" + "; } }\r\n");
             sb.Append("\tpublic override bool canPopUp { get { " + $"return {canPopUp}" + "; } }\r\n");
             sb.Append("\tpublic override UILayer layer { get { " + $"return UILayer.{layerName}" + "; } }\r\n");

@@ -1,11 +1,15 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class RoleJumpClip : BaseClip
 {
+    private BaseRole m_Role;
+    private int m_RoleId;
+    private Vector2 m_Dir = Vector2.zero;
+    private float m_PosZ;
+    
     public static RoleJumpClip Create(int roleId, Vector2 dir, float posZ)
     {
         RoleJumpClip roleJumpStory = ReferencePool.Acquire<RoleJumpClip>();
@@ -48,12 +52,12 @@ public class RoleJumpClip : BaseClip
         {
             m_Role = SceneEntityMgr.instance.GetEnemyById(m_RoleId);
 
-            if (m_Role == null)
+            if (m_Role is null)
             {
                 string roleName = StringUtil.Append("StoryRole_", m_RoleId.ToString());
-                m_Role = EntityMgr.instance.FindEntity<BaseRole>(roleName);
+                m_Role = GameEntry.entityMgr.FindEntity<BaseRole>(roleName);
 
-                if (m_Role == null)
+                if (m_Role is null)
                 {
                     RoleConfigData roleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_RoleId);
                     m_Role = SceneEntityFactory.CreateRole(roleName, roleConfigData.assetName, 1f, Vector2.zero);
@@ -75,9 +79,4 @@ public class RoleJumpClip : BaseClip
         m_Role.onDropEvent.RemoveListener(OnDropEvent);
         m_Role.UpdatePosZ(m_PosZ);
     }
-
-    private BaseRole m_Role;
-    private int m_RoleId = 0;
-    private Vector2 m_Dir = Vector2.zero;
-    private float m_PosZ = 0f;
 }

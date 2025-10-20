@@ -1,34 +1,39 @@
+using System;
 using GameFrameWork.Assets;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using GameFrameWork.Event;
 using UnityEngine;
+using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.Pool
 {
-    public class GameObjectPoolMgr : BaseMgr<GameObjectPoolMgr>
+    public class GameObjectPoolMgr : GameFrameWorkModule, IGameObjectPoolMgr
     {
-        protected override void OnAwake()
+        private readonly List<string> m_ReleaseKeys;
+        private readonly Dictionary<string, GameObjectPool> m_Pools;
+        private readonly Dictionary<string, List<LoadRequest>> m_LoadRequests;
+        private readonly List<GameObjectUnLoader> m_GameObjectUnloaders;
+        private IResourcePoolMgr m_ResourcePoolMgr;
+        private Transform m_PoolRoot;
+
+        public GameObjectPoolMgr()
         {
-            base.OnAwake();
-
-            m_PoolRoot = new GameObject("GameObjectPool").transform;
-            m_PoolRoot.SetParent(transform, false);
-            m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
-
             m_Pools = new();
             m_LoadRequests = new();
             m_ReleaseKeys = new();
-            m_Unloaders = new();
+            m_GameObjectUnloaders = new();
+        }
+
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
         }
 
         /// <summary>
         /// 释放
         /// </summary>
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
-            base.OnShutDown();
-
             foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
             {
                 kvp.Value.Clear();
@@ -37,17 +42,15 @@ namespace GameFrameWork.Pool
             m_ReleaseKeys.Clear();
             m_Pools.Clear();
             m_LoadRequests.Clear();
-            m_Unloaders.Clear();
+            m_GameObjectUnloaders.Clear();
         }
 
-        protected override void OnDestory()
+        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr, Transform poolRoot)
         {
-            base.OnDestory();
-
-            m_ReleaseKeys = null;
-            m_Pools = null;
-            m_LoadRequests = null;
-            m_Unloaders = null;
+            m_ResourcePoolMgr = resourcePoolMgr;
+            m_PoolRoot = new GameObject("GameObjectPool").transform;
+            m_PoolRoot.SetParent(poolRoot, false);
+            m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace GameFrameWork.Pool
         /// <summary>
         /// 从资源中加载一个物体
         /// </summary>
-        public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityEngine.Object, object> loadedAction, object arg = null)
+        public void GetFromAsset(string assetPath, GameFrameWorkAction<string, UnityObject, object> loadedAction, object arg = null)
         {
             GameObject go = Get(assetPath, null, string.Empty);
 
@@ -115,7 +118,7 @@ namespace GameFrameWork.Pool
                 {
                     listLoadRequest = new List<LoadRequest>() { request };
                     m_LoadRequests.Add(assetPath, listLoadRequest);
-                    AssetsPool.instance.Get<GameObject>(assetPath, OnLoaded, arg);
+                    m_ResourcePoolMgr.Get<GameObject>(assetPath, OnLoaded, arg);
                 }
                 else
                 {
@@ -131,15 +134,14 @@ namespace GameFrameWork.Pool
         {
             if (m_Pools.TryGetValue(tag, out GameObjectPool pool))
             {
-                m_Unloaders.Clear();
-                go.GetComponentsInChildren<GameObjectUnLoader>(true, m_Unloaders);
+                m_GameObjectUnloaders.Clear();
+                go.GetComponentsInChildren<GameObjectUnLoader>(true, m_GameObjectUnloaders);
 
-                for (int i = 0; i < m_Unloaders.Count; i++)
+                foreach (var gameObjectUnLoader in m_GameObjectUnloaders)
                 {
-                    GameObjectUnLoader gameObjectUnLoader = m_Unloaders[i];
                     if (gameObjectUnLoader.gameObject != go && !string.IsNullOrEmpty(gameObjectUnLoader.gameObjectPath))
                     {
-                        gameObjectUnLoader.Release();
+                        gameObjectUnLoader.Release(this);
                     }
                 }
 
@@ -149,8 +151,6 @@ namespace GameFrameWork.Pool
 
         public void CheckRelease()
         {
-            base.OnUpdate();
-
             m_ReleaseKeys.Clear();
 
             foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
@@ -163,10 +163,10 @@ namespace GameFrameWork.Pool
                 }
             }
 
-            for (int i = 0; i < m_ReleaseKeys.Count; i++)
+            foreach (var releaseKey in m_ReleaseKeys)
             {
-                m_Pools[m_ReleaseKeys[i]].Clear();
-                m_Pools.Remove(m_ReleaseKeys[i]);
+                m_Pools[releaseKey].Clear();
+                m_Pools.Remove(releaseKey);
             }
         }
 
@@ -174,7 +174,7 @@ namespace GameFrameWork.Pool
         {
             if (!m_Pools.TryGetValue(tag, out _))
             {
-                GameObjectPool pool = new(tag, m_PoolRoot, obj, isFromAsset);
+                GameObjectPool pool = new(m_ResourcePoolMgr, tag, m_PoolRoot, obj, isFromAsset);
 
                 for (int i = 0; i < prefab; i++)
                 {
@@ -185,29 +185,22 @@ namespace GameFrameWork.Pool
             }
         }
 
-        private void OnLoaded(string assetPath, UnityEngine.Object obj, object arg)
+        private void OnLoaded(string assetPath, UnityObject obj, object arg)
         {
-            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> listLoadRequest))
+            if (!m_LoadRequests.TryGetValue(assetPath, out List<LoadRequest> loadRequests))
             {
-                Log.LogError(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
-                return;
+                throw new Exception(StringUtil.Append("[", assetPath, "] 资源加载完成 , 但回调函数不存在"));
             }
 
             AddPool(assetPath, obj as GameObject, 1, true);
 
-            for (int i = 0; i < listLoadRequest.Count; i++)
+            foreach (var loadRequest in loadRequests)
             {
-                listLoadRequest[i].Loaded(Get(assetPath, null, string.Empty));
-                listLoadRequest[i].Release();
+                loadRequest.Loaded(Get(assetPath, null, string.Empty));
+                loadRequest.Release();
             }
 
             m_LoadRequests.Remove(assetPath);
         }
-
-        private List<string> m_ReleaseKeys = null;
-        private Transform m_PoolRoot = null;
-        private Dictionary<string, GameObjectPool> m_Pools = null;
-        private Dictionary<string, List<LoadRequest>> m_LoadRequests = null;
-        private List<GameObjectUnLoader> m_Unloaders = null;
     }
 }

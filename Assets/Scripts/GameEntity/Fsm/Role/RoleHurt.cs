@@ -1,10 +1,12 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleHurt : BaseFsmState
+public class RoleHurt : FsmState
 {
+    private string m_HurtAnim = string.Empty;
+    private float m_HurtTimer = -1f;
+    private BaseRole m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -38,11 +40,14 @@ public class RoleHurt : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
-        HurtStateData hurtData = stateData as HurtStateData;
-        m_HurtAnim = hurtData.hurtAnim;
+        base.OnSetStateData(fsm, fsmStateArg);
+        
+        if (fsmStateArg is HurtStateArg hurtStateArg)
+        {
+            m_HurtAnim = hurtStateArg.hurtAnim;
+        }
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
@@ -56,8 +61,4 @@ public class RoleHurt : BaseFsmState
     {
         m_Owner = null;
     }
-
-    private string m_HurtAnim = string.Empty;
-    private float m_HurtTimer = -1f;
-    private BaseRole m_Owner = null;
 }

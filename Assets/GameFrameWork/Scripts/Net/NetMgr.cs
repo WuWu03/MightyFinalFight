@@ -8,8 +8,30 @@ using GameFrameWork.Event;
 
 namespace GameFrameWork.Net
 {
-    public class NetMgr : BaseMgr<NetMgr>
+    public class NetMgr : GameFrameWorkModule , INetMgr
     {
+        private event GameFrameWorkAction m_OnConnectSuccessEvent;
+        private event GameFrameWorkAction m_OnConnectFailEvent;
+        private event GameFrameWorkAction m_OnDisConnectEvent;
+        private readonly NetDispatcher m_NetDispatcher;
+        private readonly Queue<byte[]> m_SendQueue;
+        private readonly Queue<byte[]> m_ReceiveQueue;
+        private readonly byte[] m_ReceiveBuffer;
+        private MemoryStreamEx m_ReceiveMse;
+        private Socket m_Socket;
+        private string m_IP;
+        private int m_Port;
+        private bool m_IsConnected;
+        private int m_CheckCount;
+        
+        public NetMgr()
+        {
+            m_ReceiveBuffer = new byte[1024 * 512];
+            m_SendQueue = new();
+            m_ReceiveQueue = new();
+            m_NetDispatcher = new();
+        }
+        
         public event GameFrameWorkAction onConnectSuccessEvent
         {
             add
@@ -53,47 +75,19 @@ namespace GameFrameWork.Net
                 return m_IsConnected;
             }
         }
-
-        protected override void OnAwake()
+        
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            m_ReceiveBuffer = new byte[1024 * 512];
-            m_SendQueue = new();
-            m_ReceiveQueue = new();
-            m_ReceiveEvents = new();
-        }
-
-        protected override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-
             if (m_IsConnected)
             {
                 CheckReceiveBuffer();
             }
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
-            base.OnShutDown();
             Close();
-
-            m_SendQueue.Clear();
-            m_ReceiveQueue.Clear();
-        }
-
-        protected override void OnDestory()
-        {
-            base.OnDestory();
-
-            m_IsConnected = false;
-            m_IP = string.Empty;
-            m_CheckCount = 0;
-            m_Port = int.MaxValue;
-
-            m_ReceiveBuffer = null;
-            m_Socket = null;
-            m_SendQueue = null;
-            m_ReceiveQueue = null;
+            m_NetDispatcher.Dispose();
             m_OnConnectSuccessEvent = null;
             m_OnConnectFailEvent = null;
             m_OnDisConnectEvent = null;
@@ -104,21 +98,19 @@ namespace GameFrameWork.Net
             m_IP = ip;
             m_Port = port;
             m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+            
             try
             {
                 m_Socket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
-                m_ReceiveMSE = new();
-
+                m_ReceiveMse = ReferencePool.Acquire<MemoryStreamEx>();
                 m_IsConnected = true;
                 StartReceive();
                 m_OnConnectSuccessEvent?.Invoke();
-                Log.LogInfo("连接服务器:" + ip + "成功！");
             }
             catch (Exception e)
             {
                 m_OnConnectFailEvent?.Invoke();
-                Log.LogError(e.ToString());
+                throw new GameFrameWorkException(e.Message);
             }
         }
 
@@ -130,24 +122,34 @@ namespace GameFrameWork.Net
             }
 
             m_IsConnected = false;
-
+            m_CheckCount = 0;
+            m_IP = string.Empty;
+            m_Port = 0;
+            
             try
             {
                 if (m_Socket.Connected)
                 {
                     m_Socket.Shutdown(SocketShutdown.Both);
                 }
-
+                
                 m_Socket.Close();
-                m_SendQueue.Clear();
+                
+                lock (m_SendQueue)
+                {
+                    m_SendQueue.Clear();
+                }
+                
                 m_ReceiveQueue.Clear();
-                m_ReceiveMSE.SetLength(0);
-                m_ReceiveMSE.Close();
+                m_ReceiveMse.SetLength(0);
+                m_ReceiveMse.Close();
+                m_ReceiveMse.Release();
+                m_ReceiveMse = null;
                 m_OnDisConnectEvent?.Invoke();
             }
             catch (Exception e)
             {
-                Log.LogError(e.Message);
+                throw new GameFrameWorkException(e.Message);
             }
         }
 
@@ -167,7 +169,7 @@ namespace GameFrameWork.Net
 
         public void AddReceiveEvent(ushort msgCode, GameFrameWorkAction<ushort, byte[]> receiveCall)
         {
-            m_ReceiveEvents.Add(msgCode, receiveCall);
+            m_NetDispatcher.Add(msgCode, receiveCall);
         }
 
         private void StartReceive()
@@ -193,15 +195,14 @@ namespace GameFrameWork.Net
 
                 if (length < 1)
                 {
-                    Log.LogInfo("服务器断开连接");
                     Close();
                     return;
                 }
 
-                m_ReceiveMSE.Position = m_ReceiveMSE.Length;
-                m_ReceiveMSE.Write(m_ReceiveBuffer, 0, length);
+                m_ReceiveMse.Position = m_ReceiveMse.Length;
+                m_ReceiveMse.Write(m_ReceiveBuffer, 0, length);
 
-                if (m_ReceiveMSE.Length < 3)
+                if (m_ReceiveMse.Length < 3)
                 {
                     StartReceive();
                     return;
@@ -209,47 +210,46 @@ namespace GameFrameWork.Net
 
                 while (true)
                 {
-                    m_ReceiveMSE.Position = 0;
-                    int msgLen = m_ReceiveMSE.ReadInt() + 2;
+                    m_ReceiveMse.Position = 0;
+                    int msgLen = m_ReceiveMse.ReadInt() + 2;
                     int fullLen = 4 + msgLen;
 
-                    if (m_ReceiveMSE.Length < fullLen)
+                    if (m_ReceiveMse.Length < fullLen)
                     {
                         break;
                     }
 
                     byte[] msgBuffer = ArrayPool<byte>.instance.Get(msgLen);
-                    m_ReceiveMSE.Position = 4;
-                    m_ReceiveMSE.Read(msgBuffer, 0, msgLen);
+                    m_ReceiveMse.Position = 4;
+                    m_ReceiveMse.Read(msgBuffer, 0, msgLen);
 
                     lock (m_ReceiveQueue)
                     {
                         m_ReceiveQueue.Enqueue(msgBuffer);
                     }
 
-                    int remainLen = (int)m_ReceiveMSE.Length - fullLen;
+                    int remainLen = (int)m_ReceiveMse.Length - fullLen;
 
                     if (remainLen < 1)
                     {
-                        m_ReceiveMSE.Position = 0;
-                        m_ReceiveMSE.SetLength(0);
+                        m_ReceiveMse.Position = 0;
+                        m_ReceiveMse.SetLength(0);
                         break;
                     }
 
-                    m_ReceiveMSE.Position = fullLen;
+                    m_ReceiveMse.Position = fullLen;
                     byte[] remainBuffer = ArrayPool<byte>.instance.Get(remainLen);
-                    m_ReceiveMSE.Read(remainBuffer, 0, remainLen);
-                    m_ReceiveMSE.Position = 0;
-                    m_ReceiveMSE.SetLength(0);
-                    m_ReceiveMSE.Write(remainBuffer, 0, remainLen);
+                    m_ReceiveMse.Read(remainBuffer, 0, remainLen);
+                    m_ReceiveMse.Position = 0;
+                    m_ReceiveMse.SetLength(0);
+                    m_ReceiveMse.Write(remainBuffer, 0, remainLen);
                     ArrayPool<byte>.instance.Put(remainBuffer);
                 }
             }
             catch (Exception e)
             {
-                Log.LogInfo("++服务器断开连接," + e.Message);
                 Close();
-                return;
+                throw new GameFrameWorkException(e.Message);
             }
 
             StartReceive();
@@ -286,22 +286,15 @@ namespace GameFrameWork.Net
                     }
 
                     m_CheckCount++;
-
                     MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
                     byte[] buffer = m_ReceiveQueue.Dequeue();
                     byte[] msgContent = ArrayPool<byte>.instance.Get(buffer.Length - 2);
                     mse.Write(buffer, 0, buffer.Length);
                     mse.Position = 0;
                     ushort msgCode = mse.ReadUShort();
-
-                    if(!m_ReceiveEvents.TryGetValue(msgCode,out var receiveCall))
-                    {
-                        Log.LogError("网络消息 [", msgCode.ToString(), "] 不存在");
-                        break;
-                    }
-
                     mse.Read(msgContent, 0, msgContent.Length);
-                    receiveCall?.Invoke(msgCode, msgContent);
+                    mse.Release();
+                    m_NetDispatcher.Dispatch(msgCode, msgContent);
                     ArrayPool<byte>.instance.Put(msgContent);
                     ArrayPool<byte>.instance.Put(buffer);
                 }
@@ -313,20 +306,5 @@ namespace GameFrameWork.Net
             m_Socket.EndSend(ir);
             CheckSendBuffer();
         }
-
-        private bool m_IsConnected = false;
-        private string m_IP = string.Empty;
-        private int m_CheckCount = 0;
-        private int m_Port = int.MaxValue;
-
-        private byte[] m_ReceiveBuffer = null;
-        private Queue<byte[]> m_SendQueue = null;
-        private Queue<byte[]> m_ReceiveQueue = null;
-        private MemoryStreamEx m_ReceiveMSE = null;
-        private Socket m_Socket = null;
-        private Dictionary<ushort, GameFrameWorkAction<ushort, byte[]>> m_ReceiveEvents = null;
-        private event GameFrameWorkAction m_OnConnectSuccessEvent = null;
-        private event GameFrameWorkAction m_OnConnectFailEvent = null;
-        private event GameFrameWorkAction m_OnDisConnectEvent = null;
     }
 }

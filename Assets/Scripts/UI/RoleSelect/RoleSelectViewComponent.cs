@@ -1,6 +1,6 @@
 /*
  * @Desc: RoleSelect 模块 RoleSelectView 界面数据
- * @Date: 2025-10-11 11:06:50
+ * @Date: 2025-10-16 14:14:28
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -28,13 +28,13 @@ public class RoleSelectViewComponent : UIBaseComponent
 
 	public class RoleContentItem : LayoutGroupViewItem
 	{
-		public Image imgRoleIcon = null;
+		public ImageEx imgRoleIcon = null;
 		public LanguageText txtName = null;
 		public LanguageText txtDesc = null;
 		protected override void OnCreate(GameObject go)
 		{
 			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
-			imgRoleIcon = uiRefRoot.objects[0] as Image;
+			imgRoleIcon = uiRefRoot.objects[0] as ImageEx;
 			txtName = uiRefRoot.objects[1] as LanguageText;
 			txtDesc = uiRefRoot.objects[2] as LanguageText;
 		}

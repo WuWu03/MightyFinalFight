@@ -41,11 +41,7 @@ public class TextMeshProUV : MonoBehaviour
             Refresh();
         }
     }
-    //[ContextMenu("ShowRadio")]
-    //public void ShowRadio()
-    //{
-    //    Debug.Log(text.scaleRatioA);
-    //}
+
 #if UNITY_EDITOR
     private void OnValidate()
     {

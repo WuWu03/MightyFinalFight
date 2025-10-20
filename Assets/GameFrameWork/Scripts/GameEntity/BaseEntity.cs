@@ -5,11 +5,19 @@ namespace GameFrameWork.GameEntity
 {
     public abstract class BaseEntity : MonoBehaviour
     {
-        public int id
+        private int m_EntityID;
+        private string m_Layer;
+        private bool m_IsAssetLoadComplete;
+        private string m_AssetPath;
+        private GameObject m_Asset;
+        private IGameObjectPoolMgr m_GameObjectPoolMgr;
+        private IEntityMgr m_EntityMgr;
+        
+        public int entityID
         {
             get
             {
-                return m_Id;
+                return m_EntityID;
             }
         }
 
@@ -38,11 +46,13 @@ namespace GameFrameWork.GameEntity
         }
 
 
-        public void Init(int id, string name)
+        public void Init(int entityID, string entityName, IEntityMgr entityMgr, IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_IsAssetLoadComplete = false;
-            m_Id = id;
-            this.name = name;
+            m_EntityID = entityID;
+            m_EntityMgr = entityMgr;
+            m_GameObjectPoolMgr = gameObjectPoolMgr;
+            name = entityName;
             OnInit();
         }
 
@@ -80,24 +90,24 @@ namespace GameFrameWork.GameEntity
 
         public void Release()
         {
-            if (m_Id == -1)
+            if (m_EntityID == -1)
             {
                 return;
             }
 
-            if (m_Asset != null)
+            if (m_Asset is not null)
             {
-                GameObjectPoolMgr.instance.Put(m_AssetPath, m_Asset);
+                m_GameObjectPoolMgr.Put(m_AssetPath, m_Asset);
             }
 
-            m_Id = -1;
+            m_EntityID = -1;
             m_Layer = string.Empty;
             m_IsAssetLoadComplete = false;
             m_AssetPath = null;
             m_Asset = null;
             gameObject.SetActiveSelf(false);
             OnRelease();
-            EntityMgr.instance.PutEntity(this);
+            m_EntityMgr.PutEntity(this);
         }
 
         public void SetParent(Transform parent, bool worldPossitionStays = false)
@@ -130,7 +140,7 @@ namespace GameFrameWork.GameEntity
 
             m_AssetPath = assetPath;
             m_IsAssetLoadComplete = false;
-            GameObjectPoolMgr.instance.GetFromAsset(assetPath, LoadAssetComplete);
+            m_GameObjectPoolMgr.GetFromAsset(assetPath, LoadAssetComplete);
         }
 
         protected void SetLayer(bool isChild = true)
@@ -140,13 +150,20 @@ namespace GameFrameWork.GameEntity
 
         private void LoadAssetComplete(string assetPath, UnityEngine.Object obj, object arg)
         {
-            if (obj == null)
+            if (obj is null)
             {
                 Release();
                 return;
             }
-
+            
             m_Asset = obj as GameObject;
+            
+            if (m_Asset is null)
+            {
+                Release();
+                return;
+            }
+            
             m_Asset.transform.SetParent(transform, false);
             m_Asset.transform.localPosition = Vector3.zero;
             m_Asset.SetActiveSelf(true);
@@ -161,11 +178,5 @@ namespace GameFrameWork.GameEntity
         protected virtual void OnLateUpdate() { }
         protected virtual void OnFixedUpdate() { }
         protected virtual void OnRelease() { }
-
-        private int m_Id = 0;
-        private string m_Layer = string.Empty;
-        private bool m_IsAssetLoadComplete = false;
-        private string m_AssetPath = string.Empty;
-        private GameObject m_Asset;
     }
 }

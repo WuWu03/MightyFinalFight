@@ -1,5 +1,4 @@
-﻿using GameFrameWork.Camera;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TaskTriggerFinger : BaseTaskTrigger
 {

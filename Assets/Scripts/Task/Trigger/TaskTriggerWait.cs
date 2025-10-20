@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class TaskTriggerWait : BaseTaskTrigger
 {
+    private float m_WaitTimer;
     public TaskTriggerWait(TaskConfigData data) : base(data) { }
 
     public override void Enter()
@@ -12,11 +13,9 @@ public class TaskTriggerWait : BaseTaskTrigger
 
     public override void Trigger()
     {
-        if(Time.time - m_WaitTimer >= mTaskData.WaitTime)
+        if(Time.time - m_WaitTimer >= taskConfigData.WaitTime)
         {
             Complete();
         }
     }
-
-    private float m_WaitTimer = 0f;
 }

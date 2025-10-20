@@ -1,9 +1,12 @@
 using DragonBones;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 
 public class SkillJumpAttackDeployer : SkillBaseDeployer
 {
+    private int m_TriggerTime;
+    private bool m_CanEffect;
+    private bool m_IsOnGround = true;
+    
     public SkillJumpAttackDeployer(int skillID, BaseRole owner) : base(skillID, owner)
     {
 
@@ -15,22 +18,20 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_CanEffect = true;
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-
-        SkillStateData skillStateData = SkillStateData.Create();
-        skillStateData.skillID = mSkillData.id;
-        skillStateData.animName = mSkillData.AnimationName;
-        skillStateData.animSpeed = mSkillData.AnimSpeed;
-        skillStateData.animTime = mSkillData.AnimTime;
-        skillStateData.dir = m_Owner.dir;
-        skillStateData.canChangeDir = false;
-
+        SkillStateArg skillStateArg = SkillStateArg.Create();
+        skillStateArg.skillID = mSkillData.id;
+        skillStateArg.animName = mSkillData.AnimationName;
+        skillStateArg.animSpeed = mSkillData.AnimSpeed;
+        skillStateArg.animTime = mSkillData.AnimTime;
+        skillStateArg.dir = m_Owner.dir;
+        skillStateArg.canChangeDir = false;
         m_Owner.onGroundEvent.AddListener(OnGroundEvent);
         m_Owner.onDropEvent.AddListener(OnDropEvent);
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetIsBeCatch(false);
-        m_Owner.OnAttackMsg(skillStateData, true);
-        skillStateData.Release();
+        m_Owner.OnAttackMsg(skillStateArg, true);
+        skillStateArg.Release();
     }
 
     public override bool IsAllComplete()
@@ -74,7 +75,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     private void OnDropEvent()
@@ -112,8 +113,4 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
-
-    private int m_TriggerTime = 0;
-    private bool m_CanEffect = false;
-    private bool m_IsOnGround = true;
 }

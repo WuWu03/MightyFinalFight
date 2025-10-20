@@ -1,4 +1,3 @@
-
 //===================================================
 //作者：GQY                                          
 //创建时间：2024-06-06 11:09:24
@@ -19,7 +18,8 @@ public static class ConfigDataSheet
 	public static TalkConfigData[] talkConfigDatas = null;
 
 	public static void Init()
-	{
+    {
+        ConfigDataHelper.SetResourcesMgr(GameEntry.resourceMgr);
 		levelConfigDatas = ConfigDataHelper.LoadConfigData<LevelConfigData>("LevelConfigData.bytes");
 		roleConfigDatas = ConfigDataHelper.LoadConfigData<RoleConfigData>("RoleConfigData.bytes");
 		roleSelectConfigDatas = ConfigDataHelper.LoadConfigData<RoleSelectConfigData>("RoleSelectConfigData.bytes");

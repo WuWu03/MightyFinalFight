@@ -7,14 +7,14 @@ public class TaskTriggerStory : BaseTaskTrigger
 
     public override void Enter()
     {
-        PlayerMgr.instance.canContrl = false;
+        PlayerMgr.instance.canControl = false;
         StoryMgr.instance.onPlayCompleteEvent += OnStoryComplete;
-        StoryMgr.instance.Play(mTaskData.StoryId);
+        StoryMgr.instance.Play(taskConfigData.StoryId);
     }
 
     private void OnStoryComplete()
     {
-        PlayerMgr.instance.canContrl = true;
+        PlayerMgr.instance.canControl = true;
         Complete();
     }
 }

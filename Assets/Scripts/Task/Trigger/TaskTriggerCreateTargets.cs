@@ -7,27 +7,27 @@ public class TaskTriggerCreateTargets : BaseTaskTrigger
     public override void Trigger()
     {
         base.Trigger();
-        for (int i = 0; i < mTaskData.Targets.Length; i++)
-        {       
-            int entityId = mTaskData.Targets[i].EntityID;       
-            Vector2Int pos = mTaskData.Targets[i].Pos;
+        foreach (var target in taskConfigData.Targets)
+        {
+            int entityId = target.EntityID;       
+            Vector2Int pos = target.Pos;
 
-            if (mTaskData.Targets[i].IsBarrel)
+            if (target.IsBarrel)
             {
-                float dir = mTaskData.Targets[i].Dir;
-                int groundY = mTaskData.Targets[i].GroundY;
-                int itemId = mTaskData.Targets[i].ItemId;
-                bool isFloat = mTaskData.Targets[i].IsFloat;
-                float moveSpeed = mTaskData.Targets[i].MoveSpeed;
+                float dir = target.Dir;
+                int groundY = target.GroundY;
+                int itemId = target.ItemId;
+                bool isFloat = target.IsFloat;
+                float moveSpeed = target.MoveSpeed;
                 SceneEntityMgr.instance.CreateBarrel(entityId, dir, groundY, itemId, isFloat, moveSpeed, pos);
             }
             else
             {
-                int sourceId = mTaskData.Targets[i].SourceID;
-                int hp = mTaskData.Targets[i].Hp;
-                int attack = mTaskData.Targets[i].AttackValue;
-                int defense = mTaskData.Targets[i].DefenseValue;
-                int hpBarWidth = mTaskData.Targets[i].HpBarWidth;
+                int sourceId = target.SourceID;
+                int hp = target.Hp;
+                int attack = target.AttackValue;
+                int defense = target.DefenseValue;
+                int hpBarWidth = target.HpBarWidth;
                 SceneEntityMgr.instance.CreateEnemy(sourceId, entityId, hp, attack, defense, hpBarWidth, pos);
             }
         }

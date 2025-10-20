@@ -1,10 +1,15 @@
 public class BaseSceneItem : BaseGravityObject
 {
+    private BaseRole m_Owner;
     public BaseRole owner
     {
         get
         {
             return m_Owner;
+        }
+        protected set
+        {
+            m_Owner = value;
         }
     }
 
@@ -35,6 +40,4 @@ public class BaseSceneItem : BaseGravityObject
         m_Owner = null;
         SceneEntityMgr.instance.ReleaseSceneItem(this);
     }
-
-    protected BaseRole m_Owner = null;
 }

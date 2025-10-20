@@ -1,5 +1,4 @@
 using GameFrameWork.Event;
-using GameFrameWork.UI;
 using UnityEngine;
 
 public class TaskTriggerTalk : BaseTaskTrigger
@@ -13,9 +12,9 @@ public class TaskTriggerTalk : BaseTaskTrigger
     public override void Enter()
     {
         base.Enter();
-        UIMgr.instance.Open<TalkView>(mTaskData.TalkID);
+        GameEntry.uiMgr.Open<TalkView>(taskConfigData.TalkID);
         PlayerMgr.instance.player.Move(Vector2.zero);
-        EventMgr.instance.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
+        GameEntry.eventMgr.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
     }
 
     private void OnTalkEnd(object sender, GameEventArg e)
@@ -26,6 +25,6 @@ public class TaskTriggerTalk : BaseTaskTrigger
     public override void Complete()
     {
         base.Complete();
-        EventMgr.instance.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
+        GameEntry.eventMgr.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
     }
 }

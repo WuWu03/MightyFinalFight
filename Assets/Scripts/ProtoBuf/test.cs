@@ -10,20 +10,20 @@
 // Generated from: proto/test.proto
 namespace client
 {
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"test")]
-  public partial class test : global::ProtoBuf.IExtensible
+  [System.Serializable, ProtoBuf.ProtoContract(Name=@"test")]
+  public partial class test : ProtoBuf.IExtensible
   {
     public test() {}
     
-
     private string _content = "";
-    [global::ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"content", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue("")]
+    [ProtoBuf.ProtoMember(1, IsRequired = false, Name=@"content", DataFormat = ProtoBuf.DataFormat.Default)]
+    [System.ComponentModel.DefaultValue("")]
     public string content
     {
       get { return _content; }
       set { _content = value; }
     }
+    
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

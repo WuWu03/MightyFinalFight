@@ -1,10 +1,10 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Barrel : BaseAvatar, ICanBeHit
 {
+    private BarrelData m_BarrelData;
     public bool canBeHit
     {
         get
@@ -80,19 +80,19 @@ public class Barrel : BaseAvatar, ICanBeHit
         return entityAttribute.health - attackValue <= 0;
     }
 
-    public void OnHurtMsg(HurtStateData data)
+    public void OnHurtMsg(HurtStateArg arg)
     {
-        entityAttribute.SubHealth(data.attackValue);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
+        entityAttribute.SubHealth(arg.attackValue);
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
 
         if (isDead)
         {
             SetTrigger(AnimName.Dead);
-            ChangeState<BarrelDead>(data);
+            ChangeState<BarrelDead>(arg);
             SceneEntityMgr.instance.CreateSceneItem(m_BarrelData.itemId, mapPos);
         }
 
-        ReferencePool.Release(data);
+        ReferencePool.Release(arg);
     }
 
     public void SetIsBeCatch(bool value) { }
@@ -142,7 +142,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             {
                 SetTrigger(AnimName.Move);
                 fsm.Start<BarrelMove>();
-                AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
+                GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Barrel));
             }
             else
             {
@@ -196,11 +196,11 @@ public class Barrel : BaseAvatar, ICanBeHit
 
         if (isInRange)
         {
-            HurtStateData hurtData = HurtStateData.Create();
-            hurtData.attackerDir = dir;
-            hurtData.attackForce = SkillUtil.GetSmoonForce(dir);
-            hurtData.isSwoon = true;
-            player.OnHurtMsg(hurtData);
+            HurtStateArg hurtArg = HurtStateArg.Create();
+            hurtArg.attackerDir = dir;
+            hurtArg.attackForce = SkillUtil.GetSmoonForce(dir);
+            hurtArg.isSwoon = true;
+            player.OnHurtMsg(hurtArg);
         }
     }
 
@@ -223,18 +223,16 @@ public class Barrel : BaseAvatar, ICanBeHit
             return;
         }
 
-        HurtStateData hurtData = HurtStateData.Create();
-        hurtData.attackerDir = -role.dir;
-        hurtData.attackForce = SkillUtil.GetSmoonForce();
-        hurtData.attackerPos = pos;
-        hurtData.isSwoon = true;
-        hurtData.attackerId = id;
-        hurtData.attackValue = 1;
-        hurtData.hurtAnim = string.Empty;
-        hurtData.isGroundHurt = false;
+        HurtStateArg hurtArg = HurtStateArg.Create();
+        hurtArg.attackerDir = -role.dir;
+        hurtArg.attackForce = SkillUtil.GetSmoonForce();
+        hurtArg.attackerPos = pos;
+        hurtArg.isSwoon = true;
+        hurtArg.attackerId = entityID;
+        hurtArg.attackValue = 1;
+        hurtArg.hurtAnim = string.Empty;
+        hurtArg.isGroundHurt = false;
 
-        OnHurtMsg(hurtData);
+        OnHurtMsg(hurtArg);
     }
-
-    private BarrelData m_BarrelData = null;
 }

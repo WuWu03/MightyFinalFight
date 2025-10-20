@@ -4,63 +4,46 @@ using UnityEngine;
 
 namespace GameFrameWork.Download
 {
-    public enum DownloadType
+    public class DownloadMgr : GameFrameWorkModule,IDownloadMgr
     {
-        File,
-        Buffer,
-        Script,
-        AssetBundle,
-        Texture,
-        AudioClip,
-        VideoClip,
-    }
-
-    public class DownloadMgr : BaseMgr<DownloadMgr>
-    {
-        protected override void OnAwake()
+        private readonly List<DownloadRequest> m_DownloadRequests;
+        public DownloadMgr()
         {
             m_DownloadRequests = new();
         }
 
-        protected override void OnFixedUpdate()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            if (m_DownloadRequests != null && m_DownloadRequests.Count > 0)
+            if (m_DownloadRequests is { Count: > 0 })
             {
-                for (int i = m_DownloadRequests.Count - 1; i > -1; i--)
-                {
-                    if (m_DownloadRequests[i].isDone || m_DownloadRequests[i].isError)
-                    {
-                        RemoveDownload(m_DownloadRequests[i]);
-                    }
-                }
-            }
+                DownloadRequest downloadRequest = m_DownloadRequests[0];
 
-            if (m_DownloadRequests != null && m_DownloadRequests.Count > 0 && !m_DownloadRequests[0].isDoing)
-            {
-                m_DownloadRequests[0].StartDownload();
+                if (downloadRequest.isDone || downloadRequest.isError)
+                {
+                    RemoveDownload(downloadRequest);
+                }
+                else if (!downloadRequest.isDoing)
+                {
+                    downloadRequest.StartDownload();
+                }
             }
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
             RemoveAllDownload();
 
-            for (int i = 0; i < m_DownloadRequests.Count; i++) 
-            { 
-                m_DownloadRequests[i].Release(); 
+            foreach (var downloadRequest in m_DownloadRequests)
+            {
+                downloadRequest.Release();
             }
 
             m_DownloadRequests.Clear();
         }
-
-        protected override void OnDestory()
-        {
-            m_DownloadRequests = null;
-        }
-
+        
         public void StartDownload()
         {
-            if (m_DownloadRequests != null && m_DownloadRequests.Count > 0 && !m_DownloadRequests[0].isDoing)
+            if (m_DownloadRequests is { Count: > 0 } && !m_DownloadRequests[0].isDoing)
             {
                 m_DownloadRequests[0].StartDownload();
             }
@@ -68,7 +51,7 @@ namespace GameFrameWork.Download
 
         public void StopDownload()
         {
-            if (m_DownloadRequests != null && m_DownloadRequests.Count > 0 && m_DownloadRequests[0].isDoing)
+            if (m_DownloadRequests is { Count: > 0 } && m_DownloadRequests[0].isDoing)
             {
                 m_DownloadRequests[0].StopDownload();
             }
@@ -79,7 +62,7 @@ namespace GameFrameWork.Download
             GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.File, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(DownloadType.File, uri, tag, version, downloadSize);
             downloadRequest.onDownloadBinaryFileCompleteEvent += onDownloadBinaryFileCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -91,7 +74,7 @@ namespace GameFrameWork.Download
             GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.Script, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(DownloadType.Script, uri, tag, version, downloadSize);
             downloadRequest.onDownloadScriptCompleteEvent += onDownloadTextFileCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -103,7 +86,7 @@ namespace GameFrameWork.Download
             GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.AssetBundle, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(DownloadType.AssetBundle, uri, tag, version, downloadSize);
             downloadRequest.onDownloadAssetBundleCompleteEvent += onDownloadTextureCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -115,7 +98,7 @@ namespace GameFrameWork.Download
             GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.Texture, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(DownloadType.Texture, uri, tag, version, downloadSize);
             downloadRequest.onDownloadTextureCompleteEvent += onDownloadTextureCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -128,7 +111,7 @@ namespace GameFrameWork.Download
             GameFrameWorkAction<string, string, string, ulong, ulong> onDownloadProgressEvent,
             GameFrameWorkAction<string, string, string, string> onDownloadErrorEvent)
         {
-            DownloadRequest downloadRequest = DownloadRequest.Create(this, DownloadType.AudioClip, uri, tag, version, downloadSize);
+            DownloadRequest downloadRequest = DownloadRequest.Create(DownloadType.AudioClip, uri, tag, version, downloadSize);
             downloadRequest.onDownloadAudioClipCompleteEvent += onDownloadAudioClipCompleteEvent;
             downloadRequest.onDownloadProgressEvent += onDownloadProgressEvent;
             downloadRequest.onDownloadErrorEvent += onDownloadErrorEvent;
@@ -203,7 +186,5 @@ namespace GameFrameWork.Download
             downloadRequest.Release();
             m_DownloadRequests.Remove(downloadRequest);
         }
-
-        private List<DownloadRequest> m_DownloadRequests = null;
     }
 }

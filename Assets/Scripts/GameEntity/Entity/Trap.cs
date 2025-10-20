@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Trap : BaseBoundObject
 {
+    private TrapData m_TrapData;
+    
     public override void SetData(BaseSceneObjectData info)
     {
         base.SetData(info);
@@ -20,7 +22,7 @@ public class Trap : BaseBoundObject
     {
         BaseRole target = collision.gameObject.GetComponent<BaseRole>();
 
-        if (target == null || target.IsDropTrap)
+        if (target is null || target.IsDropTrap)
         {
             return;
         }
@@ -30,7 +32,6 @@ public class Trap : BaseBoundObject
         float boundsRight = target.pos.x + 0.1f;
         float selfLeft = pos.x - width / 2;
         float selfRight = pos.x + width / 2;
-
         bool isEnter = boundsLeft >= selfLeft && boundsRight <= selfRight;
 
         if (!isEnter)
@@ -38,23 +39,12 @@ public class Trap : BaseBoundObject
             return;
         }
 
-        Vector2 rebirthPos = Vector2.zero;
-
-        if (target.pos.x < pos.x)
-        {
-            rebirthPos = new Vector2(pos.x - width - 0.1f, target.pos.y);
-        }
-        else
-        {
-            rebirthPos = new Vector2(pos.x + width + 0.1f, target.pos.y);
-        }
-
-        DropTrapStateData dropTrapData = DropTrapStateData.Create();
-        dropTrapData.rebirthPos = rebirthPos;
-        dropTrapData.attackValue = 1;
-
-        target.OnDropTragMsg(dropTrapData);
+        Vector2 rebirthPos = target.pos.x < pos.x ? 
+            new Vector2(pos.x - width - 0.1f, target.pos.y) : 
+            new Vector2(pos.x + width + 0.1f, target.pos.y);
+        DropTrapStateArg dropTrapArg = DropTrapStateArg.Create();
+        dropTrapArg.rebirthPos = rebirthPos;
+        dropTrapArg.attackValue = 1;
+        target.OnDropTrapMsg(dropTrapArg);
     }
-
-    private TrapData m_TrapData = null;
 }

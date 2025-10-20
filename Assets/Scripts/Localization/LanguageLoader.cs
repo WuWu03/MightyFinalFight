@@ -6,11 +6,13 @@ using UnityEngine;
 
 public class LanguageLoader : BaseLanguageLoader
 {
+    private readonly Dictionary<string, string> m_LanguageMap;
+    
     public LanguageLoader(string dataPath) : base(dataPath)
     {
-        m_LanguageDict = new Dictionary<string, string>();
+        m_LanguageMap = new Dictionary<string, string>();
     }
-
+    
     protected override void OnInit(TextAsset textAsset)
     {
         if (textAsset.bytes == null || textAsset.bytes.Length < 1)
@@ -19,17 +21,18 @@ public class LanguageLoader : BaseLanguageLoader
             return;
         }
 
-        using ConfigDataParser parser = new ConfigDataParser(textAsset.bytes);
+        using ConfigDataParser parser = new(textAsset.bytes);
+        
         while (!parser.eof)
         {
-            m_LanguageDict.Add(parser.GetFieldValue("key"), parser.GetFieldValue("content"));
+            m_LanguageMap.Add(parser.GetFieldValue("key"), parser.GetFieldValue("content"));
             parser.Next();
         }
     }
 
     public override string GetLanguageText(string key)
     {
-        if (m_LanguageDict.TryGetValue(key, out string result))
+        if (m_LanguageMap.TryGetValue(key, out string result))
         {
             return result;
         }
@@ -39,8 +42,6 @@ public class LanguageLoader : BaseLanguageLoader
 
     protected override void OnRelease()
     {
-        m_LanguageDict.Clear();
+        m_LanguageMap.Clear();
     }
-    
-    private Dictionary<string, string> m_LanguageDict = null;
 }

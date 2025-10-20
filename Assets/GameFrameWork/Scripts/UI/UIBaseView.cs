@@ -5,87 +5,30 @@ using GameFrameWork.Pool;
 using GameFrameWork.Utils;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
+using EventArg = GameFrameWork.Event.EventArg;
 
 namespace GameFrameWork.UI
 {
     public abstract class UIBaseView<C, S> : IView where C : UIBaseComponent, new() where S : UIBaseSettings, new()
     {
+        private readonly Dictionary<uint, List<EventHandler<EventArg>>> m_DicHandler = new();
         private GameObject m_GameObject;
-        public GameObject gameObject
-        {
-            get
-            {
-                return m_GameObject;
-            } 
-        }
-         
         private Transform m_Transform;
-        public Transform transform
-        {
-            get
-            {
-                return m_Transform;
-            }
-        }
-
         private UIBaseSettings m_Settings;
-        public UIBaseSettings settings
-        {
-            get
-            {
-                return m_Settings;
-            }
-        }
-
-        private string m_AssetPath;
-        public string assetPath
-        {
-            get
-            {
-                return m_AssetPath;
-            }
-        }
-        
-        private bool m_IsOpen = false;
-        public bool isOpen
-        {
-            get
-            {
-                return m_IsOpen;
-            }
-        }
-        
-        private bool m_IsShow;
-        public bool isShow
-        {
-            get
-            {
-                return m_IsShow;
-            }
-        }
-        
-        private float m_DelayTime;
-        public float delayTime
-        {
-            get
-            {
-                return m_DelayTime;
-            }
-        }
-        
+        private IUIMgr m_UIMgr;
+        private IGameObjectPoolMgr m_GameObjectPoolMgr;
+        private IEventMgr m_EventMgr;
         private C m_Component;
-        protected C component
-        {
-            get
-            {
-                return m_Component;
-            }
-        }
         
-        private Dictionary<uint, List<EventHandler<GameEventArg>>> m_DicHandler = new();
-        private object m_Arg = null;
-        private bool m_IsLoading = false;
-        protected UIBaseView()
+        private string m_AssetPath;
+        private bool m_IsOpen;
+        private bool m_IsShow;
+        private float m_DelayTime;
+        private object m_Arg;
+        private bool m_IsLoading;
+
+        
+        public UIBaseView()
         {
             m_AssetPath = string.Empty;
             m_IsOpen = false;
@@ -94,6 +37,78 @@ namespace GameFrameWork.UI
             m_Settings = new S();
             m_Component = new C();
         }
+        
+
+        public GameObject gameObject
+        {
+            get
+            {
+                return m_GameObject;
+            } 
+        }
+
+        public Transform transform
+        {
+            get
+            {
+                return m_Transform;
+            }
+        }
+        
+        public UIBaseSettings settings
+        {
+            get
+            {
+                return m_Settings;
+            }
+        }
+        
+        public string assetPath
+        {
+            get
+            {
+                return m_AssetPath;
+            }
+        }
+        
+        public bool isOpen
+        {
+            get
+            {
+                return m_IsOpen;
+            }
+        }
+        
+        public bool isShow
+        {
+            get
+            {
+                return m_IsShow;
+            }
+        }
+        
+        public float delayTime
+        {
+            get
+            {
+                return m_DelayTime;
+            }
+        }
+        
+        protected C component
+        {
+            get
+            {
+                return m_Component;
+            }
+        }
+        
+        public void SetMgr(IUIMgr uiMgr, IGameObjectPoolMgr gameObjectPoolMgr, IEventMgr eventMgr)
+        {
+            m_UIMgr = uiMgr;
+            m_GameObjectPoolMgr = gameObjectPoolMgr;
+            m_EventMgr = eventMgr;
+        }
 
         public void Open(object arg)
         {
@@ -101,7 +116,7 @@ namespace GameFrameWork.UI
             {
                 return;
             }
-            
+
             if (m_IsOpen)
             {
                 Show();
@@ -114,7 +129,7 @@ namespace GameFrameWork.UI
             }
 
             m_IsLoading = true;
-            GameObjectPoolMgr.instance.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), m_Settings.prefabName), OnLoadComplete);
+            m_GameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), m_Settings.prefabName), OnLoadComplete);
         }
 
         public void Update()
@@ -127,11 +142,11 @@ namespace GameFrameWork.UI
             m_IsOpen = false;
             m_DelayTime = Time.unscaledTime;
 
-            foreach (KeyValuePair<uint, List<EventHandler<GameEventArg>>> kvp in m_DicHandler)
+            foreach (KeyValuePair<uint, List<EventHandler<EventArg>>> kvp in m_DicHandler)
             {
-                foreach (EventHandler<GameEventArg> handler in kvp.Value)
+                foreach (EventHandler<EventArg> handler in kvp.Value)
                 {
-                    EventMgr.instance.UnSubscribe(kvp.Key, handler);
+                    m_EventMgr.UnSubscribe(kvp.Key, handler);
                 }
             }
 
@@ -182,10 +197,11 @@ namespace GameFrameWork.UI
             m_IsShow = false;
             m_DelayTime = 0f;
             m_AssetPath = string.Empty;
-            m_DicHandler = null;
             m_Component = null;
             m_Settings = null;
             m_Arg = null;
+            m_UIMgr = null;
+            m_EventMgr = null;
         }
         
         private void OnLoadComplete(string assetPath, UnityObject uiGameObject, object arg)
@@ -200,14 +216,14 @@ namespace GameFrameWork.UI
                 m_Transform = m_GameObject.transform;
                 m_Component.InitComponent(m_GameObject.GetComponent<UIRefRoot>());
                 m_GameObject.SetLayer(LayerName.UI);
-                m_Transform.SetParent(UIMgr.instance.GetPanelLayer(settings.layer), false);
+                m_Transform.SetParent(m_UIMgr.GetLayer(settings.layer), false);
             }
             
             OnOpen(m_Arg);
             Show();
         }
 
-        protected void AddEvent(uint eventId, EventHandler<GameEventArg> handler)
+        protected void AddEvent(uint eventId, EventHandler<EventArg> handler)
         {
             if (handler == null)
             {
@@ -215,7 +231,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArg>> list))
+            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<EventArg>> list))
             {
                 if (list.Contains(handler))
                 {
@@ -227,7 +243,7 @@ namespace GameFrameWork.UI
             }
             else
             {
-                list = new List<EventHandler<GameEventArg>>
+                list = new List<EventHandler<EventArg>>
                 {
                     handler
                 };
@@ -235,22 +251,22 @@ namespace GameFrameWork.UI
                 m_DicHandler.Add(eventId, list);
             }
 
-            EventMgr.instance.Subscribe(eventId, handler);
+            m_EventMgr.Subscribe(eventId, handler);
         }
 
-        protected void RemoveEvent(uint eventId, EventHandler<GameEventArg> handler)
+        protected void RemoveEvent(uint eventId, EventHandler<EventArg> handler)
         {
-            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<GameEventArg>> list))
+            if (m_DicHandler.TryGetValue(eventId, out List<EventHandler<EventArg>> list))
             {
                 list.Remove(handler);
             }
             
-            EventMgr.instance.UnSubscribe(eventId, handler);
+            m_EventMgr.UnSubscribe(eventId, handler);
         }
         
         protected void CloseSelf()
         {
-            UIMgr.instance.Close(this);
+            m_UIMgr.Close(this);
         }
         
         protected abstract void OnOpen(object arg);

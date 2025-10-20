@@ -1,3 +1,5 @@
+using GameFrameWork.Event;
+using GameFrameWork.Pool;
 using UnityEngine;
 
 namespace GameFrameWork.UI
@@ -10,6 +12,7 @@ namespace GameFrameWork.UI
         public string assetPath { get; }
         public bool isOpen { get; }
         public float delayTime { get; }
+        public void SetMgr(IUIMgr uiMgr, IGameObjectPoolMgr gameObjectPoolMgr, IEventMgr eventMgr);
         public void Open(object arg);
         public void Update();
         public void Close();

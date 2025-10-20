@@ -1,8 +1,7 @@
 using GameFrameWork.Fsm;
-using GameFrameWork.Camera;
 using UnityEngine;
 
-public class HeroRebirth : BaseFsmState
+public class HeroRebirth : FsmState
 {
     public Vector2 ReBirthPos
     {

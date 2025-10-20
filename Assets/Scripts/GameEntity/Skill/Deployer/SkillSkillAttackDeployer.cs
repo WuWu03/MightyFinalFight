@@ -1,5 +1,4 @@
 using DragonBones;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using static SkillConfigData;
 
@@ -11,28 +10,27 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     {
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-
-        SkillStateData skillData = SkillStateData.Create();
-        skillData.skillID = mSkillData.id;
-        skillData.animName = mSkillData.AnimationName;
-        skillData.animTime = mSkillData.AnimTime;
-        skillData.animSpeed = mSkillData.AnimSpeed;
-        skillData.canChangeDir = mSkillData.CanChangeDir;
-        skillData.canMove = mSkillData.CanMove;
+        SkillStateArg skillArg = SkillStateArg.Create();
+        skillArg.skillID = mSkillData.id;
+        skillArg.animName = mSkillData.AnimationName;
+        skillArg.animTime = mSkillData.AnimTime;
+        skillArg.animSpeed = mSkillData.AnimSpeed;
+        skillArg.canChangeDir = mSkillData.CanChangeDir;
+        skillArg.canMove = mSkillData.CanMove;
 
         if (mSkillData.TriggerType != SkillTriggerType.Animtion)
         {
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-            m_Owner.OnSkillMsg(skillData);
+            m_Owner.OnSkillMsg(skillArg);
             base.DeploySkill();
-            skillData.Release();
+            skillArg.Release();
             return;
         }
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnSkillMsg(skillData);
-        skillData.Release();
+        m_Owner.OnSkillMsg(skillArg);
+        skillArg.Release();
     }
 
     public override bool IsAllComplete()
@@ -65,7 +63,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
 
     public override void Exit()

@@ -1,8 +1,11 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
 
 public class FadeBgmClip : BaseClip
 {
+    private float m_EndValue;
+    private float m_Delay;
+    private float m_Duration;
+    
     public static FadeBgmClip Create(float endValue, float delay, float duration)
     {
         FadeBgmClip fadeBgmStory = ReferencePool.Acquire<FadeBgmClip>();
@@ -26,8 +29,8 @@ public class FadeBgmClip : BaseClip
 
     protected override void OnPlay()
     {
-        AudioMgr.instance.onBgmFadeCompleteEvent += Complete;
-        AudioMgr.instance.FadeBgm(m_EndValue, m_Delay, m_Duration);
+        GameEntry.soundMgr.onBgmFadeCompleteEvent += Complete;
+        GameEntry.soundMgr.FadeBgm(m_EndValue, m_Delay, m_Duration);
     }
 
 
@@ -35,8 +38,4 @@ public class FadeBgmClip : BaseClip
     {
 
     }
-
-    private float m_EndValue;
-    private float m_Delay;
-    private float m_Duration;
 }

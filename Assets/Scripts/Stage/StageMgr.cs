@@ -1,18 +1,17 @@
+using System;
 using GameFrameWork;
 using GameFrameWork.Audio;
-using GameFrameWork.Camera;
 using GameFrameWork.Event;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Map;
-using GameFrameWork.Pool;
 using GameFrameWork.Scene;
-using GameFrameWork.UI;
 using GameFrameWork.Utils;
-using System;
 using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
+    private StageConfigData m_CurrStageData;
+    private int m_StageIndex;
+    
     public StageConfigData CurrStageData
     {
         get
@@ -62,29 +61,28 @@ public class StageMgr : BaseMgr<StageMgr>
 
         if (m_CurrStageData != null)
         {
-            SceneMgr.instance.UnLoadScene(m_CurrStageData.assetPath);
+            GameEntry.sceneMgr.UnLoadScene(m_CurrStageData.assetPath);
         }
 
         m_CurrStageData = configData;
-
-        PlayerMgr.instance.canContrl = false;
-        CameraMgr.instance.EndFollow();  
+        PlayerMgr.instance.canControl = false;
+        CameraMgr.instance.EndFollow();
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
     
     private void OnFadeBlackComplete()
     {
-        EventMgr.instance.DispatchNow(this, EventArg.Create(EventId.StageEnterStartEvent));
+        GameEntry.eventMgr.DispatchNow(this, EventArg.Create(EventId.StageEnterStartEvent));
         TaskMgr.instance.GiveupTask();
         SceneEntityMgr.instance.ReleaseAll();
-        EntityMgr.instance.DestoryAllUnUsedEntities();
-        AudioMgr.instance.ReleaseSeAudioSources();
-        GameObjectPoolMgr.instance.CheckRelease();
-        AssetsPool.instance.CheckRelease();
+        GameEntry.entityMgr.DestroyAllUnUsedEntities();
+        GameEntry.soundMgr.ReleaseSeAudioSources();
+        GameEntry.gameObjectPoolMgr.CheckRelease();
+        GameEntry.resourcePoolMgr.CheckRelease();
         ReferencePool.ReleaseAll();
         GC.Collect();
-        SceneMgr.instance.loadSceneSuccessEvent += LoadSceneSuccess;
-        SceneMgr.instance.LoadSceneAsync(m_CurrStageData.assetPath, false);
+        GameEntry.sceneMgr.loadSceneSuccessEvent += LoadSceneSuccess;
+        GameEntry.sceneMgr.LoadSceneAsync(m_CurrStageData.assetPath, false);
     }
 
     private void LoadSceneSuccess(LoadSceneSuccessEventArgs e)
@@ -103,36 +101,37 @@ public class StageMgr : BaseMgr<StageMgr>
                 bgmInfos[i] = BgmInfo.Create(assetPath, isLoop, volume, lerpTime);
             }
 
-            AudioMgr.instance.PlayBgmGroup(bgmInfos, true);
-        }
-
-        if(m_CurrStageData.showMainPanel)
-        {
-            UIMgr.instance.Open<MainView>();
-        }
-        else
-        {
-            UIMgr.instance.Close<MainView>();
+            GameEntry.soundMgr.PlayBgmGroup(bgmInfos, true);
         }
 
         SceneEntityMgr.instance.CreateSceneBuildings(m_CurrStageData);
         PlayerMgr.instance.InitPlayer();
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
-        PlayerMgr.instance.canContrl = false;
+        PlayerMgr.instance.canControl = false;
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
-        SceneMgr.instance.AllowScene();
+        
+        if(m_CurrStageData.showMainPanel)
+        {
+            GameEntry.uiMgr.Open<MainView>();
+        }
+        else
+        {
+            GameEntry.uiMgr.Close<MainView>();
+        }
+        
+        GameEntry.sceneMgr.AllowScene();
         LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
     
     private void OnFadeWhiteComplete()
     {
         LoadMgr.instance.CloseLoadPanel();
-        EventMgr.instance.Dispatch(this, EventArg.Create(EventId.StageEnterEndEvent));
+        GameEntry.eventMgr.Dispatch(this, EventArg.Create(EventId.StageEnterEndEvent));
         CameraMgr.instance.StartFollow();
-        PlayerMgr.instance.canContrl = true;
-        for (int i = 0; i < m_CurrStageData.TaskIDs.Length; i++)
+        PlayerMgr.instance.canControl = true;
+        foreach (int taskID in m_CurrStageData.TaskIDs)
         {
-            TaskMgr.instance.AcceptTask(m_CurrStageData.TaskIDs[i]);
+            TaskMgr.instance.AcceptTask(taskID);
         }
     }
 
@@ -190,7 +189,4 @@ public class StageMgr : BaseMgr<StageMgr>
 
         return ret;
     }
-
-    private StageConfigData m_CurrStageData = null;
-    private int m_StageIndex = 0;
 }

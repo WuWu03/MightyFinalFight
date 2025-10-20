@@ -1,10 +1,9 @@
-using GameFrameWork.Audio;
-using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Consume : BaseSceneItem
 {
+    private SceneItemData m_ConsumeInfo;
     public override void SetData(BaseSceneObjectData data)
     {
         base.SetData(data);
@@ -35,29 +34,29 @@ public class Consume : BaseSceneItem
 
     private void AddHP()
     {
-        if (m_Owner.entityAttribute.IsFullHealth())
+        if (owner.entityAttribute.IsFullHealth())
         {
             AddExp();
         }
         else
         {
-            m_Owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            UIMgr.instance.Get<MainView>().SetPlayerHP(m_Owner.entityAttribute.health, m_Owner.entityAttribute.maxHealth);
+            owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
+            GameEntry.uiMgr.Get<MainView>().SetPlayerHP(owner.entityAttribute.health, owner.entityAttribute.maxHealth);
         }
 
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddExp()
     {
         PlayerMgr.instance.AddExp(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddLife()
     {
         PlayerMgr.instance.AddLife(m_ConsumeInfo.value);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));
     }
 
     private void AddMoney()
@@ -70,6 +69,4 @@ public class Consume : BaseSceneItem
         base.OnRelease();
         m_ConsumeInfo = null;
     }
-
-    private SceneItemData m_ConsumeInfo = null;
 }

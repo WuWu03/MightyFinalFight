@@ -4,19 +4,18 @@ using System.Text;
 
 namespace GameFrameWork.Serialize
 {
-    public class MemoryStreamEx : MemoryStream,IReference
+    public class MemoryStreamEx : MemoryStream, IReference
     {
         public MemoryStreamEx()
         {
-
         }
 
         public MemoryStreamEx(byte[] buffer) : base(buffer)
         {
-
         }
 
         #region Short
+
         /// <summary>
         /// 从流中读取一个short数据
         /// </summary>
@@ -37,9 +36,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region UShort
+
         /// <summary>
         /// 从流中读取一个ushort数据
         /// </summary>
@@ -60,9 +61,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region Int
+
         /// <summary>
         /// 从流中读取一个int数据
         /// </summary>
@@ -83,9 +86,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region UInt
+
         /// <summary>
         /// 从流中读取一个uint数据
         /// </summary>
@@ -106,9 +111,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region Long
+
         /// <summary>
         /// 从流中读取一个long数据
         /// </summary>
@@ -129,9 +136,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region ULong
+
         /// <summary>
         /// 从流中读取一个ulong数据
         /// </summary>
@@ -152,9 +161,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region Float
+
         /// <summary>
         /// 从流中读取一个float数据
         /// </summary>
@@ -175,9 +186,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region Double
+
         /// <summary>
         /// 从流中读取一个double数据
         /// </summary>
@@ -198,9 +211,11 @@ namespace GameFrameWork.Serialize
             byte[] arr = BitConverter.GetBytes(value);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         #region Bool
+
         /// <summary>
         /// 从流中读取一个bool数据
         /// </summary>
@@ -218,9 +233,11 @@ namespace GameFrameWork.Serialize
         {
             base.WriteByte((byte)(value == true ? 1 : 0));
         }
+
         #endregion
 
         #region UTF8String
+
         /// <summary>
         /// 从流中读取一个sting
         /// </summary>
@@ -244,9 +261,11 @@ namespace GameFrameWork.Serialize
             {
                 throw new InvalidCastException("字符串超出范围");
             }
+
             WriteUShort((ushort)arr.Length);
             base.Write(arr, 0, arr.Length);
         }
+
         #endregion
 
         public void Release()

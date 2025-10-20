@@ -1,5 +1,4 @@
 using GameFrameWork;
-using GameFrameWork.Audio;
 
 public class PauseBgmClip : BaseClip
 {
@@ -21,7 +20,7 @@ public class PauseBgmClip : BaseClip
 
     protected override void OnPlay()
     {
-        AudioMgr.instance.PauseBgm();
+        GameEntry.soundMgr.PauseBgm();
         Complete();
     }
 

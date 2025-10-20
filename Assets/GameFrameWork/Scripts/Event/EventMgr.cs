@@ -2,8 +2,14 @@ using System;
 
 namespace GameFrameWork.Event
 {
-    public class EventMgr : BaseMgr<EventMgr>
+    public class EventMgr : GameFrameWorkModule , IEventMgr
     {
+        private readonly EventPool<EventArg> m_EventPool;
+        public EventMgr()
+        {
+            m_EventPool = new();
+        }
+        
         public int currEventCount
         {
             get
@@ -20,40 +26,27 @@ namespace GameFrameWork.Event
             }
         }
 
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-            m_EventPool = new();
-        }
-
-        protected override void OnUpdate()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
             m_EventPool.Update();
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
-            base.OnShutDown();
             m_EventPool.ShutDown();
         }
-
-        protected override void OnDestory()
-        {
-            base.OnDestory();
-            m_EventPool = null;
-        }
-
-        public void Subscribe(uint eventId, EventHandler<GameEventArg> handler)
+        
+        public void Subscribe(uint eventId, EventHandler<EventArg> handler)
         {
             m_EventPool.Subscribe(eventId, handler);
         }
 
-        public void UnSubscribe(uint eventId, EventHandler<GameEventArg> handler)
+        public void UnSubscribe(uint eventId, EventHandler<EventArg> handler)
         {            
             m_EventPool.UnSubscibe(eventId, handler);
         }
 
-        public bool Check(uint eventId, EventHandler<GameEventArg> handler)
+        public bool Check(uint eventId, EventHandler<EventArg> handler)
         {
             return m_EventPool.Check(eventId, handler);
         }
@@ -63,16 +56,14 @@ namespace GameFrameWork.Event
             return m_EventPool.Count(eventId);
         }
 
-        public void Dispatch(object sender, GameEventArg arg)
+        public void Dispatch(object sender, EventArg arg)
         {
             m_EventPool.Dispatch(sender, arg);
         }
 
-        public void DispatchNow(object sender, GameEventArg arg)
+        public void DispatchNow(object sender, EventArg arg)
         {
             m_EventPool.DispatchNow(sender, arg);
         }
-
-        private EventPool<GameEventArg> m_EventPool = null;
     }
 }

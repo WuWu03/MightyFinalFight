@@ -4,6 +4,9 @@ using GameFrameWork.UI;
 
 public class UIShowHideClip : BaseClip
 {
+    private Type m_UIType;
+    private bool m_IsActive;
+    
     public static UIShowHideClip Create(Type uiType, bool isActive)
     {
         UIShowHideClip clip = ReferencePool.Acquire<UIShowHideClip>();
@@ -26,11 +29,11 @@ public class UIShowHideClip : BaseClip
     {
         if (m_IsActive) 
         {
-            UIMgr.instance.Get(m_UIType).Show();
+            GameFrameWorkMgr.GetModule<IUIMgr>().Get(m_UIType).Show();
         }
         else
         {
-            UIMgr.instance.Get(m_UIType).Hide();
+            GameFrameWorkMgr.GetModule<IUIMgr>().Get(m_UIType).Hide();
         }
 
         Complete();
@@ -40,7 +43,4 @@ public class UIShowHideClip : BaseClip
     {
 
     }
-
-    private Type m_UIType = null;
-    private bool m_IsActive = false;
 }

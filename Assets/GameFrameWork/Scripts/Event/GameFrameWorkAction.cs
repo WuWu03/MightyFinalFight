@@ -9,7 +9,7 @@ namespace GameFrameWork.Event
     public delegate int GameFrameWorkIntAction();
     public delegate string GameFrameWorkStringAction();
     public delegate byte GameFrameWorkByteAction();
-    public delegate TResult GameFrameWorkTemplateAction<TResult>();
+    public delegate TResult GameFrameWorkTemplateAction<out TResult>();
 
     /// <summary>
     /// 一个参数
@@ -113,7 +113,7 @@ namespace GameFrameWork.Event
     /// <param name="t6"></param>
     public delegate void GameFrameWorkAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
     public delegate bool GameFrameWorkBooleanAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
-    public delegate float GameFrameWorkFloatActio<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
+    public delegate float GameFrameWorkFloatAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
     public delegate int GameFrameWorkIntAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
     public delegate string GameFrameWorkStringAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
     public delegate byte GameFrameWorkByteAction<in T1, in T2, in T3, in T4, in T5, in T6>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
@@ -138,7 +138,7 @@ namespace GameFrameWork.Event
     /// <param name="t7"></param>
     public delegate void GameFrameWorkAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
     public delegate bool GameFrameWorkBooleanAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
-    public delegate float GameFrameWorkFloatActio<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
+    public delegate float GameFrameWorkFloatAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
     public delegate int GameFrameWorkIntAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
     public delegate string GameFrameWorkStringAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);
     public delegate byte GameFrameWorkByteAction<in T1, in T2, in T3, in T4, in T5, in T6, in T7>(T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7);

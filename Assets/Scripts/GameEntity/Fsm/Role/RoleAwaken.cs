@@ -1,7 +1,8 @@
 using GameFrameWork.Fsm;
 
-public class RoleAwaken : BaseFsmState
+public class RoleAwaken : FsmState
 {
+    private BaseRole m_Owner;
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -19,7 +20,6 @@ public class RoleAwaken : BaseFsmState
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Awaken, 1, 0.2f);
         m_Owner.SetPos2(m_Owner.pos);
-
     }
 
     protected override void OnUpdate(Fsm fsm, float deltaTime, float unscaleDeltaTime)
@@ -40,6 +40,4 @@ public class RoleAwaken : BaseFsmState
     {
         m_Owner = null;
     }
-
-    private BaseRole m_Owner = null;
 }

@@ -1,7 +1,8 @@
-using GameFrameWork.Camera;
-
 public abstract class BaseTaskTrigger : ITaskTrigger
 {
+    private bool m_IsComplete;
+    private readonly TaskConfigData m_TaskData;
+    
     public bool isComplete
     {
         get
@@ -10,9 +11,17 @@ public abstract class BaseTaskTrigger : ITaskTrigger
         }
     }
 
+    public TaskConfigData taskConfigData
+    {
+        get
+        {
+            return m_TaskData;
+        }
+    }
+
     public BaseTaskTrigger(TaskConfigData data)
     {
-        mTaskData = data;
+        m_TaskData = data;
     }
 
     public virtual void Enter()
@@ -22,12 +31,12 @@ public abstract class BaseTaskTrigger : ITaskTrigger
 
     public virtual void Trigger()
     {
-        if(mTaskData.TriggerPlayerCantCtrl)
+        if(m_TaskData.TriggerPlayerCantCtrl)
         {
-            PlayerMgr.instance.canContrl = false;
+            PlayerMgr.instance.canControl = false;
         }
 
-        if (mTaskData.TriggerStopCamera)
+        if (m_TaskData.TriggerStopCamera)
         {
             CameraMgr.instance.EndFollow(true);
         }
@@ -37,7 +46,4 @@ public abstract class BaseTaskTrigger : ITaskTrigger
     {
         m_IsComplete = true;
     }
-
-    private bool m_IsComplete = false;
-    protected TaskConfigData mTaskData = null;
 }

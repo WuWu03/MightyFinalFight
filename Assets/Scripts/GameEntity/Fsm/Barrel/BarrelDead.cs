@@ -1,9 +1,10 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 
-public class BarrelDead : BaseFsmState
+public class BarrelDead : FsmState
 {
+    private float m_AttackerDir;
+    private Barrel m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as Barrel;
@@ -25,11 +26,14 @@ public class BarrelDead : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
-        HurtStateData hurtData = stateData as HurtStateData;
-        m_AttackerDir = hurtData.attackerDir;
+        base.OnSetStateData(fsm, fsmStateArg);
+        
+        if (fsmStateArg is HurtStateArg hurtStateArg)
+        {
+            m_AttackerDir = hurtStateArg.attackerDir;
+        }
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
@@ -41,7 +45,4 @@ public class BarrelDead : BaseFsmState
     {
         m_Owner = null;
     }
-
-    private float m_AttackerDir = 0f;
-    private Barrel m_Owner = null;
 }

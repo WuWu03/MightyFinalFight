@@ -1,5 +1,3 @@
-using GameFrameWork.Event;
-
 namespace GameFrameWork.Pool
 {
     public class PoolObjectInfo : GameFrameWorkEventArg
@@ -9,9 +7,7 @@ namespace GameFrameWork.Pool
         public bool isReleaseImmediate;
         public string assetPath;
         public int referenceCount;
-
-        public PoolObjectInfo() { }
-
+        
         public static PoolObjectInfo Create(UnityEngine.Object poolObject, float releaseTime, bool isReleaseImmediate, string assetPath)
         {
             PoolObjectInfo resourcePoolInfo = ReferencePool.Acquire<PoolObjectInfo>();

@@ -1,10 +1,11 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleDead : BaseFsmState
+public class RoleDead : FsmState
 {
+    private Vector2 m_ReBirthPos = Vector2.zero;
+    private BaseRole m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -38,11 +39,14 @@ public class RoleDead : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
-        DropTrapStateData trapData = stateData as DropTrapStateData;
-        m_ReBirthPos = trapData.rebirthPos;
+        base.OnSetStateData(fsm, fsmStateArg);
+
+        if (fsmStateArg is DropTrapStateArg dropTrapStateArg)
+        {
+            m_ReBirthPos = dropTrapStateArg.rebirthPos;
+        }
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
@@ -54,7 +58,4 @@ public class RoleDead : BaseFsmState
     {
         m_Owner = null;
     }
-
-    private Vector2 m_ReBirthPos = Vector2.zero;
-    private BaseRole m_Owner = null;
 }

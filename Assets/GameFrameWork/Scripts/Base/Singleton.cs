@@ -2,7 +2,7 @@ using System;
 
 namespace GameFrameWork
 {
-    public abstract class Singleton<T> : IDisposable where T : Singleton<T>, new()
+    public abstract class Singleton<T> : IDisposable where T : class, new()
     {
         public static T instance
         {

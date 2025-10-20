@@ -1,6 +1,6 @@
 using GameFrameWork.Fsm;
 
-public class HeroPickUp : BaseFsmState
+public class HeroPickUp : FsmState
 {
     protected override void OnInit(Fsm fsm)
     {

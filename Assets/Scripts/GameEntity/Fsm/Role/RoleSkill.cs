@@ -1,10 +1,13 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleSkill : BaseFsmState
+public class RoleSkill : FsmState
 {
+    private bool m_CanMove;
+    private bool m_CanChangeDir;
+    private float m_Dir;
+    private BaseRole m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -33,21 +36,19 @@ public class RoleSkill : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
+        base.OnSetStateData(fsm, fsmStateArg);
 
-        if (stateData is SkillStateData)
+        if (fsmStateArg is SkillStateArg skillStateArg)
         {
-            SkillStateData skillData = stateData as SkillStateData;
-            m_CanChangeDir = skillData.canChangeDir;
-            m_CanMove = skillData.canMove;
-            m_Dir = skillData.dir;
+            m_CanChangeDir = skillStateArg.canChangeDir;
+            m_CanMove = skillStateArg.canMove;
+            m_Dir = skillStateArg.dir;
         }
-        else if (stateData is MoveStateData)
+        else if (fsmStateArg is MoveStateArg  moveStateArg)
         {
-            MoveStateData moveData = stateData as MoveStateData;
-            m_Dir = moveData.dir.x;
+            m_Dir = moveStateArg.dir.x;
         }
     }
 
@@ -55,9 +56,4 @@ public class RoleSkill : BaseFsmState
     {
         m_CanMove = false;
     }
-
-    private bool m_CanMove = false;
-    private bool m_CanChangeDir = false;
-    private float m_Dir = 0;
-    private BaseRole m_Owner = null;
 }

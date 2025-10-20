@@ -2,12 +2,11 @@ using DragonBones;
 using GameFrameWork;
 using GameFrameWork.Fsm;
 using System;
-using GameFrameWork.Event;
 using UnityEngine;
 
 public abstract class BaseAvatar : BaseGravityObject
 {
-    private Fsm m_Fsm = null;
+    private Fsm m_Fsm;
     public Fsm fsm
     {
         get
@@ -16,7 +15,7 @@ public abstract class BaseAvatar : BaseGravityObject
         }
     }
 
-    private HitTrigger m_HitTrigger = null;
+    private HitTrigger m_HitTrigger;
     public HitTrigger hitTrigger
     {
         get
@@ -45,7 +44,7 @@ public abstract class BaseAvatar : BaseGravityObject
     protected override void OnRelease()
     {
         m_Animator.animation?.Reset();
-        FsmMgr.instance.ReleaseFsm(m_Fsm);
+        GameEntry.fsmMgr.ReleaseFsm(m_Fsm);
         m_HitTrigger = null;
         m_Animator = null;
         m_CurrAnimationState = null;
@@ -209,30 +208,30 @@ public abstract class BaseAvatar : BaseGravityObject
         return false;
     }
 
-    public bool IsCurrState<T>() where T : BaseFsmState, new()
+    public bool IsCurrState<T>() where T : FsmState, new()
     {
         return m_Fsm.currStateType == typeof(T);
     }
 
-    protected void AddState<T>() where T : BaseFsmState, new()
+    protected void AddState<T>() where T : FsmState, new()
     {
-        m_Fsm ??= FsmMgr.instance.CreateFsm(this, name);
+        m_Fsm ??= GameEntry.fsmMgr.CreateFsm(this, name);
         m_Fsm.AddState<T>();
     }
 
-    public T GetState<T>() where T : BaseFsmState
+    public T GetState<T>() where T : FsmState
     {
         return m_Fsm.GetState<T>();
     }
 
-    protected void SetStateData<T>(GameFrameWorkEventArg stateData) where T : BaseFsmState
+    protected void SetStateData<T>(FsmStateArg stateArg) where T : FsmState
     {
-        m_Fsm.SetStateData<T>(stateData);
+        m_Fsm.SetStateData<T>(stateArg);
     }
 
-    public void ChangeState<T>(GameFrameWorkEventArg stateData = null) where T : BaseFsmState
+    public void ChangeState<T>(FsmStateArg stateArg = null) where T : FsmState
     {
-        m_Fsm.ChangeState<T>(stateData);
+        m_Fsm.ChangeState<T>(stateArg);
     }
 
     public void ChangeDefaultState()
@@ -240,12 +239,12 @@ public abstract class BaseAvatar : BaseGravityObject
         m_Fsm.ChangeDefaultState();
     }
 
-    public void RemoveState<T>() where T : BaseFsmState
+    public void RemoveState<T>() where T : FsmState
     {
         m_Fsm.RemoveState<T>();
     }
 
-    public void SetDefaultState<T>() where T : BaseFsmState
+    public void SetDefaultState<T>() where T : FsmState
     {
         m_Fsm.SetDefaultState<T>();
     }
@@ -278,7 +277,6 @@ public abstract class BaseAvatar : BaseGravityObject
     protected override void OnUpdate()
     {
         base.OnUpdate();
-
         m_Fsm?.Update(Time.deltaTime, Time.unscaledDeltaTime);
 
         if (m_CurrAnimationState != null && m_CurrAnimationState.isPlaying)

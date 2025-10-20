@@ -4,6 +4,7 @@ namespace GameFrameWork.Event
     {
         public void Invoke()
         {
+            RebuildCallListIfNeeded();
             foreach (GameFrameWorkCall call in calls)
             {
                 call.Invoke();
@@ -15,6 +16,7 @@ namespace GameFrameWork.Event
     {
         public void Invoke(T1 arg1)
         {
+            RebuildCallListIfNeeded();
             foreach (GameFrameWorkCall<T1> call in calls)
             {
                 call.arg1 = arg1;
@@ -27,6 +29,7 @@ namespace GameFrameWork.Event
     {
         public void Invoke(T1 arg1,T2 arg2)
         {
+            RebuildCallListIfNeeded();
             foreach (GameFrameWorkCall<T1,T2> call in calls)
             {
                 call.arg1 = arg1;
@@ -40,11 +43,28 @@ namespace GameFrameWork.Event
     {
         public void Invoke(T1 arg1, T2 arg2, T3 arg3)
         {
+            RebuildCallListIfNeeded();
             foreach (GameFrameWorkCall<T1, T2, T3> call in calls)
             {
                 call.arg1 = arg1;
                 call.arg2 = arg2;
                 call.arg3 = arg3;
+                call.Invoke();
+            }
+        }
+    }
+    
+    public class GameFrameWorkEvent<T1, T2, T3,T4> : GameFrameWorkBaseEvent<GameFrameWorkCall<T1, T2, T3,T4>, GameFrameWorkAction<T1, T2, T3,T4>>
+    {
+        public void Invoke(T1 arg1, T2 arg2, T3 arg3,T4 arg4)
+        {
+            RebuildCallListIfNeeded();
+            foreach (GameFrameWorkCall<T1, T2, T3 ,T4> call in calls)
+            {
+                call.arg1 = arg1;
+                call.arg2 = arg2;
+                call.arg3 = arg3;
+                call.arg4 = arg4;
                 call.Invoke();
             }
         }

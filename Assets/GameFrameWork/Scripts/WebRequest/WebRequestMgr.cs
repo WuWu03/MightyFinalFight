@@ -5,43 +5,51 @@ using UnityEngine.Networking;
 
 namespace GameFrameWork.WebRequest
 {
-    public class WebRequestMgr : BaseMgr<WebRequestMgr>
+    public class WebRequestMgr : GameFrameWorkModule,IWebRequestMgr
     {
-        protected override void OnAwake()
+        private readonly List<WebRequest> m_WebRequests;
+        private readonly List<WebRequest> m_RemovedWebRequests;
+        public WebRequestMgr()
         {
             m_WebRequests = new List<WebRequest>();
+            m_RemovedWebRequests = new List<WebRequest>();
         }
 
-        protected override void OnFixedUpdate()
+        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            if (m_WebRequests != null && m_WebRequests.Count > 0)
+            if (m_WebRequests is { Count: > 0 })
             {
-                for (int i = m_WebRequests.Count - 1; i > -1; i--)
+                foreach (WebRequest webRequest in m_WebRequests)
                 {
-                    if (m_WebRequests[i].isDone || m_WebRequests[i].isError)
+                    if (webRequest.isDone || webRequest.isError)
                     {
-                        RemoveWebRequest(m_WebRequests[i]);
+                        m_RemovedWebRequests.Add(webRequest);
                     }
                 }
             }
 
-            if (m_WebRequests != null && m_WebRequests.Count > 0 && !m_WebRequests[0].isDoing)
+            if (m_RemovedWebRequests is { Count: > 0 })
+            {
+                foreach (WebRequest webRequest in m_RemovedWebRequests)
+                {
+                    RemoveWebRequest(webRequest);
+                }
+                
+                m_RemovedWebRequests.Clear();
+            }
+
+            if (m_WebRequests is { Count: > 0 } && !m_WebRequests[0].isDoing)
             {
                 m_WebRequests[0].StartRequest();
             }
         }
 
-        protected override void OnShutDown()
+        public override void Shutdown()
         {
             RemoveAllWebRequests();
             m_WebRequests.Clear();
         }
-
-        protected override void OnDestory()
-        {
-            m_WebRequests = null;
-        }
-
+        
         public void AddWebRequest(string uri, string tag)
         {
             AddWebRequest(uri, tag, null, null, null);
@@ -59,7 +67,7 @@ namespace GameFrameWork.WebRequest
 
         public void AddWebRequest(string uri, string tag, WWWForm postData, GameFrameWorkAction<UnityWebRequest> onRequestCompleteEvent, GameFrameWorkAction<float> onRequesProgressEvent, GameFrameWorkAction<string> onRequestErrorEvent)
         {
-            WebRequest webRequest = WebRequest.Create(this, uri, tag, postData);
+            WebRequest webRequest = WebRequest.Create(uri, tag, postData);
             webRequest.onRequesProgressEvent += onRequesProgressEvent;
             webRequest.onRequestCompleteEvent += onRequestCompleteEvent;
             webRequest.onRequestErrorEvent += onRequestErrorEvent;
@@ -134,7 +142,5 @@ namespace GameFrameWork.WebRequest
             webRequest.Release();
             m_WebRequests.Remove(webRequest);
         }
-
-        private List<WebRequest> m_WebRequests = null;
     }
 }

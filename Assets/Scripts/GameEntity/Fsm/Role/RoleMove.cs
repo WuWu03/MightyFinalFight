@@ -1,10 +1,11 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleMove : BaseFsmState
+public class RoleMove : FsmState
 {
+    private bool m_CanChangeDir;
+    private BaseRole m_Owner;
+    
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -18,7 +19,8 @@ public class RoleMove : BaseFsmState
         m_Owner.SetCanMove(true);
         m_Owner.SetCanSkill(true);
         m_Owner.SetCanBeCatch(true);
-        if (m_Owner.objectType == ObjectType.Player && (m_Owner as BaseHero).weapon != null)
+        
+        if (m_Owner is BaseHero { weapon: not null })
         {
             m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Move_Catch : AnimName.Move_Weapon, -1, m_Owner.entityAttribute.moveSpeed * 0.2f);
         }
@@ -44,11 +46,14 @@ public class RoleMove : BaseFsmState
         m_Owner.SetPos2(ownerPos);
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
-        MoveStateData moveData = stateData as MoveStateData;
-        m_CanChangeDir = moveData.canChangeDir;
+        base.OnSetStateData(fsm, fsmStateArg);
+
+        if (fsmStateArg is MoveStateArg moveStateArg)
+        {
+            m_CanChangeDir = moveStateArg.canChangeDir;
+        }
     }
 
     protected override void OnExit(Fsm fsm, bool isShutdown)
@@ -64,7 +69,4 @@ public class RoleMove : BaseFsmState
         base.OnRelease(fsm);
         m_Owner = null;
     }
-
-    private bool m_CanChangeDir = false;
-    private BaseRole m_Owner = null;
 }

@@ -8,9 +8,9 @@ public static class StaticConfig
 
     public static void InitConfig()
     {
-        SkillConfig = AssetsMgr.instance.LoadAssetSync<SkillConfig>("ConfigData/SkillConfig.asset");
-        StageConfig = AssetsMgr.instance.LoadAssetSync<StageConfig>("ConfigData/StageConfig.asset");
-        TaskConfig = AssetsMgr.instance.LoadAssetSync<TaskConfig>("ConfigData/TaskConfig.asset");
+        SkillConfig = GameEntry.resourceMgr.Load<SkillConfig>("ConfigData/SkillConfig.asset");
+        StageConfig = GameEntry.resourceMgr.Load<StageConfig>("ConfigData/StageConfig.asset");
+        TaskConfig = GameEntry.resourceMgr.Load<TaskConfig>("ConfigData/TaskConfig.asset");
     }
 
     public static void ShutDown()

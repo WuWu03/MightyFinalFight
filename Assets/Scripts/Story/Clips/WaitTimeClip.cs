@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class WaitTimeClip : BaseClip
 {
+    private float m_WaitTime = 0;
+    private float m_PlayTimeStamp = 0;
+    private float m_PauseTimeStamp = 0;
+    
     public static WaitTimeClip Create(float waitTime)
     {
         WaitTimeClip waitTimeStory = ReferencePool.Acquire<WaitTimeClip>();
@@ -37,8 +41,4 @@ public class WaitTimeClip : BaseClip
         m_PlayTimeStamp += Time.time - m_PauseTimeStamp;
         m_PauseTimeStamp = 0;
     }
-
-    private float m_WaitTime = 0;
-    private float m_PlayTimeStamp = 0;
-    private float m_PauseTimeStamp = 0;
 }

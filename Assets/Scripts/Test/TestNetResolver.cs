@@ -1,66 +1,34 @@
 using client;
-using GameFrameWork;
-using GameFrameWork.Net;
-using GameFrameWork.Pool;
 using GameFrameWork.Event;
-using GameFrameWork.Serialize;
-using ProtoBuf;
+using GameFrameWork.Net;
 
-public class TestNetResolver : Singleton<TestNetResolver>
+public class TestNetResolver : NetResolver
 {
-    public event GameFrameWorkAction<test> testReceiveEvent
-    {
-        add
-        {
-            m_TestReceiveEvent += value;
-        }
-        remove
-        {
-            m_TestReceiveEvent -= value;;
-        }
-    }
+    public event GameFrameWorkAction<test> onReceiveTestEvent;
 
-    public TestNetResolver()
+    public TestNetResolver(INetMgr netMgr) : base(netMgr)
     {
-        m_TestProto = new();
-        NetMgr.instance.AddReceiveEvent(1, ReceiveTest);
+        AddReceiveEvent(1, ReceiveTest);
     }
 
     public void SendTest(string content)
     {
-        MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
-        m_TestProto.content = content;
-        Serializer.Serialize(mse, m_TestProto);
+        test proto = new()
+        {
+            content = content
+        };
 
-        byte[] buffer = ArrayPool<byte>.instance.Get((int)mse.Length + 6);
-
-        mse.WriteInt((int)mse.Length);
-        mse.WriteUShort(1);
-        mse.Position = buffer.Length - 6;
-        mse.Read(buffer, 0, 6);
-        mse.Position = 0;
-        mse.Read(buffer, 6, buffer.Length - 6);
-        NetMgr.instance.Send(buffer);
-        mse.Release();
-        ArrayPool<byte>.instance.Put(buffer);
+        Send(1, proto);
     }
 
-    public void ReceiveTest(ushort msgId, byte[] buffer)
+    private void ReceiveTest(ushort msgCode, byte[] buffer)
     {
-        MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
-        mse.Write(buffer, 0, buffer.Length);
-        mse.Position = 0;
-        test result = Serializer.Deserialize<test>(mse);
-        mse.Release();
-        m_TestReceiveEvent?.Invoke(result);
+        test proto = Deserialize<test>(buffer);
+        onReceiveTestEvent?.Invoke(proto);
     }
-
-    protected override void OnDispose()
+    
+    public override void Dispose()
     {
-        m_TestReceiveEvent = null;
-        m_TestProto = null;
+        onReceiveTestEvent = null;
     }
-
-    private event GameFrameWorkAction<test> m_TestReceiveEvent = null;
-    private test m_TestProto = null;
 }

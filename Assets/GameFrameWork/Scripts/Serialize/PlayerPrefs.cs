@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GameFrameWork.Serialize
@@ -15,7 +16,7 @@ namespace GameFrameWork.Serialize
 
             if(!string.IsNullOrEmpty(playerPrefsSave))
             {
-                List<string> playerPrefsSaveKeyList = new List<string>();
+                List<string> playerPrefsSaveKeyList = new();
                 string[] keys = playerPrefsSave.Split('_');
                 playerPrefsSaveKeyList.AddRange(keys);
 
@@ -80,11 +81,10 @@ namespace GameFrameWork.Serialize
         private static void DeleteSaveKey(string key)
         {
             string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(playerPrefsSaveKey, string.Empty);
-            bool isNullOrEmpty = string.IsNullOrEmpty(playerPrefsSave);
-
+            
             if (!string.IsNullOrEmpty(playerPrefsSave))
             {
-                int index = playerPrefsSave.IndexOf(key);
+                int index = playerPrefsSave.IndexOf(key, StringComparison.Ordinal);
 
                 if (index == 0)
                 {

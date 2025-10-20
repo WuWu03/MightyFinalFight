@@ -1,10 +1,25 @@
-using GameFrameWork.Camera;
-using GameFrameWork.UI;
 using System.Collections.Generic;
+using GameFrameWork;
 using UnityEngine;
 
 public class BaseHero : BaseRole
 {
+    private int m_CatchAttackCount;
+    private bool m_IsRebirthState;
+    private float m_CatchAttackTimer;
+    private float m_RebirthStateTimer;
+    private float m_RebirthStateTime = 3.0f;
+    private float m_RebirthLightTimer;
+    private float m_RebirthLightTime = 1f / 30f;
+    private float m_CatchStamp;
+    private float m_HitTime = -1f;
+    private List<ICanBeHit> m_CatchTargets;
+    private Dictionary<int, int> m_DicAttacker;
+    private Weapon m_Weapon;
+    private BaseHeroSkillData m_BaseHeroSkillData;
+    private Renderer m_Slot1Renderer;
+    private Renderer m_Slot2Renderer;
+    
     public override bool canBeHit
     {
         get
@@ -46,7 +61,7 @@ public class BaseHero : BaseRole
         AddState<HeroAttackEnd>();
 
         m_DicAttacker ??= new();
-        m_ListCatchTarget ??= new();
+        m_CatchTargets ??= new();
     }
 
     protected override void OnLoadAssetComplete(GameObject go, object arg)
@@ -66,7 +81,7 @@ public class BaseHero : BaseRole
 
         if (skillMgr.IsCurrSkill(m_BaseHeroSkillData.throwAttackID) && skillMgr.IsSkillComplete(m_BaseHeroSkillData.throwAttackID))
         {
-            ResetCatch(true, true);
+            ResetCatch();
         }
 
         if (rigidbody2D.bodyType == RigidbodyType2D.Dynamic && Mathf.Abs(rigidbody2D.linearVelocity.x) > 0)
@@ -93,9 +108,8 @@ public class BaseHero : BaseRole
 
     protected override void OnRelease()
     {
-        base.OnRelease();
         m_DicAttacker.Clear();
-        m_ListCatchTarget.Clear();
+        m_CatchTargets.Clear();
         m_RebirthStateTimer = 0;
         m_RebirthStateTime = 3.0f;
         m_RebirthLightTimer = 0;
@@ -107,9 +121,10 @@ public class BaseHero : BaseRole
         m_Slot2Renderer = null;
         m_IsRebirthState = false;
         m_Weapon = null;
-        m_ListCatchTarget = null;
+        m_CatchTargets = null;
         m_DicAttacker = null;
         m_BaseHeroSkillData = null;
+        base.OnRelease();
     }
 
     public override void SetSkillData(BaseRoleSkillData skillData)
@@ -120,19 +135,19 @@ public class BaseHero : BaseRole
 
     public override List<ICanBeHit> OnHitStart()
     {
-        if (m_ListCatchTarget.Count < 1)
+        if (m_CatchTargets.Count < 1)
         {
             return null;
         }
 
-        return m_ListCatchTarget;
+        return m_CatchTargets;
     }
 
     public override void OnHitEnd(SkillConfigData skillData, bool isHurtTarget)
     {
         base.OnHitEnd(skillData, !HasCatch() && isHurtTarget);
 
-        if (m_ListCatchTarget.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3)
+        if (m_CatchTargets.Count < 1 || !isHurtTarget || m_CatchAttackCount >= 3)
         {
             return;
         }
@@ -147,21 +162,21 @@ public class BaseHero : BaseRole
 
         if (m_CatchAttackCount >= 3)
         {
-            ICanBeHit hit = m_ListCatchTarget[0];
+            ICanBeHit hit = m_CatchTargets[0];
             ResetCatch(false, false);
-            HurtStateData hurtStateData = HurtStateData.Create();
-            hurtStateData.attackerDir = dir;
-            hurtStateData.attackValue = 0;
-            hurtStateData.isSwoon = true;
-            hurtStateData.attackForce = SkillUtil.GetSmoonForce(dir);
-            hurtStateData.isNotPlayHurtSound = true;
-            hit.OnHurtMsg(hurtStateData);
+            HurtStateArg hurtStateArg = HurtStateArg.Create();
+            hurtStateArg.attackerDir = dir;
+            hurtStateArg.attackValue = 0;
+            hurtStateArg.isSwoon = true;
+            hurtStateArg.attackForce = SkillUtil.GetSmoonForce(dir);
+            hurtStateArg.isNotPlayHurtSound = true;
+            hit.OnHurtMsg(hurtStateArg);
         }
     }
 
-    public override void OnAttackMsg(SkillStateData data, bool isForceJumpAttack = false)
+    public override void OnAttackMsg(SkillStateArg skillStateArg, bool isForceJumpAttack = false)
     {
-        if (m_ListCatchTarget != null && m_ListCatchTarget.Count > 0)
+        if (m_CatchTargets is { Count: > 0 })
         {
             m_CatchStamp = Time.time;
         }
@@ -171,18 +186,18 @@ public class BaseHero : BaseRole
             return;
         }
 
-        base.OnAttackMsg(data, isForceJumpAttack);
+        base.OnAttackMsg(skillStateArg, isForceJumpAttack);
     }
 
-    public override void OnMoveMsg(MoveStateData data)
+    public override void OnMoveMsg(MoveStateArg arg)
     {
-        data.isCatch = HasCatch() && isCatchControl;
-        base.OnMoveMsg(data);
+        arg.isCatch = HasCatch() && isCatchControl;
+        base.OnMoveMsg(arg);
     }
 
-    public override void OnJumpMsg(JumpStateData data)
+    public override void OnJumpMsg(JumpStateArg arg)
     {
-        data.isCatch = false;
+        arg.isCatch = false;
 
         if (HasCatch())
         {
@@ -193,67 +208,67 @@ public class BaseHero : BaseRole
             else
             {
                 m_CatchStamp = Time.time;
-                data.isCatch = true;
+                arg.isCatch = true;
             }
         }
 
-        base.OnJumpMsg(data);
+        base.OnJumpMsg(arg);
     }
 
-    public override void OnHurtMsg(HurtStateData data)
+    public override void OnHurtMsg(HurtStateArg arg)
     {
         if (HasCatch())
         {
             ResetCatch();
         }
 
-        if (data.isSwoon)
+        if (arg.isSwoon)
         {
-            data.hurtSound = SoundName.OnBlow;
+            arg.hurtSound = SoundName.OnBlow;
             m_DicAttacker.Clear();
             m_HitTime = -1f;
         }
         else
         {
-            int hitTime = 0;
+            int hitTime;
 
             if (!isDrop)
             {
-                if (!m_DicAttacker.TryGetValue(data.attackerId, out hitTime))
+                if (!m_DicAttacker.TryGetValue(arg.attackerId, out hitTime))
                 {
-                    m_DicAttacker.Add(data.attackerId, hitTime);
+                    m_DicAttacker.Add(arg.attackerId, hitTime);
                 }
 
                 hitTime++;
-                m_DicAttacker[data.attackerId] = hitTime;
+                m_DicAttacker[arg.attackerId] = hitTime;
             }
             else
             {
-                hitTime = data.isBoss ? 6 : 3;
+                hitTime = arg.isBoss ? 6 : 3;
             }
 
-            if (hitTime >= (data.isBoss ? 6 : 3) || IsHurtWillDie(data.attackValue))
+            if (hitTime >= (arg.isBoss ? 6 : 3) || IsHurtWillDie(arg.attackValue))
             {
-                data.attackForce = SkillUtil.GetSmoonForce(data.attackerDir);
-                data.isSwoon = true;
-                data.hurtSound = SoundName.OnBlow;
-                data.isGroundHurt = false;
+                arg.attackForce = SkillUtil.GetSmoonForce(arg.attackerDir);
+                arg.isSwoon = true;
+                arg.hurtSound = SoundName.OnBlow;
+                arg.isGroundHurt = false;
                 m_DicAttacker.Clear();
             }
             m_HitTime = Time.time;
         }
 
-        DropWeaponMsg(data.attackerDir);
-        base.OnHurtMsg(data);
+        DropWeaponMsg(arg.attackerDir);
+        base.OnHurtMsg(arg);
     }
 
-    public override void OnDropTragMsg(DropTrapStateData data)
+    public override void OnDropTrapMsg(DropTrapStateArg arg)
     {
-        base.OnDropTragMsg(data);
+        base.OnDropTrapMsg(arg);
         CameraMgr.instance.EndFollow();
     }
 
-    public override void SetPos(Vector2 pos, float posZ, bool caculateZ = false)
+    public override void SetPos(Vector2 pos, float posZ, bool calculateZ = false)
     {
         if (!isAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
         {
@@ -279,13 +294,13 @@ public class BaseHero : BaseRole
             pos.y = isMapYCanMove ? pos.y : this.pos.y;
         }
 
-        base.SetPos(pos, posZ, caculateZ);
+        base.SetPos(pos, posZ, calculateZ);
     }
 
     public virtual void OnRebirthMsg(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        UIMgr.instance.Get<MainView>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+        GameEntry.uiMgr.Get<MainView>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
     }
 
     public void SetRebirthState()
@@ -299,7 +314,7 @@ public class BaseHero : BaseRole
 
     public virtual void PickUpSceneItemMsg(BaseSceneItem item)
     {
-        if (item == null)
+        if (item is null)
         {
             return;
         }
@@ -310,7 +325,13 @@ public class BaseHero : BaseRole
         {
             Weapon weapon = item as Weapon;
 
-            if (m_Weapon == null)
+            if (weapon is null)
+            {
+                Log.LogError("武器为空");
+                return;
+            }
+            
+            if (m_Weapon is null)
             {
                 weapon.SetOwner(this);
                 m_Weapon = weapon;
@@ -329,7 +350,7 @@ public class BaseHero : BaseRole
 
     public virtual void DropWeaponMsg(float dir)
     {
-        if (m_Weapon != null)
+        if (m_Weapon is not null)
         {
             m_Weapon.entityAttribute.SubHealth(1);
             m_Weapon.Drop(dir);
@@ -348,19 +369,19 @@ public class BaseHero : BaseRole
         }
     }
 
-    protected override void OnGroundHurtMsg(HurtStateData data)
+    protected override void OnGroundHurtMsg(HurtStateArg arg)
     {
-        Vector3 damagePos = transform.position + Vector3.up * boxCollider2D.size.y / 2f + Vector3.right * boxCollider2D.size.x / 2 * data.attackerDir;
+        Vector3 damagePos = transform.position + Vector3.up * boxCollider2D.size.y / 2f + Vector3.right * boxCollider2D.size.x / 2 * arg.attackerDir;
 
-        if (data.attackValue > 0)
+        if (arg.attackValue > 0)
         {
-            HudMgr.instance.ShowEnemyDamage(data.attackValue, damagePos);
-            base.OnGroundHurtMsg(data);
-            UIMgr.instance.Get<MainView>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+            HudMgr.instance.ShowEnemyDamage(arg.attackValue, damagePos);
+            base.OnGroundHurtMsg(arg);
+            GameEntry.uiMgr.Get<MainView>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
         }
         else
         {
-            base.OnGroundHurtMsg(data);
+            base.OnGroundHurtMsg(arg);
         }
     }
 
@@ -395,7 +416,7 @@ public class BaseHero : BaseRole
             {
                 m_CatchAttackTimer = 0;
                 SetDir(dir.x);
-                m_ListCatchTarget[0].SetIsBeThrow(true);
+                m_CatchTargets[0].SetIsBeThrow(true);
                 SetTargetPos();
                 DeploySkill(m_BaseHeroSkillData.throwAttackID);
                 return;
@@ -442,23 +463,21 @@ public class BaseHero : BaseRole
 
     private BaseSceneItem IsNearSceneItem()
     {
-        List<BaseSceneItem> list = SceneEntityMgr.instance.GetSceneItems();
+        List<BaseSceneItem> baseSceneItems = SceneEntityMgr.instance.GetSceneItems();
 
-        if (list == null || list.Count < 1)
+        if (baseSceneItems == null || baseSceneItems.Count < 1)
         {
             return null;
         }
 
-        for (int i = 0; i < list.Count; i++)
+        foreach (var baseSceneItem in baseSceneItems)
         {
-            BaseSceneItem item = list[i];
-
-            bool isXNear = Mathf.Abs(item.pos.x - pos.x) <= item.bound.width / 2;
-            bool isYNear = Mathf.Abs(item.bound.yMin - bound.yMin) <= 0.05f;
+            bool isXNear = Mathf.Abs(baseSceneItem.pos.x - pos.x) <= baseSceneItem.bound.width / 2;
+            bool isYNear = Mathf.Abs(baseSceneItem.bound.yMin - bound.yMin) <= 0.05f;
 
             if (isXNear && isYNear)
             {
-                return item;
+                return baseSceneItem;
             }
         }
 
@@ -476,14 +495,14 @@ public class BaseHero : BaseRole
             else
             {
                 ResetCatch();
-                m_ListCatchTarget[0].SetIsBeCatch(false);
+                m_CatchTargets[0].SetIsBeCatch(false);
             }
         }
     }
 
     protected virtual void CheckCatch()
     {
-        if (m_ListCatchTarget.Count < 1)
+        if (m_CatchTargets.Count < 1)
         {
             List<BaseEnemy> enemyTargets = SceneEntityMgr.instance.GetEnemies();
 
@@ -492,11 +511,11 @@ public class BaseHero : BaseRole
                 return;
             }
 
-            for (int i = 0; i < enemyTargets.Count; i++)
+            foreach (var enemyTarget in enemyTargets)
             {
-                BaseEnemy target = enemyTargets[i];
+                BaseEnemy target = enemyTarget;
 
-                if (target == null || !target.canBeHit || !enemyTargets[i].isInGround || !target.canBeCatch)
+                if (target == null || !target.canBeHit || !enemyTarget.isInGround || !target.canBeCatch)
                 {
                     continue;
                 }
@@ -515,12 +534,12 @@ public class BaseHero : BaseRole
                     target.SetIsBeCatch(true);
                     SetDefaultState<HeroCatch>();
                     ChangeState<HeroCatch>();
-                    m_ListCatchTarget.Add(target);
+                    m_CatchTargets.Add(target);
                     break;
                 }
             }
 
-            if (m_ListCatchTarget.Count > 0)
+            if (m_CatchTargets.Count > 0)
             {
                 m_CatchStamp = Time.time;
             }
@@ -531,21 +550,27 @@ public class BaseHero : BaseRole
         float catchTime = m_CatchAttackCount >= 3 ? 0.3f : ConstField.CatchTime;
         bool isOutCatchTime = Time.time - m_CatchStamp >= catchTime;
 
-        if ((isOutCatchTime && isInGround) || (m_ListCatchTarget[0].isDead && IsAllAnimationComplete()))
+        if ((isOutCatchTime && isInGround) || (m_CatchTargets[0].isDead && IsAllAnimationComplete()))
         {
             ResetCatch();
             return;
         }
 
-        if (m_ListCatchTarget.Count > 0 && isCatchControl)
+        if (m_CatchTargets.Count > 0 && isCatchControl)
         {
             if (IsCurrState<RoleSkill>() && !isFloat && !isDrop)
             {
                 return;
             }
 
-            BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
+            BaseAvatar target = m_CatchTargets[0] as BaseAvatar;
 
+            if (target is null)
+            {
+                Log.LogError("捕捉敌人非BaseAvatar类型");
+                return;
+            }
+            
             if (target.IsAnyState(typeof(RoleSwoon), typeof(RoleAwaken)))
             {
                 return;
@@ -598,14 +623,14 @@ public class BaseHero : BaseRole
     {
         SetDefaultState<RoleIdle>();
 
-        for (int i = 0; i < m_ListCatchTarget.Count; i++)
+        foreach (var catchTarget in m_CatchTargets)
         {
-            m_ListCatchTarget[i].SetIsBeCatch(false);
+            catchTarget.SetIsBeCatch(false);
         }
 
         SetTargetPos();
 
-        m_ListCatchTarget.Clear();
+        m_CatchTargets.Clear();
         m_CatchStamp = 0f;
         m_CatchAttackCount = 0;
 
@@ -622,12 +647,19 @@ public class BaseHero : BaseRole
 
     private void SetTargetPos()
     {
-        if (m_ListCatchTarget == null || m_ListCatchTarget.Count < 1)
+        if (m_CatchTargets == null || m_CatchTargets.Count < 1)
         {
             return;
         }
 
-        BaseAvatar target = m_ListCatchTarget[0] as BaseAvatar;
+        BaseAvatar target = m_CatchTargets[0] as BaseAvatar;
+
+        if (target is null)
+        {
+            Log.LogError("捕捉到敌人非BaseAvatar类型");
+            return;
+        }
+        
         target.SetDepth(pos.y + 0.01f);
         target.SetScale2(target.dir, 1);
 
@@ -639,22 +671,6 @@ public class BaseHero : BaseRole
 
     private bool HasCatch()
     {
-        return m_ListCatchTarget != null && m_ListCatchTarget.Count > 0 && m_CatchAttackCount < 3;
+        return m_CatchTargets is { Count: > 0 } && m_CatchAttackCount < 3;
     }
-
-    private int m_CatchAttackCount = 0;
-    private bool m_IsRebirthState = false;
-    private float m_CatchAttackTimer = 0f;
-    private float m_RebirthStateTimer = 0;
-    private float m_RebirthStateTime = 3.0f;
-    private float m_RebirthLightTimer = 0;
-    private float m_RebirthLightTime = 1f / 30f;
-    private float m_CatchStamp = 0f;
-    private float m_HitTime = -1f;
-    private List<ICanBeHit> m_ListCatchTarget = null;
-    private Dictionary<int, int> m_DicAttacker = null;
-    private Weapon m_Weapon = null;
-    private BaseHeroSkillData m_BaseHeroSkillData = null;
-    private Renderer m_Slot1Renderer = null;
-    private Renderer m_Slot2Renderer = null;
 }

@@ -112,34 +112,6 @@ namespace GameFrameWork
             return comp;
         }
 
-        public static void SetSprite(this Image renderer, string spriteName)
-        {
-            if (renderer == null || string.IsNullOrEmpty(spriteName))
-            {
-                return;
-            }
-
-            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
-
-            AssetsPool.instance.Get<Sprite>(spritePath, (assetPath, obj, param) =>
-            {
-                renderer.sprite = obj as Sprite;
-            });
-        }
-
-        public static void PutSprite(this Image renderer,string spriteName)
-        {
-            if (renderer == null || renderer.sprite == null)
-            {
-                return;
-            }
-
-            Sprite sprite = renderer.sprite;
-            renderer.sprite = null;
-            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
-            AssetsPool.instance.Put(spritePath, sprite);
-        }
-
         public static int ToInt(this string value)
         {
             if (!string.IsNullOrEmpty(value) && int.TryParse(value, out int result))
@@ -411,69 +383,6 @@ namespace GameFrameWork
             }
 
             return new Vector2(horizontalSize, verticalSize);
-        }
-
-
-        public static void AppendInt(this StringBuilder sb, int n, int len = 0)
-        {
-            int l;
-            int k;
-
-            if (n == 0)
-            {
-                l = 0;
-            }
-            else
-            {
-                l = (int)System.Math.Floor(System.Math.Log10(n < 0 ? -n : n));
-            }
-
-            if (len - 1 > l)
-            {
-                l = len - 1;
-            }
-
-            k = (int)System.Math.Round(System.Math.Pow(10, l));
-
-            do
-            {
-                if (n < 0)
-                {
-                    sb.Append('-');
-                    n = -n;
-                }
-                else
-                {
-                    sb.Append((char)('0' + n / k));
-                    n %= k;
-                    k /= 10;
-                }
-            } while (k > 0);
-        }
-
-        public static object CreatePanelParam(this IView view, string paramName)
-        {
-            return CreatePanelParam(view.GetType().Name, paramName);
-        }
-
-        private static object CreatePanelParam(string panelTypeName, string paramName)
-        {
-            string panelParamName = StringUtil.Append(panelTypeName, paramName);
-            Type panelViewType = Type.GetType(panelParamName);
-
-            if (panelViewType == null)
-            {
-                Log.LogError("[", panelParamName, "] 不存在");
-                return null;
-            }
-
-            if (panelViewType != null)
-            {
-                object panelParam = Activator.CreateInstance(panelViewType);
-                return panelParam;
-            }
-
-            return null;
         }
     }
 }

@@ -1,11 +1,22 @@
 using GameFrameWork;
-using GameFrameWork.Camera;
 using GameFrameWork.GameEntity;
 using GameFrameWork.Event;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
 {
+    private float m_Dir = 1f;
+    private float m_Depth;
+    private float m_PosZ;
+    private int m_MapPosZ;
+    private int m_EntityId;
+    private Vector2 m_Pos = Vector2.zero;
+    private Vector2Int m_MapPos = Vector2Int.zero;
+    private ObjectType m_ObjectType = ObjectType.NONE;
+    private EntityAttribute m_EntityAttribute;
+    private GameFrameWorkAction<int> m_OnReleaseEventHandler;
+    private IReference m_Data;
+    
     public ObjectType objectType
     {
         get
@@ -144,9 +155,9 @@ public class BaseSceneObject : BaseEntity
         SetPos(new Vector3(x, m_Pos.y), m_PosZ);
     }
 
-    public void SetPosY(float y, bool caculateZ = false)
+    public void SetPosY(float y, bool calculateZ = false)
     {
-        SetPos(new Vector3(m_Pos.x, y), m_PosZ, caculateZ);
+        SetPos(new Vector3(m_Pos.x, y), m_PosZ, calculateZ);
     }
 
     public void SetPosZ(float z)
@@ -154,9 +165,9 @@ public class BaseSceneObject : BaseEntity
         SetPos(new Vector3(m_Pos.x, m_Pos.y), z, true);
     }
 
-    public void SetPosXY(float x, float y, bool caculateZ = false)
+    public void SetPosXY(float x, float y, bool calculateZ = false)
     {
-        SetPos(new Vector3(x, y), m_PosZ, caculateZ);
+        SetPos(new Vector3(x, y), m_PosZ, calculateZ);
     }
 
     public void SetPosXYZ(float x, float y, float z)
@@ -164,14 +175,14 @@ public class BaseSceneObject : BaseEntity
         SetPos(new Vector3(x, y), z, true);
     }
 
-    public void SetPos2(Vector2 pos, bool caculateZ = false)
+    public void SetPos2(Vector2 pos, bool calculateZ = false)
     {
-        SetPos(pos, m_PosZ, caculateZ);
+        SetPos(pos, m_PosZ, calculateZ);
     }
 
-    public virtual void SetPos(Vector2 pos, float posZ, bool caculateZ = false)
+    public virtual void SetPos(Vector2 pos, float posZ, bool calculateZ = false)
     {
-        if (caculateZ)
+        if (calculateZ)
         {
             pos.y += posZ;
             posZ = 0;
@@ -283,17 +294,4 @@ public class BaseSceneObject : BaseEntity
         Rect visionRect = CameraMgr.instance.GetVision();
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
-
-
-    private float m_Dir = 1f;
-    private float m_Depth = 0f;
-    private float m_PosZ = 0f;
-    private int m_MapPosZ = 0;
-    private int m_EntityId = 0;
-    private Vector2 m_Pos = Vector2.zero;
-    private Vector2Int m_MapPos = Vector2Int.zero;
-    private ObjectType m_ObjectType = ObjectType.NONE;
-    private EntityAttribute m_EntityAttribute = null;
-    private GameFrameWorkAction<int> m_OnReleaseEventHandler = null;
-    private IReference m_Data = null;
 }

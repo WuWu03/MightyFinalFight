@@ -110,7 +110,7 @@ public static class SkillUtil
         return ret;
     }
 
-    public static HurtStateData GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
+    public static HurtStateArg GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
     {
         if (hit == null || !hit.canBeHit)
         {
@@ -138,34 +138,34 @@ public static class SkillUtil
             isBoss = (owner as BaseEnemy).isBoss;
         }
 
-        HurtStateData hurtData = HurtStateData.Create();
-        hurtData.skillExp = data.EXP;
-        hurtData.attackerDir = owner.dir;
-        hurtData.attackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
-        hurtData.attackerPos = owner.pos;
-        hurtData.canBeDefense = effect.CanBeDefense;
-        hurtData.isSwoon = effect.IsSmoon;
-        hurtData.attackerId = owner.id;
-        hurtData.attackValue = CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
-        hurtData.isCritical = isCritical;
-        hurtData.hurtSound = data.HurtSound;
-        hurtData.hurtAnim = string.Empty;
-        hurtData.isGroundHurt = effect.IsOnGroundHurt;
-        hurtData.isPause = isPause;
-        hurtData.isBoss = isBoss;
+        HurtStateArg hurtArg = HurtStateArg.Create();
+        hurtArg.skillExp = data.EXP;
+        hurtArg.attackerDir = owner.dir;
+        hurtArg.attackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
+        hurtArg.attackerPos = owner.pos;
+        hurtArg.canBeDefense = effect.CanBeDefense;
+        hurtArg.isSwoon = effect.IsSmoon;
+        hurtArg.attackerId = owner.entityID;
+        hurtArg.attackValue = CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
+        hurtArg.isCritical = isCritical;
+        hurtArg.hurtSound = data.HurtSound;
+        hurtArg.hurtAnim = string.Empty;
+        hurtArg.isGroundHurt = effect.IsOnGroundHurt;
+        hurtArg.isPause = isPause;
+        hurtArg.isBoss = isBoss;
 
-        return hurtData;
+        return hurtArg;
     }
 
     public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect , bool isPause = false)
     {
-        HurtStateData hurtData = GetHurtData(hit, owner, data, effect, isPause);
+        HurtStateArg hurtArg = GetHurtData(hit, owner, data, effect, isPause);
         bool result = false;
 
-        if (hurtData != null)
+        if (hurtArg != null)
         {
-            hit.OnHurtMsg(hurtData);
-            result = !hit.IsHurtWillDie(hurtData.attackValue);
+            hit.OnHurtMsg(hurtArg);
+            result = !hit.IsHurtWillDie(hurtArg.attackValue);
         }
 
         return result;

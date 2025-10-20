@@ -84,22 +84,18 @@ namespace GameFrameWork.Editor
                 {
                     pivot = -lineSpace / 2;
                 }
-
-                Debug.Log(pivot);
+                
                 int offsetY = (int)(pivot + (lineSpace - rect.height) / 2);
-
                 CharacterInfo info = new();
                 info.index = (int)sprite.name[^1];//设置ascii码，使用切分sprite的最后一个字母
                 info.uvBottomLeft = new Vector2((float)rect.x / tex.width, (float)(rect.y / tex.height));
                 info.uvBottomRight = new Vector2((float)(rect.x + rect.width) / tex.width, (float)(rect.y) / tex.height);
                 info.uvTopLeft = new Vector2((float)rect.x / tex.width, (float)(rect.y + rect.height) / tex.height);
                 info.uvTopRight = new Vector2((float)(rect.x + rect.width) / tex.width, (float)(rect.y + rect.height) / tex.height);
-
                 info.minX = 0;//设置字符顶点的偏移位置和宽高  
                 info.minY = -(int)rect.height - offsetY;
                 info.maxX = (int)rect.width;
                 info.maxY = -offsetY;
-
                 info.advance = (int)rect.width;//设置字符的宽度 
                 info.glyphHeight = (int)rect.height;
                 characterInfo.Add(info);

@@ -1,6 +1,6 @@
 using GameFrameWork.Fsm;
 
-public class HeroAttackEnd : BaseFsmState
+public class HeroAttackEnd : FsmState
 {
     protected override void OnInit(Fsm fsm)
     {

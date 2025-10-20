@@ -1,16 +1,20 @@
 using DragonBones;
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class Weapon : BaseSceneItem
 {
+    private string m_CurrAnimName = string.Empty;
+    private HitTrigger m_HitTrigger;
+    private UnityArmatureComponent m_Animator;
+    private SceneItemData m_WeaponData;
+    
     public override bool canReleaseInSceneChange
     {
         get
         {
-            return m_Owner == null;
+            return owner is null;
         }
     }
 
@@ -28,17 +32,17 @@ public class Weapon : BaseSceneItem
         }
     
         gameObject.SetActiveSelf(true);
-        SetPosXY(m_Owner.pos.x, m_Owner.pos.y);
+        SetPosXY(owner.pos.x, owner.pos.y);
         AddForce(40f * attackerDir, 150f);
         PlayAnimation(AnimName.Drop);
-        m_Owner = null;
+        owner = null;
     }
 
     public override void SetOwner(BaseRole owner)
     {
-        m_Owner = owner;
+        base.SetOwner(owner);
         gameObject.SetActiveSelf(false);
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bonus));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Bonus));
     }
 
     protected override void OnUpdate()
@@ -50,7 +54,6 @@ public class Weapon : BaseSceneItem
             int frameCount = (int)m_Animator.animation.animations[m_CurrAnimName].frameCount;
             float duration = m_Animator.animation.animations[m_CurrAnimName].duration;
             int frameIndex = (int)(m_Animator.animation.GetState(m_CurrAnimName).currentTime * frameCount / duration);
-
             SetTrigger(m_CurrAnimName, frameIndex);
         }
     }
@@ -81,7 +84,7 @@ public class Weapon : BaseSceneItem
 
     private void PlayAnimation(string animName)
     {
-        if (m_Animator == null)
+        if (m_Animator is null)
         {
             Log.LogError(name, "[Animator] 组件不存在");
             return;
@@ -98,14 +101,13 @@ public class Weapon : BaseSceneItem
         }
 
         SetTrigger(animName);
-
         m_CurrAnimName = animName;
         m_Animator.animation.Play(animName, 1);
     }
 
     private bool IsAnimation(string animName)
     {
-        if (m_Animator == null)
+        if (m_Animator is null)
         {
             Log.LogError(name, "[Animator] 组件不存在");
             return false;
@@ -123,7 +125,7 @@ public class Weapon : BaseSceneItem
 
     private void SetTrigger(string animName,int frameIndex = 0)
     {
-        if (m_HitTrigger == null)
+        if (m_HitTrigger is null)
         {
             return;
         }
@@ -143,9 +145,4 @@ public class Weapon : BaseSceneItem
         m_HitTrigger = null;
         m_Animator = null;
     }
-
-    private string m_CurrAnimName = string.Empty;
-    private HitTrigger m_HitTrigger = null;
-    private UnityArmatureComponent m_Animator = null;
-    private SceneItemData m_WeaponData = null;
 }

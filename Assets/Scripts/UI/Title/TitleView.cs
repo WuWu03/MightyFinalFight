@@ -6,24 +6,26 @@
 
 using DG.Tweening;
 using GameFrameWork;
-using GameFrameWork.Audio;
 using GameFrameWork.Input;
-using GameFrameWork.Localization;
 using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 {
+    private bool m_CanSkipOpening;
+    private float m_TextTimer = -1f;
+    private Sequence m_AnimSequence;
+    private bool m_CanStart;
+    
     protected override void OnOpen(object arg)
     {
         
     }
-
     
     protected override void OnShow(object arg)
     {
-        InputMgr.instance.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
+        GameEntry.inputMgr.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
         OnInputDeviceChangeEvent();
         m_AnimSequence = DOTween.Sequence();
         TitleAnim();
@@ -34,7 +36,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
     {
         if (m_CanSkipOpening)
         {
-            if (InputMgr.instance.GetKeyDown(KeyType.Start))
+            if (GameEntry.inputMgr.GetKeyDown(KeyType.Start))
             {
                 component.txtIntroTmp.DOKill(true);
                 m_AnimSequence.Kill();
@@ -46,7 +48,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
         if (m_CanStart)
         {
-            if (InputMgr.instance.GetKeyDown(KeyType.Start))
+            if (GameEntry.inputMgr.GetKeyDown(KeyType.Start))
             {
                 m_CanStart = false;
                 StartGame();
@@ -61,9 +63,9 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
     protected override void OnClose()
     {
-        m_AnimSequence.Kill(false);
+        m_AnimSequence.Kill();
         m_AnimSequence = null;
-        InputMgr.instance.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
+        GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
     }
 
     protected override void OnDestroy()
@@ -73,11 +75,10 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
     private void OnInputDeviceChangeEvent()
     {
-        if (InputMgr.instance.isJoystickInput)
+        if (GameEntry.inputMgr.isJoystickInput)
         {
             component.txtStart.Append("(START)");
             component.txtSettings.Append("(SELECT)");
-
         }
         else
         {
@@ -88,13 +89,13 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
     private void StartGame()
     {
-        AudioMgr.instance.FadeBgm(0, 0, 1);
+        GameEntry.soundMgr.FadeBgm(0, 0, 1);
         LoadMgr.instance.DOFadeBlack(OnLoadFadeBlackComplete);
     }
 
     private void OnLoadFadeBlackComplete()
     {
-        UIMgr.instance.Open<RoleSelectView>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<RoleSelectView>();
         CloseSelf();
     }
 
@@ -107,7 +108,6 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         component.imgStar.color = new Color(1, 1, 0.3f, 0);
         component.imgLogoBG.fillAmount = 0f;
         component.imgRetro.fillAmount = 0f;
-
         component.imgLogoBG.gameObject.SetActiveSelf(false);
         component.imgRetro.gameObject.SetActiveSelf(false);
         component.imgLogo.gameObject.SetActiveSelf(false);
@@ -120,7 +120,6 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         component.imgIntro1.gameObject.SetActiveSelf(false);
         component.imgIntro2.gameObject.SetActiveSelf(false);
         component.txtIntro.SetText(string.Empty);
-
         m_AnimSequence.Append(component.imgCapcom.DOFade(1, 2));
         m_AnimSequence.AppendInterval(1f);
         m_AnimSequence.Append(component.imgCapcom.DOFade(0, 2));
@@ -146,7 +145,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         m_AnimSequence.AppendCallback(() =>
         {
             component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound/Phone.wav"));
+            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound/Phone.wav"));
         });
         m_AnimSequence.AppendInterval(8f);
         m_AnimSequence.AppendCallback(() =>
@@ -156,7 +155,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             component.imgIntro1.DOFade(1, 1f).SetEase(Ease.Linear);
             component.txtIntro.SetText(string.Empty);
             component.txtIntroTmp.color = Color.white;
-            AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmOpening), false);
+            GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmOpening), false);
         });
         m_AnimSequence.AppendInterval(1f);
         DoOpeningText(5, 6);
@@ -165,7 +164,6 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             component.imgIntro1.DOFade(0, 1f).SetEase(Ease.Linear);
             component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
         });
-
         m_AnimSequence.AppendInterval(1f);
         m_AnimSequence.AppendCallback(() =>
         {
@@ -194,7 +192,6 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             component.imgIntro2.DOFade(0, 1f).SetEase(Ease.Linear);
             component.txtIntroTmp.DOFade(0, 1f).SetEase(Ease.Linear);
         });
-
         m_AnimSequence.AppendInterval(1f);
         m_AnimSequence.AppendCallback(() =>
         {
@@ -202,7 +199,6 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             component.txtIntro.SetText(string.Empty);
             component.txtIntroTmp.color = Color.white;
         });
-
         DoOpeningText(12, 12);
         m_AnimSequence.AppendInterval(0.4f);
         StartAnim();
@@ -213,7 +209,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         m_AnimSequence.AppendCallback(() =>
         {
             m_CanSkipOpening = false;
-            AudioMgr.instance.StopAllSe();
+            GameEntry.soundMgr.StopAllSes();
             component.txtIntro.gameObject.SetActiveSelf(false);
             component.imgIntro1.gameObject.SetActiveSelf(false);
             component.imgIntro2.gameObject.SetActiveSelf(false);
@@ -224,7 +220,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         m_AnimSequence.AppendInterval(0.45f);
         m_AnimSequence.AppendCallback(() =>
         {
-            AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
+            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
         });
         m_AnimSequence.AppendCallback(() =>
         {
@@ -237,7 +233,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         m_AnimSequence.AppendCallback(() =>
         {
             component.imgStar.gameObject.SetActiveSelf(true);
-            AudioMgr.instance.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmTitle), false, 1, 0);
+            GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmTitle), false);
         });
         m_AnimSequence.AppendInterval(0.1f);
         m_AnimSequence.Append(component.imgStar.DOFade(1, 1f));
@@ -257,15 +253,14 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             m_AnimSequence.AppendCallback(() =>
             {
                 string key = StringUtil.Append("TitlePanelStory", storyIndex.ToString());
-                string content = LocalizationMgr.instance.GetLanguageText(key);
-
+                string content = GameEntry.localizationMgr.GetLanguageText(key);
                 component.txtIntro.SetText(string.Empty);
                 component.txtIntroTmp.DOText(content, 1.8f).SetEase(Ease.Linear).OnUpdate(() =>
                 {
                     if (m_TextTimer < 0 || Time.time - m_TextTimer > 0.1f)
                     {
                         m_TextTimer = Time.time;
-                        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound/Text.wav"));
+                        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound/Text.wav"));
                     }
                 });
             });
@@ -273,9 +268,4 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             m_AnimSequence.AppendInterval(3.8f);
         }
     }
-
-    private bool m_CanSkipOpening = false;
-    private float m_TextTimer = -1f;
-    private Sequence m_AnimSequence = null;
-    private bool m_CanStart = false;
 }

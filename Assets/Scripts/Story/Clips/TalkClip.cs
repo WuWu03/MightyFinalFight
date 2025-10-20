@@ -1,9 +1,9 @@
 using GameFrameWork;
 using GameFrameWork.Event;
-using GameFrameWork.UI;
 
 public class TalkClip : BaseClip
 {
+    private int m_TalkId;
     public static TalkClip Create(int talkId)
     {
         TalkClip clip = ReferencePool.Acquire<TalkClip>();
@@ -23,13 +23,13 @@ public class TalkClip : BaseClip
 
     protected override void OnPlay()
     {
-        EventMgr.instance.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
-        UIMgr.instance.Open<TalkView>(m_TalkId);
+        GameEntry.eventMgr.Subscribe(EventId.TalkEndEvent, OnTalkEnd);
+        GameEntry.uiMgr.Open<TalkView>(m_TalkId);
     }
 
     private void OnTalkEnd(object sender, GameEventArg e)
     {
-        EventMgr.instance.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
+        GameEntry.eventMgr.UnSubscribe(EventId.TalkEndEvent, OnTalkEnd);
         Complete();
     }
 
@@ -37,6 +37,4 @@ public class TalkClip : BaseClip
     {
 
     }
-
-    private int m_TalkId = 0;
 }

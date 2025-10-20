@@ -1,11 +1,14 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class RolePosClip : BaseClip
 {
+    private BaseRole m_Role;
+    private int m_RoleId = -1;
+    private Vector2 m_Pos = Vector2.zero;
+    
     public static RolePosClip Create(int roleId, Vector2 pos)
     {
         RolePosClip clip = ReferencePool.Acquire<RolePosClip>();
@@ -41,12 +44,12 @@ public class RolePosClip : BaseClip
         {
             m_Role = SceneEntityMgr.instance.GetEnemyById(m_RoleId);
 
-            if (m_Role == null)
+            if (m_Role is null)
             {
                 string roleName = StringUtil.Append("StoryRole_", m_RoleId.ToString());
-                m_Role = EntityMgr.instance.FindEntity<BaseRole>(roleName);
+                m_Role = GameEntry.entityMgr.FindEntity<BaseRole>(roleName);
 
-                if (m_Role == null)
+                if (m_Role is null)
                 {
                     RoleConfigData roleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_RoleId);
                     m_Role = SceneEntityFactory.CreateRole(roleName, roleConfigData.assetName, 1f, Vector2.zero);
@@ -62,8 +65,4 @@ public class RolePosClip : BaseClip
     {
 
     }
-
-    private BaseRole m_Role = null;
-    private int m_RoleId = -1;
-    private Vector2 m_Pos = Vector2.zero;
 }

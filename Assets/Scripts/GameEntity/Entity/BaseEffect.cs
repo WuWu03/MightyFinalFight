@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BaseEffect : BaseSceneObject
 {
+    private float m_Speed = 1f;
+    private bool m_IsPlaying;
+    private float m_PlayTime;
+    private float m_Timer = -1;
+    private bool m_IsAutoRelease;
+    private GameFrameWorkAction m_PlayEndCallback;
+    
     public float playTime
     {
         get
@@ -114,12 +121,4 @@ public class BaseEffect : BaseSceneObject
             Release();
         }
     }
-
-    protected float m_Speed = 1f;
-    protected bool m_IsPlaying = false;
-
-    private float m_PlayTime = 0;
-    private float m_Timer = -1;
-    private bool m_IsAutoRelease = false;
-    private GameFrameWorkAction m_PlayEndCallback = null;
 }

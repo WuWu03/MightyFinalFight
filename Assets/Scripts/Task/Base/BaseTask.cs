@@ -1,4 +1,3 @@
-using GameFrameWork.Camera;
 using UnityEngine;
 
 public abstract class BaseTask : ITask
@@ -58,9 +57,9 @@ public abstract class BaseTask : ITask
     {
         if (mTaskData.ExitStartCamera)
         {
-            PlayerMgr.instance.canContrl = false;
+            PlayerMgr.instance.canControl = false;
             PlayerMgr.instance.SetSpeedZero();
-            CameraMgr.instance.SetFollowMode(FollowMode.Linear);
+            CameraMgr.instance.SetFollowMode(CameraFollow.FollowMode.Linear);
             CameraMgr.instance.StartFollow(true);
             float cameraX = CameraMgr.instance.cameraRoot.transform.position.x;
             float playerX = PlayerMgr.instance.player.pos.x;
@@ -68,9 +67,9 @@ public abstract class BaseTask : ITask
 
             if (isDistance)
             {
-                PlayerMgr.instance.canContrl = true;
+                PlayerMgr.instance.canControl = true;
                 PlayerMgr.instance.RevertSpeed();
-                CameraMgr.instance.SetFollowMode(FollowMode.Just);
+                CameraMgr.instance.SetFollowMode(CameraFollow.FollowMode.Just);
             }
 
             return isDistance;
@@ -78,7 +77,7 @@ public abstract class BaseTask : ITask
 
         if (mTaskData.ExitPlayerCanCtrl)
         {
-            PlayerMgr.instance.canContrl = true;
+            PlayerMgr.instance.canControl = true;
         }
 
         return true;

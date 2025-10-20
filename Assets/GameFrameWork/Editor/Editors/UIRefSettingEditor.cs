@@ -81,8 +81,7 @@ namespace GameFrameWork.Editor
 
             m_SBHelp.AppendLine("UI Layer: " + m_UIRefSetting.uiLayer);
 
-            UIRefSetting.UIDestroyMode uiDestroyMode =
-                (UIRefSetting.UIDestroyMode)EditorGUILayout.EnumPopup("Destroy Mode", m_UIRefSetting.uiDestroyMode);
+            UIRefSetting.UIDestroyMode uiDestroyMode = (UIRefSetting.UIDestroyMode)EditorGUILayout.EnumPopup("Destroy Mode", m_UIRefSetting.uiDestroyMode);
             if (m_UIRefSetting.uiDestroyMode != uiDestroyMode)
             {
                 EditorUtil.RegisterUndo(target, "设置改变： Destroy Mode");

@@ -1,11 +1,16 @@
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.GameEntity;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class RoleAnimClip : BaseClip
 {
+    private int m_RoleId;
+    private string m_AnimName = string.Empty;
+    private int m_PlayTime;
+    private float m_PlaySpeed;
+    private BaseRole m_Role;
+    
     public static RoleAnimClip Create(int roleId, string animName, int playTime, float playSpeed)
     {
         RoleAnimClip roleAnimStory = ReferencePool.Acquire<RoleAnimClip>();
@@ -20,7 +25,7 @@ public class RoleAnimClip : BaseClip
     {
         if (m_PlayTime > 0)
         {
-            return isPlaying && m_Role != null && m_Role.IsAllAnimationComplete();
+            return isPlaying && m_Role is not null && m_Role.IsAllAnimationComplete();
         }
 
         return base.IsComplete();
@@ -36,12 +41,12 @@ public class RoleAnimClip : BaseClip
         {
             m_Role = SceneEntityMgr.instance.GetEnemyById(m_RoleId);
 
-            if (m_Role == null)
+            if (m_Role is null)
             {
                 string roleName = StringUtil.Append("StoryRole_", m_RoleId.ToString());
-                m_Role = EntityMgr.instance.FindEntity<BaseRole>(roleName);
+                m_Role = GameEntry.entityMgr.FindEntity<BaseRole>(roleName);
 
-                if (m_Role == null)
+                if (m_Role is null)
                 {
                     RoleConfigData roleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_RoleId);
                     m_Role = SceneEntityFactory.CreateRole(roleName, roleConfigData.assetName, 1f, Vector2.zero);
@@ -76,10 +81,4 @@ public class RoleAnimClip : BaseClip
         m_PlaySpeed = 0;
         m_Role = null;
     }
-
-    private int m_RoleId = 0;
-    private string m_AnimName = string.Empty;
-    private int m_PlayTime = 0;
-    private float m_PlaySpeed = 0;
-    private BaseRole m_Role = null;
 }

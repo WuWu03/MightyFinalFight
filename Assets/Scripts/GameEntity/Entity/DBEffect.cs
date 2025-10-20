@@ -1,17 +1,17 @@
 using DragonBones;
-using GameFrameWork.Audio;
 using GameFrameWork.Utils;
 using UnityEngine;
 
 public class DBEffect : BaseEffect
 {
+    private UnityArmatureComponent m_ArmatureAnimator;
     public override void Play()
     {
         base.Play();
 
         if (isAssetLoadComplete)
         {
-            m_ArmatureAnimator.animation.timeScale = m_Speed;
+            m_ArmatureAnimator.animation.timeScale = speed;
             m_ArmatureAnimator.animation.Play();
         }
     }
@@ -23,9 +23,9 @@ public class DBEffect : BaseEffect
         m_ArmatureAnimator.animation.Stop();
         m_ArmatureAnimator.AddEventListener(EventObject.SOUND_EVENT, SoundEvent);
 
-        if (m_IsPlaying)
+        if (isPlaying)
         {
-            m_ArmatureAnimator.animation.timeScale = m_Speed;
+            m_ArmatureAnimator.animation.timeScale = speed;
             m_ArmatureAnimator.animation.Play();
         }
     }
@@ -40,8 +40,6 @@ public class DBEffect : BaseEffect
 
     private void SoundEvent(string type, EventObject eventObject)
     {
-        AudioMgr.instance.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", StringUtil.Append(eventObject.name, ".ogg")));
     }
-
-    private DragonBones.UnityArmatureComponent m_ArmatureAnimator = null;
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using GameFrameWork.Camera;
 
 //图层交错效果
 public class InterlacingOfLayers : MonoBehaviour

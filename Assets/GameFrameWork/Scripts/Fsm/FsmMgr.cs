@@ -2,22 +2,21 @@ using System.Collections.Generic;
 
 namespace GameFrameWork.Fsm
 {
-    public class FsmMgr : BaseMgr<FsmMgr>
+    public class FsmMgr : GameFrameWorkModule, IFsmMgr
     {
-        public int fsmCount
-        {
-            get
-            {
-                return m_Fsms.Count;
-            }
-        }
-
-        protected override void OnAwake()
+        private readonly Dictionary<object, Fsm> m_Fsms;
+        
+        public FsmMgr()
         {
             m_Fsms = new();
         }
-
-        protected override void OnShutDown()
+        
+        public int fsmCount
+        {
+            get { return m_Fsms.Count; }
+        }
+        
+        public override void Shutdown()
         {
             foreach (KeyValuePair<object, Fsm> fsm in m_Fsms)
             {
@@ -27,23 +26,16 @@ namespace GameFrameWork.Fsm
             m_Fsms.Clear();
         }
 
-        protected override void OnDestory()
-        {
-            m_Fsms = null;
-        }
-
         public Fsm CreateFsm(object owner, string name)
         {
             if (owner == null)
             {
-                Log.LogError("有限状态机持有者为空");
-                return null;
+                throw new GameFrameWorkException("有限状态机持有者为空");
             }
 
             if (HasFsm(owner))
             {
-                Log.LogError("已经存在相同的有限状态机，请勿重复创建");
-                return null;
+                throw new GameFrameWorkException("已经存在相同的有限状态机，请勿重复创建");
             }
 
             Fsm fsm = Fsm.Create(owner, name);
@@ -55,8 +47,7 @@ namespace GameFrameWork.Fsm
         {
             if (owner == null)
             {
-                Log.LogError("有限状态机持有者为空");
-                return null;
+                throw new GameFrameWorkException("有限状态机持有者为空");
             }
 
             if (m_Fsms.TryGetValue(new TypeNamePair(owner.GetType(), name), out Fsm fsm))
@@ -71,8 +62,7 @@ namespace GameFrameWork.Fsm
         {
             if (owner == null)
             {
-                Log.LogError("有限状态机持有者为空");
-                return false;
+                throw new GameFrameWorkException("有限状态机持有者为空");
             }
 
             return m_Fsms.ContainsKey(owner);
@@ -82,8 +72,7 @@ namespace GameFrameWork.Fsm
         {
             if (owner == null)
             {
-                Log.LogError("有限状态机持有者为空");
-                return;
+                throw new GameFrameWorkException("有限状态机持有者为空");
             }
 
             if (m_Fsms.TryGetValue(owner, out Fsm fsm))
@@ -102,7 +91,5 @@ namespace GameFrameWork.Fsm
 
             ReleaseFsm(fsm.owner);
         }
-
-        private Dictionary<object, Fsm> m_Fsms = null;
     }
 }

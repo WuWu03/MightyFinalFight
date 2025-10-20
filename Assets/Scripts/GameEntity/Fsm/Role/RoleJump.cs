@@ -1,10 +1,13 @@
-using GameFrameWork;
-using GameFrameWork.Event;
 using GameFrameWork.Fsm;
 using UnityEngine;
 
-public class RoleJump : BaseFsmState
+public class RoleJump : FsmState
 {
+    private float m_Dir;
+    private bool m_CanChangeDir;
+    private bool m_HasAddXForce;
+    private BaseRole m_Owner;
+
     protected override void OnInit(Fsm fsm)
     {
         m_Owner = fsm.owner as BaseRole;
@@ -52,20 +55,18 @@ public class RoleJump : BaseFsmState
         }
     }
 
-    protected override void OnSetStateData(Fsm fsm, GameFrameWorkEventArg stateData)
+    protected override void OnSetStateData(Fsm fsm, FsmStateArg fsmStateArg)
     {
-        base.OnSetStateData(fsm, stateData);
+        base.OnSetStateData(fsm, fsmStateArg);
 
-        if (stateData is JumpStateData)
+        if (fsmStateArg is JumpStateArg jumpStateArg)
         {
-            JumpStateData jumpData = stateData as JumpStateData;
-            m_CanChangeDir = !jumpData.isCatch && jumpData.canChangeDir;
-            m_Dir = jumpData.dir.x;
+            m_CanChangeDir = !jumpStateArg.isCatch && jumpStateArg.canChangeDir;
+            m_Dir = jumpStateArg.dir.x;
         }
-        else if (stateData is MoveStateData)
+        else if (fsmStateArg is MoveStateArg moveStateArg)
         {
-            MoveStateData moveData = stateData as MoveStateData;
-            m_Dir = moveData.dir.x;
+            m_Dir = moveStateArg.dir.x;
         }
     }
 
@@ -91,9 +92,4 @@ public class RoleJump : BaseFsmState
             m_Owner.PlayAnimation(AnimName.JumpDown);
         }
     }
-
-    private float m_Dir = 0;
-    private bool m_CanChangeDir = false;
-    private bool m_HasAddXForce = false;
-    private BaseRole m_Owner = null;
 }
