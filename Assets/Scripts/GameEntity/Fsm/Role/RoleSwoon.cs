@@ -22,7 +22,7 @@ public class RoleSwoon : FsmState
         m_Owner.SetCanBeCatch(false);
         m_Owner.ResetRigidbody();
         m_Owner.AddForce(m_AddForce);
-        m_Owner.onGroundEvent.AddListener(OnBounce);
+        m_Owner.onGroundEvent += OnBounce;
         m_Owner.PlayAnimation(AnimName.SwoonUp);
     }
 
@@ -55,17 +55,7 @@ public class RoleSwoon : FsmState
             }
 
             m_Owner.AddForce(m_AddForce, true);
-
-            if (hurtStateArg.isSwoon)
-            {
-                m_Owner.onGroundEvent.RemoveListener(OnBounce);
-                m_Owner.onGroundEvent.AddListener(OnBounce);
-            }
-            else
-            {
-                m_Owner.onGroundEvent.RemoveListener(OnGround);
-                m_Owner.onGroundEvent.AddListener(OnGround);
-            }
+            m_Owner.onGroundEvent += OnBounce;
         }
     }
 
@@ -75,14 +65,14 @@ public class RoleSwoon : FsmState
         m_Owner.SetVelocityY(1.5f, true);
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown);
-        m_Owner.onGroundEvent.RemoveListener(OnBounce);
-        m_Owner.onGroundEvent.AddListener(OnGround);
+        m_Owner.onGroundEvent -= OnBounce;
+        m_Owner.onGroundEvent += OnGround;
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
     }
 
     private void OnGround()
     {
-        m_Owner.onGroundEvent.RemoveListener(OnGround);
+        m_Owner.onGroundEvent -= OnGround;
         m_Owner.SetPos2(m_Owner.pos);
         m_Owner.SetIsBeThrow(false);
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));

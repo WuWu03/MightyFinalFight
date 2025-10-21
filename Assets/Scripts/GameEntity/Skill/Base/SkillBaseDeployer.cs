@@ -43,7 +43,7 @@ public abstract class SkillBaseDeployer
 
             if (mSkillData.SkillEffects[i].IsOnGroundEffect)
             {
-                m_Owner.onGroundEvent.AddListener(OnGround);
+                m_Owner.onGroundEvent += OnGround;
                 break;
             }
         }
@@ -51,7 +51,7 @@ public abstract class SkillBaseDeployer
 
     public void RemoveEvent()
     {
-        m_Owner.onGroundEvent.RemoveListener(OnGround);
+        m_Owner.onGroundEvent -= OnGround;
         OnRemoveEvent();
     }
 
@@ -74,18 +74,13 @@ public abstract class SkillBaseDeployer
 
     public virtual bool IsAllComplete()
     {
-        bool result = true;
-
-        if (m_ListGroundEffect.Count > 0)
-        {
-            result = false;
-        }
-
+        bool result = m_ListGroundEffect.Count <= 0;
+        
         if (result)
         {
-            for (int i = 0; i < m_SkillEffects.Length; i++)
+            foreach (var skillEffect in m_SkillEffects)
             {
-                if (!m_SkillEffects[i].isCompleted)
+                if (!skillEffect.isCompleted)
                 {
                     result = false;
                     break;
@@ -118,14 +113,14 @@ public abstract class SkillBaseDeployer
 
     public virtual void Exit()
     {
-        for (int i = 0; i < m_SkillEffects.Length; i++)
+        foreach (var skillEffect in m_SkillEffects)
         {
-            m_SkillEffects[i].Exit();
+            skillEffect.Exit();
         }
 
-        for (int i = 0; i < m_SkillSelectors.Length; i++)
+        foreach (var selector in m_SkillSelectors)
         {
-            m_SkillSelectors[i]?.Exit();
+            selector?.Exit();
         }
 
         m_JustEffectTimer = -1f;
@@ -240,10 +235,9 @@ public abstract class SkillBaseDeployer
 
     private void OnGround()
     {
-        for (int i = 0; i < m_ListGroundEffect.Count; i++)
+        m_Owner.onGroundEvent -= OnGround;
+        foreach (var index in m_ListGroundEffect)
         {
-            int index = m_ListGroundEffect[i];
-
             if (!m_HasAddGroundForce)
             {
                 CheckSetSelfVecolity(mSkillData.SkillEffects[index].AddSelfVelocity, true);
@@ -261,32 +255,30 @@ public abstract class SkillBaseDeployer
 
     private void ResetEffect()
     {
-        for (int i = 0; i < m_SkillEffects.Length; i++)
+        foreach (var skillEffect in m_SkillEffects)
         {
-            m_SkillEffects[i].Reset();
+            skillEffect.Reset();
         }
 
-        for (int i = 0; i < m_SkillSelectors.Length; i++)
+        foreach (var skillSelector in m_SkillSelectors)
         {
-            m_SkillSelectors[i].Reset();
+            skillSelector.Reset();
         }
 
         m_Owner.ResetRigidbody(false);
     }
 
     protected virtual void OnAnimationEffectComplete() { }
-
     protected virtual void OnRemoveEvent() { }
 
-    protected BaseRole m_Owner = null;
-    protected SkillConfigData mSkillData = null;
-
-    private List<int> m_ListGroundEffect = null;
-    private int m_SkillId = 0;
-    private int m_CurrEffectIndex = 0;
-    private float m_EnternalTriggerTimer = 0f;
-    private bool m_HasAddGroundForce = false;
-    private bool m_HasAddForce = false;
-    private ISkillSelector[] m_SkillSelectors = null;
-    private ISkillEffect[] m_SkillEffects = null;
+    protected readonly BaseRole m_Owner;
+    protected readonly SkillConfigData mSkillData;
+    private readonly List<int> m_ListGroundEffect;
+    private readonly int m_SkillId;
+    private readonly ISkillSelector[] m_SkillSelectors;
+    private readonly ISkillEffect[] m_SkillEffects;
+    private int m_CurrEffectIndex;
+    private float m_EnternalTriggerTimer;
+    private bool m_HasAddGroundForce;
+    private bool m_HasAddForce;
 }

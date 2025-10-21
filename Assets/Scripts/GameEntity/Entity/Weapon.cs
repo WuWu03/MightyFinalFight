@@ -80,6 +80,8 @@ public class Weapon : BaseSceneItem
         {
             PlayAnimation(AnimName.Idle);
         }
+        
+        base.OnGround();
     }
 
     private void PlayAnimation(string animName)

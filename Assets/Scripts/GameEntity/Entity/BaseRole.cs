@@ -606,7 +606,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         ExitSkill();
-
         SetStateData<RoleJump>(jumpArg);
         ChangeState<RoleJump>();
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.DefaultJump));
@@ -867,8 +866,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
 
         rigidbody2D.linearDamping = 0;
-        onDropEvent.Invoke();
-        onDropEvent.RemoveAllListeners();
+        OnDrop();
         CheckDropTrap();
 
         if (!isInGround || m_IsDropTrap)
@@ -878,15 +876,13 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         m_IsDropGround = true;
         m_DropGroundTime = Time.time;
-        onGroundEvent.Invoke();
-        onGroundEvent.RemoveAllListeners();
         OnGround();
 
         m_IsJumpAttack = false;
 
         if (isAddGroundForce)
         {
-            onGroundEvent.AddListener(OnGroundCheck);
+            onGroundEvent += OnGroundCheck;
             return;
         }
 
@@ -967,9 +963,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void CheckGroundHurt()
     {
-        onDropEvent.RemoveAllListeners();
-        onGroundEvent.RemoveAllListeners();
-
         if (m_OnGroundHurtStateArg != null)
         {
             if (IsHurtWillDie(m_OnGroundHurtStateArg.attackValue))
@@ -1022,6 +1015,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
     private void OnGroundCheck()
     {
+        onGroundEvent -= OnGroundCheck;
         isAddGroundForce = false;
     }
 

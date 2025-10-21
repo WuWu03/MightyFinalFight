@@ -30,7 +30,7 @@ public class RoleJump : FsmState
             m_Owner.SetDir(m_Dir);
         }
 
-        m_Owner.onDropEvent.AddListener(OnDrop);
+        m_Owner.onDropEvent += OnDrop;
     }
 
     protected override void OnFixedUpdate(Fsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)
@@ -75,7 +75,7 @@ public class RoleJump : FsmState
         m_Dir = 0;
         m_CanChangeDir = false;
         m_HasAddXForce = false;
-        m_Owner.onDropEvent.RemoveListener(OnDrop);
+        m_Owner.onDropEvent -= OnDrop;
     }
 
     protected override void OnRelease(Fsm fsm)
@@ -86,7 +86,7 @@ public class RoleJump : FsmState
 
     private void OnDrop()
     {
-        m_Owner.onDropEvent.RemoveListener(OnDrop);
+        m_Owner.onDropEvent -= OnDrop;
         if (!m_Owner.isCatching && !m_Owner.IsAnyState(typeof(RoleSkill)))
         {
             m_Owner.PlayAnimation(AnimName.JumpDown);

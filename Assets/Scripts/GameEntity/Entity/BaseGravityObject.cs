@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BaseGravityObject : BaseBoundObject
 {
-    private GameFrameWorkEvent m_OnDropEvent;
-    private GameFrameWorkEvent m_OnGroundEvent;
+    private event GameFrameWorkAction m_OnDropEvent;
+    private event GameFrameWorkAction m_OnGroundEvent;
     private bool m_IsAddGroundForce;
     private Rigidbody2D m_Rigidbody2D;
     
@@ -46,19 +46,27 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public GameFrameWorkEvent onDropEvent
+    public event GameFrameWorkAction onDropEvent
     {
-        get
+        add
         {
-            return m_OnDropEvent;
+            m_OnDropEvent += value;
+        }
+        remove
+        {
+            m_OnDropEvent -= value;
         }
     }
 
-    public GameFrameWorkEvent onGroundEvent
+    public event GameFrameWorkAction onGroundEvent
     {
-        get
+        add
         {
-            return m_OnGroundEvent;
+            m_OnGroundEvent += value;
+        }
+        remove
+        {
+            m_OnGroundEvent -= value;
         }
     }
 
@@ -83,8 +91,6 @@ public class BaseGravityObject : BaseBoundObject
         m_Rigidbody2D.linearVelocity = Vector2.zero;
         m_Rigidbody2D.sleepMode = RigidbodySleepMode2D.NeverSleep;
         m_Rigidbody2D.freezeRotation = true;
-        m_OnDropEvent ??= new GameFrameWorkEvent();
-        m_OnGroundEvent ??= new GameFrameWorkEvent();
     }
 
     public void AddForceX(float x, bool isAddGroundForce = false)
@@ -167,8 +173,6 @@ public class BaseGravityObject : BaseBoundObject
     protected override void OnRelease()
     {
         ResetRigidbody();
-        m_OnDropEvent.RemoveAllListeners();
-        m_OnGroundEvent.RemoveAllListeners();
         m_OnDropEvent = null;
         m_OnGroundEvent = null;
         m_IsAddGroundForce = false;
@@ -176,8 +180,17 @@ public class BaseGravityObject : BaseBoundObject
         base.OnRelease();
     }
 
-    protected virtual void OnDrop() { }
-    protected virtual void OnGround() { }
+    protected virtual void OnDrop()
+    {
+        m_OnDropEvent?.Invoke();
+        m_OnDropEvent = null;
+    }
+
+    protected virtual void OnGround()
+    {
+        m_OnGroundEvent?.Invoke();
+        m_OnGroundEvent = null;
+    }
 
     protected override void OnFixedUpdate()
     {
@@ -200,8 +213,7 @@ public class BaseGravityObject : BaseBoundObject
         }
 
         m_Rigidbody2D.linearDamping = 0;
-        m_OnDropEvent.Invoke();
-        m_OnDropEvent.RemoveAllListeners();
+
         OnDrop();
 
         if (!isInGround)
@@ -209,8 +221,6 @@ public class BaseGravityObject : BaseBoundObject
             return;
         }
 
-        m_OnGroundEvent.Invoke();
-        m_OnGroundEvent.RemoveAllListeners();
         ResetRigidbody();
         OnGround();
         m_IsAddGroundForce = false;

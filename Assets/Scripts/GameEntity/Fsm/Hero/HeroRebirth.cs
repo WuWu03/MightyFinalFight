@@ -25,7 +25,7 @@ public class HeroRebirth : FsmState
         m_Owner.SetCanSkill(false);
 
         m_Owner.ResetRigidbody();
-        m_Owner.onGroundEvent.AddListener(OnGround);
+        m_Owner.onGroundEvent += OnGround;
         m_Owner.SetDir(1);
         CameraMgr.instance.EndFollow();
 

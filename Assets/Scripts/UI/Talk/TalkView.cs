@@ -17,6 +17,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
     private bool m_IsComplete;
     private int m_SelectIndex = -1;
     private int m_TalkId = -1;
+    private int m_CurrTalkId = -1;
     
     protected override void OnOpen(object arg)
     {
@@ -29,7 +30,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
     {
         component.talkSelectList.SetActive(false);
         component.talkSelectList.SelectItem(0);
-        PlayTalk();
+        PlayTalk(m_TalkId);
     }
 
     protected override void OnUpdate()
@@ -43,7 +44,6 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             else
             {
                 TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-
                 if (talkConfigData.talkSelect is { Length: > 0 })
                 {
                     if (m_SelectIndex > 0)
@@ -57,7 +57,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
                     m_TalkId = talkConfigData.nextTalkId;
                 }
 
-                PlayTalk();
+                PlayTalk(m_TalkId);
             }
 
             return;
@@ -101,11 +101,16 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
         component.talkSelectList.onItemSelectEvent -= OnItemSelectEvent;
     }
 
-    private void PlayTalk()
+    private void PlayTalk(int talkId)
     {
-        m_IsComplete = false;
+        if (m_CurrTalkId == talkId)
+        {
+            return;
+        }
 
-        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
+        m_CurrTalkId = talkId;
+        m_IsComplete = false;
+        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(talkId);
 
         if (talkConfigData == null)
         {
@@ -149,9 +154,13 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     private void OnItemSelectEvent(StaticListItem item, bool isSelect)
     {
-        if (isSelect && item is TalkViewComponent.TalkSelectListItem talkSelectItem)
+        if (item is TalkViewComponent.TalkSelectListItem talkSelectItem)
         {
-            m_SelectIndex = item.itemIndex;
+            if (isSelect)
+            {
+                m_SelectIndex = item.itemIndex;
+            }
+  
             talkSelectItem.selectGo.SetActiveSelf(isSelect);
         }
     }

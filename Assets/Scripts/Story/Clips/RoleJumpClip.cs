@@ -65,7 +65,7 @@ public class RoleJumpClip : BaseClip
             }
         }
 
-        m_Role.onDropEvent.AddListener(OnDropEvent);
+        m_Role.onDropEvent += OnDropEvent;
         m_Role.Jump(m_Dir, false, true);
     }
 
@@ -76,7 +76,7 @@ public class RoleJumpClip : BaseClip
 
     private void OnDropEvent()
     {
-        m_Role.onDropEvent.RemoveListener(OnDropEvent);
+        m_Role.onDropEvent -= OnDropEvent;
         m_Role.UpdatePosZ(m_PosZ);
     }
 }

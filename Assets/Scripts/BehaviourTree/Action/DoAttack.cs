@@ -4,18 +4,62 @@ using UnityEngine;
 
 public class DoAttack : Action
 {
+    private readonly BaseEnemy m_Owner;
+    private readonly bool m_IsRandomAttackCount;
+    private int m_AttackCount;
+    private int m_CurrAttackCount;
+    private float m_AttackTimer = -1f;
+    private bool m_IsAttacking;
+    private BehaviourTreeState m_State = BehaviourTreeState.None;
+
+    protected BaseEnemy owner
+    {
+        get
+        {
+            return m_Owner;
+        }
+    }
+
+    protected int attackCount
+    {
+        get
+        {
+            return m_AttackCount;
+        }
+    }
+
+    protected int currAttackCount
+    {
+        get
+        {
+            return m_CurrAttackCount;
+        }
+        set
+        {
+            m_CurrAttackCount = value;
+        }
+    }
+
+    public bool isRandomAttackCount
+    {
+        get
+        {
+            return m_IsRandomAttackCount;
+        }
+    }
+
     public DoAttack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
         m_Owner = owner as BaseEnemy;
-        m_Regex = new(@"(AttackTime:)(-?[0-9]+)");
+        Regex mRegex = new(@"(AttackTime:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
         {
-            Match m = m_Regex.Match(args);
+            Match m = mRegex.Match(args);
             if (m.Success)
             {
                 m_AttackCount = int.Parse(m.Groups[2].Value);
-                m_IsRandomAttckCount = m_AttackCount == 0;
+                m_IsRandomAttackCount = m_AttackCount == 0;
             }
         }
     }
@@ -34,7 +78,7 @@ public class DoAttack : Action
     {
         m_State = BehaviourTreeState.Running;
 
-        if (m_IsRandomAttckCount)
+        if (m_IsRandomAttackCount)
         {
             m_AttackCount = Random.Range(1, 9);
         }
@@ -72,7 +116,6 @@ public class DoAttack : Action
             if (m_CurrAttackCount >= m_AttackCount)
             {
                 m_State = BehaviourTreeState.Success;
-                return;
             }
         }
     }
@@ -85,13 +128,4 @@ public class DoAttack : Action
         m_AttackTimer = -1f;
         m_IsAttacking = false;
     }
-
-    protected int m_CurrAttackCount = 0;
-    protected int m_AttackCount = 0;
-    protected BaseEnemy m_Owner = null;
-    protected bool m_IsRandomAttckCount = false;
-    private float m_AttackTimer = -1f;
-    private bool m_IsAttacking = false;
-    private Regex m_Regex = null;
-    private BehaviourTreeState m_State = BehaviourTreeState.None;
 }

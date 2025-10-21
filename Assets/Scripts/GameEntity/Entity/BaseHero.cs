@@ -498,6 +498,8 @@ public class BaseHero : BaseRole
                 m_CatchTargets[0].SetIsBeCatch(false);
             }
         }
+        
+        base.OnGround();
     }
 
     protected virtual void CheckCatch()

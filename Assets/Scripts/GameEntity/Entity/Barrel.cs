@@ -20,8 +20,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             return false;
         }
     }
-
-
+    
     public bool isDead
     {
         get
@@ -157,10 +156,11 @@ public class Barrel : BaseAvatar, ICanBeHit
         }
     }
 
-    protected override void OnGround()
+    protected override void OnDrop()
     {
         SetTrigger(AnimName.Drop);
         ChangeState<BarrelDrop>();
+        base.OnDrop();
     }
 
     private void CheckStrike(GameObject go)

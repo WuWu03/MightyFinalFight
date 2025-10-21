@@ -25,8 +25,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         skillStateArg.animTime = mSkillData.AnimTime;
         skillStateArg.dir = m_Owner.dir;
         skillStateArg.canChangeDir = false;
-        m_Owner.onGroundEvent.AddListener(OnGroundEvent);
-        m_Owner.onDropEvent.AddListener(OnDropEvent);
+        m_Owner.onGroundEvent += OnGroundEvent;
+        m_Owner.onDropEvent += OnDropEvent;
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetIsBeCatch(false);
@@ -80,7 +80,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnDropEvent()
     {
-        m_Owner.onDropEvent.RemoveListener(OnDropEvent);
+        m_Owner.onDropEvent -= OnDropEvent;
         m_CanEffect = m_TriggerTime < mSkillData.JumpTriggerTime;
 
         if (m_CanEffect)
@@ -91,6 +91,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void OnGroundEvent()
     {
+        m_Owner.onGroundEvent -= OnDropEvent;
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_IsOnGround = true;
         m_CanEffect = false;
@@ -101,8 +102,8 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         base.Exit();
         m_CanEffect = true;
         m_TriggerTime = 0;
-        m_Owner.onDropEvent.RemoveListener(OnDropEvent);
-        m_Owner.onGroundEvent.RemoveListener(OnGroundEvent);
+        m_Owner.onDropEvent -= OnDropEvent;
+        m_Owner.onGroundEvent -= OnGroundEvent;
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
     }
