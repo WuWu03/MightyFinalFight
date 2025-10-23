@@ -4,7 +4,6 @@ namespace GameFrameWork.BehaviourTree
     {
         public Entry(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
-
         }
     }
 }

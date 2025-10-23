@@ -1,10 +1,18 @@
+using GameFrameWork.Event;
+
 namespace GameFrameWork.UI
 {
-    public interface IDataBinder
+    public interface IDataBinder<T>
     {
         public uint key { get; }
-        public void Bind(object call);
-        public void UnBind(object call);
+        public T value
+        {
+            get;
+            set;
+        }
+
+        public void Bind(GameFrameWorkAction<T> callback);
+        public void UnBind(GameFrameWorkAction<T> callback);
         public void UnBindAll();
     }
 }

@@ -5,6 +5,12 @@ namespace GameFrameWork.BehaviourTree
 {
     public class PrioritySelector : Composite
     {
+        private readonly List<int> m_ListWeights;
+        private readonly List<int> m_ListIndexes;
+        private int m_CurrChildIndex;
+        private int m_CurrRandomIndex = -1;
+        private BehaviourTreeState m_State = BehaviourTreeState.None;
+        
         public PrioritySelector(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_ListWeights = new List<int>();
@@ -22,7 +28,8 @@ namespace GameFrameWork.BehaviourTree
             {
                 return BehaviourTreeState.Success;
             }
-            else if (m_ListWeights.Count <= 0)
+            
+            if (m_ListWeights.Count <= 0)
             {
                 return BehaviourTreeState.Failure;
             }
@@ -38,7 +45,6 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
             m_State = state;
-
             m_ListWeights.RemoveAt(m_CurrRandomIndex);
             m_ListIndexes.RemoveAt(m_CurrRandomIndex);
             m_CurrRandomIndex = CommonUtil.RandomByWeight(m_ListWeights.ToArray());
@@ -48,7 +54,6 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnStart()
         {
             base.OnStart();
-
             m_ListWeights.Clear();
             m_ListIndexes.Clear();
 
@@ -69,11 +74,9 @@ namespace GameFrameWork.BehaviourTree
         protected override void OnReset()
         {
             base.OnReset();
-
             m_CurrChildIndex = 0;
             m_CurrRandomIndex = -1;
             m_State = BehaviourTreeState.None;
-
             m_ListWeights.Clear();
             m_ListIndexes.Clear();
 
@@ -83,11 +86,5 @@ namespace GameFrameWork.BehaviourTree
                 m_ListIndexes.Add(i);
             }
         }
-
-        private List<int> m_ListWeights = null;
-        private List<int> m_ListIndexes = null;
-        private int m_CurrChildIndex = 0;
-        private int m_CurrRandomIndex = -1;
-        private BehaviourTreeState m_State = BehaviourTreeState.None;
     }
 }

@@ -23,15 +23,15 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_Barrels = new();
     }
     
-    protected override void OnShutDown()
+    protected override void OnShutdown()
     {
-        base.OnShutDown();
+        base.OnShutdown();
         ReleaseAll();
     }
 
-    protected override void OnDestory()
+    protected override void OnDestroy()
     {
-        base.OnDestory();
+        base.OnDestroy();
         m_SceneBuildings = null;
         m_Enemies = null;
         m_SceneItems = null;

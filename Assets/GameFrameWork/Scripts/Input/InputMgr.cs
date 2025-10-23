@@ -6,8 +6,8 @@ namespace GameFrameWork.Input
 {
     public class InputMgr : GameFrameWorkModule , IInputMgr
     {
-        private event GameFrameWorkFloatAction m_GetDirectionEvent;
-        private event GameFrameWorkBooleanAction<int> m_GetPreConditionEvent;
+        private event GameFrameWorkFunc<float> m_GetDirectionEvent;
+        private event GameFrameWorkFunc<int, bool> m_GetPreConditionEvent;
         private event GameFrameWorkAction m_InputDeviceChangeEvent;
         private readonly Dictionary<string, bool> m_DicIsKeyDown;
         private readonly List<KeyType> m_ComboKeys;
@@ -34,7 +34,7 @@ namespace GameFrameWork.Input
             InputHelper.Init();
         }
         
-        public event GameFrameWorkFloatAction getDirectionEvent
+        public event GameFrameWorkFunc<float> getDirectionEvent
         {
             add
             {
@@ -46,7 +46,7 @@ namespace GameFrameWork.Input
             }
         }
 
-        public event GameFrameWorkBooleanAction<int> getPreConditonEvent
+        public event GameFrameWorkFunc<int, bool> getPreConditonEvent
         {
             add
             {

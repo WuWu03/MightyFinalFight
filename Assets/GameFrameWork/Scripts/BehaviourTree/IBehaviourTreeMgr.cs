@@ -5,16 +5,15 @@ namespace GameFrameWork.BehaviourTree
     public interface IBehaviourTreeMgr
     {
         public void SetResourceMgr(IResourceMgr  resourceMgr);
-        public void InitBehaviourTreeData();
-        public void AddBehaviourTree(object owner, int id);
-        public void RemoveBehaviourTree(object owner, int id);
+        public void AddBehaviourTree(object owner, string dataName);
+        public void RemoveBehaviourTree(object owner);
         public void StartAllTrees();
-        public void StartTree(object owner, int id);
+        public void StartTree(object owner);
         public void StopAllTrees();
-        public void StopTree(object owner, int id);
+        public void StopTree(object owner);
         public void PauseAllTrees();
-        public void PauseTree(object owner, int id);
+        public void PauseTree(object owner);
         public void ResumeAllTrees();
-        public void ResumeTree(object owner, int id);
+        public void ResumeTree(object owner);
     }
 }

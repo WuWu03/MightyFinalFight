@@ -4,11 +4,13 @@ namespace GameFrameWork.BehaviourTree
 {
     public abstract class Task : BaseTask
     {
+        private readonly List<BaseTask> m_Children;
+        
         public Task(int id, object owner, int priority, string args) : base(id, owner, priority, args)
         {
             m_Children = new List<BaseTask>();
-
         }
+        
         public void AddChild(BaseTask node)
         {
             if (node == null || m_Children == null)
@@ -58,7 +60,7 @@ namespace GameFrameWork.BehaviourTree
 
             if (CanRunParallelChildren())
             {
-                ParallelChlidren(deltaTime);
+                ParallelChildren(deltaTime);
             }
             else
             {
@@ -101,19 +103,19 @@ namespace GameFrameWork.BehaviourTree
             return false;
         }
 
-        private void ParallelChlidren(float deltaTime)
+        private void ParallelChildren(float deltaTime)
         {
             if (!CheckPreCondition() || !CanExecute())
             {
                 BehaviourTreeState state = Excute();
-                ExcuteResult(state);
+                ExecuteResult(state);
                 return;
             }
 
             for (int i = 0; i < m_Children.Count; i++)
             {
                 BaseTask child = m_Children[i];
-                ExcuteChild(child, i, deltaTime);
+                ExecuteChild(child, i, deltaTime);
             }
         }
 
@@ -122,7 +124,7 @@ namespace GameFrameWork.BehaviourTree
             if (!CheckPreCondition() || !CanExecute())
             {
                 BehaviourTreeState state = Excute();
-                ExcuteResult(state);
+                ExecuteResult(state);
                 return;
             }
 
@@ -131,11 +133,11 @@ namespace GameFrameWork.BehaviourTree
 
             if (child != null)
             {
-                ExcuteChild(child, childIndex, deltaTime);
+                ExecuteChild(child, childIndex, deltaTime);
             }
         }
 
-        private void ExcuteChild(BaseTask child, int childIndex, float deltaTime)
+        private void ExecuteChild(BaseTask child, int childIndex, float deltaTime)
         {
             child.Enter();
 
@@ -146,28 +148,26 @@ namespace GameFrameWork.BehaviourTree
 
                 if (childState != BehaviourTreeState.Running)
                 {
-                    ChildExcuteResult(childIndex, childState);
+                    ChildExecuteResult(childIndex, childState);
                 }
             }
             else
             {
-                ChildExcuteResult(childIndex, BehaviourTreeState.Failure);
+                ChildExecuteResult(childIndex, BehaviourTreeState.Failure);
             }
         }
 
-        private void ExcuteResult(BehaviourTreeState state)
+        private void ExecuteResult(BehaviourTreeState state)
         {
             OnExecuteResult(state);
         }
 
-        private void ChildExcuteResult(int childIndex, BehaviourTreeState state)
+        private void ChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
             OnChildExecuteResult(childIndex, state);
         }
 
         protected virtual void OnExecuteResult(BehaviourTreeState state) { }
         protected virtual void OnChildExecuteResult(int childIndex, BehaviourTreeState state) { }
-
-        private List<BaseTask> m_Children = null;
     }
 }

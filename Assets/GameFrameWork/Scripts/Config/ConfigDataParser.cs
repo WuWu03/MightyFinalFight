@@ -50,33 +50,33 @@ namespace GameFrameWork.ConfigData
 
             m_FieldNameDict = new Dictionary<string, int>();
             byte[] buffer = ZlibHelper.DeCompressBytes(bytes);//1解压缩
+            MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
+            mse.Write(buffer, 0, buffer.Length);
+            mse.Position = 0;
+            row = mse.ReadInt();
+            column = mse.ReadInt();
+            m_Datas = new String[row - 1, column];
+            m_FieldNames = new string[column];
 
-            using (MemoryStreamEx mse = new MemoryStreamEx(buffer))//2解析数据到数组
+            for (int i = 0; i < row; i++)
             {
-                row = mse.ReadInt();
-                column = mse.ReadInt();
-
-                m_Datas = new String[row - 1, column];
-                m_FieldNames = new string[column];
-
-                for (int i = 0; i < row; i++)
+                for (int j = 0; j < column; j++)
                 {
-                    for (int j = 0; j < column; j++)
-                    {
-                        string str = mse.ReadUTF8String();
+                    string str = mse.ReadUTF8String();
 
-                        if (i == 0)//表示读取的是字段
-                        {
-                            m_FieldNames[j] = str;
-                            m_FieldNameDict[str] = j;
-                        }
-                        else//表示读取的是数据
-                        {
-                            m_Datas[i - 1, j] = str;
-                        }
+                    if (i == 0)//表示读取的是字段
+                    {
+                        m_FieldNames[j] = str;
+                        m_FieldNameDict[str] = j;
+                    }
+                    else//表示读取的是数据
+                    {
+                        m_Datas[i - 1, j] = str;
                     }
                 }
             }
+            
+            mse.Release();
         }
 
         /// <summary>

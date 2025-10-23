@@ -1,6 +1,7 @@
 using GameFrameWork.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Test2 : MonoBehaviour
 {        
@@ -20,6 +21,8 @@ public class Test2 : MonoBehaviour
     
     private void OnPress(GameObject t1)
     {
+        Button b;
+        
         Debug.Log("OnPress");
     }
 

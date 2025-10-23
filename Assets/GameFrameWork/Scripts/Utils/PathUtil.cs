@@ -10,7 +10,7 @@ namespace GameFrameWork.Utils
         public static string persistentDataPath = Application.persistentDataPath;
 
         public const string gameFrameWorkConfigDataName = "GameFrameWorkConfig.asset";
-        public const string behaviourTreeConfigDataName = "BehaviourTreeConfigData.json";
+        public const string behaviourTreeDataPath = "BehaviourTreeData";
         public const string maniFestName = "StreamingAssets";
 
         public static string runTimeAssetsPath

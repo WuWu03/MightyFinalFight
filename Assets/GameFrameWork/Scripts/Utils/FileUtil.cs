@@ -43,6 +43,7 @@ namespace GameFrameWork.Utils
             using StreamWriter sw = new(fs);
             sw.Write(content);
             sw.Close();
+            fs.Close();
         }
 
         /// <summary>

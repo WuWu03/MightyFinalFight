@@ -34,18 +34,13 @@ namespace GameFrameWork
             }
 
             s_Instance = manager.GetOrAddComponent<T>();
-            s_Instance.StartUp();
-        }
-
-        public void StartUp()
-        {
             s_Instance.m_Running = true;
         }
-
+        
         public void ShutDown()
         {
             m_Running = false;
-            OnShutDown();
+            OnShutdown();
         }
 
         private void Awake()
@@ -87,10 +82,9 @@ namespace GameFrameWork
         protected virtual void OnUpdate() { }
         protected virtual void OnLateUpdate() { }
         protected virtual void OnFixedUpdate() { }
-        protected virtual void OnShutDown() { }
-        protected virtual void OnDestory() { }
+        protected virtual void OnShutdown() { }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (!m_Running)
             {
@@ -98,7 +92,6 @@ namespace GameFrameWork
             }
 
             ShutDown();
-            OnDestory();
         }
     }
 }

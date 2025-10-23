@@ -184,7 +184,7 @@ public class CameraMgr : BaseMgr<CameraMgr>
         }
     }
 
-    protected override void OnShutDown()
+    protected override void OnShutdown()
     {
         m_ListCamera.Clear();
         m_ListCamera = null;

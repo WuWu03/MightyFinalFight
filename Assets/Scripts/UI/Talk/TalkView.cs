@@ -46,7 +46,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
                 TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
                 if (talkConfigData.talkSelect is { Length: > 0 })
                 {
-                    if (m_SelectIndex > 0)
+                    if (m_SelectIndex > -1)
                     {
                         m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
                         component.talkSelectList.SetActive(false);

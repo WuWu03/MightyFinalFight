@@ -6,8 +6,8 @@ namespace GameFrameWork.Input
 {
     public interface IInputMgr
     {
-        public event GameFrameWorkFloatAction getDirectionEvent;
-        public event GameFrameWorkBooleanAction<int> getPreConditonEvent;
+        public event GameFrameWorkFunc<float> getDirectionEvent;
+        public event GameFrameWorkFunc<int, bool> getPreConditonEvent;
         public event GameFrameWorkAction inputDeviceChangeEvent;
         public bool isJoystickInput { get; }
         public bool isRunning { get; set; }

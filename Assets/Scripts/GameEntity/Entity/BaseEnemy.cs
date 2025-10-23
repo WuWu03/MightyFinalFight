@@ -21,7 +21,7 @@ public class BaseEnemy : BaseRole
     protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
         base.OnLoadAssetComplete(go, arg);
-        GameEntry.behaviourTreeMgr.StartTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.StartTree(this);
     }
 
     protected override void OnUpdate()
@@ -47,7 +47,7 @@ public class BaseEnemy : BaseRole
     protected override void OnRelease()
     {
         PlayerMgr.instance.AddExp(m_SkillExp);
-        GameEntry.behaviourTreeMgr.RemoveBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.RemoveBehaviourTree(this);
         m_SkillExp = 0;
         m_HpBarWidth = 0;
         m_IsBoss = false;
@@ -82,8 +82,9 @@ public class BaseEnemy : BaseRole
             Log.LogError("敌人技能数据为空");
             return;
         }
-        
-        GameEntry.behaviourTreeMgr.AddBehaviourTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+
+        string dataName = StringUtil.Append(m_BaseEnemySkillData.behaviourTreeIds[0].ToString(), ".bytes");
+        GameEntry.behaviourTreeMgr.AddBehaviourTree(this, dataName);
     }
 
     public void OppositePlayer()
@@ -94,13 +95,13 @@ public class BaseEnemy : BaseRole
     public override void Pause()
     {
         base.Pause();
-        GameEntry.behaviourTreeMgr.PauseTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.PauseTree(this);
     }
 
     public override void Resume()
     {
         base.Resume();
-        GameEntry.behaviourTreeMgr.ResumeTree(this, m_BaseEnemySkillData.behaviourTreeIds[0]);
+        GameEntry.behaviourTreeMgr.ResumeTree(this);
     }
 
     public override void SetPos(Vector2 pos, float posZ, bool calculateZ = false)

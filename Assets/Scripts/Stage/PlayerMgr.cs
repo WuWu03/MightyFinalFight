@@ -116,9 +116,9 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.Y, AfterTriggerJump);
     }
 
-    protected override void OnDestory()
+    protected override void OnDestroy()
     {
-        base.OnDestory();
+        base.OnDestroy();
 
         m_RoleConfigData = null;
         m_Player = null;
@@ -220,7 +220,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         {
             m_Level++;
             m_Exp -= m_LevelConfigData.exp;
-            m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("roleId=", m_RoleConfigData.id.ToString(), ",level=", m_Level.ToString()));
+            m_LevelConfigData = ConfigDataSheet.levelConfigDatas.GetSingConfigDataByAttr(StringUtil.Append("{roleId=", m_RoleConfigData.id.ToString(), ",level=", m_Level.ToString(), "}"));
             m_Player.entityAttribute.health = m_LevelConfigData.hpValue;
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainView.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);

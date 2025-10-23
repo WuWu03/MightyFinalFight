@@ -123,7 +123,6 @@ public class DoAttack : Action
     protected override void OnReset()
     {
         base.OnReset();
-
         m_CurrAttackCount = 0;
         m_AttackTimer = -1f;
         m_IsAttacking = false;

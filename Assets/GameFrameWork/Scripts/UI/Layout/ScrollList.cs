@@ -64,12 +64,12 @@ namespace GameFrameWork.UI
         /// <summary>
         /// 获取数据长度
         /// </summary>
-        public GameFrameWorkIntAction getDataCountEvent;
+        public GameFrameWorkFunc<int> getDataCountEvent;
 
         /// <summary>
         /// 
         /// </summary>
-        public GameFrameWorkFloatAction<int> getItemSizeEvent;
+        public GameFrameWorkFunc<int, float> getItemSizeEvent;
 
         /// <summary>
         /// This delegate is called when the scroll rect scrolls

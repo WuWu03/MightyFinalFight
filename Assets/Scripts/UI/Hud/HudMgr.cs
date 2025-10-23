@@ -36,16 +36,16 @@ public class HudMgr : BaseMgr<HudMgr>
         
     }
 
-    protected override void OnShutDown()
+    protected override void OnShutdown()
     {
-        base.OnShutDown();
+        base.OnShutdown();
         GameFrameWorkMgr.GetModule<IUIMgr>().Close<HudView>();
         m_HudArgs.Clear();
     }
 
-    protected override void OnDestory()
+    protected override void OnDestroy()
     {
-        base.OnDestory();
+        base.OnDestroy();
         m_HudArgs = null;
     }
 

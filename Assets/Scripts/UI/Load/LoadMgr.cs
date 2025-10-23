@@ -57,15 +57,15 @@ public class LoadMgr : BaseMgr<LoadMgr>
         m_QueueFade = new Queue<FadeArgs>();
     }
 
-    protected override void OnShutDown()
+    protected override void OnShutdown()
     {
-        base.OnShutDown();
+        base.OnShutdown();
         m_QueueFade.Clear();
     }
 
-    protected override void OnDestory()
+    protected override void OnDestroy()
     {
-        base.OnDestory();
+        base.OnDestroy();
         m_QueueFade = null;
     }
 

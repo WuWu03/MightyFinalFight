@@ -18,25 +18,28 @@ namespace GameFrameWork.BehaviourTree
 
         protected override void OnExecuteResult(BehaviourTreeState state)
         {
-            base.OnExecuteResult(state);
-            Reset();
+            if (state != BehaviourTreeState.Running)
+            {
+                Reset();
+            }
         }
 
         protected override void OnChildExecuteResult(int childIndex, BehaviourTreeState state)
         {
-            base.OnChildExecuteResult(childIndex, state);
-
-            m_CurrExecuteCount++;
-
-            if (m_CurrExecuteCount >= GetChildCount())
+            if (state != BehaviourTreeState.Running)
             {
-                if (m_RepeatCount == 0)
-                {
-                    Reset();
-                    return;
-                }
+                m_CurrExecuteCount++;
 
-                m_CurrRepeatCount++;
+                if (m_CurrExecuteCount >= GetChildCount())
+                {
+                    if (m_RepeatCount == 0)
+                    {
+                        Reset();
+                        return;
+                    }
+
+                    m_CurrRepeatCount++;
+                }
             }
         }
 

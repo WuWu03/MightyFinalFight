@@ -2,16 +2,21 @@ using GameFrameWork.Event;
 
 namespace GameFrameWork.UI
 {
-    public class DataBinder<T> : IDataBinder
+    public class DataBinder<T> : IDataBinder<T>
     {
-        private uint m_Key = 0;
+        private readonly uint m_Key;
+        private event GameFrameWorkAction<T> m_Event;
+        private T m_Value;
+
+        public DataBinder(uint key)
+        {
+            m_Key = key;
+        }
 
         public uint key
         {
             get { return m_Key; }
         }
-
-        private T m_Value = default;
 
         public T value
         {
@@ -27,26 +32,19 @@ namespace GameFrameWork.UI
             }
         }
 
-        private GameFrameWorkEvent<T> m_Event = new();
-
-        public DataBinder(uint key)
+        public void Bind(GameFrameWorkAction<T> callback)
         {
-            m_Key = key;
+            m_Event += callback;
         }
 
-        public void Bind(object call)
+        public void UnBind(GameFrameWorkAction<T> callback)
         {
-            m_Event.AddListener(call as GameFrameWorkAction<T>);
-        }
-
-        public void UnBind(object call)
-        {
-            m_Event.RemoveListener(call as GameFrameWorkAction<T>);
+            m_Event -= callback;
         }
 
         public void UnBindAll()
         {
-            m_Event.RemoveAllListeners();
+            m_Event = null;
         }
     }
 }

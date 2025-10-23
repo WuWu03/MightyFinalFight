@@ -286,7 +286,6 @@ public class GameEntry : GameFrameWorkEntry
         ReferencePool.ReleaseAll();
         GC.Collect();
         resourceMgr.InitAssetsMap();
-        behaviourTreeMgr.InitBehaviourTreeData();
         StaticConfig.InitConfig();
         ConfigDataSheet.Init();
         uiMgr.Open<TitleView>();

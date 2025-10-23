@@ -13,7 +13,8 @@ namespace GameFrameWork.BehaviourTree
             {
                 return BehaviourTreeState.Success;
             }
-            else if (m_CurrChildIndex >= GetChildCount())
+            
+            if (m_CurrChildIndex >= GetChildCount())
             {
                 return BehaviourTreeState.Failure;
             }

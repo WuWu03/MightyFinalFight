@@ -26,7 +26,6 @@ namespace GameFrameWork.UI
         private float m_DelayTime;
         private object m_Arg;
         private bool m_IsLoading;
-
         
         public UIBaseView()
         {

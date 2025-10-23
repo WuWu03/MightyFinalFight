@@ -8,6 +8,8 @@ using UnityEngine;
 public class BaseRole : BaseAvatar, ICanBeHit
 {
     private event GameFrameWorkAction<HurtStateArg> m_OnHurtEvent;
+    private event GameFrameWorkAction m_AutoMoveComplete;
+    
     private bool m_IsAttack;
     private bool m_IsJumpAttack;
     private bool m_IsDropTrap;
@@ -44,7 +46,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
     private HurtStateArg m_OnGroundHurtStateArg;
     private DropTrapStateArg m_DropTrapStateArg;
     private BaseRoleSkillData m_SkillData;
-    private GameFrameWorkEvent m_AutoMoveComplete;
     private Queue<HurtStateArg> m_HurtQueue;
     private List<Bullet> m_Bullets;
     
@@ -267,8 +268,6 @@ public class BaseRole : BaseAvatar, ICanBeHit
         AddState<RoleSkill>();
         AddState<RoleDefense>();
         SetDefaultState<RoleIdle>();
-
-        m_AutoMoveComplete ??= new();
         m_Bullets ??= new();
         m_HurtQueue ??= new();
     }
@@ -286,7 +285,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     protected override void OnRelease()
     {
         base.OnRelease();
-        m_AutoMoveComplete.RemoveAllListeners();
+        m_AutoMoveComplete = null;
         m_OnGroundHurtStateArg?.Release();
         m_DropTrapStateArg?.Release();
         m_SkillData?.Release();
@@ -402,7 +401,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
 
         if (moveComplete != null)
         {
-            m_AutoMoveComplete.AddListener(moveComplete);
+            m_AutoMoveComplete += moveComplete;
         }
     }
 
@@ -886,9 +885,9 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
+        ResetRigidbody();
         ExitSkill();
         CheckGroundHurt();
-        ResetRigidbody();
     }
 
     protected virtual void CheckAttack()
@@ -1057,7 +1056,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ChangeDefaultState();
 
         m_AutoMoveComplete?.Invoke();
-        m_AutoMoveComplete?.RemoveAllListeners();
+        m_AutoMoveComplete = null;
         m_IsAutoMove = false;
         m_XArrived = false;
         m_YArrived = false;

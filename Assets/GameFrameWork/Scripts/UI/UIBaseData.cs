@@ -2,15 +2,16 @@ using System.Collections.Generic;
 
 namespace GameFrameWork.UI
 {
-    public class UIBaseData
+    public abstract class UIBaseData
     {
+        private readonly Dictionary<uint, object> m_DataBinders = new();
         public void SetData<T>(uint key, T value)
         {
-            DataBinder<T> dataBinder = GetDataBinder<T>(key);
+            IDataBinder<T> dataBinder = GetDataBinder<T>(key);
 
             if (dataBinder == null)
             {
-                dataBinder = new(key);
+                dataBinder = new DataBinder<T>(key);
                 dataBinder.value = value;
                 m_DataBinders.Add(key, dataBinder);
                 return;
@@ -21,15 +22,15 @@ namespace GameFrameWork.UI
         
         public T GetData<T>(uint key)
         {
-            DataBinder<T> dataBinder = GetDataBinder<T>(key);
+            IDataBinder<T> dataBinder = GetDataBinder<T>(key);
             return dataBinder != null ? dataBinder.value : default;
         }
 
-        private DataBinder<T> GetDataBinder<T>(uint key)
+        private IDataBinder<T> GetDataBinder<T>(uint key)
         {
-            if (m_DataBinders.TryGetValue(key, out IDataBinder dataBinder))
+            if (m_DataBinders.TryGetValue(key, out object dataBinder))
             {
-                if (dataBinder.key == key && dataBinder is DataBinder<T> tempDataBinder)
+                if (dataBinder is IDataBinder<T> tempDataBinder && tempDataBinder.key == key)
                 {
                     return tempDataBinder;
                 }
@@ -39,7 +40,5 @@ namespace GameFrameWork.UI
 
             return null;
         }
-
-        private Dictionary<uint, IDataBinder> m_DataBinders = new();
     }
 }

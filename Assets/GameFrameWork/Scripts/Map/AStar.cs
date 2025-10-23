@@ -15,7 +15,6 @@ namespace GameFrameWork.Map
             public float f;
             public float g;
             public float h;
-            public bool open = true;
 
             public Node(Node parent, Vector2Int pos, float h, float g)
             {
@@ -24,7 +23,6 @@ namespace GameFrameWork.Map
                 this.f = g + h;
                 this.g = g;
                 this.h = h;
-                this.open = true;
             }
 
             public int CompareTo(Node target)
@@ -34,9 +32,9 @@ namespace GameFrameWork.Map
                     return 0;
                 }
 
-                if (this.f == target.f)
+                if (Mathf.Approximately(this.f, target.f))
                 {
-                    if (this.g == target.g)
+                    if (Mathf.Approximately(this.g, target.g))
                     {
                         return 0;
                     }
@@ -137,7 +135,7 @@ namespace GameFrameWork.Map
 
             static Vector2Int[] getNeighbors(Vector2Int pos)
             {
-                Vector2Int[] neighbors = new Vector2Int[8]
+                Vector2Int[] neighbors =
                 {
                     new(pos.x - 1, pos.y + 1),
                     new(pos.x, pos.y + 1),
@@ -161,7 +159,7 @@ namespace GameFrameWork.Map
         {
             static Vector2Int[] getNeighbors(Vector2Int pos)
             {
-                Vector2Int[] neighbors = new Vector2Int[4]
+                Vector2Int[] neighbors =
                 {
                     new(pos.x, pos.y + 1),
                     new(pos.x, pos.y - 1),
@@ -179,7 +177,7 @@ namespace GameFrameWork.Map
         {
             static Vector2Int[] getNeighbors(Vector2Int pos)
             {
-                Vector2Int[] neighbors = new Vector2Int[6]
+                Vector2Int[] neighbors =
                 {
                     new(pos.x + 1, pos.y + 1),
                     new(pos.x - 1, pos.y + 1),
@@ -199,7 +197,7 @@ namespace GameFrameWork.Map
         {
             static Vector2Int[] getNeighbors(Vector2Int pos)
             {
-                Vector2Int[] neighbors = new Vector2Int[8]
+                Vector2Int[] neighbors =
                 {
                     new(pos.x - 1, pos.y + 1),
                     new(pos.x, pos.y + 1),
@@ -219,7 +217,7 @@ namespace GameFrameWork.Map
             return CheckRange(point, range, map, passTypes, getNeighbors);
         }
 
-        private static List<Vector2Int> AStarPathFinding(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFloatAction<Vector2Int, Vector2Int> getDistance, GameFrameWorkTemplateAction<Vector2Int, Vector2Int[]> getNeighbors)
+        private static List<Vector2Int> AStarPathFinding(Vector2Int from, Vector2Int to, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFunc<Vector2Int, Vector2Int, float> getDistance, GameFrameWorkFunc<Vector2Int, Vector2Int[]> getNeighbors)
         {
             List<Vector2Int> results = new();
 
@@ -238,7 +236,7 @@ namespace GameFrameWork.Map
             while (openList.Count > 0)
             {
                 Node currNode = openList.Min();
-                Vector2Int[] neigbors = getNeighbors(currNode.pos);
+                Vector2Int[] neighbors = getNeighbors(currNode.pos);
 
                 openList.Remove(currNode);
                 closeList.Add(currNode);
@@ -250,9 +248,9 @@ namespace GameFrameWork.Map
                     break;
                 }
 
-                for (int i = 0; i < neigbors.Length; i++)
+                foreach (var neighbor in neighbors)
                 {
-                    FindDestNode(neigbors[i], to, currNode, map, passTypes, getDistance, openList, closeList);
+                    FindDestNode(neighbor, to, currNode, map, passTypes, getDistance, openList, closeList);
                 }
             }
 
@@ -266,7 +264,7 @@ namespace GameFrameWork.Map
             return results;
         }
 
-        private static void FindDestNode(Vector2Int from, Vector2Int to, Node currNode, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFloatAction<Vector2Int, Vector2Int> getDistance, List<Node> openList, List<Node> closeList)
+        private static void FindDestNode(Vector2Int from, Vector2Int to, Node currNode, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFunc<Vector2Int, Vector2Int, float> getDistance, List<Node> openList, List<Node> closeList)
         {
             if (!map.TryGetValue(from, out int passType) || !passTypes.Contains(passType))
             {
@@ -305,7 +303,7 @@ namespace GameFrameWork.Map
         }
 
 
-        private static List<Vector2Int> CheckRange(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkTemplateAction<Vector2Int, Vector2Int[]> getNeighbors)
+        private static List<Vector2Int> CheckRange(Vector2Int point, int range, Dictionary<Vector2Int, int> map, List<int> passTypes, GameFrameWorkFunc<Vector2Int, Vector2Int[]> getNeighbors)
         {
             Queue<Vector2Int> queuePoints = new();
             Queue<int> queueRange = new();
@@ -332,10 +330,8 @@ namespace GameFrameWork.Map
                 results.Add(currentPoint);
                 Vector2Int[] neighbors = getNeighbors(currentPoint);
 
-                for (int i = 0; i < neighbors.Length; i++)
+                foreach (var neighbor in neighbors)
                 {
-                    Vector2Int neighbor = neighbors[i];
-
                     if (results.Contains(neighbor))
                     {
                         continue;

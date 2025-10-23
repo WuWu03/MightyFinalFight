@@ -34,7 +34,7 @@ namespace GameFrameWork.BehaviourTree
             m_Root.Update(deltaTime);
         }
 
-        public void LateUpate(float deltaTime)
+        public void LateUpdate(float deltaTime)
         {
             if (!m_IsRunning || m_IsPause)
             {
