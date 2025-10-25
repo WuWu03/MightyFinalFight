@@ -605,15 +605,17 @@ namespace GameFrameWork.Editor
                 id = behaviourTreeWindowData.id
             };
             GenerateData(behaviourTreeData, behaviourTreeWindowData);
-            using MemoryStreamEx mse = new();
-            SerializeData(behaviourTreeData, mse);
-            byte[] bytes = mse.ToArray();
-            mse.Close();
+            byte[] dataBuffer = SerializeData(behaviourTreeData);
+
+            if (dataBuffer == null)
+            {
+                throw new GameFrameWorkException("序列化数据错误");
+            }
+
             string configDataPath = EditorMgr.GetGameFrameWorkConfig().configDataPath;
             string behaviourTreeDataPath = PathUtil.behaviourTreeDataPath;
             string dataPath = PathUtil.FormatPath(configDataPath, behaviourTreeDataPath,behaviourTreeWindowData.id.ToString(),".bytes");
-            FileUtil.CreateBinaryFile(dataPath, bytes);
-  
+            FileUtil.CreateBinaryFile(dataPath, dataBuffer);
         }
         
         private void GenerateData(BehaviourTreeData outData, BehaviourTreeWindowData windowData)
@@ -624,7 +626,7 @@ namespace GameFrameWork.Editor
             outData.priority = windowData.priority;
             outData.children = new BehaviourTreeData[windowData.children.Count];
             outData.preConditions = new BehaviorTreePreConditionData[windowData.preConditions.Count];
-
+            
             for (int i = 0; i < windowData.preConditions.Count; i++)
             {
                 outData.preConditions[i] = new BehaviorTreePreConditionData();
@@ -648,38 +650,45 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private void SerializeData(BehaviourTreeData data, MemoryStreamEx mse)
+        private byte[] SerializeData(BehaviourTreeData data)
         {
             if (data == null)
             {
-                return;
+                return null;
             }
 
-            mse.WriteInt(data.id);
-            mse.WriteUTF8String(data.classType);
-            mse.WriteUTF8String(string.IsNullOrEmpty(data.args) ? string.Empty : data.args);
-            mse.WriteInt(data.priority);
-            mse.WriteInt(data.children.Length);
-            mse.WriteInt(data.preConditions.Length);
+            using MemoryStreamEx mse = new();
+            Queue<BehaviourTreeData> dataQueue = new();
+            dataQueue.Enqueue(data);
 
-            foreach (var preCondition in data.preConditions)
+            while (dataQueue.Count > 0)
             {
-                mse.WriteInt(preCondition.id);
-                mse.WriteUTF8String(preCondition.classType);
-                mse.WriteUTF8String(string.IsNullOrEmpty(preCondition.args) ? string.Empty : preCondition.args);
-                mse.WriteInt(preCondition.priority);
-                mse.WriteBool(preCondition.isAndCondition);
+                BehaviourTreeData tempData = dataQueue.Dequeue();
+                mse.WriteInt(tempData.id);
+                mse.WriteUTF8String(tempData.classType);
+                mse.WriteUTF8String(string.IsNullOrEmpty(tempData.args) ? string.Empty : tempData.args);
+                mse.WriteInt(tempData.priority);
+                mse.WriteInt(tempData.children.Length);
+                mse.WriteInt(tempData.preConditions.Length);
+                
+                foreach (var preCondition in tempData.preConditions)
+                {
+                    mse.WriteInt(preCondition.id);
+                    mse.WriteUTF8String(preCondition.classType);
+                    mse.WriteUTF8String(string.IsNullOrEmpty(preCondition.args) ? string.Empty : preCondition.args);
+                    mse.WriteInt(preCondition.priority);
+                    mse.WriteBool(preCondition.isAndCondition);
+                }
+                
+                foreach (var child in data.children)
+                {
+                    dataQueue.Enqueue(child);
+                }
             }
-
-            if (data.children == null || data.children.Length < 1)
-            {
-                return;
-            }
-
-            foreach (var child in data.children)
-            {
-                SerializeData(child, mse);
-            }
+            
+            byte[] bytes = mse.ToArray();
+            mse.Close();
+            return bytes;
         }
 
         private void SetRightWindowNode(BehaviourTreeWindowData data)

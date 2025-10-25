@@ -11,11 +11,11 @@ using GameFrameWork.ConfigData;
 /// </summary>
 public static class ConfigDataSheet
 {
-	public static LevelConfigData[] levelConfigDatas = null;
-	public static RoleConfigData[] roleConfigDatas = null;
-	public static RoleSelectConfigData[] roleSelectConfigDatas = null;
-	public static SceneItemConfigData[] sceneItemConfigDatas = null;
-	public static TalkConfigData[] talkConfigDatas = null;
+    public static LevelConfigData[] levelConfigDatas;
+	public static RoleConfigData[] roleConfigDatas;
+	public static RoleSelectConfigData[] roleSelectConfigDatas;
+	public static SceneItemConfigData[] sceneItemConfigDatas;
+	public static TalkConfigData[] talkConfigDatas;
 
 	public static void Init()
     {

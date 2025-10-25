@@ -244,9 +244,9 @@ public class GameEntry : GameFrameWorkEntry
     {
         LanguageText.SetLocalizationMgr(localizationMgr);
         localizationMgr.SetDefaultLanguage(LanguageType.English);
-        localizationMgr.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "SimplifiedChineseLanguageData.bytes")));
-        localizationMgr.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "EnglishLanguageData.bytes")));
-        localizationMgr.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, "JapaneseLanguageData.bytes")));
+        localizationMgr.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, AssetPathDefine.SimplifiedChinese)));
+        localizationMgr.AddLanguageLoader(LanguageType.English, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, AssetPathDefine.English)));
+        localizationMgr.AddLanguageLoader(LanguageType.Japanese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, AssetPathDefine.Japanese)));
         localizationMgr.ChangeLanguage(LanguageType.SimplifiedChinese);
 
         StoryMgr.instance.AddStoryBuilder<Story1001>(1001);
