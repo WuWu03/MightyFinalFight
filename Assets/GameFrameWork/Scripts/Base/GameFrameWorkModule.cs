@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameFrameWork.Assets;
 using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
+using GameFrameWork.ConfigData;
 using GameFrameWork.Download;
 using GameFrameWork.Event;
 using GameFrameWork.Fsm;
@@ -30,6 +31,7 @@ namespace GameFrameWork
         
         private static readonly Dictionary<Type,byte> s_ModulePriorities = new()
         {
+            [typeof(ConfigDataMgr)] = GetPriority(),
             [typeof(NetMgr)] = GetPriority(),
             [typeof(EventMgr)] = GetPriority(),
             [typeof(WebRequestMgr)] = GetPriority(),

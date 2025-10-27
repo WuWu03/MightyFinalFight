@@ -14,7 +14,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
 {
     private bool m_HasSelect;
     private int m_CurrSelectIndex = -1;
-    
+    private RoleSelectConfigData[] m_RoleSelectConfigData;
     protected override void OnOpen(object arg)
     {
         component.roleSelectList.onItemUpdateEvent += OnItemUpdate;
@@ -24,8 +24,9 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     protected override void OnShow(object arg)
     {
         m_HasSelect = true;
+        m_RoleSelectConfigData = GameEntry.configDataMgr.Get<RoleSelectConfigData>();
         component.imgSelectRect.gameObject.SetActiveSelf(true);
-        component.roleSelectList.RefreshItems(ConfigDataSheet.roleSelectConfigDatas.Length);
+        component.roleSelectList.RefreshItems(m_RoleSelectConfigData.Length);
         component.roleSelectList.SelectItem(0);
         LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
@@ -44,12 +45,19 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
             if (axis.y < 0)
             {
                 m_CurrSelectIndex++;
-                if (m_CurrSelectIndex >= ConfigDataSheet.roleSelectConfigDatas.Length) m_CurrSelectIndex = 0;
             }
             else
             {
                 m_CurrSelectIndex--;
-                if (m_CurrSelectIndex < 0) m_CurrSelectIndex = ConfigDataSheet.roleSelectConfigDatas.Length - 1;
+            }
+            
+            if (m_CurrSelectIndex >= m_RoleSelectConfigData.Length)
+            {
+                m_CurrSelectIndex = 0;
+            }
+            else if (m_CurrSelectIndex < 0)
+            {
+                m_CurrSelectIndex = m_RoleSelectConfigData.Length - 1;
             }
 
             component.roleSelectList.SelectItem(m_CurrSelectIndex);
@@ -65,7 +73,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
 
     protected override void OnHide()
     {
-        
+        m_RoleSelectConfigData = null;
     }
 
     protected override void OnClose()
@@ -83,7 +91,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
     {
         if (item is RoleSelectViewComponent.RoleSelectListItem roleSelectListItem)
         {
-            RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas[item.itemIndex];
+            RoleSelectConfigData roleSelectConfigData = m_RoleSelectConfigData[item.itemIndex];
             roleSelectListItem.txtName.SetLanguageTextKey(roleSelectConfigData.name);
             roleSelectListItem.txtDesc.SetLanguageTextKey(roleSelectConfigData.desc);
             roleSelectListItem.imgRoleIcon.spriteName = roleSelectConfigData.headIcon;
@@ -112,7 +120,7 @@ public class RoleSelectView : UIBaseView<RoleSelectViewComponent, RoleSelectView
         component.imgSelectRect.GetComponent<UIFrameEffect>().StopFrame();
         GameEntry.soundMgr.StopBgm(true);
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelected));
-        PlayerMgr.instance.selectRoleId = ConfigDataSheet.roleSelectConfigDatas[m_CurrSelectIndex].roleId;
+        PlayerMgr.instance.selectRoleId = m_RoleSelectConfigData[m_CurrSelectIndex].roleId;
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
 

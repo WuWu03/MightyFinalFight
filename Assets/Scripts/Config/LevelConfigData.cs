@@ -71,19 +71,21 @@ public class LevelConfigData : BaseConfigData
 
 	public LevelConfigData Clone()
 	{
-		LevelConfigData levelConfigData = new LevelConfigData();
-		levelConfigData.roleId = this.roleId;
-		levelConfigData.level = this.level;
-		levelConfigData.hpValue = this.hpValue;
-		levelConfigData.attackValue = this.attackValue;
-		levelConfigData.defenseValue = this.defenseValue;
-		levelConfigData.exp = this.exp;
-		levelConfigData.attackSpeed = this.attackSpeed;
-		levelConfigData.criticalValue = this.criticalValue;
-		levelConfigData.moveSpeed = this.moveSpeed;
-		levelConfigData.jumpForce = this.jumpForce;
-		levelConfigData.hpBarWidth = this.hpBarWidth;
-		return levelConfigData;
+		LevelConfigData levelConfigData = new()
+        {
+            roleId = this.roleId,
+            level = this.level,
+            hpValue = this.hpValue,
+            attackValue = this.attackValue,
+            defenseValue = this.defenseValue,
+            exp = this.exp,
+            attackSpeed = this.attackSpeed,
+            criticalValue = this.criticalValue,
+            moveSpeed = this.moveSpeed,
+            jumpForce = this.jumpForce,
+            hpBarWidth = this.hpBarWidth
+        };
+        return levelConfigData;
 	}
 
 	public override void Read(ConfigDataParser parser)

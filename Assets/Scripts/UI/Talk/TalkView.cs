@@ -16,21 +16,20 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 {
     private bool m_IsComplete;
     private int m_SelectIndex = -1;
-    private int m_TalkId = -1;
-    private int m_CurrTalkId = -1;
-    
+    private TalkConfigData m_ConfigData;
     protected override void OnOpen(object arg)
     {
-        m_TalkId = int.Parse(arg.ToString());
         component.talkSelectList.onItemUpdateEvent += OnItemUpdateEvent;
         component.talkSelectList.onItemSelectEvent += OnItemSelectEvent;
     }
 
     protected override void OnShow(object arg)
     {
+        int talkId = int.Parse(arg.ToString());
+        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
         component.talkSelectList.SetActive(false);
         component.talkSelectList.SelectItem(0);
-        PlayTalk(m_TalkId);
+        PlayTalk();
     }
 
     protected override void OnUpdate()
@@ -43,21 +42,22 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             }
             else
             {
-                TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-                if (talkConfigData.talkSelect is { Length: > 0 })
+                if (m_ConfigData.talkSelect is { Length: > 0 })
                 {
                     if (m_SelectIndex > -1)
                     {
-                        m_TalkId = talkConfigData.talkSelect[m_SelectIndex].talkId;
+                        int talkId = m_ConfigData.talkSelect[m_SelectIndex].talkId;
+                        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
                         component.talkSelectList.SetActive(false);
+                        PlayTalk();
                     }
                 }
                 else
                 {
-                    m_TalkId = talkConfigData.nextTalkId;
+                    int talkId = m_ConfigData.nextTalkId;
+                    m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
+                    PlayTalk();
                 }
-
-                PlayTalk(m_TalkId);
             }
 
             return;
@@ -65,9 +65,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
         if (m_IsComplete)
         {
-            TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-
-            if (talkConfigData.talkSelect is { Length: > 0 })
+            if (m_ConfigData.talkSelect is { Length: > 0 })
             {
                 Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis);
 
@@ -85,14 +83,14 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     protected override void OnHide()
     {
-        
+        m_IsComplete = false;
+        m_SelectIndex = -1;
+        m_ConfigData = null;
     }
 
     protected override void OnClose()
     {
-        m_IsComplete = false;
-        m_SelectIndex = -1;
-        m_TalkId = -1;
+
     }
 
     protected override void OnDestroy()
@@ -101,40 +99,31 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
         component.talkSelectList.onItemSelectEvent -= OnItemSelectEvent;
     }
 
-    private void PlayTalk(int talkId)
+    private void PlayTalk()
     {
-        if (m_CurrTalkId == talkId)
+        if (m_ConfigData == null)
         {
             return;
         }
 
-        m_CurrTalkId = talkId;
-        m_IsComplete = false;
-        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(talkId);
-
-        if (talkConfigData == null)
-        {
-            return;
-        }
-
-        string content = GameEntry.localizationMgr.GetLanguageText(talkConfigData.content);
+        string content = GameEntry.localizationMgr.GetLanguageText(m_ConfigData.content);
         component.txtContent.text = string.Empty;
-        component.txtContent.DOText(content, talkConfigData.content.Length * 0.05f).OnComplete(() =>
+        component.txtContent.DOText(content, m_ConfigData.content.Length * 0.05f).OnComplete(() =>
         {
             m_IsComplete = true;
-            component.languageContent.SetLanguageTextKey(talkConfigData.content);
+            component.languageContent.SetLanguageTextKey(m_ConfigData.content);
             
-            if (talkConfigData.talkSelect is { Length: > 0 })
+            if (m_ConfigData.talkSelect is { Length: > 0 })
             {
                 component.talkSelectList.SetActive(true);
-                component.talkSelectList.RefreshItems(talkConfigData.talkSelect.Length);
+                component.talkSelectList.RefreshItems(m_ConfigData.talkSelect.Length);
                 component.talkSelectList.SelectItem(0);
             }
             else
             {
                 component.talkSelectList.SetActive(false);
 
-                if (talkConfigData.nextTalkId == 0)
+                if (m_ConfigData.nextTalkId == 0)
                 {
                     GameEntry.eventMgr.Dispatch(this, EventArg.Create(EventId.TalkEndEvent));
                     CloseSelf();
@@ -147,8 +136,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
     {
         if (item is TalkViewComponent.TalkSelectListItem talkSelectItem)
         {
-            TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-            talkSelectItem.txtSelect.SetLanguageTextKey(talkConfigData.talkSelect[item.itemIndex].content);
+            talkSelectItem.txtSelect.SetLanguageTextKey(m_ConfigData.talkSelect[item.itemIndex].content);
         }
     }
 
@@ -167,16 +155,14 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     private void SelectNext()
     {
-        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-
-        if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
+        if (m_ConfigData.talkSelect == null || m_ConfigData.talkSelect.Length < 1)
         {
             return;
         }
 
         int select = m_SelectIndex + 1;
 
-        if (select >= talkConfigData.talkSelect.Length)
+        if (select >= m_ConfigData.talkSelect.Length)
         {
             select = 0;
         }
@@ -186,9 +172,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     private void SelectPrevious()
     {
-        TalkConfigData talkConfigData = ConfigDataSheet.talkConfigDatas.GetConfigDataById(m_TalkId);
-
-        if (talkConfigData.talkSelect == null || talkConfigData.talkSelect.Length < 1)
+        if (m_ConfigData.talkSelect == null || m_ConfigData.talkSelect.Length < 1)
         {
             return;
         }
@@ -197,7 +181,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
         if (select < 0)
         {
-            select = talkConfigData.talkSelect.Length - 1;
+            select = m_ConfigData.talkSelect.Length - 1;
         }
 
         component.talkSelectList.SelectItem(select);

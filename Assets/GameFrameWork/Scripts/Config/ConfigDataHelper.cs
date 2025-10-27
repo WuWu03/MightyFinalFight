@@ -16,17 +16,18 @@ namespace GameFrameWork.ConfigData
             m_ResourceMgr = resourceMgr;
         }
         
-        public static T[] LoadConfigData<T>(string fileName) where T : BaseConfigData, new()
+        public static T[] LoadConfigData<T>(string filePath) where T : BaseConfigData, new()
         {
-            string path = PathUtil.FormatPath(GameFrameWorkEntry.config.configDataPath, fileName);
-            TextAsset txt = m_ResourceMgr.Load<TextAsset>(path);
+            TextAsset txt = m_ResourceMgr.Load<TextAsset>(filePath);
+            byte[] bytes = txt.bytes;
+            m_ResourceMgr.Unload(filePath);
 
-            if (txt?.bytes == null)
+            if (bytes == null)
             {
-                throw new Exception(StringUtil.Append("读取配置文件失败 : ", path));
+                throw new Exception(StringUtil.Append("读取配置文件失败 : ", filePath));
             }
 
-            using ConfigDataParser parser = new(txt.bytes);
+            using ConfigDataParser parser = new(bytes);
             T[] data = new T[parser.row - 1];
             int index = 0;
             
@@ -37,7 +38,7 @@ namespace GameFrameWork.ConfigData
                 parser.Next();
                 index++;
             }
-
+            
             return data;
         }
 
@@ -46,9 +47,10 @@ namespace GameFrameWork.ConfigData
             int left = 0;
             int right = data.Length;
 
-            while (left <= right)
+            while (left < right)
             {
                 int mid = (left + right) / 2;
+                
                 if (data[mid].id == id)
                 {
                     return data[mid];
@@ -64,22 +66,27 @@ namespace GameFrameWork.ConfigData
                 }
             }
 
-            return null;
+            return data[left];
         }
 
-        public static T GetSingConfigDataByAttr<T>(this T[] data, string attr) where T : BaseConfigData, new()
+        public static T GetSingConfigDataByAttr<T>(this T[] data, string attr, int index = 0) where T : BaseConfigData, new()
         {
             T[] result = GetConfigDataByAttr(data, attr, true);
 
-            if (result != null && result.Length > 0)
+            if (result is { Length: > 0 })
             {
-                return result[0];
+                return result[index];
             }
 
             return null;
         }
+
+        public static T[] GetConfigDataByAttr<T>(this T[] data, string attr) where T : BaseConfigData, new()
+        {
+            return GetConfigDataByAttr<T>(data, attr, false);
+        }
         
-        private static T[] GetConfigDataByAttr<T>(T[] data, string attr, bool isSingle = false) where T : BaseConfigData, new()
+        private static T[] GetConfigDataByAttr<T>(T[] data, string attr, bool isSingle) where T : BaseConfigData, new()
         {
             if (string.IsNullOrEmpty(attr) || !attr.StartsWith("{") || !attr.EndsWith("}"))
             {
@@ -87,8 +94,8 @@ namespace GameFrameWork.ConfigData
             }
             
             attr = attr.Replace(" ", string.Empty);
-
             Match match = Regex.Match(attr, @"((\w)+=(\w)+)");
+            
             if (match.Success)
             {
                 List<T> values = new();

@@ -28,6 +28,7 @@ namespace GameFrameWork.Audio
             m_PlayingSes = new();
             m_UnUsedSes = new();
         }
+        
         public bool isBgmComplete
         {
             get
@@ -81,10 +82,10 @@ namespace GameFrameWork.Audio
 
         public void PlaySe(string sePath, float volume = 1)
         {
-            foreach (var playingSE in m_PlayingSes)
+            foreach (var playingSe in m_PlayingSes)
             {
-                string path = playingSE.path;
-                float process = Time.time - playingSE.playTime;
+                string path = playingSe.path;
+                float process = Time.time - playingSe.playTime;
                 if (sePath.Equals(path) && process <= 0.05f)
                 {
                     return;
@@ -288,8 +289,7 @@ namespace GameFrameWork.Audio
 
             foreach (var playingSe in m_PlayingSes)
             {
-                SeInfo tempSoundEffectInfo = playingSe;
-                if (tempSoundEffectInfo.path == assetPath && tempSoundEffectInfo.audioSource.clip == null)
+                if (playingSe.path == assetPath && playingSe.audioSource.clip == null)
                 {
                     seInfo = playingSe;
                 }
@@ -339,21 +339,19 @@ namespace GameFrameWork.Audio
 
         private SeInfo GetSe(string assetPath, float volume)
         {
-            SeInfo seInfo = null;
+            SeInfo seInfo;
 
             if (m_UnUsedSes.Count > 0)
             {
                 seInfo = m_UnUsedSes.Dequeue();
             }
-
-            if (seInfo == null)
+            else
             {
                 seInfo = SeInfo.Create();
                 seInfo.audioSource.transform.SetParent(m_Root.transform, false);
             }
 
             m_PlayingSes.Add(seInfo);
-
             seInfo.path = assetPath;
             seInfo.playTime = Time.time;
             seInfo.audioSource.SetActiveSelf(false);
@@ -362,7 +360,6 @@ namespace GameFrameWork.Audio
             seInfo.audioSource.playOnAwake = false;
             seInfo.audioSource.loop = false;
             seInfo.audioSource.Stop();
-
             return seInfo;
         }
 

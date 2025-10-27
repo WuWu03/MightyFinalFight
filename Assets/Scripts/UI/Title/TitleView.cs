@@ -58,14 +58,14 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
     protected override void OnHide()
     {
-        
+        m_AnimSequence.Kill();
+        m_AnimSequence = null;
+        GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
     }
 
     protected override void OnClose()
     {
-        m_AnimSequence.Kill();
-        m_AnimSequence = null;
-        GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
+
     }
 
     protected override void OnDestroy()

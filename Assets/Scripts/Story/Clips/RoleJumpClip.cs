@@ -59,7 +59,7 @@ public class RoleJumpClip : BaseClip
 
                 if (m_Role is null)
                 {
-                    RoleConfigData roleConfigData = ConfigDataSheet.roleConfigDatas.GetConfigDataById(m_RoleId);
+                    RoleConfigData roleConfigData = GameEntry.configDataMgr.Get<RoleConfigData>().GetConfigDataById(m_RoleId);
                     m_Role = SceneEntityFactory.CreateRole(roleName, roleConfigData.assetName, 1f, Vector2.zero);
                 }
             }

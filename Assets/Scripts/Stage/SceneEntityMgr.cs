@@ -69,7 +69,8 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseEnemy CreateEnemy(int sourceId, int entityId, int hp, int attack, int defense, int hpBarWidth, Vector2Int pos, bool startBehaviourTree = true)
     {
-        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(ConfigDataSheet.roleConfigDatas.GetConfigDataById(sourceId), entityId, hp, attack, defense, hpBarWidth, pos);
+        RoleConfigData roleConfigData = GameEntry.configDataMgr.Get<RoleConfigData>().GetConfigDataById(sourceId);
+        BaseEnemy enemy = SceneEntityFactory.CreateEnemy(roleConfigData, entityId, hp, attack, defense, hpBarWidth, pos);
         Log.LogInfo("创建 Enemy , sourceId : " + sourceId + " , entityId : " + entityId);
 
         if (enemy is null)
@@ -85,7 +86,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseSceneObject CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemConfigData sceneItemConfigData = ConfigDataSheet.sceneItemConfigDatas.GetConfigDataById(id);
+        SceneItemConfigData sceneItemConfigData =  GameEntry.configDataMgr.Get<SceneItemConfigData>().GetConfigDataById(id);
         BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
 
         if (sceneItem is null)

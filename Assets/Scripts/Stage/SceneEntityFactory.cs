@@ -34,11 +34,9 @@ public static class SceneEntityFactory
             EntityAttribute weaponAttribute = ReferencePool.Acquire<EntityAttribute>();
             weaponAttribute.health = sceneItemConfigData.value;
             weaponAttribute.maxHealth = sceneItemConfigData.value;
-
-            sceneItemConfigData = ConfigDataSheet.sceneItemConfigDatas.GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
+            sceneItemConfigData = GameEntry.configDataMgr.Get<SceneItemConfigData>().GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
             sceneItem = GameEntry.entityMgr.GetEntity<Weapon>(sceneItemConfigData.name);
-
             sceneItem.SetAttribute(weaponAttribute);
         }
         else
@@ -130,6 +128,7 @@ public static class SceneEntityFactory
         Barrel barrel = GameEntry.entityMgr.GetEntity<Barrel>("Barrel");
         BarrelData barrelData = BarrelData.Create();
         EntityAttribute barrelAttribute = EntityAttribute.Create();
+        SceneItemConfigData[] sceneItemConfigData = GameEntry.configDataMgr.Get<SceneItemConfigData>();
         barrelData.entityId = entityId;
         barrelData.value = 0;
         barrelData.canDrop = false;
@@ -137,7 +136,7 @@ public static class SceneEntityFactory
         barrelData.groundY = groundY;
         barrelData.isFloat = isFloat;
         barrelData.moveSpeed = moveSpeed;
-        barrelData.itemId = itemId == -1 ? ConfigDataSheet.sceneItemConfigDatas[Random.Range(0, ConfigDataSheet.sceneItemConfigDatas.Length)].id : itemId;
+        barrelData.itemId = itemId == -1 ? sceneItemConfigData[Random.Range(0, sceneItemConfigData.Length)].id : itemId;
         barrelAttribute.health = 1;
         barrelAttribute.maxHealth = 1;
         barrel.SetData(barrelData);

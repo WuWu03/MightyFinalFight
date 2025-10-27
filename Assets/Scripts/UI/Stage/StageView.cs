@@ -16,6 +16,7 @@ using UnityEngine.UI;
 public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 {
     private GameObject m_Role;
+    private RoleSelectConfigData m_RoleSelectConfig;
     protected override void OnOpen(object arg)
     {
         
@@ -34,8 +35,8 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 
         component.imgMapGo.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
         int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectConfigData roleSelectConfigData = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
-        GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfigData.assetName), OnLoaded);
+        m_RoleSelectConfig = GameEntry.configDataMgr.Get<RoleSelectConfigData>().GetConfigDataById(characterId);
+        GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), OnLoaded);
         AddEvent(EventId.StageEnterStartEvent, OnStageEnterStart);
     }
 
@@ -46,15 +47,14 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 
     protected override void OnHide()
     {
-        
+        GameEntry.gameObjectPoolMgr.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), m_Role);
+        m_Role = null;
+        m_RoleSelectConfig = null;
     }
 
     protected override void OnClose()
     {
-        int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
-        GameEntry.gameObjectPoolMgr.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, roleSelectConfig.assetName), m_Role);
-        m_Role = null;
+
     }
 
     protected override void OnDestroy()
@@ -64,9 +64,9 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 
     private void OnLoaded(string assetPath, Object obj, object arg)
     {
-        if (obj is GameObject gameObject)
+        if (obj is GameObject roleGo)
         {
-            m_Role = gameObject;
+            m_Role = roleGo;
             m_Role.transform.SetParent(component.heroPosGo.transform, false);
             m_Role.SetActiveSelf(true);
             m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
@@ -76,12 +76,10 @@ public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
 
     private void OnFadeWhiteComplete()
     {
-        int characterId = PlayerMgr.instance.selectRoleId;
-        RoleSelectConfigData roleSelectConfig = ConfigDataSheet.roleSelectConfigDatas.GetConfigDataById(characterId);
-        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = roleSelectConfig.animSpeed;
-        m_Role.GetComponent<UnityArmatureComponent>().animation.Play(roleSelectConfig.animName, 1);
-        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, roleSelectConfig.soundName));
-        GameEntry.timerMgr.Register(roleSelectConfig.showTime, OnTimer);
+        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = m_RoleSelectConfig.animSpeed;
+        m_Role.GetComponent<UnityArmatureComponent>().animation.Play(m_RoleSelectConfig.animName, 1);
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, m_RoleSelectConfig.soundName));
+        GameEntry.timerMgr.Register(m_RoleSelectConfig.showTime, OnTimer);
     }
 
     private void OnTimer()

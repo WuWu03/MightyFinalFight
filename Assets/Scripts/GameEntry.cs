@@ -3,6 +3,7 @@ using GameFrameWork;
 using GameFrameWork.Assets;
 using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
+using GameFrameWork.ConfigData;
 using GameFrameWork.Download;
 using GameFrameWork.Event;
 using GameFrameWork.Fsm;
@@ -37,6 +38,7 @@ public class GameEntry : GameFrameWorkEntry
     private static IInputMgr s_InputMgr;
     private static ISceneMgr s_SceneMgr;
     private static ITimerMgr s_TimerMgr;
+    private static IConfigDataMgr s_ConfigDataMgr;
     
     public static ILocalizationMgr localizationMgr
     {
@@ -225,10 +227,20 @@ public class GameEntry : GameFrameWorkEntry
             return s_TimerMgr;
         }
     }
+
+    public static IConfigDataMgr configDataMgr
+    {
+        get
+        {
+            s_ConfigDataMgr ??= GameFrameWorkMgr.GetModule<IConfigDataMgr>();
+            return s_ConfigDataMgr;
+        }
+    }
     
     protected override void OnInit(GameObject manager)
     {
         s_GameEntry = gameObject.transform;
+        ConfigDataHelper.SetResourcesMgr(resourceMgr);
         EffectMgr.Init(manager);
         TaskMgr.Init(manager);
         StageMgr.Init(manager);
@@ -287,7 +299,6 @@ public class GameEntry : GameFrameWorkEntry
         GC.Collect();
         resourceMgr.InitAssetsMap();
         StaticConfig.InitConfig();
-        ConfigDataSheet.Init();
         uiMgr.Open<TitleView>();
     }
 
@@ -303,6 +314,5 @@ public class GameEntry : GameFrameWorkEntry
         HudMgr.instance.ShutDown();
         LoadMgr.instance.ShutDown();
         StaticConfig.ShutDown();
-        ConfigDataSheet.ShutDown();
     }
 }

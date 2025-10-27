@@ -4,7 +4,7 @@ namespace GameFrameWork.Audio
 {
     public class SeInfo
     {
-        public AudioSource audioSource { get; set; }
+        public AudioSource audioSource { get; private set; }
         public string path { get; set; }
         public float playTime { get; set; }
 

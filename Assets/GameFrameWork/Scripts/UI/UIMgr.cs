@@ -11,7 +11,7 @@ namespace GameFrameWork.UI
     /// <summary>
     /// UI管理器
     /// </summary>
-    public class UIMgr : GameFrameWorkModule,IUIMgr
+    public class UIMgr : GameFrameWorkModule, IUIMgr
     {
         private readonly Canvas m_UICanvas;
         private readonly UnityEngine.Camera m_UICamera;
@@ -27,7 +27,7 @@ namespace GameFrameWork.UI
         private IEventMgr m_EventMgr;
         private bool m_CanPopPanel;
         private bool m_IsOpenViewsDirty;
-        
+
         public UIMgr()
         {
             m_OpenViews = new();
@@ -44,32 +44,26 @@ namespace GameFrameWork.UI
             {
                 m_UILayers[i] = m_UICanvas.transform.GetChild(i).GetComponent<RectTransform>();
             }
-            
+
             UnityObject.DontDestroyOnLoad(uiRoot);
         }
-        
+
         /// <summary>
         /// UI画布
         /// </summary>
         public Canvas uiCanvas
         {
-            get
-            {
-                return m_UICanvas;
-            }
+            get { return m_UICanvas; }
         }
-        
+
         /// <summary>
         /// UI相机
         /// </summary>
         public UnityEngine.Camera uiCamera
         {
-            get
-            {
-                return m_UICamera;
-            }
+            get { return m_UICamera; }
         }
-        
+
         /// <summary>
         /// 每帧更新
         /// </summary>
@@ -137,7 +131,7 @@ namespace GameFrameWork.UI
                 }
             }
         }
-        
+
         /// <summary>
         /// 销毁
         /// </summary>
@@ -208,7 +202,7 @@ namespace GameFrameWork.UI
         {
             return Open(typeof(T), arg) as T;
         }
-        
+
         /// <summary>
         /// 打开UI
         /// </summary>
@@ -223,15 +217,15 @@ namespace GameFrameWork.UI
             }
 
             IView view = Get(viewType);
-            
+
             if (view != null)
             {
                 view.Open(arg);
                 return view;
             }
-            
+
             view = Activator.CreateInstance(viewType) as IView;
-            
+
             if (view == null)
             {
                 throw new Exception(StringUtil.Append("创建 [", viewType.FullName, "] UI对象失败"));
@@ -242,7 +236,7 @@ namespace GameFrameWork.UI
             m_AlwaysUIs.Remove(view);
             m_DelayDestroyUIs.Remove(view);
             m_IsOpenViewsDirty = true;
-            
+
             if (!m_CanPopPanel && view.settings.canPopUp)
             {
                 m_CanPopPanel = true;
@@ -262,7 +256,7 @@ namespace GameFrameWork.UI
             view.Open(arg);
             return view;
         }
-        
+
         public IView Get(string viewName)
         {
             Type viewType = GetViewType(viewName);
@@ -273,7 +267,7 @@ namespace GameFrameWork.UI
         {
             return Get(typeof(T)) as T;
         }
-        
+
         public IView Get(Type viewType)
         {
             if (viewType == null)
@@ -291,7 +285,7 @@ namespace GameFrameWork.UI
 
             return null;
         }
-        
+
         public bool IsOpen(string viewName)
         {
             IView view = Get(viewName);
@@ -309,7 +303,7 @@ namespace GameFrameWork.UI
             IView view = Get(viewType);
             return view is { isOpen: true };
         }
-        
+
         public void Close(string viewName, bool isForceDestroy = false)
         {
             IView view = Get(viewName);
@@ -321,13 +315,13 @@ namespace GameFrameWork.UI
             IView view = Get<T>();
             Close(view, isForceDestroy);
         }
-        
+
         public void Close(Type viewType, bool isForceDestroy = false)
         {
             IView view = Get(viewType);
             Close(view, isForceDestroy);
         }
-        
+
         public void Close(IView view, bool isForceDestroy = false, bool checkPopPanel = true)
         {
             if (view == null)
@@ -348,7 +342,7 @@ namespace GameFrameWork.UI
                 m_CurrPopView = oldView;
                 m_IsOpenViewsDirty = true;
             }
-            
+
             if (view.settings.destroyMode == UIDestroyMode.Immediately || isForceDestroy)
             {
                 m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
@@ -356,7 +350,7 @@ namespace GameFrameWork.UI
                 m_OpenViews.Remove(view);
                 m_PopViews.Remove(view);
                 m_IsOpenViewsDirty = true;
-                
+
                 if (m_CurrPopView == view)
                 {
                     m_CurrPopView = null;
@@ -383,7 +377,7 @@ namespace GameFrameWork.UI
         {
             s_ViewTypes.Add(viewName, typeof(T));
         }
-        
+
         private Type GetViewType(string viewName)
         {
             if (s_ViewTypes.TryGetValue(viewName, out Type viewType))

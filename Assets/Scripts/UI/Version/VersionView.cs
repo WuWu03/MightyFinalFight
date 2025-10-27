@@ -32,10 +32,12 @@ public class VersionView : UIBaseView<VersionViewComponent, VersionViewSettings>
 
     protected override void OnClose()
 	{
+        GameEntry.versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
 	}
 
 	protected override void OnDestroy()
 	{
+  
 	}
 
     private void OnVersionProcessStateChanged(VersionProcessState state, string info, ulong downloadSize, ulong downloadFullSize)

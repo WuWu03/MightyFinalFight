@@ -115,18 +115,18 @@ namespace GameFrameWork.UI
             {
                 return;
             }
+            
+            if (arg != null)
+            {
+                m_Arg = arg;
+            }
 
             if (m_IsOpen)
             {
                 Show();
                 return;
             }
-
-            if (arg != null)
-            {
-                m_Arg = arg;
-            }
-
+            
             m_IsLoading = true;
             m_GameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(PathUtil.GetUIPrefabsPath(), m_Settings.prefabName), OnLoadComplete);
         }

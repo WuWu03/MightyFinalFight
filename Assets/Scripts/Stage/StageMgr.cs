@@ -79,6 +79,7 @@ public class StageMgr : BaseMgr<StageMgr>
         GameEntry.soundMgr.ReleaseSeAudioSources();
         GameEntry.gameObjectPoolMgr.CheckRelease();
         GameEntry.resourcePoolMgr.CheckRelease();
+        GameEntry.configDataMgr.RemoveAll();
         ReferencePool.ReleaseAll();
         GC.Collect();
         GameEntry.sceneMgr.loadSceneSuccessEvent += LoadSceneSuccess;
