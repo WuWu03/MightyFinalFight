@@ -23,8 +23,7 @@ public class TestNetResolver : NetResolver
 
     private void ReceiveTest(ushort msgCode, byte[] buffer)
     {
-        test proto = Deserialize<test>(buffer);
-        onReceiveTestEvent?.Invoke(proto);
+        onReceiveTestEvent?.Invoke(Deserialize<test>(buffer));
     }
     
     public override void Dispose()
