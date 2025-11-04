@@ -98,7 +98,7 @@ namespace GameFrameWork.Editor
         {
             for (int i = 0; i < config.listDatas.Count; i++)
             {
-                if (config.listDatas[i].bundleBuildType == AssetBundleData.BundleBuildType.Mulity)
+                if (config.listDatas[i].bundleBuildType == AssetBundleData.BundleBuildType.Multi)
                 {
                     if (!AddMulityBuildMap(config.listDatas[i], i))
                     {

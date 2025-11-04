@@ -9,8 +9,12 @@ namespace GameFrameWork.Serialize
 
         public virtual int CompareTo(object obj)
         {
-            BaseScriptableConfigData data = obj as BaseScriptableConfigData;
-            return id.CompareTo(data.id);
+            if (obj is BaseScriptableConfigData data)
+            {
+                return id.CompareTo(data.id);
+            }
+
+            return 0;
         }
     }
 }

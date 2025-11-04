@@ -19,9 +19,9 @@ namespace GameFrameWork.Editor
     {
         public enum BundleBuildType : byte
         {
-            Mulity,//包体下每个资源单独打ab
+            Multi,//包体下每个资源单独打ab
             Single,//包体下所有资源打成一个ab
-            MulitySingle,//按文件夹打包
+            MultiSingle,//按文件夹打包
         }
 
         public BundleBuildType bundleBuildType;
@@ -33,8 +33,12 @@ namespace GameFrameWork.Editor
 
         public override int CompareTo(object obj)
         {
-            AssetBundleData data = obj as AssetBundleData;
-            return string.Compare(this.bundleName, data.bundleName);
+            if (obj is AssetBundleData data)
+            {
+                return String.CompareOrdinal(this.bundleName, data.bundleName);
+            }
+            
+            return base.CompareTo(obj);
         }
 
         public AssetBundleData Clone()

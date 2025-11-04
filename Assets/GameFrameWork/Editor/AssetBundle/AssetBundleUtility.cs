@@ -83,8 +83,8 @@ namespace GameFrameWork.Editor
             return bundleBuildType switch
             {
                 AssetBundleData.BundleBuildType.Single => "sv_label_6",
-                AssetBundleData.BundleBuildType.MulitySingle => "sv_label_4",
-                AssetBundleData.BundleBuildType.Mulity => "sv_label_3",
+                AssetBundleData.BundleBuildType.MultiSingle => "sv_label_4",
+                AssetBundleData.BundleBuildType.Multi => "sv_label_3",
                 _ => "sv_label_0"
             };
         }

@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using GameFrameWork.UI;
+using UnityEditor;
 using UnityEngine;
-using UnityEditor.AnimatedValues;
+using UnityEditor.UI;
 using UnityEngine.UI;
 
-namespace UnityEditor.UI
+namespace GameFrameWork.Editor
 {
     [CustomEditor(typeof(ImagePolygon))]
     public class ImagePolygonEditor : ImageEditor

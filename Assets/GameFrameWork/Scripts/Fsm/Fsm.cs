@@ -200,12 +200,13 @@ namespace GameFrameWork.Fsm
         {
             FsmState state = this.GetState<T>();
 
-            if (state == null)
+            if (state != null)
             {
-                throw new Exception(StringUtil.Append("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
+                m_DefaultState = state;
+                return;
             }
 
-            m_DefaultState = state;
+            throw new Exception(StringUtil.Append("[", typeof(T).Name, "] 状态不存在，调用AddState方法添加该状态"));
         }
 
         public void ChangeDefaultState()
