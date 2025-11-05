@@ -13,13 +13,7 @@ public class RoleDead : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanMove(false);
-        m_Owner.SetCanAttack(false);
-        m_Owner.SetCanBeHit(false);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetIsBeThrow(false);
-        m_Owner.SetCanSkill(false);
-        m_Owner.SetCanBeCatch(false);
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Dead, 4);
         m_Owner.SetPos2(m_Owner.pos);

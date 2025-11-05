@@ -59,7 +59,6 @@ public class BaseHero : BaseRole
         AddState<HeroCatch>();
         AddState<HeroPickUp>();
         AddState<HeroAttackEnd>();
-
         m_DicAttacker ??= new();
         m_CatchTargets ??= new();
     }
@@ -127,6 +126,35 @@ public class BaseHero : BaseRole
         base.OnRelease();
     }
 
+    public override void SetPos(Vector2 pos, float posZ, bool calculateZ = false)
+    {
+        if (!isAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
+        {
+            if (!canMove)
+            {
+                return;
+            }
+
+            float border = moveDir.x > 0 ? bound.xMax : bound.xMin;
+            bool isMapXCanMove = StageMgr.instance.CanMovePosX(border) && !IsOutVersionX(border);
+            bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
+
+            if (!isMapXCanMove && !isMapYCanMove)
+            {
+                CameraMgr.instance.EndFollow();
+            }
+            else
+            {
+                CameraMgr.instance.StartFollow();
+            }
+
+            pos.x = isMapXCanMove ? pos.x : this.pos.x;
+            pos.y = isMapYCanMove ? pos.y : this.pos.y;
+        }
+
+        base.SetPos(pos, posZ, calculateZ);
+    }
+    
     public override void SetSkillData(BaseRoleSkillData skillData)
     {
         base.SetSkillData(skillData);
@@ -170,11 +198,11 @@ public class BaseHero : BaseRole
             hurtStateArg.isSwoon = true;
             hurtStateArg.attackForce = SkillUtil.GetSmoonForce(dir);
             hurtStateArg.isNotPlayHurtSound = true;
-            hit.OnHurtMsg(hurtStateArg);
+            hit.HurtState(hurtStateArg);
         }
     }
 
-    public override void OnAttackMsg(SkillStateArg skillStateArg, bool isForceJumpAttack = false)
+    public override void AttackState(SkillStateArg skillStateArg, bool isForceJumpAttack = false)
     {
         if (m_CatchTargets is { Count: > 0 })
         {
@@ -186,16 +214,16 @@ public class BaseHero : BaseRole
             return;
         }
 
-        base.OnAttackMsg(skillStateArg, isForceJumpAttack);
+        base.AttackState(skillStateArg, isForceJumpAttack);
     }
 
-    public override void OnMoveMsg(MoveStateArg arg)
+    public override void MoveState(MoveStateArg arg)
     {
         arg.isCatch = HasCatch() && isCatchControl;
-        base.OnMoveMsg(arg);
+        base.MoveState(arg);
     }
 
-    public override void OnJumpMsg(JumpStateArg arg)
+    public override void JumpState(JumpStateArg arg)
     {
         arg.isCatch = false;
 
@@ -212,10 +240,10 @@ public class BaseHero : BaseRole
             }
         }
 
-        base.OnJumpMsg(arg);
+        base.JumpState(arg);
     }
 
-    public override void OnHurtMsg(HurtStateArg arg)
+    public override void HurtState(HurtStateArg arg)
     {
         if (HasCatch())
         {
@@ -259,45 +287,16 @@ public class BaseHero : BaseRole
         }
 
         DropWeaponMsg(arg.attackerDir);
-        base.OnHurtMsg(arg);
+        base.HurtState(arg);
     }
 
-    public override void OnDropTrapMsg(DropTrapStateArg arg)
+    public override void DropTrapState(DropTrapStateArg arg)
     {
-        base.OnDropTrapMsg(arg);
+        base.DropTrapState(arg);
         CameraMgr.instance.EndFollow();
     }
-
-    public override void SetPos(Vector2 pos, float posZ, bool calculateZ = false)
-    {
-        if (!isAutoMove && IsAnyState(typeof(RoleMove), typeof(RoleSkill)))
-        {
-            if (!canMove)
-            {
-                return;
-            }
-
-            float border = moveDir.x > 0 ? bound.xMax : bound.xMin;
-            bool isMapXCanMove = StageMgr.instance.CanMovePosX(border) && !IsOutVersionX(border);
-            bool isMapYCanMove = StageMgr.instance.CanMovePosY(pos.y);
-
-            if (!isMapXCanMove && !isMapYCanMove)
-            {
-                CameraMgr.instance.EndFollow();
-            }
-            else
-            {
-                CameraMgr.instance.StartFollow();
-            }
-
-            pos.x = isMapXCanMove ? pos.x : this.pos.x;
-            pos.y = isMapYCanMove ? pos.y : this.pos.y;
-        }
-
-        base.SetPos(pos, posZ, calculateZ);
-    }
-
-    public virtual void OnRebirthMsg(Vector2 rebirthPos)
+    
+    public virtual void RebirthState(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
         GameEntry.uiMgr.Get<MainView>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
@@ -434,12 +433,13 @@ public class BaseHero : BaseRole
         m_CatchAttackTimer = 0f;
         BaseSceneItem item = IsNearSceneItem();
 
-        if (item != null && item.canPickUp)
+        if (item is not null && item.canPickUp)
         {
             PickUpSceneItemMsg(item);
             return;
         }
-        else if (m_Weapon != null)
+        
+        if (m_Weapon is not null)
         {
             if (m_Weapon.entityAttribute.health <= 1)
             {
@@ -517,7 +517,7 @@ public class BaseHero : BaseRole
             {
                 BaseEnemy target = enemyTarget;
 
-                if (target == null || !target.canBeHit || !enemyTarget.isInGround || !target.canBeCatch)
+                if (target is null || !target.canBeHit || !enemyTarget.isInGround || !target.canBeCatch)
                 {
                     continue;
                 }

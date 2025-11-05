@@ -9,12 +9,12 @@ public class HeroCatch : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(true);
-        m_Owner.SetCanBeHit(true);
-        m_Owner.SetCanJump(true);
-        m_Owner.SetCanMove(m_Owner.isCatchControl);
-        m_Owner.SetCanSkill(true);
-
+        RoleStateParam roleStateParam = FsmStateMap.GetParam<RoleStateParam>(this.GetType());
+        if (roleStateParam != null)
+        {
+            roleStateParam.canMove = m_Owner.isCatchControl;
+        }
+        m_Owner.SetStateParam(roleStateParam);
         m_Owner.ResetRigidbody();
         m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
         m_Owner.PlayAnimation(AnimName.Catch, 1);

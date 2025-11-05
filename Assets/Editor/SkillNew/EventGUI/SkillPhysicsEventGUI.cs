@@ -1,14 +1,19 @@
+using DG.DemiEditor;
 using UnityEditor;
+using UnityEngine;
 using static SkillEditorConfigData.SkillEvent;
 
 namespace SkillNew
 {
     public class SkillPhysicsEventGUI : SkillEventGUI
     {
+        private PhysicsEventInfo m_TargetPhysicsEventInfo;
+        private PhysicsEventInfo m_SelfPhysicsEventInfo;
+
         public SkillPhysicsEventGUI(EditorWindow window) : base(window)
         {
-            m_TargetPhysicsEventInfo = new PhysicsEventInfo();
-            m_SelfPhysicsEventInfo = new PhysicsEventInfo();
+            m_TargetPhysicsEventInfo = new();
+            m_SelfPhysicsEventInfo = new();
         }
 
         protected override void OnUpdateSkillEvent()
@@ -16,32 +21,27 @@ namespace SkillNew
             PhysicsEventInfo currPhysicsEventInfo = null;
             PhysicsEventInfo physicsEventInfo = null;
 
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
+            if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
             {
-                if (m_CurrEvent.targetPhysicsEventInfo == null)
-                {
-                    m_CurrEvent.targetPhysicsEventInfo = new PhysicsEventInfo();
-                }
-
+                currEvent.targetPhysicsEventInfo ??= new();
+                m_TargetPhysicsEventInfo ??= new();
                 currPhysicsEventInfo = m_TargetPhysicsEventInfo;
-                physicsEventInfo = m_CurrEvent.targetPhysicsEventInfo;
+                physicsEventInfo = currEvent.targetPhysicsEventInfo;
             }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
+            else if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
             {
-                if (m_CurrEvent.selfPhysicsEventInfo == null)
-                {
-                    m_CurrEvent.selfPhysicsEventInfo = new PhysicsEventInfo();
-                }
-
+                currEvent.selfPhysicsEventInfo ??= new();
+                m_SelfPhysicsEventInfo ??= new();
                 currPhysicsEventInfo = m_SelfPhysicsEventInfo;
-                physicsEventInfo = m_CurrEvent.selfPhysicsEventInfo;
+                physicsEventInfo = currEvent.selfPhysicsEventInfo;
             }
 
-            currPhysicsEventInfo.force = physicsEventInfo.force;
-            currPhysicsEventInfo.velocity = physicsEventInfo.velocity;
-            currPhysicsEventInfo.drag = physicsEventInfo.drag;
-            currPhysicsEventInfo.gravity = physicsEventInfo.gravity;
-            currPhysicsEventInfo.distanceLimit = physicsEventInfo.distanceLimit;
+            if (currPhysicsEventInfo != null)
+            {
+                currPhysicsEventInfo.groundForceInfo = physicsEventInfo.groundForceInfo;
+                currPhysicsEventInfo.floatForceInfo = physicsEventInfo.floatForceInfo;
+                currPhysicsEventInfo.lieGroundForceInfo = physicsEventInfo.lieGroundForceInfo;
+            }
         }
 
         protected override void OnGUI()
@@ -49,51 +49,70 @@ namespace SkillNew
             PhysicsEventInfo currPhysicsEventInfo = null;
             PhysicsEventInfo physicsEventInfo = null;
 
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
+            if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
             {
                 currPhysicsEventInfo = m_TargetPhysicsEventInfo;
-                physicsEventInfo = m_CurrEvent.targetPhysicsEventInfo;
+                physicsEventInfo = currEvent.targetPhysicsEventInfo;
             }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
+            else if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
             {
                 currPhysicsEventInfo = m_SelfPhysicsEventInfo;
-                physicsEventInfo = m_CurrEvent.selfPhysicsEventInfo;
+                physicsEventInfo = currEvent.selfPhysicsEventInfo;
             }
 
-            DrawField(() => { return currPhysicsEventInfo.force != physicsEventInfo.force; },
-                () => { currPhysicsEventInfo.force = EditorGUILayout.Vector2Field("附加力", currPhysicsEventInfo.force); },
-                () => { physicsEventInfo.force = currPhysicsEventInfo.force; }, 40);
+            if (currPhysicsEventInfo != null)
+            {
+                GUIStyle style = new("sv_label_0")
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                };
+                EditorGUILayout.LabelField("一般", style);
+                Draw(currPhysicsEventInfo.groundForceInfo, physicsEventInfo.groundForceInfo);
+                EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+                EditorGUILayout.LabelField("浮空", style);
+                Draw(currPhysicsEventInfo.floatForceInfo, physicsEventInfo.floatForceInfo);
+                EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+                EditorGUILayout.LabelField("扫地", style);
+                Draw(currPhysicsEventInfo.lieGroundForceInfo, physicsEventInfo.lieGroundForceInfo);
+            }
+        }
 
-            DrawField(() => { return currPhysicsEventInfo.velocity != physicsEventInfo.velocity; },
-                () => { currPhysicsEventInfo.velocity = EditorGUILayout.Vector2Field("速度", currPhysicsEventInfo.velocity); },
-                () => { physicsEventInfo.velocity = currPhysicsEventInfo.velocity; }, 40);
+        private void Draw(ForceInfo currForceInfo, ForceInfo forceInfo)
+        {
+            DrawField(() => { return currForceInfo.force != forceInfo.force; },
+                () => { currForceInfo.force = EditorGUILayout.Vector2Field("附加力", forceInfo.force); },
+                () => { forceInfo.force = currForceInfo.force; }, 40);
 
-            DrawField(() => { return currPhysicsEventInfo.drag != physicsEventInfo.drag; },
-                () => { currPhysicsEventInfo.drag = EditorGUILayout.FloatField("摩擦力", currPhysicsEventInfo.drag); },
-                () => { physicsEventInfo.drag = currPhysicsEventInfo.drag; });
+            DrawField(() => { return currForceInfo.velocity != forceInfo.velocity; },
+                () => { currForceInfo.velocity = EditorGUILayout.Vector2Field("速度", currForceInfo.velocity); },
+                () => { forceInfo.velocity = currForceInfo.velocity; }, 40);
 
-            DrawField(() => { return currPhysicsEventInfo.gravity != physicsEventInfo.gravity; },
-                () => { currPhysicsEventInfo.gravity = EditorGUILayout.FloatField("重力", currPhysicsEventInfo.gravity); },
-                () => { physicsEventInfo.gravity = currPhysicsEventInfo.gravity; });
+            DrawField(() => { return !Mathf.Approximately(currForceInfo.drag, forceInfo.drag); },
+                () => { currForceInfo.drag = EditorGUILayout.FloatField("摩擦力", currForceInfo.drag); },
+                () => { forceInfo.drag = currForceInfo.drag; });
 
-            DrawField(() => { return currPhysicsEventInfo.distanceLimit != physicsEventInfo.distanceLimit; },
-                () => { currPhysicsEventInfo.distanceLimit = EditorGUILayout.FloatField("距离限制", currPhysicsEventInfo.distanceLimit); },
-                () => { physicsEventInfo.distanceLimit = currPhysicsEventInfo.distanceLimit; });
+            DrawField(() => { return !Mathf.Approximately(currForceInfo.gravity, forceInfo.gravity); },
+                () => { currForceInfo.gravity = EditorGUILayout.FloatField("重力", currForceInfo.gravity); },
+                () => { forceInfo.gravity = currForceInfo.gravity; });
+
+            DrawField(() => { return !Mathf.Approximately(currForceInfo.distanceLimit, forceInfo.distanceLimit); },
+                () =>
+                {
+                    currForceInfo.distanceLimit = EditorGUILayout.FloatField("距离限制", currForceInfo.distanceLimit);
+                },
+                () => { forceInfo.distanceLimit = currForceInfo.distanceLimit; });
         }
 
         protected override void OnResetEvent()
         {
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
+            if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetPhysicsEvent)
             {
-                m_CurrEvent.targetPhysicsEventInfo = null;
+                currEvent.targetPhysicsEventInfo = null;
             }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
+            else if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfPhysicsEvent)
             {
-                m_CurrEvent.selfPhysicsEventInfo = null;
+                currEvent.selfPhysicsEventInfo = null;
             }
         }
-
-        private PhysicsEventInfo m_TargetPhysicsEventInfo = null;
-        private PhysicsEventInfo m_SelfPhysicsEventInfo = null;
     }
 }

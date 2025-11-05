@@ -18,30 +18,26 @@ public class HeroRebirth : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(false);
-        m_Owner.SetCanBeHit(false);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetCanMove(false);
-        m_Owner.SetCanSkill(false);
-
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.ResetRigidbody();
         m_Owner.onGroundEvent += OnGround;
         m_Owner.SetDir(1);
         CameraMgr.instance.EndFollow();
-
+        m_Owner.rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        
         if (m_ReBirthPos == Vector2.zero)
         {
             Rect visionRect = CameraMgr.instance.GetVision();
             float rebirthPosX = visionRect.xMin + m_Owner.bound.size.x;
             float rebirthPosY = visionRect.yMax + m_Owner.bound.size.y;
+            Debug.Log(rebirthPosX + "," + rebirthPosY + " rebirth position");
             m_Owner.transform.localPosition = new Vector3(rebirthPosX, rebirthPosY, rebirthPosY);
         }
         else
         {
             m_Owner.transform.localPosition = new Vector3(m_ReBirthPos.x, m_ReBirthPos.y, m_ReBirthPos.y);
         }
-
-        m_Owner.rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+        
         m_Owner.PlayAnimation(AnimName.JumpDown);
         m_Owner.SetRebirthState();
     }

@@ -9,12 +9,7 @@ public class RoleIdle : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(true);
-        m_Owner.SetCanBeHit(true);
-        m_Owner.SetCanJump(true);
-        m_Owner.SetCanMove(true);
-        m_Owner.SetCanSkill(true);
-        m_Owner.SetCanBeCatch(true);
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.ResetRigidbody();
         m_Owner.SetPos2(m_Owner.pos, true);
 

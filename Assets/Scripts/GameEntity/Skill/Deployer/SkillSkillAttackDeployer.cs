@@ -21,7 +21,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         if (mSkillData.TriggerType != SkillTriggerType.Animtion)
         {
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-            m_Owner.OnSkillMsg(skillArg);
+            m_Owner.SkillState(skillArg);
             base.DeploySkill();
             skillArg.Release();
             return;
@@ -29,7 +29,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
 
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnSkillMsg(skillArg);
+        m_Owner.SkillState(skillArg);
         skillArg.Release();
     }
 

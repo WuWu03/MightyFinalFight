@@ -9,6 +9,7 @@ public class HeroAttackEnd : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.AttackEnd, 1);
     }

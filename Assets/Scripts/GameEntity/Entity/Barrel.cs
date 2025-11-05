@@ -79,7 +79,7 @@ public class Barrel : BaseAvatar, ICanBeHit
         return entityAttribute.health - attackValue <= 0;
     }
 
-    public void OnHurtMsg(HurtStateArg arg)
+    public void HurtState(HurtStateArg arg)
     {
         entityAttribute.SubHealth(arg.attackValue);
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Hurt));
@@ -200,7 +200,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             hurtArg.attackerDir = dir;
             hurtArg.attackForce = SkillUtil.GetSmoonForce(dir);
             hurtArg.isSwoon = true;
-            player.OnHurtMsg(hurtArg);
+            player.HurtState(hurtArg);
         }
     }
 
@@ -233,6 +233,6 @@ public class Barrel : BaseAvatar, ICanBeHit
         hurtArg.hurtAnim = string.Empty;
         hurtArg.isGroundHurt = false;
 
-        OnHurtMsg(hurtArg);
+        HurtState(hurtArg);
     }
 }

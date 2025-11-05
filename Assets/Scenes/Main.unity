@@ -319,6 +319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2bd42f9c4494441b036c4290592378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  list:
+  - skillName: ddd
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

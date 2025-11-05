@@ -10,9 +10,9 @@ namespace GameFrameWork
 {
     public static class MethodExtend
     {
-        public static void SetActiveSelf (this GameObject gameObject,bool value)
+        public static void SetActiveSelf(this GameObject gameObject, bool value)
         {
-            if (gameObject == null || gameObject.activeSelf == value)
+            if (gameObject is null || gameObject.activeSelf == value)
             {
                 return;
             }
@@ -22,7 +22,7 @@ namespace GameFrameWork
 
         public static void SetActiveSelf(this UnityEngine.Component component, bool value)
         {
-            if (component == null)
+            if (component is null)
             {
                 return;
             }
@@ -39,23 +39,23 @@ namespace GameFrameWork
         {
             return GetOrAddComponent<T>(component.gameObject);
         }
-        
+
         public static T GetOrAddComponent<T>(this GameObject go) where T : Component
         {
             if (go is null)
             {
                 return null;
             }
-            
-            if (!go.TryGetComponent<T>(out T result))
+
+            if (!go.TryGetComponent(out T result))
             {
                 result = go.AddComponent<T>();
             }
 
             return result;
         }
-        
-        public static T GetOrAddComponentInChildren<T>(this GameObject go,string path) where T : Component
+
+        public static T GetOrAddComponentInChildren<T>(this GameObject go, string path) where T : Component
         {
             T result = go.GetComponentInChildren<T>(true);
 
@@ -63,7 +63,7 @@ namespace GameFrameWork
             {
                 Transform child = go.transform.Find(path);
 
-                if(child != null)
+                if (child != null)
                 {
                     result = child.gameObject.AddComponent<T>();
                 }
@@ -93,23 +93,23 @@ namespace GameFrameWork
 
         public static T FindComponentInParents<T>(this GameObject gameObject) where T : Component
         {
-            if (gameObject == null)
+            if (gameObject is null)
             {
                 return null;
             }
 
-            if (!gameObject.TryGetComponent<T>(out T comp))
+            if (!gameObject.TryGetComponent(out T component))
             {
-                Transform t = gameObject.transform.parent;
+                Transform parent = gameObject.transform.parent;
 
-                while (t != null && comp == null)
+                while (parent is not null && component is null)
                 {
-                    comp = t.gameObject.GetComponent<T>();
-                    t = t.parent;
+                    component = parent.gameObject.GetComponent<T>();
+                    parent = parent.parent;
                 }
             }
 
-            return comp;
+            return component;
         }
 
         public static int ToInt(this string value)
@@ -172,14 +172,14 @@ namespace GameFrameWork
             return false;
         }
 
-        public static int[] ToIntArray(this string value, char partten = ',')
+        public static int[] ToIntArray(this string value, char separator = ',')
         {
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            string[] valueStr = value.Split(partten);
+            string[] valueStr = value.Split(separator);
             int[] result = new int[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
@@ -198,14 +198,14 @@ namespace GameFrameWork
             return result;
         }
 
-        public static long[] ToLongArray(this string value, char partten = ',')
+        public static long[] ToLongArray(this string value, char separator = ',')
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            string[] valueStr = value.Split(partten);
+            string[] valueStr = value.Split(separator);
             long[] result = new long[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
@@ -224,14 +224,14 @@ namespace GameFrameWork
             return result;
         }
 
-        public static float[] ToFloatArray(this string value, char partten = ',')
+        public static float[] ToFloatArray(this string value, char separator = ',')
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            string[] valueStr = value.Split(partten);
+            string[] valueStr = value.Split(separator);
             float[] result = new float[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
@@ -250,14 +250,14 @@ namespace GameFrameWork
             return result;
         }
 
-        public static double[] ToDoubleArray(this string value, char partten = ',')
+        public static double[] ToDoubleArray(this string value, char separator = ',')
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            string[] valueStr = value.Split(partten);
+            string[] valueStr = value.Split(separator);
             double[] result = new double[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
@@ -276,14 +276,14 @@ namespace GameFrameWork
             return result;
         }
 
-        public static bool[] ToBoolArray(this string value, char partten = ',')
+        public static bool[] ToBoolArray(this string value, char separator = ',')
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            string[] valueStr = value.Split(partten);
+            string[] valueStr = value.Split(separator);
             bool[] result = new bool[valueStr.Length];
 
             for (int i = 0; i <= valueStr.Length / 2; i++)
@@ -302,24 +302,24 @@ namespace GameFrameWork
             return result;
         }
 
-        public static string[] ToStringArray(this string value, char partten = ',')
+        public static string[] ToStringArray(this string value, char separator = ',')
         {
             if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            return value.Split(partten);
+            return value.Split(separator);
         }
 
-        public static Vector2 ToVector2(this string value, char partten = ',')
+        public static Vector2 ToVector2(this string value, char separator = ',')
         {
             float x = 0;
             float y = 0;
 
             if (!string.IsNullOrEmpty(value))
             {
-                string[] valueStr = value.Split(partten);
+                string[] valueStr = value.Split(separator);
 
                 if (valueStr.Length == 2)
                 {
@@ -331,7 +331,7 @@ namespace GameFrameWork
             return new Vector2(x, y);
         }
 
-        public static Vector3 ToVector3(this string value, char partten = ',')
+        public static Vector3 ToVector3(this string value, char separator = ',')
         {
             float x = 0;
             float y = 0;
@@ -339,7 +339,7 @@ namespace GameFrameWork
 
             if (!string.IsNullOrEmpty(value))
             {
-                string[] valueStr = value.Split(partten);
+                string[] valueStr = value.Split(separator);
 
                 if (valueStr.Length == 3)
                 {
@@ -348,6 +348,7 @@ namespace GameFrameWork
                     z = float.Parse(valueStr[2]);
                 }
             }
+
             return new Vector3(x, y, z);
         }
 
@@ -356,32 +357,25 @@ namespace GameFrameWork
             LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
         }
 
-        public static Vector2 GetContentSizeFitterPreferredSize(this ContentSizeFitter contentSizeFitter)
+        public static Vector2 GetContentSizeFitterSize(this ContentSizeFitter contentSizeFitter)
         {
             RectTransform rectTransform = contentSizeFitter.GetComponent<RectTransform>();
             rectTransform.ForceRebuildLayoutImmediate();
 
-            float horizontalSize;
-            float verticalSize;
+            float horizontalSize = contentSizeFitter.horizontalFit switch
+            {
+                ContentSizeFitter.FitMode.MinSize => LayoutUtility.GetMinSize(rectTransform, 0),
+                ContentSizeFitter.FitMode.PreferredSize => LayoutUtility.GetPreferredSize(rectTransform, 0),
+                _ => 0,
+            };
 
-            if (contentSizeFitter.horizontalFit == ContentSizeFitter.FitMode.MinSize)
+            float verticalSize = contentSizeFitter.verticalFit switch
             {
-                horizontalSize = LayoutUtility.GetMinSize(rectTransform, 0);
-            }
-            else
-            {
-                horizontalSize = LayoutUtility.GetPreferredSize(rectTransform, 0);
-            }
-
-            if (contentSizeFitter.verticalFit == ContentSizeFitter.FitMode.MinSize)
-            {
-                verticalSize = LayoutUtility.GetMinSize(rectTransform, 1);
-            }
-            else
-            {
-                verticalSize = LayoutUtility.GetPreferredSize(rectTransform, 1);
-            }
-
+                ContentSizeFitter.FitMode.MinSize => LayoutUtility.GetMinSize(rectTransform, 1),
+                ContentSizeFitter.FitMode.PreferredSize => LayoutUtility.GetPreferredSize(rectTransform, 1),
+                _ => 0,
+            };
+            
             return new Vector2(horizontalSize, verticalSize);
         }
     }

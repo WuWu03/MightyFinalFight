@@ -14,12 +14,7 @@ public class RoleHurt : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(false);
-        m_Owner.SetCanBeHit(true);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetCanMove(false);
-        m_Owner.SetCanSkill(false);
-        m_Owner.SetCanBeCatch(false);
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.PlayAnimation(m_HurtAnim, 1, m_Owner.isBeCatch ? 1f : m_Owner.objectType == ObjectType.Player ? 0.5f : 1f);
         m_Owner.SetPos(m_Owner.pos, m_Owner.posZ);
     }

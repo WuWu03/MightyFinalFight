@@ -223,7 +223,7 @@ namespace SkillNew
             }
         }
 
-        public static void DrawSKilEventlGUI(SkillEditorConfigData.SkillEvent skillEvent)
+        public static void DrawSKilEventGUI(SkillEditorConfigData.SkillEvent skillEvent)
         {
             if (m_DicSkillEventGUI.TryGetValue(skillEvent.skillEventType, out SkillEventGUI skillGUI))
             {

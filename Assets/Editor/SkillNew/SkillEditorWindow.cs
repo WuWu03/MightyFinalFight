@@ -14,7 +14,6 @@ namespace SkillNew
             m_SkillGUIs = new SkillBaseGUI[3];
             m_SkillGUIs[0] = new SkillConfigGUI(this);
             m_SkillGUIs[1] = new SkillPrevConditionGUI(this);
-
             m_SkillGUIs[0].UpdateData();
             m_SkillGUIs[1].UpdateData();
             UpdateData();
@@ -102,7 +101,7 @@ namespace SkillNew
                         () => { m_CurrType = EditorGUILayout.TextField("类别", m_CurrType); },
                         () =>
                         {
-                            SkillEditorHelper.CurrConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                            SkillEditorHelper.CurrConfigData.skillName = StringUtil.Append(m_CurrType, "/", m_CurrName);
                             SkillEditorHelper.SetShowNames();
                             m_CurrType = SkillEditorHelper.currShowType;
                         }, 20);
@@ -114,7 +113,7 @@ namespace SkillNew
                         () => { m_CurrName = EditorGUILayout.TextField("名称", m_CurrName); },
                         () =>
                         {
-                            SkillEditorHelper.CurrConfigData.skillName = PathUtil.FormatPath(m_CurrType, m_CurrName);
+                            SkillEditorHelper.CurrConfigData.skillName = StringUtil.Append(m_CurrType, "/", m_CurrName);
                             SkillEditorHelper.SetShowNames();
                             m_CurrName = SkillEditorHelper.currShowName;
                         }, 20);
@@ -141,7 +140,6 @@ namespace SkillNew
                 }
 
                 EditorGUILayout.EndHorizontal();
-
                 m_SkillGUIs[m_CurrPage].Draw();
             }
 

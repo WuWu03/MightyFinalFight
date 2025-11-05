@@ -15,11 +15,13 @@ public class RoleSkill : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(m_Owner.isAttack);
-        m_Owner.SetCanMove(true);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetCanBeCatch(false);
-        m_Owner.SetCanSkill(false);
+        RoleStateParam roleStateParam = FsmStateMap.GetParam<RoleStateParam>(this.GetType());
+        if (roleStateParam != null)
+        {
+            roleStateParam.canAttack = m_Owner.isAttack;
+            roleStateParam.canSkill = m_Owner.isAttack;
+        }
+        m_Owner.SetStateParam(roleStateParam);
     }
 
     protected override void OnFixedUpdate(Fsm fsm, float fixedDeltaTime, float fixedUnscaledDeltaTime)

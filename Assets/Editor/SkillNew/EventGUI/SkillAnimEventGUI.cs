@@ -1,10 +1,13 @@
 using UnityEditor;
+using UnityEngine;
 using static SkillEditorConfigData.SkillEvent;
 
 namespace SkillNew
 {
     public class SkillAnimEventGUI : SkillEventGUI
     {
+        private AnimEventInfo m_CurrAnimEventInfo;
+        
         public SkillAnimEventGUI(EditorWindow window) : base(window)
         {
             m_CurrAnimEventInfo = new AnimEventInfo();
@@ -12,40 +15,35 @@ namespace SkillNew
 
         protected override void OnUpdateSkillEvent()
         {
-            if (m_CurrEvent.animEventInfo == null)
-            {
-                m_CurrEvent.animEventInfo = new AnimEventInfo();
-            }
-
-            m_CurrAnimEventInfo.animName = m_CurrEvent.animEventInfo.animName;
-            m_CurrAnimEventInfo.animSpeed = m_CurrEvent.animEventInfo.animSpeed;
-            m_CurrAnimEventInfo.animPlayTimes = m_CurrEvent.animEventInfo.animPlayTimes;
+            currEvent.animEventInfo ??= new();
+            m_CurrAnimEventInfo ??= new();
+            m_CurrAnimEventInfo.animName = currEvent.animEventInfo.animName;
+            m_CurrAnimEventInfo.animSpeed = currEvent.animEventInfo.animSpeed;
+            m_CurrAnimEventInfo.animPlayTimes = currEvent.animEventInfo.animPlayTimes;
         }
 
         protected override void OnGUI()
         {
             EditorGUILayout.BeginVertical();
 
-            DrawField(() => { return m_CurrAnimEventInfo.animName != m_CurrEvent.animEventInfo.animName; },
+            DrawField(() => { return m_CurrAnimEventInfo.animName != currEvent.animEventInfo.animName; },
                 () => { m_CurrAnimEventInfo.animName = EditorGUILayout.TextField("动画名称", m_CurrAnimEventInfo.animName); },
-                () => { m_CurrEvent.animEventInfo.animName = m_CurrAnimEventInfo.animName; });
+                () => { currEvent.animEventInfo.animName = m_CurrAnimEventInfo.animName; });
 
-            DrawField(() => { return m_CurrAnimEventInfo.animSpeed != m_CurrEvent.animEventInfo.animSpeed; },
+            DrawField(() => { return !Mathf.Approximately(m_CurrAnimEventInfo.animSpeed, currEvent.animEventInfo.animSpeed); },
                 () => { m_CurrAnimEventInfo.animSpeed = EditorGUILayout.FloatField("动画速度", m_CurrAnimEventInfo.animSpeed); },
-                () => { m_CurrEvent.animEventInfo.animSpeed = m_CurrAnimEventInfo.animSpeed; });
+                () => { currEvent.animEventInfo.animSpeed = m_CurrAnimEventInfo.animSpeed; });
 
-            DrawField(() => { return m_CurrAnimEventInfo.animPlayTimes != m_CurrEvent.animEventInfo.animPlayTimes; },
+            DrawField(() => { return !Mathf.Approximately(m_CurrAnimEventInfo.animPlayTimes, currEvent.animEventInfo.animPlayTimes); },
                 () => { m_CurrAnimEventInfo.animPlayTimes = EditorGUILayout.FloatField("播放次数", m_CurrAnimEventInfo.animPlayTimes); },
-                () => { m_CurrEvent.animEventInfo.animPlayTimes = m_CurrAnimEventInfo.animPlayTimes; });
+                () => { currEvent.animEventInfo.animPlayTimes = m_CurrAnimEventInfo.animPlayTimes; });
 
             EditorGUILayout.EndVertical();
         }
 
         protected override void OnResetEvent()
         {
-            m_CurrEvent.animEventInfo = null;
+            m_CurrAnimEventInfo = null;
         }
-
-        private AnimEventInfo m_CurrAnimEventInfo = null;
     }
 }

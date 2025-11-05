@@ -31,7 +31,7 @@ public interface ICanBeHit
     }
 
     bool IsHurtWillDie(int attackValue);
-    void OnHurtMsg(HurtStateArg arg);
+    void HurtState(HurtStateArg arg);
     void SetIsBeCatch(bool value);
     void SetIsBeThrow(bool value);
 }

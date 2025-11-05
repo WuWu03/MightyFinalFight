@@ -164,7 +164,7 @@ public static class SkillUtil
 
         if (hurtArg != null)
         {
-            hit.OnHurtMsg(hurtArg);
+            hit.HurtState(hurtArg);
             result = !hit.IsHurtWillDie(hurtArg.attackValue);
         }
 

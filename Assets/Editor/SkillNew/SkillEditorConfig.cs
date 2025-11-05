@@ -1,6 +1,5 @@
 using GameFrameWork.Serialize;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -54,8 +53,8 @@ public class SkillEditorConfigData : BaseScriptableConfigData
         Float,//浮空
         Catch,//抓人
         GroundNotCatch,//着陆且没有抓人
-        HPMoreThan,//hp大于
-        HPLessThan,//hp小于
+        HpMoreThan,//hp大于
+        HpLessThan,//hp小于
         TimeElapsed,//从释放技能开始时间流逝x秒
     }
 
@@ -79,7 +78,7 @@ public class SkillEditorConfigData : BaseScriptableConfigData
             public float animPlayTimes;
         }
 
-        public AnimEventInfo animEventInfo = null;
+        public AnimEventInfo animEventInfo;
 
         [Serializable]//声音事件
         public class AudioEventInfo
@@ -90,7 +89,7 @@ public class SkillEditorConfigData : BaseScriptableConfigData
             public float audioPlayVolume;
         }
 
-        public AudioEventInfo audioEventInfo = null;
+        public AudioEventInfo audioEventInfo;
 
         [Serializable]//位移事件
         public class TweenInfo
@@ -109,19 +108,31 @@ public class SkillEditorConfigData : BaseScriptableConfigData
             public bool isPositionBasedOnSelf;//位置变化是否在自身基础上变化
             public bool isRotationBasedOnSelf;//旋转变化是否在自身基础上变化
             public bool isPositionAnim;//动画补间
-            public TweenInfo positionTweenInfo = new TweenInfo();
+            public TweenInfo positionTweenInfo = new();
             public bool isRotationAnim;//动画补间
-            public TweenInfo rotationTweenInfo = new TweenInfo();
+            public TweenInfo rotationTweenInfo = new();
             public DG.Tweening.RotateMode rotateMode;
             public bool isScaleAnim;//动画补间
-            public TweenInfo scaleTweenInfo = new TweenInfo();
+            public TweenInfo scaleTweenInfo = new();
         }
 
-        public TransformEventInfo targetTransformEventInfo = null;
-        public TransformEventInfo selfTransformEventInfo = null;
+        private TransformEventInfo m_TargetTransformInfo;
+        public TransformEventInfo targetTransformEventInfo
+        {
+            get
+            {
+                return m_TargetTransformInfo;
+            }
+            set
+            {
+                Debug.Log(value);
+                m_TargetTransformInfo = value;
+            }
+        }
+        public TransformEventInfo selfTransformEventInfo;
 
-        [Serializable]
-        public class PhysicsEventInfo
+        [Serializable] //受力参数
+        public class ForceInfo
         {
             public Vector2 force;
             public Vector2 velocity;
@@ -129,12 +140,20 @@ public class SkillEditorConfigData : BaseScriptableConfigData
             public float gravity;
             public float distanceLimit;
         }
+        
+        [Serializable]//物理事件
+        public class PhysicsEventInfo
+        {
+            public ForceInfo groundForceInfo = new();
+            public ForceInfo floatForceInfo = new();
+            public ForceInfo lieGroundForceInfo = new();
+        }
 
-        public PhysicsEventInfo targetPhysicsEventInfo = null;
-        public PhysicsEventInfo selfPhysicsEventInfo = null;
+        public PhysicsEventInfo targetPhysicsEventInfo;
+        public PhysicsEventInfo selfPhysicsEventInfo;
 
-        //子弹事件
-        [Serializable]
+        
+        [Serializable]//子弹事件
         public class BulletEventInfo
         {
             public string bulletName;
@@ -158,17 +177,16 @@ public class SkillEditorConfigData : BaseScriptableConfigData
         [Serializable]//伤害事件
         public class HurtEventInfo
         {
-            public bool isSmoon;//是否击昏
+            public bool isSwoon;//是否击昏
             public bool isOnGroundHurt;//是否落地才触发伤害
             public bool isOnGroundEffect;//落地才触发效果
             public bool canBeDefense;//能否被防御
             public bool hitFinish;//击中任意敌人就结束事件
         }
 
-        [SerializeField] public HurtEventInfo hurtEventInfo = null;
-
-        //特效事件
-        [Serializable]
+        [SerializeField] public HurtEventInfo hurtEventInfo;
+        
+        [Serializable]//特效事件
         public class EffectEventInfo
         {
             public string assetPath;//资源路径
@@ -177,9 +195,9 @@ public class SkillEditorConfigData : BaseScriptableConfigData
             public Vector3 scale;//缩放
         }
 
-        public EffectEventInfo effectEventInfo = null;
+        public EffectEventInfo effectEventInfo;
         
-        [Serializable]
+        [Serializable]//延时事件
         public class WaitEventInfo
         {
             public SkillConditionType conditionType;
@@ -213,8 +231,8 @@ public class SkillEditorConfigData : BaseScriptableConfigData
     public string skillName; 
     public int skillFrameCount;
     public SkillDeployerType deployerType;//释放器类型
-    public SerializableDictionary<int, SkillSelector> dicSkillSelectors = null;
-    public SerializableDictionary<int, List<SkillEvent>> dicSkillEvents = null;
+    public SerializableDictionary<int, SkillSelector> dicSkillSelectors;
+    public SerializableDictionary<int, SerializableList<SkillEvent>> dicSkillEvents;
     public SkillKey skillKey;
     public SkillPrevCondition[] skillPrevConditions;//释放技能的前置条件
 }

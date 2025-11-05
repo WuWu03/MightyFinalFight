@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
+using GameFrameWork;
+using GameFrameWork.Event;
 
-public abstract class BaseFsmStateParm
-{
-}
-
-public class RoleStateParam : BaseFsmStateParm
+public class RoleStateParam: GameFrameWorkEventArg
 {
     public bool canAttack { get; set; }
     public bool canBeHit { get; set; }
@@ -13,11 +11,35 @@ public class RoleStateParam : BaseFsmStateParm
     public bool canJump { get; set; }
     public bool canSkill { get; set; }
     public bool canBeCatch { get; set; }
+    public override void Clear()
+    {
+        this.canAttack = false;
+        this.canBeHit = false;
+        this.canMove = false;
+        this.canJump = false;
+        this.canSkill = false;
+        this.canBeCatch = false;
+    }
+
+    public virtual void CopyTo(RoleStateParam roleStateParam)
+    {
+        if (roleStateParam == null)
+        {
+            return;
+        }
+
+        roleStateParam.canAttack = this.canAttack;
+        roleStateParam.canBeHit = this.canBeHit;
+        roleStateParam.canMove = this.canMove;
+        roleStateParam.canJump = this.canJump;
+        roleStateParam.canSkill = this.canSkill;
+        roleStateParam.canBeCatch = this.canBeCatch;
+    }
 }
 
 public static class FsmStateMap
 {
-    private static Dictionary<Type, BaseFsmStateParm> s_StateMap = new()
+    private static Dictionary<Type, RoleStateParam> s_StateMap = new()
     {
         [typeof(RoleAwaken)] = new RoleStateParam()
         {
@@ -127,20 +149,20 @@ public static class FsmStateMap
             canSkill = false,
             canBeCatch = false,
         },
-        [typeof(HeroPickUp)] = new RoleStateParam()
+        [typeof(HeroRebirth)] = new RoleStateParam()
         {
-            canAttack = true,
+            canAttack = false,
             canBeHit = false,
-            canJump = true,
-            canMove = true,
-            canSkill = true,
+            canJump = false,
+            canMove = false,
+            canSkill = false,
             canBeCatch = false,
         },
     };
 
-    public static T GetParam<T>(Type stateType) where T : BaseFsmStateParm, new()
+    public static T GetParam<T>(Type stateType) where T : RoleStateParam, new()
     {
-        if (s_StateMap.TryGetValue(stateType, out BaseFsmStateParm baseFsmStateParm))
+        if (s_StateMap.TryGetValue(stateType, out RoleStateParam baseFsmStateParm))
         {
             if (baseFsmStateParm is T result)
             {

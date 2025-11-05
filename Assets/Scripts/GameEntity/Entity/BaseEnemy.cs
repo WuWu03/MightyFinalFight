@@ -132,7 +132,7 @@ public class BaseEnemy : BaseRole
         }
     }
 
-    public override void OnHurtMsg(HurtStateArg arg)
+    public override void HurtState(HurtStateArg arg)
     {
         if (arg.isBoss)
         {
@@ -162,7 +162,7 @@ public class BaseEnemy : BaseRole
             m_SkillExp = arg.skillExp;
         }
 
-        base.OnHurtMsg(arg);
+        base.HurtState(arg);
     }
 
     protected override void OnGroundHurtMsg(HurtStateArg arg)
@@ -221,7 +221,7 @@ public class BaseEnemy : BaseRole
         hurtArg.hurtSound = string.Empty;
         hurtArg.hurtAnim = string.Empty;
         hurtArg.isGroundHurt = true;
-        OnHurtMsg(hurtArg);
+        HurtState(hurtArg);
 
         HurtStateArg targetHurt = HurtStateArg.Create();
         targetHurt.skillExp = 2;
@@ -237,7 +237,7 @@ public class BaseEnemy : BaseRole
         targetHurt.hurtSound = string.Empty;
         targetHurt.hurtAnim = string.Empty;
         targetHurt.isGroundHurt = true;
-        throwTarget.OnHurtMsg(targetHurt);
+        throwTarget.HurtState(targetHurt);
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnHit02));
     }
 }

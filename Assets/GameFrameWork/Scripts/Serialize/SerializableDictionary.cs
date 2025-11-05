@@ -8,31 +8,30 @@ namespace GameFrameWork.Serialize
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         [SerializeField]
-        private List<TKey> keys = new();
+        private List<TKey> m_Keys = new();
 
         [SerializeField]
-        private List<TValue> values = new();
-
-        // 序列化回调，用于在序列化时填充keys和values
+        private List<TValue> m_Values = new();
+        
         public void OnBeforeSerialize()
         {
-            keys.Clear();
-            values.Clear();
+            m_Keys.Clear();
+            m_Values.Clear();
+            
             foreach (KeyValuePair<TKey, TValue> pair in this)
             {
-                keys.Add(pair.Key);
-                values.Add(pair.Value);
+                m_Keys.Add(pair.Key);
+                m_Values.Add(pair.Value);
             }
         }
-
-        // 反序列化回调，用于在反序列化时重建字典
+        
         public void OnAfterDeserialize()
         {
             this.Clear();
 
-            for (int i = 0; i < Mathf.Min(keys.Count, values.Count); i++)
+            for (int i = 0; i < Mathf.Min(m_Keys.Count, m_Values.Count); i++)
             {
-                this[keys[i]] = values[i];
+                this[m_Keys[i]] = m_Values[i];
             }
         }
     }

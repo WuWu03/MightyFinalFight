@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using GameFrameWork.Utils;
+using GameFrameWork.Serialize;
 using UnityEditor;
 using UnityEngine;
 using static SkillEditorConfigData;
@@ -9,11 +9,20 @@ namespace SkillNew
 {
     public class SkillConfigGUI : SkillBaseGUI
     {
+        private SerializableList<SkillEvent> m_SkillEvents;
+        private readonly List<SkillEventType> m_SkillEventTypes;
+        private readonly List<bool> m_SkillEventContinuous;
+        private readonly List<int> m_ListSkillEventNextSkill;
+        private readonly List<GameFrameWork.Input.KeyType> m_ListKey;
+        private int m_SkillFrameCount;
+        private int m_CurrFrame;
+        private Vector2 m_ScrollPos = Vector2.zero;
+        
         public SkillConfigGUI(EditorWindow window) : base(window)
         {
             m_ListKey = new List<GameFrameWork.Input.KeyType>();
             m_SkillEventTypes = new List<SkillEventType>();
-            m_SkillEventContinuouses = new List<bool>();
+            m_SkillEventContinuous = new List<bool>();
             m_ListSkillEventNextSkill = new List<int>();
         }
 
@@ -26,32 +35,24 @@ namespace SkillNew
 
             m_SkillFrameCount = SkillEditorHelper.CurrConfigData.skillFrameCount;
             m_CurrFrame = Mathf.Min(1, m_SkillFrameCount);
-
             m_SkillEvents = null;
 
             if (m_CurrFrame > 0)
             {
-                if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
-                {
-                    m_SkillEvents = list.ToList();
-                }
-                else
-                {
-                    m_SkillEvents = null;
-                }
+                m_SkillEvents = SkillEditorHelper.CurrConfigData.dicSkillEvents.GetValueOrDefault(m_CurrFrame);
 
-                if (m_SkillEvents != null && m_SkillEvents.Count > 0)
+                if (m_SkillEvents is { Count: > 0 })
                 {
                     m_SkillEventTypes.Clear();
-                    m_SkillEventContinuouses.Clear();
+                    m_SkillEventContinuous.Clear();
                     m_ListSkillEventNextSkill.Clear();
 
-                    for (int i = 0; i < m_SkillEvents.Count; i++)
+                    foreach (var skillEvent in m_SkillEvents)
                     {
-                        m_SkillEventTypes.Add(m_SkillEvents[i].skillEventType);
-                        m_SkillEventContinuouses.Add(m_SkillEvents[i].continuous);
-                        m_ListSkillEventNextSkill.Add(m_SkillEvents[i].nextSkill);
-                        SkillEditorHelper.UpdateSKilEventGUI(m_SkillEvents[i]);
+                        m_SkillEventTypes.Add(skillEvent.skillEventType);
+                        m_SkillEventContinuous.Add(skillEvent.continuous);
+                        m_ListSkillEventNextSkill.Add(skillEvent.nextSkill);
+                        SkillEditorHelper.UpdateSKilEventGUI(skillEvent);
                     }
                 }
             }
@@ -83,15 +84,8 @@ namespace SkillNew
                             SkillEditorHelper.CurrConfigData.dicSkillEvents.Remove(delete);
                         }
 
-                        if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
-                        {
-                            m_SkillEvents = list.ToList();
-                        }
-                        else
-                        {
-                            m_SkillEvents = null;
-                        }
-                    }, 20);
+                        m_SkillEvents = SkillEditorHelper.CurrConfigData.dicSkillEvents.GetValueOrDefault(m_CurrFrame);
+                    });
             });
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
@@ -99,20 +93,13 @@ namespace SkillNew
                 int frameIndex = EditorGUILayout.IntSlider("当前帧", m_CurrFrame, Mathf.Min(1, SkillEditorHelper.CurrConfigData.skillFrameCount), SkillEditorHelper.CurrConfigData.skillFrameCount);
                 if (frameIndex != m_CurrFrame)
                 {
-                    if (SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(frameIndex, out var list))
-                    {
-                        m_SkillEvents = list.ToList();
-                    }
-                    else
-                    {
-                        m_SkillEvents = null;
-                    }
+                    m_SkillEvents = SkillEditorHelper.CurrConfigData.dicSkillEvents.GetValueOrDefault(frameIndex);
 
-                    if (m_SkillEvents != null)
+                    if (m_SkillEvents is { Count: > 0 })
                     {
-                        for (int i = 0; i < m_SkillEvents.Count; i++)
+                        foreach (var skillEvent in m_SkillEvents)
                         {
-                            SkillEditorHelper.UpdateSKilEventGUI(m_SkillEvents[i]);
+                            SkillEditorHelper.UpdateSKilEventGUI(skillEvent);
                         }
                     }
 
@@ -133,39 +120,40 @@ namespace SkillNew
 
                 for (int i = 0; i < m_SkillEvents.Count; i++)
                 {
+                    int currentIndex = i;
                     GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
                     {
                         EditorGUILayout.BeginVertical();
 
                         EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField((i + 1).ToString());
+                        EditorGUILayout.LabelField((currentIndex + 1).ToString());
                         if (GUILayout.Button("x", GUILayout.Width(20)))
                         {
-                            if (UnityEditor.EditorUtility.DisplayDialog("提示", "确定删除该事件？", "确定", "取消"))
+                            if (EditorUtility.DisplayDialog("提示", "确定删除该事件？", "确定", "取消"))
                             {
-                                removeIndex = i;
+                                removeIndex = currentIndex;
                             }
                         }
                         EditorGUILayout.EndHorizontal();
 
-                        DrawField(() => { return m_SkillEventTypes[i] != m_SkillEvents[i].skillEventType; },
-                            () => { m_SkillEventTypes[i] = (SkillEventType)EditorGUILayout.EnumPopup("事件类型", m_SkillEventTypes[i]); },
+                        DrawField(() => { return m_SkillEventTypes[currentIndex] != m_SkillEvents[currentIndex].skillEventType; },
+                            () => { m_SkillEventTypes[currentIndex] = (SkillEventType)EditorGUILayout.EnumPopup("事件类型", m_SkillEventTypes[currentIndex]); },
                             () =>
                             {
-                                if (m_SkillEventTypes[i] != m_SkillEvents[i].skillEventType)
+                                if (m_SkillEventTypes[currentIndex] != m_SkillEvents[currentIndex].skillEventType)
                                 {
                                     bool hasSameEvent = false;
 
-                                    for (int j = 0; j < m_SkillEvents.Count; j++)
+                                    foreach (var tempSkillEvent in m_SkillEvents)
                                     {
-                                        if (m_SkillEvents[j] == m_SkillEvents[i])
+                                        if (tempSkillEvent == m_SkillEvents[currentIndex])
                                         {
                                             continue;
                                         }
 
-                                        if (m_SkillEvents[j].skillEventType != SkillEventType.None &&
-                                            m_SkillEvents[i].skillEventType != SkillEventType.None &&
-                                            m_SkillEvents[j].skillEventType == m_SkillEvents[i].skillEventType)
+                                        if (tempSkillEvent.skillEventType != SkillEventType.None && 
+                                            m_SkillEvents[currentIndex].skillEventType != SkillEventType.None &&
+                                            tempSkillEvent.skillEventType == m_SkillEvents[currentIndex].skillEventType)
                                         {
                                             hasSameEvent = true;
                                             break;
@@ -178,21 +166,21 @@ namespace SkillNew
                                     }
                                     else
                                     {
-                                        m_SkillEvents[i].skillEventType = m_SkillEventTypes[i];
-                                        SkillEditorHelper.UpdateSKilEventGUI(m_SkillEvents[i]);
+                                        m_SkillEvents[currentIndex].skillEventType = m_SkillEventTypes[currentIndex];
+                                        SkillEditorHelper.UpdateSKilEventGUI(m_SkillEvents[currentIndex]);
                                         m_EditorWindow.ShowNotification(new GUIContent("更改成功"));
                                     }
                                 }
                             }, 20, false);
 
-                        SkillEditorHelper.DrawSKilEventlGUI(m_SkillEvents[i]);
+                        SkillEditorHelper.DrawSKilEventGUI(m_SkillEvents[currentIndex]);
 
-                        DrawField(() => { return m_SkillEventContinuouses[i] != m_SkillEvents[i].continuous; },
-                            () => { m_SkillEventContinuouses[i] = EditorGUILayout.Toggle("持续检测", m_SkillEventContinuouses[i]); },
+                        DrawField(() => { return m_SkillEventContinuous[currentIndex] != m_SkillEvents[currentIndex].continuous; },
+                            () => { m_SkillEventContinuous[currentIndex] = EditorGUILayout.Toggle("持续检测", m_SkillEventContinuous[currentIndex]); },
                             () => 
                             {
-                                m_SkillEvents[i].continuous = m_SkillEventContinuouses[i];
-                                m_SkillEventContinuouses[i] = m_SkillEventContinuouses[i];
+                                m_SkillEvents[currentIndex].continuous = m_SkillEventContinuous[currentIndex];
+                                m_SkillEventContinuous[currentIndex] = m_SkillEventContinuous[currentIndex];
                             }, 20);
 
                         EditorGUILayout.EndVertical();
@@ -203,7 +191,7 @@ namespace SkillNew
                 {
                     m_SkillEvents.RemoveAt(removeIndex);
                     m_SkillEventTypes.RemoveAt(removeIndex);
-                    m_SkillEventContinuouses.RemoveAt(removeIndex);
+                    m_SkillEventContinuous.RemoveAt(removeIndex);
 
                     if (m_SkillEvents.Count < 1)
                     {
@@ -220,13 +208,13 @@ namespace SkillNew
                     if (!SkillEditorHelper.CurrConfigData.dicSkillEvents.TryGetValue(m_CurrFrame, out var list))
                     {
                         list = new();
-                        m_SkillEvents = list.ToList();
                         SkillEditorHelper.CurrConfigData.dicSkillEvents.Add(m_CurrFrame, list);
                     }
-
-                    m_SkillEvents.Add(new SkillEditorConfigData.SkillEvent());
+                    
+                    m_SkillEvents = list;
+                    m_SkillEvents.Add(new SkillEvent());
                     m_SkillEventTypes.Add(SkillEventType.None);
-                    m_SkillEventContinuouses.Add(false);
+                    m_SkillEventContinuous.Add(false);
                 }
                 else
                 {
@@ -235,7 +223,6 @@ namespace SkillNew
             }
 
             EditorGUILayout.EndVertical();
-
             int removeKeyIndex = -1;
 
             GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
@@ -278,14 +265,5 @@ namespace SkillNew
 
             EditorGUILayout.EndScrollView();
         }
-
-        private List<SkillEvent> m_SkillEvents = null;
-        private List<SkillEventType> m_SkillEventTypes = null;
-        private List<bool> m_SkillEventContinuouses = null;
-        private List<int> m_ListSkillEventNextSkill = null;
-        private int m_SkillFrameCount = 0;
-        private int m_CurrFrame = 0;
-        private List<GameFrameWork.Input.KeyType> m_ListKey = null;
-        private Vector2 m_ScrollPos = Vector2.zero;
     }
 }

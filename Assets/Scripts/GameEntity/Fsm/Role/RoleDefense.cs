@@ -10,11 +10,7 @@ public class RoleDefense : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanMove(false);
-        m_Owner.SetCanAttack(false);
-        m_Owner.SetCanBeHit(true);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetCanSkill(false);
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Timer = -1f;
         m_Owner.ResetRigidbody();
         m_Owner.PlayAnimation(AnimName.Defense);

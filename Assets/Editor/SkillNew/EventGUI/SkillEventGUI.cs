@@ -3,17 +3,17 @@ namespace SkillNew
 {
     public abstract class SkillEventGUI : SkillBaseGUI
     {
+        private SkillEditorConfigData.SkillEvent m_CurrEvent;
+        public SkillEventGUI(EditorWindow window) : base(window)
+        {
+        }
+        
         public SkillEditorConfigData.SkillEvent currEvent
         {
             get
             {
                 return m_CurrEvent;
             }
-        }
-
-        public SkillEventGUI(EditorWindow window) : base(window)
-        {
-
         }
 
         public override void Draw()
@@ -41,11 +41,8 @@ namespace SkillNew
 
         protected virtual void OnResetEvent()
         {
-
         }
 
         protected abstract void OnUpdateSkillEvent();
-
-        protected SkillEditorConfigData.SkillEvent m_CurrEvent = null;
     }
 }

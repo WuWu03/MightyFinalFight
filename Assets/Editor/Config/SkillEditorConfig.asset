@@ -14,14 +14,114 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   listDatas:
   - id: 0
-    skillName: Cody/CodySkill1/
+    skillName: Cody/CodySkill1
     skillFrameCount: 5
     deployerType: 0
     dicSkillSelectors:
-      keys: 
-      values: []
+      m_Keys: 
+      m_Values: []
     dicSkillEvents:
-      keys: 
+      m_Keys: 01000000
+      m_Values:
+      - m_Data:
+        - skillEventType: 6
+          animEventInfo:
+            animName: 
+            animSpeed: 0
+            animPlayTimes: 0
+          audioEventInfo:
+            audioClipName: 
+            audioPlaySpeed: 0
+            audioPlayLoop: 0
+            audioPlayVolume: 0
+          selfTransformEventInfo:
+            position: {x: 0, y: 0}
+            rotation: {x: 0, y: 0, z: 0}
+            scale: {x: 0, y: 0, z: 0}
+            isPositionBasedOnSelf: 0
+            isRotationBasedOnSelf: 0
+            isPositionAnim: 0
+            positionTweenInfo:
+              duration: 0
+              delay: 0
+              ease: 0
+            isRotationAnim: 0
+            rotationTweenInfo:
+              duration: 0
+              delay: 0
+              ease: 0
+            rotateMode: 0
+            isScaleAnim: 0
+            scaleTweenInfo:
+              duration: 0
+              delay: 0
+              ease: 0
+          targetPhysicsEventInfo:
+            groundForceInfo:
+              force: {x: 1, y: 2}
+              velocity: {x: 1, y: 0}
+              drag: 1
+              gravity: 1
+              distanceLimit: 0
+            floatForceInfo:
+              force: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              gravity: 0
+              distanceLimit: 0
+            lieGroundForceInfo:
+              force: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              gravity: 0
+              distanceLimit: 0
+          selfPhysicsEventInfo:
+            groundForceInfo:
+              force: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              gravity: 0
+              distanceLimit: 0
+            floatForceInfo:
+              force: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              gravity: 0
+              distanceLimit: 0
+            lieGroundForceInfo:
+              force: {x: 0, y: 0}
+              velocity: {x: 0, y: 0}
+              drag: 0
+              gravity: 0
+              distanceLimit: 0
+          bulletEventInfo:
+            bulletName: 
+            assetPath: 
+            bulletClass: 
+            normalAnim: 
+            hitAnim: 
+            normalAnimSpeed: 0
+            hitAnimSpeed: 0
+            hitRange: 0
+            bulletCount: -1
+            pos: {x: 0, y: 0}
+            velocity: {x: 0, y: 0}
+            drag: 0
+            moveSpeed: 0
+            isPhysicsMove: 0
+          hurtEventInfo:
+            isSwoon: 0
+            isOnGroundHurt: 0
+            isOnGroundEffect: 0
+            canBeDefense: 0
+            hitFinish: 0
+          effectEventInfo:
+            assetPath: 
+            pos: {x: 0, y: 0}
+            rotation: {x: 0, y: 0, z: 0}
+            scale: {x: 0, y: 0, z: 0}
+          continuous: 0
+          nextSkill: 0
     skillKey:
       keys: 
       addTrigger: 0

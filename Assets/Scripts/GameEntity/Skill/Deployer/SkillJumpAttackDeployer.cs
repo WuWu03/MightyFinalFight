@@ -30,7 +30,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.SetIsBeCatch(false);
-        m_Owner.OnAttackMsg(skillStateArg, true);
+        m_Owner.AttackState(skillStateArg, true);
         skillStateArg.Release();
     }
 

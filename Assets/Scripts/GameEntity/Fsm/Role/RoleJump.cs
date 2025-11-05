@@ -15,12 +15,7 @@ public class RoleJump : FsmState
 
     protected override void OnEnter(Fsm fsm)
     {
-        m_Owner.SetCanAttack(true);
-        m_Owner.SetCanBeHit(true);
-        m_Owner.SetCanJump(false);
-        m_Owner.SetCanMove(true);
-        m_Owner.SetCanSkill(true);
-        m_Owner.SetCanBeCatch(false);
+        m_Owner.SetStateParam(FsmStateMap.GetParam<RoleStateParam>(this.GetType()));
         m_Owner.AddForce(m_Dir * m_Owner.entityAttribute.jumpForce.x, m_Owner.entityAttribute.jumpForce.y);
         m_Owner.PlayAnimation(m_Owner.isCatching ? AnimName.Catch : AnimName.JumpUp);
         m_HasAddXForce = m_Dir != 0;

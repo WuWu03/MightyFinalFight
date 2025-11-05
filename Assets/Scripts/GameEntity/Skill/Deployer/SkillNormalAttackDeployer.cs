@@ -23,7 +23,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         skillStateArg.canChangeDir = mSkillData.CanChangeDir;
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
-        m_Owner.OnAttackMsg(skillStateArg);
+        m_Owner.AttackState(skillStateArg);
         skillStateArg.Release();
     }
 

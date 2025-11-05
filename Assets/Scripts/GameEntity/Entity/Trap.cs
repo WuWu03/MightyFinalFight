@@ -45,6 +45,6 @@ public class Trap : BaseBoundObject
         DropTrapStateArg dropTrapArg = DropTrapStateArg.Create();
         dropTrapArg.rebirthPos = rebirthPos;
         dropTrapArg.attackValue = 1;
-        target.OnDropTrapMsg(dropTrapArg);
+        target.DropTrapState(dropTrapArg);
     }
 }

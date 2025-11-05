@@ -1,10 +1,14 @@
 using UnityEditor;
+using UnityEngine;
 using static SkillEditorConfigData.SkillEvent;
 
 namespace SkillNew
 {
     public class SkillTransformEventGUI : SkillEventGUI
     {
+        private TransformEventInfo m_TargetTransformInfo;
+        private TransformEventInfo m_SelfTransformInfo;
+        
         public SkillTransformEventGUI(EditorWindow window) : base(window)
         {
             m_TargetTransformInfo = new TransformEventInfo();
@@ -16,85 +20,65 @@ namespace SkillNew
             TransformEventInfo currTransformEventInfo = null;
             TransformEventInfo transformEventInfo = null;
 
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
+            if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
             {
-                if (m_CurrEvent.targetTransformEventInfo == null)
-                {
-                    m_CurrEvent.targetTransformEventInfo = new TransformEventInfo();
-                }
-
+                currEvent.targetTransformEventInfo ??= new();
+                m_TargetTransformInfo ??= new();
                 currTransformEventInfo = m_TargetTransformInfo;
-                transformEventInfo = m_CurrEvent.targetTransformEventInfo;
+                transformEventInfo = currEvent.targetTransformEventInfo;
             }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
+            else if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
             {
-                if (m_CurrEvent.selfTransformEventInfo == null)
-                {
-                    m_CurrEvent.selfTransformEventInfo = new TransformEventInfo();
-                }
-
+                currEvent.selfTransformEventInfo ??= new TransformEventInfo();
+                m_SelfTransformInfo ??= new();
                 currTransformEventInfo = m_SelfTransformInfo;
-                transformEventInfo = m_CurrEvent.selfTransformEventInfo;
+                transformEventInfo = currEvent.selfTransformEventInfo;
             }
 
-            currTransformEventInfo.position = transformEventInfo.position;
-            currTransformEventInfo.rotation = transformEventInfo.rotation;
-            currTransformEventInfo.scale = transformEventInfo.scale;
-            currTransformEventInfo.isPositionBasedOnSelf = transformEventInfo.isPositionBasedOnSelf;
-            currTransformEventInfo.isRotationBasedOnSelf = transformEventInfo.isRotationBasedOnSelf;
-
-            currTransformEventInfo.isPositionAnim = transformEventInfo.isPositionAnim;
-            currTransformEventInfo.positionTweenInfo.duration = transformEventInfo.positionTweenInfo.duration;
-            currTransformEventInfo.positionTweenInfo.delay = transformEventInfo.positionTweenInfo.delay;
-            currTransformEventInfo.positionTweenInfo.ease = transformEventInfo.positionTweenInfo.ease;
-
-            currTransformEventInfo.isRotationAnim = transformEventInfo.isRotationAnim;
-            currTransformEventInfo.rotationTweenInfo.duration = transformEventInfo.rotationTweenInfo.duration;
-            currTransformEventInfo.rotationTweenInfo.delay = transformEventInfo.rotationTweenInfo.delay;
-            currTransformEventInfo.rotationTweenInfo.ease = transformEventInfo.rotationTweenInfo.ease;
-            currTransformEventInfo.rotateMode = transformEventInfo.rotateMode;
-
-            currTransformEventInfo.isScaleAnim = transformEventInfo.isScaleAnim;
-            currTransformEventInfo.scaleTweenInfo.duration = transformEventInfo.scaleTweenInfo.duration;
-            currTransformEventInfo.scaleTweenInfo.delay = transformEventInfo.scaleTweenInfo.delay;
-            currTransformEventInfo.scaleTweenInfo.ease = transformEventInfo.scaleTweenInfo.ease;
-        }
-
-        protected override void OnResetEvent()
-        {
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
+            if (currTransformEventInfo != null)
             {
-                m_CurrEvent.targetTransformEventInfo = null;
-            }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
-            {
-                m_CurrEvent.selfTransformEventInfo = null;
+                currTransformEventInfo.position = transformEventInfo.position;
+                currTransformEventInfo.rotation = transformEventInfo.rotation;
+                currTransformEventInfo.scale = transformEventInfo.scale;
+                currTransformEventInfo.isPositionBasedOnSelf = transformEventInfo.isPositionBasedOnSelf;
+                currTransformEventInfo.isRotationBasedOnSelf = transformEventInfo.isRotationBasedOnSelf;
+                currTransformEventInfo.isPositionAnim = transformEventInfo.isPositionAnim;
+                currTransformEventInfo.positionTweenInfo.duration = transformEventInfo.positionTweenInfo.duration;
+                currTransformEventInfo.positionTweenInfo.delay = transformEventInfo.positionTweenInfo.delay;
+                currTransformEventInfo.positionTweenInfo.ease = transformEventInfo.positionTweenInfo.ease;
+                currTransformEventInfo.isRotationAnim = transformEventInfo.isRotationAnim;
+                currTransformEventInfo.rotationTweenInfo.duration = transformEventInfo.rotationTweenInfo.duration;
+                currTransformEventInfo.rotationTweenInfo.delay = transformEventInfo.rotationTweenInfo.delay;
+                currTransformEventInfo.rotationTweenInfo.ease = transformEventInfo.rotationTweenInfo.ease;
+                currTransformEventInfo.rotateMode = transformEventInfo.rotateMode;
+                currTransformEventInfo.isScaleAnim = transformEventInfo.isScaleAnim;
+                currTransformEventInfo.scaleTweenInfo.duration = transformEventInfo.scaleTweenInfo.duration;
+                currTransformEventInfo.scaleTweenInfo.delay = transformEventInfo.scaleTweenInfo.delay;
+                currTransformEventInfo.scaleTweenInfo.ease = transformEventInfo.scaleTweenInfo.ease;
             }
         }
-
+        
         protected override void OnGUI()
         {
             TransformEventInfo currTransformInfo = null;
             TransformEventInfo transformEventInfo = null;
 
-            if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
+            if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.TargetTransformEvent)
             {
                 currTransformInfo = m_TargetTransformInfo;
-                transformEventInfo = m_CurrEvent.targetTransformEventInfo;
+                transformEventInfo = currEvent.targetTransformEventInfo;
             }
-            else if (m_CurrEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
+            else if (currEvent.skillEventType == SkillEditorConfigData.SkillEventType.SelfTransformEvent)
             {
                 currTransformInfo = m_SelfTransformInfo;
-                transformEventInfo = m_CurrEvent.selfTransformEventInfo;
+                transformEventInfo = currEvent.selfTransformEventInfo;
             }
 
             if (currTransformInfo == null || transformEventInfo == null)
             {
                 return;
             }
-
-            EditorGUILayout.BeginVertical();
-
+            
             DrawField(() => { return currTransformInfo.position != transformEventInfo.position; },
                       () => { currTransformInfo.position = EditorGUILayout.Vector2Field("目标位置", currTransformInfo.position); },
                       () => { transformEventInfo.position = currTransformInfo.position; }, 40);
@@ -106,25 +90,22 @@ namespace SkillNew
             DrawField(() => { return currTransformInfo.scale != transformEventInfo.scale; },
                       () => { currTransformInfo.scale = EditorGUILayout.Vector3Field("目标缩放", currTransformInfo.scale); },
                       () => { transformEventInfo.scale = currTransformInfo.scale; }, 40);
-
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             DrawField(() => { return currTransformInfo.isPositionBasedOnSelf != transformEventInfo.isPositionBasedOnSelf; },
                       () => { currTransformInfo.isPositionBasedOnSelf = EditorGUILayout.Toggle("基于自身位置", currTransformInfo.isPositionBasedOnSelf); },
                       () => { transformEventInfo.isPositionBasedOnSelf = currTransformInfo.isPositionBasedOnSelf; });
-
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             DrawField(() => { return currTransformInfo.isRotationBasedOnSelf != transformEventInfo.isRotationBasedOnSelf; },
                       () => { currTransformInfo.isRotationBasedOnSelf = EditorGUILayout.Toggle("基于自身旋转", currTransformInfo.isRotationBasedOnSelf); },
                       () => { transformEventInfo.isRotationBasedOnSelf = currTransformInfo.isRotationBasedOnSelf; });
-
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             DrawAnimInfo(currTransformInfo, transformEventInfo, 1);
             DrawAnimInfo(currTransformInfo, transformEventInfo, 2);
             DrawAnimInfo(currTransformInfo, transformEventInfo, 3);
-
-            EditorGUILayout.EndVertical();
         }
 
         private void DrawAnimInfo(TransformEventInfo currTransformEventInfo, TransformEventInfo transformEventInfo, int type)
         {
-            bool condition = false;
             bool eventCondition = false;
             TweenInfo tweenInfo = null;
             TweenInfo eventTweenInfo = null;
@@ -133,7 +114,6 @@ namespace SkillNew
             {
                 tweenInfo = currTransformEventInfo.positionTweenInfo;
                 eventTweenInfo = transformEventInfo.positionTweenInfo;
-                condition = currTransformEventInfo.isPositionAnim;
                 eventCondition = transformEventInfo.isPositionAnim;
 
                 DrawField(() => { return currTransformEventInfo.isPositionAnim != transformEventInfo.isPositionAnim; },
@@ -144,7 +124,6 @@ namespace SkillNew
             {
                 tweenInfo = currTransformEventInfo.rotationTweenInfo;
                 eventTweenInfo = transformEventInfo.rotationTweenInfo;
-                condition = currTransformEventInfo.isRotationAnim;
                 eventCondition = transformEventInfo.isRotationAnim;
 
                 DrawField(() => { return currTransformEventInfo.isRotationAnim != transformEventInfo.isRotationAnim; },
@@ -155,7 +134,6 @@ namespace SkillNew
             {
                 tweenInfo = currTransformEventInfo.scaleTweenInfo;
                 eventTweenInfo = transformEventInfo.scaleTweenInfo;
-                condition = currTransformEventInfo.isScaleAnim;
                 eventCondition = transformEventInfo.isScaleAnim;
 
                 DrawField(() => { return currTransformEventInfo.isScaleAnim != transformEventInfo.isScaleAnim; },
@@ -191,16 +169,28 @@ namespace SkillNew
             }
             else
             {
-                tweenInfo.duration = 0;
-                tweenInfo.delay = 0;
-                tweenInfo.ease = DG.Tweening.Ease.Unset;
-                eventTweenInfo.duration = 0;
-                eventTweenInfo.delay = 0;
-                eventTweenInfo.ease = DG.Tweening.Ease.Unset;
-            }
-        }
+                if (tweenInfo != null)
+                {
+                    tweenInfo.duration = 0;
+                    tweenInfo.delay = 0;
+                    tweenInfo.ease = DG.Tweening.Ease.Unset;
+                }
 
-        private TransformEventInfo m_TargetTransformInfo = null;
-        private TransformEventInfo m_SelfTransformInfo = null;
+                if (eventTweenInfo != null)
+                {
+                    eventTweenInfo.duration = 0;
+                    eventTweenInfo.delay = 0;
+                    eventTweenInfo.ease = DG.Tweening.Ease.Unset;
+                }
+            }
+            
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        }
+        
+        protected override void OnResetEvent()
+        {
+            m_TargetTransformInfo = null;
+            m_SelfTransformInfo = null;
+        }
     }
 }

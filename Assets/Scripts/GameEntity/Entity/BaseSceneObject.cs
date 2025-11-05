@@ -190,7 +190,6 @@ public class BaseSceneObject : BaseEntity
 
         UpdatePos(pos, posZ);
         m_Depth = pos.y;
-
         transform.localPosition = new Vector3(pos.x, pos.y, pos.y);
     }
 
