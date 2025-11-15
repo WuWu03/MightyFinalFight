@@ -1,4 +1,5 @@
 ### FC快打旋风Unity重制版
+![](/desc.png)
 本项目是使用Unity开发的FC快打旋风重制版
 
 仅开发了第一关可玩内容，以开发Unity基础框架为主要目的
@@ -21,4 +22,5 @@
 15. 各种池
 
 阿B演示视频：<a href="https://www.bilibili.com/video/BV1LAYRz1EVL/?share_source=copy_web&vd_source=3f2932dfc4d3d226ac0a90845d0fea3d">【Unity】用现代技术还原童年经典，这才是游戏开发的乐趣所在</a>
+
 
