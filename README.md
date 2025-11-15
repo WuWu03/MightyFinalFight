@@ -1,6 +1,6 @@
 ### FC快打旋风Unity重制版
 本项目是使用Unity开发的FC快打旋风重制版
-游戏仅开发了第一关可玩内容，以开发Unity基础框架为主要目的
+仅开发了第一关可玩内容，以开发Unity基础框架为主要目的
 项目含有完整的框架和工具链，包括：
 1. UI框架及常用UI工具
 2. 横板2.5D游戏基本框架
@@ -17,3 +17,4 @@
 13. 资源下载更新
 14. 多语言
 15. 各种池
+演示视频：<a herf= https://www.bilibili.com/video/BV1LAYRz1EVL/?share_source=copy_web&vd_source=3f2932dfc4d3d226ac0a90845d0fea3d>【Unity】失业闲来无事，把我的小游戏再写一写，这才是游戏开发的乐趣所在】</a>
