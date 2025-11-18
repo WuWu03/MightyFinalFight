@@ -122,7 +122,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         }
     }
 
-    public bool IsDropTrap
+    public bool isDropTrap
     {
         get
         {

@@ -12,7 +12,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     private List<Barrel> m_Barrels;
     private List<int> m_DeadEnemies;
     private List<int> m_BreakBarrels;
-    
+
     protected override void OnAwake()
     {
         m_DeadEnemies = new();
@@ -22,7 +22,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         m_SceneItems = new();
         m_Barrels = new();
     }
-    
+
     protected override void OnShutdown()
     {
         base.OnShutdown();
@@ -77,7 +77,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
         {
             Log.LogError("创建 Enemy 失败 , sourceId : " + sourceId + " , entityId : " + entityId);
             return null;
-        }   
+        }
 
         enemy.onReleaseEvent += OnEnemyRelease;
         m_Enemies.Add(enemy);
@@ -86,7 +86,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     public BaseSceneObject CreateSceneItem(int id, Vector2Int pos)
     {
-        SceneItemConfigData sceneItemConfigData =  GameEntry.configDataMgr.Get<SceneItemConfigData>().GetConfigDataById(id);
+        SceneItemConfigData sceneItemConfigData = GameEntry.configDataMgr.Get<SceneItemConfigData>().GetConfigDataById(id);
         BaseSceneItem sceneItem = SceneEntityFactory.CreateSceneItem(sceneItemConfigData, pos);
 
         if (sceneItem is null)
