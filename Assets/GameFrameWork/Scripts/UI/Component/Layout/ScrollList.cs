@@ -46,78 +46,54 @@ namespace GameFrameWork.UI
             Down
         }
 
-        /// <summary>
-        /// The number of pixels between items, starting after the first cell view
-        /// </summary>
-        [SerializeField] private float m_Spacing = 0;
 
-        public float spacing
-        {
-            get { return m_Spacing; }
-        }
-
-        /// <summary>
-        /// The maximum speed the scroller can go.
-        /// </summary>
-        public float maxVelocity;
-
-        /// <summary>
-        /// 获取数据长度
-        /// </summary>
         public GameFrameWorkFunc<int> getDataCountEvent;
-
-        /// <summary>
-        /// 
-        /// </summary>
         public GameFrameWorkFunc<int, float> getItemSizeEvent;
-
-        /// <summary>
-        /// This delegate is called when the scroll rect scrolls
-        /// </summary>
+        public GameFrameWorkAction<ScrollListItem> itemUpdateEvent;
         public GameFrameWorkAction<Vector2, float> scrolledEvent;
-        
         public GameFrameWorkAction beginDragEvent;
         public GameFrameWorkAction endDragEvent;
-
-        /// <summary>
-        /// This delegate is called when the scroller has snapped to a position
-        /// </summary>
         public GameFrameWorkAction<GameObject, int, int> snappedEvent;
-
-        /// <summary>
-        /// This delegate is called when the scroller has started or stopped scrolling
-        /// </summary>
         public GameFrameWorkAction<bool> scrollingChangedEvent;
-
-        /// <summary>
-        /// This delegate is called when the scroller has started or stopped tweening
-        /// </summary>
         public GameFrameWorkAction<bool> tweeningChangedEvent;
 
         /// <summary>
-        /// The absolute position in pixels from the start of the scroller
+        /// This is the first data index showing in the scroller's visible area
         /// </summary>
-        private float m_ScrollPosition;
-
-        public float scrollPosition
+        public int startDataIndex
         {
-            get { return m_ScrollPosition; }
-            set
-            {
-                value = Mathf.Clamp(value, 0, scrollSize);
-                if (m_ScrollPosition != value)
-                {
-                    m_ScrollPosition = value;
+            get { return m_ActiveItemsStartIndex % itemCount; }
+        }
 
-                    if (m_ScrollRect.vertical)
-                    {
-                        m_ScrollRect.verticalNormalizedPosition = 1f - (m_ScrollPosition / scrollSize);
-                    }
-                    else
-                    {
-                        m_ScrollRect.horizontalNormalizedPosition = (m_ScrollPosition / scrollSize);
-                    }
+        /// <summary>
+        /// This is the last data index showing in the scroller's visible area
+        /// </summary>
+        public int endDataIndex
+        {
+            get { return m_ActiveItemsEndIndex % itemCount; }
+        }
+
+        /// <summary>
+        /// This is the number of cells in the scroller
+        /// </summary>
+        public int itemCount
+        {
+            get { return getDataCountEvent?.Invoke() ?? 0; }
+        }
+
+        /// <summary>
+        /// The size of the visible portion of the scroller
+        /// </summary>
+        public float scrollRectSize
+        {
+            get
+            {
+                if (m_ScrollRect.vertical)
+                {
+                    return m_ScrollRectTransform.rect.height;
                 }
+
+                return m_ScrollRectTransform.rect.width;
             }
         }
 
@@ -145,57 +121,7 @@ namespace GameFrameWork.UI
         /// </summary>
         public float normalizedScrollPosition
         {
-            get
-            {
-                float scrollPosition = this.scrollPosition;
-                return (scrollPosition <= 0 ? 0 : m_ScrollPosition / scrollSize);
-            }
-        }
-
-        /// <summary>
-        /// Sets how the visibility of the scrollbars should be handled
-        /// </summary>
-        [SerializeField] private ScrollbarVisibilityType m_ScrollbarVisibility;
-
-        public ScrollbarVisibilityType scrollbarVisibility
-        {
-            get { return m_ScrollbarVisibility; }
-            set
-            {
-                m_ScrollbarVisibility = value;
-
-                if (m_Scrollbar is null)
-                {
-                    return;
-                }
-
-                if (m_ItemOffsetArray != null && m_ItemOffsetArray.Count > 0)
-                {
-                    if (m_ScrollRect.vertical)
-                    {
-                        scrollRect.verticalScrollbar = m_Scrollbar;
-                    }
-                    else
-                    {
-                        scrollRect.horizontalScrollbar = m_Scrollbar;
-                    }
-
-                    if (m_ItemOffsetArray[^1] < scrollRectSize)
-                    {
-                        m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility == ScrollbarVisibilityType.Always);
-                    }
-                    else
-                    {
-                        m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility != ScrollbarVisibilityType.Never);
-                    }
-
-                    if (!m_Scrollbar.gameObject.activeSelf)
-                    {
-                        scrollRect.verticalScrollbar = null;
-                        scrollRect.horizontalScrollbar = null;
-                    }
-                }
-            }
+            get { return this.scrollPosition <= 0 ? 0 : m_ScrollPosition / scrollSize; }
         }
 
         /// <summary>
@@ -213,17 +139,7 @@ namespace GameFrameWork.UI
         public float linearVelocity
         {
             get { return (m_ScrollRect.vertical ? m_ScrollRect.velocity.y : m_ScrollRect.velocity.x); }
-            set
-            {
-                if (m_ScrollRect.vertical)
-                {
-                    m_ScrollRect.velocity = new Vector2(0, value);
-                }
-                else
-                {
-                    m_ScrollRect.velocity = new Vector2(value, 0);
-                }
-            }
+            set { m_ScrollRect.velocity = m_ScrollRect.vertical ? new Vector2(0, value) : new Vector2(value, 0); }
         }
 
         /// <summary>
@@ -235,6 +151,33 @@ namespace GameFrameWork.UI
         /// Whether the scroller is tweening or not
         /// </summary>
         public bool isTweening { get; private set; }
+
+        /// <summary>
+        /// The absolute position in pixels from the start of the scroller
+        /// </summary>
+        private float m_ScrollPosition;
+
+        public float scrollPosition
+        {
+            get { return m_ScrollPosition; }
+            set
+            {
+                value = Mathf.Clamp(value, 0, scrollSize);
+                if (!Mathf.Approximately(m_ScrollPosition, value))
+                {
+                    m_ScrollPosition = value;
+
+                    if (m_ScrollRect.vertical)
+                    {
+                        m_ScrollRect.verticalNormalizedPosition = 1f - m_ScrollPosition / scrollSize;
+                    }
+                    else
+                    {
+                        m_ScrollRect.horizontalNormalizedPosition = m_ScrollPosition / scrollSize;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// This is the first cell view index showing in the scroller's visible area
@@ -254,30 +197,6 @@ namespace GameFrameWork.UI
         public int endItemIndex
         {
             get { return m_ActiveItemsEndIndex; }
-        }
-
-        /// <summary>
-        /// This is the first data index showing in the scroller's visible area
-        /// </summary>
-        public int startDataIndex
-        {
-            get { return m_ActiveItemsStartIndex % itemCount; }
-        }
-
-        /// <summary>
-        /// This is the last data index showing in the scroller's visible area
-        /// </summary>
-        public int endDataIndex
-        {
-            get { return m_ActiveItemsEndIndex % itemCount; }
-        }
-
-        /// <summary>
-        /// This is the number of cells in the scroller
-        /// </summary>
-        public int itemCount
-        {
-            get { return getDataCountEvent?.Invoke() ?? 0; }
         }
 
         /// <summary>
@@ -313,26 +232,73 @@ namespace GameFrameWork.UI
         }
 
         /// <summary>
-        /// The size of the visible portion of the scroller
+        /// Sets how the visibility of the scrollbars should be handled
         /// </summary>
-        public float scrollRectSize
+        [SerializeField] private ScrollbarVisibilityType m_ScrollbarVisibility;
+
+        public ScrollbarVisibilityType scrollbarVisibility
         {
-            get
+            get { return m_ScrollbarVisibility; }
+            set
             {
-                if (m_ScrollRect.vertical)
+                m_ScrollbarVisibility = value;
+
+                if (m_Scrollbar is null)
                 {
-                    return m_ScrollRectTransform.rect.height;
+                    return;
                 }
 
-                else
+                if (m_ItemOffsetArray is { Count: > 0 })
                 {
-                    return m_ScrollRectTransform.rect.width;
+                    if (m_ScrollRect.vertical)
+                    {
+                        scrollRect.verticalScrollbar = m_Scrollbar;
+                    }
+                    else
+                    {
+                        scrollRect.horizontalScrollbar = m_Scrollbar;
+                    }
+
+                    if (m_ItemOffsetArray[^1] < scrollRectSize)
+                    {
+                        m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility == ScrollbarVisibilityType.Always);
+                    }
+                    else
+                    {
+                        m_Scrollbar.gameObject.SetActiveSelf(m_ScrollbarVisibility != ScrollbarVisibilityType.Never);
+                    }
+
+                    if (!m_Scrollbar.gameObject.activeSelf)
+                    {
+                        scrollRect.verticalScrollbar = null;
+                        scrollRect.horizontalScrollbar = null;
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Access to the scroll rect container
+        /// 间隔
+        /// </summary>
+        [SerializeField] private float m_Spaceing;
+
+        public float spacing
+        {
+            get { return m_Spaceing; }
+        }
+
+        /// <summary>
+        /// 最大滚动速度
+        /// </summary>
+        [SerializeField] private float m_MaxVelocity;
+
+        public float maxVelocity
+        {
+            get { return m_MaxVelocity; }
+        }
+
+        /// <summary>
+        /// 容器
         /// </summary>
         private RectTransform m_Content;
 
@@ -371,14 +337,15 @@ namespace GameFrameWork.UI
         private Scrollbar m_Scrollbar;
         private RectTransform m_ScrollRectTransform;
         private RectTransform m_RecycledItemsContent;
-        private List<ScrollListItem> m_ActiveItems = null;
-        private List<ScrollListItem> m_RecycledItems = null;
-        private List<float> m_ItemSizeArray = null;
-        private List<float> m_ItemOffsetArray = null;
-        private bool m_IsInitialized = false;
+        private List<ScrollListItem> m_ActiveItems;
+        private List<ScrollListItem> m_RecycledItems;
+        private List<float> m_ItemSizeArray;
+        private List<float> m_ItemOffsetArray;
+        private bool m_IsInitialized;
+        private bool m_HasSetPosition;
         private float m_TweenTimer;
         private int m_DragFingerCount;
-        private Type m_ItemClassType = null;
+        private Type m_ItemClassType;
         private ScrollbarVisibilityType m_LastScrollbarVisibility;
 
         private void Awake()
@@ -388,11 +355,6 @@ namespace GameFrameWork.UI
 
         public void Init<T>() where T : ScrollListItem, new()
         {
-            if (m_ScrollRect is null)
-            {
-                m_ScrollRect = GetComponent<ScrollRect>();
-            }
-
             if (m_ScrollRect is null)
             {
                 Log.LogError(name, "[Scroll Rect] 组件不存在");
@@ -424,9 +386,9 @@ namespace GameFrameWork.UI
             else
             {
                 float horizontalChildAlignment = GetHorizontalChildAlignment();
-                m_Content.anchorMin = new Vector2(0, horizontalChildAlignment);
-                m_Content.anchorMax = new Vector2(1, horizontalChildAlignment);
-                m_Content.pivot = new Vector2(0.5f, horizontalChildAlignment);
+                m_Content.anchorMin = new Vector2(horizontalChildAlignment, 0);
+                m_Content.anchorMax = new Vector2(horizontalChildAlignment, 1);
+                m_Content.pivot = new Vector2(horizontalChildAlignment, 0.5f);
             }
 
             m_Content.offsetMax = Vector2.zero;
@@ -434,16 +396,7 @@ namespace GameFrameWork.UI
             m_Content.anchoredPosition = Vector2.zero;
             m_Content.localRotation = Quaternion.identity;
             m_Content.localScale = Vector3.one;
-
-            if (m_ScrollRect.vertical)
-            {
-                m_Scrollbar = m_ScrollRect.verticalScrollbar;
-            }
-            else
-            {
-                m_Scrollbar = m_ScrollRect.horizontalScrollbar;
-            }
-
+            m_Scrollbar = m_ScrollRect.vertical ? m_ScrollRect.verticalScrollbar : m_ScrollRect.horizontalScrollbar;
             m_RecycledItemsContent = new GameObject("Recycled Cells", typeof(RectTransform)).GetComponent<RectTransform>();
             m_RecycledItemsContent.transform.SetParent(m_ScrollRect.transform, false);
             m_RecycledItemsContent.gameObject.SetActiveSelf(false);
@@ -457,8 +410,6 @@ namespace GameFrameWork.UI
             m_Prefab.SetActiveSelf(false);
             m_IsInitialized = true;
         }
-
-        private bool m_HasSetPosition = false;
 
         /// <summary>
         /// 刷新列表
@@ -512,17 +463,17 @@ namespace GameFrameWork.UI
             {
                 return 0.5f;
             }
-            
+
             return 0f;
         }
 
         private float GetHorizontalChildAlignment()
         {
-            if (m_ChildAlignment == TextAnchor.UpperLeft ||
-                m_ChildAlignment == TextAnchor.MiddleLeft ||
-                m_ChildAlignment == TextAnchor.LowerLeft)
+            if (m_ChildAlignment == TextAnchor.UpperRight ||
+                m_ChildAlignment == TextAnchor.MiddleRight ||
+                m_ChildAlignment == TextAnchor.LowerRight)
             {
-                return 0f;
+                return 1f;
             }
 
             if (m_ChildAlignment == TextAnchor.UpperCenter ||
@@ -530,13 +481,6 @@ namespace GameFrameWork.UI
                 m_ChildAlignment == TextAnchor.LowerCenter)
             {
                 return 0.5f;
-            }
-
-            if (m_ChildAlignment == TextAnchor.UpperRight ||
-                m_ChildAlignment == TextAnchor.MiddleRight ||
-                m_ChildAlignment == TextAnchor.LowerRight)
-            {
-                return 1f;
             }
 
             return 0f;
@@ -549,7 +493,7 @@ namespace GameFrameWork.UI
         {
             foreach (var item in m_ActiveItems)
             {
-                item.OnUpdate();
+                itemUpdateEvent?.Invoke(item);
             }
         }
 
@@ -567,9 +511,9 @@ namespace GameFrameWork.UI
         /// </summary>
         public void ClearActive()
         {
-            for (var i = 0; i < m_ActiveItems.Count; i++)
+            foreach (var activeItem in m_ActiveItems)
             {
-                DestroyImmediate(m_ActiveItems[i].gameObject);
+                DestroyImmediate(activeItem.gameObject);
             }
 
             m_ActiveItems.Clear();
@@ -580,9 +524,9 @@ namespace GameFrameWork.UI
         /// </summary>
         public void ClearRecycled()
         {
-            for (var i = 0; i < m_RecycledItems.Count; i++)
+            foreach (var recycledItem in m_RecycledItems)
             {
-                DestroyImmediate(m_RecycledItems[i].gameObject);
+                DestroyImmediate(recycledItem.gameObject);
             }
 
             m_RecycledItems.Clear();
@@ -601,17 +545,17 @@ namespace GameFrameWork.UI
         /// Jump to a position in the scroller based on a dataIndex.
         /// </summary>
         public void JumpToDataIndex(int dataIndex,
-            bool useSpacing = true,
-            TweenType tweenType = TweenType.None,
-            float tweenTime = 0f,
-            Action jumpComplete = null,
-            LoopJumpDirectionEnum loopJumpDirection = LoopJumpDirectionEnum.Closest,
-            bool forceCalculateRange = false)
+                                    bool useSpacing = true,
+                                    TweenType tweenType = TweenType.None,
+                                    float tweenTime = 0f,
+                                    Action jumpComplete = null,
+                                    LoopJumpDirectionEnum loopJumpDirection = LoopJumpDirectionEnum.Closest,
+                                    bool forceCalculateRange = false)
         {
             float newScrollPosition = GetScrollPositionByDataIndex(dataIndex, ItemPositionType.Before);
             newScrollPosition = Mathf.Clamp(newScrollPosition - (useSpacing ? spacing : 0), 0, scrollSize);
 
-            if (newScrollPosition == m_ScrollPosition)
+            if (Mathf.Approximately(newScrollPosition, m_ScrollPosition))
             {
                 jumpComplete?.Invoke();
                 return;
@@ -623,8 +567,7 @@ namespace GameFrameWork.UI
         /// <summary>
         /// Snaps the scroller on command. 
         /// </summary>
-        public void Snap(float snapWatchOffset, bool useSpacing = true, TweenType tweenType = TweenType.None,
-            float tweenTime = 0f)
+        public void Snap(float snapWatchOffset, bool useSpacing = true, TweenType tweenType = TweenType.None, float tweenTime = 0f)
         {
             if (itemCount == 0)
             {
@@ -632,12 +575,10 @@ namespace GameFrameWork.UI
             }
 
             linearVelocity = 0;
-
             bool inertia = m_ScrollRect.inertia;
             float snapPosition = scrollSize * Mathf.Clamp01(snapWatchOffset);
             int sapItemIndex = GetItemIndexAtPosition(snapPosition);
             int snapDataIndex = sapItemIndex % itemCount;
-
             m_ScrollRect.inertia = false;
 
             JumpToDataIndex(snapDataIndex, useSpacing, tweenType, tweenTime, () =>
@@ -648,16 +589,19 @@ namespace GameFrameWork.UI
                 {
                     ScrollListItem cellView = null;
 
-                    for (var i = 0; i < m_ActiveItems.Count; i++)
+                    foreach (var activeItem in m_ActiveItems)
                     {
-                        if (m_ActiveItems[i].dataIndex == snapDataIndex)
+                        if (activeItem.dataIndex == snapDataIndex)
                         {
-                            cellView = m_ActiveItems[i];
+                            cellView = activeItem;
                             break;
                         }
                     }
 
-                    snappedEvent.Invoke(cellView.gameObject, cellView.dataIndex, cellView.itemIndex);
+                    if (cellView != null)
+                    {
+                        snappedEvent?.Invoke(cellView.gameObject, cellView.dataIndex, cellView.itemIndex);
+                    }
                 }
             });
         }
@@ -672,7 +616,7 @@ namespace GameFrameWork.UI
                 return 0;
             }
 
-            if (itemIndex < 0) itemIndex = 0;
+            itemIndex = Mathf.Max(0, itemIndex);
 
             if (itemIndex == 0 && insertPosition == ItemPositionType.Before)
             {
@@ -744,7 +688,7 @@ namespace GameFrameWork.UI
             {
                 m_DragFingerCount = 0;
             }
-            
+
             endDragEvent?.Invoke();
         }
 
@@ -759,7 +703,7 @@ namespace GameFrameWork.UI
             {
                 var go = Instantiate(m_Prefab);
                 item = Activator.CreateInstance(m_ItemClassType) as ScrollListItem;
-                item.Create(go);
+                item?.Create(go);
             }
 
             return item;
@@ -803,9 +747,9 @@ namespace GameFrameWork.UI
             m_ItemOffsetArray.Clear();
             float offset = 0f;
 
-            for (var i = 0; i < m_ItemSizeArray.Count; i++)
+            foreach (var itemSize in m_ItemSizeArray)
             {
-                offset += m_ItemSizeArray[i];
+                offset += itemSize;
                 m_ItemOffsetArray.Add(offset);
             }
         }
@@ -815,7 +759,7 @@ namespace GameFrameWork.UI
         /// </summary>
         private ScrollListItem GetRecycledItem()
         {
-            if (m_RecycledItems != null && m_RecycledItems.Count > 0)
+            if (m_RecycledItems is { Count: > 0 })
             {
                 var cellView = m_RecycledItems[0];
                 m_RecycledItems.RemoveAt(0);
@@ -898,7 +842,6 @@ namespace GameFrameWork.UI
         {
             m_ActiveItems.Remove(item);
             m_RecycledItems.Add(item);
-
             item.SetActiveSelf(false);
             item.itemIndex = 0;
             item.dataIndex = 0;
@@ -914,16 +857,15 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            int realItemIndex = itemIndex;//Mathf.Abs(itemCount - 1 - itemIndex);
+            int realItemIndex = itemIndex; //Mathf.Abs(itemCount - 1 - itemIndex);
             var dataIndex = realItemIndex % itemCount;
             var item = GetItem();
-
             item.itemIndex = realItemIndex;
             item.dataIndex = dataIndex;
             item.transform.localScale = Vector3.one;
             item.transform.SetParent(m_Content, false);
             item.SetActiveSelf(true);
-            
+
             if (m_ScrollRect.vertical)
             {
                 float size = m_ItemSizeArray[itemIndex];
@@ -931,7 +873,7 @@ namespace GameFrameWork.UI
                 float posY = m_Content.rect.height / 2 - height;
                 item.rectTransform.anchoredPosition = new Vector2(0, posY);
             }
-            
+
             if (listPosition == ListPositionType.First)
             {
                 m_ActiveItems.Insert(0, item);
@@ -940,8 +882,8 @@ namespace GameFrameWork.UI
             {
                 m_ActiveItems.Add(item);
             }
-            
-            item.OnUpdate();
+
+            itemUpdateEvent?.Invoke(item);
         }
 
         /// <summary>
@@ -965,10 +907,7 @@ namespace GameFrameWork.UI
         private void CalculateCurrentActiveItemRange(out int startIndex, out int endIndex)
         {
             float startPosition = m_ScrollPosition - lookAheadBefore;
-            float endPosition = m_ScrollPosition +
-                                (m_ScrollRect.vertical
-                                    ? m_ScrollRectTransform.rect.height
-                                    : m_ScrollRectTransform.rect.width) + lookAheadAfter;
+            float endPosition = m_ScrollPosition + scrollRectSize + lookAheadAfter;
             startIndex = GetItemIndexAtPosition(startPosition);
             endIndex = GetItemIndexAtPosition(endPosition);
         }
@@ -986,7 +925,7 @@ namespace GameFrameWork.UI
             var middleIndex = (startIndex + endIndex) / 2;
             float pad = m_ScrollRect.vertical ? m_Padding.top : m_Padding.left;
 
-            if ((m_ItemOffsetArray[middleIndex] + pad) >= (position + (pad == 0 ? 0 : 1.00001f)))
+            if (m_ItemOffsetArray[middleIndex] + pad >= position + (pad == 0 ? 0 : 1.00001f))
             {
                 return GetItemIndexAtPosition(position, startIndex, middleIndex);
             }
@@ -1033,13 +972,11 @@ namespace GameFrameWork.UI
             {
                 if (m_ScrollRect.horizontal)
                 {
-                    velocity = new Vector2(Mathf.Clamp(Mathf.Abs(velocity.x), 0, maxVelocity) * Mathf.Sign(velocity.x),
-                        velocity.y);
+                    velocity = new Vector2(Mathf.Clamp(Mathf.Abs(velocity.x), 0, maxVelocity) * Mathf.Sign(velocity.x), velocity.y);
                 }
                 else
                 {
-                    velocity = new Vector2(velocity.x,
-                        Mathf.Clamp(Mathf.Abs(velocity.y), 0, maxVelocity) * Mathf.Sign(velocity.y));
+                    velocity = new Vector2(velocity.x, Mathf.Clamp(Mathf.Abs(velocity.y), 0, maxVelocity) * Mathf.Sign(velocity.y));
                 }
             }
         }
@@ -1090,7 +1027,7 @@ namespace GameFrameWork.UI
         /// Moves the scroll position over time between two points given an easing function.
         /// </summary>
         IEnumerator TweenPosition(TweenType tweenType, float time, float start, float end, Action tweenComplete,
-            bool forceCalculateRange)
+                                  bool forceCalculateRange)
         {
             if (!(tweenType == TweenType.None || time == 0))
             {

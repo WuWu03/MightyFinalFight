@@ -16,8 +16,6 @@ namespace GameFrameWork.UI
             set;
         }
 
-        public abstract void OnUpdate();
-
         protected override void OnReleaseItem()
         {
             dataIndex = 0;

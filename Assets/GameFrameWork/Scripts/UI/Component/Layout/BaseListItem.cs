@@ -76,13 +76,13 @@ namespace GameFrameWork.UI
             OnSelect(isSelected);
         }
 
-        public void SetActiveSelf(bool isAcitve)
+        public void SetActiveSelf(bool isActive)
         {
-            m_IsActive = isAcitve;
+            m_IsActive = isActive;
 
             if (m_GameObject is not null)
             {
-                m_GameObject.SetActiveSelf(isAcitve);
+                m_GameObject.SetActiveSelf(isActive);
             }
         }
 

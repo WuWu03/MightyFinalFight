@@ -9,15 +9,14 @@ namespace GameFrameWork.UI
     [AddComponentMenu("UI/StaticList")]
     public class StaticList : MonoBehaviour
     {
+        public event GameFrameWorkAction<StaticListItem> onItemUpdateEvent;
+        public event GameFrameWorkAction<StaticListItem, bool> onItemSelectEvent;
+        public event GameFrameWorkAction<StaticListItem> onItemReleaseEvent;
         private List<StaticListItem> m_ListItem;
         private GameObject m_ItemParent;
         private GameObject m_Item;
         private int m_CurrSelectIndex = -1;
-
-        public event GameFrameWorkAction<StaticListItem> onItemUpdateEvent;
-        public event GameFrameWorkAction<StaticListItem, bool> onItemSelectEvent;
-        public event GameFrameWorkAction<StaticListItem> onItemReleaseEvent;
-        private Type m_ItemClassType = null;
+        private Type m_ItemClassType;
 
         public void Init<T>(GameObject parent, GameObject item) where T : StaticListItem, new()
         {
