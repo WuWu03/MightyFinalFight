@@ -37,7 +37,6 @@ namespace GameFrameWork.UI
             m_Component = new C();
         }
         
-
         public GameObject gameObject
         {
             get

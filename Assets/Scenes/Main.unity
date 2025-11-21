@@ -182,6 +182,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2759244458228759885, guid: a733addfc5bcea443a3d2da4f347b23d,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -319,8 +324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2bd42f9c4494441b036c4290592378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list:
-  - skillName: ddd
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
