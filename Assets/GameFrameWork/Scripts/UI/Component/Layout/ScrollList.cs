@@ -72,6 +72,11 @@ namespace GameFrameWork.UI
 
         private void OnDisable()
         {
+            if (!m_IsInit)
+            {
+                return;
+            }
+            
             if (m_ScrollRect is null)
             {
                 throw new GameFrameWorkException("[Scroll Rect] 组件不存在");
@@ -199,7 +204,7 @@ namespace GameFrameWork.UI
 
             scrollPosition = Mathf.Clamp(scrollPosition, 0, scrollSize);
 
-            if (Mathf.Approximately(m_ScrollPosition, scrollPosition))
+            if (m_HasInitScrollPos && Mathf.Approximately(m_ScrollPosition, scrollPosition))
             {
                 return;
             }

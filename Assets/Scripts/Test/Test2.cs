@@ -4,8 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-public class TestItem : ScrollListItem
+public class TestItem : GameFrameWork.UI.ScrollListItem
 {
     public TextMeshProUGUI txt;
 
@@ -17,7 +16,7 @@ public class TestItem : ScrollListItem
 
 public class Test2 : MonoBehaviour
 {
-    public ScrollList view;
+    public GameFrameWork.UI.ScrollList view;
     public ButtonEx btn;
 
     private void Awake()
@@ -32,7 +31,7 @@ public class Test2 : MonoBehaviour
         // btn.onPress.AddListener(OnPress);
     }
 
-    private void onRenderItem(ScrollListItem t)
+    private void onRenderItem(GameFrameWork.UI.ScrollListItem t)
     {
         var item = t as TestItem;
         item.txt.text = item.itemIndex.ToString();
