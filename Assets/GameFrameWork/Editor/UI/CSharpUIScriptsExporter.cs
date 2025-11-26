@@ -11,8 +11,12 @@ namespace GameFrameWork.Editor
         public override void Export(UIRef[] uiRefs, UIRefSetting setting)
         {
             ExportComponent(uiRefs, setting);
-            ExportViewSettings(setting);
-            ExportView(setting);
+            
+            if (setting.uiType != UIRefSetting.UIType.Item)
+            {
+                ExportViewSettings(setting);
+                ExportView(setting);
+            }
         }
 
         public override string CopyRef(UIRef[] uiRefs)

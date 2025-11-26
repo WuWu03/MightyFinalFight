@@ -10,6 +10,7 @@ namespace GameFrameWork.UI
         {
             Panel, //依附于其他界面的子界面
             View, //普通界面
+            Item, //成员
         }
 
         public enum UIDestroyMode : byte
@@ -75,8 +76,14 @@ namespace GameFrameWork.UI
 
         public void RefreshScriptFolder()
         {
-            string suffix = uiType == UIType.View ? "View" : "Panel";
-            string tempViewName = m_ViewName.Replace("View", string.Empty).Replace("Panel", string.Empty);
+            string suffix = uiType switch
+            {
+                UIType.View => "View",
+                UIType.Panel => "Panel",
+                UIType.Item => "Item",
+            };
+            
+            string tempViewName = m_ViewName.Replace("View", string.Empty).Replace("Panel", string.Empty).Replace("Item",string.Empty);
             m_ViewName = tempViewName + suffix;
 
             if (string.IsNullOrEmpty(m_ModuleName))

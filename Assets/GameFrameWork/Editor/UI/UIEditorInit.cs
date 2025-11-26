@@ -19,6 +19,7 @@ namespace GameFrameWork.Editor
             get { return SceneManager.GetActiveScene(); }
         }
 
+        private static UIRefSetting s_UIRefSetting;
         public static UIRefSetting uiRefSetting
         {
             get
@@ -33,7 +34,20 @@ namespace GameFrameWork.Editor
             }
         }
 
-        private static UIRefSetting s_UIRefSetting;
+        private static GameObject s_Panel;
+        public static GameObject panel
+        {
+            get
+            {
+                if (s_Panel == null)
+                {
+                    s_Panel = GameObject.Find("UIRoot/UICanvas/Panel");
+                }
+
+                return s_Panel;
+            }
+        }
+        
         private static readonly IUIScriptsExporter s_CSharpExporter;
 
         static UIEditorInit()
@@ -107,22 +121,50 @@ namespace GameFrameWork.Editor
             }
 
             rootObj.transform.SetAsLastSibling();
-            GameObject panel = new("Panel");
-            RectTransform rect = panel.AddComponent<RectTransform>();
-            panel.gameObject.AddComponent<UIRefRoot>();
-            rect.anchoredPosition = Vector3.zero;
-            rect.sizeDelta = Vector2.zero;
-            rect.anchorMin = new Vector2(0, 0);
-            rect.anchorMax = new Vector2(1, 1);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.SetParent(rootObj.transform.Find("UICanvas"), false);
-            panel.AddComponent<Canvas>().vertexColorAlwaysGammaSpace = true;
-            panel.AddComponent<GraphicRaycaster>();
+            s_Panel = new("Panel");
+            s_Panel.AddComponent<RectTransform>();
+            s_Panel.transform.SetParent(rootObj.transform.Find("UICanvas"), false);
+            s_Panel.AddComponent<UIRefRoot>();
+            AddPanelComponent();
             EditorSceneManager.SaveScene(scene, uiPath);
             AssetDatabase.Refresh();
             Selection.activeGameObject = settings.gameObject;
         }
 
+        public static void AddPanelComponent()
+        {
+            if (panel == null || panel.GetComponent<Canvas>() != null)
+            {
+                return;
+            }
+            
+            RectTransform rect = panel.GetComponent<RectTransform>();
+            rect.anchoredPosition = Vector3.zero;
+            rect.sizeDelta = Vector2.zero;
+            rect.anchorMin = new Vector2(0, 0);
+            rect.anchorMax = new Vector2(1, 1);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            panel.AddComponent<Canvas>().vertexColorAlwaysGammaSpace = true;
+            panel.AddComponent<GraphicRaycaster>();
+        }
+
+        public static void DestroyPanelComponent()
+        {
+            if (panel == null || panel.GetComponent<Canvas>() == null)
+            {
+                return;
+            }
+            
+            RectTransform rect = panel.GetComponent<RectTransform>();
+            rect.anchoredPosition = Vector3.zero;
+            rect.sizeDelta = Vector2.zero;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            Object.DestroyImmediate(panel.GetComponent<GraphicRaycaster>());
+            Object.DestroyImmediate(panel.GetComponent<Canvas>());
+        }
+        
         private static void DuringSceneGUI(SceneView scnView)
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode && IsUIScene())
