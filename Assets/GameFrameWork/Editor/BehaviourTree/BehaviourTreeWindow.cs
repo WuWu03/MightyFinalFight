@@ -680,7 +680,7 @@ namespace GameFrameWork.Editor
                     mse.WriteBool(preCondition.isAndCondition);
                 }
                 
-                foreach (var child in data.children)
+                foreach (var child in tempData.children)
                 {
                     dataQueue.Enqueue(child);
                 }

@@ -51,7 +51,7 @@ public class DoAttack : Action
     public DoAttack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
         m_Owner = owner as BaseEnemy;
-        Regex mRegex = new(@"(AttackTime:)(-?[0-9]+)");
+        Regex mRegex = new("(AttackTime:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
         {
