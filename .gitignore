@@ -11,10 +11,4 @@
 /.vsconfig
 /temp.unitypackage
 /Assets/StreamingAssets
-/Assembly-CSharp-Editor-firstpass.csproj
-/Assembly-CSharp-firstpass.csproj
-/Assets/StreamingAssets.meta
-/StompyRobot.SRDebugger.Editor.csproj
-/StompyRobot.SRDebugger.csproj
-/StompyRobot.SRF.Editor.csproj
-/StompyRobot.SRF.csproj
+/*.csproj
