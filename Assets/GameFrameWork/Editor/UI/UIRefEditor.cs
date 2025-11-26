@@ -89,12 +89,12 @@ namespace GameFrameWork.Editor
             if (m_UIRef.IsStaticList() || m_UIRef.IsScrollList())
             {
                 SerializedProperty isList = EditorUtil.DrawProperty("列表", serializedObject, "m_IsList", new GUILayoutOption[0]);
-                if (m_UIRef.IsList != isList.boolValue)
+                if (m_UIRef.isList != isList.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.IsList = isList.boolValue;
+                    m_UIRef.isList = isList.boolValue;
 
-                    if (!m_UIRef.IsList)
+                    if (!m_UIRef.isList)
                     {
                         UIRef[] childrenRefs = m_UIRef.GetComponentsInChildren<UIRef>(true);
                         for (int i = 1; i < childrenRefs.Length; i++)
@@ -105,7 +105,7 @@ namespace GameFrameWork.Editor
                             for (int j = 1; j < childrenRefs2.Length; j++)
                             {
                                 UIRef child2 = childrenRefs2[i];
-                                child2.IsListItemVariable = false;
+                                child2.isListItemVariable = false;
                             }
                         }
                     }
@@ -113,7 +113,7 @@ namespace GameFrameWork.Editor
             }
             else
             {
-                m_UIRef.IsList = false;
+                m_UIRef.isList = false;
                 UIRef[] childrenRefs = m_UIRef.GetComponentsInChildren<UIRef>(true);
                 for (int i = 1; i < childrenRefs.Length; i++)
                 {
@@ -123,7 +123,7 @@ namespace GameFrameWork.Editor
                     for (int j = 1; j < childrenRefs2.Length; j++)
                     {
                         UIRef child2 = childrenRefs2[i];
-                        child2.IsListItemVariable = false;
+                        child2.isListItemVariable = false;
                     }
                 }
             }
@@ -146,7 +146,7 @@ namespace GameFrameWork.Editor
                         for (int i = 1; i < childrenRefs.Length; i++)
                         {
                             UIRef child1 = childrenRefs[i];
-                            child1.IsListItemVariable = false;
+                            child1.isListItemVariable = false;
                         }
 
                         if (m_UIRef.gameObject.TryGetComponent<UIRefRoot>(out var uiRefRoot))
@@ -163,7 +163,7 @@ namespace GameFrameWork.Editor
                 for (int i = 1; i < childrenRefs.Length; i++)
                 {
                     UIRef child1 = childrenRefs[i];
-                    child1.IsListItemVariable = false;
+                    child1.isListItemVariable = false;
                 }
                 if (m_UIRef.gameObject.TryGetComponent<UIRefRoot>(out var uiRefRoot))
                 {
@@ -173,21 +173,21 @@ namespace GameFrameWork.Editor
 
             if (m_UIRef.IsListItemVariable())
             {
-                SerializedProperty isListItemVariable = EditorUtil.DrawProperty("列表格子成员", serializedObject, "m_IsListItemVariable", new GUILayoutOption[0]);
-                if (m_UIRef.IsListItemVariable != isListItemVariable.boolValue)
+                SerializedProperty isListItemVariable = EditorUtil.DrawProperty("列表格子成员", serializedObject, "m_IsListItemVariable");
+                if (m_UIRef.isListItemVariable != isListItemVariable.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
-                    m_UIRef.IsListItemVariable = isListItemVariable.boolValue;
+                    m_UIRef.isListItemVariable = isListItemVariable.boolValue;
                 }
             }
             else
             {
-                m_UIRef.IsListItemVariable = false;
+                m_UIRef.isListItemVariable = false;
             }
 
-            if (!m_UIRef.IsListItemVariable)
+            if (!m_UIRef.isListItemVariable)
             {
-                SerializedProperty isCopyRefStr = EditorUtil.DrawProperty("复制引用", serializedObject, "m_IsCopyRefStr", new GUILayoutOption[0]);
+                SerializedProperty isCopyRefStr = EditorUtil.DrawProperty("复制引用", serializedObject, "m_IsCopyRefStr");
                 if (m_UIRef.isCopyRefStr != isCopyRefStr.boolValue)
                 {
                     UnityEditor.EditorUtility.SetDirty(m_UIRef);
@@ -200,12 +200,6 @@ namespace GameFrameWork.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        public static UIRef[] GetOtherRef(UIRef uiref)
-        {
-            UIRef[] ret = uiref.gameObject.GetComponents<UIRef>();
-            return ret;
         }
     }
 }

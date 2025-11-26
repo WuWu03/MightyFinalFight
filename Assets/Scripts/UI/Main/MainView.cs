@@ -17,7 +17,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 {
 	protected override void OnOpen(object arg)
 	{
-        component.levelList.onItemUpdateEvent += OnLevelItemUpdate;
+        component.levelList.itemUpdateEvent += OnLevelItemUpdate;
     }
 
     protected override void OnShow(object arg)
@@ -57,10 +57,10 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	protected override void OnDestroy()
 	{
-        component.levelList.onItemUpdateEvent -= OnLevelItemUpdate;
+        component.levelList.itemUpdateEvent -= OnLevelItemUpdate;
     }
 
-	private void OnLevelItemUpdate(StaticListItem item)
+	private void OnLevelItemUpdate(BaseListItem item)
 	{
         if (item is MainViewComponent.LevelListItem levelListItem)
         {
@@ -140,7 +140,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
 
 	public void SetPlayerLevel()
 	{
-		component.levelList.RefreshItems(5);
+		component.levelList.SetItemCount(5);
 	}
 
 	private string GetExpStr(int exp)
@@ -153,7 +153,7 @@ public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
         Color color = CommonUtil.HexToRGB(StageMgr.instance.CurrStageData.StageColor);
 		component.playerHpBarImage.color = color;
 		component.enemyHpBarImage.color = color;
-		component.levelList.RefreshItems(5);
+		component.levelList.SetItemCount(5);
 	}
 
 	private bool m_IsEnemyHpBarAnim = false;

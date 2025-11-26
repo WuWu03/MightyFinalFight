@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class TestItem : GameFrameWork.UI.ScrollListItem
+public class TestItem : BaseListItem
 {
     public TextMeshProUGUI txt;
 
@@ -21,7 +21,7 @@ public class Test2 : MonoBehaviour
 
     private void Awake()
     {
-        view.renderItemEvent += onRenderItem;
+        view.itemUpdateEvent += onRenderItem;
         // btn.onClick.AddListener(delegate(GameObject go)
         // {
         //     this.OnClick(go, 3);
@@ -31,10 +31,10 @@ public class Test2 : MonoBehaviour
         // btn.onPress.AddListener(OnPress);
     }
 
-    private void onRenderItem(GameFrameWork.UI.ScrollListItem t)
+    private void onRenderItem(GameFrameWork.UI.BaseListItem t)
     {
         var item = t as TestItem;
-        item.txt.text = item.itemIndex.ToString();
+        item.txt.text = item.index.ToString();
     }
 
     private void Start()

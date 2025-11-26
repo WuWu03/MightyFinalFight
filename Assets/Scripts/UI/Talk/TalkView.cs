@@ -19,15 +19,15 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
     private TalkConfigData m_ConfigData;
     protected override void OnOpen(object arg)
     {
-        component.talkSelectList.onItemUpdateEvent += OnItemUpdateEvent;
-        component.talkSelectList.onItemSelectEvent += OnItemSelectEvent;
+        component.talkSelectList.itemUpdateEvent += OnItemUpdateEvent;
+        component.talkSelectList.itemSelectEvent += OnItemSelectEvent;
     }
 
     protected override void OnShow(object arg)
     {
         int talkId = int.Parse(arg.ToString());
         m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
-        component.talkSelectList.SetActive(false);
+        component.talkSelectList.SetActiveSelf(false);
         component.talkSelectList.SelectItem(0);
         PlayTalk();
     }
@@ -48,7 +48,7 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
                     {
                         int talkId = m_ConfigData.talkSelect[m_SelectIndex].talkId;
                         m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
-                        component.talkSelectList.SetActive(false);
+                        component.talkSelectList.SetActiveSelf(false);
                         PlayTalk();
                     }
                 }
@@ -95,8 +95,8 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
 
     protected override void OnDestroy()
     {
-        component.talkSelectList.onItemUpdateEvent -= OnItemUpdateEvent;
-        component.talkSelectList.onItemSelectEvent -= OnItemSelectEvent;
+        component.talkSelectList.itemUpdateEvent -= OnItemUpdateEvent;
+        component.talkSelectList.itemSelectEvent -= OnItemSelectEvent;
     }
 
     private void PlayTalk()
@@ -115,13 +115,13 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
             
             if (m_ConfigData.talkSelect is { Length: > 0 })
             {
-                component.talkSelectList.SetActive(true);
-                component.talkSelectList.RefreshItems(m_ConfigData.talkSelect.Length);
+                component.talkSelectList.SetActiveSelf(true);
+                component.talkSelectList.SetItemCount(m_ConfigData.talkSelect.Length);
                 component.talkSelectList.SelectItem(0);
             }
             else
             {
-                component.talkSelectList.SetActive(false);
+                component.talkSelectList.SetActiveSelf(false);
 
                 if (m_ConfigData.nextTalkId == 0)
                 {
@@ -132,21 +132,21 @@ public class TalkView : UIBaseView<TalkViewComponent, TalkViewSettings>
         });
     }
 
-    private void OnItemUpdateEvent(StaticListItem item)
+    private void OnItemUpdateEvent(BaseListItem item)
     {
         if (item is TalkViewComponent.TalkSelectListItem talkSelectItem)
         {
-            talkSelectItem.txtSelect.SetLanguageTextKey(m_ConfigData.talkSelect[item.itemIndex].content);
+            talkSelectItem.txtSelect.SetLanguageTextKey(m_ConfigData.talkSelect[item.index].content);
         }
     }
 
-    private void OnItemSelectEvent(StaticListItem item, bool isSelect)
+    private void OnItemSelectEvent(BaseListItem item, bool isSelect)
     {
         if (item is TalkViewComponent.TalkSelectListItem talkSelectItem)
         {
             if (isSelect)
             {
-                m_SelectIndex = item.itemIndex;
+                m_SelectIndex = item.index;
             }
   
             talkSelectItem.selectGo.SetActiveSelf(isSelect);

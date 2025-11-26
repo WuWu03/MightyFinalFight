@@ -55,15 +55,15 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            GameFrameWork.Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorConfigFullPath);
+            GameFrameWork.Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorConfigFullPath);
 
-            if (!File.Exists(EditorPathUtil.behaviourTreeWindowDataFullPath))
+            if (!File.Exists(EditorPathUtil.BehaviourTreeWindowDataFullPath))
             {
                 m_BehaviourTreeWindowConfig = new BehaviourTreeWindowConfig();
             }
             else
             {
-                string jsonStr = File.ReadAllText(EditorPathUtil.behaviourTreeWindowDataFullPath);
+                string jsonStr = File.ReadAllText(EditorPathUtil.BehaviourTreeWindowDataFullPath);
                 m_BehaviourTreeWindowConfig = LitJson.JsonMapper.ToObject<BehaviourTreeWindowConfig>(jsonStr);
             }
 
@@ -559,7 +559,7 @@ namespace GameFrameWork.Editor
         private void SaveConfig()
         {
             string jsonStr = LitJson.JsonMapper.ToJson(m_BehaviourTreeWindowConfig);
-            File.WriteAllText(EditorPathUtil.behaviourTreeWindowDataFullPath, jsonStr);
+            File.WriteAllText(EditorPathUtil.BehaviourTreeWindowDataFullPath, jsonStr);
         }
 
         private void ExportConfig()

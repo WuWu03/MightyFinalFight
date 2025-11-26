@@ -60,17 +60,17 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            if (!Directory.Exists(EditorPathUtil.editorConfigFullPath))
+            if (!Directory.Exists(EditorPathUtil.EditorConfigFullPath))
             {
-                Directory.CreateDirectory(EditorPathUtil.editorConfigFullPath);
+                Directory.CreateDirectory(EditorPathUtil.EditorConfigFullPath);
             }
 
-            if (!File.Exists(EditorPathUtil.assetBundleWindowDataFullPath))
+            if (!File.Exists(EditorPathUtil.AassetBundleWindowDataFullPath))
             {
-                EditorUtil.CreateConfigData<AssetBundleConfig, AssetBundleData>(EditorPathUtil.assetBundleWindowDataName, EditorPathUtil.assetBundleWindowDataExtend, EditorPathUtil.editorConfigPath);
+                EditorUtil.CreateConfigData<AssetBundleConfig, AssetBundleData>(EditorPathUtil.AssetBundleWindowDataName, EditorPathUtil.AssetBundleWindowDataExtend, EditorPathUtil.EditorConfigPath);
             }
 
-            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
+            m_AssetBundleConfig = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.AssetBundleWindowDataPath);
 
             for (int i = 0; i < m_AssetBundleConfig.listDatas.Count; i++)
             {

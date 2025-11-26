@@ -15,8 +15,8 @@ namespace GameFrameWork.UI
             Last
         }
 
-        public event GameFrameWorkAction<ScrollListItem> renderItemEvent;
-        public event GameFrameWorkFunc<int, Vector2> renderItemSizeEvent;
+        public event GameFrameWorkAction<BaseListItem> itemUpdateEvent;
+        public event GameFrameWorkFunc<int, Vector2> itemSizeEvent;
         public float xSpacing;
         public float ySpacing;
         public bool isHorizontalReverse;
@@ -46,8 +46,8 @@ namespace GameFrameWork.UI
         private int m_CurrStartRowOrColumn;
         private int m_CurrEndRowOrColumn;
         private float m_ScrollPosition;
-        private LinkedList<ScrollListItem> m_ActiveItems;
-        private Queue<ScrollListItem> m_RecycledItems;
+        private LinkedList<BaseListItem> m_ActiveItems;
+        private Queue<BaseListItem> m_RecycledItems;
         private List<Vector2> m_ItemSizeArray;
         private List<float> m_ItemOffsetArray;
         private List<int> m_RemainingItemIndexes;
@@ -61,13 +61,13 @@ namespace GameFrameWork.UI
             {
                 return;
             }
-            
+
             if (m_ScrollRect is null)
             {
                 throw new GameFrameWorkException("[Scroll Rect] 组件不存在");
             }
 
-            this.AddEvent();
+            AddEvent();
         }
 
         private void OnDisable()
@@ -76,27 +76,27 @@ namespace GameFrameWork.UI
             {
                 return;
             }
-            
+
             if (m_ScrollRect is null)
             {
                 throw new GameFrameWorkException("[Scroll Rect] 组件不存在");
             }
 
-            this.RemoveEvent();
+            RemoveEvent();
         }
 
-        public void Init<T>() where T : ScrollListItem
+        public void Init<T>() where T : BaseListItem
         {
             if (m_IsInit)
             {
                 throw new GameFrameWorkException("不能重复初始化");
             }
-            
+
             m_ScrollRect = GetComponent<ScrollRect>();
 
             if (m_ScrollRect is null)
             {
-                throw new GameFrameWorkException("ScrollRect组件为空");
+                throw new GameFrameWorkException("[Scroll Rect] 组件不存在");
             }
 
             if (m_ScrollRect.content is null || m_ScrollRect.viewport is null)
@@ -109,7 +109,7 @@ namespace GameFrameWork.UI
                 throw new GameFrameWorkException("prefab为空");
             }
 
-            this.AddEvent();
+            AddEvent();
 
             if (m_ScrollRect.vertical)
             {
@@ -146,7 +146,7 @@ namespace GameFrameWork.UI
             {
                 throw new GameFrameWorkException("未初始化，必须先调用Init方法进行初始化");
             }
-            
+
             if (m_ItemCount == count)
             {
                 RefreshActiveItems(keepPosition);
@@ -190,7 +190,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public void SetScrollPosition(float scrollPosition)
+        public void SetScrollPosition(float scrollPosition, bool isForce)
         {
             if (!m_IsInit)
             {
@@ -204,7 +204,7 @@ namespace GameFrameWork.UI
 
             scrollPosition = Mathf.Clamp(scrollPosition, 0, scrollSize);
 
-            if (m_HasInitScrollPos && Mathf.Approximately(m_ScrollPosition, scrollPosition))
+            if (!isForce && Mathf.Approximately(m_ScrollPosition, scrollPosition))
             {
                 return;
             }
@@ -243,7 +243,7 @@ namespace GameFrameWork.UI
 
             foreach (var activeItem in m_ActiveItems)
             {
-                renderItemEvent?.Invoke(activeItem);
+                itemUpdateEvent?.Invoke(activeItem);
             }
         }
 
@@ -252,12 +252,12 @@ namespace GameFrameWork.UI
             if (m_ScrollRect.vertical)
             {
                 float scrollPositionFactor = isVerticalReverse ? 0 : 1;
-                SetScrollPosition((1 - scrollPositionFactor) * scrollSize);
+                SetScrollPosition((1 - scrollPositionFactor) * scrollSize, true);
             }
             else
             {
                 float scrollPositionFactor = isHorizontalReverse ? 1 : 0;
-                SetScrollPosition(scrollPositionFactor * scrollSize);
+                SetScrollPosition(scrollPositionFactor * scrollSize, true);
             }
         }
 
@@ -277,7 +277,7 @@ namespace GameFrameWork.UI
 
             for (int i = 0; i < m_ItemCount; i++)
             {
-                m_ItemSizeArray.Add(renderItemSizeEvent?.Invoke(i) ?? m_PrefabRect.sizeDelta);
+                m_ItemSizeArray.Add(itemSizeEvent?.Invoke(i) ?? m_PrefabRect.sizeDelta);
             }
 
             for (var i = 0; i < rowOrColumn; i++) // 只存储行或列的第一个元素的宽或高
@@ -312,18 +312,18 @@ namespace GameFrameWork.UI
             int startIndex = startRowOrColumn * perCount;
             int endIndex = Mathf.Min(m_ItemCount - 1, endRowOrColumn * perCount + perCount - 1);
             m_RemainingItemIndexes.Clear();
-            LinkedListNode<ScrollListItem> current = m_ActiveItems.First;
+            LinkedListNode<BaseListItem> current = m_ActiveItems.First;
 
             while (current != null)
             {
-                if (current.Value.itemIndex < startIndex || current.Value.itemIndex > endIndex)
+                if (current.Value.index < startIndex || current.Value.index > endIndex)
                 {
                     RecycleItem(current.Value);
                     current = m_ActiveItems.First;
                 }
                 else
                 {
-                    m_RemainingItemIndexes.Add(current.Value.itemIndex);
+                    m_RemainingItemIndexes.Add(current.Value.index);
                     current = current.Next;
                 }
             }
@@ -369,7 +369,7 @@ namespace GameFrameWork.UI
             bool verticalReverseCondition = m_ScrollRect.vertical && isVerticalReverse;
             bool horizontalReverseCondition = m_ScrollRect.horizontal && isHorizontalReverse;
 
-            if (verticalReverseCondition || horizontalReverseCondition)
+            if (horizontalReverseCondition || verticalReverseCondition)
             {
                 int tempStartRowOrColumn = (m_ScrollRect.vertical ? m_Row : m_Column) - endRowOrColumn - 1;
                 int tempEndRowOrColumn = (m_ScrollRect.vertical ? m_Row : m_Column) - startRowOrColumn - 1;
@@ -410,10 +410,10 @@ namespace GameFrameWork.UI
             }
 
             var item = GetItem();
-            item.itemIndex = index;
+            item.index = index;
             item.transform.localScale = Vector3.one;
             item.transform.SetParent(m_ScrollRect.content, false);
-            item.SetActiveSelf(true);
+            item.SetActive(true);
             item.rectTransform.anchorMin = new Vector2(isHorizontalReverse ? 1 : 0, isVerticalReverse ? 0 : 1);
             item.rectTransform.anchorMax = new Vector2(isHorizontalReverse ? 1 : 0, isVerticalReverse ? 0 : 1);
             item.rectTransform.pivot = new Vector2(isHorizontalReverse ? 1 : 0, isVerticalReverse ? 0 : 1);
@@ -440,10 +440,10 @@ namespace GameFrameWork.UI
                 m_ActiveItems.AddLast(item);
             }
 
-            renderItemEvent?.Invoke(item);
+            itemUpdateEvent?.Invoke(item);
         }
 
-        private ScrollListItem GetItem()
+        private BaseListItem GetItem()
         {
             if (m_RecycledItems.Count > 0)
             {
@@ -451,7 +451,7 @@ namespace GameFrameWork.UI
             }
 
             var go = Instantiate(prefab);
-            var item = Activator.CreateInstance(m_ItemClassType) as ScrollListItem;
+            var item = Activator.CreateInstance(m_ItemClassType) as BaseListItem;
             item?.Create(go);
             return item;
         }
@@ -460,8 +460,8 @@ namespace GameFrameWork.UI
         {
             foreach (var activeItem in m_ActiveItems)
             {
-                activeItem.SetActiveSelf(false);
-                activeItem.itemIndex = 0;
+                activeItem.SetActive(false);
+                activeItem.index = 0;
                 m_RecycledItems.Enqueue(activeItem);
             }
 
@@ -470,12 +470,12 @@ namespace GameFrameWork.UI
             m_CurrEndRowOrColumn = 0;
         }
 
-        private void RecycleItem(ScrollListItem activeItem)
+        private void RecycleItem(BaseListItem activeItem)
         {
             m_ActiveItems.Remove(activeItem);
             m_RecycledItems.Enqueue(activeItem);
-            activeItem.SetActiveSelf(false);
-            activeItem.itemIndex = 0;
+            activeItem.SetActive(false);
+            activeItem.index = 0;
         }
 
         private void AddEvent()

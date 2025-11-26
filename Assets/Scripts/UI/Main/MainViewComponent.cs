@@ -1,6 +1,6 @@
 /*
  * @Desc: Main 模块 MainView 界面组件
- * @Date: 2025-10-20 20:57:12
+ * @Date: 2025-11-25 18:33:03
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -39,13 +39,12 @@ public class MainViewComponent : UIBaseComponent
 		enemyHpBarImage = root.objects[3] as Image;
 		txtStage = root.objects[4] as TextMeshProUGUI;
 		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
-        levelList = root.objects[6] as StaticList;
-		GameObject levelListItem = root.objects[7] as GameObject;
-		levelList.Init<LevelListItem>(levelList.gameObject , levelListItem);
-		txtExp = root.objects[8] as TextMeshProUGUI;
+		levelList = root.objects[6] as StaticList;
+		levelList?.Init<LevelListItem>();
+		txtExp = root.objects[7] as TextMeshProUGUI;
 	}
 
-	public class LevelListItem : StaticListItem
+	public class LevelListItem : BaseListItem
 	{
 		//level/levelList/levelListItem/imgLevel1,GameObject
 		public GameObject imgLevel1Go {get; private set;}

@@ -54,13 +54,13 @@ namespace GameFrameWork.UI
         /// <summary>
         /// 列表格子成员
         /// </summary>
-        public bool IsListItemVariable
+        public bool isListItemVariable
         {
             get { return m_IsListItemVariable; }
             set { m_IsListItemVariable = value; }
         }
 
-        public bool IsList
+        public bool isList
         {
             get { return m_IsList; }
             set { m_IsList = value; }

@@ -5,56 +5,56 @@ namespace GameFrameWork.Editor
 {
     public class EditorPathUtil
     {
-        public const string applicationDataPath = "Assets/";
-        public static string applicationDataFullPath = Application.dataPath + "/";
+        public const string ApplicationDataPath = "Assets/";
+        public static readonly string ApplicationDataFullPath = Application.dataPath + "/";
 
-        public static string streamingAssetsPath = applicationDataPath + "StreamingAssets/";
-        public static string streamingAssetsFullPath = applicationDataFullPath + "StreamingAssets/";
+        public static readonly string StreamingAssetsPath = ApplicationDataPath + "StreamingAssets/";
+        public static readonly string StreamingAssetsFullPath = ApplicationDataFullPath + "StreamingAssets/";
 
-        public const string editorUIRootPath = applicationDataPath + "GameFrameWork/UI/UIRoot.prefab";
-        public const string editorUIRootScenePath = applicationDataPath + "GameFrameWork/UI/UIRootScene.prefab";
+        public const string EditorUIRootPath = ApplicationDataPath + "GameFrameWork/UI/UIRoot.prefab";
+        public const string EditorUIRootScenePath = ApplicationDataPath + "GameFrameWork/UI/UIRootScene.prefab";
 
-        public const string editorConfigPath = applicationDataPath +  "Editor/Config/";
-        public static string editorConfigFullPath = applicationDataFullPath + "Editor/Config/";
+        public const string EditorConfigPath = ApplicationDataPath +  "Editor/Config/";
+        public static readonly string EditorConfigFullPath = ApplicationDataFullPath + "Editor/Config/";
 
-        public const string editorResourcesPath = applicationDataPath + "Resources/";
-        public static string editorResourcesFullPath = applicationDataFullPath + "Resources/";
+        public const string EditorResourcesPath = ApplicationDataPath + "Resources/";
+        public static readonly string EditorResourcesFullPath = ApplicationDataFullPath + "Resources/";
 
-        public const string editorScriptPath = applicationDataPath + "Scripts/";
-        public static string editorScriptFullPath = applicationDataFullPath + "Scripts/";
+        public const string EditorScriptPath = ApplicationDataPath + "Scripts/";
+        public static readonly string EditorScriptFullPath = ApplicationDataFullPath + "Scripts/";
 
-        public const string behaviourTreeWindowDataName = "BehaviourTreeWindowData";
-        public const string behaviourTreeWindowDataExtend = ".json";
-        public const string behaviourTreeWindowDataFullPath =  editorConfigPath + behaviourTreeWindowDataName + behaviourTreeWindowDataExtend;
+        public const string BehaviourTreeWindowDataName = "BehaviourTreeWindowData";
+        public const string BehaviourTreeWindowDataExtend = ".json";
+        public const string BehaviourTreeWindowDataFullPath =  EditorConfigPath + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
 
-        public const string assetBundleWindowDataName = "AssetBundleWindowData";
-        public const string assetBundleWindowDataExtend = ".asset";
-        public const string assetBundleWindowDataPath = editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
-        public static string assetBundleWindowDataFullPath = applicationDataFullPath + editorConfigPath + assetBundleWindowDataName + assetBundleWindowDataExtend;
+        public const string AssetBundleWindowDataName = "AssetBundleWindowData";
+        public const string AssetBundleWindowDataExtend = ".asset";
+        public const string AssetBundleWindowDataPath = EditorConfigPath + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
+        public static readonly string AassetBundleWindowDataFullPath = ApplicationDataFullPath + EditorConfigPath + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
 
-        public const string gameFrameWorkConfigWindowDataName = "GameFrameWorkConfigWindowData";
-        public const string gameFrameWorkConfigWindowDataExtend = ".asset";
-        public static string gameFrameWorkConfigWindowDataPath = editorConfigPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
-        public static string gameFrameWorkConfigWindowDataFullPath = editorConfigFullPath + gameFrameWorkConfigWindowDataName + gameFrameWorkConfigWindowDataExtend;
+        public const string GameFrameWorkConfigWindowDataName = "GameFrameWorkConfigWindowData";
+        public const string GameFrameWorkConfigWindowDataExtend = ".asset";
+        public static readonly string GameFrameWorkConfigWindowDataPath = EditorConfigPath + GameFrameWorkConfigWindowDataName + GameFrameWorkConfigWindowDataExtend;
+        public static readonly string GameFrameWorkConfigWindowDataFullPath = EditorConfigFullPath + GameFrameWorkConfigWindowDataName + GameFrameWorkConfigWindowDataExtend;
         
-        public const string entryScriptName = "GameEntry";
-        public const string entryScriptExtend = ".cs";
-        public static string entryScriptFullPath = editorScriptFullPath + entryScriptName + entryScriptExtend;
+        public const string EntryScriptName = "GameEntry";
+        public const string EntryScriptExtend = ".cs";
+        public static readonly string EntryScriptFullPath = EditorScriptFullPath + EntryScriptName + EntryScriptExtend;
 
-        public const string defaultUIPath = "UI";
-        public const string defaultUIScriptsPath = "Scripts/UI";
-        public const string defaultConfigDataPath = "ConfigData";
+        public const string DefaultUIPath = "UI";
+        public const string DefaultUIScriptsPath = "Scripts/UI";
+        public const string DefaultConfigDataPath = "ConfigData";
 
-        public const string uiPrefabsPath = "Prefabs";
-        public const string uiAtlasPath = "Atlas";
-        public const string uiScenesPath = "Scenes";
-        public const string uiSpritesPath = "Sprites";
+        public const string UIPrefabsPath = "Prefabs";
+        public const string UIAtlasPath = "Atlas";
+        public const string UIScenesPath = "Scenes";
+        public const string UISpritesPath = "Sprites";
 
-        public const string assetMapFileDefaultName = "AssetMap";
-        public const string assetMapFileDefaultExt = ".txt";
+        public const string AssetMapFileDefaultName = "AssetMap";
+        public const string AssetMapFileDefaultExt = ".txt";
 
-        public const string versionFileDefaultName = "Version";
-        public const string versionFileDefaultExt = ".txt";
+        public const string VersionFileDefaultName = "Version";
+        public const string VersionFileDefaultExt = ".txt";
 
         public static string GetUIPrefabPath()
         {
@@ -65,7 +65,7 @@ namespace GameFrameWork.Editor
                 return string.Empty;
             }
 
-            return PathUtil.FormatPath(uiPath, uiPrefabsPath);
+            return PathUtil.FormatPath(uiPath, UIPrefabsPath);
         }
 
         public static string GetUIAtlasPath()
@@ -77,7 +77,7 @@ namespace GameFrameWork.Editor
                 return string.Empty;
             }
 
-            return PathUtil.FormatPath(uiPath, uiAtlasPath);
+            return PathUtil.FormatPath(uiPath, UIAtlasPath);
         }
 
         public static string GetPathWithoutAssets(string path)

@@ -145,10 +145,10 @@ namespace GameFrameWork.Editor
 
         private void SaveGameFrameWorkConfig(GameFrameWorkConfigWindowData windowData)
         {
-            string configPath = PathUtil.FormatPath(EditorPathUtil.editorResourcesPath, PathUtil.gameFrameWorkConfigDataName);
-            string configFullPath = PathUtil.FormatPath(EditorPathUtil.editorResourcesFullPath, PathUtil.gameFrameWorkConfigDataName);
+            string configPath = PathUtil.FormatPath(EditorPathUtil.EditorResourcesPath, PathUtil.gameFrameWorkConfigDataName);
+            string configFullPath = PathUtil.FormatPath(EditorPathUtil.EditorResourcesFullPath, PathUtil.gameFrameWorkConfigDataName);
 
-            Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorResourcesFullPath);
+            Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorResourcesFullPath);
 
             GameFrameWorkConfig config = null;
 

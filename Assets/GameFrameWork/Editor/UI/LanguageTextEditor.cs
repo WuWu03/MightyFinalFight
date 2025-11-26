@@ -10,21 +10,26 @@ namespace GameFrameWork.Editor
     [CustomEditor(typeof(LanguageText))]
     public class LanguageTextEditor : UnityEditor.Editor
     {
+        private string[] m_PopKeys;
+        private int m_SelectedIndex = -1;
+        private static List<string> s_LanguageTextKeys;
+        private LanguageText m_LanguageText;
+        
         void OnEnable()
         {
             m_LanguageText = (target as LanguageText);
             m_SelectedIndex = -1;
 
-            if (m_LanguageTextKeys == null)
+            if (s_LanguageTextKeys == null)
             {
                 string languageKeyPath = EditorMgr.GetGameFrameWorkConfig().languageKeyFilePath;
                 string languageKeyFullPath = PathUtil.GetAssetFullPath(languageKeyPath);
 
                 if (!string.IsNullOrEmpty(languageKeyPath) && System.IO.File.Exists(languageKeyFullPath))
                 {
-                    m_LanguageTextKeys = new List<string>();
-                    m_LanguageTextKeys.AddRange(System.IO.File.ReadAllLines(languageKeyFullPath, System.Text.Encoding.UTF8));
-                    m_LanguageTextKeys.Sort(StringComparer.Ordinal);
+                    s_LanguageTextKeys = new List<string>();
+                    s_LanguageTextKeys.AddRange(System.IO.File.ReadAllLines(languageKeyFullPath, System.Text.Encoding.UTF8));
+                    s_LanguageTextKeys.Sort(StringComparer.Ordinal);
                 }
             }
         }
@@ -33,18 +38,18 @@ namespace GameFrameWork.Editor
         {
             m_LanguageText = null;
             m_SelectedIndex = -1;
-            m_LanguageTextKeys = null;
+            s_LanguageTextKeys = null;
         }
 
         public override void OnInspectorGUI()
         {
             SerializedProperty languageTextKey = serializedObject.FindProperty("languageTextKey");
 
-            if (m_LanguageTextKeys != null && m_LanguageTextKeys.Count > 0)
+            if (s_LanguageTextKeys is { Count: > 0 })
             {
                 if (!string.IsNullOrEmpty(m_LanguageText.languageTextKey))
                 {
-                    GUI.color = m_LanguageTextKeys.Contains(m_LanguageText.languageTextKey) ? Color.green : Color.red;
+                    GUI.color = s_LanguageTextKeys.Contains(m_LanguageText.languageTextKey) ? Color.green : Color.red;
                 }
                 else
                 {
@@ -64,9 +69,9 @@ namespace GameFrameWork.Editor
             {
                 EditorUtility.SetDirty(target);
 
-                if (m_LanguageTextKeys != null && m_LanguageTextKeys.Count > 0)
+                if (s_LanguageTextKeys is { Count: > 0 })
                 {
-                    m_PopKeys = m_LanguageTextKeys.FindAll(key => key.ToLower().StartsWith(languageTextKey.stringValue.ToLower())).ToArray();
+                    m_PopKeys = s_LanguageTextKeys.FindAll(key => key.ToLower().StartsWith(languageTextKey.stringValue.ToLower())).ToArray();
                 }
 
                 m_SelectedIndex = -1;
@@ -74,7 +79,7 @@ namespace GameFrameWork.Editor
 
             m_LanguageText.languageTextKey = languageTextKey.stringValue;
 
-            if (m_PopKeys != null && m_PopKeys.Length > 0)
+            if (m_PopKeys is { Length: > 0 })
             {
                 int select = EditorGUILayout.Popup(m_SelectedIndex, m_PopKeys);
                 if (select != m_SelectedIndex)
@@ -86,10 +91,5 @@ namespace GameFrameWork.Editor
                 }
             }
         }
-
-        private string[] m_PopKeys = null;
-        private int m_SelectedIndex = -1;
-        private static List<string> m_LanguageTextKeys = null;
-        private LanguageText m_LanguageText;
     }
 }

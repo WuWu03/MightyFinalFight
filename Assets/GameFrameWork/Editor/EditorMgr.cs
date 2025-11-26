@@ -16,7 +16,7 @@ namespace GameFrameWork.Editor
 
         public static GameFrameWorkConfigWindowData GetGameFrameWorkConfig()
         {
-            GameFrameWorkConfigWindowData config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.gameFrameWorkConfigWindowDataPath);
+            GameFrameWorkConfigWindowData config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.GameFrameWorkConfigWindowDataPath);
             return config;
         }
 
@@ -62,8 +62,8 @@ namespace GameFrameWork.Editor
                 sb.AppendLine();
                 sb.Append("}");
         
-                Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorScriptFullPath);
-                File.WriteAllText(EditorPathUtil.entryScriptFullPath, sb.ToString());
+                Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorScriptFullPath);
+                File.WriteAllText(EditorPathUtil.EntryScriptFullPath, sb.ToString());
                 AssetDatabase.Refresh();
             }
         }
@@ -154,7 +154,7 @@ namespace GameFrameWork.Editor
             GameObject uiRoot = GameObject.Find("UIRoot");
             if (uiRoot == null)
             {
-                UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.editorUIRootPath));
+                UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.EditorUIRootPath));
             }
         }
         

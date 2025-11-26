@@ -51,16 +51,16 @@ namespace GameFrameWork.Editor
                 {
                     m_UIPath = PathUtil.GetAssetPath(m_UIPath);
                     string uiPath = PathUtil.GetAssetPath(m_UIPath);
-                    string uiPrefabsPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiPrefabsPath);
-                    string uiAtlasPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiAtlasPath);
-                    string uiScenesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiScenesPath);
-                    string uiSpritesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.uiSpritesPath);
+                    string uiPrefabsPath = PathUtil.FormatPath(uiPath, EditorPathUtil.UIPrefabsPath);
+                    string uiAtlasPath = PathUtil.FormatPath(uiPath, EditorPathUtil.UIAtlasPath);
+                    string uiScenesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.UIScenesPath);
+                    string uiSpritesPath = PathUtil.FormatPath(uiPath, EditorPathUtil.UISpritesPath);
 
                     string uiFullPath = PathUtil.GetAssetFullPath(m_UIPath);
-                    string uiPrefabsFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiPrefabsPath);
-                    string uiAtlasFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiAtlasPath);
-                    string uiScenesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiScenesPath);
-                    string uiSpritesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.uiSpritesPath);
+                    string uiPrefabsFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.UIPrefabsPath);
+                    string uiAtlasFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.UIAtlasPath);
+                    string uiScenesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.UIScenesPath);
+                    string uiSpritesFullPath = PathUtil.FormatPath(uiFullPath, EditorPathUtil.UISpritesPath);
 
                     Utils.FileUtil.VerifyDirectory(uiFullPath);
                     Utils.FileUtil.VerifyDirectory(uiPrefabsFullPath);
@@ -106,12 +106,12 @@ namespace GameFrameWork.Editor
                 {
                     if (string.IsNullOrEmpty(m_VersionFileName))
                     {
-                        m_VersionFileName = EditorPathUtil.versionFileDefaultName;
+                        m_VersionFileName = EditorPathUtil.VersionFileDefaultName;
                     }
 
                     if (string.IsNullOrEmpty(Path.GetExtension(m_VersionFileName)))
                     {
-                        m_VersionFileName += EditorPathUtil.versionFileDefaultExt;
+                        m_VersionFileName += EditorPathUtil.VersionFileDefaultExt;
                     }
 
                     m_EditorConfig.versionFileName = m_VersionFileName;
@@ -124,12 +124,12 @@ namespace GameFrameWork.Editor
                    {
                        if (string.IsNullOrEmpty(m_AssetMapFileName))
                        {
-                           m_AssetMapFileName = EditorPathUtil.assetMapFileDefaultName;
+                           m_AssetMapFileName = EditorPathUtil.AssetMapFileDefaultName;
                        }
 
                        if (string.IsNullOrEmpty(Path.GetExtension(m_AssetMapFileName)))
                        {
-                           m_AssetMapFileName += EditorPathUtil.assetMapFileDefaultExt;
+                           m_AssetMapFileName += EditorPathUtil.AssetMapFileDefaultExt;
                        }
 
                        m_EditorConfig.assetMapFileName = m_AssetMapFileName;
@@ -209,43 +209,43 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(m_VersionFileName))
             {
-                m_VersionFileName = EditorPathUtil.versionFileDefaultName;
+                m_VersionFileName = EditorPathUtil.VersionFileDefaultName;
                 m_EditorConfig.versionFileName = m_VersionFileName;
             }
 
             if (string.IsNullOrEmpty(Path.GetExtension(m_VersionFileName)))
             {
-                m_VersionFileName += EditorPathUtil.versionFileDefaultExt;
+                m_VersionFileName += EditorPathUtil.VersionFileDefaultExt;
                 m_EditorConfig.versionFileName = m_VersionFileName;
             }
 
             if (string.IsNullOrEmpty(m_AssetMapFileName))
             {
-                m_AssetMapFileName = EditorPathUtil.assetMapFileDefaultName;
+                m_AssetMapFileName = EditorPathUtil.AssetMapFileDefaultName;
                 m_EditorConfig.assetMapFileName = m_AssetMapFileName;
             }
 
             if(string.IsNullOrEmpty(Path.GetExtension(m_AssetMapFileName)))
             {
-                m_AssetMapFileName += EditorPathUtil.assetMapFileDefaultExt;
+                m_AssetMapFileName += EditorPathUtil.AssetMapFileDefaultExt;
                 m_EditorConfig.assetMapFileName = m_AssetMapFileName;
             }
 
             if (string.IsNullOrEmpty(m_UIPath))
             {
-                m_UIPath = PathUtil.GetAssetPath(EditorPathUtil.defaultUIPath);
+                m_UIPath = PathUtil.GetAssetPath(EditorPathUtil.DefaultUIPath);
                 m_EditorConfig.uiPath = m_UIPath;
             }
 
             if (string.IsNullOrEmpty(m_UIScriptsPath))
             {
-                m_UIScriptsPath = PathUtil.GetAssetPath(EditorPathUtil.defaultUIScriptsPath);
+                m_UIScriptsPath = PathUtil.GetAssetPath(EditorPathUtil.DefaultUIScriptsPath);
                 m_EditorConfig.uiScriptsPath = m_UIScriptsPath;
             }
             
             if (string.IsNullOrEmpty(m_ConfigDataPath))
             {
-                m_ConfigDataPath = PathUtil.GetAssetPath(EditorPathUtil.defaultConfigDataPath);
+                m_ConfigDataPath = PathUtil.GetAssetPath(EditorPathUtil.DefaultConfigDataPath);
                 m_EditorConfig.configDataPath = m_ConfigDataPath;
             }
 
@@ -269,18 +269,18 @@ namespace GameFrameWork.Editor
         {
             GameFrameWorkConfigWindowData config = null;
 
-            Utils.FileUtil.VerifyDirectory(EditorPathUtil.editorConfigFullPath);
+            Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorConfigFullPath);
 
-            if (!File.Exists(EditorPathUtil.gameFrameWorkConfigWindowDataFullPath))
+            if (!File.Exists(EditorPathUtil.GameFrameWorkConfigWindowDataFullPath))
             {
                 config = ScriptableObject.CreateInstance<GameFrameWorkConfigWindowData>();
-                AssetDatabase.CreateAsset(config, EditorPathUtil.gameFrameWorkConfigWindowDataPath);
+                AssetDatabase.CreateAsset(config, EditorPathUtil.GameFrameWorkConfigWindowDataPath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
             }
             else
             {
-                config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.gameFrameWorkConfigWindowDataPath);
+                config = AssetDatabase.LoadAssetAtPath<GameFrameWorkConfigWindowData>(EditorPathUtil.GameFrameWorkConfigWindowDataPath);
             }
 
             return config;

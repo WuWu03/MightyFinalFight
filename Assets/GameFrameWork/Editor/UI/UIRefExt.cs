@@ -149,7 +149,7 @@ namespace GameFrameWork.Editor
             {
                 if (current.TryGetComponent(out UIRef component))
                 {
-                    if (component.IsList)
+                    if (component.isList)
                     {
                         return true;
                     }

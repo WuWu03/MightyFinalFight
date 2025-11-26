@@ -37,7 +37,7 @@ namespace GameFrameWork.Editor
         }
 
         private static UIRefSetting s_UIRefSetting;
-        private static IUIScriptsExporter s_CSharpExporter;
+        private static readonly IUIScriptsExporter s_CSharpExporter;
         
         static UIEditorInit()
         {
@@ -59,7 +59,7 @@ namespace GameFrameWork.Editor
 
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
-                if (UnityEditor.EditorUtility.DisplayDialog("提示", "未设置UI目录，点击确定前往设置", "确定"))
+                if (EditorUtility.DisplayDialog("提示", "未设置UI目录，点击确定前往设置", "确定"))
                 {
                     EditorMgr.GameFrameWorkStartUp();
                 }
@@ -71,7 +71,7 @@ namespace GameFrameWork.Editor
 
             if (File.Exists(uiPath))
             {
-                UnityEngine.SceneManagement.Scene activeScene = EditorSceneManager.GetActiveScene();
+                UnityEngine.SceneManagement.Scene activeScene = SceneManager.GetActiveScene();
 
                 if (activeScene.path == uiPath)
                 {
@@ -98,14 +98,19 @@ namespace GameFrameWork.Editor
             GameFrameWorkConfigWindowData config = EditorMgr.GetGameFrameWorkConfig();
             string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
-            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.editorUIRootScenePath));
+            UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.EditorUIRootScenePath));
             root.name = "UIRoot";
             UIRefSetting settings = new GameObject("UI Scene Setting").AddComponent<UIRefSetting>();
             settings.viewName = Path.GetFileNameWithoutExtension(uiName);
             settings.transform.SetAsLastSibling();
-            GameObject rootObj = root as GameObject;
+
+            if (root is not GameObject rootObj)
+            {
+                return;
+            }
+            
             rootObj.transform.SetAsLastSibling();
-            GameObject panel = new GameObject("Panel");
+            GameObject panel = new ("Panel");
             RectTransform rect = panel.AddComponent<RectTransform>();
             panel.gameObject.AddComponent<UIRefRoot>();
             rect.anchoredPosition = Vector3.zero;
@@ -142,6 +147,7 @@ namespace GameFrameWork.Editor
                 }
 
                 GUI.color = Color.red;
+                
                 if (GUI.Button(new Rect(10, 50, 150f, 30f), "生成预制体(不生成代码)"))
                 {
                     string exportPath = ExportUIPrefab(false);
@@ -180,7 +186,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            GameObject gameObject = UnityEditor.EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
 
             if (gameObject == null || gameObject.transform.parent == null)
             {
@@ -203,17 +209,14 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
-            GUIStyle labelStyle2 = new GUIStyle(EditorStyles.label);
-
+            GUIStyle labelStyle = new(EditorStyles.label);
+            GUIStyle labelStyle2 = new(EditorStyles.label);
             labelStyle.normal.textColor = Color.green;
             labelStyle2.normal.textColor = Color.yellow;
-
             float x = selectionRect.x + selectionRect.width - 15f;
             float y = selectionRect.y + 2f;
             float width = 15f;
             float height = selectionRect.height;
-
             GUI.Label(new Rect(x, y, width, height), "*", component.isCopyRefStr ? labelStyle2 : labelStyle);
         }
 
@@ -249,23 +252,23 @@ namespace GameFrameWork.Editor
 
             if (string.IsNullOrEmpty(uiRefSetting.viewName) || uiRefSetting.viewName.Contains("/"))
             {
-                UnityEngine.Debug.LogError("界面名字未设置正确");
+                Debug.LogError("界面名字未设置正确");
                 Selection.activeGameObject = uiRefSetting.gameObject;
                 return false;
             }
 
             GameObject gameObject = GameObject.Find("UIRoot/UICanvas/Panel");
             UIRefRoot[] uiRefRoots = gameObject.GetComponentsInChildren<UIRefRoot>(true);
-            List<UIRef> retList = new();
+            List<UIRef> uiRefs = new();
 
             foreach (UIRefRoot uiRefRoot in uiRefRoots)
             {
                 UIRef rootRef = uiRefRoot.GetComponent<UIRef>();
-                GenUIRefRootObjs(uiRefRoot, rootRef != null && rootRef.isListItem, retList);
+                GenUIRefRootObjs(uiRefRoot, rootRef != null && rootRef.isListItem, uiRefs);
             }
 
-            UnityEditor.EditorUtility.SetDirty(gameObject);
-            s_CSharpExporter.Export(retList.ToArray(), uiRefSetting);
+            EditorUtility.SetDirty(gameObject);
+            s_CSharpExporter.Export(uiRefs.ToArray(), uiRefSetting);
             return true;
         }
 
@@ -279,7 +282,7 @@ namespace GameFrameWork.Editor
             for (int i = startIndex; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                if (component.isCopyRefStr || (!isLayoutItem && component.IsListItemVariable))
+                if (component.isCopyRefStr || (!isLayoutItem && component.isListItemVariable))
                 {
                     continue;
                 }
@@ -287,30 +290,29 @@ namespace GameFrameWork.Editor
                 string name = component.GetName();
                 if (!repeat.Add(name))
                 {
-                    string errorStr = string.Concat(new string[]
-                    {
+                    string errorStr = string.Concat(
                         "有重复的引用名称 => ",
                         component.refName,
                         "; 引用对象=>",
                         EditorUtil.GetHierarchy(component.gameObject),
                         "; ",
                         EditorUtil.GetHierarchy(component.gameObject)
-                    });
+                    );
 
-                    UnityEngine.Debug.LogError(errorStr);
+                    Debug.LogError(errorStr);
                     Selection.activeGameObject = component.gameObject;
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(component.componentName) || component.componentName == typeof(Transform).Name)
+                if (string.IsNullOrEmpty(component.componentName) || component.componentName == nameof(Transform))
                 {
                     listComponent.Add(component.transform);
                 }
-                else if (component.componentName == typeof(RectTransform).Name)
+                else if (component.componentName == nameof(RectTransform))
                 {
                     listComponent.Add(component.GetComponent<RectTransform>());
                 }
-                else if (component.componentName == typeof(GameObject).Name)
+                else if (component.componentName == nameof(GameObject))
                 {
                     listComponent.Add(component.gameObject);
                 }
@@ -319,7 +321,10 @@ namespace GameFrameWork.Editor
                     listComponent.Add(component.GetComponent(component.componentName));
                 }
 
-                uiRefs.Add(component);
+                if (!component.isListItem)
+                {
+                    uiRefs.Add(component);  
+                }
             }
 
             uiRefRoot.objects = listComponent.ToArray();
@@ -340,10 +345,9 @@ namespace GameFrameWork.Editor
 
             GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
-
             UIRef[] components = panel.GetComponentsInChildren<UIRef>(true);
-            List<UIRef> listRef = new List<UIRef>();
-            HashSet<string> hashSet = new HashSet<string>();
+            List<UIRef> listRef = new();
+            HashSet<string> hashSet = new();
 
             foreach (var component in components)
             {
@@ -357,7 +361,7 @@ namespace GameFrameWork.Editor
 
                 if (!hashSet.Add(name))
                 {
-                    UnityEngine.Debug.LogError("有重复的引用名称 => " + component.refName + "; 引用对象=>" + path);
+                    Debug.LogError("有重复的引用名称 => " + component.refName + "; 引用对象=>" + path);
                     Selection.activeGameObject = component.gameObject;
                     return false;
                 }
@@ -365,7 +369,7 @@ namespace GameFrameWork.Editor
 
             foreach (var component in components)
             {
-                if (component.IsListItemVariable) continue;
+                if (component.isListItemVariable) continue;
                 listRef.Add(component);
             }
 
@@ -373,7 +377,7 @@ namespace GameFrameWork.Editor
             
             if (string.IsNullOrEmpty(value))
             {
-                UnityEngine.Debug.LogWarning("没有需要导出到剪切板的对象");
+                Debug.LogWarning("没有需要导出到剪切板的对象");
             }
             else
             {
@@ -403,7 +407,7 @@ namespace GameFrameWork.Editor
 
             if (File.Exists(path))
             {
-                if (!UnityEditor.EditorUtility.DisplayDialog("存在资源", "已经存在资源 " + path + " 是否替换", "替换", "取消"))
+                if (!EditorUtility.DisplayDialog("存在资源", "已经存在资源 " + path + " 是否替换", "替换", "取消"))
                 {
                     return null;
                 }
@@ -412,9 +416,7 @@ namespace GameFrameWork.Editor
             GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
             Utils.FileUtil.VerifyDirectory(Path.GetDirectoryName(path));
-
-            bool isSuccess;
-            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out isSuccess);
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out bool isSuccess);
 
             if (!isSuccess)
             {
@@ -425,7 +427,7 @@ namespace GameFrameWork.Editor
 
             foreach (var component in components)
             {
-                UnityEngine.Object.DestroyImmediate(component, true);
+                UnityObject.DestroyImmediate(component, true);
             }
 
             EditorSceneManager.SaveScene(scene);
@@ -434,14 +436,14 @@ namespace GameFrameWork.Editor
 
         private static bool IsUIScene()
         {
-            return UnityEngine.Object.FindAnyObjectByType<UIRefSetting>() != null;
+            return UnityObject.FindAnyObjectByType<UIRefSetting>() != null;
         }
 
         private static bool CanExport()
         {
             if (!IsUIScene())
             {
-                UnityEngine.Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
+                Debug.LogError("当前场景不是UI场景 Scene => " + scene.name);
                 return false;
             }
 
@@ -449,7 +451,7 @@ namespace GameFrameWork.Editor
 
             if (root == null || root.transform.Find("UICanvas/Panel") == null)
             {
-                UnityEngine.Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
+                Debug.LogError(root + "场景UI资源错误 Scene => " + scene.name + "===没有Panel对象");
                 return false;
             }
 

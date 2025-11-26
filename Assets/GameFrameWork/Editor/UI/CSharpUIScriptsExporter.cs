@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Text;
 using GameFrameWork.UI;
-using UnityEngine;
 
 namespace GameFrameWork.Editor
 {
@@ -56,7 +55,7 @@ namespace GameFrameWork.Editor
             
             foreach (var uiRef in uiRefs)
             {
-                if (!uiRef.isListItem && !uiRef.IsListItemVariable)
+                if (!uiRef.isListItem && !uiRef.isListItemVariable)
                 {
                     sb.Append("\t//").Append(GetComment(uiRef));
                     sb.AppendLine();
@@ -73,62 +72,12 @@ namespace GameFrameWork.Editor
             {
                 UIRef uiRef = uiRefs[i];
 
-                if(uiRef.IsList)
+                if(uiRef.isList)
                 {
-                    if (uiRef.IsScrollList())
-                    {
-                        int itemIndex = -1;
-                        UIRef itemUIRef = null;
-
-                        for (int j = 0; j < uiRefs.Length; j++)
-                        {
-                            if (uiRefs[j].isListItem)
-                            {
-                                Transform current = uiRefs[j].transform.parent;
-
-                                while (current != null)
-                                {
-                                    if (current == uiRef.transform)
-                                    {
-                                        itemUIRef = uiRefs[j];
-                                        itemIndex = j;
-                                        break;
-                                    }
-                                    current = current.parent;
-                                }
-                            }
-
-                            if (itemIndex > 0)
-                            {
-                                break;
-                            }
-                        }
-                        
-                        sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
-                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, uiRef.GetName() + "Item", itemIndex, itemUIRef.componentName);
-                        sb.AppendFormat("\t\t{0}.Init<{1}>({2});\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item", uiRef.GetName() + "Item");
-                    }
-                    else if (uiRef.IsStaticList())
-                    {
-                        int itemIndex = -1;
-                        UIRef itemUIRef = null;
-
-                        for (int j = 0; j < uiRefs.Length; j++)
-                        {
-                            if (uiRefs[j].isListItem && uiRefs[j].transform.parent == uiRef.transform)
-                            {
-                                itemUIRef = uiRefs[j];
-                                itemIndex = j;
-                                break;
-                            }
-                        }
-
-                        sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
-                        sb.AppendFormat("\t\t{0} {1} = root.objects[{2}] as {3};\r\n", itemUIRef.componentName, uiRef.GetName() + "Item", itemIndex, itemUIRef.componentName);
-                        sb.AppendFormat("\t\t{0}.Init<{1}>({2}.gameObject , {3});\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item", uiRef.GetName(), uiRef.GetName() + "Item");
-                    }
+                    sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
+                    sb.AppendFormat("\t\t{0}?.Init<{1}>();\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item");
                 }
-                else if (!uiRef.isListItem && !uiRef.IsListItemVariable)
+                else if (!uiRef.isListItem && !uiRef.isListItemVariable)
                 {
                     sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
                 }
@@ -138,7 +87,7 @@ namespace GameFrameWork.Editor
 
             foreach (var uiRef in uiRefs)
             {
-                if (uiRef.IsList)
+                if (uiRef.isList)
                 {
                     ExportLayout(uiRef, sb);
                 }
@@ -179,7 +128,6 @@ namespace GameFrameWork.Editor
             sb.AppendLine();
             sb.AppendFormat("public class {0}Settings : UIBaseSettings", setting.viewName);
             sb.AppendLine("\r\n{");
-
             sb.Append("\tpublic override string prefabName { get { " + $"return \"{setting.viewName}.prefab\"" + "; } }\r\n");
             sb.Append("\tpublic override float delayDestroyTime { get { " + $"return {delayDestroyTime}f" + "; } }\r\n");
             sb.Append("\tpublic override bool canPopUp { get { " + $"return {canPopUp}" + "; } }\r\n");
@@ -254,25 +202,14 @@ namespace GameFrameWork.Editor
             {
                 return;
             }
-
-            string listItemClassName = string.Empty;
-
-            if (uiRef.IsScrollList())
-            {
-                listItemClassName = "ScrollListItem";
-            }
-            else if (uiRef.IsStaticList())
-            {
-                listItemClassName = "StaticListItem";
-            }
-
+            
             sb.AppendLine();
-            sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", listItemClassName);
+            sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", "BaseListItem");
             sb.AppendLine("\t{");
 
             foreach (var variableUIRef in itemUIRefs)
             {
-                if (!variableUIRef.IsListItemVariable)
+                if (!variableUIRef.isListItemVariable)
                 {
                     continue;
                 }
@@ -290,7 +227,7 @@ namespace GameFrameWork.Editor
             
             foreach (var itemUIRef in itemUIRefs)
             {
-                if (!itemUIRef.IsListItemVariable)
+                if (!itemUIRef.isListItemVariable)
                 {
                     continue;
                 }

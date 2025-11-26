@@ -205,7 +205,7 @@ MonoBehaviour:
   objects:
   - {fileID: 7847948427997836847}
   - {fileID: 1510415882775948204}
-  - {fileID: 2860523884996589527}
+  - {fileID: 0}
   - {fileID: 8867318502796825573}
 --- !u!223 &6187158319069513126
 Canvas:
@@ -675,6 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
+  prefab: {fileID: 8867318502796825573}
 --- !u!1 &8867318502796825573
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,3 @@
-using GameFrameWork.Pool;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
-using System;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +15,7 @@ namespace GameFrameWork
             gameObject.SetActive(value);
         }
 
-        public static void SetActiveSelf(this UnityEngine.Component component, bool value)
+        public static void SetActiveSelf(this Component component, bool value)
         {
             if (component is null)
             {
@@ -30,7 +25,7 @@ namespace GameFrameWork
             component.gameObject.SetActiveSelf(value);
         }
 
-        public static T GetOrAddComponent<T>(this Transform transform) where T : UnityEngine.Component
+        public static T GetOrAddComponent<T>(this Transform transform) where T : Component
         {
             return GetOrAddComponent<T>(transform.gameObject);
         }

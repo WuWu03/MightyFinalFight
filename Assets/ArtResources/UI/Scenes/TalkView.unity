@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dc8e2aed1cf1c469871a491183e30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.StaticList
+  prefab: {fileID: 1617518070}
 --- !u!1 &173809237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,7 +1096,7 @@ MonoBehaviour:
   objects:
   - {fileID: 647808736}
   - {fileID: 647808737}
-  - {fileID: 161920223}
+  - {fileID: 0}
   - {fileID: 1617518070}
 --- !u!114 &1605887881
 MonoBehaviour:

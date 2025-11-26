@@ -1,6 +1,6 @@
 /*
  * @Desc: Talk 模块 TalkView 界面组件
- * @Date: 2025-10-20 20:49:38
+ * @Date: 2025-11-26 14:23:44
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -25,12 +25,11 @@ public class TalkViewComponent : UIBaseComponent
 	{
 		languageContent = root.objects[0] as LanguageText;
 		txtContent = root.objects[1] as TextMeshProUGUI;
-        talkSelectList = root.objects[2] as StaticList;
-		GameObject talkSelectListItem = root.objects[3] as GameObject;
-		talkSelectList.Init<TalkSelectListItem>(talkSelectList.gameObject , talkSelectListItem);
+		talkSelectList = root.objects[2] as StaticList;
+		talkSelectList?.Init<TalkSelectListItem>();
 	}
 
-	public class TalkSelectListItem : StaticListItem
+	public class TalkSelectListItem : BaseListItem
 	{
 		//bottom/talkSelect/talkSelectItem/txtSelect,LanguageText
 		public LanguageText txtSelect {get; private set;}

@@ -1,6 +1,6 @@
 /*
  * @Desc: RoleSelect 模块 RoleSelectView 界面组件
- * @Date: 2025-10-20 21:18:58
+ * @Date: 2025-11-26 14:20:06
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -22,12 +22,11 @@ public class RoleSelectViewComponent : UIBaseComponent
 	protected override void OnInitComponent(UIRefRoot root)
 	{
 		roleSelectList = root.objects[0] as StaticList;
-		GameObject roleSelectListItem = root.objects[1] as GameObject;
-		roleSelectList.Init<RoleSelectListItem>(roleSelectList.gameObject , roleSelectListItem);
-		imgSelectRect = root.objects[2] as RectTransform;
+		roleSelectList?.Init<RoleSelectListItem>();
+		imgSelectRect = root.objects[1] as RectTransform;
 	}
 
-	public class RoleSelectListItem : StaticListItem
+	public class RoleSelectListItem : BaseListItem
 	{
 		//roleSelect/roleSelectListItem/imgRoleIcon,ImageEx
 		public ImageEx imgRoleIcon {get; private set;}

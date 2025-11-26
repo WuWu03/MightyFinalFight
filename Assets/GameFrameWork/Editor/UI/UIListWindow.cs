@@ -13,7 +13,7 @@ namespace GameFrameWork.Editor
         {
             m_IsCloseWindow = false;
             m_DeleteIndex = -1;
-            string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.uiScenesPath);
+            string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.UIScenesPath);
             m_UISceneFiles = GameFrameWork.Utils.FileUtil.GetFiles(uiScenesPath, "*.unity");
         }
 
@@ -91,7 +91,7 @@ namespace GameFrameWork.Editor
                 string filePath = m_UISceneFiles[m_DeleteIndex];
                 FileUtil.DeleteFile(filePath);
                 AssetDatabase.Refresh();
-                string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.uiScenesPath);
+                string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetGameFrameWorkConfig().uiPath, EditorPathUtil.UIScenesPath);
                 m_UISceneFiles = GameFrameWork.Utils.FileUtil.GetFiles(uiScenesPath, "*.unity");
                 m_DeleteIndex = -1;
             }

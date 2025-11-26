@@ -27,7 +27,7 @@ namespace GameFrameWork.Editor
             m_Files.Clear();
             m_BuildMaps.Clear();
 
-            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.assetBundleWindowDataPath);
+            AssetBundleConfig config = AssetDatabase.LoadAssetAtPath<AssetBundleConfig>(EditorPathUtil.AssetBundleWindowDataPath);
 
             if (!GenerateBuildMap(config))
             {
@@ -39,31 +39,31 @@ namespace GameFrameWork.Editor
                 return true;
             }
 
-            FileUtil.VerifyDirectory(EditorPathUtil.streamingAssetsFullPath);
-            BuildPipeline.BuildAssetBundles(EditorPathUtil.streamingAssetsPath, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
+            FileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
+            BuildPipeline.BuildAssetBundles(EditorPathUtil.StreamingAssetsPath, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
             AssetDatabase.Refresh();
 
             if (config.isCopyAsset && !string.IsNullOrEmpty(config.assetCopyDir))
             {
                 FileUtil.DeleteDirectory(config.assetCopyDir);
-                FileUtil.CopyDirectory(EditorPathUtil.streamingAssetsPath, config.assetCopyDir);
+                FileUtil.CopyDirectory(EditorPathUtil.StreamingAssetsPath, config.assetCopyDir);
             }
 
             //删除无用ab包
-            FileUtil.VerifyDirectory(EditorPathUtil.streamingAssetsFullPath);
-            FileUtil.Recursive(EditorPathUtil.streamingAssetsFullPath, "*.*", m_Files, m_Paths);
+            FileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
+            FileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
 
             for (int i = 0; i < m_Files.Count; i++)
             {
                 string directoryName = Path.GetDirectoryName(m_Files[i]).Replace("\\", "/") + "/";
-                directoryName = directoryName[directoryName.IndexOf(EditorPathUtil.streamingAssetsPath)..];
+                directoryName = directoryName[directoryName.IndexOf(EditorPathUtil.StreamingAssetsPath)..];
 
-                if (directoryName.Equals(EditorPathUtil.streamingAssetsPath))
+                if (directoryName.Equals(EditorPathUtil.StreamingAssetsPath))
                 {
                     continue;
                 }
 
-                int startIndex = m_Files[i].IndexOf(EditorPathUtil.streamingAssetsPath) + EditorPathUtil.streamingAssetsPath.Length;
+                int startIndex = m_Files[i].IndexOf(EditorPathUtil.StreamingAssetsPath) + EditorPathUtil.StreamingAssetsPath.Length;
                 string filePath = m_Files[i][startIndex..];
 
                 if (filePath.EndsWith(".manifest"))
@@ -84,7 +84,7 @@ namespace GameFrameWork.Editor
 
             if (isShowNotify)
             {
-                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(EditorPathUtil.streamingAssetsPath);
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(EditorPathUtil.StreamingAssetsPath);
                 EditorUtility.DisplayDialog("提示", "打包成功", "确定");
             }
 
@@ -381,7 +381,7 @@ namespace GameFrameWork.Editor
         /// </summary>
         private void CreateAssetMapFile()
         {
-            string mapFilePath = EditorPathUtil.streamingAssetsFullPath + EditorMgr.GetGameFrameWorkConfig().assetMapFileName;
+            string mapFilePath = EditorPathUtil.StreamingAssetsFullPath + EditorMgr.GetGameFrameWorkConfig().assetMapFileName;
 
             if (File.Exists(mapFilePath))
             {
@@ -411,7 +411,7 @@ namespace GameFrameWork.Editor
         /// </summary>
         private void CreateVersionFile()
         {
-            string versionFilePath = EditorPathUtil.streamingAssetsFullPath + EditorMgr.GetGameFrameWorkConfig().versionFileName;
+            string versionFilePath = EditorPathUtil.StreamingAssetsFullPath + EditorMgr.GetGameFrameWorkConfig().versionFileName;
 
             if (File.Exists(versionFilePath))
             {
@@ -421,14 +421,14 @@ namespace GameFrameWork.Editor
             m_Paths.Clear();
             m_Files.Clear();
 
-            FileUtil.Recursive(EditorPathUtil.streamingAssetsFullPath, "*.*", m_Files, m_Paths);
+            FileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
 
             string content = string.Empty;
 
             for (int i = 0; i < m_Files.Count; i++)
             {
                 string md5 = FileUtil.MD5File(m_Files[i]);
-                string filePath = m_Files[i].Replace(EditorPathUtil.streamingAssetsFullPath, string.Empty).Replace("\\", "/");
+                string filePath = m_Files[i].Replace(EditorPathUtil.StreamingAssetsFullPath, string.Empty).Replace("\\", "/");
                 string fileSize = FileUtil.GetFileSize(m_Files[i]).ToString();
                 //string directory = Path.GetDirectoryName(value).Replace("\\", "/");
                 //string fileName = Path.GetFileNameWithoutExtension(value);
