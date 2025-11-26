@@ -16,10 +16,7 @@ namespace GameFrameWork.Editor
     {
         private static UnityEngine.SceneManagement.Scene scene
         {
-            get
-            {
-                return SceneManager.GetActiveScene();
-            }
+            get { return SceneManager.GetActiveScene(); }
         }
 
         public static UIRefSetting uiRefSetting
@@ -38,7 +35,7 @@ namespace GameFrameWork.Editor
 
         private static UIRefSetting s_UIRefSetting;
         private static readonly IUIScriptsExporter s_CSharpExporter;
-        
+
         static UIEditorInit()
         {
             SceneView.duringSceneGui -= DuringSceneGUI;
@@ -108,9 +105,9 @@ namespace GameFrameWork.Editor
             {
                 return;
             }
-            
+
             rootObj.transform.SetAsLastSibling();
-            GameObject panel = new ("Panel");
+            GameObject panel = new("Panel");
             RectTransform rect = panel.AddComponent<RectTransform>();
             panel.gameObject.AddComponent<UIRefRoot>();
             rect.anchoredPosition = Vector3.zero;
@@ -147,7 +144,7 @@ namespace GameFrameWork.Editor
                 }
 
                 GUI.color = Color.red;
-                
+
                 if (GUI.Button(new Rect(10, 50, 150f, 30f), "生成预制体(不生成代码)"))
                 {
                     string exportPath = ExportUIPrefab(false);
@@ -206,18 +203,26 @@ namespace GameFrameWork.Editor
 
             if (component == null)
             {
+                if (gameObject.GetComponentInChildren<UIRef>() != null)
+                {
+                    DrawStar(Color.white, selectionRect);
+                }
+
                 return;
             }
 
+            DrawStar(component.isCopyRefStr ? Color.yellow : Color.green, selectionRect);
+        }
+
+        private static void DrawStar(Color color, Rect rect)
+        {
             GUIStyle labelStyle = new(EditorStyles.label);
-            GUIStyle labelStyle2 = new(EditorStyles.label);
-            labelStyle.normal.textColor = Color.green;
-            labelStyle2.normal.textColor = Color.yellow;
-            float x = selectionRect.x + selectionRect.width - 15f;
-            float y = selectionRect.y + 2f;
+            labelStyle.normal.textColor = color;
+            float x = rect.x + rect.width - 15f;
+            float y = rect.y + 2f;
             float width = 15f;
-            float height = selectionRect.height;
-            GUI.Label(new Rect(x, y, width, height), "*", component.isCopyRefStr ? labelStyle2 : labelStyle);
+            float height = rect.height;
+            GUI.Label(new Rect(x, y, width, height), "*", labelStyle);
         }
 
         private static void AddUIRef()
@@ -263,8 +268,7 @@ namespace GameFrameWork.Editor
 
             foreach (UIRefRoot uiRefRoot in uiRefRoots)
             {
-                UIRef rootRef = uiRefRoot.GetComponent<UIRef>();
-                GenUIRefRootObjs(uiRefRoot, rootRef != null && rootRef.isListItem, uiRefs);
+                GenUIRefRootObjs(uiRefRoot, uiRefs);
             }
 
             EditorUtility.SetDirty(gameObject);
@@ -272,59 +276,84 @@ namespace GameFrameWork.Editor
             return true;
         }
 
-        private static bool GenUIRefRootObjs(UIRefRoot uiRefRoot, bool isLayoutItem, List<UIRef> uiRefs)
+        private static bool GenUIRefRootObjs(UIRefRoot uiRefRoot, List<UIRef> rootUIRefs)
         {
-            UIRef[] components = uiRefRoot.GetComponentsInChildren<UIRef>(true);
+            UIRef[] uiRefs = uiRefRoot.GetComponentsInChildren<UIRef>(true);
             HashSet<string> repeat = new();
             List<UnityObject> listComponent = new();
-            int startIndex = isLayoutItem ? 1 : 0;
+            bool rootIsListItem = false;
 
-            for (int i = startIndex; i < components.Length; i++)
+            foreach (var uiRef in uiRefs)
             {
-                UIRef component = components[i];
-                if (component.isCopyRefStr || (!isLayoutItem && component.isListItemVariable))
+                if (!uiRef.IsScrollList() && !uiRef.IsStaticList())
+                {
+                    uiRef.isList = false;
+                }
+
+                if (!uiRef.IsListItemVariable())
+                {
+                    uiRef.isListItemVariable = false;
+                }
+
+                if (!uiRef.IsListItem())
+                {
+                    uiRef.isListItem = false;
+
+                    if (uiRef.gameObject == uiRefRoot.gameObject)
+                    {
+                        Object.DestroyImmediate(uiRefRoot);
+                        return true;
+                    }
+                }
+
+                if (!rootIsListItem && uiRef.gameObject == uiRefRoot.gameObject && uiRef.isListItem)
+                {
+                    rootIsListItem = true;
+                }
+
+                bool isListItem = uiRef.isListItem;
+                bool isListItemVariable = !rootIsListItem && uiRef.isListItemVariable;
+
+                if (uiRef.isCopyRefStr || isListItem || isListItemVariable)
                 {
                     continue;
                 }
 
-                string name = component.GetName();
+                string name = uiRef.GetName();
                 if (!repeat.Add(name))
                 {
                     string errorStr = string.Concat(
                         "有重复的引用名称 => ",
-                        component.refName,
+                        uiRef.refName,
                         "; 引用对象=>",
-                        EditorUtil.GetHierarchy(component.gameObject),
+                        EditorUtil.GetHierarchy(uiRef.gameObject),
                         "; ",
-                        EditorUtil.GetHierarchy(component.gameObject)
+                        EditorUtil.GetHierarchy(uiRef.gameObject)
                     );
 
                     Debug.LogError(errorStr);
-                    Selection.activeGameObject = component.gameObject;
+                    Selection.activeGameObject = uiRef.gameObject;
                     return false;
                 }
 
-                if (string.IsNullOrEmpty(component.componentName) || component.componentName == nameof(Transform))
+                if (string.IsNullOrEmpty(uiRef.componentName) || uiRef.componentName == nameof(Transform))
                 {
-                    listComponent.Add(component.transform);
+                    listComponent.Add(uiRef.transform);
                 }
-                else if (component.componentName == nameof(RectTransform))
+                else if (uiRef.componentName == nameof(RectTransform))
                 {
-                    listComponent.Add(component.GetComponent<RectTransform>());
+                    listComponent.Add(uiRef.GetComponent<RectTransform>());
                 }
-                else if (component.componentName == nameof(GameObject))
+                else if (uiRef.componentName == nameof(GameObject))
                 {
-                    listComponent.Add(component.gameObject);
+                    listComponent.Add(uiRef.gameObject);
                 }
                 else
                 {
-                    listComponent.Add(component.GetComponent(component.componentName));
+                    listComponent.Add(uiRef.GetComponent(uiRef.componentFullName));
                 }
 
-                if (!component.isListItem)
-                {
-                    uiRefs.Add(component);  
-                }
+                rootUIRefs.Add(uiRef);
             }
 
             uiRefRoot.objects = listComponent.ToArray();
@@ -374,7 +403,7 @@ namespace GameFrameWork.Editor
             }
 
             string value = s_CSharpExporter.CopyRef(listRef.ToArray());
-            
+
             if (string.IsNullOrEmpty(value))
             {
                 Debug.LogWarning("没有需要导出到剪切板的对象");

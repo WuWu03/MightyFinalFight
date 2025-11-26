@@ -619,11 +619,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgShade
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2056449681
 MonoBehaviour:

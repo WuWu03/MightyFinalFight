@@ -54,7 +54,7 @@ namespace GameFrameWork.UI
         private bool m_IsInit;
         private bool m_HasAddEvent;
         private bool m_HasInitScrollPos;
-
+        
         private void OnEnable()
         {
             if (!m_IsInit)
@@ -109,6 +109,7 @@ namespace GameFrameWork.UI
                 throw new GameFrameWorkException("prefab为空");
             }
 
+            prefab.SetActiveSelf(false);
             AddEvent();
 
             if (m_ScrollRect.vertical)

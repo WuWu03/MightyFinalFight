@@ -288,6 +288,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtExp
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -558,6 +559,7 @@ MonoBehaviour:
   m_UseDefaultName: 0
   m_RefName: PlayerHpBar
   m_ComponentName: Slider
+  m_ComponentFullName: UnityEngine.UI.Slider
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -973,6 +975,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: enemyHpBarImage
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -1220,6 +1223,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLevel3
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1527,7 +1531,6 @@ MonoBehaviour:
   - {fileID: 1160052226}
   - {fileID: 1193886234}
   - {fileID: 1746242808}
-  - {fileID: 2006755757}
   - {fileID: 154107360}
 --- !u!223 &743783147
 Canvas:
@@ -1895,6 +1898,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLevel2
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1991,6 +1995,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLevel5
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -2049,6 +2054,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtStage
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -2357,6 +2363,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtPlayerLife
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -2553,6 +2560,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLevel1
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -2613,6 +2621,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: levelList
   m_ComponentName: StaticList
+  m_ComponentFullName: GameFrameWork.UI.StaticList
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -2974,6 +2983,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: levelListItem
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 1
   m_IsListItemVariable: 0
@@ -3126,6 +3136,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: playerHpBarImage
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -3481,6 +3492,7 @@ MonoBehaviour:
   m_UseDefaultName: 0
   m_RefName: EnemyHpBar
   m_ComponentName: Slider
+  m_ComponentFullName: UnityEngine.UI.Slider
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -3577,6 +3589,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLevel4
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1

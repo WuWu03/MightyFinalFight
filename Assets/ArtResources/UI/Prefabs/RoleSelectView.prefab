@@ -130,8 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 0}
-  - {fileID: 1363424318995423646}
+  - {fileID: 263208190875742670}
   - {fileID: 8961851881823368294}
 --- !u!223 &5653381140260308885
 Canvas:
@@ -259,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8653164396123646118}
   - component: {fileID: 3638791971061253316}
-  - component: {fileID: 5256941762738951440}
+  - component: {fileID: 1591615671493057174}
   m_Layer: 5
   m_Name: roleSelectListItem
   m_TagString: Untagged
@@ -309,7 +308,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &5256941762738951440
+--- !u!114 &1591615671493057174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -320,7 +319,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
   objects:
   - {fileID: 4490484540527332593}
   - {fileID: 4015511239435813319}

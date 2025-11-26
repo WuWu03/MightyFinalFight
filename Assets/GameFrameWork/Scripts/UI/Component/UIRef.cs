@@ -32,6 +32,15 @@ namespace GameFrameWork.UI
             get { return m_ComponentName; }
             set { m_ComponentName = value; }
         }
+        
+        /// <summary>
+        /// 引用组件的名称
+        /// </summary>
+        public string componentFullName
+        {
+            get { return m_ComponentFullName; }
+            set { m_ComponentFullName = value; }
+        }
 
         /// <summary>
         /// 描述
@@ -78,6 +87,7 @@ namespace GameFrameWork.UI
         [SerializeField] private bool m_UseDefaultName;
         [SerializeField] private string m_RefName;
         [SerializeField] private string m_ComponentName;
+        [SerializeField] private string m_ComponentFullName;
         [SerializeField] private string m_Desc;
         [SerializeField] private bool m_IsListItem;
         [SerializeField] private bool m_IsListItemVariable;

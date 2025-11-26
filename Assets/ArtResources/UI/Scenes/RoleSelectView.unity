@@ -174,8 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 0}
-  - {fileID: 712527415}
+  - {fileID: 767242342}
   - {fileID: 472813151}
 --- !u!114 &209631948
 MonoBehaviour:
@@ -348,6 +347,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgSelect
   m_ComponentName: RectTransform
+  m_ComponentFullName: 
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -547,6 +547,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtDesc
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -733,6 +734,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: roleSelectListItem
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
   m_IsListItem: 1
   m_IsListItemVariable: 0
@@ -749,7 +751,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ee95c14710ee3b4cb376a8170ee641e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
   objects:
   - {fileID: 1669707885}
   - {fileID: 2043417341}
@@ -885,6 +887,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: roleSelect
   m_ComponentName: StaticList
+  m_ComponentFullName: GameFrameWork.UI.StaticList
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -1530,6 +1533,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgRoleIcon
   m_ComponentName: ImageEx
+  m_ComponentFullName: GameFrameWork.UI.ImageEx
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1695,6 +1699,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtName
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1

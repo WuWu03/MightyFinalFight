@@ -175,6 +175,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: talkSelect
   m_ComponentName: StaticList
+  m_ComponentFullName: GameFrameWork.UI.StaticList
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -376,6 +377,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtSelect
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -408,7 +410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -666,6 +668,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtContent
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -686,6 +689,7 @@ MonoBehaviour:
   m_UseDefaultName: 0
   m_RefName: languageContent
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -858,6 +862,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: select
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1096,8 +1101,7 @@ MonoBehaviour:
   objects:
   - {fileID: 647808736}
   - {fileID: 647808737}
-  - {fileID: 0}
-  - {fileID: 1617518070}
+  - {fileID: 161920223}
 --- !u!114 &1605887881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1197,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: talkSelectItem
   m_ComponentName: GameObject
+  m_ComponentFullName: UnityEngine.GameObject
   m_Desc: 
   m_IsListItem: 1
   m_IsListItemVariable: 0

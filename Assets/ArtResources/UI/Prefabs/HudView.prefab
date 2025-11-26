@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3888754336913146710}
   - component: {fileID: 861532159661403525}
   - component: {fileID: 4417106019558078600}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HudView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 5850626358859897390}
   - component: {fileID: 4440010208180596889}
   - component: {fileID: 4942532342704125100}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: txtDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

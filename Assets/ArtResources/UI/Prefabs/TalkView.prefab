@@ -205,8 +205,7 @@ MonoBehaviour:
   objects:
   - {fileID: 7847948427997836847}
   - {fileID: 1510415882775948204}
-  - {fileID: 0}
-  - {fileID: 8867318502796825573}
+  - {fileID: 2860523884996589527}
 --- !u!223 &6187158319069513126
 Canvas:
   m_ObjectHideFlags: 0
@@ -307,7 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -686,7 +685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5199717968076966129}
   - component: {fileID: 2456089270703898834}
-  - component: {fileID: 2034734379116563260}
+  - component: {fileID: 8768561544002549445}
   m_Layer: 0
   m_Name: talkSelectItem
   m_TagString: Untagged
@@ -741,7 +740,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2034734379116563260
+--- !u!114 &8768561544002549445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

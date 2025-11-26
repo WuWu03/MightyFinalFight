@@ -9,7 +9,7 @@ namespace GameFrameWork.Editor
         public static void SetName(this UIRef uiRef, string name)
         {
             UIRefRoot uiRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();
-            
+
             if (uiRefRoot == null)
             {
                 UnityEngine.Debug.LogError("没有 UIRefSetting 组件");
@@ -23,7 +23,7 @@ namespace GameFrameWork.Editor
             for (int i = 0; i < components.Length; i++)
             {
                 UIRef component = components[i];
-                
+
                 if (component.isCopyRefStr == uiRef.isCopyRefStr)
                 {
                     if (components[i] == uiRef)
@@ -89,7 +89,7 @@ namespace GameFrameWork.Editor
             {
                 refName += str;
             }
-            
+
             return refName;
         }
 
@@ -128,19 +128,6 @@ namespace GameFrameWork.Editor
             return uiRef.GetComponent<ScrollList>() != null;
         }
 
-        public static bool IsListItemVariable(this UIRef uiRef)
-        {
-            Transform parent = uiRef.transform.parent;
-
-            if(parent != null)
-            {
-                UIRef parentRef = parent.GetComponent<UIRef>();
-                return parentRef != null && parentRef.isListItem;
-            }
-
-            return false;
-        }
-
         public static bool IsListItem(this UIRef uiRef)
         {
             Transform current = uiRef.transform.parent;
@@ -156,6 +143,40 @@ namespace GameFrameWork.Editor
                 }
 
                 current = current.parent;
+            }
+
+            return false;
+        }
+        
+        public static bool IsListItemVariable(this UIRef uiRef)
+        {
+            Transform parent = uiRef.transform.parent;
+            bool parentIsList = false;
+            bool parentIsListItem = false;
+       
+            while (parent != null)
+            {
+                UIRef parentRef = parent.GetComponent<UIRef>();
+
+                if (parentRef != null)
+                {
+                    if (parentRef.isList)
+                    {
+                        parentIsList = true;
+                    }
+
+                    if (parentRef.isListItem)
+                    {
+                        parentIsListItem = true;
+                    }
+                }
+
+                if (parentIsList && parentIsListItem)
+                {
+                    return true;
+                }
+                
+                parent = parent.parent;
             }
 
             return false;
