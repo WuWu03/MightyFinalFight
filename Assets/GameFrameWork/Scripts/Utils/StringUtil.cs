@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,29 +9,38 @@ namespace GameFrameWork.Utils
 {
     public static class StringUtil
     {
+        private static readonly char[] s_ChineseUnits = { '\0', '十', '百', '千', '万', '亿', '兆', '京' };
+        private static readonly char[] s_ChineseDigits = { '零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十' };
+        private static readonly int[] s_UnitDigits = { 4, 8, 16, 32 };
+        private static readonly char s_ChineseNegative = '负';
+        private static readonly char s_ChineseDot = '点';
+        private static readonly object[] s_Args = new object[7];
+        private static int s_ArgIndex;
+        private static readonly StringBuilder s_StringBuilder = new();
+
         public static string Format(string format, string arg1)
         {
-            return Format(format, arg1, null, null, null, null, null, null);
+            return Format(format, arg1, null);
         }
 
         public static string Format(string format, string arg1, string arg2)
         {
-            return Format(format, arg1, arg2, null, null, null, null, null);
+            return Format(format, arg1, arg2, null);
         }
 
         public static string Format(string format, string arg1, string arg2, string arg3)
         {
-            return Format(format, arg1, arg2, arg3, null, null, null, null);
+            return Format(format, arg1, arg2, arg3, null);
         }
 
         public static string Format(string format, string arg1, string arg2, string arg3, string arg4)
         {
-            return Format(format, arg1, arg2, arg3, arg4, null, null, null);
+            return Format(format, arg1, arg2, arg3, arg4, null);
         }
 
         public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            return Format(format, arg1, arg2, arg3, arg4, arg5, null, null);
+            return Format(format, arg1, arg2, arg3, arg4, arg5, null);
         }
 
         public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
@@ -40,8 +50,7 @@ namespace GameFrameWork.Utils
 
         public static string Format(string format, string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
         {
-            m_ListArgs.Clear();
-
+            ClearArgs();
             AddArg(arg1);
             AddArg(arg2);
             AddArg(arg3);
@@ -49,41 +58,48 @@ namespace GameFrameWork.Utils
             AddArg(arg5);
             AddArg(arg6);
             AddArg(arg7);
-
             return Format(format);
         }
 
         public static string Format(string format, params string[] args)
         {
-            m_ListArgs.Clear();
-            m_ListArgs.AddRange(args);
+            ClearArgs();
+            
+            foreach (var arg in args)
+            {
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    s_Args[s_ArgIndex] = arg;
+                    s_ArgIndex++;
+                }
+            }
 
             return Format(format);
         }
 
         public static string Append(string arg1)
         {
-            return Append(arg1, null, null, null, null, null, null);
+            return Append(arg1, null);
         }
 
         public static string Append(string arg1, string arg2)
         {
-            return Append(arg1, arg2, null, null, null, null, null);
+            return Append(arg1, arg2, null);
         }
 
         public static string Append(string arg1, string arg2, string arg3)
         {
-            return Append(arg1, arg2, arg3, null, null, null, null);
+            return Append(arg1, arg2, arg3, null);
         }
 
         public static string Append(string arg1, string arg2, string arg3, string arg4)
         {
-            return Append(arg1, arg2, arg3, arg4, null, null, null);
+            return Append(arg1, arg2, arg3, arg4, null);
         }
 
         public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            return Append(arg1, arg2, arg3, arg4, arg5, null, null);
+            return Append(arg1, arg2, arg3, arg4, arg5, null);
         }
 
         public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
@@ -93,8 +109,7 @@ namespace GameFrameWork.Utils
 
         public static string Append(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
         {
-            m_ListArgs.Clear();
-
+            ClearArgs();
             AddArg(arg1);
             AddArg(arg2);
             AddArg(arg3);
@@ -108,8 +123,15 @@ namespace GameFrameWork.Utils
 
         public static string Append(params string[] args)
         {
-            m_ListArgs.Clear();
-            m_ListArgs.AddRange(args);
+            ClearArgs();
+            foreach (var arg in args)
+            {
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    s_Args[s_ArgIndex] = arg;
+                    s_ArgIndex++;
+                }
+            }
 
             return Append(false);
         }
@@ -122,8 +144,7 @@ namespace GameFrameWork.Utils
             int roman1 = 5;
             int roman2 = 10;
             int offset = 1;
-
-            m_StringBuilder.Clear();
+            s_StringBuilder.Clear();
 
             while (num > 0)
             {
@@ -131,11 +152,11 @@ namespace GameFrameWork.Utils
 
                 if (value == roman2)
                 {
-                    m_StringBuilder.Append(GetRomanStr(roman2));
+                    s_StringBuilder.Append(GetRomanStr(roman2));
                 }
                 else if (value == roman1)
                 {
-                    m_StringBuilder.Append(GetRomanStr(roman1));
+                    s_StringBuilder.Append(GetRomanStr(roman1));
                 }
                 else if (value > roman2)
                 {
@@ -143,15 +164,15 @@ namespace GameFrameWork.Utils
 
                     for (int i = 0; i < temp; i += offset)
                     {
-                        m_StringBuilder.Append(GetRomanStr(offset));
+                        s_StringBuilder.Append(GetRomanStr(offset));
                     }
 
-                    m_StringBuilder.Append(GetRomanStr(roman2));
+                    s_StringBuilder.Append(GetRomanStr(roman2));
                 }
                 else if (value >= roman2 - offset)
                 {
-                    m_StringBuilder.Append(GetRomanStr(offset));
-                    m_StringBuilder.Append(GetRomanStr(roman2));
+                    s_StringBuilder.Append(GetRomanStr(offset));
+                    s_StringBuilder.Append(GetRomanStr(roman2));
                 }
                 else if (value > roman1)
                 {
@@ -159,21 +180,21 @@ namespace GameFrameWork.Utils
 
                     for (int i = 0; i < temp; i += offset)
                     {
-                        m_StringBuilder.Append(GetRomanStr(offset));
+                        s_StringBuilder.Append(GetRomanStr(offset));
                     }
 
-                    m_StringBuilder.Append(GetRomanStr(roman1));
+                    s_StringBuilder.Append(GetRomanStr(roman1));
                 }
                 else if (value >= roman1 - offset)
                 {
-                    m_StringBuilder.Append(GetRomanStr(offset));
-                    m_StringBuilder.Append(GetRomanStr(roman1));
+                    s_StringBuilder.Append(GetRomanStr(offset));
+                    s_StringBuilder.Append(GetRomanStr(roman1));
                 }
                 else
                 {
                     for (int i = 0; i < value; i += offset)
                     {
-                        m_StringBuilder.Append(GetRomanStr(offset));
+                        s_StringBuilder.Append(GetRomanStr(offset));
                     }
                 }
 
@@ -183,17 +204,17 @@ namespace GameFrameWork.Utils
                 offset *= 10;
             }
 
-            return m_StringBuilder.ToString();
+            return s_StringBuilder.ToString();
         }
 
         public static string GetChineseNum(decimal num)
         {
-            m_StringBuilder.Clear();
+            s_StringBuilder.Clear();
 
             if (num == 0)
             {
-                m_StringBuilder.Append(m_ChineseDigit[0]);
-                return m_StringBuilder.ToString();
+                s_StringBuilder.Append(s_ChineseDigits[0]);
+                return s_StringBuilder.ToString();
             }
 
             decimal integerNum = Math.Round(num, 0);
@@ -202,8 +223,8 @@ namespace GameFrameWork.Utils
             int unitIndex = 0;
             int prevUnitDigit = 0;
             int lastDigit = 0;
-            int[] isUnitDigtsAdd = new int[m_UnitDigits.Length];
-  
+            int[] isUnitDigitsAdd = new int[s_UnitDigits.Length];
+
             while (tempIntegerNum >= 1)
             {
                 int digit = (int)(tempIntegerNum % 10);
@@ -217,46 +238,46 @@ namespace GameFrameWork.Utils
                     {
                         if (tempUnitIndex < 4)
                         {
-                            m_StringBuilder.Insert(0, m_ChineseUnit[tempUnitIndex]);
+                            s_StringBuilder.Insert(0, s_ChineseUnits[tempUnitIndex]);
                             tempUnitIndex -= 4;
                         }
                         else
                         {
-                            for (int i = prevUnitDigit; i < m_UnitDigits.Length; i++)
+                            for (int i = prevUnitDigit; i < s_UnitDigits.Length; i++)
                             {
-                                if (tempUnitIndex < m_UnitDigits[i])
+                                if (tempUnitIndex < s_UnitDigits[i])
                                 {
                                     int digitIndex = i - 1;
                                     if (digitIndex > prevUnitDigit)
                                     {
-                                        for (int j = 0; j < m_UnitDigits.Length; j++)
+                                        for (int j = 0; j < s_UnitDigits.Length; j++)
                                         {
-                                            isUnitDigtsAdd[j] = 0;
+                                            isUnitDigitsAdd[j] = 0;
                                         }
 
                                         prevUnitDigit = digitIndex;
                                     }
 
-                                    if (isUnitDigtsAdd[digitIndex] != m_UnitDigits[digitIndex])
+                                    if (isUnitDigitsAdd[digitIndex] != s_UnitDigits[digitIndex])
                                     {
-                                        m_StringBuilder.Insert(0, m_ChineseUnit[digitIndex + 4]);
-                                        isUnitDigtsAdd[digitIndex] = m_UnitDigits[digitIndex];
+                                        s_StringBuilder.Insert(0, s_ChineseUnits[digitIndex + 4]);
+                                        isUnitDigitsAdd[digitIndex] = s_UnitDigits[digitIndex];
                                     }
 
-                                    tempUnitIndex -= m_UnitDigits[digitIndex];
+                                    tempUnitIndex -= s_UnitDigits[digitIndex];
                                     break;
                                 }
                             }
                         }
                     }
 
-                    m_StringBuilder.Insert(0, m_ChineseDigit[digit]);
+                    s_StringBuilder.Insert(0, s_ChineseDigits[digit]);
                 }
                 else
                 {
-                    if (m_StringBuilder.Length > 0 && m_StringBuilder[0] != m_ChineseDigit[0])
+                    if (s_StringBuilder.Length > 0 && s_StringBuilder[0] != s_ChineseDigits[0])
                     {
-                        m_StringBuilder.Insert(0, m_ChineseDigit[0]);
+                        s_StringBuilder.Insert(0, s_ChineseDigits[0]);
                     }
                 }
 
@@ -266,39 +287,38 @@ namespace GameFrameWork.Utils
 
             lastDigit = (int)(tempIntegerNum * 10);
 
-            if (lastDigit == 1 && (unitIndex - 1) % 4 == 1)//十，十万，十亿，十兆等十开头的移除最高位的1，否则会出现一十五这样的数字
+            if (lastDigit == 1 && (unitIndex - 1) % 4 == 1) //十，十万，十亿，十兆等十开头的移除最高位的1，否则会出现一十五这样的数字
             {
-                m_StringBuilder.Remove(0, 1);
+                s_StringBuilder.Remove(0, 1);
             }
-
 
             if (integerNum == 0)
             {
-                m_StringBuilder.Insert(0, m_ChineseDigit[0]);
+                s_StringBuilder.Insert(0, s_ChineseDigits[0]);
             }
 
             if (decimalNum > 0)
             {
-                m_StringBuilder.Append(m_ChineseDot);
+                s_StringBuilder.Append(s_ChineseDot);
 
                 while (decimalNum > 0 && decimalNum < 1)
                 {
                     decimalNum *= 10;
                     int decimalValue = (int)(decimalNum);
                     decimalNum -= decimalValue;
-                    m_StringBuilder.Append(m_ChineseDigit[decimalValue]);
+                    s_StringBuilder.Append(s_ChineseDigits[decimalValue]);
                 }
             }
 
             if (integerNum < 0)
             {
-                m_StringBuilder.Insert(0, m_ChineseNegative);
+                s_StringBuilder.Insert(0, s_ChineseNegative);
             }
 
-            return m_StringBuilder.ToString();
+            return s_StringBuilder.ToString();
         }
 
-        public static string FormatFileSize(ulong bytes,int digits = 2)
+        public static string FormatFileSize(ulong bytes, int digits = 2)
         {
             int counter = 0;
             double number = bytes;
@@ -332,7 +352,7 @@ namespace GameFrameWork.Utils
                 _ => throw new ArgumentException("骚年，你是不是忘了更新 maxCount 等级了")
             };
 
-            return Format("{0}{1}", number.ToString(), suffix);
+            return Format("{0}{1}", number.ToString(CultureInfo.InvariantCulture), suffix);
         }
 
         /// <summary>
@@ -346,7 +366,6 @@ namespace GameFrameWork.Utils
         /// <summary>
         /// 计算二进制的MD5
         /// </summary>
-
         public static string MD5(byte[] source)
         {
             try
@@ -354,18 +373,18 @@ namespace GameFrameWork.Utils
                 using MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] result = md5.ComputeHash(source);
 
-                m_StringBuilder.Clear();
+                s_StringBuilder.Clear();
 
-                for (int i = 0; i < result.Length; i++)
+                foreach (var num in result)
                 {
-                    m_StringBuilder.Append(result[i].ToString("x2"));
+                    s_StringBuilder.Append(num.ToString("x2"));
                 }
 
-                return m_StringBuilder.ToString();
+                return s_StringBuilder.ToString();
             }
             catch (Exception ex)
             {
-                throw new Exception("MD5 caculation error:" + ex.Message);
+                throw new Exception("MD5 calculate error:" + ex.Message);
             }
         }
 
@@ -373,52 +392,55 @@ namespace GameFrameWork.Utils
         {
             if (!string.IsNullOrEmpty(arg))
             {
-                m_ListArgs.Add(arg);
+                s_Args[s_ArgIndex] = arg;
+                s_ArgIndex++;
             }
         }
 
         public static void ClearArgs()
         {
-            if (m_ListArgs != null && m_ListArgs.Count > 0)
+            for (int i = 0; i < s_Args.Length; i++)
             {
-                m_ListArgs.Clear();
+                s_Args[i] = null;
             }
+
+            s_ArgIndex = 0;
         }
 
         public static string Append(bool isPath)
         {
-            if (m_ListArgs == null || m_ListArgs.Count < 1)
+            if (s_Args == null || s_Args.Length < 1)
             {
                 return string.Empty;
             }
-            
-            m_StringBuilder.Clear();
-            
-            for (int i = 0;i < m_ListArgs.Count;i++)
+
+            s_StringBuilder.Clear();
+
+            for (int i = 0; i < s_ArgIndex; i++)
             {
-                string arg = m_ListArgs[i];
+                string arg = s_Args[i].ToString();
                 bool canAddPath = false;
-                
+
                 if (isPath)
                 {
                     canAddPath = string.IsNullOrEmpty(Path.GetExtension(arg)) && !arg.EndsWith("/");
-                    
-                    if (canAddPath && m_ListArgs.Count > 1 && i == m_ListArgs.Count - 2)
+
+                    if (canAddPath && s_ArgIndex > 1 && i == s_ArgIndex - 2)
                     {
-                        canAddPath = !m_ListArgs[i + 1].StartsWith(".");
+                        canAddPath = !s_Args[i + 1].ToString().StartsWith(".");
                     }
                 }
-                
-                m_StringBuilder.Append(arg);
+
+                s_StringBuilder.Append(arg);
 
                 if (canAddPath)
                 {
-                    m_StringBuilder.Append('/');
+                    s_StringBuilder.Append('/');
                 }
             }
 
-            m_ListArgs.Clear();
-            return m_StringBuilder.ToString();
+            ClearArgs();
+            return s_StringBuilder.ToString();
         }
 
         private static string Format(string format)
@@ -428,10 +450,9 @@ namespace GameFrameWork.Utils
                 throw new Exception("Format is invalid.");
             }
 
-            m_StringBuilder.Clear();
-            m_StringBuilder.AppendFormat(format, m_ListArgs.ToArray());
-
-            return m_StringBuilder.ToString();
+            s_StringBuilder.Clear();
+            s_StringBuilder.AppendFormat(format, s_Args);
+            return s_StringBuilder.ToString();
         }
 
         private static string GetRomanStr(int num)
@@ -448,14 +469,5 @@ namespace GameFrameWork.Utils
                 _ => string.Empty,
             };
         }
-
-        private static readonly char[] m_ChineseUnit = { default, '十', '百', '千', '万', '亿', '兆', '京' };
-        private static readonly char[] m_ChineseDigit = { '零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十' };
-        private static readonly int[] m_UnitDigits = { 4, 8, 16, 32 };
-        private static readonly char m_ChineseNegative = '负';
-        private static readonly char m_ChineseDot = '点';
-
-        private static readonly List<string> m_ListArgs = new(7);
-        private static readonly StringBuilder m_StringBuilder = new();
     }
 }

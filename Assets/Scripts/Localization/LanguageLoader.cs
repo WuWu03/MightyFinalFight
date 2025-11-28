@@ -7,12 +7,12 @@ using UnityEngine;
 public class LanguageLoader : BaseLanguageLoader
 {
     private readonly Dictionary<string, string> m_LanguageMap;
-    
+
     public LanguageLoader(string dataPath) : base(dataPath)
     {
         m_LanguageMap = new Dictionary<string, string>();
     }
-    
+
     protected override void OnInit(TextAsset textAsset)
     {
         if (textAsset.bytes == null || textAsset.bytes.Length < 1)
@@ -22,10 +22,11 @@ public class LanguageLoader : BaseLanguageLoader
         }
 
         using ConfigDataParser parser = new(textAsset.bytes);
-        
+
         while (!parser.eof)
         {
-            m_LanguageMap.Add(parser.GetFieldValue("key"), parser.GetFieldValue("content"));
+            string content = parser.GetFieldValue("content").Replace("\\n", "\n");
+            m_LanguageMap.Add(parser.GetFieldValue("key"), content);
             parser.Next();
         }
     }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GameFrameWork.Event;
 using UnityEngine;
 
@@ -7,9 +6,9 @@ namespace GameFrameWork.Input
     public interface IInputMgr
     {
         public event GameFrameWorkFunc<float> getDirectionEvent;
-        public event GameFrameWorkFunc<int, bool> getPreConditonEvent;
+        public event GameFrameWorkFunc<int, bool> getPreConditionEvent;
         public event GameFrameWorkAction inputDeviceChangeEvent;
-        public bool isJoystickInput { get; }
+        public InputDeviceType inputDeviceType { get; }
         public bool isRunning { get; set; }
         public void SetKey(KeyType keyType, string keyName);
         public void SetKey(KeyType keyType, KeyCode keyCode);

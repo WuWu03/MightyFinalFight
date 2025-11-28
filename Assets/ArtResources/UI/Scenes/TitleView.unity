@@ -172,11 +172,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgRetro
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &313977149
 MonoBehaviour:
@@ -384,11 +384,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLogoBG
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &701202345
 MonoBehaviour:
@@ -519,11 +519,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgIntro2
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &808287205
 GameObject:
@@ -562,9 +562,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -326.98}
-  m_SizeDelta: {x: 600, y: 186.06}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -233.94504}
+  m_SizeDelta: {x: 600, y: 306.05}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &808287207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,11 +580,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtIntro
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &808287209
 MonoBehaviour:
@@ -600,7 +600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 2.16893, w: -121.46562}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -718,11 +718,11 @@ MonoBehaviour:
   m_UseDefaultName: 0
   m_RefName: txtIntroTmp
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1003151673
 GameObject:
@@ -815,11 +815,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgIntro1
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1151043727
 GameObject:
@@ -912,11 +912,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgLogo
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1302789499
 GameObject:
@@ -1250,11 +1250,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgStar
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1704327077
 GameObject:
@@ -1323,11 +1323,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtSettings
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1704327081
 MonoBehaviour:
@@ -1524,11 +1524,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtDeveloper
   m_ComponentName: TextMeshProUGUI
+  m_ComponentFullName: TMPro.TextMeshProUGUI
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1794442529
 MonoBehaviour:
@@ -1692,11 +1692,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtStart
   m_ComponentName: LanguageText
+  m_ComponentFullName: GameFrameWork.UI.LanguageText
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1802727946
 MonoBehaviour:
@@ -1934,11 +1934,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgCapcom
   m_ComponentName: Image
+  m_ComponentFullName: UnityEngine.UI.Image
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &2017069367
 MonoBehaviour:

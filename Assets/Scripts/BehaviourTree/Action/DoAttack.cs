@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoAttack : Action
 {
-    private readonly BaseEnemy m_Owner;
+    private readonly BaseEnemy m_AttackOwner;
     private readonly bool m_IsRandomAttackCount;
     private int m_AttackCount;
     private int m_CurrAttackCount;
@@ -12,11 +12,11 @@ public class DoAttack : Action
     private bool m_IsAttacking;
     private BehaviourTreeState m_State = BehaviourTreeState.None;
 
-    protected BaseEnemy owner
+    protected BaseEnemy attackOwner
     {
         get
         {
-            return m_Owner;
+            return m_AttackOwner;
         }
     }
 
@@ -50,7 +50,7 @@ public class DoAttack : Action
 
     public DoAttack(int id, object owner, int priority, string args) : base(id, owner, priority, args)
     {
-        m_Owner = owner as BaseEnemy;
+        m_AttackOwner = owner as BaseEnemy;
         Regex mRegex = new("(AttackTime:)(-?[0-9]+)");
 
         if (!string.IsNullOrEmpty(args))
@@ -94,12 +94,12 @@ public class DoAttack : Action
 
         if (!m_IsAttacking)
         {
-            m_Owner.OppositePlayer();
-            m_Owner.Attack(Vector2.zero);
+            m_AttackOwner.OppositePlayer();
+            m_AttackOwner.Attack(Vector2.zero);
             m_IsAttacking = true;
         }
 
-        if (m_Owner.IsCurrAnimationComplete())
+        if (m_AttackOwner.IsCurrAnimationComplete())
         {
             if (m_AttackTimer < 0)
             {
@@ -107,7 +107,7 @@ public class DoAttack : Action
             }
         }
 
-        if (m_AttackTimer > 0 && Time.time - m_AttackTimer >= 0.05f / m_Owner.entityAttribute.attackSpeed)
+        if (m_AttackTimer > 0 && Time.time - m_AttackTimer >= 0.05f / m_AttackOwner.entityAttribute.attackSpeed)
         {
             m_CurrAttackCount++;
             m_AttackTimer = -1;

@@ -1,9 +1,17 @@
 using System.Collections.Generic;
 using GameFrameWork.Event;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GameFrameWork.Input
 {
+    public enum InputDeviceType
+    {
+        None,
+        Keyboard,
+        Joystick,
+    }
+    
     public class InputMgr : GameFrameWorkModule , IInputMgr
     {
         private event GameFrameWorkFunc<float> m_GetDirectionEvent;
@@ -18,7 +26,7 @@ namespace GameFrameWork.Input
         private float m_CurrDir;
         private float m_KeyDownTimer = -1f;
         private bool m_IsRunning;
-        private bool m_IsJoystickInput;
+        private InputDeviceType m_InputDeviceType = InputDeviceType.None;
         private int m_CurrKeyDown = -1;
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
         private AxisType m_AxisDownType = AxisType.None;
@@ -46,7 +54,7 @@ namespace GameFrameWork.Input
             }
         }
 
-        public event GameFrameWorkFunc<int, bool> getPreConditonEvent
+        public event GameFrameWorkFunc<int, bool> getPreConditionEvent
         {
             add
             {
@@ -70,11 +78,11 @@ namespace GameFrameWork.Input
             }
         }
 
-        public bool isJoystickInput
+        public InputDeviceType inputDeviceType
         {
             get
             {
-                return m_IsJoystickInput;
+                return m_InputDeviceType;
             }
         }
 
@@ -100,21 +108,37 @@ namespace GameFrameWork.Input
             m_DicAfterTriggerEvents.Clear();
             m_IsRunning = false;
         }
-
+        
         public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
             string[] joystickNames = UnityEngine.Input.GetJoystickNames();
             bool isConnected = joystickNames.Length > 0 && !string.IsNullOrEmpty(joystickNames[0]);
 
-            if (!isConnected || (m_IsJoystickInput && !AnyJoystickInput() && UnityEngine.Input.anyKeyDown))
+            if (!isConnected)
             {
-                m_IsJoystickInput = false;
-                m_InputDeviceChangeEvent?.Invoke();
+                if (m_InputDeviceType == InputDeviceType.None)
+                {
+                    m_InputDeviceType = InputDeviceType.Keyboard;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+                else if (m_InputDeviceType == InputDeviceType.Joystick && UnityEngine.Input.anyKeyDown)
+                {
+                    m_InputDeviceType = InputDeviceType.Keyboard;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
             }
-            else if (!m_IsJoystickInput && AnyJoystickInput())
+            else
             {
-                m_IsJoystickInput = true;
-                m_InputDeviceChangeEvent?.Invoke();
+                if (m_InputDeviceType == InputDeviceType.None)
+                {
+                    m_InputDeviceType = InputDeviceType.Joystick;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+                else if (m_InputDeviceType == InputDeviceType.Keyboard && AnyJoystickInput())
+                {
+                    m_InputDeviceType = InputDeviceType.Joystick;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
             }
 
             if (m_QueueKeyDown.Count > 0)

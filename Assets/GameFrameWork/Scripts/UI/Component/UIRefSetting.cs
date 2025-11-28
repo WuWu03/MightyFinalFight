@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -81,6 +82,7 @@ namespace GameFrameWork.UI
                 UIType.View => "View",
                 UIType.Panel => "Panel",
                 UIType.Item => "Item",
+                _ => throw new ArgumentOutOfRangeException()
             };
             
             string tempViewName = m_ViewName.Replace("View", string.Empty).Replace("Panel", string.Empty).Replace("Item",string.Empty);

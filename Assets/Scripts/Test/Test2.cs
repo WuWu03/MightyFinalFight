@@ -3,6 +3,7 @@ using GameFrameWork.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 public class TestItem : BaseListItem
 {
@@ -19,6 +20,7 @@ public class Test2 : MonoBehaviour
     public GameFrameWork.UI.ScrollList view;
     public ButtonEx btn;
 
+    private InputAction stickAction;
     private void Awake()
     {
         view.itemUpdateEvent += onRenderItem;
@@ -29,6 +31,9 @@ public class Test2 : MonoBehaviour
         //
         // btn.onDoubleClick.AddListener(OnDoubleClick);
         // btn.onPress.AddListener(OnPress);
+        //stickAction.starte
+        
+        //actions.Button
     }
 
     private void onRenderItem(GameFrameWork.UI.BaseListItem t)
@@ -45,8 +50,6 @@ public class Test2 : MonoBehaviour
 
     private void OnPress(GameObject t1)
     {
-        Button b;
-
         Debug.Log("OnPress");
     }
 

@@ -32,16 +32,16 @@ public class DoJumpAttack : DoAttack
     {
         base.OnEnter();
         m_State = BehaviourTreeState.Running;
-        m_CanJump = owner.isInGround;
+        m_CanJump = attackOwner.isInGround;
         currAttackCount = m_CanJump ? 0 : -1;
-        owner.onGroundEvent += OnGround;
+        attackOwner.onGroundEvent += OnGround;
 
         if (m_CanJump)
         {
             m_CanJump = false;
-            owner.onDropEvent += OnDrop;
-            owner.OppositePlayer();
-            owner.Jump(GetJumpDir(), false, true);
+            attackOwner.onDropEvent += OnDrop;
+            attackOwner.OppositePlayer();
+            attackOwner.Jump(GetJumpDir(), false, true);
         }
     }
     
@@ -52,14 +52,14 @@ public class DoJumpAttack : DoAttack
         
         if (!m_IsMoveJump)
         {
-            owner.OppositePlayer();
+            attackOwner.OppositePlayer();
         }
     }
 
     private void OnDrop()
     {
-        owner.onDropEvent -= OnDrop;
-        owner.Attack(Vector2.zero);
+        attackOwner.onDropEvent -= OnDrop;
+        attackOwner.Attack(Vector2.zero);
     }
 
     protected override void OnUpdate(float deltaTime)
@@ -73,9 +73,9 @@ public class DoJumpAttack : DoAttack
         if (m_CanJump)
         {
             m_CanJump = false;
-            owner.onDropEvent += OnDrop;
-            owner.onGroundEvent += OnGround;
-            owner.Jump(GetJumpDir(), false, true);
+            attackOwner.onDropEvent += OnDrop;
+            attackOwner.onGroundEvent += OnGround;
+            attackOwner.Jump(GetJumpDir(), false, true);
         }
     }
 
@@ -83,8 +83,8 @@ public class DoJumpAttack : DoAttack
     {
         base.OnReset();
         m_CanJump = false;
-        owner.onGroundEvent -= OnGround;
-        owner.onDropEvent -= OnDrop;
+        attackOwner.onGroundEvent -= OnGround;
+        attackOwner.onDropEvent -= OnDrop;
         m_State = BehaviourTreeState.None;
     }
 
@@ -95,6 +95,6 @@ public class DoJumpAttack : DoAttack
             return Vector2.zero;
         }
 
-        return Vector2.right * owner.dir;
+        return Vector2.right * attackOwner.dir;
     }
 }

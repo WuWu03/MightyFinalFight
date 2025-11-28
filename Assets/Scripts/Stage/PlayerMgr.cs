@@ -183,7 +183,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
 
         CameraMgr.instance.SetFollowTarget(m_Player.transform);
         GameEntry.inputMgr.getDirectionEvent += GetDirection;
-        GameEntry.inputMgr.getPreConditonEvent += GetPreCondition;
+        GameEntry.inputMgr.getPreConditionEvent += GetPreCondition;
         GameEntry.inputMgr.isRunning = true;
     }
 

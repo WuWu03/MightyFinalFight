@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -105,6 +106,42 @@ namespace GameFrameWork
             }
 
             return component;
+        }
+
+        /// <summary>
+        /// 限制文本的宽度
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static void ClampTextWidth(this TextMeshProUGUI text, string str)
+        {
+            float height = text.rectTransform.sizeDelta.y;
+            ClampTextWidth(text, str, height);
+        }
+
+        public static void ClampTextWidth(this TextMeshProUGUI text, string str, float height)
+        {
+            Vector2 size = text.GetPreferredValues(str);
+            text.rectTransform.sizeDelta = new Vector2(size.x, height);
+        }
+
+        /// <summary>
+        /// 限制文本的高度
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static void ClampTextHeight(this TextMeshProUGUI text, string str)
+        {
+            float width = text.rectTransform.sizeDelta.x;
+            ClampTextHeight(text, str, width);
+        }
+
+        public static void ClampTextHeight(this TextMeshProUGUI text, string str, float width)
+        {
+            Vector2 size = text.GetPreferredValues(str);
+            text.rectTransform.sizeDelta = new Vector2(width, size.y);
         }
 
         public static int ToInt(this string value)
@@ -370,7 +407,7 @@ namespace GameFrameWork
                 ContentSizeFitter.FitMode.PreferredSize => LayoutUtility.GetPreferredSize(rectTransform, 1),
                 _ => 0,
             };
-            
+
             return new Vector2(horizontalSize, verticalSize);
         }
     }

@@ -36,7 +36,6 @@ namespace GameFrameWork.Input
             m_Keys = new KeyArgs[(int)KeyType.None - 1];
             m_AxisDown = new bool[((int)AxisType.None - 1) * 2];
             m_KeyDown = new bool[(int)KeyType.None - 1];
-
             AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
             AddAxis(AxisType.RightAxis, "SubHorizontal", "SubVertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
             AddAxis(AxisType.CrossAxis, "CrossHorizontal", "CrossVertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);

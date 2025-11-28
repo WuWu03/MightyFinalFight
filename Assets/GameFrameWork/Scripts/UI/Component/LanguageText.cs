@@ -14,7 +14,8 @@ namespace GameFrameWork.UI
         private string m_AppendArg = string.Empty;
         private Text m_Text;
         private TextMeshProUGUI m_TextMeshProUGUI;
-        private static ILocalizationMgr m_LocalizationMgr;
+        private static ILocalizationMgr s_LocalizationMgr;
+
         private void Awake()
         {
             if (GameFrameWorkEntry.isStartUp)
@@ -28,7 +29,7 @@ namespace GameFrameWork.UI
         {
             if (GameFrameWorkEntry.isStartUp)
             {
-                m_LocalizationMgr.lanuageChangeEvent += OnLanguageChange;
+                s_LocalizationMgr.lanuageChangeEvent += OnLanguageChange;
                 UpdateLanguage();
             }
         }
@@ -37,28 +38,29 @@ namespace GameFrameWork.UI
         {
             if (GameFrameWorkEntry.isStartUp)
             {
-                m_LocalizationMgr.lanuageChangeEvent -= OnLanguageChange;
+                s_LocalizationMgr.lanuageChangeEvent -= OnLanguageChange;
             }
         }
 
         public static void SetLocalizationMgr(ILocalizationMgr localizationMgr)
         {
-            m_LocalizationMgr = localizationMgr;
+            s_LocalizationMgr = localizationMgr;
         }
-        
+
         public void SetText(string text)
         {
             InitComponent();
+            
             if (!string.IsNullOrEmpty(m_AppendArg))
             {
                 text = StringUtil.Append(text, m_AppendArg);
             }
 
-            if (m_TextMeshProUGUI != null)
+            if (m_TextMeshProUGUI is not null)
             {
                 m_TextMeshProUGUI.text = text;
             }
-            else if (m_Text != null)
+            else if (m_Text is not  null)
             {
                 m_Text.text = text;
             }
@@ -118,27 +120,27 @@ namespace GameFrameWork.UI
 
         public void SetLanguageTextParams(string arg1)
         {
-            SetLanguageTextParams(arg1, null, null, null, null, null, null);
+            SetLanguageTextParams(arg1, null);
         }
 
         public void SetLanguageTextParams(string arg1, string arg2)
         {
-            SetLanguageTextParams(arg1, arg2, null, null, null, null, null);
+            SetLanguageTextParams(arg1, arg2, null);
         }
 
         public void SetLanguageTextParams(string arg1, string arg2, string arg3)
         {
-            SetLanguageTextParams(arg1, arg2, arg3, null, null, null, null);
+            SetLanguageTextParams(arg1, arg2, arg3, null);
         }
 
         public void SetLanguageTextParams(string arg1, string arg2, string arg3, string arg4)
         {
-            SetLanguageTextParams(arg1, arg2, arg3, arg4, null, null, null);
+            SetLanguageTextParams(arg1, arg2, arg3, arg4, null);
         }
 
         public void SetLanguageTextParams(string arg1, string arg2, string arg3, string arg4, string arg5)
         {
-            SetLanguageTextParams(arg1, arg2, arg3, arg4, arg5, null, null);
+            SetLanguageTextParams(arg1, arg2, arg3, arg4, arg5, null);
         }
 
         public void SetLanguageTextParams(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
@@ -167,7 +169,7 @@ namespace GameFrameWork.UI
             m_AppendArg = arg1;
             UpdateLanguage();
         }
-
+        
         private void OnLanguageChange()
         {
             UpdateLanguage();
@@ -180,7 +182,7 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            string text = m_LocalizationMgr.GetLanguageText(languageTextKey);
+            string text = s_LocalizationMgr.GetLanguageText(languageTextKey);
             SetText(text);
         }
 
@@ -191,9 +193,8 @@ namespace GameFrameWork.UI
                 return;
             }
 
-            string text = m_LocalizationMgr.GetLanguageText(languageTextKey);
+            string text = s_LocalizationMgr.GetLanguageText(languageTextKey);
             text = StringUtil.Format(text, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
             SetText(text);
         }
 

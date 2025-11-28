@@ -17,12 +17,11 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
     private float m_TextTimer = -1f;
     private Sequence m_AnimSequence;
     private bool m_CanStart;
-    
+
     protected override void OnOpen(object arg)
     {
-        
     }
-    
+
     protected override void OnShow(object arg)
     {
         GameEntry.inputMgr.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
@@ -65,22 +64,21 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
 
     protected override void OnClose()
     {
-
     }
 
     protected override void OnDestroy()
     {
-
     }
 
     private void OnInputDeviceChangeEvent()
     {
-        if (GameEntry.inputMgr.isJoystickInput)
+        Debug.Log("测试输入状态操了" + GameEntry.inputMgr.inputDeviceType);
+        if (GameEntry.inputMgr.inputDeviceType == InputDeviceType.Joystick)
         {
             component.txtStart.Append("(START)");
             component.txtSettings.Append("(SELECT)");
         }
-        else
+        else if (GameEntry.inputMgr.inputDeviceType == InputDeviceType.Keyboard)
         {
             component.txtStart.Append("(G)");
             component.txtSettings.Append("(H)");
@@ -203,7 +201,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
         m_AnimSequence.AppendInterval(0.4f);
         StartAnim();
     }
-       
+
     private void StartAnim()
     {
         m_AnimSequence.AppendCallback(() =>
@@ -218,10 +216,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
             component.imgLogo.transform.DOScale(1, 0.5f).SetEase(Ease.OutBounce);
         });
         m_AnimSequence.AppendInterval(0.45f);
-        m_AnimSequence.AppendCallback(() =>
-        {
-            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick));
-        });
+        m_AnimSequence.AppendCallback(() => { GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BicycleKick)); });
         m_AnimSequence.AppendCallback(() =>
         {
             component.imgLogoBG.gameObject.SetActiveSelf(true);
@@ -255,6 +250,7 @@ public class TitleView : UIBaseView<TitleViewComponent, TitleViewSettings>
                 string key = StringUtil.Append("TitlePanelStory", storyIndex.ToString());
                 string content = GameEntry.localizationMgr.GetLanguageText(key);
                 component.txtIntro.SetText(string.Empty);
+                component.txtIntroTmp.ClampTextWidth(content);
                 component.txtIntroTmp.DOText(content, 1.8f).SetEase(Ease.Linear).OnUpdate(() =>
                 {
                     if (m_TextTimer < 0 || Time.time - m_TextTimer > 0.1f)
