@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GameFrameWorkConfigWindowData
   m_EditorClassIdentifier: 
   buildPath: 
-  uiScenesPath: Assets/ArtResources/UI/Scenes
-  uiAtlasPath: Assets/ArtResources/UI/Atlas
+  uiScenesPath: Assets/ArtResources/UI/Scenes/
+  uiAtlasPath: Assets/ArtResources/UI/Atlas/
   uiScriptsPath: Assets/Scripts/UI/
   entryScene: Assets/Scenes/Main.unity
   languageKeyFilePath: Assets/Editor/Config/LanguageKeys.txt
@@ -22,8 +22,8 @@ MonoBehaviour:
   m_IsLoadFromAssetBundle: 0
   m_IsOpenLog: 1
   m_UIPath: Assets/ArtResources/UI/
-  m_UIPrefabsPath: Assets/ArtResources/UI/Prefabs
-  m_UISpritesPath: Assets/ArtResources/UI/Sprites
+  m_UIPrefabsPath: Assets/ArtResources/UI/Prefabs/
+  m_UISpritesPath: Assets/ArtResources/UI/Sprites/
   m_ConfigDataPath: Assets/ConfigData/
   m_VersionFileName: Version.txt
   m_AssetMapFileName: AssetMap.txt

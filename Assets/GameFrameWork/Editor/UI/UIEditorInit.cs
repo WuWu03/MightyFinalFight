@@ -225,7 +225,7 @@ namespace GameFrameWork.Editor
                 return;
             }
 
-            GameObject gameObject = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+            GameObject gameObject = EditorUtility.EntityIdToObject(instanceID) as GameObject;
 
             if (gameObject == null || gameObject.transform.parent == null)
             {

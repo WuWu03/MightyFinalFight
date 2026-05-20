@@ -344,13 +344,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Load
+  m_PresenterName: LoadPresenter
   m_ViewName: LoadView
   uiDestroyMode: 3
   uiLayer: 9
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/Load/Load.cs
   viewPath: Assets/Scripts/UI/Load/LoadView.cs
-  componentPath: Assets/Scripts/UI/Load/LoadViewComponent.cs
   settingsPath: Assets/Scripts/UI/Load/LoadViewSettings.cs
 --- !u!4 &772694343
 Transform:

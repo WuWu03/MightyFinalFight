@@ -3,17 +3,19 @@ using System.Collections.Generic;
 
 namespace GameFrameWork.Event
 {
-    public class EventPool<T> where T : EventArg
+    public class EventPool
     {
-        private readonly Queue<EventSender<T>> m_Events;
-        private readonly Dictionary<uint, List<EventHandler<T>>> m_EventHandlers;
-        
+        private readonly Queue<IEventSender> m_Events;
+        private readonly Dictionary<Type, List<object>> m_EventHandlers;
+        private readonly UnSubscribe m_UnSubscribe;
+
         public EventPool()
         {
             m_Events = new();
             m_EventHandlers = new();
+            m_UnSubscribe = new(this);
         }
-        
+
         public int currEventCount
         {
             get
@@ -29,10 +31,10 @@ namespace GameFrameWork.Event
                 return m_EventHandlers.Count;
             }
         }
-        
-        public int Count(uint id)
+
+        public int Count<T>() where T : struct
         {
-            if (m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (m_EventHandlers.TryGetValue(typeof(T), out List<object> eventList))
             {
                 return eventList.Count;
             }
@@ -46,47 +48,52 @@ namespace GameFrameWork.Event
             {
                 lock (m_Events)
                 {
-                    EventSender<T> eventSender = m_Events.Dequeue();
-                    HandleEvent(eventSender.sender, eventSender.eventArg);
-                    eventSender.Release();
+                    IEventSender eventSender = m_Events.Dequeue();
+                    eventSender.Dispatch(this);
                 }
             }
         }
 
-        public void Subscribe(uint eventId, EventHandler<T> handler)
+        public UnSubscribe Subscribe<T>(EventHandler<T> handler) where T : struct
         {
+            Type eventType = typeof(T);
+
             if (handler == null)
             {
-                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
-                return;
+                Log.LogError("事件 [", eventType.Name, "] 的回调函数为空");
+                return null;
             }
 
-            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
-                eventList = new List<EventHandler<T>>();
-                m_EventHandlers.Add(eventId, eventList);
+                eventList = new();
+                m_EventHandlers.Add(eventType, eventList);
             }
 
             if (eventList.Contains(handler))
             {
-                Log.LogError("事件 [", eventId.ToString(), "] 重复订阅");
-                return;
+                Log.LogError("事件 [", eventType.Name, "] 重复订阅");
+                return null;
             }
 
             eventList.Add(handler);
+            m_UnSubscribe.SetCurrEventType(eventType);
+            return m_UnSubscribe;
         }
 
-        public void UnSubscibe(uint eventId, EventHandler<T> handler)
+        public void UnSubscibe<T>(EventHandler<T> handler) where T : struct
         {
+            Type eventType = typeof(T);
+
             if (handler == null)
             {
-                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
+                Log.LogError("事件 [", eventType.Name, "] 的回调函数为空");
                 return;
             }
 
-            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
-                Log.LogError("事件 [", eventId.ToString(), "] 不存在");
+                Log.LogError("事件 [", eventType.Name, "] 不存在");
                 return;
             }
 
@@ -97,18 +104,30 @@ namespace GameFrameWork.Event
 
             if (eventList.Count < 1)
             {
-                m_EventHandlers.Remove(eventId);
+                m_EventHandlers.Remove(eventType);
             }
         }
 
-        public bool Check(uint eventId, EventHandler<T> handler)
+        public void UnSubscibeAll(Type eventType)
         {
+            if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
+            {
+                Log.LogError("事件 [", eventType.Name, "] 不存在");
+                return;
+            }
+            m_EventHandlers.Remove(eventType);
+        }
+
+        public bool Check<T>(EventHandler<T> handler) where T : struct
+        {
+            Type eventType = typeof(T);
+
             if (handler == null)
             {
-                Log.LogError("事件 [", eventId.ToString(), "] 的回调函数为空");
+                Log.LogError("事件 [", eventType.Name, "] 的回调函数为空");
             }
 
-            if (!m_EventHandlers.TryGetValue(eventId, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
                 return false;
             }
@@ -116,7 +135,7 @@ namespace GameFrameWork.Event
             return eventList.Contains(handler);
         }
 
-        public void Dispatch(object sender, T arg)
+        public void Dispatch<T>(object sender, T arg) where T : struct
         {
             EventSender<T> eventSender = EventSender<T>.Create(sender, arg);
 
@@ -126,7 +145,7 @@ namespace GameFrameWork.Event
             }
         }
 
-        public void DispatchNow(object sender, T arg)
+        public void DispatchNow<T>(object sender, T arg) where T : struct
         {
             HandleEvent(sender, arg);
         }
@@ -137,21 +156,19 @@ namespace GameFrameWork.Event
             m_EventHandlers.Clear();
         }
 
-        private void HandleEvent(object sender, T arg)
+        public void HandleEvent<T>(object sender, T arg) where T : struct
         {
-            uint id = arg.id;
+            Type eventType = typeof(T);
 
-            if (!m_EventHandlers.TryGetValue(id, out List<EventHandler<T>> eventList))
+            if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
                 return;
             }
 
             for (int i = eventList.Count - 1; i >= 0; i--)
             {
-                eventList[i]?.Invoke(sender, arg);
+                (eventList[i] as EventHandler<T>)?.Invoke(sender, arg);
             }
-
-            arg.Release();
         }
     }
 }

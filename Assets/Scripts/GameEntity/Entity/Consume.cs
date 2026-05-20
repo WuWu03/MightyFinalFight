@@ -41,7 +41,7 @@ public class Consume : BaseSceneItem
         else
         {
             owner.entityAttribute.AddHealth(m_ConsumeInfo.value);
-            GameEntry.uiMgr.Get<MainView>().SetPlayerHP(owner.entityAttribute.health, owner.entityAttribute.maxHealth);
+            GameEntry.uiMgr.Get<MainPresenter>().SetPlayerHP(owner.entityAttribute.health, owner.entityAttribute.maxHealth);
         }
 
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.Eat));

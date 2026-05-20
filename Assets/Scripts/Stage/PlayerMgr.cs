@@ -190,7 +190,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void Rebirth(Vector2 rebirthPos)
     {
         m_Life -= 1;
-        GameEntry.uiMgr.Get<MainView>().SetPlayerLife(life);
+        GameEntry.uiMgr.Get<MainPresenter>().SetPlayerLife(life);
         
         if (life < 1)
         {
@@ -209,7 +209,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_Exp += value;
-        MainView mainView = GameEntry.uiMgr.Get<MainView>();
+        MainPresenter mainView = GameEntry.uiMgr.Get<MainPresenter>();
 
         if (m_Exp >= m_LevelConfigData.exp)
         {
@@ -229,7 +229,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddLife(int value)
     {
         m_Life += value;
-        GameEntry.uiMgr.Get<MainView>().SetPlayerLife(m_Life);
+        GameEntry.uiMgr.Get<MainPresenter>().SetPlayerLife(m_Life);
     }
 
     public void AddContinue(int value)

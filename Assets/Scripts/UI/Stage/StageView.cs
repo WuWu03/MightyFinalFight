@@ -1,112 +1,36 @@
 /*
- * @Desc: Stage 模块 StageView 界面视图
- * @Date: 2021-09-08 12:24:44
- * @Author: WuWu
+ * @Desc: Stage 模块 StageView 界面数据
+ * @Date: 2025-10-11 12:19:46
+ * @Author: GQY
+ * @Note: 工具生成，请勿修改
  */
 
-using DragonBones;
-using GameFrameWork;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Event;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using GameFrameWork.UI;
 
-public class StageView : UIBaseView<StageViewComponent, StageViewSettings>
+public class StageView : UIBaseView
 {
-    private GameObject m_Role;
-    private RoleSelectConfigData m_RoleSelectConfig;
-    protected override void OnOpen(object arg)
-    {
-        
-    }
+	//blue,GameObject
+	public GameObject blueGo { get; private set; }
+	//red,GameObject
+	public GameObject redGo { get; private set; }
+	//green,GameObject
+	public GameObject greenGo { get; private set; }
+	//imgMap,GameObject
+	public GameObject imgMapGo { get; private set; }
+	//heroPos,GameObject
+	public GameObject heroPosGo { get; private set; }
 
-    protected override void OnShow(object arg)
-    {
-        int stageIndex = StageMgr.instance.stageIndex;
-        StageConfigData stageConfigData = StaticConfig.StageConfig.GetDataByIndex(stageIndex);
-        GetRoundTxt(stageConfigData.StageShowColor).text = stageConfigData.StageIndex.ToString();
-
-        for (int i = 1; i < 6; i++)
-        {
-            component.imgMapGo.transform.Find("pos" + i).gameObject.SetActiveSelf(false);
-        }
-
-        component.imgMapGo.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
-        int characterId = PlayerMgr.instance.selectRoleId;
-        m_RoleSelectConfig = GameEntry.configDataMgr.Get<RoleSelectConfigData>().GetConfigDataById(characterId);
-        GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), OnLoaded);
-        AddEvent(EventId.StageEnterStartEvent, OnStageEnterStart);
-    }
-
-    protected override void OnUpdate()
-    {
-
-    }
-
-    protected override void OnHide()
-    {
-        GameEntry.gameObjectPoolMgr.Put(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), m_Role);
-        m_Role = null;
-        m_RoleSelectConfig = null;
-    }
-
-    protected override void OnClose()
-    {
-
-    }
-
-    protected override void OnDestroy()
-    {
-
-    }
-
-    private void OnLoaded(string assetPath, Object obj, object arg)
-    {
-        if (obj is GameObject roleGo)
-        {
-            m_Role = roleGo;
-            m_Role.transform.SetParent(component.heroPosGo.transform, false);
-            m_Role.SetActiveSelf(true);
-            m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = 0f;
-            LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
-        }
-    }
-
-    private void OnFadeWhiteComplete()
-    {
-        m_Role.GetComponent<UnityArmatureComponent>().animation.timeScale = m_RoleSelectConfig.animSpeed;
-        m_Role.GetComponent<UnityArmatureComponent>().animation.Play(m_RoleSelectConfig.animName, 1);
-        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, m_RoleSelectConfig.soundName));
-        GameEntry.timerMgr.Register(m_RoleSelectConfig.showTime, OnTimer);
-    }
-
-    private void OnTimer()
-    {
-        StageMgr.instance.StageEnterNext();
-    }
-
-    private void OnStageEnterStart(object sender, GameEventArg e)
-    {
-        CloseSelf();
-    }
-
-    private Text GetRoundTxt(int type)
-    {
-        GameObject go;
-        component.blueGo.SetActiveSelf(false);
-        component.redGo.SetActiveSelf(false);
-        component.greenGo.SetActiveSelf(false);
-        
-        if (type == 1)
-            go = component.blueGo;
-        else if (type == 2)
-            go = component.redGo;
-        else
-            go = component.greenGo;
-
-        go.SetActiveSelf(true);
-        return go.transform.Find("txtIndex").GetComponent<Text>();
-    }
+	protected override void OnInitView(UIRefRoot root)
+	{
+		blueGo = root.objects[0] as GameObject;
+		redGo = root.objects[1] as GameObject;
+		greenGo = root.objects[2] as GameObject;
+		imgMapGo = root.objects[3] as GameObject;
+		heroPosGo = root.objects[4] as GameObject;
+	}
 }

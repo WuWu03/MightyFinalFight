@@ -763,11 +763,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgMap
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &632135520
 GameObject:
@@ -966,11 +966,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: blue
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1285304433
 GameObject:
@@ -1271,11 +1271,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: red
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1438736093
 GameObject:
@@ -1307,13 +1307,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Stage
+  m_PresenterName: StagePresenter
   m_ViewName: StageView
   uiDestroyMode: 1
   uiLayer: 3
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/Stage/Stage.cs
   viewPath: Assets/Scripts/UI/Stage/StageView.cs
-  componentPath: Assets/Scripts/UI/Stage/StageViewComponent.cs
   settingsPath: Assets/Scripts/UI/Stage/StageViewSettings.cs
 --- !u!4 &1438736095
 Transform:
@@ -1481,11 +1482,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: heroPos
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &1646893348
 GameObject:
@@ -1936,11 +1937,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: green
   m_ComponentName: GameObject
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!1 &2073645757
 GameObject:

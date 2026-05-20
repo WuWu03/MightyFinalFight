@@ -455,6 +455,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -767,6 +768,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1024,13 +1026,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Talk
+  m_PresenterName: TalkPresenter
   m_ViewName: TalkView
   uiDestroyMode: 0
   uiLayer: 3
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/Talk/TalkPresenter.cs
   viewPath: Assets/Scripts/UI/Talk/TalkView.cs
-  componentPath: Assets/Scripts/UI/Talk/TalkViewComponent.cs
   settingsPath: Assets/Scripts/UI/Talk/TalkViewSettings.cs
 --- !u!4 &1507287115
 Transform:

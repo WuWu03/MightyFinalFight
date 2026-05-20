@@ -11,7 +11,7 @@ public class StageMgr : BaseMgr<StageMgr>
 {
     private StageConfigData m_CurrStageData;
     private int m_StageIndex;
-    
+
     public StageConfigData CurrStageData
     {
         get
@@ -69,10 +69,10 @@ public class StageMgr : BaseMgr<StageMgr>
         CameraMgr.instance.EndFollow();
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
-    
+
     private void OnFadeBlackComplete()
     {
-        GameEntry.eventMgr.DispatchNow(this, EventArg.Create(EventId.StageEnterStartEvent));
+        GameEntry.eventMgr.DispatchNow(this, new StageEnterStartEvent());
         TaskMgr.instance.GiveupTask();
         SceneEntityMgr.instance.ReleaseAll();
         GameEntry.entityMgr.DestroyAllUnUsedEntities();
@@ -110,24 +110,24 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
         PlayerMgr.instance.canControl = false;
         CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
-        
-        if(m_CurrStageData.showMainPanel)
+
+        if (m_CurrStageData.showMainPanel)
         {
-            GameEntry.uiMgr.Open<MainView>();
+            GameEntry.uiMgr.Open<MainPresenter>();
         }
         else
         {
-            GameEntry.uiMgr.Close<MainView>();
+            GameEntry.uiMgr.Close<MainPresenter>();
         }
-        
+
         GameEntry.sceneMgr.AllowScene();
         LoadMgr.instance.DOFadeWhite(OnFadeWhiteComplete);
     }
-    
+
     private void OnFadeWhiteComplete()
     {
         LoadMgr.instance.CloseLoadPanel();
-        GameEntry.eventMgr.Dispatch(this, EventArg.Create(EventId.StageEnterEndEvent));
+        GameEntry.eventMgr.Dispatch(this, new StageEnterEndEvent());
         CameraMgr.instance.StartFollow();
         PlayerMgr.instance.canControl = true;
         foreach (int taskID in m_CurrStageData.TaskIDs)

@@ -117,7 +117,7 @@ namespace DragonBones
             {
                 var dragonBonesSke = AssetDatabase.LoadMainAssetAtPath(dragonBonesSkePath) as TextAsset;
                 var textureAtlasJSONs = new List<string>();
-                GetTextureAtlasConfigs(textureAtlasJSONs, AssetDatabase.GetAssetPath(dragonBonesSke.GetInstanceID()));
+                GetTextureAtlasConfigs(textureAtlasJSONs, AssetDatabase.GetAssetPath(dragonBonesSke.GetEntityId()));
                 UnityDragonBonesData.TextureAtlas[] textureAtlas = new UnityDragonBonesData.TextureAtlas[textureAtlasJSONs.Count];
 
                 for (int i = 0; i < textureAtlasJSONs.Count; ++i)
@@ -168,7 +168,7 @@ namespace DragonBones
             if (dragonBoneJSON != null)
             {
                 var textureAtlasJSONs = new List<string>();
-                UnityEditor.GetTextureAtlasConfigs(textureAtlasJSONs, AssetDatabase.GetAssetPath(dragonBoneJSON.GetInstanceID()));
+                UnityEditor.GetTextureAtlasConfigs(textureAtlasJSONs, AssetDatabase.GetAssetPath(dragonBoneJSON.GetEntityId()));
 
                 UnityDragonBonesData.TextureAtlas[] textureAtlas = UnityEditor.GetTextureAtlasByJSONs(textureAtlasJSONs);
 

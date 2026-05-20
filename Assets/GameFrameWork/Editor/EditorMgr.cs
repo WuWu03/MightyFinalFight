@@ -12,6 +12,8 @@ namespace GameFrameWork.Editor
     [InitializeOnLoad]
     public static class EditorMgr
     {
+        private const string EditorPrefsKey = "unity_editor_show_main_scene";
+
         static EditorMgr() { }
 
         public static GameFrameWorkConfigWindowData GetGameFrameWorkConfig()
@@ -74,7 +76,7 @@ namespace GameFrameWork.Editor
         [UnityEditor.Callbacks.DidReloadScripts(0)]
         private static void OnScriptReload()
         {
-            int isShowMainScene = EditorPrefs.GetInt("unity_editor_show_main_scene", 0);
+            int isShowMainScene = EditorPrefs.GetInt(EditorPrefsKey, 0);
         
             if (isShowMainScene == 0)
             {
@@ -105,18 +107,18 @@ namespace GameFrameWork.Editor
         private static void CheckEntryScene()
         {
             GameFrameWorkConfigWindowData config = GetGameFrameWorkConfig();
-            int isShowMainScene = EditorPrefs.GetInt("unity_editor_show_main_scene", 0);
+            int isShowMainScene = EditorPrefs.GetInt(EditorPrefsKey, 0);
         
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
-                EditorPrefs.SetInt("unity_editor_show_main_scene", 1);
+                EditorPrefs.SetInt(EditorPrefsKey, 1);
                 GameFrameWorkStartUp();
                 return;
             }
         
             if (isShowMainScene == 0)
             {
-                EditorPrefs.SetInt("unity_editor_show_main_scene", 1);
+                EditorPrefs.SetInt(EditorPrefsKey, 1);
                 GoToGameFrameWorkEntryScene();
             }
         }
@@ -160,7 +162,7 @@ namespace GameFrameWork.Editor
         
         private static bool ApplicationWantsToQuit()
         {
-            EditorPrefs.SetInt("unity_editor_show_main_scene", 0);
+            EditorPrefs.SetInt(EditorPrefsKey, 0);
             return true;
         }
 

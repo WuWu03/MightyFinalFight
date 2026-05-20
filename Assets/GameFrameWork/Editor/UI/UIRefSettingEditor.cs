@@ -17,7 +17,7 @@ namespace GameFrameWork.Editor
             if (target is UIRefSetting uiRefSetting)
             {
                 m_UIRefSetting = uiRefSetting;
-                RefreshPath(uiRefSetting.moduleName, uiRefSetting.viewName);
+                RefreshPath(uiRefSetting.moduleName, uiRefSetting.presenterName, uiRefSetting.viewName);
             }
         }
 
@@ -26,13 +26,28 @@ namespace GameFrameWork.Editor
             m_HelpStringBuilder.Length = 0;
             serializedObject.Update();
 
-            string viewName = EditorGUILayout.TextField("View Name", m_UIRefSetting.viewName);
             string moduleName = EditorGUILayout.TextField("Module Name", m_UIRefSetting.moduleName);
+            string presenterName = EditorGUILayout.TextField("Presenter Name", m_UIRefSetting.presenterName);
+            string viewName = EditorGUILayout.TextField("View Name", m_UIRefSetting.viewName);
+
+            if (m_UIRefSetting.moduleName != moduleName)
+            {
+                EditorUtil.RegisterUndo(target, "设置改变：Module Name");
+                m_UIRefSetting.moduleName = moduleName;
+                RefreshPath(moduleName, presenterName, viewName);
+            }
+
+            if (m_UIRefSetting.presenterName != presenterName)
+            {
+                EditorUtil.RegisterUndo(target, "设置改变：Presenter Name");
+                m_UIRefSetting.presenterName = presenterName;
+                RefreshPath(moduleName, presenterName, viewName);
+            }
 
             if (m_UIRefSetting.viewName != viewName)
             {
                 EditorUtil.RegisterUndo(target, "设置改变：View Name");
-                
+
                 switch (m_UIRefSetting.uiType)
                 {
                     case UIRefSetting.UIType.Panel:
@@ -49,20 +64,13 @@ namespace GameFrameWork.Editor
                 }
 
                 m_UIRefSetting.viewName = viewName;
-                RefreshPath(moduleName, viewName);
-            }
-
-            if (m_UIRefSetting.moduleName != moduleName)
-            {
-                EditorUtil.RegisterUndo(target, "设置改变：Module Name");
-                m_UIRefSetting.moduleName = moduleName;
-                RefreshPath(moduleName, viewName);
+                RefreshPath(moduleName, presenterName, viewName);
             }
 
             if (m_UIRefSetting.uiType != UIRefSetting.UIType.Item)
             {
                 UIRefSetting.UILayer uiLayer = (UIRefSetting.UILayer)EditorGUILayout.EnumPopup("UI Layer", m_UIRefSetting.uiLayer);
-                
+
                 if (m_UIRefSetting.uiLayer != uiLayer)
                 {
                     EditorUtil.RegisterUndo(target, "设置改变：UI Layer");
@@ -71,13 +79,13 @@ namespace GameFrameWork.Editor
             }
 
             UIRefSetting.UIType uiType = (UIRefSetting.UIType)EditorGUILayout.EnumPopup("UI Type", m_UIRefSetting.uiType);
-            
+
             if (m_UIRefSetting.uiType != uiType)
             {
                 EditorUtil.RegisterUndo(target, "设置改变：UI Type");
                 m_UIRefSetting.uiType = uiType;
             }
-            
+
             switch (uiType)
             {
                 case UIRefSetting.UIType.Item:
@@ -91,14 +99,14 @@ namespace GameFrameWork.Editor
             if (!string.IsNullOrEmpty(viewName))
             {
                 m_HelpStringBuilder.AppendLine("1.脚本创建路径:");
-                m_HelpStringBuilder.AppendLine("        UI视图脚本" + m_UIRefSetting.componentPath);
+                m_HelpStringBuilder.AppendLine("        UI视图脚本" + m_UIRefSetting.viewPath);
 
                 if (m_UIRefSetting.uiType != UIRefSetting.UIType.Item)
                 {
                     m_HelpStringBuilder.AppendLine("        UI设置脚本" + m_UIRefSetting.settingsPath);
-                    m_HelpStringBuilder.AppendLine("        UI逻辑脚本" + m_UIRefSetting.viewPath);
+                    m_HelpStringBuilder.AppendLine("        UI逻辑脚本" + m_UIRefSetting.presenterPath);
                 }
-                
+
                 m_HelpStringBuilder.AppendLine("2.预制体创建路径:");
                 m_HelpStringBuilder.AppendLine("        " + EditorMgr.GetGameFrameWorkConfig().uiPrefabsPath);
                 m_HelpStringBuilder.AppendLine();
@@ -138,11 +146,11 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            EditorGUILayout.HelpBox(m_HelpStringBuilder.ToString(), MessageType.Info,true);
+            EditorGUILayout.HelpBox(m_HelpStringBuilder.ToString(), MessageType.Info, true);
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void RefreshPath(string moduleName, string viewName)
+        private void RefreshPath(string moduleName, string presenterName, string viewName)
         {
             GameFrameWorkConfigWindowData windowData = GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig();
 
@@ -151,14 +159,19 @@ namespace GameFrameWork.Editor
                 m_UIRefSetting.moduleName = "Module";
             }
 
+            if (string.IsNullOrEmpty(presenterName))
+            {
+                m_UIRefSetting.presenterName = "Presenter";
+            }
+
             if (string.IsNullOrEmpty(viewName))
             {
                 m_UIRefSetting.viewName = "View";
             }
 
             m_UIRefSetting.viewPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName, ".cs");
-            m_UIRefSetting.componentPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Component", ".cs");
             m_UIRefSetting.settingsPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Settings", ".cs");
+            m_UIRefSetting.presenterPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, presenterName, ".cs");
         }
     }
 }

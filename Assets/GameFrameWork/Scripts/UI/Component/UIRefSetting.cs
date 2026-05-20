@@ -36,7 +36,7 @@ namespace GameFrameWork.UI
             Load,
         }
 
-        [HideInInspector] [SerializeField] private string m_ModuleName = string.Empty;
+        [HideInInspector][SerializeField] private string m_ModuleName = string.Empty;
 
         public string moduleName
         {
@@ -51,7 +51,21 @@ namespace GameFrameWork.UI
             }
         }
 
-        [HideInInspector] [SerializeField] private string m_ViewName = string.Empty;
+        [HideInInspector][SerializeField] private string m_PresenterName = string.Empty;
+        public string presenterName
+        {
+            get { return m_PresenterName; }
+            set
+            {
+                if (m_PresenterName != value)
+                {
+                    m_PresenterName = System.Text.RegularExpressions.Regex.Replace(value, "\\.|\\s|/|\\\\", "");
+                    RefreshScriptFolder();
+                }
+            }
+        }
+
+        [HideInInspector][SerializeField] private string m_ViewName = string.Empty;
 
         public string viewName
         {
@@ -71,8 +85,8 @@ namespace GameFrameWork.UI
         public UIType uiType = UIType.View;
         public float delayDestroyTime = 10;
 
+        [HideInInspector] public string presenterPath;
         [HideInInspector] public string viewPath;
-        [HideInInspector] public string componentPath;
         [HideInInspector] public string settingsPath;
 
         public void RefreshScriptFolder()
@@ -84,9 +98,12 @@ namespace GameFrameWork.UI
                 UIType.Item => "Item",
                 _ => throw new ArgumentOutOfRangeException()
             };
-            
-            string tempViewName = m_ViewName.Replace("View", string.Empty).Replace("Panel", string.Empty).Replace("Item",string.Empty);
+
+            string tempViewName = m_ViewName.Replace("View", string.Empty).Replace("Panel", string.Empty).Replace("Item", string.Empty);
             m_ViewName = tempViewName + suffix;
+
+            string tempPresenterName = m_PresenterName.Replace("Presenter", string.Empty);
+            m_PresenterName = tempPresenterName + "Presenter";
 
             if (string.IsNullOrEmpty(m_ModuleName))
             {

@@ -426,13 +426,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: RoundClear
+  m_PresenterName: RoundClearPresenter
   m_ViewName: RoundClearView
   uiDestroyMode: 1
   uiLayer: 3
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/RoundClear/RoundClear.cs
   viewPath: Assets/Scripts/UI/RoundClear/RoundClearView.cs
-  componentPath: Assets/Scripts/UI/RoundClear/RoundClearViewComponent.cs
   settingsPath: Assets/Scripts/UI/RoundClear/RoundClearViewSettings.cs
 --- !u!4 &589985609
 Transform:
@@ -511,11 +512,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtRound
   m_ComponentName: LanguageText
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &599519122
 MonoBehaviour:
@@ -589,6 +590,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

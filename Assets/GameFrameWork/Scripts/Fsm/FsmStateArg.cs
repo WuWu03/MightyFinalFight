@@ -2,7 +2,7 @@ using GameFrameWork.Event;
 
 namespace GameFrameWork.Fsm
 {
-    public class FsmStateArg : GameEventArg<FsmStateArg>
+    public abstract class FsmStateArg : GameFrameWorkEventArg
     {
     }
 }

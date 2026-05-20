@@ -7,7 +7,7 @@ public class Story1003 : BaseStoryBuilder
     public override void BuildStory()
     {
         PauseBgm(1);
-        UIShowHide(1, typeof(MainView), false);
+        UIShowHide(1, typeof(MainPresenter), false);
         RoleIdle(1, 200501, -1);
         PauseEnemy(1, 200501);;
         PlaySe(1, SoundName.FallDownHigh, 1);
@@ -28,7 +28,7 @@ public class Story1003 : BaseStoryBuilder
         WaitTime(-1, 1);
         RoleMove(1, -1, new Vector2(0.8f, -0.6f));
         Talk(1, 1001);
-        UIShowHide(1, typeof(MainView), true);
+        UIShowHide(1, typeof(MainPresenter), true);
         ResumeEnemy(1, 200501);
     }
 

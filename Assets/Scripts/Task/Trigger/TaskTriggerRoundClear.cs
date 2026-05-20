@@ -13,7 +13,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
         base.Enter();
         GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmClear), false, 1, 0.3f, true);
         PlayerMgr.instance.player.Move(Vector2.zero);
-        GameEntry.uiMgr.Open<RoundClearView>();
+        GameEntry.uiMgr.Open<RoundClearPresenter>();
         m_PlayTimer = Time.time;
     }
 
@@ -31,7 +31,7 @@ public class TaskTriggerRoundClear : BaseTaskTrigger
     private void OnLoadFadeComplete()
     {
         Complete();
-        GameEntry.uiMgr.Close<RoundClearView>();
-        GameEntry.uiMgr.Open<StageView>();
+        GameEntry.uiMgr.Close<RoundClearPresenter>();
+        GameEntry.uiMgr.Open<StagePresenter>();
     }
 }

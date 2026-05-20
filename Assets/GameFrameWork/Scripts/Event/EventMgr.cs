@@ -2,14 +2,14 @@ using System;
 
 namespace GameFrameWork.Event
 {
-    public class EventMgr : GameFrameWorkModule , IEventMgr
+    public class EventMgr : GameFrameWorkModule, IEventMgr
     {
-        private readonly EventPool<EventArg> m_EventPool;
+        private readonly EventPool m_EventPool;
         public EventMgr()
         {
             m_EventPool = new();
         }
-        
+
         public int currEventCount
         {
             get
@@ -35,33 +35,33 @@ namespace GameFrameWork.Event
         {
             m_EventPool.ShutDown();
         }
-        
-        public void Subscribe(uint eventId, EventHandler<EventArg> handler)
+
+        public UnSubscribe Subscribe<T>(EventHandler<T> handler) where T : struct
         {
-            m_EventPool.Subscribe(eventId, handler);
+            return m_EventPool.Subscribe(handler);
         }
 
-        public void UnSubscribe(uint eventId, EventHandler<EventArg> handler)
-        {            
-            m_EventPool.UnSubscibe(eventId, handler);
-        }
-
-        public bool Check(uint eventId, EventHandler<EventArg> handler)
+        public void UnSubscribe<T>(EventHandler<T> handler) where T : struct
         {
-            return m_EventPool.Check(eventId, handler);
+            m_EventPool.UnSubscibe(handler);
         }
 
-        public int Count(uint eventId)
+        public bool Check<T>(EventHandler<T> handler) where T : struct
         {
-            return m_EventPool.Count(eventId);
+            return m_EventPool.Check(handler);
         }
 
-        public void Dispatch(object sender, EventArg arg)
+        public int Count<T>() where T : struct
+        {
+            return m_EventPool.Count<T>();
+        }
+
+        public void Dispatch<T>(object sender, T arg) where T : struct
         {
             m_EventPool.Dispatch(sender, arg);
         }
 
-        public void DispatchNow(object sender, EventArg arg)
+        public void DispatchNow<T>(object sender, T arg) where T : struct
         {
             m_EventPool.DispatchNow(sender, arg);
         }

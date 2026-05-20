@@ -64,7 +64,7 @@ namespace DragonBones
 
         static void HierarchyIconsOnGUI(int instanceId, Rect selectionRect)
         {
-            GameObject go = (GameObject)EditorUtility.InstanceIDToObject(instanceId);
+            GameObject go = (GameObject)EditorUtility.EntityIdToObject(instanceId);
             if (!go)
             {
                 return;

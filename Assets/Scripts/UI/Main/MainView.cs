@@ -1,161 +1,69 @@
 /*
- * @Desc: Main 模块 MainView 界面数据
- * @Date: 2020-07-22 19:39:11
- * @Author: WuWu
+ * @Desc: Main 模块 MainView 界面组件
+ * @Date: 2025-11-26 17:06:53
+ * @Author: GQY
  * @Note: 工具生成，请勿修改
  */
 
-using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.Event;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using GameFrameWork.UI;
 
-public class MainView : UIBaseView<MainViewComponent, MainViewSettings>
+public class MainView : UIBaseView
 {
-	protected override void OnOpen(object arg)
-	{
-        component.levelList.itemUpdateEvent += OnLevelItemUpdate;
-    }
+	//player/playerHpBar,Slider
+	public Slider playerHpBar { get; private set; }
+	//player/playerHpBar/playerHpBarImage,Image
+	public Image playerHpBarImage { get; private set; }
+	//enemy/enemyHpBar,Slider
+	public Slider enemyHpBar { get; private set; }
+	//enemy/enemyHpBar/enemyHpBarImage,Image
+	public Image enemyHpBarImage { get; private set; }
+	//stage/txtStage,TextMeshProUGUI
+	public TextMeshProUGUI txtStage { get; private set; }
+	//playerLife/txtPlayerLife,TextMeshProUGUI
+	public TextMeshProUGUI txtPlayerLife { get; private set; }
+	//level/levelList,StaticList
+	public StaticList levelList { get; private set; }
+	//exp/txtExp,TextMeshProUGUI
+	public TextMeshProUGUI txtExp { get; private set; }
 
-    protected override void OnShow(object arg)
-    {
-        component.enemyHpBar.SetActiveSelf(false);
-        SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
-        SetRound(StageMgr.instance.CurrStageData.StageIndex);
-        SetPlayerLife(PlayerMgr.instance.life);
-        SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
-        AddEvent(EventId.StageEnterStartEvent, OnStageEnterStartEvent);
-        SetColor();
-    }
-
-	private void OnStageEnterStartEvent(object sender, GameEventArg e)
+	protected override void OnInitView(UIRefRoot root)
 	{
-		SetColor();
+		playerHpBar = root.objects[0] as Slider;
+		playerHpBarImage = root.objects[1] as Image;
+		enemyHpBar = root.objects[2] as Slider;
+		enemyHpBarImage = root.objects[3] as Image;
+		txtStage = root.objects[4] as TextMeshProUGUI;
+		txtPlayerLife = root.objects[5] as TextMeshProUGUI;
+		levelList = root.objects[6] as StaticList;
+		levelList?.Init<LevelListItem>();
+		txtExp = root.objects[7] as TextMeshProUGUI;
 	}
 
-	protected override void OnUpdate()
+	public class LevelListItem : BaseListItem
 	{
-		if (m_EnemyHpBarHideTimer > 0 && Time.time - m_EnemyHpBarHideTimer >= ConstField.EnemyHPBarHideTime)
+		//level/levelList/levelListItem/imgLevel1,GameObject
+		public GameObject imgLevel1Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel2,GameObject
+		public GameObject imgLevel2Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel3,GameObject
+		public GameObject imgLevel3Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel4,GameObject
+		public GameObject imgLevel4Go {get; private set;}
+		//level/levelList/levelListItem/imgLevel5,GameObject
+		public GameObject imgLevel5Go {get; private set;}
+		protected override void OnCreate(GameObject go)
 		{
-			component.enemyHpBar.gameObject.SetActiveSelf(false);
-			m_EnemyHpBarHideTimer = -1;
+			UIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();
+			imgLevel1Go = uiRefRoot.objects[0] as GameObject;
+			imgLevel2Go = uiRefRoot.objects[1] as GameObject;
+			imgLevel3Go = uiRefRoot.objects[2] as GameObject;
+			imgLevel4Go = uiRefRoot.objects[3] as GameObject;
+			imgLevel5Go = uiRefRoot.objects[4] as GameObject;
 		}
 	}
-
-    protected override void OnHide()
-    {
-        
-    }
-
-    protected override void OnClose()
-	{
-
-	}
-
-	protected override void OnDestroy()
-	{
-        component.levelList.itemUpdateEvent -= OnLevelItemUpdate;
-    }
-
-	private void OnLevelItemUpdate(BaseListItem item)
-	{
-        if (item is MainViewComponent.LevelListItem levelListItem)
-        {
-            int stageIndex = StageMgr.instance.CurrStageData.StageIndex;
-            int playerLevel = PlayerMgr.instance.level;
-            levelListItem.imgLevel1Go.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
-            levelListItem.imgLevel2Go.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
-            levelListItem.imgLevel3Go.gameObject.SetActiveSelf(stageIndex == 3 && playerLevel >= item.id);
-            levelListItem.imgLevel4Go.gameObject.SetActiveSelf(stageIndex == 4 && playerLevel >= item.id);
-            levelListItem.imgLevel5Go.gameObject.SetActiveSelf(stageIndex == 5 && playerLevel >= item.id); 
-        }
-	}
-
-	public void SetPlayerHP(int value, int max, float width = 0f)
-	{
-		if (width != 0)
-		{
-			component.playerHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		}
-
-		component.playerHpBar.maxValue = max;
-		component.playerHpBar.value = value;
-	}
-
-	public void SetEnemyHP(int value, int max, float width)
-	{
-		if (m_IsEnemyHpBarAnim)
-		{
-			return;
-		}
-
-		component.enemyHpBar.GetComponent<LayoutElement>().preferredWidth = width;
-		component.enemyHpBar.maxValue = max;
-		component.enemyHpBar.value = value;
-		component.enemyHpBar.gameObject.SetActiveSelf(true);
-
-		Image image = component.enemyHpBar.GetComponent<Image>();
-		image.DOFade(1, 0);
-
-		if (value == 0)
-		{
-			m_EnemyHpBarHideTimer = -1;
-			m_IsEnemyHpBarAnim = true;
-
-			Sequence sequence = DOTween.Sequence();
-			for (int i = 0; i < 7; i++)
-			{
-				sequence.Append(image.DOFade(i % 2, 0.2f));
-			}
-			sequence.AppendCallback(() =>
-			{
-				component.enemyHpBar.gameObject.SetActiveSelf(false);
-				m_IsEnemyHpBarAnim = false;
-			});
-			return;
-		}
-
-		m_EnemyHpBarHideTimer = Time.time;
-	}
-
-	public void SetRound(int round)
-	{
-		component.txtStage.text = round.ToString();
-	}
-
-	public void SetPlayerLife(int life)
-	{
-		component.txtPlayerLife.text = life.ToString();
-	}
-
-	public void SetPlayerExp(int currExp, int maxExp)
-	{
-		string currExpStr = GetExpStr(currExp);
-		string maxExpStr = GetExpStr(maxExp);
-		component.txtExp.text = StringUtil.Append(currExpStr, "/", maxExpStr);
-	}
-
-	public void SetPlayerLevel()
-	{
-		component.levelList.SetItemCount(5);
-	}
-
-	private string GetExpStr(int exp)
-	{
-		return exp.ToString().PadLeft(3, '0');
-	}
-
-	private void SetColor()
-	{
-        Color color = CommonUtil.HexToRGB(StageMgr.instance.CurrStageData.StageColor);
-		component.playerHpBarImage.color = color;
-		component.enemyHpBarImage.color = color;
-		component.levelList.SetItemCount(5);
-	}
-
-	private bool m_IsEnemyHpBarAnim = false;
-	private float m_EnemyHpBarHideTimer = -1;
 }

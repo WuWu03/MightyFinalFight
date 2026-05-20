@@ -334,13 +334,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Version
+  m_PresenterName: VersionPresenter
   m_ViewName: VersionView
   uiDestroyMode: 1
   uiLayer: 1
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/Version/VersionPresenter.cs
   viewPath: Assets/Scripts/UI/Version/VersionView.cs
-  componentPath: Assets/Scripts/UI/Version/VersionViewComponent.cs
   settingsPath: Assets/Scripts/UI/Version/VersionViewSettings.cs
 --- !u!4 &1279368565
 Transform:
@@ -678,11 +679,11 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtVersion
   m_ComponentName: LanguageText
+  m_ComponentFullName: 
   m_Desc: 
-  m_IsLayoutItem: 0
-  m_IsLayoutItemVariable: 0
-  m_IsLayout: 0
-  m_IsScrollLayout: 0
+  m_IsListItem: 0
+  m_IsListItemVariable: 0
+  m_IsList: 0
   m_IsCopyRefStr: 0
 --- !u!114 &1782345795
 MonoBehaviour:
@@ -756,6 +757,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

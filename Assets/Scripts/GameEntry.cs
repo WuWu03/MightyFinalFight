@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using GameFrameWork;
 using GameFrameWork.Assets;
 using GameFrameWork.Audio;
@@ -18,6 +16,7 @@ using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using GameFrameWork.Version;
 using GameFrameWork.WebRequest;
+using System;
 using UnityEngine;
 
 public class GameEntry : GameFrameWorkEntry
@@ -103,7 +102,7 @@ public class GameEntry : GameFrameWorkEntry
             if (s_UIMgr == null)
             {
                 s_UIMgr = GameFrameWorkMgr.GetModule<IUIMgr>();
-                s_UIMgr.SetMgr(gameObjectPoolMgr, eventMgr);
+                s_UIMgr.SetMgr(gameObjectPoolMgr);
             }
 
             return s_UIMgr;
@@ -300,7 +299,7 @@ public class GameEntry : GameFrameWorkEntry
         GC.Collect();
         resourceMgr.InitAssetsMap();
         StaticConfig.InitConfig();
-        uiMgr.Open<TitleView>();
+        uiMgr.Open<TitlePresenter>();
     }
 
     protected override void OnExit()

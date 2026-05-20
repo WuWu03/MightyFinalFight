@@ -10,12 +10,12 @@ namespace GameFrameWork.Editor
     {
         public override void Export(UIRef[] uiRefs, UIRefSetting setting)
         {
-            ExportComponent(uiRefs, setting);
-            
+            ExportView(uiRefs, setting);
+
             if (setting.uiType != UIRefSetting.UIType.Item)
             {
                 ExportViewSettings(setting);
-                ExportView(setting);
+                ExportPresenter(setting);
             }
         }
 
@@ -36,14 +36,14 @@ namespace GameFrameWork.Editor
             return sb.ToString();
         }
 
-        private void ExportComponent(UIRef[] uiRefs, UIRefSetting setting)
+        private void ExportView(UIRef[] uiRefs, UIRefSetting setting)
         {
             StringBuilder sb = new();
 
             sb.AppendLine("/*");
-            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面组件\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 视图\r\n", setting.moduleName, setting.viewName);
             sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
-            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" * @Author: " + Author);
             sb.AppendLine(" * @Note: 工具生成，请勿修改");
             sb.AppendLine(" */");
             sb.AppendLine();
@@ -54,9 +54,9 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0}Component : UIBaseComponent", setting.viewName);
+            sb.AppendFormat("public class {0}View : UIBaseView", setting.viewName);
             sb.AppendLine("\r\n{");
-            
+
             foreach (var uiRef in uiRefs)
             {
                 if (!uiRef.isListItem && !uiRef.isListItemVariable)
@@ -69,14 +69,14 @@ namespace GameFrameWork.Editor
             }
 
             sb.AppendLine();
-            sb.AppendLine("\tprotected override void OnInitComponent(UIRefRoot root)");
+            sb.AppendLine("\tprotected override void OnInitView(UIRefRoot root)");
             sb.AppendLine("\t{");
 
             for (int i = 0; i < uiRefs.Length; i++)
             {
                 UIRef uiRef = uiRefs[i];
 
-                if(uiRef.isList)
+                if (uiRef.isList)
                 {
                     sb.AppendFormat("\t\t{0} = root.objects[{1}] as {2};\r\n", uiRef.GetName(), i, uiRef.componentName);
                     sb.AppendFormat("\t\t{0}?.Init<{1}>();\r\n", uiRef.GetName(), uiRef.GetName(true) + "Item");
@@ -98,7 +98,7 @@ namespace GameFrameWork.Editor
             }
 
             sb.Append("}");
-            FileUtil.CreateTextFile(setting.componentPath, sb.ToString());
+            FileUtil.CreateTextFile(setting.viewPath, sb.ToString());
         }
 
         private void ExportViewSettings(UIRefSetting setting)
@@ -122,9 +122,9 @@ namespace GameFrameWork.Editor
             }
 
             sb.AppendLine("/*");
-            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面组件\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 视图设置\r\n", setting.moduleName, setting.viewName);
             sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
-            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" * @Author: " + Author);
             sb.AppendLine(" * @Note: 工具生成，请勿修改");
             sb.AppendLine(" */");
             sb.AppendLine();
@@ -141,25 +141,25 @@ namespace GameFrameWork.Editor
             FileUtil.CreateTextFile(setting.settingsPath, sb.ToString());
         }
 
-        private void ExportView(UIRefSetting setting)
+        private void ExportPresenter(UIRefSetting setting)
         {
-            if (File.Exists(setting.viewPath))
+            if (File.Exists(setting.presenterPath))
             {
                 return;
             }
 
             StringBuilder sb = new();
-            
+
             sb.AppendLine("/*");
-            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面视图\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面展示器\r\n", setting.moduleName, setting.viewName);
             sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
-            sb.AppendLine(" * @Author: WuWu");
+            sb.AppendLine(" * @Author: " + Author);
             sb.AppendLine(" */");
             sb.AppendLine();
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0} : UIBaseView<{1}Component, {2}Settings>", setting.viewName, setting.viewName, setting.viewName);
+            sb.AppendFormat("public class {0} : UIBasePresenter<{1}, {2}Settings>", setting.viewName, setting.viewName, setting.viewName);
             sb.AppendLine("\r\n{");
             sb.AppendLine("\tprotected override void OnOpen(object arg)");
             sb.AppendLine("\t{");
@@ -185,7 +185,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\t{");
             sb.AppendLine("\t}");
             sb.Append("}");
-            FileUtil.CreateTextFile(setting.viewPath, sb.ToString());
+            FileUtil.CreateTextFile(setting.presenterPath, sb.ToString());
         }
 
         private void ExportLayout(UIRef uiRef, StringBuilder sb)
@@ -202,11 +202,11 @@ namespace GameFrameWork.Editor
                 }
             }
 
-            if(tempUIRef == null)
+            if (tempUIRef == null)
             {
                 return;
             }
-            
+
             sb.AppendLine();
             sb.AppendFormat("\tpublic class {0} : {1}\r\n", uiRef.GetName(true) + "Item", "BaseListItem");
             sb.AppendLine("\t{");
@@ -217,8 +217,8 @@ namespace GameFrameWork.Editor
                 {
                     continue;
                 }
-                
-                sb.AppendFormat("\t\t//{0}\r\n",GetComment(variableUIRef));
+
+                sb.AppendFormat("\t\t//{0}\r\n", GetComment(variableUIRef));
                 sb.AppendFormat("\t\tpublic {0} {1} ", variableUIRef.componentName, variableUIRef.GetName());
                 sb.Append("{get; private set;}\r\n");
             }
@@ -228,14 +228,14 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\t\t\tUIRefRoot uiRefRoot = go.GetComponent<UIRefRoot>();");
 
             int itemIndex = 0;
-            
+
             foreach (var itemUIRef in itemUIRefs)
             {
                 if (!itemUIRef.isListItemVariable)
                 {
                     continue;
                 }
-                
+
                 sb.AppendFormat("\t\t\t{0} = uiRefRoot.objects[{1}] as {2};\r\n", itemUIRef.GetName(), itemIndex, itemUIRef.componentName);
                 itemIndex++;
             }
@@ -248,7 +248,7 @@ namespace GameFrameWork.Editor
         {
             string objPath = EditorUtil.GetHierarchy(uiRef.gameObject);
             string comment = objPath.Substring("UIRoot/UICanvas/Panel".Length + 1).Replace("\\", "/") + "," + uiRef.componentName;
-            
+
             if (!string.IsNullOrEmpty(uiRef.desc))
             {
                 comment = comment + "[" + uiRef.desc + "]";

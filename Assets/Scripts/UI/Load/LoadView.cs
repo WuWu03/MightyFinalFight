@@ -1,79 +1,24 @@
 /*
- * @Desc: Load 模块 LoadView 界面视图
- * @Date: 2021-07-23 10:03:48
- * @Author: WuWu
+ * @Desc: Load 模块 LoadView 界面组件
+ * @Date: 2025-11-26 16:35:53
+ * @Author: GQY
+ * @Note: 工具生成，请勿修改
  */
 
-using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.UI;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using static LoadMgr;
+using UnityEngine.UI;
+using GameFrameWork.UI;
 
-public class LoadView : UIBaseView<LoadViewComponent, LoadViewSettings>
+public class LoadView : UIBaseView
 {
-    protected override void OnOpen(object arg)
-    {
+	//imgShade,Image
+	public Image imgShade { get; private set; }
 
-    }
-
-    protected override void OnShow(object arg)
-    {
-
-    }
-    
-    protected override void OnUpdate()
-    {
-        if (!m_IsFading)
-        {
-            if (m_CurrFadeInfo != null)
-            {
-                m_CurrFadeInfo.onComplete?.Invoke();
-                m_CurrFadeInfo.Release();
-                m_CurrFadeInfo = null;
-            }
-
-            if (LoadMgr.instance.fadeInfoCount > 0)
-            {
-                Fade(LoadMgr.instance.GetFadeInfo());
-            }
-        }
-    }
-
-    protected override void OnHide()
-    {
-        
-    }
-
-    protected override void OnClose()
-    {
-        m_IsFading = false;
-    }
-
-    protected override void OnDestroy()
-    {
-
-    }
-
-    private void Fade(FadeArgs fadeInfo)
-    {
-        if (fadeInfo == null)
-        {
-            return;
-        }
-        
-        m_IsFading = true;
-        m_CurrFadeInfo = fadeInfo;
-        component.imgShade.DOKill();
-        component.imgShade.color = new Color(0, 0, 0, fadeInfo.from);
-        component.imgShade.DOFade(fadeInfo.to, fadeInfo.duration).SetDelay(fadeInfo.delay).OnComplete(OnFadeComplete);
-    }
-
-    private void OnFadeComplete()
-    {
-        m_IsFading = false;
-    }
-
-    private FadeArgs m_CurrFadeInfo = null;
-    private bool m_IsFading = false;
+	protected override void OnInitView(UIRefRoot root)
+	{
+		imgShade = root.objects[0] as Image;
+	}
 }

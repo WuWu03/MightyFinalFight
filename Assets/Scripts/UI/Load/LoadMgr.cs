@@ -98,12 +98,12 @@ public class LoadMgr : BaseMgr<LoadMgr>
             m_QueueFade.Enqueue(FadeArgs.Create(from, to, duration, delay, onComplete));
         }
 
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<LoadView>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<LoadPresenter>();
     }
 
     public void CloseLoadPanel()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Close<LoadView>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Close<LoadPresenter>();
     }
 
     private bool m_IsFadeComplete = false;

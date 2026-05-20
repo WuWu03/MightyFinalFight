@@ -53,6 +53,8 @@ namespace GameFrameWork.Editor
             }
         }
 
+        protected const string Author = "GQY";
+
         public abstract string CopyRef(UIRef[] uiRefs);
 
         public abstract void Export(UIRef[] uiRefs, UIRefSetting setting);

@@ -6,11 +6,11 @@ namespace GameFrameWork.Event
     {
         public int currEventCount { get; }
         public int eventHandlerCount { get; }
-        public void Subscribe(uint eventId, EventHandler<EventArg> handler);
-        public void UnSubscribe(uint eventId, EventHandler<EventArg> handler);
-        public bool Check(uint eventId, EventHandler<EventArg> handler);
-        public int Count(uint eventId);
-        public void Dispatch(object sender, EventArg arg);
-        public void DispatchNow(object sender, EventArg arg);
+        public UnSubscribe Subscribe<T>(EventHandler<T> handler) where T : struct;
+        public void UnSubscribe<T>(EventHandler<T> handler) where T : struct;
+        public bool Check<T>(EventHandler<T> handler) where T : struct;
+        public int Count<T>() where T : struct;
+        public void Dispatch<T>(object sender, T arg) where T : struct;
+        public void DispatchNow<T>(object sender, T arg) where T : struct;
     }
 }

@@ -420,6 +420,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -608,13 +609,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Hud
+  m_PresenterName: HudPresenter
   m_ViewName: HudView
   uiDestroyMode: 3
   uiLayer: 0
   uiType: 1
   delayDestroyTime: 0
+  presenterPath: Assets/Scripts/UI/Hud/HudPresenter.cs
   viewPath: Assets/Scripts/UI/Hud/HudView.cs
-  componentPath: Assets/Scripts/UI/Hud/HudViewComponent.cs
   settingsPath: Assets/Scripts/UI/Hud/HudViewSettings.cs
 --- !u!4 &1731513110
 Transform:
