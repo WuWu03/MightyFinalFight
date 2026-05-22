@@ -5,7 +5,7 @@ using UnityObject = UnityEngine.Object;
 
 namespace GameFrameWork.UI
 {
-    public abstract class UIBaseView<V, P, S> : IUIView where V : class, IUIView, new() where P : class, IUIViewPresenter, new() where S : class, IUIViewSetting, new()
+    public abstract class UIBaseView<V, P, S> : IUIView where V : class, IUIView, new() where P : class, IUIViewPresenter, new() where S : class, IUIViewSettings, new()
     {
         private GameObject m_GameObject;
         private Transform m_Transform;
@@ -51,7 +51,7 @@ namespace GameFrameWork.UI
             }
         }
 
-        public IUIViewSetting settings
+        public IUIViewSettings settings
         {
             get
             {

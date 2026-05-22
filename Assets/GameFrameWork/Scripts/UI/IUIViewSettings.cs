@@ -1,6 +1,6 @@
 namespace GameFrameWork.UI
 {
-    public interface IUIViewSetting
+    public interface IUIViewSettings
     {
         public string prefabName { get; }
 

@@ -22,7 +22,7 @@ namespace GameFrameWork.UI
         Eternal, //总是存于场景中, 除非主动销毁
     }
 
-    public abstract class UIBaseViewSettings : IUIViewSetting
+    public abstract class UIBaseViewSettings : IUIViewSettings
     {
         public abstract string prefabName { get; }
 

@@ -9,7 +9,7 @@ namespace GameFrameWork.UI
 
         public Transform transform { get; }
 
-        public IUIViewSetting settings { get; }
+        public IUIViewSettings settings { get; }
 
         public string assetPath { get; }
 
