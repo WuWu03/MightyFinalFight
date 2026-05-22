@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class LoadViewSettings : UIBaseSettings
+public class LoadViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "LoadView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

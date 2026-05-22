@@ -103,7 +103,7 @@ namespace GameFrameWork.UI
             m_ViewName = tempViewName + suffix;
 
             string tempPresenterName = m_PresenterName.Replace("Presenter", string.Empty);
-            m_PresenterName = tempPresenterName + "Presenter";
+            m_PresenterName = tempPresenterName + suffix + "Presenter";
 
             if (string.IsNullOrEmpty(m_ModuleName))
             {

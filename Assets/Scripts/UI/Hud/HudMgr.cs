@@ -39,7 +39,7 @@ public class HudMgr : BaseMgr<HudMgr>
     protected override void OnShutdown()
     {
         base.OnShutdown();
-        GameFrameWorkMgr.GetModule<IUIMgr>().Close<HudPresenter>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Close<HudView>();
         m_HudArgs.Clear();
     }
 
@@ -63,7 +63,7 @@ public class HudMgr : BaseMgr<HudMgr>
     
     private void ShowHud()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<HudPresenter>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<HudView>();
     }
 
     private Queue<HudArg> m_HudArgs = null;

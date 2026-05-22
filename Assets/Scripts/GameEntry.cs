@@ -39,7 +39,7 @@ public class GameEntry : GameFrameWorkEntry
     private static ISceneMgr s_SceneMgr;
     private static ITimerMgr s_TimerMgr;
     private static IConfigDataMgr s_ConfigDataMgr;
-    
+
     public static ILocalizationMgr localizationMgr
     {
         get
@@ -53,7 +53,7 @@ public class GameEntry : GameFrameWorkEntry
             return s_LocalizationMgr;
         }
     }
-    
+
     public static IResourceMgr resourceMgr
     {
         get
@@ -72,11 +72,11 @@ public class GameEntry : GameFrameWorkEntry
                 s_VersionMgr = GameFrameWorkMgr.GetModule<IVersionMgr>();
                 s_VersionMgr.SetMgr(downloadMgr, webRequestMgr);
             }
-            
+
             return s_VersionMgr;
         }
     }
-    
+
     public static IDownloadMgr downloadMgr
     {
         get
@@ -85,7 +85,7 @@ public class GameEntry : GameFrameWorkEntry
             return s_DownloadMgr;
         }
     }
-    
+
     public static IWebRequestMgr webRequestMgr
     {
         get
@@ -168,11 +168,11 @@ public class GameEntry : GameFrameWorkEntry
                 s_SoundMgr = GameFrameWorkMgr.GetModule<ISoundMgr>();
                 s_SoundMgr.SetResourcePoolMgr(resourcePoolMgr, s_GameEntry);
             }
-            
+
             return s_SoundMgr;
         }
     }
-    
+
     public static IFsmMgr fsmMgr
     {
         get
@@ -236,7 +236,7 @@ public class GameEntry : GameFrameWorkEntry
             return s_ConfigDataMgr;
         }
     }
-    
+
     protected override void OnInit(GameObject manager)
     {
         s_GameEntry = gameObject.transform;
@@ -299,7 +299,7 @@ public class GameEntry : GameFrameWorkEntry
         GC.Collect();
         resourceMgr.InitAssetsMap();
         StaticConfig.InitConfig();
-        uiMgr.Open<TitlePresenter>();
+        uiMgr.Open<TitleView>();
     }
 
     protected override void OnExit()

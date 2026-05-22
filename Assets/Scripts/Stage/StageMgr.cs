@@ -113,11 +113,11 @@ public class StageMgr : BaseMgr<StageMgr>
 
         if (m_CurrStageData.showMainPanel)
         {
-            GameEntry.uiMgr.Open<MainPresenter>();
+            GameEntry.uiMgr.Open<MainView>();
         }
         else
         {
-            GameEntry.uiMgr.Close<MainPresenter>();
+            GameEntry.uiMgr.Close<MainView>();
         }
 
         GameEntry.sceneMgr.AllowScene();

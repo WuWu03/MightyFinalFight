@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class MainViewSettings : UIBaseSettings
+public class MainViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "MainView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

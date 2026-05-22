@@ -14,14 +14,13 @@ namespace GameFrameWork.UI
     {
         private readonly Canvas m_UICanvas;
         private readonly UnityEngine.Camera m_UICamera;
-        private readonly List<IPresenter> m_DelayDestroyUIs;
-        private readonly List<IPresenter> m_AlwaysViews;
-        private readonly List<IPresenter> m_PopViews;
-        private readonly List<IPresenter> m_OpenViews;
-        private readonly List<IPresenter> m_TempViews;
+        private readonly List<IUIView> m_DelayDestroyViews;
+        private readonly List<IUIView> m_AlwaysViews;
+        private readonly List<IUIView> m_PopViews;
+        private readonly List<IUIView> m_OpenViews;
+        private readonly List<IUIView> m_TempViews;
         private readonly RectTransform[] m_UILayers;
-        private readonly Dictionary<string, Type> s_ViewTypes = new();
-        private IPresenter m_CurrPopView;
+        private IUIView m_CurrPopView;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
         private bool m_CanPopView;
         private bool m_IsOpenViewsDirty;
@@ -30,7 +29,7 @@ namespace GameFrameWork.UI
         {
             m_OpenViews = new();
             m_AlwaysViews = new();
-            m_DelayDestroyUIs = new();
+            m_DelayDestroyViews = new();
             m_PopViews = new();
             m_TempViews = new();
             GameObject uiRoot = GameObject.Find("UIRoot");
@@ -38,9 +37,10 @@ namespace GameFrameWork.UI
             m_UICamera = uiRoot.transform.Find("UICamera").GetOrAddComponent<UnityEngine.Camera>();
             m_UILayers = new RectTransform[(int)UILayer.Load + 1];
 
-            for (int i = 0; i < m_UILayers.Length; i++)
+            string[] uiLayerNames = Enum.GetNames(typeof(UILayer));
+            for (int i = 0; i < uiLayerNames.Length; i++)
             {
-                m_UILayers[i] = m_UICanvas.transform.GetChild(i).GetComponent<RectTransform>();
+                m_UILayers[i] = m_UICanvas.transform.Find(uiLayerNames[i]).GetComponent<RectTransform>();
             }
 
             UnityObject.DontDestroyOnLoad(uiRoot);
@@ -71,11 +71,11 @@ namespace GameFrameWork.UI
         /// <param name="unscaledTime"></param>
         public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            if (m_DelayDestroyUIs.Count > 0)
+            if (m_DelayDestroyViews.Count > 0)
             {
-                for (int i = m_DelayDestroyUIs.Count - 1; i >= 0; i++)
+                for (int i = m_DelayDestroyViews.Count - 1; i >= 0; i++)
                 {
-                    IPresenter view = m_DelayDestroyUIs[i];
+                    IUIView view = m_DelayDestroyViews[i];
                     bool isDelayTimeOut = false;
 
                     if (view.settings.destroyMode == UIDestroyMode.Delay && view.delayTime > 0f)
@@ -90,7 +90,7 @@ namespace GameFrameWork.UI
 
                     m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
                     view.Destroy();
-                    m_DelayDestroyUIs.Remove(view);
+                    m_DelayDestroyViews.Remove(view);
                     m_PopViews.Remove(view);
 
                     if (m_CurrPopView == view)
@@ -102,7 +102,7 @@ namespace GameFrameWork.UI
 
             if (m_AlwaysViews.Count > 1)
             {
-                IPresenter view = m_AlwaysViews[0];
+                IUIView view = m_AlwaysViews[0];
                 m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
                 view.Destroy();
                 m_AlwaysViews.Remove(view);
@@ -123,7 +123,7 @@ namespace GameFrameWork.UI
 
             foreach (var view in m_TempViews)
             {
-                if (view is { isOpen : true })
+                if (view is { isOpen: true })
                 {
                     view.Update();
                 }
@@ -145,7 +145,7 @@ namespace GameFrameWork.UI
                 m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
             }
 
-            foreach (var view in m_DelayDestroyUIs)
+            foreach (var view in m_DelayDestroyViews)
             {
                 m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
             }
@@ -155,7 +155,7 @@ namespace GameFrameWork.UI
                 m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
             }
 
-            m_DelayDestroyUIs.Clear();
+            m_DelayDestroyViews.Clear();
             m_AlwaysViews.Clear();
             m_PopViews.Clear();
             m_OpenViews.Clear();
@@ -183,9 +183,9 @@ namespace GameFrameWork.UI
         /// <param name="viewName">UI名字</param>
         /// <param name="arg">自定义参数</param>
         /// <returns>IPresenter</returns>
-        public IPresenter Open(string viewName, object arg = null)
+        public IUIView Open(string viewName, object arg = null)
         {
-            Type viewType = GetViewType(viewName);
+            Type viewType = UIFactory.GetViewType(viewName);
             return Open(viewType, arg);
         }
 
@@ -195,7 +195,7 @@ namespace GameFrameWork.UI
         /// <param name="arg">自定义参数</param>
         /// <typeparam name="T">UI类型</typeparam>
         /// <returns></returns>
-        public T Open<T>(object arg = null) where T : class, IPresenter, new()
+        public T Open<T>(object arg = null) where T : class, IUIView, new()
         {
             return Open(typeof(T), arg) as T;
         }
@@ -206,14 +206,14 @@ namespace GameFrameWork.UI
         /// <param name="viewType">UI类型</param>
         /// <param name="arg">自定义参数</param>
         /// <returns>IPresenter</returns>
-        public IPresenter Open(Type viewType, object arg = null)
+        public IUIView Open(Type viewType, object arg = null)
         {
             if (viewType == null)
             {
                 return null;
             }
 
-            IPresenter view = Get(viewType);
+            IUIView view = Get(viewType);
 
             if (view != null)
             {
@@ -221,7 +221,7 @@ namespace GameFrameWork.UI
                 return view;
             }
 
-            view = Activator.CreateInstance(viewType) as IPresenter;
+            view = UIFactory.GetUIView(viewType);
 
             if (view == null)
             {
@@ -231,7 +231,7 @@ namespace GameFrameWork.UI
             view.SetMgr(this, m_GameObjectPoolMgr);
             m_OpenViews.Add(view);
             m_AlwaysViews.Remove(view);
-            m_DelayDestroyUIs.Remove(view);
+            m_DelayDestroyViews.Remove(view);
             m_IsOpenViewsDirty = true;
 
             if (!m_CanPopView && view.settings.canPopUp)
@@ -254,25 +254,19 @@ namespace GameFrameWork.UI
             return view;
         }
 
-        public IPresenter Get(string viewName)
-        {
-            Type viewType = GetViewType(viewName);
-            return Get(viewType);
-        }
-
-        public T Get<T>() where T : class, IPresenter, new()
+        public T Get<T>() where T : class, IUIView, new()
         {
             return Get(typeof(T)) as T;
         }
 
-        public IPresenter Get(Type viewType)
+        public IUIView Get(Type viewType)
         {
             if (viewType == null)
             {
                 return null;
             }
 
-            foreach (IPresenter view in m_OpenViews)
+            foreach (IUIView view in m_OpenViews)
             {
                 if (view.GetType() == viewType)
                 {
@@ -285,41 +279,41 @@ namespace GameFrameWork.UI
 
         public bool IsOpen(string viewName)
         {
-            IPresenter view = Get(viewName);
+            IUIView view = Get(UIFactory.GetViewType(viewName));
             return view is { isOpen: true };
         }
 
-        public bool IsOpen<T>() where T : class, IPresenter, new()
+        public bool IsOpen<T>() where T : class, IUIView, new()
         {
-            IPresenter view = Get<T>();
+            IUIView view = Get<T>();
             return view is { isOpen: true };
         }
 
         public bool IsOpen(Type viewType)
         {
-            IPresenter view = Get(viewType);
+            IUIView view = Get(viewType);
             return view is { isOpen: true };
         }
 
         public void Close(string viewName, bool isForceDestroy = false)
         {
-            IPresenter view = Get(viewName);
+            IUIView view = Get(UIFactory.GetViewType(viewName));
             Close(view, isForceDestroy);
         }
 
-        public void Close<T>(bool isForceDestroy = false) where T : class, IPresenter, new()
+        public void Close<T>(bool isForceDestroy = false) where T : class, IUIView, new()
         {
-            IPresenter view = Get<T>();
+            IUIView view = Get<T>();
             Close(view, isForceDestroy);
         }
 
         public void Close(Type viewType, bool isForceDestroy = false)
         {
-            IPresenter view = Get(viewType);
+            IUIView view = Get(viewType);
             Close(view, isForceDestroy);
         }
 
-        public void Close(IPresenter view, bool isForceDestroy = false, bool checkPopView = true)
+        public void Close(IUIView view, bool isForceDestroy = false, bool checkPopView = true)
         {
             if (view == null)
             {
@@ -330,11 +324,11 @@ namespace GameFrameWork.UI
 
             if (checkPopView && m_CanPopView && !view.settings.canPopUp && m_PopViews.Count > 0)
             {
-                IPresenter oldView = m_PopViews[^1];
+                IUIView oldView = m_PopViews[^1];
                 oldView.Open(null);
                 m_OpenViews.Add(oldView);
                 m_AlwaysViews.Remove(oldView);
-                m_DelayDestroyUIs.Remove(oldView);
+                m_DelayDestroyViews.Remove(oldView);
                 m_PopViews.Remove(oldView);
                 m_CurrPopView = oldView;
                 m_IsOpenViewsDirty = true;
@@ -355,9 +349,9 @@ namespace GameFrameWork.UI
             }
             else if (view.settings.destroyMode == UIDestroyMode.Delay)
             {
-                if (!m_DelayDestroyUIs.Contains(view))
+                if (!m_DelayDestroyViews.Contains(view))
                 {
-                    m_DelayDestroyUIs.Add(view);
+                    m_DelayDestroyViews.Add(view);
                 }
             }
             else if (view.settings.destroyMode == UIDestroyMode.Always)
@@ -367,22 +361,6 @@ namespace GameFrameWork.UI
                     m_AlwaysViews.Add(view);
                 }
             }
-        }
-
-
-        public void RegisterViewType<T>(string viewName) where T : class, IPresenter, new()
-        {
-            s_ViewTypes.Add(viewName, typeof(T));
-        }
-
-        private Type GetViewType(string viewName)
-        {
-            if (s_ViewTypes.TryGetValue(viewName, out Type viewType))
-            {
-                return viewType;
-            }
-
-            throw new Exception(StringUtil.Append("[", viewName, "] 不存在,请使用RegisterViewType方法进行类型注册"));
         }
     }
 }

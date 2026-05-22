@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class VersionViewSettings : UIBaseSettings
+public class VersionViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "VersionView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

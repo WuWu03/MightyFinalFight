@@ -1,5 +1,5 @@
 /*
- * @Desc: RoleSelect 模块 RoleSelectPresenter 界面视图
+ * @Desc: RoleSelect 模块 RoleSelectView 视图展示器
  * @Date: 2020-7-2 16:19:21
  * @Author: GQY
  */
@@ -10,7 +10,7 @@ using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
-public class RoleSelectPresenter : UIBasePresenter<RoleSelectView, RoleSelectViewSettings>
+public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
 {
     private bool m_HasSelect;
     private int m_CurrSelectIndex = -1;
@@ -50,7 +50,7 @@ public class RoleSelectPresenter : UIBasePresenter<RoleSelectView, RoleSelectVie
             {
                 m_CurrSelectIndex--;
             }
-            
+
             if (m_CurrSelectIndex >= m_RoleSelectConfigData.Length)
             {
                 m_CurrSelectIndex = 0;
@@ -127,6 +127,6 @@ public class RoleSelectPresenter : UIBasePresenter<RoleSelectView, RoleSelectVie
     private void OnFadeBlackComplete()
     {
         CloseSelf();
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<StagePresenter>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<StageView>();
     }
 }

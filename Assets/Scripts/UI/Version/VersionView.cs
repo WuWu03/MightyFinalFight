@@ -1,88 +1,24 @@
 /*
- * @Desc: Version 模块 VersionView 界面视图
- * @Date: 2025-08-08 14:18:49
+ * @Desc: Version 模块 VersionView 界面数据
+ * @Date: 2025-10-11 12:36:11
  * @Author: GQY
+ * @Note: 工具生成，请勿修改
  */
 
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 using GameFrameWork.UI;
-using GameFrameWork.Utils;
-using GameFrameWork.Version;
 
-public class VersionView : UIBasePresenter<VersionViewComponent, VersionViewSettings>
+public class VersionView : UIBaseView<VersionView, VersionViewPresenter, VersionViewSettings>
 {
-	protected override void OnOpen(object arg)
-	{
-        GameEntry.versionMgr.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
-    }
+    //txtVersion,LanguageText
+    public LanguageText txtVersion { get; private set; }
 
-	protected override void OnShow(object arg)
-	{
-        GameEntry.versionMgr.SetCheckVersionUri("http://localhost/StreamingAssets/");
-    }
-
-	protected override void OnUpdate()
-	{
-        
-	}
-
-    protected override void OnHide()
+    protected override void OnInitView(UIRefRoot root)
     {
-        
-    }
-
-    protected override void OnClose()
-	{
-        GameEntry.versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
-	}
-
-	protected override void OnDestroy()
-	{
-  
-	}
-
-    private void OnVersionProcessStateChanged(VersionProcessState state, string info, ulong downloadSize, ulong downloadFullSize)
-    {
-        switch (state)
-        {
-            case VersionProcessState.DontCheckVersion:
-                break;
-            case VersionProcessState.CheckVersion:
-                view.txtVersion.SetLanguageTextKey("VersionPanelCheckVersion");
-                break;
-            case VersionProcessState.CheckVersionUriError:
-                view.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
-                break;
-            case VersionProcessState.CheckVersionFileError:
-                view.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionError");
-                break;
-            case VersionProcessState.CheckVersionComplete:
-                view.txtVersion.SetLanguageTextKey("VersionPaneCheckVersionComplete");
-                break;
-            case VersionProcessState.VersionAnalyze:
-                view.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyze");
-                break;
-            case VersionProcessState.VersionAnalyzeError:
-                view.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeError");
-                break;
-            case VersionProcessState.VersionAnalyzeComplete:
-                view.txtVersion.SetLanguageTextKey("VersionPanelVersionAnalyzeComplete");
-                break;
-            case VersionProcessState.DownloadFiles:
-                string downloadSizeText = StringUtil.FormatFileSize(downloadSize);
-                string downloadFullSizeText = StringUtil.FormatFileSize(downloadFullSize);
-                view.txtVersion.SetLanguageTextKey("VersionPanelDownloadFiles");
-                view.txtVersion.SetLanguageTextParams(downloadSizeText, downloadFullSizeText);
-                break;
-            case VersionProcessState.DownloadFilesError:
-                view.txtVersion.SetLanguageTextKey("VersionPanelDownloadFilesError");
-                break;
-            case VersionProcessState.DownloadFilesComplete:
-                break;
-            case VersionProcessState.Success:
-                break;
-            case VersionProcessState.Error:
-                view.txtVersion.SetText(info);
-                break;
-        }
+        txtVersion = root.objects[0] as LanguageText;
     }
 }

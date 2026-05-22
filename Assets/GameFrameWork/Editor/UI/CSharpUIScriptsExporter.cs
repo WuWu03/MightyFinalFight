@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using GameFrameWork.UI;
+using System.Diagnostics;
 
 namespace GameFrameWork.Editor
 {
@@ -17,6 +18,8 @@ namespace GameFrameWork.Editor
                 ExportViewSettings(setting);
                 ExportPresenter(setting);
             }
+
+            ExportUIMapping();
         }
 
         public override string CopyRef(UIRef[] uiRefs)
@@ -54,7 +57,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using UnityEngine.UI;");
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0}View : UIBaseView", setting.viewName);
+            sb.AppendFormat("public class {0} : UIBaseView<{0}, {0}Presenter, {0}Settings>", setting.viewName);
             sb.AppendLine("\r\n{");
 
             foreach (var uiRef in uiRefs)
@@ -130,7 +133,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine();
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0}Settings : UIBaseSettings", setting.viewName);
+            sb.AppendFormat("public class {0}Settings : UIBaseViewSettings", setting.viewName);
             sb.AppendLine("\r\n{");
             sb.Append("\tpublic override string prefabName { get { " + $"return \"{setting.viewName}.prefab\"" + "; } }\r\n");
             sb.Append("\tpublic override float delayDestroyTime { get { " + $"return {delayDestroyTime}f" + "; } }\r\n");
@@ -151,7 +154,7 @@ namespace GameFrameWork.Editor
             StringBuilder sb = new();
 
             sb.AppendLine("/*");
-            sb.AppendFormat(" * @Desc: {0} 模块 {1} 界面展示器\r\n", setting.moduleName, setting.viewName);
+            sb.AppendFormat(" * @Desc: {0} 模块 {1} 视图展示器\r\n", setting.moduleName, setting.viewName);
             sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
             sb.AppendLine(" * @Author: " + Author);
             sb.AppendLine(" */");
@@ -159,7 +162,7 @@ namespace GameFrameWork.Editor
             sb.AppendLine("using GameFrameWork.UI;");
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0} : UIBasePresenter<{1}, {2}Settings>", setting.viewName, setting.viewName, setting.viewName);
+            sb.AppendFormat("public class {0}Presenter : UIBaseViewPresenter<{0}>", setting.viewName);
             sb.AppendLine("\r\n{");
             sb.AppendLine("\tprotected override void OnOpen(object arg)");
             sb.AppendLine("\t{");
@@ -186,6 +189,37 @@ namespace GameFrameWork.Editor
             sb.AppendLine("\t}");
             sb.Append("}");
             FileUtil.CreateTextFile(setting.presenterPath, sb.ToString());
+        }
+
+
+        private void ExportUIMapping()
+        {
+            StringBuilder sb = new();
+            sb.AppendLine("/*");
+            sb.AppendFormat(" * @Desc: UI工厂\r\n");
+            sb.AppendFormat(" * @Date: {0}-{1}-{2} {3}:{4}:{5}\r\n", year, month, day, hour, minute, second);
+            sb.AppendLine(" * @Author: " + Author);
+            sb.AppendLine(" * @Note: 工具生成，请勿修改");
+            sb.AppendLine(" */");
+            sb.AppendLine();
+            sb.AppendLine("namespace GameFrameWork.UI");
+            sb.AppendLine("{");
+            sb.AppendLine("\tpublic static partial class UIFactory");
+            sb.AppendLine("\t{");
+            sb.AppendLine("\t\tstatic UIFactory()");
+            sb.AppendLine("\t\t{");
+
+            string[] uiTypeNames = EditorUtil.GetAssemblyTypeNames("GameFrameWork.UI.IUIView", false, "UIBaseView");
+            for (int i = 0; i < uiTypeNames.Length; i++)
+            {
+                sb.AppendFormat("\t\t\ts_UIFactory.Add(typeof({0}), CreatUIView<{0}>);", uiTypeNames[i]);
+                sb.AppendLine();
+            }
+            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t}");
+            sb.Append("}");
+            GameFrameWorkConfigWindowData windowData = GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig();
+            FileUtil.CreateTextFile(PathUtil.FormatPath(windowData.uiScriptsPath, "UIFactory.cs"), sb.ToString());
         }
 
         private void ExportLayout(UIRef uiRef, StringBuilder sb)

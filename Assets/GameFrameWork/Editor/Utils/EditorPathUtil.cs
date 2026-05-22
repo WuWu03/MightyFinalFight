@@ -14,7 +14,7 @@ namespace GameFrameWork.Editor
         public const string EditorUIRootPath = ApplicationDataPath + "GameFrameWork/UI/UIRoot.prefab";
         public const string EditorUIRootScenePath = ApplicationDataPath + "GameFrameWork/UI/UIRootScene.prefab";
 
-        public const string EditorConfigPath = ApplicationDataPath +  "Editor/Config/";
+        public const string EditorConfigPath = ApplicationDataPath + "Editor/Config/";
         public static readonly string EditorConfigFullPath = ApplicationDataFullPath + "Editor/Config/";
 
         public const string EditorResourcesPath = ApplicationDataPath + "Resources/";
@@ -25,7 +25,7 @@ namespace GameFrameWork.Editor
 
         public const string BehaviourTreeWindowDataName = "BehaviourTreeWindowData";
         public const string BehaviourTreeWindowDataExtend = ".json";
-        public const string BehaviourTreeWindowDataFullPath =  EditorConfigPath + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
+        public const string BehaviourTreeWindowDataFullPath = EditorConfigPath + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
 
         public const string AssetBundleWindowDataName = "AssetBundleWindowData";
         public const string AssetBundleWindowDataExtend = ".asset";
@@ -36,7 +36,9 @@ namespace GameFrameWork.Editor
         public const string GameFrameWorkConfigWindowDataExtend = ".asset";
         public static readonly string GameFrameWorkConfigWindowDataPath = EditorConfigPath + GameFrameWorkConfigWindowDataName + GameFrameWorkConfigWindowDataExtend;
         public static readonly string GameFrameWorkConfigWindowDataFullPath = EditorConfigFullPath + GameFrameWorkConfigWindowDataName + GameFrameWorkConfigWindowDataExtend;
-        
+
+        public static readonly string GameFrameWorkUIScriptsFullPath = ApplicationDataFullPath + "GameFrameWork/Scripts/UI/";
+
         public const string EntryScriptName = "GameEntry";
         public const string EntryScriptExtend = ".cs";
         public static readonly string EntryScriptFullPath = EditorScriptFullPath + EntryScriptName + EntryScriptExtend;

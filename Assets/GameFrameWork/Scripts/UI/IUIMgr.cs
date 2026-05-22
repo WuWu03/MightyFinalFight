@@ -10,18 +10,17 @@ namespace GameFrameWork.UI
         public UnityEngine.Camera uiCamera { get; }
         public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr);
         public RectTransform GetLayer(UILayer layer);
-        public IPresenter Open(string viewName, object arg = null);
-        public T Open<T>(object arg = null) where T : class, IPresenter, new();
-        public IPresenter Open(Type viewType, object arg = null);
-        public IPresenter Get(string viewName);
-        public T Get<T>() where T : class, IPresenter, new();
-        public IPresenter Get(Type viewType);
+        public IUIView Open(string viewName, object arg = null);
+        public T Open<T>(object arg = null) where T : class, IUIView, new();
+        public IUIView Open(Type viewType, object arg = null);
+        public T Get<T>() where T : class, IUIView, new();
+        public IUIView Get(Type viewType);
         public bool IsOpen(string viewName);
-        public bool IsOpen<T>() where T : class, IPresenter, new();
+        public bool IsOpen<T>() where T : class, IUIView, new();
         public bool IsOpen(Type viewType);
         public void Close(string viewName, bool isForceDestroy = false);
-        public void Close<T>(bool isForceDestroy = false) where T : class, IPresenter, new();
+        public void Close<T>(bool isForceDestroy = false) where T : class, IUIView, new();
         public void Close(Type viewType, bool isForceDestroy = false);
-        public void Close(IPresenter view, bool isForceDestroy = false, bool checkPopPanel = true);
+        public void Close(IUIView view, bool isForceDestroy = false, bool checkPopPanel = true);
     }
 }

@@ -180,7 +180,7 @@ public class BaseEnemy : BaseRole
         {
             HudMgr.instance.ShowPlayerDamage(arg.attackValue, damagePos);
             base.OnGroundHurtMsg(arg);
-            GameEntry.uiMgr.Get<MainPresenter>().SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
+            GameEntry.uiMgr.Get<MainView>().presenter.SetEnemyHP(entityAttribute.health, entityAttribute.maxHealth, m_HpBarWidth);
         }
         else
         {

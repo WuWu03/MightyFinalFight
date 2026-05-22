@@ -12,13 +12,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
 
-public class RoundClearView : UIBaseView
+public class RoundClearView : UIBaseView<RoundClearView, RoundClearPresenter, RoundClearViewSettings>
 {
-	//bottom/txtRound,LanguageText
-	public LanguageText txtRound { get; private set; }
+    //bottom/txtRound,LanguageText
+    public LanguageText txtRound { get; private set; }
 
-	protected override void OnInitView(UIRefRoot root)
-	{
-		txtRound = root.objects[0] as LanguageText;
-	}
+    protected override void OnInitView(UIRefRoot root)
+    {
+        txtRound = root.objects[0] as LanguageText;
+    }
 }

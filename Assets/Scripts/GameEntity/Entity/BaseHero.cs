@@ -299,7 +299,7 @@ public class BaseHero : BaseRole
     public virtual void RebirthState(Vector2 rebirthPos)
     {
         ChangeState<HeroRebirth>();
-        GameEntry.uiMgr.Get<MainPresenter>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+        GameEntry.uiMgr.Get<MainView>().presenter.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
     }
 
     public void SetRebirthState()
@@ -376,7 +376,7 @@ public class BaseHero : BaseRole
         {
             HudMgr.instance.ShowEnemyDamage(arg.attackValue, damagePos);
             base.OnGroundHurtMsg(arg);
-            GameEntry.uiMgr.Get<MainPresenter>().SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
+            GameEntry.uiMgr.Get<MainView>().presenter.SetPlayerHP(entityAttribute.health, entityAttribute.maxHealth);
         }
         else
         {

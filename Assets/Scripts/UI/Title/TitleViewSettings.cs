@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class TitleViewSettings : UIBaseSettings
+public class TitleViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "TitleView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

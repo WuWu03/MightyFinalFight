@@ -12,13 +12,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
 
-public class LoadView : UIBaseView
+public class LoadView : UIBaseView<LoadView, LoadPresenter, LoadViewSettings>
 {
-	//imgShade,Image
-	public Image imgShade { get; private set; }
+    //imgShade,Image
+    public Image imgShade { get; private set; }
 
-	protected override void OnInitView(UIRefRoot root)
-	{
-		imgShade = root.objects[0] as Image;
-	}
+    protected override void OnInitView(UIRefRoot root)
+    {
+        imgShade = root.objects[0] as Image;
+    }
 }

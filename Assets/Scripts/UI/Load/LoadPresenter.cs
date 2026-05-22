@@ -9,7 +9,7 @@ using GameFrameWork.UI;
 using UnityEngine;
 using static LoadMgr;
 
-public class LoadPresenter : UIBasePresenter<LoadView, LoadViewSettings>
+public class LoadPresenter : UIBaseViewPresenter<LoadView>
 {
     protected override void OnOpen(object arg)
     {

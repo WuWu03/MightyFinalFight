@@ -1,5 +1,5 @@
 /*
- * @Desc: Title 模块 TitleView 界面视图
+ * @Desc: Title 模块 TitleView 视图展示器
  * @Date: 2021-09-06 21:09:22
  * @Author: GQY
  */
@@ -11,7 +11,7 @@ using GameFrameWork.UI;
 using GameFrameWork.Utils;
 using UnityEngine;
 
-public class TitlePresenter : UIBasePresenter<TitleView, TitleViewSettings>
+public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 {
     private bool m_CanSkipOpening;
     private float m_TextTimer = -1f;
@@ -93,7 +93,7 @@ public class TitlePresenter : UIBasePresenter<TitleView, TitleViewSettings>
 
     private void OnLoadFadeBlackComplete()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<RoleSelectPresenter>();
+        GameFrameWorkMgr.GetModule<IUIMgr>().Open<RoleSelectView>();
         CloseSelf();
     }
 

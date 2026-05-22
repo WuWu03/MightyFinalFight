@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class StageViewSettings : UIBaseSettings
+public class StageViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "StageView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

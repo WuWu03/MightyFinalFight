@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class RoleSelectViewSettings : UIBaseSettings
+public class RoleSelectViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "RoleSelectView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

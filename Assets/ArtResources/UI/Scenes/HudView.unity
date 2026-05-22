@@ -609,13 +609,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: Hud
-  m_PresenterName: HudPresenter
+  m_PresenterName: HudViewPresenter
   m_ViewName: HudView
   uiDestroyMode: 3
   uiLayer: 0
   uiType: 1
   delayDestroyTime: 0
-  presenterPath: Assets/Scripts/UI/Hud/HudPresenter.cs
+  presenterPath: Assets/Scripts/UI/Hud/HudViewPresenter.cs
   viewPath: Assets/Scripts/UI/Hud/HudView.cs
   settingsPath: Assets/Scripts/UI/Hud/HudViewSettings.cs
 --- !u!4 &1731513110

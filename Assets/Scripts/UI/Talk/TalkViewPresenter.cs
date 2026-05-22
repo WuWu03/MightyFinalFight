@@ -1,5 +1,5 @@
 /*
- * @Desc: Talk 模块 TalkView 界面视图
+ * @Desc: Talk 模块 TalkView 视图展示器
  * @Date: 2023-11-29 09:28:43
  * @Author: GQY
  */
@@ -7,12 +7,11 @@
 using DG.Tweening;
 using GameFrameWork;
 using GameFrameWork.ConfigData;
-using GameFrameWork.Event;
 using GameFrameWork.Input;
 using GameFrameWork.UI;
 using UnityEngine;
 
-public class TalkPresenter : UIBasePresenter<TalkView, TalkViewSettings>
+public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
 {
     private bool m_IsComplete;
     private int m_SelectIndex = -1;

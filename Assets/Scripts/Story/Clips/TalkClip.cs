@@ -24,7 +24,7 @@ public class TalkClip : BaseClip
     protected override void OnPlay()
     {
         GameEntry.eventMgr.Subscribe<TalkEndEvent>(OnTalkEnd);
-        GameEntry.uiMgr.Open<TalkPresenter>(m_TalkId);
+        GameEntry.uiMgr.Open<TalkView>(m_TalkId);
     }
 
     private void OnTalkEnd(object sender, TalkEndEvent e)

@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class RoundClearPresenter : UIBasePresenter<RoundClearView, RoundClearViewSettings>
+public class RoundClearPresenter : UIBaseViewPresenter<RoundClearView>
 {
 	protected override void OnOpen(object arg)
 	{

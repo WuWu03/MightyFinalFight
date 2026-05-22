@@ -22,14 +22,14 @@ namespace GameFrameWork.UI
         Eternal, //总是存于场景中, 除非主动销毁
     }
 
-    public abstract class UIBaseSettings
+    public abstract class UIBaseViewSettings : IUIViewSetting
     {
         public abstract string prefabName { get; }
 
         public abstract float delayDestroyTime { get; }
-        
-        public virtual bool canPopUp { get; }//是否可以回弹
-        
+
+        public virtual bool canPopUp { get { return false; } }//是否可以回弹
+
         public abstract UILayer layer { get; }
 
         public abstract UIDestroyMode destroyMode { get; }

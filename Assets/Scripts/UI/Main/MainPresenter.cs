@@ -13,7 +13,7 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainPresenter : UIBasePresenter<MainView, MainViewSettings>
+public class MainPresenter : UIBaseViewPresenter<MainView>
 {
     protected override void OnOpen(object arg)
     {

@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class TalkViewSettings : UIBaseSettings
+public class TalkViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "TalkView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

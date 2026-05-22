@@ -12,25 +12,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using GameFrameWork.UI;
 
-public class StageView : UIBaseView
+public class StageView : UIBaseView<StageView, StageViewPresenter, StageViewSettings>
 {
-	//blue,GameObject
-	public GameObject blueGo { get; private set; }
-	//red,GameObject
-	public GameObject redGo { get; private set; }
-	//green,GameObject
-	public GameObject greenGo { get; private set; }
-	//imgMap,GameObject
-	public GameObject imgMapGo { get; private set; }
-	//heroPos,GameObject
-	public GameObject heroPosGo { get; private set; }
+    //blue,GameObject
+    public GameObject blueGo { get; private set; }
+    //red,GameObject
+    public GameObject redGo { get; private set; }
+    //green,GameObject
+    public GameObject greenGo { get; private set; }
+    //imgMap,GameObject
+    public GameObject imgMapGo { get; private set; }
+    //heroPos,GameObject
+    public GameObject heroPosGo { get; private set; }
 
-	protected override void OnInitView(UIRefRoot root)
-	{
-		blueGo = root.objects[0] as GameObject;
-		redGo = root.objects[1] as GameObject;
-		greenGo = root.objects[2] as GameObject;
-		imgMapGo = root.objects[3] as GameObject;
-		heroPosGo = root.objects[4] as GameObject;
-	}
+    protected override void OnInitView(UIRefRoot root)
+    {
+        blueGo = root.objects[0] as GameObject;
+        redGo = root.objects[1] as GameObject;
+        greenGo = root.objects[2] as GameObject;
+        imgMapGo = root.objects[3] as GameObject;
+        heroPosGo = root.objects[4] as GameObject;
+    }
 }

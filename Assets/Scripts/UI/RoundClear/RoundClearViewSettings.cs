@@ -7,7 +7,7 @@
 
 using GameFrameWork.UI;
 
-public class RoundClearViewSettings : UIBaseSettings
+public class RoundClearViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "RoundClearView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }

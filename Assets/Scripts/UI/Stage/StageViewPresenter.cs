@@ -1,5 +1,5 @@
 /*
- * @Desc: Stage 模块 StageView 界面视图
+ * @Desc: Stage 模块 StageView 视图展示器
  * @Date: 2021-09-08 12:24:44
  * @Author: GQY
  */
@@ -12,7 +12,7 @@ using GameFrameWork.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StagePresenter : UIBasePresenter<StageView, StageViewSettings>
+public class StageViewPresenter : UIBaseViewPresenter<StageView>
 {
     private GameObject m_Role;
     private RoleSelectConfigData m_RoleSelectConfig;
@@ -36,7 +36,7 @@ public class StagePresenter : UIBasePresenter<StageView, StageViewSettings>
         int characterId = PlayerMgr.instance.selectRoleId;
         m_RoleSelectConfig = GameEntry.configDataMgr.Get<RoleSelectConfigData>().GetConfigDataById(characterId);
         GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), OnLoaded);
-        GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStart).UnSubscribeAllOnDestroy(gameObject);
+        GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStart).UnSubscribeAllOnDestroy(view.gameObject);
     }
 
     protected override void OnUpdate()
