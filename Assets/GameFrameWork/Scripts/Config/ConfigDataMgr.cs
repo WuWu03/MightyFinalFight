@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 
 namespace GameFrameWork.ConfigData
@@ -8,7 +8,7 @@ namespace GameFrameWork.ConfigData
     public class ConfigDataMgr : GameFrameWorkModule , IConfigDataMgr
     {
         private readonly Dictionary<string, object> m_ConfigData;
-        private IResourceMgr m_ResourceMgr;
+        private IResourcesMgr m_ResourceMgr;
         
         public ConfigDataMgr()
         {
@@ -20,7 +20,7 @@ namespace GameFrameWork.ConfigData
             RemoveAll();
         }
         
-        public void SetResourceMgr(IResourceMgr resourceMgr)
+        public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
             ConfigDataHelper.SetResourcesMgr(resourceMgr);

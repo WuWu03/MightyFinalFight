@@ -1,10 +1,10 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 
 namespace GameFrameWork.BehaviourTree
 {
     public interface IBehaviourTreeMgr
     {
-        public void SetResourceMgr(IResourceMgr  resourceMgr);
+        public void SetResourceMgr(IResourcesMgr  resourceMgr);
         public void AddBehaviourTree(object owner, string dataName);
         public void RemoveBehaviourTree(object owner);
         public void StartAllTrees();

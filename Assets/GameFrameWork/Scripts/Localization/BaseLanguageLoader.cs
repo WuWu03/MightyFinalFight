@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using UnityEngine;
 
 namespace GameFrameWork.Localization
@@ -14,7 +14,7 @@ namespace GameFrameWork.Localization
             m_IsInit = false;
         }
 
-        public void Init(IResourceMgr resourceMgr)
+        public void Init(IResourcesMgr resourceMgr)
         {
             if (m_IsInit)
             {
@@ -39,13 +39,13 @@ namespace GameFrameWork.Localization
             OnInit(txt);
         }
 
-        public void Reload(IResourceMgr resourceMgr)
+        public void Reload(IResourcesMgr resourceMgr)
         {
             Release(resourceMgr);
             Init(resourceMgr);
         }
 
-        public void Release(IResourceMgr resourceMgr)
+        public void Release(IResourcesMgr resourceMgr)
         {
             if (!m_IsInit)
             {

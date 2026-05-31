@@ -61,8 +61,14 @@ public class RoleSwoon : FsmState
         m_Owner.StopAnimation(AnimName.SwoonUp);
         m_Owner.PlayAnimation(AnimName.SwoonDown);
         m_Owner.onGroundEvent -= OnBounce;
-        m_Owner.onGroundEvent += OnGround;
+        m_Owner.onDropEvent += OnDrop;
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.FallDown));
+    }
+
+    private void OnDrop()
+    {
+        m_Owner.onDropEvent -= OnDrop;
+        m_Owner.onGroundEvent += OnGround;
     }
 
     private void OnGround()

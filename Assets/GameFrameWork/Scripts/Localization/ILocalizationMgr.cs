@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Resources;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Event;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ namespace GameFrameWork.Localization
     public interface ILocalizationMgr
     {
         public event GameFrameWorkAction lanuageChangeEvent;
-        public void SetResourceManager(IResourceMgr resourceMgr);
+        public void SetResourceManager(IResourcesMgr resourceMgr);
         public void AddLanguageLoader(LanguageType languageType, BaseLanguageLoader loader);
         public void SetDefaultLanguage(LanguageType languageType);
         public void ChangeLanguage(LanguageType languageType);

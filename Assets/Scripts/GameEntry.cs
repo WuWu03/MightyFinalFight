@@ -1,5 +1,5 @@
 using GameFrameWork;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
 using GameFrameWork.ConfigData;
@@ -23,7 +23,7 @@ public class GameEntry : GameFrameWorkEntry
 {
     private static Transform s_GameEntry;
     private static ILocalizationMgr s_LocalizationMgr;
-    private static IResourceMgr s_ResourceMgr;
+    private static IResourcesMgr s_ResourceMgr;
     private static IVersionMgr s_VersionMgr;
     private static IDownloadMgr s_DownloadMgr;
     private static IWebRequestMgr s_WebRequestMgr;
@@ -54,11 +54,11 @@ public class GameEntry : GameFrameWorkEntry
         }
     }
 
-    public static IResourceMgr resourceMgr
+    public static IResourcesMgr resourceMgr
     {
         get
         {
-            s_ResourceMgr ??= GameFrameWorkMgr.GetModule<IResourceMgr>();
+            s_ResourceMgr ??= GameFrameWorkMgr.GetModule<IResourcesMgr>();
             return s_ResourceMgr;
         }
     }

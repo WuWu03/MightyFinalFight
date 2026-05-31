@@ -1,5 +1,5 @@
 using System;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Event;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
@@ -8,7 +8,7 @@ namespace GameFrameWork.Pool
 {
     public interface IResourcePoolMgr
     {
-        public void SetResourceMgr(IResourceMgr resourceMgr,Transform poolRoot);
+        public void SetResourceMgr(IResourcesMgr resourceMgr,Transform poolRoot);
         public void CheckRelease();
         public void Cache<T>(string assetPath) where T : UnityObject;
         public void Cache(string assetPath, Type assetType);

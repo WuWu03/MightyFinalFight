@@ -7,20 +7,20 @@ using System.Linq;
 using GameFrameWork.Event;
 using UnityObject = UnityEngine.Object;
 
-namespace GameFrameWork.Assets
+namespace GameFrameWork.Resources
 {
-    public static class EditorResourceMgr
+    public static class EditorResourcesMgr
     {
         private static readonly Dictionary<string, UnityObject> s_LoadedAssets = new();
         private static readonly Dictionary<string, List<LoadRequest>> s_LoadRequests = new();
         
-        public static UnityObject LoadAssetSync(string assetPath, Type t = null)
+        public static UnityObject LoadSync(string assetPath, Type t = null)
         {
             Log.LogInfo("开始加载编辑器资源 : [<color=#FFFF00>", assetPath, "</color>]");
             return OnLoadAssetSync(assetPath, t);
         }
 
-        public static void LoadAssetAsync(string assetPath, Type assetType, GameFrameWorkAction<string, UnityObject, object> loadedAction, object arg = null)
+        public static void LoadAsync(string assetPath, Type assetType, GameFrameWorkAction<string, UnityObject, object> loadedAction, object arg = null)
         {
             LoadRequest loadRequest = LoadRequest.Create(assetPath, assetType, loadedAction, arg);
 
@@ -36,7 +36,7 @@ namespace GameFrameWork.Assets
             }
         }
 
-        public static void UnLoadAssetEditor(string assetPath)
+        public static void UnLoad(string assetPath)
         {
             Log.LogInfo("开始卸载编辑器资源 : [<color=#FF0000>", assetPath, "</color>] , ", "卸载前资源数为 : ", s_LoadedAssets.Count.ToString());
 
@@ -54,7 +54,7 @@ namespace GameFrameWork.Assets
 
             foreach (var assetName in assetNames)
             {
-                UnLoadAssetEditor(assetName);
+                UnLoad(assetName);
             }
 
             s_LoadedAssets.Clear();
@@ -92,7 +92,7 @@ namespace GameFrameWork.Assets
         private static IEnumerator OnLoadAssetAsync(string assetPath, Type t = null)
         {
             yield return null;
-            UnityObject obj = LoadAssetSync(assetPath, t);
+            UnityObject obj = LoadSync(assetPath, t);
             yield return null;
             
             if (obj is null)

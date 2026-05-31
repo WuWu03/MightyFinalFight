@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Audio;
 using GameFrameWork.BehaviourTree;
 using GameFrameWork.ConfigData;
@@ -49,7 +49,7 @@ namespace GameFrameWork
             [typeof(GameObjectPoolMgr)] = GetPriority(),
             [typeof(ResourcePoolMgr)] = GetPriority(),
             [typeof(LocalizationMgr)] = GetPriority(),
-            [typeof(ResourceMgr)] = GetPriority(),
+            [typeof(ResourcesMgr)] = GetPriority(),
         };
         
         /// <summary>

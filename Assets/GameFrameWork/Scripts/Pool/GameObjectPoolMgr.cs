@@ -1,5 +1,5 @@
 using System;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using GameFrameWork.Event;
@@ -132,6 +132,11 @@ namespace GameFrameWork.Pool
         /// </summary>
         public void Put(string tag, GameObject go, bool isReleaseImmdiately = false)
         {
+            if (string.IsNullOrEmpty(tag))
+            {
+                throw new GameFrameWorkException("资源路径为空，无法回收资源，检查资源是否加载成功");
+            }
+
             if (m_Pools.TryGetValue(tag, out GameObjectPool pool))
             {
                 m_GameObjectUnloaders.Clear();

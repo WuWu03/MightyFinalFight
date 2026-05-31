@@ -370,7 +370,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             int groundY = -40;
             int itemId = -1;
             bool isFloat = false;
-            float moveSpeed = 0;
+            float moveSpeed = 2;
             SceneEntityMgr.instance.CreateBarrel(1, dir, groundY, itemId, isFloat, moveSpeed, new Vector2Int(m_Player.mapPos.x + 40, m_Player.mapPos.y));
         }
         else if (Input.GetKeyDown(KeyCode.Keypad7))

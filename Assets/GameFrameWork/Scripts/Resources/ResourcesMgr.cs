@@ -1,45 +1,51 @@
+using GameFrameWork.Event;
 using GameFrameWork.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameFrameWork.Event;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
-namespace GameFrameWork.Assets
+namespace GameFrameWork.Resources
 {
-    public class ResourceMgr : GameFrameWorkModule,IResourceMgr
+    public class ResourcesMgr : GameFrameWorkModule, IResourcesMgr
     {
         private readonly Dictionary<string, AssetBundleInfo> m_LoadedAssetBundles;
         private readonly Dictionary<string, List<LoadRequest>> m_LoadRequests;
         private readonly Dictionary<string, string> m_AssetsMap;
+        private readonly List<AssetBundleLoader> m_AssetBundleLoaders;
         private AssetBundle m_ManifestAssetBundle;
         private AssetBundleManifest m_Manifest;
-        
-        public ResourceMgr()
+
+        public ResourcesMgr()
         {
             m_LoadedAssetBundles = new();
             m_LoadRequests = new();
             m_AssetsMap = new();
+            m_AssetBundleLoaders = new();
             InitAssetsMap();
         }
 
         public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            
+
         }
 
         public override void Shutdown()
         {
             UnloadAll(true);
+            foreach (AssetBundleLoader loader in m_AssetBundleLoaders)
+            {
+                loader.Release();
+            }
+            m_AssetBundleLoaders.Clear();
             m_ManifestAssetBundle?.Unload(true);
             m_AssetsMap.Clear();
             m_ManifestAssetBundle = null;
             m_Manifest = null;
         }
-        
+
         public void InitAssetsMap()
         {
 #if UNITY_EDITOR
@@ -54,7 +60,7 @@ namespace GameFrameWork.Assets
                 m_ManifestAssetBundle.Unload(true);
             }
 
-            string maniFestPath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, PathUtil.maniFestName);
+            string maniFestPath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, PathUtil.maniFestName, false);
             byte[] maniFestData = File.ReadAllBytes(maniFestPath);
 
             m_ManifestAssetBundle = AssetBundle.LoadFromMemory(maniFestData);
@@ -96,7 +102,7 @@ namespace GameFrameWork.Assets
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
-                return EditorResourceMgr.LoadAssetSync(assetPath, assetType);
+                return EditorResourcesMgr.LoadSync(assetPath, assetType);
             }
 #endif
             return InnerLoad(assetPath, assetType);
@@ -119,7 +125,7 @@ namespace GameFrameWork.Assets
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
-                EditorResourceMgr.LoadAssetAsync(assetPath, assetType, loadedAction, arg);
+                EditorResourcesMgr.LoadAsync(assetPath, assetType, loadedAction, arg);
                 return;
             }
 #endif
@@ -134,20 +140,20 @@ namespace GameFrameWork.Assets
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
-                EditorResourceMgr.UnLoadAssetEditor(assetPath);
+                EditorResourcesMgr.UnLoad(assetPath);
                 return;
             }
 #endif
             string assetBundleName = GetAssetBundleName(assetPath);
             InnerUnload(assetBundleName, isThorough);
         }
-        
+
         public void UnloadAll(bool isThorough = false)
         {
 #if UNITY_EDITOR
             if (!GameFrameWorkEntry.config.isLoadFromAssetBundle)
             {
-                EditorResourceMgr.UnLoadAll();
+                EditorResourcesMgr.UnLoadAll();
                 return;
             }
 #endif
@@ -175,7 +181,7 @@ namespace GameFrameWork.Assets
             {
                 for (int i = 0; i < dependencies.Length; i++)
                 {
-                    InnerLoad(dependencies[i], typeof(UnityEngine.Object));
+                    InnerLoad(dependencies[i], typeof(UnityObject));
                 }
             }
 
@@ -208,23 +214,23 @@ namespace GameFrameWork.Assets
                 return;
             }
 
+            string[] dependencies = GetDependencies(assetBundleName);
+
+            if (dependencies is { Length: > 0 })
+            {
+                foreach (string dependency in dependencies)
+                {
+                    InnerLoadAsync(dependency, typeof(UnityObject), null, true);
+                }
+            }
+
             LoadRequest request = LoadRequest.Create(assetPath, assetType, loadedAction, arg);
 
             if (!m_LoadRequests.TryGetValue(assetBundleName, out List<LoadRequest> listRequests))
             {
-                string[] dependencies = GetDependencies(assetBundleName);
-
-                if (dependencies is { Length: > 0 })
-                {
-                    foreach (var dependency in dependencies)
-                    {
-                        InnerLoadAsync(dependency, typeof(UnityObject), null, true);
-                    }
-                }
-
                 listRequests = new() { request };
                 m_LoadRequests.Add(assetBundleName, listRequests);
-                MonoBehaviourMgr.instance.StartCoroutine(OnLoadAsync(assetBundleName));
+                m_AssetBundleLoaders.Add(AssetBundleLoader.Create(assetBundleName, GetAssetBundlePath(assetBundleName), isDependence, GetLoadedAssetBundle, GetDependencies, OnLoadAsync));
             }
             else
             {
@@ -244,83 +250,37 @@ namespace GameFrameWork.Assets
             }
         }
 
-        private IEnumerator OnLoadAsync(string assetBundleName)
+        private void OnLoadAsync(AssetBundleLoader assetBundleLoader)
         {
-            string[] dependencies = GetDependencies(assetBundleName);
-            bool hasDependencies = dependencies is { Length: > 0 };
-            bool dependenciesLoaded = false;
-
-            while (hasDependencies && !dependenciesLoaded)
+            if (assetBundleLoader == null)
             {
-                dependenciesLoaded = true;
-
-                foreach (string dependency in dependencies)
-                {
-                    if (GetLoadedAssetBundle(dependency) == null)
-                    {
-                        dependenciesLoaded = false;
-                        break;
-                    }
-                }
-
-                yield return null;
+                throw new GameFrameWorkException(StringUtil.Append("加载资源异常，未能成功创建加载器"));
             }
 
+            string assetBundleName = assetBundleLoader.assetBundleName;
             AssetBundleInfo assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
 
             if (assetBundleInfo == null)
             {
-                string assetBundlePath = GetAssetBundlePath(assetBundleName);
-                Log.LogInfo("开始异步加载资源 ：<color=#FFFF00>[", assetBundlePath, "</color>]");
-                AssetBundleCreateRequest assetBundleCreateRequest = AssetBundle.LoadFromFileAsync(assetBundlePath);
-                
-                while (!assetBundleCreateRequest.isDone)
-                {
-                    yield return null;
-                }
-                
-                AssetBundle assetBundle = assetBundleCreateRequest.assetBundle;
+                assetBundleInfo = assetBundleLoader.assetBundleInfo;
 
-                if (assetBundle != null)
+                if (assetBundleInfo == null || assetBundleLoader.assetBundleInfo.assetBundle == null)
                 {
-                    m_LoadedAssetBundles.Add(assetBundleName, AssetBundleInfo.Create(assetBundle));
+                    throw new GameFrameWorkException(StringUtil.Append("加载 [", assetBundleLoader?.assetBundleName, "] 失败，AB包不存在"));
                 }
 
-                assetBundleInfo = GetLoadedAssetBundle(assetBundleName);
+                m_LoadedAssetBundles.Add(assetBundleName, assetBundleInfo);
             }
 
-            if (assetBundleInfo == null)
-            {
-                throw new Exception(StringUtil.Append("加载 [", assetBundleName,"] 失败，AB包不存在"));
-            }
+            m_AssetBundleLoaders.Remove(assetBundleLoader);
+            assetBundleLoader.Release();
 
             if (!m_LoadRequests.Remove(assetBundleName, out List<LoadRequest> loadRequests))
             {
-                throw new Exception(StringUtil.Append("加载 [", assetBundleName,"] 成功，但回调不存在"));
+                throw new Exception(StringUtil.Append("加载 [", assetBundleName, "] 成功，但回调不存在"));
             }
-            
-            foreach (LoadRequest loadRequest in loadRequests)
-            {
-                if (!assetBundleInfo.assetBundle.isStreamedSceneAssetBundle)
-                {
-                    string assetName = Path.GetFileNameWithoutExtension(loadRequest.assetPath);
-                    AssetBundleRequest assetBundleRequest = assetBundleInfo.assetBundle.LoadAssetAsync(assetName, loadRequest.assetType);
-           
-                    while (!assetBundleRequest.isDone)
-                    {
-                        yield return null;
-                    }
-                    
-                    loadRequest.Loaded(assetBundleRequest.asset);
-                }
-                else
-                {
-                    loadRequest.Loaded(null);
-                }
 
-                loadRequest.Release();
-                assetBundleInfo.referencedCount++;
-            }
+            assetBundleInfo.LoadAssetAsync(loadRequests);
         }
 
         private void InnerUnload(string assetBundleName, bool isThorough)

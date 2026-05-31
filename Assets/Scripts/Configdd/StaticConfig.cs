@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 
 public static class StaticConfig
 {

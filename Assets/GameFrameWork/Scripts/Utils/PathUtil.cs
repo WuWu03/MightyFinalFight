@@ -20,42 +20,42 @@ namespace GameFrameWork.Utils
 #if UNITY_ANDROID || UNITY_IOS
                 return persistentDataPath;
 #else
-                return streamingAssetsPath; 
+                return streamingAssetsPath;
 #endif
             }
         }
 
-        public static string FormatPath(string arg1)
+        public static string FormatPath(string arg1, bool isLastPath = true)
         {
-            return FormatPath(arg1, null, null, null, null, null, null);
+            return FormatPath(arg1, null, null, null, null, null, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2)
+        public static string FormatPath(string arg1, string arg2, bool isLastPath = true)
         {
-            return FormatPath(arg1, arg2, null, null, null, null, null);
+            return FormatPath(arg1, arg2, null, null, null, null, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2, string arg3)
+        public static string FormatPath(string arg1, string arg2, string arg3, bool isLastPath = true)
         {
-            return FormatPath(arg1, arg2, arg3, null, null, null, null);
+            return FormatPath(arg1, arg2, arg3, null, null, null, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2, string arg3, string arg4)
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, bool isLastPath = true)
         {
-            return FormatPath(arg1, arg2, arg3, arg4, null, null, null);
+            return FormatPath(arg1, arg2, arg3, arg4, null, null, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5)
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, bool isLastPath = true)
         {
-            return FormatPath(arg1, arg2, arg3, arg4, arg5, null, null);
+            return FormatPath(arg1, arg2, arg3, arg4, arg5, null, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6)
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, bool isLastPath = true)
         {
-            return FormatPath(arg1, arg2, arg3, arg4, arg5, arg6, null);
+            return FormatPath(arg1, arg2, arg3, arg4, arg5, arg6, null, isLastPath);
         }
 
-        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7)
+        public static string FormatPath(string arg1, string arg2, string arg3, string arg4, string arg5, string arg6, string arg7, bool isLastPath = true)
         {
             StringUtil.ClearArgs();
             StringUtil.AddArg(arg1);
@@ -65,7 +65,7 @@ namespace GameFrameWork.Utils
             StringUtil.AddArg(arg5);
             StringUtil.AddArg(arg6);
             StringUtil.AddArg(arg7);
-            return StringUtil.Append(true);
+            return StringUtil.Append(true, isLastPath);
         }
 
         public static string FormatPath(params string[] args)
@@ -77,7 +77,7 @@ namespace GameFrameWork.Utils
                 StringUtil.AddArg(arg);
             }
 
-            return StringUtil.Append(true);
+            return StringUtil.Append(true, true);
         }
 
         public static string GetUIPrefabsPath()

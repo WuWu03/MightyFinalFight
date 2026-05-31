@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace GameFrameWork.BehaviourTree
         private readonly Dictionary<object,BehaviourTree> m_BehaviourTrees;
         private readonly List<BehaviourTree> m_PersistentBehaviourTrees;
         private bool m_IsDirty;
-        private IResourceMgr m_ResourceMgr;
+        private IResourcesMgr m_ResourceMgr;
         
         public BehaviourTreeMgr()
         {
@@ -61,7 +61,7 @@ namespace GameFrameWork.BehaviourTree
             m_BehaviourTrees.Clear();
         }
 
-        public void SetResourceMgr(IResourceMgr resourceMgr)
+        public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }

@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Event;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +13,7 @@ namespace GameFrameWork.Scene
         public string currSceneName { get; }
         public int loadedSceneCount { get; }
         
-        public void SetResourceMgr(IResourceMgr resourceMgr);
+        public void SetResourceMgr(IResourcesMgr resourceMgr);
         public void LoadSceneAsync(string sceneName, object arg = null);
         public void LoadSceneAsync(string sceneName, bool isAutoAllowScene, object arg = null);
         public void LoadSceneAsync(string sceneName, LoadSceneMode mode, bool isAutoAllowScene, object arg = null);

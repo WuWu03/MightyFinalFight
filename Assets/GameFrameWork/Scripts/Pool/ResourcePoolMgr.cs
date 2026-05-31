@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace GameFrameWork.Pool
         private readonly List<string> m_RemoveList;
         private readonly Dictionary<string, PoolObjectInfo> m_LoadedAssets;
         private readonly Dictionary<string, List<LoadRequest>> m_LoadRequests;
-        private IResourceMgr m_ResourceMgr;
+        private IResourcesMgr m_ResourceMgr;
         private Transform m_PoolRoot;
         public ResourcePoolMgr()
         {
@@ -39,7 +39,7 @@ namespace GameFrameWork.Pool
             m_LoadRequests.Clear();
         }
 
-        public void SetResourceMgr(IResourceMgr resourceMgr, Transform poolRoot)
+        public void SetResourceMgr(IResourcesMgr resourceMgr, Transform poolRoot)
         {
             m_ResourceMgr = resourceMgr;
             m_PoolRoot = new GameObject("ResourcePool").transform;
@@ -74,7 +74,7 @@ namespace GameFrameWork.Pool
                 m_LoadedAssets.Remove(assetName);
             }
 
-            Resources.UnloadUnusedAssets();
+            UnityEngine.Resources.UnloadUnusedAssets();
         }
 
         public void Cache<T>(string assetPath) where T : UnityObject

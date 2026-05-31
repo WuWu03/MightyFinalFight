@@ -20,7 +20,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             return false;
         }
     }
-    
+
     public bool isDead
     {
         get
@@ -116,19 +116,8 @@ public class Barrel : BaseAvatar, ICanBeHit
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        CheckThrow(collision.gameObject);
         CheckStrike(collision.gameObject);
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        CheckStrike(collision.gameObject);
-    }
-
-    //protected override void OnTriggerExit2D(Collider2D collision)
-    //{
-    //    CheckStrike(collision.gameObject);
-    //}
 
     protected override void OnLoadAssetComplete(GameObject go, object arg)
     {
@@ -170,21 +159,22 @@ public class Barrel : BaseAvatar, ICanBeHit
             return;
         }
 
-        BaseHero player = PlayerMgr.instance.player;
+        BaseRole role = go.GetComponent<BaseRole>();
 
-        if (player == null || player.gameObject != go)
+        if (role == null)
         {
             return;
         }
-          
-        bool isInRange = false;
 
-        if (SkillUtil.IsRectangleCollide(player.bound, bound) && player.pos.y >= pos.y)
+        bool isInRange = false;
+        float yMinDiff = Mathf.Abs(role.bound.yMin - bound.yMin);
+
+        if (yMinDiff <= 0.05 && role.bound.yMin < bound.yMax)
         {
             Vector2 bsoLeftTop = new Vector2(bound.xMin, bound.yMax) - bound.center;
             float selectorAngle = Vector2.Angle(Vector2.left, bsoLeftTop.normalized);
 
-            Vector2 target = (player.pos - pos).normalized;
+            Vector2 target = (role.pos - pos).normalized;
             Vector2 normal = dir >= 0 ? Vector2.right : Vector2.left - Vector2.zero;
             float angle = Vector2.Angle(target, normal);
 
@@ -200,39 +190,7 @@ public class Barrel : BaseAvatar, ICanBeHit
             hurtArg.attackerDir = dir;
             hurtArg.attackForce = SkillUtil.GetSmoonForce(dir);
             hurtArg.isSwoon = true;
-            player.HurtState(hurtArg);
+            role.HurtState(hurtArg);
         }
-    }
-
-    private void CheckThrow(GameObject go)
-    {
-        if (!isAssetLoadComplete || isDead)
-        {
-            return;
-        }
-
-        BaseRole role = go.GetComponent<BaseRole>();
-
-        if (role == null || role.objectType != ObjectType.Enemy || !role.isBeThrow || !role.canBeHit)
-        {
-            return;
-        }
-
-        if (Mathf.Abs(role.pos.y - pos.y) > 0.1f)
-        {
-            return;
-        }
-
-        HurtStateArg hurtArg = HurtStateArg.Create();
-        hurtArg.attackerDir = -role.dir;
-        hurtArg.attackForce = SkillUtil.GetSmoonForce();
-        hurtArg.attackerPos = pos;
-        hurtArg.isSwoon = true;
-        hurtArg.attackerId = entityID;
-        hurtArg.attackValue = 1;
-        hurtArg.hurtAnim = string.Empty;
-        hurtArg.isGroundHurt = false;
-
-        HurtState(hurtArg);
     }
 }

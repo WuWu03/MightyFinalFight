@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameFrameWork;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Event;
 using GameFrameWork.Utils;
 using UnityEngine;
@@ -87,7 +87,7 @@ public class TestInputMgr
         set => m_InputActionAsset = value;
     }
 
-    public void Init(IResourceMgr resourceMgr, string configDataName, string saveKey)
+    public void Init(IResourcesMgr resourceMgr, string configDataName, string saveKey)
     {
         m_SaveKey = saveKey;
         string jsonStr = PlayerPrefs.GetString(saveKey, string.Empty);

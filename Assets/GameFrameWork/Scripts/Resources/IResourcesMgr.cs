@@ -2,9 +2,9 @@ using System;
 using GameFrameWork.Event;
 using UnityObject = UnityEngine.Object;
 
-namespace GameFrameWork.Assets
+namespace GameFrameWork.Resources
 {
-    public interface IResourceMgr
+    public interface IResourcesMgr
     {
         public void InitAssetsMap();
         public T Load<T>(string assetPath) where T : UnityObject;

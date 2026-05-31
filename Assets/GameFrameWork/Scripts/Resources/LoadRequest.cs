@@ -1,7 +1,7 @@
 using System;
 using GameFrameWork.Event;
 
-namespace GameFrameWork.Assets
+namespace GameFrameWork.Resources
 {
     public class LoadRequest : GameFrameWorkEventArg
     {

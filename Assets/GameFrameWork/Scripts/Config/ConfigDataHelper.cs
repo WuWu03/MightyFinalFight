@@ -1,5 +1,5 @@
 using System;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,8 +10,8 @@ namespace GameFrameWork.ConfigData
 {
     public static class ConfigDataHelper
     {
-        private static IResourceMgr m_ResourceMgr;
-        public static void SetResourcesMgr(IResourceMgr resourceMgr)
+        private static IResourcesMgr m_ResourceMgr;
+        public static void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }

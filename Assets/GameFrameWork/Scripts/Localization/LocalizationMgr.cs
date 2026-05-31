@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Event;
 using GameFrameWork.Utils;
 using UnityEngine;
@@ -12,7 +12,7 @@ namespace GameFrameWork.Localization
         private readonly Dictionary<LanguageType, BaseLanguageLoader> m_DicLanguageLoader;
         private const string CacheKey = "_GAME_LANGUAGE_NAME_";
         private LanguageType m_LanguageType;
-        private IResourceMgr m_ResourceMgr;
+        private IResourcesMgr m_ResourceMgr;
         private event GameFrameWorkAction m_LanguageChangeEvent;
         
         public LocalizationMgr()
@@ -39,7 +39,7 @@ namespace GameFrameWork.Localization
             m_LanguageChangeEvent = null;
         }
 
-        public void SetResourceManager(IResourceMgr resourceMgr)
+        public void SetResourceManager(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }

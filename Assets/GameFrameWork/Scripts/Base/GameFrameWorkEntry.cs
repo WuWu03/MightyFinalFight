@@ -27,7 +27,7 @@ namespace GameFrameWork
         private void Awake()
         {
             MonoBehaviourMgr.Init(gameObject);
-            s_Config = Resources.Load<GameFrameWorkConfig>(Path.GetFileNameWithoutExtension(PathUtil.gameFrameWorkConfigDataName));
+            s_Config = UnityEngine.Resources.Load<GameFrameWorkConfig>(Path.GetFileNameWithoutExtension(PathUtil.gameFrameWorkConfigDataName));
             DontDestroyOnLoad(gameObject);
             OnInit(gameObject);
         }

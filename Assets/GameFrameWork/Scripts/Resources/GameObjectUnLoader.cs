@@ -1,7 +1,7 @@
 using GameFrameWork.Pool;
 using UnityEngine;
 
-namespace GameFrameWork.Assets
+namespace GameFrameWork.Resources
 {
     public class GameObjectUnLoader : MonoBehaviour
     {

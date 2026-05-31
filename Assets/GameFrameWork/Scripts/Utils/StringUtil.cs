@@ -15,7 +15,7 @@ namespace GameFrameWork.Utils
         private static readonly char s_ChineseNegative = '负';
         private static readonly char s_ChineseDot = '点';
         private static readonly object[] s_Args = new object[7];
-        private static int s_ArgIndex;
+        private static int s_ArgCount;
         private static readonly StringBuilder s_StringBuilder = new();
 
         public static string Format(string format, string arg1)
@@ -64,13 +64,13 @@ namespace GameFrameWork.Utils
         public static string Format(string format, params string[] args)
         {
             ClearArgs();
-            
+
             foreach (var arg in args)
             {
                 if (!string.IsNullOrEmpty(arg))
                 {
-                    s_Args[s_ArgIndex] = arg;
-                    s_ArgIndex++;
+                    s_Args[s_ArgCount] = arg;
+                    s_ArgCount++;
                 }
             }
 
@@ -118,7 +118,7 @@ namespace GameFrameWork.Utils
             AddArg(arg6);
             AddArg(arg7);
 
-            return Append(false);
+            return Append(false, false);
         }
 
         public static string Append(params string[] args)
@@ -128,12 +128,12 @@ namespace GameFrameWork.Utils
             {
                 if (!string.IsNullOrEmpty(arg))
                 {
-                    s_Args[s_ArgIndex] = arg;
-                    s_ArgIndex++;
+                    s_Args[s_ArgCount] = arg;
+                    s_ArgCount++;
                 }
             }
 
-            return Append(false);
+            return Append(false, false);
         }
 
         /// <summary>
@@ -392,8 +392,8 @@ namespace GameFrameWork.Utils
         {
             if (!string.IsNullOrEmpty(arg))
             {
-                s_Args[s_ArgIndex] = arg;
-                s_ArgIndex++;
+                s_Args[s_ArgCount] = arg;
+                s_ArgCount++;
             }
         }
 
@@ -404,10 +404,10 @@ namespace GameFrameWork.Utils
                 s_Args[i] = null;
             }
 
-            s_ArgIndex = 0;
+            s_ArgCount = 0;
         }
 
-        public static string Append(bool isPath)
+        public static string Append(bool isPath, bool isLastPath)
         {
             if (s_Args == null || s_Args.Length < 1)
             {
@@ -416,7 +416,7 @@ namespace GameFrameWork.Utils
 
             s_StringBuilder.Clear();
 
-            for (int i = 0; i < s_ArgIndex; i++)
+            for (int i = 0; i < s_ArgCount; i++)
             {
                 string arg = s_Args[i].ToString();
                 bool canAddPath = false;
@@ -425,9 +425,16 @@ namespace GameFrameWork.Utils
                 {
                     canAddPath = string.IsNullOrEmpty(Path.GetExtension(arg)) && !arg.EndsWith("/");
 
-                    if (canAddPath && s_ArgIndex > 1 && i == s_ArgIndex - 2)
+                    if (canAddPath)
                     {
-                        canAddPath = !s_Args[i + 1].ToString().StartsWith(".");
+                        if (s_ArgCount > 1 && i == s_ArgCount - 2)
+                        {
+                            canAddPath = !s_Args[i + 1].ToString().StartsWith(".");
+                        }
+                        else if (i == s_ArgCount - 1)
+                        {
+                            canAddPath = isLastPath;
+                        }
                     }
                 }
 

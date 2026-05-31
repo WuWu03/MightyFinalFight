@@ -1,4 +1,4 @@
-using GameFrameWork.Assets;
+using GameFrameWork.Resources;
 using GameFrameWork.Utils;
 using System;
 using System.Collections;
@@ -19,7 +19,7 @@ namespace GameFrameWork.Scene
         private readonly List<string> m_LoadedScenes;
         private readonly Queue<LoadSceneRequest> m_LoadRequests;
         private string m_CurrSceneName;
-        private IResourceMgr m_ResourceMgr;
+        private IResourcesMgr m_ResourceMgr;
         private AsyncOperation m_AsyncOperation;
         
         public SceneMgr()
@@ -119,7 +119,7 @@ namespace GameFrameWork.Scene
             m_LoadRequests.Clear();
         }
 
-        public void SetResourceMgr(IResourceMgr resourceMgr)
+        public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }
