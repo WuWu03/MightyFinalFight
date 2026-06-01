@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a6c990a646984f4aa65614ec0c5f3d4, type: 3}
+  m_Script: {fileID: 11500000, guid: c3be6e38a53f39246855b10c922dc2ed, type: 3}
   m_Name: WuWuFrameworkConfig
   m_EditorClassIdentifier: 
   isCheckVersion: 0
-  isLoadFromAssetBundle: 0
+  isLoadFromAssetBundle: 1
   isOpenLog: 1
   uiPrefabsPath: ArtResources/UI/Prefabs/
   uiSpritesPath: ArtResources/UI/Sprites/

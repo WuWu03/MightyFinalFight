@@ -188,7 +188,15 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/工具/切图工具", false, 104)]
+
+        [MenuItem("WuWuFramework/资源引用查找 &5", false, 104)]
+        public static void AssetsReferenceFinder()
+        {
+            EditorWindow window = EditorWindow.GetWindow<AssetsReferencesWindow>();
+            window.Show();
+        }
+
+        [MenuItem("WuWuFramework/工具/切图工具", false, 105)]
         public static void OpenSpriteSpliterTool()
         {
             Rect rect = new(0, 0, 600, 300);
@@ -196,7 +204,7 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/工具/PlayerPrefs工具", false, 105)]
+        [MenuItem("WuWuFramework/工具/PlayerPrefs工具", false, 106)]
         public static void OpenPlayerPrefsTool()
         {
             Rect rect = new(0, 0, 600, 300);
@@ -204,14 +212,14 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/Build/Build Game", false, 106)]
+        [MenuItem("WuWuFramework/Build/Build Game", false, 107)]
         public static void BuildGame()
         {
             BuildGame(false);
 
         }
 
-        [MenuItem("WuWuFramework/Build/Build Game Log", false, 107)]
+        [MenuItem("WuWuFramework/Build/Build Game Log", false, 108)]
         public static void BuildGameLog()
         {
             BuildGame(true);
