@@ -1,14 +1,13 @@
-using System.Linq;
-using WuWuFramework.UI;
 using UnityEditor;
-using UnityEngine;
 using UnityEditor.UI;
+using UnityEngine;
 using UnityEngine.UI;
+using WuWuFramework.UI;
 
 namespace WuWuFramework.Editor
 {
     [CustomEditor(typeof(ImagePolygon))]
-    public class ImagePolygonEditor : ImageEditor
+    public class ImagePolygonEditor : ImageExEditor
     {
         private ImagePolygon m_ImagePolygon;
         protected override void OnEnable()

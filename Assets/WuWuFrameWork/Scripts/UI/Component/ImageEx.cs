@@ -1,8 +1,7 @@
-using System;
-using WuWuFramework.Pool;
-using WuWuFramework.Utils;
 using UnityEngine;
 using UnityEngine.UI;
+using WuWuFramework.Pool;
+using WuWuFramework.Utils;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.UI
@@ -10,7 +9,7 @@ namespace WuWuFramework.UI
     [AddComponentMenu("UI/ImageEx")]
     public class ImageEx : Image
     {
-        private string m_SpriteName;
+        [SerializeField] private string m_SpriteName;
         
         public string spriteName
         {
@@ -28,8 +27,7 @@ namespace WuWuFramework.UI
                 m_SpriteName = value;
             }
         }
-        
-        
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
