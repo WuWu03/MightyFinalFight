@@ -1,5 +1,5 @@
 using DG.Tweening;
-using GameFrameWork;
+using WuWuFramework;
 using UnityEngine;
 
 public class Story1003 : BaseStoryBuilder

@@ -52,7 +52,7 @@ public class MapEditorWindow : EditorWindow
             }
         }
 
-        string[] files = GameFrameWork.Utils.FileUtil.GetFiles(MapEditorHelper.mapPath, searchOption: SearchOption.AllDirectories);
+        string[] files = WuWuFramework.Utils.FileUtil.GetFiles(MapEditorHelper.mapPath, searchOption: SearchOption.AllDirectories);
 
         if (files.Length > 0)
         {
@@ -247,7 +247,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.currData.listTaskIds.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
@@ -288,7 +288,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.currData.listBGMs.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();
@@ -334,7 +334,7 @@ public class MapEditorWindow : EditorWindow
 
         for (int i = 0; i < MapEditorHelper.currData.listSceneBuildings.Count; i++)
         {
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.BeginVertical();
                 GUILayout.BeginHorizontal();

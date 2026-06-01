@@ -1,4 +1,4 @@
-using GameFrameWork;
+using WuWuFramework;
 
 public class PauseBgmClip : BaseClip
 {

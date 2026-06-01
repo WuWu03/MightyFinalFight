@@ -1,6 +1,6 @@
-﻿using GameFrameWork;
+using WuWuFramework;
 
-public class BaseRoleSkillData : GameFrameWorkEventArg
+public class BaseRoleSkillData : WuWuFrameworkEventArg
 {
     public int roleId { get; set; }
     public int[] attackIds { get; set; }

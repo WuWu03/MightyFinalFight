@@ -1,5 +1,5 @@
 using DragonBones;
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class DBEffect : BaseEffect

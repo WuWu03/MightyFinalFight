@@ -1,7 +1,7 @@
 /*
  * @Desc: Main 模块 MainView 界面组件
  * @Date: 2025-11-26 17:06:53
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 
 public class MainView : UIBaseView<MainView, MainPresenter, MainViewSettings>
 {

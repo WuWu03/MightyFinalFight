@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.Fsm;
+using WuWuFramework;
+using WuWuFramework.Fsm;
 using UnityEngine;
 
 public class JumpStateArg : FsmStateArg

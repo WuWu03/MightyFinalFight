@@ -1,4 +1,4 @@
-using GameFrameWork.Resources;
+using WuWuFramework.Resources;
 
 public static class StaticConfig
 {

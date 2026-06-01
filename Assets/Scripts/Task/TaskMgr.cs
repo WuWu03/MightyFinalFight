@@ -1,4 +1,4 @@
-using GameFrameWork;
+using WuWuFramework;
 using System.Collections.Generic;
 
 public class TaskMgr : BaseMgr<TaskMgr>

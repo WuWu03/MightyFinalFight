@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.UI;
+using WuWuFramework;
+using WuWuFramework.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,7 +39,7 @@ public class HudMgr : BaseMgr<HudMgr>
     protected override void OnShutdown()
     {
         base.OnShutdown();
-        GameFrameWorkMgr.GetModule<IUIMgr>().Close<HudView>();
+        GameEntry.uiMgr.Close<HudView>();
         m_HudArgs.Clear();
     }
 
@@ -63,7 +63,7 @@ public class HudMgr : BaseMgr<HudMgr>
     
     private void ShowHud()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<HudView>();
+        GameEntry.uiMgr.Open<HudView>();
     }
 
     private Queue<HudArg> m_HudArgs = null;

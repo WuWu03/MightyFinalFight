@@ -1,5 +1,5 @@
 using DragonBones;
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 
 public class SkillNormalAttackDeployer : SkillBaseDeployer

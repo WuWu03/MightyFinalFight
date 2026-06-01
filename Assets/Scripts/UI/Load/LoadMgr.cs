@@ -1,20 +1,20 @@
-using GameFrameWork;
-using GameFrameWork.UI;
+using WuWuFramework;
+using WuWuFramework.UI;
 using System.Collections.Generic;
-using GameFrameWork.Event;
+using WuWuFramework.Event;
 
 
 public class LoadMgr : BaseMgr<LoadMgr>
 {
-    public class FadeArgs : GameFrameWorkEventArg
+    public class FadeArgs : WuWuFrameworkEventArg
     {
         public float from;
         public float to;
         public float duration;
         public float delay;
-        public GameFrameWorkAction onComplete;
+        public WuWuFrameworkAction onComplete;
 
-        public static FadeArgs Create(float from, float to, float duration, float delay, GameFrameWorkAction onComplete)
+        public static FadeArgs Create(float from, float to, float duration, float delay, WuWuFrameworkAction onComplete)
         {
             FadeArgs fadeInfo = ReferencePool.Acquire<FadeArgs>();
             fadeInfo.from = from;
@@ -79,17 +79,17 @@ public class LoadMgr : BaseMgr<LoadMgr>
         return null;
     }
 
-    public void DOFadeBlack(GameFrameWorkAction onComplete, float duration = 0.3f, float delay = 0.5f)
+    public void DOFadeBlack(WuWuFrameworkAction onComplete, float duration = 0.3f, float delay = 0.5f)
     {
         DOFade(0, 1, duration, delay, onComplete);
     }
 
-    public void DOFadeWhite(GameFrameWorkAction onComplete, float duration = 0.3f, float delay = 0.5f)
+    public void DOFadeWhite(WuWuFrameworkAction onComplete, float duration = 0.3f, float delay = 0.5f)
     {
         DOFade(1, 0, duration, delay, onComplete);
     }
 
-    public void DOFade(float from, float to, float duration, float delay, GameFrameWorkAction onComplete)
+    public void DOFade(float from, float to, float duration, float delay, WuWuFrameworkAction onComplete)
     {
         m_IsFadeComplete = false;
 
@@ -98,12 +98,12 @@ public class LoadMgr : BaseMgr<LoadMgr>
             m_QueueFade.Enqueue(FadeArgs.Create(from, to, duration, delay, onComplete));
         }
 
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<LoadView>();
+        GameEntry.uiMgr.Open<LoadView>();
     }
 
     public void CloseLoadPanel()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Close<LoadView>();
+        GameEntry.uiMgr.Close<LoadView>();
     }
 
     private bool m_IsFadeComplete = false;

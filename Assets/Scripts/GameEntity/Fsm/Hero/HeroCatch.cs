@@ -1,4 +1,4 @@
-using GameFrameWork.Fsm;
+using WuWuFramework.Fsm;
 
 public class HeroCatch : FsmState
 {

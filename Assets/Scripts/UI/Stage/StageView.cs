@@ -1,7 +1,7 @@
 /*
  * @Desc: Stage 模块 StageView 界面数据
  * @Date: 2025-10-11 12:19:46
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 
 public class StageView : UIBaseView<StageView, StageViewPresenter, StageViewSettings>
 {

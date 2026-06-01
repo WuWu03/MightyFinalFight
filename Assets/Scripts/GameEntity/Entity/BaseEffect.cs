@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.Event;
 using UnityEngine;
 
 public class BaseEffect : BaseSceneObject
@@ -9,7 +9,7 @@ public class BaseEffect : BaseSceneObject
     private float m_PlayTime;
     private float m_Timer = -1;
     private bool m_IsAutoRelease;
-    private GameFrameWorkAction m_PlayEndCallback;
+    private WuWuFrameworkAction m_PlayEndCallback;
     
     public float playTime
     {
@@ -35,7 +35,7 @@ public class BaseEffect : BaseSceneObject
         }
     }
 
-    public GameFrameWorkAction onPlayEndEvent
+    public WuWuFrameworkAction onPlayEndEvent
     {
         get
         {

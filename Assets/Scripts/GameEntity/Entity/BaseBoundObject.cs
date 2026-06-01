@@ -1,4 +1,4 @@
-using GameFrameWork;
+using WuWuFramework;
 using UnityEngine;
 
 public class BaseBoundObject : BaseSceneObject

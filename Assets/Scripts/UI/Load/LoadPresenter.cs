@@ -1,11 +1,11 @@
 /*
  * @Desc: Load 模块 LoadPresenter 界面视图
  * @Date: 2021-07-23 10:03:48
- * @Author: GQY
+ * @Author: WuWu
  */
 
 using DG.Tweening;
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 using UnityEngine;
 using static LoadMgr;
 

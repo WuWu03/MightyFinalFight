@@ -1,4 +1,4 @@
-using GameFrameWork.Fsm;
+using WuWuFramework.Fsm;
 using UnityEngine;
 
 public class BarrelMove : FsmState

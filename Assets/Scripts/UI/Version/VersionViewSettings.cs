@@ -1,11 +1,11 @@
 /*
  * @Desc: Version 模块 VersionView 界面组件
  * @Date: 2025-10-11 12:36:11
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 
 public class VersionViewSettings : UIBaseViewSettings
 {

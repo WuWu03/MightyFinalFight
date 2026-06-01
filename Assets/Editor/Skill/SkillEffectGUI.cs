@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -26,7 +26,7 @@ public class SkillEffectGUI : SkillGUI
             SkillConfigData.SkillEffect skillEffect = SkillEditorHelper.CurrConfigData.SkillEffects[i];
             SkillConfigData.SkillEffect tempEffect = m_ListSkillEffect[i];
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.BeginHorizontal();
@@ -81,7 +81,7 @@ public class SkillEffectGUI : SkillGUI
             SkillConfigData.Bullet skillBullet = skillEffect.Bullets[i];
             SkillConfigData.Bullet tempBullet = tempEffect.Bullets[i];
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
 

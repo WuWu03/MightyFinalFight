@@ -1,13 +1,13 @@
 /*
  * @Desc: RoleSelect 模块 RoleSelectView 视图展示器
  * @Date: 2020-7-2 16:19:21
- * @Author: GQY
+ * @Author: WuWu
  */
 
-using GameFrameWork;
-using GameFrameWork.Input;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Input;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
@@ -127,6 +127,6 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
     private void OnFadeBlackComplete()
     {
         CloseSelf();
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<StageView>();
+        GameEntry.uiMgr.Open<StageView>();
     }
 }

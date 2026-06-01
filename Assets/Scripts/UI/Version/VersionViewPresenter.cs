@@ -1,12 +1,12 @@
 /*
  * @Desc: Version 模块 VersionView 视图展示器
  * @Date: 2025-08-08 14:18:49
- * @Author: GQY
+ * @Author: WuWu
  */
 
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
-using GameFrameWork.Version;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
+using WuWuFramework.Version;
 
 public class VersionViewPresenter : UIBaseViewPresenter<VersionView>
 {

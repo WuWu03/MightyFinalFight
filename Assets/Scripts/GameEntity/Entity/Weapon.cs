@@ -1,6 +1,6 @@
 using DragonBones;
-using GameFrameWork;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class Weapon : BaseSceneItem

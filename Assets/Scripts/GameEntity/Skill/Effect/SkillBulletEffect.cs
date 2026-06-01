@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 
 public class SkillBulletEffect : SkillBaseEffect
 {

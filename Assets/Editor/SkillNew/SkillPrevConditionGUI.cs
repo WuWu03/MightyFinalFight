@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -34,7 +34,7 @@ namespace SkillNew
                 {
                     SkillPrevCondition skillPrevCondition = skillPrevConditions[i];
 
-                    GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                    WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                     {
                         EditorGUILayout.BeginVertical();
 

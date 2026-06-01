@@ -1,4 +1,4 @@
-using GameFrameWork.Serialize;
+using WuWuFramework.Serialize;
 using System;
 using UnityEngine;
 
@@ -61,7 +61,7 @@ public class SkillEditorConfigData : BaseScriptableConfigData
     [Serializable]
     public class SkillKey
     {
-        public GameFrameWork.Input.KeyType[] keys;
+        public WuWuFramework.Input.KeyType[] keys;
         public bool addTrigger;
     }
 

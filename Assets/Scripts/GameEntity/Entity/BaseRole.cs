@@ -1,14 +1,13 @@
-using GameFrameWork;
-using GameFrameWork.Timer;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Event;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
-using GameFrameWork.Event;
 using UnityEngine;
 
 public class BaseRole : BaseAvatar, ICanBeHit
 {
-    private event GameFrameWorkAction<HurtStateArg> m_OnHurtEvent;
-    private event GameFrameWorkAction m_AutoMoveComplete;
+    private event WuWuFrameworkAction<HurtStateArg> m_OnHurtEvent;
+    private event WuWuFrameworkAction m_AutoMoveComplete;
     private RoleStateParam m_RoleStateParam;
     
     private bool m_IsAttack;
@@ -219,7 +218,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
     }
 
 
-    public event GameFrameWorkAction<HurtStateArg> onHurtEvent
+    public event WuWuFrameworkAction<HurtStateArg> onHurtEvent
     {
         add
         {
@@ -366,7 +365,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
         ReferencePool.Release(moveArg);
     }
 
-    public virtual void AutoMove(Vector2 pos, GameFrameWorkAction moveComplete = null)
+    public virtual void AutoMove(Vector2 pos, WuWuFrameworkAction moveComplete = null)
     {
         m_MoveToPos = pos;
         m_IsAutoMove = true;
@@ -906,7 +905,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 return;
             }
 
-            GameFrameWorkMgr.GetModule<ITimerMgr>().Register(0.1f, () =>
+            GameEntry.timerMgr.Register(0.1f, () =>
             {
                 if (m_OnGroundHurtStateArg != null)
                 {

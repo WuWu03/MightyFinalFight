@@ -1,5 +1,5 @@
 using System;
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,7 +17,7 @@ public class TestItem : BaseListItem
 
 public class Test2 : MonoBehaviour
 {
-    public GameFrameWork.UI.ScrollList view;
+    public WuWuFramework.UI.ScrollList view;
     public ButtonEx btn;
 
     private InputAction stickAction;
@@ -36,7 +36,7 @@ public class Test2 : MonoBehaviour
         //actions.Button
     }
 
-    private void onRenderItem(GameFrameWork.UI.BaseListItem t)
+    private void onRenderItem(WuWuFramework.UI.BaseListItem t)
     {
         var item = t as TestItem;
         item.txt.text = item.index.ToString();

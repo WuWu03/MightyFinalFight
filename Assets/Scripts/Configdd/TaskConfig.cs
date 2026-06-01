@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using UnityEngine;
-using GameFrameWork.Serialize;
+using WuWuFramework.Serialize;
 
 public class TaskConfig : BaseScriptableObject<TaskConfigData>
 {

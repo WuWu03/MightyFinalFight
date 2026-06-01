@@ -1,17 +1,13 @@
-
-//===================================================
-//作者：GQY                                          
-//创建时间：2024-06-06 11:09:24
-//备注：此代码为工具生成 请勿手工修改
-//===================================================
-using GameFrameWork;
-using GameFrameWork.ConfigData;
+/*
+ * @Desc: Role.xlsx数据表
+ * @Date: 2024-06-06 11:09:24
+ * @Author: WuWu
+ * @Note: 工具生成，请勿修改
+ */
+using WuWuFramework;
+using WuWuFramework.ConfigData;
 using UnityEngine;
 
-/// <summary>
-/// Role.xlsx数据表
-/// SheetName:Sheet1
-/// </summary>
 public class RoleConfigData : BaseConfigData
 {
 	/// <summary>

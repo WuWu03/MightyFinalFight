@@ -1,15 +1,15 @@
 /*
  * @Desc: Main 模块 MainView 界面数据
  * @Date: 2020-07-22 19:39:11
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
 using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.Event;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Event;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 

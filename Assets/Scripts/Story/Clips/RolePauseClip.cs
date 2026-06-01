@@ -1,6 +1,6 @@
-using GameFrameWork;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class RolePauseClip : BaseClip

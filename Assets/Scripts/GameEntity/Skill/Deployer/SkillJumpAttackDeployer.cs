@@ -1,5 +1,5 @@
 using DragonBones;
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 
 public class SkillJumpAttackDeployer : SkillBaseDeployer
 {

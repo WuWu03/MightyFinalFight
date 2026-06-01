@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GameFrameWork;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.Event;
 
-public class RoleStateParam: GameFrameWorkEventArg
+public class RoleStateParam: WuWuFrameworkEventArg
 {
     public bool canAttack { get; set; }
     public bool canBeHit { get; set; }

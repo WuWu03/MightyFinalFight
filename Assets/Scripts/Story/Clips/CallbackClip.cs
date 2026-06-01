@@ -1,18 +1,18 @@
-using GameFrameWork;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.Event;
 
 public class CallbackClip : BaseClip
 {
-    public static CallbackClip Create(GameFrameWorkAction gameFrameWorkAction)
+    public static CallbackClip Create(WuWuFrameworkAction callbackAction)
     {
         CallbackClip clip = ReferencePool.Acquire<CallbackClip>();
-        clip.m_GameFrameWorkAction = gameFrameWorkAction;
+        clip.m_CallbackAction = callbackAction;
         return clip;
     }
 
     protected override void OnClear()
     {
-        m_GameFrameWorkAction = null;
+        m_CallbackAction = null;
     }
 
     protected override void OnPause()
@@ -22,7 +22,7 @@ public class CallbackClip : BaseClip
 
     protected override void OnPlay()
     {
-        m_GameFrameWorkAction?.Invoke();
+        m_CallbackAction?.Invoke();
         Complete();
     }
 
@@ -31,5 +31,5 @@ public class CallbackClip : BaseClip
 
     }
 
-    private GameFrameWorkAction m_GameFrameWorkAction = null;
+    private WuWuFrameworkAction m_CallbackAction = null;
 }

@@ -1,8 +1,8 @@
 using DG.Tweening;
-using GameFrameWork;
+using WuWuFramework;
 using UnityEngine;
 using System;
-using GameFrameWork.Event;
+using WuWuFramework.Event;
 
 public abstract class BaseStoryBuilder : IStoryBuilder
 {
@@ -104,7 +104,7 @@ public abstract class BaseStoryBuilder : IStoryBuilder
         StoryMgr.instance.AddClip(track, clip);
     }
 
-    public void Callback(int track, GameFrameWorkAction action) 
+    public void Callback(int track, WuWuFrameworkAction action) 
     {
         CallbackClip clip = CallbackClip.Create(action);
         StoryMgr.instance.AddClip(track, clip);

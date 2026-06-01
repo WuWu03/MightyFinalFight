@@ -1,6 +1,6 @@
-using GameFrameWork;
-using GameFrameWork.GameEntity;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.GameEntity;
+using WuWuFramework.Event;
 using UnityEngine;
 
 public class BaseSceneObject : BaseEntity
@@ -14,7 +14,7 @@ public class BaseSceneObject : BaseEntity
     private Vector2Int m_MapPos = Vector2Int.zero;
     private ObjectType m_ObjectType = ObjectType.NONE;
     private EntityAttribute m_EntityAttribute;
-    private GameFrameWorkAction<int> m_OnReleaseEventHandler;
+    private WuWuFrameworkAction<int> m_OnReleaseEventHandler;
     private IReference m_Data;
     
     public ObjectType objectType
@@ -97,7 +97,7 @@ public class BaseSceneObject : BaseEntity
         }
     }
 
-    public event GameFrameWorkAction<int> onReleaseEvent
+    public event WuWuFrameworkAction<int> onReleaseEvent
     {
         add
         {

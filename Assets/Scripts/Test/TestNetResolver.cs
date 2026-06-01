@@ -1,10 +1,10 @@
 using client;
-using GameFrameWork.Event;
-using GameFrameWork.Net;
+using WuWuFramework.Event;
+using WuWuFramework.Net;
 
 public class TestNetResolver : NetResolver
 {
-    public event GameFrameWorkAction<test> onReceiveTestEvent;
+    public event WuWuFrameworkAction<test> onReceiveTestEvent;
 
     public TestNetResolver(INetMgr netMgr) : base(netMgr)
     {

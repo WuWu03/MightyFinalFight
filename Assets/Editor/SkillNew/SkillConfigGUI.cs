@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using GameFrameWork.Serialize;
+using WuWuFramework.Serialize;
 using UnityEditor;
 using UnityEngine;
 using static SkillEditorConfigData;
@@ -13,14 +13,14 @@ namespace SkillNew
         private readonly List<SkillEventType> m_SkillEventTypes;
         private readonly List<bool> m_SkillEventContinuous;
         private readonly List<int> m_ListSkillEventNextSkill;
-        private readonly List<GameFrameWork.Input.KeyType> m_ListKey;
+        private readonly List<WuWuFramework.Input.KeyType> m_ListKey;
         private int m_SkillFrameCount;
         private int m_CurrFrame;
         private Vector2 m_ScrollPos = Vector2.zero;
         
         public SkillConfigGUI(EditorWindow window) : base(window)
         {
-            m_ListKey = new List<GameFrameWork.Input.KeyType>();
+            m_ListKey = new List<WuWuFramework.Input.KeyType>();
             m_SkillEventTypes = new List<SkillEventType>();
             m_SkillEventContinuous = new List<bool>();
             m_ListSkillEventNextSkill = new List<int>();
@@ -64,12 +64,12 @@ namespace SkillNew
         {
             m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 GUILayout.Label(SkillEditorHelper.currShowName, SkillEditorHelper.indexLabelStyle);
             });
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 DrawField(() => { return m_SkillFrameCount != SkillEditorHelper.CurrConfigData.skillFrameCount; },
                     () => { m_SkillFrameCount = EditorGUILayout.IntField("技能帧数", m_SkillFrameCount); },
@@ -88,7 +88,7 @@ namespace SkillNew
                     });
             });
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 int frameIndex = EditorGUILayout.IntSlider("当前帧", m_CurrFrame, Mathf.Min(1, SkillEditorHelper.CurrConfigData.skillFrameCount), SkillEditorHelper.CurrConfigData.skillFrameCount);
                 if (frameIndex != m_CurrFrame)
@@ -107,7 +107,7 @@ namespace SkillNew
                 }
             });
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.LabelField("技能事件列表");
             });
@@ -121,7 +121,7 @@ namespace SkillNew
                 for (int i = 0; i < m_SkillEvents.Count; i++)
                 {
                     int currentIndex = i;
-                    GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                    WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                     {
                         EditorGUILayout.BeginVertical();
 
@@ -225,7 +225,7 @@ namespace SkillNew
             EditorGUILayout.EndVertical();
             int removeKeyIndex = -1;
 
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
                 EditorGUILayout.LabelField("技能按键");
@@ -237,7 +237,7 @@ namespace SkillNew
                     for (int i = 0; i < SkillEditorHelper.CurrConfigData.skillKey.keys.Length; i++)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        SkillEditorHelper.CurrConfigData.skillKey.keys[i] = (GameFrameWork.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.skillKey.keys[i]);
+                        SkillEditorHelper.CurrConfigData.skillKey.keys[i] = (WuWuFramework.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.skillKey.keys[i]);
                         if (GUILayout.Button("x", GUILayout.Width(20)))
                         {
                             removeKeyIndex = i;
@@ -249,7 +249,7 @@ namespace SkillNew
 
                 if (GUILayout.Button("增加按键"))
                 {
-                    m_ListKey.Add(GameFrameWork.Input.KeyType.A);
+                    m_ListKey.Add(WuWuFramework.Input.KeyType.A);
                     SkillEditorHelper.CurrConfigData.skillKey.keys = m_ListKey.ToArray();
                 }
 

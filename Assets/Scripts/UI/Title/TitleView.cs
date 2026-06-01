@@ -1,7 +1,7 @@
 /*
  * @Desc: Title 模块 TitleView 界面组件
  * @Date: 2025-11-28 10:22:46
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 
 public class TitleView : UIBaseView<TitleView, TitleViewPresenter, TitleViewSettings>
 {

@@ -1,11 +1,11 @@
 /*
  * @Desc: UI工厂
  * @Date: 2026-05-22 22:37:38
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-namespace GameFrameWork.UI
+namespace WuWuFramework.UI
 {
 	public static partial class UIFactory
 	{

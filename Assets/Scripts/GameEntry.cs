@@ -1,25 +1,25 @@
-using GameFrameWork;
-using GameFrameWork.Resources;
-using GameFrameWork.Audio;
-using GameFrameWork.BehaviourTree;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Download;
-using GameFrameWork.Event;
-using GameFrameWork.Fsm;
-using GameFrameWork.GameEntity;
-using GameFrameWork.Input;
-using GameFrameWork.Localization;
-using GameFrameWork.Pool;
-using GameFrameWork.Scene;
-using GameFrameWork.Timer;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
-using GameFrameWork.Version;
-using GameFrameWork.WebRequest;
+using WuWuFramework;
+using WuWuFramework.Resources;
+using WuWuFramework.Audio;
+using WuWuFramework.BehaviourTree;
+using WuWuFramework.ConfigData;
+using WuWuFramework.Download;
+using WuWuFramework.Event;
+using WuWuFramework.Fsm;
+using WuWuFramework.GameEntity;
+using WuWuFramework.Input;
+using WuWuFramework.Localization;
+using WuWuFramework.Pool;
+using WuWuFramework.Scene;
+using WuWuFramework.Timer;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
+using WuWuFramework.Version;
+using WuWuFramework.WebRequest;
 using System;
 using UnityEngine;
 
-public class GameEntry : GameFrameWorkEntry
+public class GameEntry : WuWuFrameworkEntry
 {
     private static Transform s_GameEntry;
     private static ILocalizationMgr s_LocalizationMgr;
@@ -46,7 +46,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_LocalizationMgr == null)
             {
-                s_LocalizationMgr = GameFrameWorkMgr.GetModule<ILocalizationMgr>();
+                s_LocalizationMgr = WuWuFrameworkMgr.GetModule<ILocalizationMgr>();
                 s_LocalizationMgr.SetResourceManager(resourceMgr);
             }
 
@@ -58,7 +58,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_ResourceMgr ??= GameFrameWorkMgr.GetModule<IResourcesMgr>();
+            s_ResourceMgr ??= WuWuFrameworkMgr.GetModule<IResourcesMgr>();
             return s_ResourceMgr;
         }
     }
@@ -69,7 +69,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_VersionMgr == null)
             {
-                s_VersionMgr = GameFrameWorkMgr.GetModule<IVersionMgr>();
+                s_VersionMgr = WuWuFrameworkMgr.GetModule<IVersionMgr>();
                 s_VersionMgr.SetMgr(downloadMgr, webRequestMgr);
             }
 
@@ -81,7 +81,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_DownloadMgr ??= GameFrameWorkMgr.GetModule<IDownloadMgr>();
+            s_DownloadMgr ??= WuWuFrameworkMgr.GetModule<IDownloadMgr>();
             return s_DownloadMgr;
         }
     }
@@ -90,7 +90,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_WebRequestMgr ??= GameFrameWorkMgr.GetModule<IWebRequestMgr>();
+            s_WebRequestMgr ??= WuWuFrameworkMgr.GetModule<IWebRequestMgr>();
             return s_WebRequestMgr;
         }
     }
@@ -101,7 +101,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_UIMgr == null)
             {
-                s_UIMgr = GameFrameWorkMgr.GetModule<IUIMgr>();
+                s_UIMgr = WuWuFrameworkMgr.GetModule<IUIMgr>();
                 s_UIMgr.SetMgr(gameObjectPoolMgr);
             }
 
@@ -115,7 +115,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_GameObjectPoolMgr == null)
             {
-                s_GameObjectPoolMgr = GameFrameWorkMgr.GetModule<IGameObjectPoolMgr>();
+                s_GameObjectPoolMgr = WuWuFrameworkMgr.GetModule<IGameObjectPoolMgr>();
                 s_GameObjectPoolMgr.SetResourcePoolMgr(resourcePoolMgr, s_GameEntry);
             }
 
@@ -127,7 +127,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_EventMgr ??= GameFrameWorkMgr.GetModule<IEventMgr>();
+            s_EventMgr ??= WuWuFrameworkMgr.GetModule<IEventMgr>();
             return s_EventMgr;
         }
     }
@@ -137,7 +137,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_ResourcePoolMgr == null)
             {
-                s_ResourcePoolMgr = GameFrameWorkMgr.GetModule<IResourcePoolMgr>();
+                s_ResourcePoolMgr = WuWuFrameworkMgr.GetModule<IResourcePoolMgr>();
                 s_ResourcePoolMgr.SetResourceMgr(resourceMgr, s_GameEntry);
             }
 
@@ -151,7 +151,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_BehaviourTreeMgr == null)
             {
-                s_BehaviourTreeMgr = GameFrameWorkMgr.GetModule<IBehaviourTreeMgr>();
+                s_BehaviourTreeMgr = WuWuFrameworkMgr.GetModule<IBehaviourTreeMgr>();
                 s_BehaviourTreeMgr.SetResourceMgr(resourceMgr);
             }
 
@@ -165,7 +165,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_SoundMgr == null)
             {
-                s_SoundMgr = GameFrameWorkMgr.GetModule<ISoundMgr>();
+                s_SoundMgr = WuWuFrameworkMgr.GetModule<ISoundMgr>();
                 s_SoundMgr.SetResourcePoolMgr(resourcePoolMgr, s_GameEntry);
             }
 
@@ -177,7 +177,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_FsmMgr ??= GameFrameWorkMgr.GetModule<IFsmMgr>();
+            s_FsmMgr ??= WuWuFrameworkMgr.GetModule<IFsmMgr>();
             return s_FsmMgr;
         }
     }
@@ -188,7 +188,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_EntityMgr == null)
             {
-                s_EntityMgr = GameFrameWorkMgr.GetModule<IEntityMgr>();
+                s_EntityMgr = WuWuFrameworkMgr.GetModule<IEntityMgr>();
                 s_EntityMgr.SetGameObjectPoolMgr(gameObjectPoolMgr, s_GameEntry);
             }
 
@@ -200,7 +200,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_InputMgr ??= GameFrameWorkMgr.GetModule<IInputMgr>();
+            s_InputMgr ??= WuWuFrameworkMgr.GetModule<IInputMgr>();
             return s_InputMgr;
         }
     }
@@ -211,7 +211,7 @@ public class GameEntry : GameFrameWorkEntry
         {
             if (s_SceneMgr == null)
             {
-                s_SceneMgr = GameFrameWorkMgr.GetModule<ISceneMgr>();
+                s_SceneMgr = WuWuFrameworkMgr.GetModule<ISceneMgr>();
                 s_SceneMgr.SetResourceMgr(resourceMgr);
             }
 
@@ -223,7 +223,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_TimerMgr ??= GameFrameWorkMgr.GetModule<ITimerMgr>();
+            s_TimerMgr ??= WuWuFrameworkMgr.GetModule<ITimerMgr>();
             return s_TimerMgr;
         }
     }
@@ -232,7 +232,7 @@ public class GameEntry : GameFrameWorkEntry
     {
         get
         {
-            s_ConfigDataMgr ??= GameFrameWorkMgr.GetModule<IConfigDataMgr>();
+            s_ConfigDataMgr ??= WuWuFrameworkMgr.GetModule<IConfigDataMgr>();
             return s_ConfigDataMgr;
         }
     }
@@ -268,7 +268,7 @@ public class GameEntry : GameFrameWorkEntry
         if (config.isCheckVersion)
         {
             versionMgr.onVersionProcessStateChangedEvent += OnVersionProcessStateChanged;
-            GameFrameWorkMgr.GetModule<IUIMgr>().Open<VersionView>();
+            uiMgr.Open<VersionView>();
         }
         else
         {

@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -97,7 +97,7 @@ public static class MapEditorHelper
 
         if (!File.Exists(path + fileName + ext))
         {
-            GameFrameWork.Editor.EditorUtil.CreateConfigData<MapEditorConfig, MapEditorConfigData>(fileName, ext, path);
+            WuWuFramework.Editor.EditorUtil.CreateConfigData<MapEditorConfig, MapEditorConfigData>(fileName, ext, path);
         }
 
         if (m_MapEditorConfig == null)
@@ -320,13 +320,13 @@ public static class MapEditorHelper
     }
     public static void Export()
     {
-        string configDataPath = PathUtil.GetAssetPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath);
+        string configDataPath = PathUtil.GetAssetPath(WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().configDataPath);
         string stageConfigPath = PathUtil.FormatPath(configDataPath, "StageConfig.asset");
         string configDataFullPath = PathUtil.GetAssetFullPath(stageConfigPath);
 
         if (!File.Exists(configDataFullPath))
         {
-            GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfig", ".asset");
+            WuWuFramework.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageConfig", ".asset");
         }
 
         StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(stageConfigPath);

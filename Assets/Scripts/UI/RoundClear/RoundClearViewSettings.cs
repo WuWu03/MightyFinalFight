@@ -1,11 +1,11 @@
 /*
  * @Desc: RoundClear 模块 RoundClearView 界面组件
  * @Date: 2025-10-11 12:16:07
- * @Author: GQY
+ * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-using GameFrameWork.UI;
+using WuWuFramework.UI;
 
 public class RoundClearViewSettings : UIBaseViewSettings
 {

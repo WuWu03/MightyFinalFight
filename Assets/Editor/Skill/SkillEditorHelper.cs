@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -91,7 +91,7 @@ public static class SkillEditorHelper
             return;
         }
 
-        string configDataPath = PathUtil.FormatPath(GameFrameWork.Editor.EditorMgr.GetGameFrameWorkConfig().configDataPath, "SkillConfig.asset");
+        string configDataPath = PathUtil.FormatPath(WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().configDataPath, "SkillConfig.asset");
         string configDataFullPath = PathUtil.GetAssetFullPath(configDataPath);
 
         if (!File.Exists(configDataFullPath))
@@ -139,7 +139,7 @@ public static class SkillEditorHelper
         SkillConfigData skillConfigData = new SkillConfigData();
         skillConfigData.Name = name;
         skillConfigData.Key = new SkillConfigData.SkillKey();
-        skillConfigData.Key.Keys = new GameFrameWork.Input.KeyType[0];
+        skillConfigData.Key.Keys = new WuWuFramework.Input.KeyType[0];
         skillConfigData.SkillPrevConditions = new SkillConfigData.SkillPrevCondition[0];
         skillConfigData.SkillEffects = new SkillConfigData.SkillEffect[0];
         m_SkillConfig.AddData(skillConfigData);

@@ -1,6 +1,6 @@
-﻿using GameFrameWork;
+using WuWuFramework;
 
-public abstract class BaseSceneObjectData : GameFrameWorkEventArg
+public abstract class BaseSceneObjectData : WuWuFrameworkEventArg
 {
     public int entityId { get; set; }
 

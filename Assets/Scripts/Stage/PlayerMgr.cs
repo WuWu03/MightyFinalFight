@@ -1,8 +1,8 @@
-using GameFrameWork;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Input;
-using GameFrameWork.Localization;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
+using WuWuFramework.Input;
+using WuWuFramework.Localization;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 

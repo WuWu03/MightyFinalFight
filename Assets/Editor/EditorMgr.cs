@@ -33,19 +33,19 @@ public class EditorMgr : MonoBehaviour
     [MenuItem("Assets/Config/CreateSkillData")]
     public static void CreateSkillData()
     {
-        GameFrameWork.Editor.EditorUtil.CreateConfigData<SkillConfig, SkillConfigData>("SkillData", ".asset");
+        WuWuFramework.Editor.EditorUtil.CreateConfigData<SkillConfig, SkillConfigData>("SkillData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateStageData")]
     public static void CreateStageData()
     {
-        GameFrameWork.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
+        WuWuFramework.Editor.EditorUtil.CreateConfigData<StageConfig, StageConfigData>("StageData", ".asset");
     }
 
     [MenuItem("Assets/Config/CreateTaskData")]
     public static void CreateTaskData()
     {
-        GameFrameWork.Editor.EditorUtil.CreateConfigData<TaskConfig, TaskConfigData>("TaskData", ".asset");
+        WuWuFramework.Editor.EditorUtil.CreateConfigData<TaskConfig, TaskConfigData>("TaskData", ".asset");
     }
 
 }

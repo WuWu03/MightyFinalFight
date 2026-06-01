@@ -1,14 +1,14 @@
 /*
  * @Desc: Hud 模块 HudView 视图展示器
  * @Date: 2024-06-06 16:54:04
- * @Author: GQY
+ * @Author: WuWu
  */
 
 using UnityEngine;
 using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
 using TMPro;
 
 public class HudViewPresenter : UIBaseViewPresenter<HudView>
@@ -64,7 +64,7 @@ public class HudViewPresenter : UIBaseViewPresenter<HudView>
             Color.white : // 绿色为玩家伤害
             Color.red; //红色为敌人伤害
         Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
-        Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, view.gameObject.GetComponent<RectTransform>(), GameFrameWorkMgr.GetModule<IUIMgr>().uiCamera);
+        Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, view.gameObject.GetComponent<RectTransform>(), GameEntry.uiMgr.uiCamera);
         textRect.localPosition = uguiPos;
         textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
         text.DOFade(0, 2f).OnComplete(() =>

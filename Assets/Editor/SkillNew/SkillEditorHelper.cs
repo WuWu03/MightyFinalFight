@@ -1,9 +1,9 @@
 using System;
-using GameFrameWork.Serialize;
+using WuWuFramework.Serialize;
 using System.Collections.Generic;
 using System.IO;
-using GameFrameWork.Input;
-using GameFrameWork.Utils;
+using WuWuFramework.Input;
+using WuWuFramework.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -92,7 +92,7 @@ namespace SkillNew
 
             if (!File.Exists(path + fileName + ext))
             {
-                GameFrameWork.Editor.EditorUtil.CreateConfigData<SkillEditorConfig, SkillEditorConfigData>(fileName, ext, path);
+                WuWuFramework.Editor.EditorUtil.CreateConfigData<SkillEditorConfig, SkillEditorConfigData>(fileName, ext, path);
             }
 
             if (m_SkillEditorConfig == null)

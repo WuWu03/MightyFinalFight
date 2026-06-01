@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.Event;
 
 public class TalkClip : BaseClip
 {

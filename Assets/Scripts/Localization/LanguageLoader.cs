@@ -1,6 +1,6 @@
-using GameFrameWork;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Localization;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
+using WuWuFramework.Localization;
 using System.Collections.Generic;
 using UnityEngine;
 

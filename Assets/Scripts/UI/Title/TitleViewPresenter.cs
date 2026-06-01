@@ -1,14 +1,14 @@
 /*
  * @Desc: Title 模块 TitleView 视图展示器
  * @Date: 2021-09-06 21:09:22
- * @Author: GQY
+ * @Author: WuWu
  */
 
 using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.Input;
-using GameFrameWork.UI;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Input;
+using WuWuFramework.UI;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
@@ -93,7 +93,7 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 
     private void OnLoadFadeBlackComplete()
     {
-        GameFrameWorkMgr.GetModule<IUIMgr>().Open<RoleSelectView>();
+        GameEntry.uiMgr.Open<RoleSelectView>();
         CloseSelf();
     }
 

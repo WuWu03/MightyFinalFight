@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -24,7 +24,7 @@ public class SkillPrevConditionGUI : SkillGUI
 
         for (int i = 0; i < SkillEditorHelper.CurrConfigData.SkillPrevConditions.Length; i++)
         {
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
 

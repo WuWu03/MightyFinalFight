@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.Fsm;
+using WuWuFramework;
+using WuWuFramework.Fsm;
 
 public class SkillStateArg : FsmStateArg
 {

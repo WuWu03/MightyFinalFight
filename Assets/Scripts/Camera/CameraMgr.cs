@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using GameFrameWork;
+using WuWuFramework;
 
 public class CameraMgr : BaseMgr<CameraMgr>
 {

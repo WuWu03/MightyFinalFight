@@ -1,11 +1,11 @@
-using GameFrameWork;
-using GameFrameWork.Event;
+using WuWuFramework;
+using WuWuFramework.Event;
 using UnityEngine;
 
 public class BaseGravityObject : BaseBoundObject
 {
-    private event GameFrameWorkAction m_OnDropEvent;
-    private event GameFrameWorkAction m_OnGroundEvent;
+    private event WuWuFrameworkAction m_OnDropEvent;
+    private event WuWuFrameworkAction m_OnGroundEvent;
     private bool m_IsAddGroundForce;
     private Rigidbody2D m_Rigidbody2D;
     
@@ -38,7 +38,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public new Rigidbody2D rigidbody2D
+    public Rigidbody2D rigidbody2D
     {
         get
         {
@@ -46,7 +46,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public event GameFrameWorkAction onDropEvent
+    public event WuWuFrameworkAction onDropEvent
     {
         add
         {
@@ -58,7 +58,7 @@ public class BaseGravityObject : BaseBoundObject
         }
     }
 
-    public event GameFrameWorkAction onGroundEvent
+    public event WuWuFrameworkAction onGroundEvent
     {
         add
         {

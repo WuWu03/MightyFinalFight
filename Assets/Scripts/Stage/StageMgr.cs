@@ -1,10 +1,10 @@
 using System;
-using GameFrameWork;
-using GameFrameWork.Audio;
-using GameFrameWork.Event;
-using GameFrameWork.Map;
-using GameFrameWork.Scene;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Audio;
+using WuWuFramework.Event;
+using WuWuFramework.Map;
+using WuWuFramework.Scene;
+using WuWuFramework.Utils;
 using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>

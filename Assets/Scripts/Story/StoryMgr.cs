@@ -1,11 +1,11 @@
-using GameFrameWork;
+using WuWuFramework;
 using System;
 using System.Collections.Generic;
-using GameFrameWork.Event;
+using WuWuFramework.Event;
 
 public class StoryMgr : BaseMgr<StoryMgr>
 {
-    public event GameFrameWorkAction onPlayCompleteEvent
+    public event WuWuFrameworkAction onPlayCompleteEvent
     {
         add
         {
@@ -122,5 +122,5 @@ public class StoryMgr : BaseMgr<StoryMgr>
     private bool m_IsPlaying = false;
     private Dictionary<int, Type> m_StoryBuilders = null;
     private Dictionary<int, List<BaseClip>> m_Storys = null;
-    private event GameFrameWorkAction m_OnPlayCompleteEvent = null;
+    private event WuWuFrameworkAction m_OnPlayCompleteEvent = null;
 }

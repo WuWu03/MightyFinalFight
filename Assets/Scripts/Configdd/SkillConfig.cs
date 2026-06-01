@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using GameFrameWork.Serialize;
+using WuWuFramework.Serialize;
 
 public class SkillConfig : BaseScriptableObject<SkillConfigData>
 {
@@ -119,7 +119,7 @@ public class SkillConfigData : BaseScriptableConfigData
     [Serializable]
     public class SkillKey
     {
-        public GameFrameWork.Input.KeyType[] Keys;
+        public WuWuFramework.Input.KeyType[] Keys;
         public bool AddTrigger;
     }
 

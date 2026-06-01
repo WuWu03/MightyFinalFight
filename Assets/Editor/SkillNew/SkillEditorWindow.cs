@@ -1,4 +1,4 @@
-using GameFrameWork.Utils;
+using WuWuFramework.Utils;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -56,7 +56,7 @@ namespace SkillNew
 
         private void MainGUI()
         {
-            GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+            WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
             {
                 EditorGUILayout.BeginVertical();
                 m_AddType = EditorGUILayout.TextField("技能类别", m_AddType);
@@ -83,7 +83,7 @@ namespace SkillNew
             {
                 EditorGUILayout.Space(10f);
 
-                GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     int selectIndex = EditorGUILayout.Popup("选择处理项", SkillEditorHelper.currSelectIndex, SkillEditorHelper.showNames);
 
@@ -95,7 +95,7 @@ namespace SkillNew
                     }
                 });
 
-                GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     DrawField(() => { return m_CurrType != SkillEditorHelper.currShowType; },
                         () => { m_CurrType = EditorGUILayout.TextField("类别", m_CurrType); },
@@ -107,7 +107,7 @@ namespace SkillNew
                         }, 20);
                 });
 
-                GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     DrawField(() => { return m_CurrName != SkillEditorHelper.currShowName; },
                         () => { m_CurrName = EditorGUILayout.TextField("名称", m_CurrName); },
@@ -119,7 +119,7 @@ namespace SkillNew
                         }, 20);
                 });
 
-                GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     DrawField(() => { return m_CurrId != SkillEditorHelper.CurrConfigData.id; },
                         () => { m_CurrId = EditorGUILayout.IntField("Id", m_CurrId); },

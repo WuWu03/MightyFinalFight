@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using GameFrameWork;
+using WuWuFramework;
 using UnityEngine;
 
 public class BaseHero : BaseRole

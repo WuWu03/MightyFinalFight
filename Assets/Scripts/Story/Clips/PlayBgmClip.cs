@@ -1,5 +1,5 @@
-using GameFrameWork;
-using GameFrameWork.Utils;
+using WuWuFramework;
+using WuWuFramework.Utils;
 
 public class PlayBgmClip : BaseClip
 {

@@ -1,14 +1,14 @@
 /*
  * @Desc: Talk 模块 TalkView 视图展示器
  * @Date: 2023-11-29 09:28:43
- * @Author: GQY
+ * @Author: WuWu
  */
 
 using DG.Tweening;
-using GameFrameWork;
-using GameFrameWork.ConfigData;
-using GameFrameWork.Input;
-using GameFrameWork.UI;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
+using WuWuFramework.Input;
+using WuWuFramework.UI;
 using UnityEngine;
 
 public class TalkViewPresenter : UIBaseViewPresenter<TalkView>

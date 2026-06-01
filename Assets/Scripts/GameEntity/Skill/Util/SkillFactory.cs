@@ -1,4 +1,4 @@
-using GameFrameWork;
+using WuWuFramework;
 using static SkillConfigData;
 
 public class SkillFactory

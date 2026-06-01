@@ -143,7 +143,7 @@ namespace SkillNew
 
             if (eventCondition)
             {
-                GameFrameWork.Editor.EditorUtil.GUIBoxScope(() =>
+                WuWuFramework.Editor.EditorUtil.GUIBoxScope(() =>
                 {
                     EditorGUILayout.BeginVertical();
                     DrawField(() => { return tweenInfo.duration != eventTweenInfo.duration; },

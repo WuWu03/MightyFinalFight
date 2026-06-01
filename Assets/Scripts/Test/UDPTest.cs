@@ -1,5 +1,5 @@
 using client;
-using GameFrameWork.Net;
+using WuWuFramework.Net;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

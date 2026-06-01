@@ -1,6 +1,6 @@
 using System;
-using GameFrameWork;
-using GameFrameWork.UI;
+using WuWuFramework;
+using WuWuFramework.UI;
 
 public class UIShowHideClip : BaseClip
 {
@@ -29,11 +29,11 @@ public class UIShowHideClip : BaseClip
     {
         if (m_IsActive) 
         {
-            GameFrameWorkMgr.GetModule<IUIMgr>().Get(m_UIType).Show();
+            GameEntry.uiMgr.Get(m_UIType).Show();
         }
         else
         {
-            GameFrameWorkMgr.GetModule<IUIMgr>().Get(m_UIType).Hide();
+            GameEntry.uiMgr.Get(m_UIType).Hide();
         }
 
         Complete();
