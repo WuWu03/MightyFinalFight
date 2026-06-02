@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WuWuFrameworkConfig
   m_EditorClassIdentifier: 
   isCheckVersion: 0
-  isLoadFromAssetBundle: 1
+  isLoadFromAssetBundle: 0
   isOpenLog: 1
   uiPrefabsPath: ArtResources/UI/Prefabs/
   uiSpritesPath: ArtResources/UI/Sprites/

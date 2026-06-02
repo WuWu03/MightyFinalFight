@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WuWuFramework.Event
 {
@@ -93,7 +94,6 @@ namespace WuWuFramework.Event
 
             if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
-                Log.LogError("事件 [", eventType.Name, "] 不存在");
                 return;
             }
 
@@ -112,9 +112,9 @@ namespace WuWuFramework.Event
         {
             if (!m_EventHandlers.TryGetValue(eventType, out List<object> eventList))
             {
-                Log.LogError("事件 [", eventType.Name, "] 不存在");
                 return;
             }
+
             m_EventHandlers.Remove(eventType);
         }
 

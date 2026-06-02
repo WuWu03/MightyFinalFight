@@ -13,13 +13,14 @@ namespace WuWuFramework.UI
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
         private string m_AssetPath;
         private bool m_IsOpen;
+        private bool m_IsLoaded;
         private bool m_IsShow;
         private float m_DelayTime;
         private object m_Arg;
         private bool m_IsLoading;
         private P m_Presenter;
         private S m_Settings;
-        
+
         public UIBaseView()
         {
             m_Presenter = new P();
@@ -109,9 +110,10 @@ namespace WuWuFramework.UI
                 m_Arg = arg;
             }
 
-            if (m_IsOpen)
+            if (m_IsLoaded)
             {
                 Show();
+                m_IsOpen = true;
                 return;
             }
 
@@ -171,6 +173,7 @@ namespace WuWuFramework.UI
             m_Presenter.Destroy();
             m_IsOpen = false;
             m_IsShow = false;
+            m_IsLoaded = false;
             m_DelayTime = 0f;
             m_AssetPath = string.Empty;
             m_Settings = null;
@@ -183,6 +186,7 @@ namespace WuWuFramework.UI
             m_GameObject = uiGameObject as GameObject;
             m_AssetPath = assetPath;
             m_IsOpen = true;
+            m_IsLoaded = true;
             m_IsLoading = false;
 
             if (m_GameObject is not null)

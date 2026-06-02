@@ -13,7 +13,7 @@ using WuWuFramework.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainPresenter : UIBaseViewPresenter<MainView>
+public class MainViewPresenter : UIBaseViewPresenter<MainView>
 {
     protected override void OnOpen(object arg)
     {
@@ -27,7 +27,7 @@ public class MainPresenter : UIBaseViewPresenter<MainView>
         SetRound(StageMgr.instance.CurrStageData.StageIndex);
         SetPlayerLife(PlayerMgr.instance.life);
         SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
-        GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStartEvent);
+        GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStartEvent).UnSubscribeAllOnDisable(view.gameObject);
         SetColor();
     }
 

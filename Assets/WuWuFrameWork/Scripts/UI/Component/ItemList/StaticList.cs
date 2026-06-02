@@ -51,14 +51,14 @@ namespace WuWuFramework.UI
             m_IsInit = true;
         }
 
-        public void SetItemCount(int count)
+        public void SetItemCount(int count, bool isForceRebuildLayout = false)
         {
             if (!m_IsInit)
             {
                 throw new WuWuFrameworkException("未初始化，必须先调用Init方法进行初始化");
             }
 
-            if (m_CurrCount != count)
+            if (m_CurrCount != count || isForceRebuildLayout)
             {
                 SetLayoutEnabled(true);
             }
@@ -83,7 +83,7 @@ namespace WuWuFramework.UI
                 m_ListItem[i].SetActive(false);
             }
 
-            if (m_CurrCount != count)
+            if (m_CurrCount != count || isForceRebuildLayout)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(m_RectTransform);
                 SetLayoutEnabled(false);

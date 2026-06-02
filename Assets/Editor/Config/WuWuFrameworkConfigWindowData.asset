@@ -20,7 +20,7 @@ MonoBehaviour:
   entryScene: Assets/Scenes/Main.unity
   languageKeyFilePath: Assets/Editor/Config/LanguageKeys.txt
   m_IsCheckVersion: 0
-  m_IsLoadFromAssetBundle: 1
+  m_IsLoadFromAssetBundle: 0
   m_IsOpenLog: 1
   m_UIPath: Assets/ArtResources/UI/
   m_UIPrefabsPath: Assets/ArtResources/UI/Prefabs/

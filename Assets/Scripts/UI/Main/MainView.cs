@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WuWuFramework.UI;
 
-public class MainView : UIBaseView<MainView, MainPresenter, MainViewSettings>
+public class MainView : UIBaseView<MainView, MainViewPresenter, MainViewSettings>
 {
     //player/playerHpBar,Slider
     public Slider playerHpBar { get; private set; }

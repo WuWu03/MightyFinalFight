@@ -16,6 +16,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
     private bool m_IsComplete;
     private int m_SelectIndex = -1;
     private TalkConfigData m_ConfigData;
+
     protected override void OnOpen(object arg)
     {
         view.talkSelectList.itemUpdateEvent += OnItemUpdateEvent;
@@ -37,7 +38,8 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
         {
             if (!m_IsComplete)
             {
-                view.txtContent.DOComplete();
+                view.txtContent.DOKill();
+                OnTalkAnimComplete();
             }
             else
             {
@@ -105,30 +107,33 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
             return;
         }
 
+        m_IsComplete = false;
         string content = GameEntry.localizationMgr.GetLanguageText(m_ConfigData.content);
         view.txtContent.text = string.Empty;
-        view.txtContent.DOText(content, m_ConfigData.content.Length * 0.05f).OnComplete(() =>
+        view.txtContent.DOText(content, m_ConfigData.content.Length * 0.05f).OnComplete(OnTalkAnimComplete);
+    }
+
+    private void OnTalkAnimComplete()
+    {
+        m_IsComplete = true;
+        view.languageContent.SetLanguageTextKey(m_ConfigData.content);
+
+        if (m_ConfigData.talkSelect is { Length: > 0 })
         {
-            m_IsComplete = true;
-            view.languageContent.SetLanguageTextKey(m_ConfigData.content);
+            view.talkSelectList.SetActiveSelf(true);
+            view.talkSelectList.SetItemCount(m_ConfigData.talkSelect.Length, true);
+            view.talkSelectList.SelectItem(0);
+        }
+        else
+        {
+            view.talkSelectList.SetActiveSelf(false);
 
-            if (m_ConfigData.talkSelect is { Length: > 0 })
+            if (m_ConfigData.nextTalkId == 0)
             {
-                view.talkSelectList.SetActiveSelf(true);
-                view.talkSelectList.SetItemCount(m_ConfigData.talkSelect.Length);
-                view.talkSelectList.SelectItem(0);
+                GameEntry.eventMgr.Dispatch(this, new TalkEndEvent());
+                CloseSelf();
             }
-            else
-            {
-                view.talkSelectList.SetActiveSelf(false);
-
-                if (m_ConfigData.nextTalkId == 0)
-                {
-                    GameEntry.eventMgr.Dispatch(this, new TalkEndEvent());
-                    CloseSelf();
-                }
-            }
-        });
+        }
     }
 
     private void OnItemUpdateEvent(BaseListItem item)

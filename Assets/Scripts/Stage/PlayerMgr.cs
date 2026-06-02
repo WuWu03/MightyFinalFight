@@ -209,7 +209,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     public void AddExp(int value)
     {
         m_Exp += value;
-        MainPresenter mainView = GameEntry.uiMgr.Get<MainView>().presenter;
+        MainViewPresenter mainView = GameEntry.uiMgr.Get<MainView>().presenter;
 
         if (m_Exp >= m_LevelConfigData.exp)
         {

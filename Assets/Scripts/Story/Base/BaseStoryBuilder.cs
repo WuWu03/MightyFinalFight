@@ -3,6 +3,7 @@ using WuWuFramework;
 using UnityEngine;
 using System;
 using WuWuFramework.Event;
+using WuWuFramework.UI;
 
 public abstract class BaseStoryBuilder : IStoryBuilder
 {
@@ -86,13 +87,18 @@ public abstract class BaseStoryBuilder : IStoryBuilder
         StoryMgr.instance.AddClip(track, clip);
     }
 
+    public void UIShowHide<T>(int track, bool isActive) where T : IUIView
+    {
+        UIShowHide(track, typeof(T), isActive);
+    }
+
     public void UIShowHide(int track, Type uiType, bool isActive)
     {
         UIShowHideClip clip = UIShowHideClip.Create(uiType, isActive);
         StoryMgr.instance.AddClip(track, clip);
     }
 
-    public void PauseEnemy(int track,int entityId) 
+    public void PauseEnemy(int track, int entityId)
     {
         RolePauseClip clip = RolePauseClip.Create(entityId);
         StoryMgr.instance.AddClip(track, clip);
@@ -104,13 +110,13 @@ public abstract class BaseStoryBuilder : IStoryBuilder
         StoryMgr.instance.AddClip(track, clip);
     }
 
-    public void Callback(int track, WuWuFrameworkAction action) 
+    public void Callback(int track, WuWuFrameworkAction action)
     {
         CallbackClip clip = CallbackClip.Create(action);
         StoryMgr.instance.AddClip(track, clip);
     }
 
-    public void Talk(int track, int talkId) 
+    public void Talk(int track, int talkId)
     {
         TalkClip clip = TalkClip.Create(talkId);
         StoryMgr.instance.AddClip(track, clip);

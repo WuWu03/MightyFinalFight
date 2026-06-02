@@ -1,6 +1,6 @@
 /*
- * @Desc: Stage 模块 StageView 界面组件
- * @Date: 2025-10-11 12:19:46
+ * @Desc: Stage 模块 StageView 视图设置
+ * @Date: 2026-06-02 23:34:03
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
