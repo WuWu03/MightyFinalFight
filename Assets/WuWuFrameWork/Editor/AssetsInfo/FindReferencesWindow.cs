@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,8 +7,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Profiling;
 using WuWuFramework.Event;
-using UnityObject = UnityEngine.Object;
 using UnityColor = UnityEngine.Color;
+using UnityObject = UnityEngine.Object;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -26,6 +27,7 @@ namespace WuWuFramework.Editor
 
         private static string m_FindPath = string.Empty;
         private Dictionary<string, List<string>> m_References;
+        private Dictionary<string, UnityObject> m_Objects = new();
         private WuWuFrameworkFunc<ThreadData, Dictionary<string, List<string>>>[] m_ThreadFuncs;
         private IAsyncResult[] m_ThreadFuncResults;
         private bool m_IsInit = false;
@@ -34,8 +36,9 @@ namespace WuWuFramework.Editor
         private List<bool> m_UsedHasShow = new();
         private Vector2 m_ScrollPos;
         private const int ThreadCount = 4;
+        private string m_UISpritesPath = string.Empty;
 
-        public static void FindThread(string path, bool outExcel = false)
+        public static void FindReferences(string path)
         {
             m_FindPath = path;
             FindReferencesWindow window = GetWindow<FindReferencesWindow>();
@@ -44,6 +47,7 @@ namespace WuWuFramework.Editor
 
         private void OnEnable()
         {
+            m_UISpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
             minSize = new Vector2(1100, 600);
             InitFindData();
         }
@@ -58,6 +62,7 @@ namespace WuWuFramework.Editor
             m_References ??= new Dictionary<string, List<string>>();
             m_References.Clear();
             m_UsedHasShow.Clear();
+            m_Objects.Clear();
             m_IsInit = false;
             EditorSettings.serializationMode = SerializationMode.ForceText;
             AssetDatabase.Refresh();
@@ -72,11 +77,11 @@ namespace WuWuFramework.Editor
 
             if (Directory.Exists(m_FindPath))
             {
-                string[] allFiles = WuWuFramework.Utils.FileUtil.GetFiles(m_FindPath);
+                string[] allFiles = WuWuFileUtil.GetFiles(m_FindPath, "*", SearchOption.AllDirectories);
 
                 foreach (string file in allFiles)
                 {
-                    string assetPath = WuWuFramework.Utils.PathUtil.GetAssetPath(file);
+                    string assetPath = WuWuPathUtil.GetAssetPath(file);
                     assetsNames.Add(assetPath);
                     assetsGuids.Add(AssetDatabase.AssetPathToGUID(assetPath));
                 }
@@ -98,9 +103,9 @@ namespace WuWuFramework.Editor
                 };
             }
 
-            string assetsFullPath = WuWuFramework.Utils.PathUtil.GetAssetFullPath("ArtResources");
+            string assetsPath = EditorMgr.GetWuWuFrameworkConfig().assetsPath;
             string[] withoutExtensions = new string[] { ".prefab", ".unity", ".mat", ".asset" };
-            string[] findFiles = WuWuFramework.Utils.FileUtil.GetFiles(assetsFullPath, "*", SearchOption.AllDirectories).Where(s => withoutExtensions.Contains(Path.GetExtension(s).ToLower())).ToArray();
+            string[] findFiles = WuWuFileUtil.GetFiles(assetsPath, "*", SearchOption.AllDirectories).Where(s => withoutExtensions.Contains(Path.GetExtension(s).ToLower())).ToArray();
 
             for (int i = 0; i < findFiles.Length; i++)//添加要查找的资源文件
             {
@@ -108,7 +113,7 @@ namespace WuWuFramework.Editor
                 threadData[index].checkAssets.Add(findFiles[i]);
             }
 
-            string[] cshaprFiles = WuWuFramework.Utils.FileUtil.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories).Where(s => !s.ToLower().Contains("/editor/")).ToArray();
+            string[] cshaprFiles = WuWuFileUtil.GetFiles(WuWuPathUtil.AppDataPath, "*.cs", SearchOption.AllDirectories).Where(s => !s.ToLower().Contains("/editor/")).ToArray();
 
             for (int i = 0; i < cshaprFiles.Length; i++)//添加要查找的CS文件
             {
@@ -247,26 +252,30 @@ namespace WuWuFramework.Editor
                     {
                         EditorGUILayout.BeginHorizontal();
                         var assetPath = AssetDatabase.GUIDToAssetPath(item.Key);
-                        UnityObject assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityObject));
+
+                        if (!m_Objects.TryGetValue(assetPath, out UnityObject assetObj))
+                        {
+                            assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityObject));
+                            m_Objects.Add(assetPath, assetObj);
+                        }
+
+                        UnityColor oriColor = GUI.color;
+
+                        if (assetPath.Contains(m_UISpritesPath) && ValidateImage(assetObj))
+                        {
+                            GUI.color = UnityColor.red;
+                        }
+
+                        GUI.color = oriColor;
                         GUILayout.Label(assetPath, GUILayout.Width(600));
                         EditorGUILayout.ObjectField("", assetObj, typeof(UnityObject), true);
                         EditorGUILayout.LabelField("内存占用：" + EditorUtility.FormatBytes(Profiler.GetRuntimeMemorySizeLong(assetObj)));
-
-                        if (ValidateImage(assetPath))
-                        {
-                            GUIStyle fontStyle = new GUIStyle();
-                            fontStyle.normal.textColor = new UnityColor(1, 0, 0);   //设置字体颜色  
-                            fontStyle.fixedWidth = 100;
-                            GUILayout.Label("bigImage", fontStyle);
-                        }
-
                         EditorGUILayout.EndHorizontal();
 
                     }
                 }
                 EditorGUILayout.EndVertical();
             }
-
 
             EditorGUILayout.BeginHorizontal();
             m_ShowUsed = GUILayout.Toggle(m_ShowUsed, string.Empty, GUILayout.Width(20));
@@ -285,21 +294,26 @@ namespace WuWuFramework.Editor
                             m_UsedHasShow.Add(true);
                         }
                         var assetPath = AssetDatabase.GUIDToAssetPath(item.Key);
-                        UnityObject assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityObject));
+                        if (!m_Objects.TryGetValue(assetPath, out UnityObject assetObj))
+                        {
+                            assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityObject));
+                            m_Objects.Add(assetPath, assetObj);
+                        }
 
                         //有引用的资源
                         EditorGUILayout.BeginHorizontal();
                         m_UsedHasShow[index] = GUILayout.Toggle(m_UsedHasShow[index], string.Empty, GUILayout.Width(20));
+                        UnityColor oriColor = GUI.color;
+
+                        if (assetPath.Contains(m_UISpritesPath) && ValidateImage(assetObj))
+                        {
+                            GUI.color = UnityColor.red;
+                        }
+
                         GUILayout.Label(assetPath, GUILayout.Width(600));
+                        GUI.color = oriColor;
                         EditorGUILayout.ObjectField("", assetObj, typeof(UnityObject), true, GUILayout.Width(300));
                         GUILayout.Label("内存占用：" + EditorUtility.FormatBytes(Profiler.GetRuntimeMemorySizeLong(assetObj)), GUILayout.Width(100));
-                        if (ValidateImage(assetPath))
-                        {
-                            GUIStyle fontStyle = new GUIStyle();
-                            fontStyle.normal.textColor = new UnityColor(1, 0, 0);   //设置字体颜色  
-                            fontStyle.fixedWidth = 100;
-                            GUILayout.Label("bigImage", fontStyle);
-                        }
                         EditorGUILayout.EndHorizontal();
 
                         if (m_UsedHasShow[index])
@@ -324,24 +338,19 @@ namespace WuWuFramework.Editor
             EditorGUILayout.EndScrollView();
         }
 
-        private bool ValidateImage(string assetPath)
+        private bool ValidateImage(UnityObject assetObj)
         {
-            string uiSpritesPath = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
+            string uiSpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
 
-            if (assetPath.Contains(uiSpritesPath))
+            if (assetObj is UnityEngine.Texture2D assetTexture)
             {
-                if (!AssetDatabase.AssetPathExists(assetPath) || string.IsNullOrEmpty(Path.GetExtension(assetPath)))
-                {
-                    return false;
-                }
-
-                using FileStream fileStream = new(assetPath, FileMode.Open, FileAccess.Read);
-                using Image image = Image.FromStream(fileStream);
-                return image.Width > 256 || image.Height > 256;
+                return assetTexture.width > 256 || assetTexture.height > 256;
             }
 
             return false;
         }
+
+
 
         static private void OutputToExcel()
         {

@@ -2,6 +2,8 @@ using WuWuFramework.Utils;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
+
 namespace WuWuFramework.Editor
 {
     public class WuWuFrameworkConfigWindowData : ScriptableObject
@@ -83,7 +85,7 @@ namespace WuWuFramework.Editor
                 SaveWuWuFrameworkConfig(this);
             }
         }
-        
+
         public string configDataPath
         {
             get
@@ -136,6 +138,7 @@ namespace WuWuFramework.Editor
             }
         }
 
+        [SerializeField] public string assetsPath = string.Empty;
         [SerializeField] public string buildPath = string.Empty;
         [SerializeField] public string uiScenesPath = string.Empty;
         [SerializeField] public string uiAtlasPath = string.Empty;
@@ -147,9 +150,7 @@ namespace WuWuFramework.Editor
         {
             string configPath = PathUtil.FormatPath(EditorPathUtil.EditorResourcesPath, PathUtil.WuWuFrameworkConfigDataName);
             string configFullPath = PathUtil.FormatPath(EditorPathUtil.EditorResourcesFullPath, PathUtil.WuWuFrameworkConfigDataName);
-
-            Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorResourcesFullPath);
-
+            WuWuFileUtil.VerifyDirectory(EditorPathUtil.EditorResourcesFullPath);
             WuWuFrameworkConfig config = null;
 
             if (!File.Exists(configFullPath))
@@ -172,7 +173,6 @@ namespace WuWuFramework.Editor
             config.configDataPath = EditorPathUtil.GetPathWithoutAssets(windowData.configDataPath);
             config.versionFileName = windowData.versionFileName;
             config.assetMapFileName = windowData.assetMapFileName;
-
             EditorUtility.SetDirty(config);
         }
 

@@ -1,13 +1,13 @@
-using WuWuFramework.Utils;
 using System.Collections.Generic;
 using System.IO;
-using WuWuFramework.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using WuWuFramework.UI;
 using UnityObject = UnityEngine.Object;
+using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -78,7 +78,7 @@ namespace WuWuFramework.Editor
                 return false;
             }
 
-            string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
+            string uiPath = WuWuPathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
 
             if (File.Exists(uiPath))
             {
@@ -107,7 +107,7 @@ namespace WuWuFramework.Editor
         public static void NewUIScene(string uiName)
         {
             WuWuFrameworkConfigWindowData config = EditorMgr.GetWuWuFrameworkConfig();
-            string uiPath = PathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
+            string uiPath = WuWuPathUtil.FormatPath(config.uiScenesPath, uiName + ".unity");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
             UnityObject root = UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<UnityObject>(EditorPathUtil.EditorUIRootScenePath));
             root.name = "UIRoot";
@@ -474,7 +474,7 @@ namespace WuWuFramework.Editor
                 }
             }
 
-            string path = PathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPrefabsPath, s_UIRefSetting.viewName, ".prefab");
+            string path = WuWuPathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPrefabsPath, s_UIRefSetting.viewName, ".prefab");
 
             if (File.Exists(path))
             {

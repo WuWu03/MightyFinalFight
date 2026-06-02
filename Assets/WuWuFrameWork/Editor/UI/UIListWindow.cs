@@ -3,18 +3,24 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using FileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
 
 namespace WuWuFramework.Editor
 {
     public class UIListWindow : EditorWindow
     {
+        private bool m_IsCloseWindow = false;
+        private string m_UIName = string.Empty;
+        private int m_DeleteIndex = -1;
+        private Vector2 m_ScrollPos = Vector2.zero;
+        private string[] m_UISceneFiles = null;
+
         private void OnEnable()
         {
             m_IsCloseWindow = false;
             m_DeleteIndex = -1;
             string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPath, EditorPathUtil.UIScenesPath);
-            m_UISceneFiles = WuWuFramework.Utils.FileUtil.GetFiles(uiScenesPath, "*.unity");
+            m_UISceneFiles = WuWuFileUtil.GetFiles(uiScenesPath, "*.unity");
         }
 
         private void OnDisable()
@@ -26,16 +32,21 @@ namespace WuWuFramework.Editor
 
         private void OnGUI()
         {
-            if (m_IsCloseWindow && UIEditorInit.CanCreateUIScene(m_UIName))
+            if (m_IsCloseWindow)
             {
-                this.Close();
-                UIEditorInit.NewUIScene(m_UIName);
-                return;
+                if (UIEditorInit.CanCreateUIScene(m_UIName))
+                {
+                    this.Close();
+                    UIEditorInit.NewUIScene(m_UIName);
+                    return;
+                }
+
+                m_IsCloseWindow = false;
             }
 
             EditorGUILayout.BeginVertical();
             EditorGUILayout.BeginHorizontal();
-            EditorUtil.GUIBoxScope(() => 
+            EditorUtil.GUIBoxScope(() =>
             {
                 string uiName = EditorGUILayout.TextField("名称", m_UIName);
                 if (string.IsNullOrEmpty(uiName))
@@ -86,24 +97,18 @@ namespace WuWuFramework.Editor
                 EditorGUILayout.EndHorizontal();
             }
 
-            if (m_DeleteIndex > -1) 
+            if (m_DeleteIndex > -1)
             {
                 string filePath = m_UISceneFiles[m_DeleteIndex];
-                FileUtil.DeleteFile(filePath);
+                WuWuFileUtil.DeleteFile(filePath);
                 AssetDatabase.Refresh();
                 string uiScenesPath = PathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPath, EditorPathUtil.UIScenesPath);
-                m_UISceneFiles = WuWuFramework.Utils.FileUtil.GetFiles(uiScenesPath, "*.unity");
+                m_UISceneFiles = WuWuFileUtil.GetFiles(uiScenesPath, "*.unity");
                 m_DeleteIndex = -1;
             }
 
             EditorGUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
-
-        private bool m_IsCloseWindow = false;
-        private string m_UIName = string.Empty;
-        private int m_DeleteIndex = -1;
-        private Vector2 m_ScrollPos = Vector2.zero;
-        private string[] m_UISceneFiles = null;
     }
 }

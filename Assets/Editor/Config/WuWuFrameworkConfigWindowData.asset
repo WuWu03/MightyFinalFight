@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1054cc3b99d464d97e0d5aec841a53, type: 3}
   m_Name: WuWuFrameworkConfigWindowData
   m_EditorClassIdentifier: 
+  assetsPath: Assets/ArtResources/
   buildPath: 
   uiScenesPath: Assets/ArtResources/UI/Scenes/
   uiAtlasPath: Assets/ArtResources/UI/Atlas/

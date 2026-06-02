@@ -43,6 +43,7 @@ namespace WuWuFramework.Editor
         public const string EntryScriptExtend = ".cs";
         public static readonly string EntryScriptFullPath = EditorScriptFullPath + EntryScriptName + EntryScriptExtend;
 
+        public const string DefaultAssetsPath = "ArtResources";
         public const string DefaultUIPath = "UI";
         public const string DefaultUIScriptsPath = "Scripts/UI";
         public const string DefaultConfigDataPath = "ConfigData";

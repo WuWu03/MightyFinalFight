@@ -8,6 +8,7 @@ using UnityEngine.Profiling;
 using WuWuFramework.Event;
 using UnityColor = UnityEngine.Color;
 using UnityObject = UnityEngine.Object;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -42,6 +43,7 @@ namespace WuWuFramework.Editor
         private IAsyncResult[] m_ThreadFuncResults;
         private bool m_IsInit = false;
         private const int ThreadCount = 4;
+        private string m_UISpritesPath;
 
         void OnEnable()
         {
@@ -85,23 +87,26 @@ namespace WuWuFramework.Editor
             m_CurrFolderData.isRoot = true;
             m_ThreadFuncs ??= new WuWuFrameworkFunc<ThreadData, long>[ThreadCount];
             m_ThreadFuncResults ??= new IAsyncResult[ThreadCount];
+            m_UISpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
             m_IsInit = false;
 
-            string assetPath = "Assets/ArtResources";
+            string assetsPath = EditorMgr.GetWuWuFrameworkConfig().assetsPath;
             int indent = 0;
             long dataSize = 0;
-            GUIContent content = GetGUIContent(assetPath);
+            GUIContent content = GetGUIContent(assetsPath);
 
             if (content != null)
             {
                 m_CurrFolderData.indent = indent;
                 m_CurrFolderData.content = content;
-                m_CurrFolderData.assetPath = assetPath;
-                m_CurrFolderData.isIllegalImage = ValidateImage(assetPath);
-                m_CurrFolderData.fileMemorySize = GetFileMemorySize(assetPath);
+                m_CurrFolderData.assetPath = assetsPath;
+                m_CurrFolderData.isIllegalImage = ValidateImage(assetsPath);
+                m_CurrFolderData.fileMemorySize = GetFileMemorySize(assetsPath);
             }
 
-            foreach (string file in WuWuFramework.Utils.FileUtil.GetFiles(assetPath))
+            string[] allFiles = WuWuFileUtil.GetFiles(assetsPath);
+
+            foreach (string file in allFiles)
             {
                 content = GetGUIContent(file);
 
@@ -130,7 +135,9 @@ namespace WuWuFramework.Editor
             }
 
             int assetCount = 0;
-            foreach (string path in Directory.GetDirectories(assetPath))
+            string[] directories = Directory.GetDirectories(assetsPath);
+
+            foreach (string path in directories)
             {
                 int index = assetCount % ThreadCount;
                 FolderData child = new();
@@ -149,8 +156,6 @@ namespace WuWuFramework.Editor
             EditorApplication.update += FindAssets;
             return dataSize;
         }
-
-
 
         private void FindAssets()
         {
@@ -209,7 +214,7 @@ namespace WuWuFramework.Editor
             folderData.indent = indent;
             folderData.assetPath = currentPath;
 
-            foreach (string file in WuWuFramework.Utils.FileUtil.GetFiles(currentPath))
+            foreach (string file in WuWuFileUtil.GetFiles(currentPath))
             {
                 FolderData child = new()
                 {
@@ -221,7 +226,7 @@ namespace WuWuFramework.Editor
                 folderData.children.Add(child);
             }
 
-            foreach (string directory in WuWuFramework.Utils.FileUtil.GetDirectories(currentPath))
+            foreach (string directory in WuWuFileUtil.GetDirectories(currentPath))
             {
                 FolderData child = new();
                 folderData.children.Add(child);
@@ -264,6 +269,9 @@ namespace WuWuFramework.Editor
                 DrawFile(data);
             }
 
+            EditorGUILayout.BeginVertical("Button");
+            EditorGUILayout.EndVertical();
+
             for (int i = 0; i < data.children.Count; i++)
             {
                 FolderData child = data.children[i];
@@ -288,6 +296,12 @@ namespace WuWuFramework.Editor
                         DrawFile(child);
                     }
                 }
+
+                if (i < data.children.Count - 1)
+                {
+                    EditorGUILayout.BeginVertical("Button");
+                    EditorGUILayout.EndVertical();
+                }
             }
         }
 
@@ -299,6 +313,7 @@ namespace WuWuFramework.Editor
             }
 
             EditorGUILayout.BeginHorizontal();
+
             if (!folderData.isCreateContent)
             {
                 folderData.isCreateContent = true;
@@ -339,12 +354,12 @@ namespace WuWuFramework.Editor
 
             if (GUILayout.Button("引用", GUILayout.Width(60)))
             {
-                FindFileReferences(folderData.assetPath);
+                FindFileDependencies(folderData.assetPath);
             }
 
             if (GUILayout.Button("被引用", GUILayout.Width(60)))
             {
-                FindFileUsed(folderData.assetPath);
+                FindFileReferences(folderData.assetPath);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -352,23 +367,16 @@ namespace WuWuFramework.Editor
 
 
         //查找引用了哪些资源
-        private static void FindFileReferences(string assetPath)
+        private static void FindFileDependencies(string assetPath)
         {
-            if (Directory.Exists(assetPath))
-            {
-                FindDependenciesWindow.FindFolderDependencies(assetPath);
-            }
-            else
-            {
-                FindDependenciesWindow.FindAssetDependencies(assetPath);
-            }
+            FindDependenciesWindow.FindDependencies(assetPath);
         }
 
 
         //查找本资源被哪些资源引用
-        private void FindFileUsed(string assetPath)
+        private void FindFileReferences(string assetPath)
         {
-            FindReferencesWindow.FindThread(assetPath);
+            FindReferencesWindow.FindReferences(assetPath);
         }
 
 
@@ -392,9 +400,9 @@ namespace WuWuFramework.Editor
 
         private bool ValidateImage(string assetPath)
         {
-            string uiSpritesPath = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
-
-            if (assetPath.Contains(uiSpritesPath))
+            assetPath = assetPath.TrimEnd('/');
+           
+            if (assetPath.Contains(m_UISpritesPath))
             {
                 if (!AssetDatabase.AssetPathExists(assetPath) || string.IsNullOrEmpty(Path.GetExtension(assetPath)))
                 {
@@ -411,6 +419,7 @@ namespace WuWuFramework.Editor
 
         private GUIContent GetGUIContent(string path)
         {
+            path = path.TrimEnd('/');
             if (AssetDatabase.AssetPathExists(path))
             {
                 return new GUIContent(Path.GetFileName(path), AssetDatabase.GetCachedIcon(path));

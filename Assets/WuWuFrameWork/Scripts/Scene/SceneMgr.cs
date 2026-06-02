@@ -177,8 +177,7 @@ namespace WuWuFramework.Scene
 #if UNITY_EDITOR
                 if (!WuWuFrameworkEntry.config.isLoadFromAssetBundle)
                 {
-                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName),
-                        parameters);
+                    UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(PathUtil.GetAssetPath(sceneName), parameters);
                 }
                 else
 #endif
