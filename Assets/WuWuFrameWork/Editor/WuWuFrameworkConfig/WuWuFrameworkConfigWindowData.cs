@@ -168,7 +168,7 @@ namespace WuWuFramework.Editor
             config.isLoadFromAssetBundle = windowData.isLoadFromAssetBundle;
             config.isOpenLog = windowData.isOpenLog;
             config.uiPrefabsPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiPrefabsPath);
-            config.uiSpritesPath = EditorPathUtil.GetPathWithoutAssets(windowData.m_UISpritesPath);
+            config.uiSpritesPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiSpritesPath);
             config.configDataPath = EditorPathUtil.GetPathWithoutAssets(windowData.configDataPath);
             config.versionFileName = windowData.versionFileName;
             config.assetMapFileName = windowData.assetMapFileName;

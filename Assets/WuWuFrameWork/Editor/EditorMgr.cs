@@ -192,7 +192,7 @@ namespace WuWuFramework.Editor
         [MenuItem("WuWuFramework/资源引用查找 &5", false, 104)]
         public static void AssetsReferenceFinder()
         {
-            EditorWindow window = EditorWindow.GetWindow<AssetsReferencesWindow>();
+            EditorWindow window = EditorWindow.GetWindow<AssetsInfoWindow>();
             window.Show();
         }
 

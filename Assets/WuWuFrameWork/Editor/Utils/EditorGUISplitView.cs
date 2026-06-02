@@ -17,7 +17,13 @@ namespace WuWuFramework.Editor
 			private set;
 		}
 
-		public EditorGUISplitView(Direction splitDirection)
+        private Rect m_AvailableRect;
+        private Direction m_SplitDirection;
+        private float m_SplitNormalizedPosition;
+        private bool m_Resize;
+        private float m_MinHorizontal = 0.2f;
+
+        public EditorGUISplitView(Direction splitDirection)
 		{
 			m_SplitNormalizedPosition = 0.2f;
 			m_SplitDirection = splitDirection;
@@ -104,11 +110,5 @@ namespace WuWuFramework.Editor
 			if (UnityEngine.Event.current.type == EventType.MouseUp)
 				m_Resize = false;
 		}
-
-        private Rect m_AvailableRect;
-        private Direction m_SplitDirection;
-        private float m_SplitNormalizedPosition;
-        private bool m_Resize;
-        private float m_MinHorizontal = 0.2f;
     }
 }

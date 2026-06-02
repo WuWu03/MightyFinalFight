@@ -70,7 +70,7 @@ namespace WuWuFramework.Editor
             {
                 alignment = TextAnchor.MiddleCenter
             };
-
+            
             float width = 30f;
             float height = selectionRect.height;
             float x = selectionRect.x + selectionRect.width - width;

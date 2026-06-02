@@ -68,7 +68,7 @@ namespace WuWuFramework.Utils
             VerifyDirectory(Path.GetDirectoryName(filePath));
             using FileStream fs = new(filePath, FileMode.Create);
 
-            if(data is { Length: > 0 })
+            if (data is { Length: > 0 })
             {
                 fs.Write(data, 0, data.Length);
             }
@@ -218,17 +218,17 @@ namespace WuWuFramework.Utils
         /// <summary>
         /// 遍历目录及其子目录
         /// </summary>
-        public static void Recursive(string path,string searchPattern, List<string> listFiles, List<string> listPaths)
+        public static void Recursive(string path, string searchPattern, List<string> listFiles, List<string> listPaths)
         {
             string[] files = GetFiles(path, searchPattern);
             string[] dirs = GetDirectories(path);
 
-            if(files != null  && files.Length > 0)
+            if (files != null && files.Length > 0)
             {
                 listFiles.AddRange(files);
             }
 
-            if(dirs != null && dirs.Length > 0)
+            if (dirs != null && dirs.Length > 0)
             {
                 listPaths.AddRange(dirs);
 

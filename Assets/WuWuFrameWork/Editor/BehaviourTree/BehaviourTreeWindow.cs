@@ -8,7 +8,7 @@ using WuWuFramework.Serialize;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using FileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -55,7 +55,7 @@ namespace WuWuFramework.Editor
                 return;
             }
 
-            WuWuFramework.Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorConfigFullPath);
+            WuWuFileUtil.VerifyDirectory(EditorPathUtil.EditorConfigFullPath);
 
             if (!File.Exists(EditorPathUtil.BehaviourTreeWindowDataFullPath))
             {
@@ -615,7 +615,7 @@ namespace WuWuFramework.Editor
             string configDataPath = EditorMgr.GetWuWuFrameworkConfig().configDataPath;
             string behaviourTreeDataPath = PathUtil.BehaviourTreeDataPath;
             string dataPath = PathUtil.FormatPath(configDataPath, behaviourTreeDataPath,behaviourTreeWindowData.id.ToString(),".bytes");
-            FileUtil.CreateBinaryFile(dataPath, dataBuffer);
+            WuWuFileUtil.CreateBinaryFile(dataPath, dataBuffer);
         }
         
         private void GenerateData(BehaviourTreeData outData, BehaviourTreeWindowData windowData)
