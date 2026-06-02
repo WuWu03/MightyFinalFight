@@ -152,7 +152,7 @@ namespace WuWuFramework.Editor
 
         private void RefreshPath(string moduleName, string presenterName, string viewName)
         {
-            WuWuFrameworkConfigWindowData windowData = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig();
+            WuWuFrameworkConfigWindowData windowData = EditorMgr.GetWuWuFrameworkConfig();
 
             if (string.IsNullOrEmpty(moduleName))
             {
@@ -171,7 +171,7 @@ namespace WuWuFramework.Editor
 
             m_UIRefSetting.viewPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName, ".cs");
             m_UIRefSetting.settingsPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Settings", ".cs");
-            m_UIRefSetting.presenterPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, presenterName, ".cs");
+            m_UIRefSetting.presenterPath = PathUtil.FormatPath(windowData.uiScriptsPath, moduleName, viewName + "Presenter", ".cs");
         }
     }
 }

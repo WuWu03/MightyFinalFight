@@ -1,6 +1,6 @@
 /*
- * @Desc: Talk 模块 TalkView 界面组件
- * @Date: 2025-11-26 17:08:14
+ * @Desc: Talk 模块 TalkView 视图设置
+ * @Date: 2026-06-02 23:46:55
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */

@@ -211,7 +211,7 @@ namespace WuWuFramework.Editor
             string[] uiTypeNames = EditorUtil.GetAssemblyTypeNames("WuWuFramework.UI.IUIView", false, "UIBaseView");
             for (int i = 0; i < uiTypeNames.Length; i++)
             {
-                sb.AppendFormat("\t\t\ts_UIFactory.Add(typeof({0}), CreatUIView<{0}>);", uiTypeNames[i]);
+                sb.AppendFormat("\t\t\ts_Factories.Add(typeof({0}), CreateUIView<{0}>);", uiTypeNames[i]);
                 sb.AppendLine();
             }
             sb.AppendLine("\t\t}");

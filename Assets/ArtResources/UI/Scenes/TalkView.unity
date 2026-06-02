@@ -1032,7 +1032,7 @@ MonoBehaviour:
   uiLayer: 3
   uiType: 1
   delayDestroyTime: 0
-  presenterPath: Assets/Scripts/UI/Talk/TalkPresenter.cs
+  presenterPath: Assets/Scripts/UI/Talk/TalkViewPresenter.cs
   viewPath: Assets/Scripts/UI/Talk/TalkView.cs
   settingsPath: Assets/Scripts/UI/Talk/TalkViewSettings.cs
 --- !u!4 &1507287115
@@ -1102,9 +1102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 647808736}
+  - {fileID: 0}
   - {fileID: 647808737}
-  - {fileID: 161920223}
+  - {fileID: 0}
 --- !u!114 &1605887881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
   objects:
-  - {fileID: 273504479}
+  - {fileID: 0}
   - {fileID: 1116311660}
 --- !u!1 &1865802014
 GameObject:
