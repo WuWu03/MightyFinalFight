@@ -98,6 +98,7 @@ public class TestInputMgr
             string filePath = PathUtil.FormatPath(configDataPath, configDataName);
             byte[] buffer = resourceMgr.Load<TextAsset>(filePath).bytes;
             jsonStr = System.Text.Encoding.UTF8.GetString(buffer);
+            resourceMgr.Unload(filePath);
         }
 
         m_InputActionAsset = InputActionAsset.FromJson(jsonStr);

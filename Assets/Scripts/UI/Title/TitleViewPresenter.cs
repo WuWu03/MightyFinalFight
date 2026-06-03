@@ -72,7 +72,6 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 
     private void OnInputDeviceChangeEvent()
     {
-        Debug.Log("测试输入状态操了" + GameEntry.inputMgr.inputDeviceType);
         if (GameEntry.inputMgr.inputDeviceType == InputDeviceType.Joystick)
         {
             view.txtStart.Append("(START)");
