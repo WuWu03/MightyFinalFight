@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 
 namespace SRDebugger.Editor
@@ -14,10 +15,10 @@ namespace SRDebugger.Editor
         /// </summary>
         static void SetCompileDefine(string define, bool enabled)
         {
-            foreach (BuildTargetGroup targetGroup in GetAllBuildTargetGroups())
+            foreach (NamedBuildTarget targetGroup in GetAllBuildTargetGroups())
             {
                 // Use hash set to remove duplicates.
-                List<string> defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';').ToList();
+                List<string> defines = PlayerSettings.GetScriptingDefineSymbols(targetGroup).Split(';').ToList();
 
                 bool alreadyExists = false;
 
@@ -38,7 +39,7 @@ namespace SRDebugger.Editor
                     defines.Add(define);
                 }
 
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbols(targetGroup, string.Join(";", defines.ToArray()));
             }
         }
         static void ForceRecompile()
@@ -46,18 +47,18 @@ namespace SRDebugger.Editor
             AssetDatabase.ImportAsset(SRInternalEditorUtil.GetAssetPath("StompyRobot.SRDebugger.asmdef"), ImportAssetOptions.ForceUpdate);
         }
 
-        static IEnumerable<BuildTargetGroup> GetAllBuildTargetGroups()
+        static IEnumerable<NamedBuildTarget> GetAllBuildTargetGroups()
         {
-            Type enumType = typeof(BuildTargetGroup);
+            Type enumType = typeof(NamedBuildTarget);
             string[] names = Enum.GetNames(enumType);
             Array values = Enum.GetValues(enumType);
 
             for (var i = 0; i < names.Length; i++)
             {
                 string name = names[i];
-                BuildTargetGroup value = (BuildTargetGroup)values.GetValue(i);
+                NamedBuildTarget value = (NamedBuildTarget)values.GetValue(i);
 
-                if (value == BuildTargetGroup.Unknown) continue;
+                if (value == NamedBuildTarget.Unknown) continue;
 
                 MemberInfo[] member = enumType.GetMember(name);
                 MemberInfo entry = member.FirstOrDefault(p => p.DeclaringType == enumType);

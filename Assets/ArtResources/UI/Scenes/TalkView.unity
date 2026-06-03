@@ -175,7 +175,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: talkSelect
   m_ComponentName: StaticList
-  m_ComponentFullName: GameFrameWork.UI.StaticList
+  m_ComponentFullName: WuWuFramework.UI.StaticList
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtSelect
   m_ComponentName: LanguageText
-  m_ComponentFullName: GameFrameWork.UI.LanguageText
+  m_ComponentFullName: WuWuFramework.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_UseDefaultName: 0
   m_RefName: languageContent
   m_ComponentName: LanguageText
-  m_ComponentFullName: GameFrameWork.UI.LanguageText
+  m_ComponentFullName: WuWuFramework.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -1102,9 +1102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 0}
+  - {fileID: 647808736}
   - {fileID: 647808737}
-  - {fileID: 0}
+  - {fileID: 161920223}
 --- !u!114 &1605887881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
   objects:
-  - {fileID: 0}
+  - {fileID: 273504479}
   - {fileID: 1116311660}
 --- !u!1 &1865802014
 GameObject:

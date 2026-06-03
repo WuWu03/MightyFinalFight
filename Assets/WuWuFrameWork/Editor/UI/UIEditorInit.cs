@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WuWuFramework.UI;
 using UnityObject = UnityEngine.Object;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
 using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
 
 namespace WuWuFramework.Editor
@@ -486,7 +487,7 @@ namespace WuWuFramework.Editor
 
             GameObject root = GameObject.Find("UIRoot");
             GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
-            Utils.FileUtil.VerifyDirectory(Path.GetDirectoryName(path));
+            WuWuFileUtil.VerifyDirectory(Path.GetDirectoryName(path));
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out bool isSuccess);
 
             if (!isSuccess)

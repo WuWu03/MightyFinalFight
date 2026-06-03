@@ -204,9 +204,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 0}
+  - {fileID: 7847948427997836847}
   - {fileID: 1510415882775948204}
-  - {fileID: 0}
+  - {fileID: 2860523884996589527}
 --- !u!223 &6187158319069513126
 Canvas:
   m_ObjectHideFlags: 0
@@ -755,5 +755,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIRefRoot
   objects:
-  - {fileID: 0}
+  - {fileID: 7722473821638957319}
   - {fileID: 5485437433624530023}
