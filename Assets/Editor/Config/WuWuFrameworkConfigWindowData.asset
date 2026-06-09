@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WuWuFrameworkConfigWindowData
   m_EditorClassIdentifier: 
   assetsPath: Assets/ArtResources/
-  buildPath: 
+  buildPath: "C:/Users/WuWu/Desktop/\u5C24\u5C14\u54C8"
   uiScenesPath: Assets/ArtResources/UI/Scenes/
   uiAtlasPath: Assets/ArtResources/UI/Atlas/
   uiScriptsPath: Assets/Scripts/UI/
