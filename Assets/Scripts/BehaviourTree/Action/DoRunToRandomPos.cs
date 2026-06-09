@@ -23,7 +23,7 @@ public class DoRunToRandomPos : Action
 
         Rect ownerBound = m_Owner.bound;
         Rect playerBound = PlayerMgr.instance.player.bound;
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
         Vector2 playerPos = PlayerMgr.instance.player.pos;
 
         visionRect.xMin = Mathf.Max(visionRect.xMin, playerPos.x - visionRect.width / 3);

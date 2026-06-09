@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MainPanel
+  m_Name: MainView
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -123,5 +123,5 @@ SpriteAtlas:
   - Life5
   - Life4
   m_RenderDataMap: {}
-  m_Tag: MainPanel
+  m_Tag: MainView
   m_IsVariant: 0

@@ -38,7 +38,7 @@ public abstract class BaseTaskTrigger : ITaskTrigger
 
         if (m_TaskData.TriggerStopCamera)
         {
-            CameraMgr.instance.EndFollow(true);
+            CameraMgr.instance.cameraFollow.EndFollow(true);
         }
     }
 

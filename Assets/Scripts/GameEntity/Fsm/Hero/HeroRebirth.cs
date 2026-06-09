@@ -22,12 +22,12 @@ public class HeroRebirth : FsmState
         m_Owner.ResetRigidbody();
         m_Owner.onGroundEvent += OnGround;
         m_Owner.SetDir(1);
-        CameraMgr.instance.EndFollow();
+        CameraMgr.instance.cameraFollow.EndFollow();
         m_Owner.rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         
         if (m_ReBirthPos == Vector2.zero)
         {
-            Rect visionRect = CameraMgr.instance.GetVision();
+            Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
             float rebirthPosX = visionRect.xMin + m_Owner.bound.size.x;
             float rebirthPosY = visionRect.yMax + m_Owner.bound.size.y;
             Debug.Log(rebirthPosX + "," + rebirthPosY + " rebirth position");
@@ -55,7 +55,7 @@ public class HeroRebirth : FsmState
 
     private void OnGround()
     {
-        CameraMgr.instance.StartFollow();
+        CameraMgr.instance.cameraFollow.StartFollow();
     }
 
     private Vector2 m_ReBirthPos = Vector2.zero;

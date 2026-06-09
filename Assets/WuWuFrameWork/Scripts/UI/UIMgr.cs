@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
+using WuWuFramework.Camera;
 
 namespace WuWuFramework.UI
 {
@@ -22,6 +23,7 @@ namespace WuWuFramework.UI
         private readonly RectTransform[] m_UILayers;
         private IUIView m_CurrPopView;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
+        private ICameraMgr m_CameraMgr;
         private bool m_CanPopView;
         private bool m_IsOpenViewsDirty;
 
@@ -35,6 +37,7 @@ namespace WuWuFramework.UI
             GameObject uiRoot = GameObject.Find("UIRoot");
             m_UICanvas = uiRoot.transform.Find("UICanvas").GetOrAddComponent<Canvas>();
             m_UICamera = uiRoot.transform.Find("UICamera").GetOrAddComponent<UnityEngine.Camera>();
+            WuWuFrameworkMgr.GetModule<ICameraMgr>().AddUICamera(m_UICamera);
             m_UILayers = new RectTransform[(int)UILayer.Load + 1];
 
             string[] uiLayerNames = Enum.GetNames(typeof(UILayer));
@@ -162,9 +165,11 @@ namespace WuWuFramework.UI
             m_TempViews.Clear();
         }
 
-        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr)
+        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr, ICameraMgr cameraMgr)
         {
             m_GameObjectPoolMgr = gameObjectPoolMgr;
+            m_CameraMgr = cameraMgr;
+
         }
 
         /// <summary>

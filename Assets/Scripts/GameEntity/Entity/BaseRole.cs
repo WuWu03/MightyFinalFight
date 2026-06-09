@@ -851,7 +851,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
             return;
         }
 
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
 
         if ((transform.localPosition + Vector3.up * 0.6f).y + 0.1f < visionRect.yMin)
         {
@@ -868,7 +868,7 @@ public class BaseRole : BaseAvatar, ICanBeHit
                 {
                     SetPos2(m_DropTrapStateArg.rebirthPos);
                     ChangeState<RoleIdle>();
-                    CameraMgr.instance.StartFollow();
+                    CameraMgr.instance.cameraFollow.StartFollow();
                 }
             }
             else

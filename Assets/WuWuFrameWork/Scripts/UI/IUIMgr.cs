@@ -1,6 +1,7 @@
 using System;
 using WuWuFramework.Pool;
 using UnityEngine;
+using WuWuFramework.Camera;
 
 namespace WuWuFramework.UI
 {
@@ -8,7 +9,7 @@ namespace WuWuFramework.UI
     {
         public Canvas uiCanvas { get; }
         public UnityEngine.Camera uiCamera { get; }
-        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr);
+        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr, ICameraMgr cameraMgr);
         public RectTransform GetLayer(UILayer layer);
         public IUIView Open(string viewName, object arg = null);
         public T Open<T>(object arg = null) where T : class, IUIView, new();

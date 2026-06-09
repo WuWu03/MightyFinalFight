@@ -272,25 +272,25 @@ public class BaseSceneObject : BaseEntity
 
     public bool IsOutVersionX(float posX)
     {
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
         return posX <= visionRect.xMin || posX >= visionRect.xMax;
     }
 
     public bool IsOutVersionXRight(float posX)
     {
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
         return posX >= visionRect.xMax;
     }
 
     public bool IsOutVersionXLeft(float posX)
     {
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
         return posX <= visionRect.xMin;
     }
 
     public bool IsOutVersionY(float posY)
     {
-        Rect visionRect = CameraMgr.instance.GetVision();
+        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
         return posY <= visionRect.yMin || posY >= visionRect.yMax;
     }
 }

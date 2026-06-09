@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using WuWuFramework.Resources;
 using WuWuFramework.Audio;
 using WuWuFramework.BehaviourTree;
+using WuWuFramework.Camera;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Download;
 using WuWuFramework.Event;
@@ -12,6 +12,7 @@ using WuWuFramework.Input;
 using WuWuFramework.Localization;
 using WuWuFramework.Net;
 using WuWuFramework.Pool;
+using WuWuFramework.Resources;
 using WuWuFramework.Scene;
 using WuWuFramework.Timer;
 using WuWuFramework.UI;
@@ -28,30 +29,31 @@ namespace WuWuFramework
         {
             return s_TempPriority--;
         }
-        
-        private static readonly Dictionary<Type,byte> s_ModulePriorities = new()
+
+        private static readonly Dictionary<Type, byte> s_ModulePriorities = new()
         {
-            [typeof(ConfigDataMgr)] = GetPriority(),
-            [typeof(NetMgr)] = GetPriority(),
-            [typeof(EventMgr)] = GetPriority(),
-            [typeof(WebRequestMgr)] = GetPriority(),
-            [typeof(DownloadMgr)] = GetPriority(),
-            [typeof(VersionMgr)] = GetPriority(),
+            [typeof(IConfigDataMgr)] = GetPriority(),
+            [typeof(INetMgr)] = GetPriority(),
+            [typeof(IEventMgr)] = GetPriority(),
+            [typeof(IWebRequestMgr)] = GetPriority(),
+            [typeof(IDownloadMgr)] = GetPriority(),
+            [typeof(IVersionMgr)] = GetPriority(),
             [typeof(IFsmMgr)] = GetPriority(),
-            [typeof(EntityMgr)] = GetPriority(),
-            [typeof(BehaviourTreeMgr)] = GetPriority(),
-            [typeof(UIMgr)] = GetPriority(),
-            [typeof(RedDotMgr)] = GetPriority(),
-            [typeof(InputMgr)] = GetPriority(),
-            [typeof(SoundMgr)] = GetPriority(),
-            [typeof(SceneMgr)] = GetPriority(),
-            [typeof(TimerMgr)] = GetPriority(),
-            [typeof(GameObjectPoolMgr)] = GetPriority(),
-            [typeof(ResourcePoolMgr)] = GetPriority(),
-            [typeof(LocalizationMgr)] = GetPriority(),
-            [typeof(ResourcesMgr)] = GetPriority(),
+            [typeof(IEntityMgr)] = GetPriority(),
+            [typeof(IBehaviourTreeMgr)] = GetPriority(),
+            [typeof(IUIMgr)] = GetPriority(),
+            [typeof(IRedDotMgr)] = GetPriority(),
+            [typeof(IInputMgr)] = GetPriority(),
+            [typeof(ISoundMgr)] = GetPriority(),
+            [typeof(ISceneMgr)] = GetPriority(),
+            [typeof(ITimerMgr)] = GetPriority(),
+            [typeof(IGameObjectPoolMgr)] = GetPriority(),
+            [typeof(IResourcePoolMgr)] = GetPriority(),
+            [typeof(ILocalizationMgr)] = GetPriority(),
+            [typeof(IResourcesMgr)] = GetPriority(),
+            [typeof(ICameraMgr)] = GetPriority(),
         };
-        
+
         /// <summary>
         /// 优先级
         /// </summary>
@@ -63,31 +65,31 @@ namespace WuWuFramework
                 {
                     return m_Priority;
                 }
-                
+
                 if (s_ModulePriorities.TryGetValue(this.GetType(), out byte tempPriority))
                 {
                     m_Priority = tempPriority;
                 }
-                
+
                 return m_Priority;
             }
         }
 
         public virtual void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            
+
         }
 
         public virtual void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            
+
         }
 
         public virtual void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
         {
 
         }
-        
+
         /// <summary>
         /// 关闭模块
         /// </summary>

@@ -21,7 +21,7 @@ public class DoRunToBorder : Action
     protected override void OnEnter()
     {
         m_State = BehaviourTreeState.Running;
-        Rect vision = CameraMgr.instance.GetVision();
+        Rect vision = CameraMgr.instance.cameraFollow.GetVision();
         Vector2 pos = m_Owner.pos;
 
         float leftDistance = Mathf.Abs(pos.x - vision.xMin);

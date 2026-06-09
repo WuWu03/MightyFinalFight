@@ -18,6 +18,7 @@ using WuWuFramework.Version;
 using WuWuFramework.WebRequest;
 using System;
 using UnityEngine;
+using WuWuFramework.Camera;
 
 public class GameEntry : WuWuFrameworkEntry
 {
@@ -39,6 +40,7 @@ public class GameEntry : WuWuFrameworkEntry
     private static ISceneMgr s_SceneMgr;
     private static ITimerMgr s_TimerMgr;
     private static IConfigDataMgr s_ConfigDataMgr;
+    private static ICameraMgr s_CameraMgr;
 
     public static ILocalizationMgr localizationMgr
     {
@@ -102,7 +104,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_UIMgr == null)
             {
                 s_UIMgr = WuWuFrameworkMgr.GetModule<IUIMgr>();
-                s_UIMgr.SetMgr(gameObjectPoolMgr);
+                s_UIMgr.SetMgr(gameObjectPoolMgr, cameraMgr);
             }
 
             return s_UIMgr;
@@ -237,6 +239,15 @@ public class GameEntry : WuWuFrameworkEntry
         }
     }
 
+    public static ICameraMgr cameraMgr
+    {
+        get
+        {
+            s_CameraMgr ??= WuWuFrameworkMgr.GetModule<ICameraMgr>();
+            return s_CameraMgr;
+        }
+    }
+
     protected override void OnInit(GameObject manager)
     {
         s_GameEntry = gameObject.transform;
@@ -288,10 +299,7 @@ public class GameEntry : WuWuFrameworkEntry
     {
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
-        CameraMgr.instance.AddOrthographicCamera(CameraName.MainCamera, CameraDepth.MainCamera, CameraTag.MainCamera, 1.0f, LayerName.Map);
-        CameraMgr.instance.AddOrthographicCamera(CameraName.RoleCamera, CameraDepth.RoleCamera, CameraTag.Untagged, 1.0f, LayerName.Unit, LayerName.Bullet);
-        CameraMgr.instance.AllowAxisFollow(true, false);
-        CameraMgr.instance.SetFollowMode(CameraFollow.FollowMode.Just);
+        CameraMgr.instance.Init();
         uiMgr.Close<VersionView>();
         gameObjectPoolMgr.CheckRelease();
         resourcePoolMgr.CheckRelease();

@@ -14,7 +14,7 @@ using TMPro;
 public class HudViewPresenter : UIBaseViewPresenter<HudView>
 {
     private const string DamageText = "DamageText";
-    
+
     protected override void OnOpen(object arg)
     {
         GameEntry.gameObjectPoolMgr.AddPool(DamageText, view.txtDamageGo);
@@ -22,9 +22,9 @@ public class HudViewPresenter : UIBaseViewPresenter<HudView>
 
     protected override void OnShow(object arg)
     {
-        
+
     }
-    
+
     protected override void OnUpdate()
     {
         if (HudMgr.instance.hudArgs.Count > 0)
@@ -35,7 +35,7 @@ public class HudViewPresenter : UIBaseViewPresenter<HudView>
 
     protected override void OnHide()
     {
-        
+
     }
 
     protected override void OnClose()
@@ -60,10 +60,10 @@ public class HudViewPresenter : UIBaseViewPresenter<HudView>
         text.DOFade(1, 0);
         text.transform.localScale = Vector3.one * 2f;
         text.transform.DOScale(1f, 0.3f).SetEase(Ease.InOutBack);
-        text.color = damageType == HudMgr.DamageType.Player ? 
+        text.color = damageType == HudMgr.DamageType.Player ?
             Color.white : // 绿色为玩家伤害
             Color.red; //红色为敌人伤害
-        Vector3 screenPos = CameraMgr.instance.WorldPosToScreenPos(pos);
+        Vector3 screenPos = GameEntry.cameraMgr.GetMainCamera().WorldToScreenPoint(pos);
         Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, view.gameObject.GetComponent<RectTransform>(), GameEntry.uiMgr.uiCamera);
         textRect.localPosition = uguiPos;
         textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);

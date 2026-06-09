@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 namespace WuWuFramework.Audio
@@ -5,23 +6,34 @@ namespace WuWuFramework.Audio
     public class SeInfo
     {
         public AudioSource audioSource { get; private set; }
-        public string path { get; set; }
+        public string assetPath { get; set; }
         public float playTime { get; set; }
 
-        public SeInfo()
+        public SeInfo(Transform parent)
         {
             audioSource = new GameObject().GetOrAddComponent<AudioSource>();
+            audioSource.transform.SetParent(parent, false);
         }
 
-        public static SeInfo Create()
+        public void SetSeInfo(string assetPath, float playTime, float volume)
         {
-            return new SeInfo();
+            this.assetPath = assetPath;
+            this.playTime = playTime;
+            audioSource.SetActiveSelf(false);
+            audioSource.name = Path.GetFileNameWithoutExtension(assetPath);
+            audioSource.volume = volume;
+            audioSource.playOnAwake = false;
+            audioSource.loop = false;
+            audioSource.Stop();
         }
 
         public void Clear()
         {
-            path = string.Empty;
+            assetPath = string.Empty;
             playTime = 0;
+            audioSource.clip = null;
+            audioSource.Stop();
+            audioSource.SetActiveSelf(false);
         }
     }
 }

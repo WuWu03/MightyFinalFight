@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -8,7 +8,20 @@ public class CameraFollow : MonoBehaviour
         Lerp,
         Linear,
     }
-    
+
+    private Rect m_VisionRect = Rect.zero;
+    private Vector3 m_CameraClamp = Vector3.zero;
+    private FollowMode m_FollowMode = FollowMode.Just;
+    private float m_InitSpeed = 0.5f;
+    private float m_Delta = 1f;
+    private bool m_IsStart = false;
+    private bool m_IsForceEnd = false;
+    private float m_OrthographicSize = 0f;
+    private Transform m_Target = null;
+    private int m_MapWidth = 0;
+    private int m_MapHeight = 0;
+    private Rect m_Border = Rect.zero;
+
     public float speed
     {
         get { return m_InitSpeed; }
@@ -49,15 +62,22 @@ public class CameraFollow : MonoBehaviour
     public Rect GetVision()
     {
         float aspectRate = (float)Screen.width / Screen.height;
-        float orthographicSize = m_OrthographicSize;
 
-        m_VisionRect.width = aspectRate * orthographicSize * 2;
+        m_VisionRect.width = aspectRate * m_OrthographicSize * 2;
         m_VisionRect.height = orthographicSize * 2;
-        m_VisionRect.xMin = transform.position.x - aspectRate * orthographicSize;
-        m_VisionRect.xMax = transform.position.x + aspectRate * orthographicSize;
-        m_VisionRect.yMin = transform.position.y - orthographicSize;
-        m_VisionRect.yMax = transform.position.y + orthographicSize;
+        m_VisionRect.xMin = transform.position.x - aspectRate * m_OrthographicSize;
+        m_VisionRect.xMax = transform.position.x + aspectRate * m_OrthographicSize;
+        m_VisionRect.yMin = transform.position.y - m_OrthographicSize;
+        m_VisionRect.yMax = transform.position.y + m_OrthographicSize;
         return m_VisionRect;
+    }
+
+    public bool IsOutVision(Vector2 targetPos)
+    {
+        Rect visionRect = GetVision();
+        bool xOut = targetPos.x - 0.1 <= visionRect.xMin || targetPos.x + 0.1 >= visionRect.xMax;
+        bool yOut = targetPos.y - 0.1 <= visionRect.yMin || targetPos.y + 0.1 >= visionRect.yMax;
+        return xOut || yOut;
     }
 
     public void UpdateOrthographicSize(float orthographicSize)
@@ -77,12 +97,10 @@ public class CameraFollow : MonoBehaviour
         m_MapHeight = height;
 
         float aspectRate = (float)Screen.width / Screen.height;
-        float orthographicSize = m_OrthographicSize;
-
-        m_Border.xMin = -width / 200f + orthographicSize * aspectRate;
-        m_Border.xMax = width / 200f - orthographicSize * aspectRate;
-        m_Border.yMin = -height / 200f + orthographicSize;
-        m_Border.yMax = height / 200f - orthographicSize * aspectRate;
+        m_Border.xMin = -width / 200f + m_OrthographicSize * aspectRate;
+        m_Border.xMax = width / 200f - m_OrthographicSize * aspectRate;
+        m_Border.yMin = Mathf.Min(0, -height / 200f + m_OrthographicSize * aspectRate);
+        m_Border.yMax = Mathf.Max(0, height / 200f - m_OrthographicSize * aspectRate);
 
         if (m_Target != null)
         {
@@ -91,14 +109,20 @@ public class CameraFollow : MonoBehaviour
         }
     }
 
-    public void StartFollow()
+    public void StartFollow(bool isForce = false)
     {
+        if(m_IsForceEnd && !isForce)
+        {
+            return;
+        }
+
         m_IsStart = m_Target != null;
     }
 
-    public void EndFollow()
+    public void EndFollow(bool isForce = false)
     {
         m_IsStart = false;
+        m_IsForceEnd = isForce;
     }
 
     private void LateUpdate()
@@ -157,16 +181,4 @@ public class CameraFollow : MonoBehaviour
         m_CameraClamp.z = 0;
         return m_CameraClamp;
     }
-
-    private Rect m_VisionRect = Rect.zero;
-    private Vector3 m_CameraClamp = Vector3.zero;
-    private FollowMode m_FollowMode = FollowMode.Just;
-    private float m_InitSpeed = 0.5f;
-    private float m_Delta = 1f;
-    private bool m_IsStart = false;
-    private float m_OrthographicSize = 0f;
-    private Transform m_Target = null;
-    private int m_MapWidth = 0;
-    private int m_MapHeight = 0;
-    private Rect m_Border = Rect.zero;
 }

@@ -1,16 +1,17 @@
-using System;
 using DG.Tweening;
-using WuWuFramework.Pool;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using WuWuFramework.Event;
-using WuWuFramework.Utils;
 using UnityEngine;
+using WuWuFramework.Event;
+using WuWuFramework.Pool;
+using WuWuFramework.Utils;
+using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.Audio
 {
-    public class SoundMgr : WuWuFrameworkModule,ISoundMgr
+    public class SoundMgr : WuWuFrameworkModule, ISoundMgr
     {
         private readonly Queue<BgmInfo> m_WaitToPlayBgms;
         private readonly List<SeInfo> m_PlayingSes;
@@ -21,14 +22,14 @@ namespace WuWuFramework.Audio
         private GameObject m_Root;
         private IResourcePoolMgr m_ResourcePoolMgr;
         private event WuWuFrameworkAction m_OnBgmFadeCompleteEvent;
-        
+
         public SoundMgr()
         {
             m_WaitToPlayBgms = new();
             m_PlayingSes = new();
             m_UnUsedSes = new();
         }
-        
+
         public bool isBgmComplete
         {
             get
@@ -66,7 +67,7 @@ namespace WuWuFramework.Audio
             }
 
             ReleaseSeAudioSources();
-            m_PlayingSes.Clear();            
+            m_PlayingSes.Clear();
             m_IsBgmPause = false;
             m_OnBgmFadeCompleteEvent = null;
         }
@@ -80,20 +81,22 @@ namespace WuWuFramework.Audio
             m_Root.transform.SetParent(root, false);
         }
 
-        public void PlaySe(string sePath, float volume = 1)
+        public void PlaySe(string assetPath, float volume = 1)
         {
             foreach (var playingSe in m_PlayingSes)
             {
-                string path = playingSe.path;
                 float process = Time.time - playingSe.playTime;
-                if (sePath.Equals(path) && process <= 0.05f)
+
+                if (assetPath.Equals(playingSe.assetPath) && process <= 0.05f)
                 {
                     return;
                 }
             }
 
-            GetSe(sePath, volume);
-            InnerPlaySe(sePath, volume);
+            SeInfo seInfo = m_UnUsedSes.Count > 0 ? m_UnUsedSes.Dequeue() : new SeInfo(m_Root.transform);
+            seInfo.SetSeInfo(assetPath, Time.time, volume);
+            m_PlayingSes.Add(seInfo);
+            InnerPlaySe(assetPath);
         }
 
         public void StopAllSes()
@@ -106,11 +109,11 @@ namespace WuWuFramework.Audio
 
         public void SetSePlaySpeed(float speed)
         {
-            if(m_PlayingSes is { Count: > 0 })
+            if (m_PlayingSes is { Count: > 0 })
             {
                 foreach (var playingSe in m_PlayingSes)
                 {
-                    if(playingSe.audioSource != null && playingSe.audioSource.isPlaying)
+                    if (playingSe.audioSource != null && playingSe.audioSource.isPlaying)
                     {
                         playingSe.audioSource.pitch = speed;
                     }
@@ -172,7 +175,12 @@ namespace WuWuFramework.Audio
             if (m_PlayingBgm != null)
             {
                 m_BgmAudioSource.Stop();
-                m_ResourcePoolMgr.Put(m_PlayingBgm.assetPath, m_BgmAudioSource.clip);
+
+                if (m_BgmAudioSource.clip != null)
+                {
+                    m_ResourcePoolMgr.Put(m_PlayingBgm.assetPath, m_BgmAudioSource.clip);
+                }
+
                 m_PlayingBgm.Release();
                 m_PlayingBgm = null;
                 m_BgmAudioSource.clip = null;
@@ -225,7 +233,7 @@ namespace WuWuFramework.Audio
 
         public bool IsBgmPlaying(string assetPath)
         {
-            if(m_IsBgmPause)
+            if (m_IsBgmPause)
             {
                 return false;
             }
@@ -235,7 +243,7 @@ namespace WuWuFramework.Audio
                 return true;
             }
 
-            foreach(BgmInfo audioGroup in m_WaitToPlayBgms)
+            foreach (BgmInfo audioGroup in m_WaitToPlayBgms)
             {
                 if (audioGroup.assetPath.Equals(assetPath))
                 {
@@ -248,7 +256,7 @@ namespace WuWuFramework.Audio
 
         public void SetBgmSpeed(float speed)
         {
-            if(m_BgmAudioSource is not null)
+            if (m_BgmAudioSource is not null)
             {
                 m_BgmAudioSource.pitch = speed;
             }
@@ -271,112 +279,83 @@ namespace WuWuFramework.Audio
             m_OnBgmFadeCompleteEvent = null;
         }
 
-        private void InnerPlaySe(string assetPath,float volume)
+        private void InnerPlaySe(string assetPath)
         {
-            m_ResourcePoolMgr.Get<AudioClip>(assetPath, OnSeLoaded, AudioSourceInfo.Create(volume, 0, false));
+            m_ResourcePoolMgr.Get<AudioClip>(assetPath, OnSeLoaded);
         }
 
         private void OnSeLoaded(string assetPath, UnityObject obj, object arg)
         {
-            AudioSourceInfo audioSourceInfo = arg as AudioSourceInfo;
+            SeInfo playingSe = null;
 
-            if (audioSourceInfo == null)
+            foreach (SeInfo seInfo in m_PlayingSes)
             {
-                throw new Exception(StringUtil.Append("[", assetPath, "] ", "音效数据丢失"));
-            }
-            
-            SeInfo seInfo = null;
-
-            foreach (var playingSe in m_PlayingSes)
-            {
-                if (playingSe.path == assetPath && playingSe.audioSource.clip == null)
+                if (seInfo.assetPath == assetPath && seInfo.audioSource.clip == null)
                 {
-                    seInfo = playingSe;
+                    playingSe = seInfo;
+                    break;
                 }
             }
 
-            seInfo ??= GetSe(assetPath, audioSourceInfo.volume);
-            seInfo.audioSource.clip = obj as AudioClip;
-            seInfo.audioSource.SetActiveSelf(true);
-            seInfo.audioSource.Play();
-            audioSourceInfo.Release();
+            if (playingSe == null)
+            {
+                m_ResourcePoolMgr.Put(assetPath, obj);
+                return;
+            }
+
+            playingSe.audioSource.clip = obj as AudioClip;
+            playingSe.audioSource.SetActiveSelf(true);
+            playingSe.audioSource.Play();
         }
 
-        private void InnerPlayBgm(string assetPath, float volume, float fadeTime, bool isLoop)
+        private void InnerPlayBgm()
         {
-            m_ResourcePoolMgr.Get<AudioClip>(assetPath, OnBgmLoaded, AudioSourceInfo.Create(volume, fadeTime, isLoop));
+            if (m_PlayingBgm == null)
+            {
+                return;
+            }
+
+            m_ResourcePoolMgr.Get<AudioClip>(m_PlayingBgm.assetPath, OnBgmLoaded);
         }
 
         private void OnBgmLoaded(string assetPath, UnityObject obj, object arg)
         {
-            AudioSourceInfo audioSourceInfo = arg as AudioSourceInfo;
-
-            if (audioSourceInfo == null)
+            if (m_PlayingBgm == null)
             {
-                throw new Exception(StringUtil.Append("[", assetPath, "] ", "背景音乐数据丢失"));
+                m_ResourcePoolMgr.Put(assetPath, obj);
+                return;
             }
-            
+
             m_BgmAudioSource.clip = obj as AudioClip;
-            m_BgmAudioSource.loop = audioSourceInfo.isLoop;
-            m_BgmAudioSource.volume = audioSourceInfo.fadeTime > 0f ? 0f : audioSourceInfo.volume;
+            m_BgmAudioSource.loop = m_PlayingBgm.isLoop;
+            m_BgmAudioSource.volume = m_PlayingBgm.lerpTime > 0f ? 0f : m_PlayingBgm.volume;
 
             if (!m_IsBgmPause)
             {
                 m_BgmAudioSource.Play();
 
-                if (audioSourceInfo.fadeTime > 0f)
+                if (m_PlayingBgm.lerpTime > 0f)
                 {
-                    m_BgmAudioSource.DOFade(audioSourceInfo.volume, audioSourceInfo.fadeTime);
+                    m_BgmAudioSource.DOFade(m_PlayingBgm.volume, m_PlayingBgm.lerpTime);
                 }
             }
             else
             {
                 m_BgmAudioSource.Pause();
             }
-
-            audioSourceInfo.Release();
-        }
-
-        private SeInfo GetSe(string assetPath, float volume)
-        {
-            SeInfo seInfo;
-
-            if (m_UnUsedSes.Count > 0)
-            {
-                seInfo = m_UnUsedSes.Dequeue();
-            }
-            else
-            {
-                seInfo = SeInfo.Create();
-                seInfo.audioSource.transform.SetParent(m_Root.transform, false);
-            }
-
-            m_PlayingSes.Add(seInfo);
-            seInfo.path = assetPath;
-            seInfo.playTime = Time.time;
-            seInfo.audioSource.SetActiveSelf(false);
-            seInfo.audioSource.name = Path.GetFileNameWithoutExtension(assetPath);
-            seInfo.audioSource.volume = volume;
-            seInfo.audioSource.playOnAwake = false;
-            seInfo.audioSource.loop = false;
-            seInfo.audioSource.Stop();
-            return seInfo;
         }
 
         private void PutSe(SeInfo seInfo)
         {
-            m_ResourcePoolMgr.Put(seInfo.path, seInfo.audioSource.clip);
-            seInfo.Clear();
-            seInfo.audioSource.clip = null;
-            seInfo.audioSource.Stop();
-            seInfo.audioSource.SetActiveSelf(false);
+            m_ResourcePoolMgr.Put(seInfo.assetPath, seInfo.audioSource.clip);
             m_PlayingSes.Remove(seInfo);
             m_UnUsedSes.Enqueue(seInfo);
+            seInfo.Clear();
         }
 
         private void CheckBgm()
         {
-            if(m_IsBgmPause)
+            if (m_IsBgmPause)
             {
                 return;
             }
@@ -384,7 +363,7 @@ namespace WuWuFramework.Audio
             if (m_PlayingBgm == null && m_WaitToPlayBgms.Count > 0)
             {
                 m_PlayingBgm = m_WaitToPlayBgms.Dequeue();
-                InnerPlayBgm(m_PlayingBgm.assetPath, m_PlayingBgm.volume, m_PlayingBgm.lerpTime, m_PlayingBgm.isLoop);
+                InnerPlayBgm();
             }
 
             if (m_PlayingBgm != null && m_BgmAudioSource.clip != null && !m_PlayingBgm.isLoop)

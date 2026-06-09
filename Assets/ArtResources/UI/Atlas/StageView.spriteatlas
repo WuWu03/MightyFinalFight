@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StagePanel
+  m_Name: StageView
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -111,5 +111,5 @@ SpriteAtlas:
   - Map
   - round_r
   m_RenderDataMap: {}
-  m_Tag: StagePanel
+  m_Tag: StageView
   m_IsVariant: 0

@@ -141,11 +141,11 @@ public class BaseHero : BaseRole
 
             if (!isMapXCanMove && !isMapYCanMove)
             {
-                CameraMgr.instance.EndFollow();
+                CameraMgr.instance.cameraFollow.EndFollow();
             }
             else
             {
-                CameraMgr.instance.StartFollow();
+                CameraMgr.instance.cameraFollow.StartFollow();
             }
 
             pos.x = isMapXCanMove ? pos.x : this.pos.x;
@@ -293,7 +293,7 @@ public class BaseHero : BaseRole
     public override void DropTrapState(DropTrapStateArg arg)
     {
         base.DropTrapState(arg);
-        CameraMgr.instance.EndFollow();
+        CameraMgr.instance.cameraFollow.EndFollow();
     }
     
     public virtual void RebirthState(Vector2 rebirthPos)

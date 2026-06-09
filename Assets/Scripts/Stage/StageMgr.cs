@@ -66,7 +66,7 @@ public class StageMgr : BaseMgr<StageMgr>
 
         m_CurrStageData = configData;
         PlayerMgr.instance.canControl = false;
-        CameraMgr.instance.EndFollow();
+        CameraMgr.instance.cameraFollow.EndFollow();
         LoadMgr.instance.DOFadeBlack(OnFadeBlackComplete);
     }
 
@@ -109,7 +109,7 @@ public class StageMgr : BaseMgr<StageMgr>
         PlayerMgr.instance.InitPlayer();
         PlayerMgr.instance.player.SetMapPos(m_CurrStageData.InitPos);
         PlayerMgr.instance.canControl = false;
-        CameraMgr.instance.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
+        CameraMgr.instance.cameraFollow.SetFollowSize(m_CurrStageData.Width, m_CurrStageData.Height);
 
         if (m_CurrStageData.showMainPanel)
         {
@@ -128,7 +128,7 @@ public class StageMgr : BaseMgr<StageMgr>
     {
         LoadMgr.instance.CloseLoadPanel();
         GameEntry.eventMgr.Dispatch(this, new StageEnterEndEvent());
-        CameraMgr.instance.StartFollow();
+        CameraMgr.instance.cameraFollow.StartFollow();
         PlayerMgr.instance.canControl = true;
         foreach (int taskID in m_CurrStageData.TaskIDs)
         {
