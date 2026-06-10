@@ -11,14 +11,14 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         SkillStateArg skillArg = SkillStateArg.Create();
-        skillArg.skillID = mSkillData.id;
-        skillArg.animName = mSkillData.AnimationName;
-        skillArg.animTime = mSkillData.AnimTime;
-        skillArg.animSpeed = mSkillData.AnimSpeed;
-        skillArg.canChangeDir = mSkillData.CanChangeDir;
-        skillArg.canMove = mSkillData.CanMove;
+        skillArg.skillID = m_SkillData.id;
+        skillArg.animName = m_SkillData.AnimationName;
+        skillArg.animTime = m_SkillData.AnimTime;
+        skillArg.animSpeed = m_SkillData.AnimSpeed;
+        skillArg.canChangeDir = m_SkillData.CanChangeDir;
+        skillArg.canMove = m_SkillData.CanMove;
 
-        if (mSkillData.TriggerType != SkillTriggerType.Animtion)
+        if (m_SkillData.TriggerType != SkillTriggerType.Animtion)
         {
             m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
             m_Owner.SkillState(skillArg);
@@ -41,7 +41,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
         {
             m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
 
-            if (!mSkillData.IsInEffectPlaySound)
+            if (!m_SkillData.IsInEffectPlaySound)
             {
                 m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
             }
@@ -70,7 +70,7 @@ public class SkillSkillAttackDeployer : SkillBaseDeployer
     {
         base.Exit();
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
-        if (!mSkillData.IsInEffectPlaySound)
+        if (!m_SkillData.IsInEffectPlaySound)
         {
             m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         }

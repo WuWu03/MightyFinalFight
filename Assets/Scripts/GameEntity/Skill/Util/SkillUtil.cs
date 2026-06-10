@@ -110,7 +110,7 @@ public static class SkillUtil
         return ret;
     }
 
-    public static HurtStateArg GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect,bool isPause)
+    public static HurtStateArg GetHurtData(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect, bool isPause)
     {
         if (hit == null || !hit.canBeHit)
         {
@@ -144,7 +144,16 @@ public static class SkillUtil
         hurtArg.attackForce = new Vector2(effect.AddTargetForce.x * dir, effect.AddTargetForce.y);
         hurtArg.attackerPos = owner.pos;
         hurtArg.canBeDefense = effect.CanBeDefense;
-        hurtArg.isSwoon = effect.IsSmoon;
+
+        if (data.TriggerType == SkillTriggerType.Enternal)
+        {
+            hurtArg.isSwoon = !hit.isSwoon && effect.IsSmoon;
+        }
+        else
+        {
+            hurtArg.isSwoon = effect.IsSmoon;
+        }
+
         hurtArg.attackerId = owner.entityID;
         hurtArg.attackValue = CacDamage(owner.entityAttribute.attackValue, hit.entityAttribute.defenseValue, owner.entityAttribute.criticalValue, effect.DamageMulity, out isCritical);
         hurtArg.isCritical = isCritical;
@@ -157,7 +166,7 @@ public static class SkillUtil
         return hurtArg;
     }
 
-    public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect , bool isPause = false)
+    public static bool SkillHit(ICanBeHit hit, BaseRole owner, SkillConfigData data, SkillEffect effect, bool isPause = false)
     {
         HurtStateArg hurtArg = GetHurtData(hit, owner, data, effect, isPause);
         bool result = false;
@@ -205,13 +214,12 @@ public static class SkillUtil
         return new Vector2(40f * dir, 150f);
     }
 
-    public static Vector2 GetFloatSmoonForce(float dir, Vector2 oriForce)
+    public static Vector2 GetFloatSmoonForce()
     {
-        float maxXForce = Mathf.Min(10f, oriForce.x);
-        return new Vector2(0 * dir, 100);
+        return new Vector2(0, 100);
     }
 
-    public static Vector2 GetGroundSmoonForce(float dir,Vector2 oriForce)
+    public static Vector2 GetGroundSmoonForce(float dir, Vector2 oriForce)
     {
         float maxXForce = Mathf.Min(10f, oriForce.x);
         return new Vector2(maxXForce * dir, 20);

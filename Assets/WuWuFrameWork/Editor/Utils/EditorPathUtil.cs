@@ -37,6 +37,11 @@ namespace WuWuFramework.Editor
         public static readonly string WuWuFrameWorkConfigWindowDataPath = EditorConfigPath + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
         public static readonly string WuWuFrameWorkConfigWindowDataFullPath = EditorConfigFullPath + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
 
+        public const string InputConfigDataName = "InputConfigData";
+        public const string InputConfigDataExtend = ".inputactions";
+        public static readonly string InputConfigDataPath = ApplicationDataPath + "WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
+        public static readonly string InputConfigDataFullPath = ApplicationDataFullPath + "WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
+
         public static readonly string WuWuFrameworkUIScriptsFullPath = ApplicationDataFullPath + "WuWuFramework/Scripts/UI/";
 
         public const string EntryScriptName = "GameEntry";

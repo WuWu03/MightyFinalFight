@@ -80,6 +80,7 @@ public class TestInputMgr
     private InputActionMap m_CurrActionMap;
     private readonly Dictionary<string, InputEvent> m_InputEvens = new();
     private string m_SaveKey = string.Empty;
+    private const string DefaultSchemeName = "Game";
 
     public InputActionAsset inputActionAsset
     {
@@ -97,12 +98,13 @@ public class TestInputMgr
             string configDataPath = WuWuFrameworkEntry.config.configDataPath;
             string filePath = PathUtil.FormatPath(configDataPath, configDataName);
             byte[] buffer = resourceMgr.Load<TextAsset>(filePath).bytes;
-            jsonStr = System.Text.Encoding.UTF8.GetString(buffer);
+            jsonStr = System.Text.Encoding.UTF8.GetString(ZlibHelper.DeCompressBytes(buffer));
             resourceMgr.Unload(filePath);
         }
 
         m_InputActionAsset = InputActionAsset.FromJson(jsonStr);
         InputSystem.onDeviceChange += OnDeviceChange;
+        this.SetCurrScheme(DefaultSchemeName);
     }
 
     private void OnDeviceChange(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
@@ -120,10 +122,6 @@ public class TestInputMgr
         m_CurrActionMap = m_InputActionAsset.FindActionMap(schemeName);
     }
 
-    public void AddInputEvent(string actionName, WuWuFrameworkAction<InputEventType> inputCall)
-    {
-        //this.AddInputEvent(actionName, inputCall, null);
-    }
 
     public void AddInputEvent<InputValueType>(string actionName, WuWuFrameworkAction<InputValueType, InputEventType> inputCall) where InputValueType : struct
     {
@@ -134,12 +132,11 @@ public class TestInputMgr
 
         if (!m_InputEvens.TryGetValue(actionName, out InputEvent inputEvent))
         {
-            // m_InputEvens.Add(actionName, InputEvent.Create(inputCall, typeof(InputEventType)));
+            inputEvent = InputEvent.Create(typeof(InputEventType));
+            m_InputEvens.Add(actionName, inputEvent);
         }
-        else
-        {
-            //if (inputEvent.)
-        }
+
+        inputEvent.Add(inputCall);
     }
 
     private bool CanAddInputEvent(string actionName)

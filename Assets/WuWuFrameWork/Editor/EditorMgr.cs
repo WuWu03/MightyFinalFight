@@ -5,7 +5,10 @@ using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityObject = UnityEngine.Object;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -26,19 +29,19 @@ namespace WuWuFramework.Editor
         public static void WuWuFrameworkStartUp()
         {
             CreateEntryScript();
-        
+
             Rect rect = new(0, 0, 600, 300);
             EditorWindow window = EditorWindow.GetWindowWithRect<WuWuFrameworkConfigWindow>(rect);
             window.Show();
         }
-        
+
         /// <summary>
         /// 创建框架启动脚本
         /// </summary>
         private static void CreateEntryScript()
         {
             string[] entryScript = EditorUtil.GetAssemblyTypeNames("WuWuFramework.WuWuFrameworkEntry", true, "WuWuFrameworkEntry");
-        
+
             if (entryScript == null || entryScript.Length < 1)
             {
                 StringBuilder sb = new();
@@ -63,13 +66,13 @@ namespace WuWuFramework.Editor
                 sb.AppendLine("\t}");
                 sb.AppendLine();
                 sb.Append("}");
-        
+
                 Utils.FileUtil.VerifyDirectory(EditorPathUtil.EditorScriptFullPath);
                 File.WriteAllText(EditorPathUtil.EntryScriptFullPath, sb.ToString());
                 AssetDatabase.Refresh();
             }
         }
-        
+
         /// <summary>
         /// 主要用于第一次启动Unity编辑器和编译完成后，检查是否已经设置框架启动场景
         /// </summary>
@@ -77,52 +80,52 @@ namespace WuWuFramework.Editor
         private static void OnScriptReload()
         {
             int isShowMainScene = EditorPrefs.GetInt(EditorPrefsKey, 0);
-        
+
             if (isShowMainScene == 0)
             {
                 EditorApplication.update += CheckIsInit;
             }
-        
+
             EditorApplication.wantsToQuit += ApplicationWantsToQuit;
         }
-        
+
         private static void CheckIsInit()
         {
             if (string.IsNullOrEmpty(EditorSceneManager.GetActiveScene().path))
             {
                 return;
             }
-        
+
             EditorSceneManager.sceneOpened += CheckEntryScene;
             EditorApplication.update -= CheckIsInit;
             CheckEntryScene();
         }
-        
+
         private static void CheckEntryScene(UnityEngine.SceneManagement.Scene scene, OpenSceneMode mode)
         {
             EditorSceneManager.sceneOpened -= CheckEntryScene;
             CheckEntryScene();
         }
-        
+
         private static void CheckEntryScene()
         {
             WuWuFrameworkConfigWindowData config = GetWuWuFrameworkConfig();
             int isShowMainScene = EditorPrefs.GetInt(EditorPrefsKey, 0);
-        
+
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
                 EditorPrefs.SetInt(EditorPrefsKey, 1);
                 WuWuFrameworkStartUp();
                 return;
             }
-        
+
             if (isShowMainScene == 0)
             {
                 EditorPrefs.SetInt(EditorPrefsKey, 1);
                 GoToWuWuFrameworkEntryScene();
             }
         }
-        
+
         /// <summary>
         /// 跳转到框架启动场景
         /// </summary>
@@ -133,33 +136,33 @@ namespace WuWuFramework.Editor
             {
                 return;
             }
-        
+
             if (!EditorSceneManager.GetActiveScene().path.Equals(config.entryScene))
             {
                 EditorSceneManager.OpenScene(config.entryScene);
             }
-        
+
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("WuWuFramework.WuWuFrameworkEntry", "WuWuFrameworkEntry");
-        
+
             if (entryTypes == null || entryTypes.Length < 1)
             {
                 return;
             }
-        
+
             GameObject entry = GameObject.Find("GameEntry");
             if (entry == null)
             {
                 entry = new GameObject("GameEntry");
-                entry.AddComponent(entryTypes[0]); 
+                entry.AddComponent(entryTypes[0]);
             }
-            
+
             GameObject uiRoot = GameObject.Find("UIRoot");
             if (uiRoot == null)
             {
                 UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.EditorUIRootPath));
             }
         }
-        
+
         private static bool ApplicationWantsToQuit()
         {
             EditorPrefs.SetInt(EditorPrefsKey, 0);
@@ -196,7 +199,21 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/工具/切图工具", false, 105)]
+        [MenuItem("WuWuFramework/导出输入配置 &6", false, 105)]
+        public static void ExportInputConfig()
+        {
+            InputActionAsset inputActionAsset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(EditorPathUtil.InputConfigDataPath);
+            string jsonStr = inputActionAsset.ToJson();
+            byte[] jsonBuffer = Encoding.UTF8.GetBytes(jsonStr);
+            string fileName = inputActionAsset.name + ".bytes";
+            string configDataPath = GetWuWuFrameworkConfig().configDataPath;
+            string configDataFullPath = WuWuPathUtil.GetAssetFullPath(configDataPath);
+            string filePath = WuWuPathUtil.FormatPath(configDataFullPath, fileName);
+            WuWuFileUtil.CreateBinaryFile(filePath, ZlibHelper.CompressBytes(jsonBuffer));
+            AssetDatabase.Refresh();
+        }
+
+        [MenuItem("WuWuFramework/工具/切图工具", false, 106)]
         public static void OpenSpriteSpliterTool()
         {
             Rect rect = new(0, 0, 600, 300);
@@ -204,7 +221,7 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/工具/PlayerPrefs工具", false, 106)]
+        [MenuItem("WuWuFramework/工具/PlayerPrefs工具", false, 107)]
         public static void OpenPlayerPrefsTool()
         {
             Rect rect = new(0, 0, 600, 300);
@@ -212,14 +229,13 @@ namespace WuWuFramework.Editor
             window.Show();
         }
 
-        [MenuItem("WuWuFramework/Build/Build Game", false, 107)]
+        [MenuItem("WuWuFramework/Build/Build Game", false, 108)]
         public static void BuildGame()
         {
             BuildGame(false);
-
         }
 
-        [MenuItem("WuWuFramework/Build/Build Game Log", false, 108)]
+        [MenuItem("WuWuFramework/Build/Build Game Log", false, 109)]
         public static void BuildGameLog()
         {
             BuildGame(true);

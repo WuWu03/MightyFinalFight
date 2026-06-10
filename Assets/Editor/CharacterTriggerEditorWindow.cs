@@ -64,12 +64,12 @@ public class CharacterTriggerEditorWindow : EditorWindow
             }
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
-            m_TriggerDatas = new TriggerDatum[m_CurrDB.animation.animationNames.Count];
-            TriggerDatum[] currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData;
+            m_TriggerDatas = new TriggerData[m_CurrDB.animation.animationNames.Count];
+            TriggerData[] currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData;
 
             if(currTriggerDatas == null)
             {
-                m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData = new TriggerDatum[0];
+                m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData = new TriggerData[0];
                 currTriggerDatas = m_CurrGo.GetOrAddComponent<HitTrigger>().triggerData;
             }
 
@@ -101,17 +101,17 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
                 if (m_TriggerDatas[i] == null || !m_TriggerDatas[i].animName.Equals(m_CurrDB.animation.animationNames[i]))
                 {
-                    m_TriggerDatas[i] = new TriggerDatum()
+                    m_TriggerDatas[i] = new TriggerData()
                     {
                         animName = animationName,
-                        offestList = new Vector2[animationFrameCount],
-                        sizeList = new Vector2[animationFrameCount],
+                        defendBoxOffsets = new Vector2[animationFrameCount],
+                        defendBoxSizes = new Vector2[animationFrameCount],
                     };
                 }
-                else if (m_TriggerDatas[i].sizeList.Length != animationFrameCount)
+                else if (m_TriggerDatas[i].defendBoxSizes.Length != animationFrameCount)
                 {
-                    m_TriggerDatas[i].sizeList = new Vector2[animationFrameCount];
-                    m_TriggerDatas[i].offestList = new Vector2[animationFrameCount];
+                    m_TriggerDatas[i].defendBoxSizes = new Vector2[animationFrameCount];
+                    m_TriggerDatas[i].defendBoxOffsets = new Vector2[animationFrameCount];
                 }
             }
 
@@ -122,11 +122,11 @@ public class CharacterTriggerEditorWindow : EditorWindow
                     string animationName = m_CurrDB.animation.animationNames[i];
                     int animationFrameCount = GetFrameCount(animationName);
 
-                    m_TriggerDatas[i] = new TriggerDatum()
+                    m_TriggerDatas[i] = new TriggerData()
                     {
                         animName = animationName,
-                        offestList = new Vector2[animationFrameCount],
-                        sizeList = new Vector2[animationFrameCount],
+                        defendBoxOffsets = new Vector2[animationFrameCount],
+                        defendBoxSizes = new Vector2[animationFrameCount],
                     };
                 }
             }
@@ -178,10 +178,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
             if (GUILayout.Button("粘贴全部"))
             {
-                for (int i = 0; i < m_CurrTriggerDatum.offestList.Length; i++)
+                for (int i = 0; i < m_CurrTriggerDatum.defendBoxOffsets.Length; i++)
                 {
-                    m_CurrTriggerDatum.offestList[i] = m_CopyOffest;
-                    m_CurrTriggerDatum.sizeList[i] = m_CopySize;
+                    m_CurrTriggerDatum.defendBoxOffsets[i] = m_CopyOffest;
+                    m_CurrTriggerDatum.defendBoxSizes[i] = m_CopySize;
                 }
 
                 m_CurrCollider.size = m_CopySize;
@@ -213,8 +213,8 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
         if (GUILayout.Button("保存设置"))
         {
-            m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
-            m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1] = m_CurrCollider.size;
+            m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
+            m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1] = m_CurrCollider.size;
 
             m_CurrDB.GetComponent<HitTrigger>().triggerData = m_TriggerDatas;
             Component.DestroyImmediate(m_CurrCollider);
@@ -227,18 +227,18 @@ public class CharacterTriggerEditorWindow : EditorWindow
             }
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
-            m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
-            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
         }
 
         if (GUILayout.Button("恢复初始"))
         {
-            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
-            m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
         }
     }
 
-    private TriggerDatum GetTriggerData(string name)
+    private TriggerData GetTriggerData(string name)
     {
         for (int i = 0; i < m_TriggerDatas.Length; i++)
         {
@@ -257,16 +257,16 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
         if (m_CurrTriggerDatum != null)
         {
-            if (m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1] != Vector2.zero)
+            if (m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1] != Vector2.zero)
             {
-                m_CurrCollider.size = m_CurrTriggerDatum.sizeList[m_CurrAnimFrame - 1];
+                m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
             }
             else
             {
                 m_CurrCollider.size = Vector2.one;
             }
 
-            m_CurrCollider.offset = m_CurrTriggerDatum.offestList[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
         }
 
         m_CurrDB.animation.GotoAndStopByFrame(m_CurrAnimName, (uint)(m_CurrAnimFrame - 1));
@@ -289,10 +289,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
     private UnityEngine.Object m_CurrSelectObj = null;
     private UnityArmatureComponent m_CurrDB = null;
     private BoxCollider2D m_CurrCollider = null;
-    private TriggerDatum m_CurrTriggerDatum = null;
+    private TriggerData m_CurrTriggerDatum = null;
     private string m_CurrAnimName = string.Empty;
     private Vector2 scroll = Vector2.zero;
     private Vector2 m_CopyOffest = Vector2.zero;
     private Vector2 m_CopySize = Vector2.zero;
-    private TriggerDatum[] m_TriggerDatas = null;
+    private TriggerData[] m_TriggerDatas = null;
 }

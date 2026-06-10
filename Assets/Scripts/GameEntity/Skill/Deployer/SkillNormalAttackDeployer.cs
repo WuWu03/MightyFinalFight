@@ -16,11 +16,11 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         SkillStateArg skillStateArg = SkillStateArg.Create();
         skillStateArg.dir = m_Owner.dir;
-        skillStateArg.skillID = mSkillData.id;
-        skillStateArg.animName = mSkillData.AnimationName;
-        skillStateArg.animSpeed = mSkillData.AnimSpeed;
-        skillStateArg.animTime = mSkillData.AnimTime;
-        skillStateArg.canChangeDir = mSkillData.CanChangeDir;
+        skillStateArg.skillID = m_SkillData.id;
+        skillStateArg.animName = m_SkillData.AnimationName;
+        skillStateArg.animSpeed = m_SkillData.AnimSpeed;
+        skillStateArg.animTime = m_SkillData.AnimTime;
+        skillStateArg.canChangeDir = m_SkillData.CanChangeDir;
         m_Owner.AddAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.AddAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         m_Owner.AttackState(skillStateArg);
@@ -53,7 +53,7 @@ public class SkillNormalAttackDeployer : SkillBaseDeployer
 
         string soundName = m_QueueSound.Dequeue();
 
-        if (!m_Owner.isHitSuccess || mSkillData.IsInEffectPlaySound)
+        if (!m_Owner.isHitSuccess || m_SkillData.IsInEffectPlaySound)
         {
             GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, "Sound", soundName, ".ogg"));
         }

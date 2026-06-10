@@ -11,8 +11,8 @@ public class InputTest : MonoBehaviour
     {
         m_InputMgr.inputActionAsset = asset;
         m_InputMgr.SetCurrScheme("Game");
-        // m_InputMgr.AddInputEvent<Vector2>("LeftAxis",OnLeftAxis);
-        // m_InputMgr.AddInputEvent<float>("LT",OnLT);
+        //m_InputMgr.AddInputEvent<Vector2>("LeftAxis",OnLeftAxis);
+        // m_InputMgr.AddInputEvent<float>("LT", OnLT);
         // m_InputMgr.AddInputEvent("LB",OnLB);
         // action = new InputAction("fuck");
         // InputBinding binding = new InputBinding("Keyboard/W");

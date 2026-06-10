@@ -25,7 +25,7 @@ public abstract class BaseAvatar : BaseGravityObject
     }
 
     private DragonBones.AnimationState m_CurrAnimationState = null;
-    private TriggerDatum m_CurrTriggerDatum = null;
+    private TriggerData m_CurrTriggerDatum = null;
     private float m_LastAnimTimeScale = 1f;
     private int m_LastTriggerFrameIndex = -1;
     private UnityArmatureComponent m_Animator;
@@ -37,8 +37,8 @@ public abstract class BaseAvatar : BaseGravityObject
             return Vector2.zero;
         }
 
-        TriggerDatum triggerDatum = m_HitTrigger.GetTriggerData(animName);
-        return triggerDatum != null ? triggerDatum.sizeList[frame] : Vector2.zero;
+        TriggerData triggerDatum = m_HitTrigger.GetTriggerData(animName);
+        return triggerDatum != null ? triggerDatum.defendBoxSizes[frame] : Vector2.zero;
     }
 
     protected override void OnRelease()
@@ -268,7 +268,7 @@ public abstract class BaseAvatar : BaseGravityObject
 
         if (m_CurrTriggerDatum != null)
         {
-            SetCollider(m_CurrTriggerDatum.offestList[frameIndex], m_CurrTriggerDatum.sizeList[frameIndex]);
+            SetCollider(m_CurrTriggerDatum.defendBoxOffsets[frameIndex], m_CurrTriggerDatum.defendBoxSizes[frameIndex]);
         }
 
         m_LastTriggerFrameIndex = frameIndex;

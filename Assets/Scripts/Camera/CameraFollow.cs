@@ -111,7 +111,7 @@ public class CameraFollow : MonoBehaviour
 
     public void StartFollow(bool isForce = false)
     {
-        if(m_IsForceEnd && !isForce)
+        if (m_IsStart || (m_IsForceEnd && !isForce))
         {
             return;
         }
@@ -121,6 +121,11 @@ public class CameraFollow : MonoBehaviour
 
     public void EndFollow(bool isForce = false)
     {
+        if (!m_IsStart)
+        {
+            return;
+        }
+
         m_IsStart = false;
         m_IsForceEnd = isForce;
     }

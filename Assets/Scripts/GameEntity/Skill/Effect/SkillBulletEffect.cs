@@ -34,6 +34,6 @@ public class SkillBulletEffect : SkillBaseEffect
     
     public bool BulletEffect(ICanBeHit hit)
     {
-        return SkillUtil.SkillHit(hit, m_Owner, mSkillData, m_SkillEffect);
+        return SkillUtil.SkillHit(hit, m_Owner, m_SkillData, m_SkillEffect);
     }
 }

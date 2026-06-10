@@ -132,11 +132,11 @@ public class Weapon : BaseSceneItem
             return;
         }
 
-        TriggerDatum triggerDatum = m_HitTrigger.GetTriggerData(animName);
+        TriggerData triggerDatum = m_HitTrigger.GetTriggerData(animName);
 
         if (triggerDatum != null)
         {
-            SetCollider(triggerDatum.offestList[frameIndex], triggerDatum.sizeList[frameIndex]);
+            SetCollider(triggerDatum.defendBoxOffsets[frameIndex], triggerDatum.defendBoxSizes[frameIndex]);
         }
     }
 

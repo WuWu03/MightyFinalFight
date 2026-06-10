@@ -193,14 +193,14 @@ public class BaseEnemy : BaseRole
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isFloat || isBeCatch || collision.gameObject.Equals(gameObject))
+        BaseEnemy throwTarget = collision.gameObject.GetComponent<BaseEnemy>();
+
+        if (throwTarget is null || collision.gameObject.Equals(gameObject))
         {
             return;
         }
 
-        BaseEnemy throwTarget = collision.gameObject.GetComponent<BaseEnemy>();
-
-        if (throwTarget is null || !throwTarget.isBeThrow || throwTarget.m_HasThrowTriggerEnter)
+        if (isFloat || isBeCatch || throwTarget.isBeCatch || !throwTarget.isBeThrow || throwTarget.m_HasThrowTriggerEnter)
         {
             return;
         }

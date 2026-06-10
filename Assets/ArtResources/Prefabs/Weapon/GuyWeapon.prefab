@@ -79,7 +79,8 @@ MeshRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &6675416664935568496
 MeshFilter:
@@ -145,7 +146,7 @@ MonoBehaviour:
   _timeScale: 1
   _sortingMode: 0
   _sortingLayerName: Default
-  _sortingOrder: 0
+  _sortingOrder: 2
   _zSpace: 0
   _flipX: 0
   _flipY: 0
@@ -178,16 +179,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Idle
-    offestList:
-    - {x: -0.0005002357, y: 0.035150103}
-    sizeList:
-    - {x: 0.11129501, y: 0.07121344}
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets: []
+    defendBoxSizes: []
   - animName: Hit
-    offestList:
-    - {x: -0.00041815452, y: 0.04046916}
-    - {x: -0.00041815452, y: 0.04046916}
-    - {x: -0.00041815452, y: 0.04046916}
-    sizeList:
-    - {x: 0.08185154, y: 0.08185149}
-    - {x: 0.08185154, y: 0.08185149}
-    - {x: 0.08185154, y: 0.08185149}
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets: []
+    defendBoxSizes: []

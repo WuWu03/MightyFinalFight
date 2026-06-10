@@ -39,6 +39,7 @@ namespace WuWuFramework.Utils
         {
             DeleteFile(filePath);
             VerifyDirectory(Path.GetDirectoryName(filePath));
+            File.WriteAllText(filePath, content);
             using FileStream fs = new(filePath, FileMode.Create);
             using StreamWriter sw = new(fs);
             sw.Write(content);
@@ -66,14 +67,7 @@ namespace WuWuFramework.Utils
         {
             DeleteFile(filePath);
             VerifyDirectory(Path.GetDirectoryName(filePath));
-            using FileStream fs = new(filePath, FileMode.Create);
-
-            if (data is { Length: > 0 })
-            {
-                fs.Write(data, 0, data.Length);
-            }
-
-            fs.Close();
+            File.WriteAllBytes(filePath, data);
         }
 
         /// <summary>

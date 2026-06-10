@@ -56,7 +56,7 @@ MonoBehaviour:
   _timeScale: 1
   _sortingMode: 0
   _sortingLayerName: Default
-  _sortingOrder: 0
+  _sortingOrder: 2
   _zSpace: 0
   _flipX: 0
   _flipY: 0
@@ -89,7 +89,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Move
-    offestList:
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets:
     - {x: -0.0011643618, y: 0.1245874}
     - {x: -0.0011643618, y: 0.1245874}
     - {x: -0.0011643618, y: 0.1245874}
@@ -99,7 +102,7 @@ MonoBehaviour:
     - {x: -0.0011643618, y: 0.1245874}
     - {x: -0.0011643618, y: 0.1245874}
     - {x: -0.0011643618, y: 0.1245874}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.16398355, y: 0.2571331}
     - {x: 0.16398355, y: 0.2571331}
     - {x: 0.16398355, y: 0.2571331}
@@ -110,7 +113,10 @@ MonoBehaviour:
     - {x: 0.16398355, y: 0.2571331}
     - {x: 0.16398355, y: 0.2571331}
   - animName: Dead
-    offestList:
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets:
     - {x: -0.0023287535, y: 0.1874633}
     - {x: -0.0023287535, y: 0.1874633}
     - {x: -0.0023287535, y: 0.1874633}
@@ -120,7 +126,7 @@ MonoBehaviour:
     - {x: -0.0023287535, y: 0.1874633}
     - {x: -0.0023287535, y: 0.1874633}
     - {x: -0.0023287535, y: 0.1874633}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.17562729, y: 0.37356988}
     - {x: 0.17562729, y: 0.37356988}
     - {x: 0.17562729, y: 0.37356988}
@@ -131,14 +137,20 @@ MonoBehaviour:
     - {x: 0.17562729, y: 0.37356988}
     - {x: 0.17562729, y: 0.37356988}
   - animName: Drop
-    offestList:
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets:
     - {x: -0.0011643618, y: 0.1245874}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.16398355, y: 0.2571331}
   - animName: Idle
-    offestList:
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets:
     - {x: 0.0011643469, y: 0.12458739}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.16398358, y: 0.24316067}
 --- !u!1 &8137241495959884460
 GameObject:
@@ -219,7 +231,7 @@ MeshRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &8287713065498493081

@@ -19,10 +19,10 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
         m_Owner.RemoveAnimationEvent(EventObject.FRAME_EVENT, SkillEvent);
         m_Owner.RemoveAnimationEvent(EventObject.SOUND_EVENT, SoundEvent);
         SkillStateArg skillStateArg = SkillStateArg.Create();
-        skillStateArg.skillID = mSkillData.id;
-        skillStateArg.animName = mSkillData.AnimationName;
-        skillStateArg.animSpeed = mSkillData.AnimSpeed;
-        skillStateArg.animTime = mSkillData.AnimTime;
+        skillStateArg.skillID = m_SkillData.id;
+        skillStateArg.animName = m_SkillData.AnimationName;
+        skillStateArg.animSpeed = m_SkillData.AnimSpeed;
+        skillStateArg.animTime = m_SkillData.AnimTime;
         skillStateArg.dir = m_Owner.dir;
         skillStateArg.canChangeDir = false;
         m_Owner.onGroundEvent += OnGroundEvent;
@@ -47,7 +47,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     public override void Update()
     {
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Just)
         {
             if (m_CanEffect)
             {
@@ -67,7 +67,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
 
     private void SkillEvent(string type, EventObject eventObject)
     {
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
             base.DeploySkill();
         }
@@ -81,7 +81,7 @@ public class SkillJumpAttackDeployer : SkillBaseDeployer
     private void OnDropEvent()
     {
         m_Owner.onDropEvent -= OnDropEvent;
-        m_CanEffect = m_TriggerTime < mSkillData.JumpTriggerTime;
+        m_CanEffect = m_TriggerTime < m_SkillData.JumpTriggerTime;
 
         if (m_CanEffect)
         {

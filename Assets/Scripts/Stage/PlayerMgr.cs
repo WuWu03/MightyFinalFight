@@ -18,7 +18,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     private int m_SelectRoleId;
     private float m_CurrSpeed;
     private bool m_CanCtrl;
-    
+
     public BaseHero player
     {
         get
@@ -138,7 +138,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Exp = 0;
         m_CanCtrl = true;
         m_RoleConfigData = GameEntry.configDataMgr.Get<RoleConfigData>().GetConfigDataById(m_SelectRoleId);
-        m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().GetSingConfigDataByAttr(StringUtil.Append("{roleId=", m_SelectRoleId.ToString(), ",level=", m_Level.ToString(),"}"));
+        m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().GetSingConfigDataByAttr(StringUtil.Append("{roleId=", m_SelectRoleId.ToString(), ",level=", m_Level.ToString(), "}"));
         m_Player = GameEntry.entityMgr.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
@@ -191,7 +191,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         m_Life -= 1;
         GameEntry.uiMgr.Get<MainView>().presenter.SetPlayerLife(life);
-        
+
         if (life < 1)
         {
             CameraFollowMgr.instance.cameraFollow.EndFollow();
@@ -205,7 +205,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.entityAttribute.ResetHealth();
         m_Player.RebirthState(rebirthPos);
     }
-    
+
     public void AddExp(int value)
     {
         m_Exp += value;
@@ -338,8 +338,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true,attackForce = SkillUtil.GetSmoonForce()});
-            m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true, attackForce = SkillUtil.GetSmoonForce() });
             m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 1, isSwoon = true, attackForce = SkillUtil.GetSmoonForce() });
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
@@ -394,7 +392,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
         else if (Input.GetKeyDown(KeyCode.Keypad0))
         {
-            m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 9999, isSwoon = false});
+            m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 9999, isSwoon = false });
         }
     }
 

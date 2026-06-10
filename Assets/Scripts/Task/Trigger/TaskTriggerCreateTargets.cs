@@ -7,9 +7,10 @@ public class TaskTriggerCreateTargets : BaseTaskTrigger
     public override void Trigger()
     {
         base.Trigger();
+
         foreach (var target in taskConfigData.Targets)
         {
-            int entityId = target.EntityID;       
+            int entityId = target.EntityID;
             Vector2Int pos = target.Pos;
 
             if (target.IsBarrel)

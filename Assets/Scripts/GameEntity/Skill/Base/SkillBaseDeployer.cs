@@ -15,7 +15,7 @@ public abstract class SkillBaseDeployer
     {
         get
         {
-            return mSkillData;
+            return m_SkillData;
         }
     }
 
@@ -23,9 +23,9 @@ public abstract class SkillBaseDeployer
     {
         m_SkillId = skillId;
         m_Owner = owner;
-        mSkillData = StaticConfig.SkillConfig.GetData(skillId);
-        m_SkillSelectors = SkillFactory.CreateSelector(mSkillData, owner);
-        m_SkillEffects = SkillFactory.CreateEffects(this, mSkillData, owner);
+        m_SkillData = StaticConfig.SkillConfig.GetData(skillId);
+        m_SkillSelectors = SkillFactory.CreateSelector(m_SkillData, owner);
+        m_SkillEffects = SkillFactory.CreateEffects(this, m_SkillData, owner);
         m_ListGroundEffect = new List<int>();
     }
 
@@ -41,7 +41,7 @@ public abstract class SkillBaseDeployer
                 continue;
             }
 
-            if (mSkillData.SkillEffects[i].IsOnGroundEffect)
+            if (m_SkillData.SkillEffects[i].IsOnGroundEffect)
             {
                 m_Owner.onGroundEvent += OnGround;
                 break;
@@ -57,12 +57,12 @@ public abstract class SkillBaseDeployer
 
     public virtual void DeploySkill()
     {
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             m_EnternalTriggerTimer = Time.time;
         }
 
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
             AnimationEffect();
         }
@@ -88,12 +88,11 @@ public abstract class SkillBaseDeployer
             }
         }
 
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
-            result = result && Time.time - m_EnternalTriggerTimer >= mSkillData.EnternalTiggerTime;
-
+            result = result && Time.time - m_EnternalTriggerTimer >= m_SkillData.EnternalTiggerTime;
         }
-        else if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
+        else if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Animtion)
         {
             result = result && m_Owner.IsAllAnimationComplete();
 
@@ -129,7 +128,7 @@ public abstract class SkillBaseDeployer
 
     public virtual void Update()
     {
-        if (mSkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
+        if (m_SkillData.TriggerType == SkillConfigData.SkillTriggerType.Enternal)
         {
             JustEffect();
         }
@@ -145,12 +144,12 @@ public abstract class SkillBaseDeployer
 
     private void AnimationEffect()
     {
-        if (!mSkillData.SkillEffects[m_CurrEffectIndex].IsOnGroundEffect)
+        if (!m_SkillData.SkillEffects[m_CurrEffectIndex].IsOnGroundEffect)
         {
-            CheckSetSelfVecolity(mSkillData.SkillEffects[m_CurrEffectIndex].AddSelfVelocity);
-            CheckAddSelfForce(mSkillData.SkillEffects[m_CurrEffectIndex].AddSelfForce);
-            m_Owner.SetDrag(mSkillData.SkillEffects[m_CurrEffectIndex].AddSelfDrag);
-            m_Owner.SetGravityScale(mSkillData.SkillEffects[m_CurrEffectIndex].Gravity);
+            CheckSetSelfVecolity(m_SkillData.SkillEffects[m_CurrEffectIndex].AddSelfVelocity);
+            CheckAddSelfForce(m_SkillData.SkillEffects[m_CurrEffectIndex].AddSelfForce);
+            m_Owner.SetDrag(m_SkillData.SkillEffects[m_CurrEffectIndex].AddSelfDrag);
+            m_Owner.SetGravityScale(m_SkillData.SkillEffects[m_CurrEffectIndex].Gravity);
             m_SkillEffects[m_CurrEffectIndex].Effect(m_SkillSelectors[m_CurrEffectIndex]);
         }
         else
@@ -180,21 +179,21 @@ public abstract class SkillBaseDeployer
                 continue;
             }
 
-            if (mSkillData.SkillEffects[i].IsOnGroundEffect)
+            if (m_SkillData.SkillEffects[i].IsOnGroundEffect)
             {
                 if (!m_Owner.isInGround && !m_ListGroundEffect.Contains(i))
                 {
                     m_ListGroundEffect.Add(i);
                 }
             }
-            else if(m_JustEffectTimer < 0 || Time.time - m_JustEffectTimer >= mSkillData.EnternalTriggerInterval)
+            else if(m_JustEffectTimer < 0 || Time.time - m_JustEffectTimer >= m_SkillData.EnternalTriggerInterval)
             {
                 if (!m_HasAddForce)
                 {
-                    CheckSetSelfVecolity(mSkillData.SkillEffects[i].AddSelfVelocity);
-                    CheckAddSelfForce(mSkillData.SkillEffects[i].AddSelfForce);
-                    m_Owner.SetDrag(mSkillData.SkillEffects[i].AddSelfDrag);
-                    m_Owner.SetGravityScale(mSkillData.SkillEffects[i].Gravity);
+                    CheckSetSelfVecolity(m_SkillData.SkillEffects[i].AddSelfVelocity);
+                    CheckAddSelfForce(m_SkillData.SkillEffects[i].AddSelfForce);
+                    m_Owner.SetDrag(m_SkillData.SkillEffects[i].AddSelfDrag);
+                    m_Owner.SetGravityScale(m_SkillData.SkillEffects[i].Gravity);
                 }
 
                 m_SkillEffects[i].Effect(m_SkillSelectors[i]);
@@ -240,10 +239,10 @@ public abstract class SkillBaseDeployer
         {
             if (!m_HasAddGroundForce)
             {
-                CheckSetSelfVecolity(mSkillData.SkillEffects[index].AddSelfVelocity, true);
-                CheckAddSelfForce(mSkillData.SkillEffects[index].AddSelfForce, true);
-                m_Owner.SetDrag(mSkillData.SkillEffects[index].AddSelfDrag);
-                m_Owner.SetGravityScale(mSkillData.SkillEffects[index].Gravity);
+                CheckSetSelfVecolity(m_SkillData.SkillEffects[index].AddSelfVelocity, true);
+                CheckAddSelfForce(m_SkillData.SkillEffects[index].AddSelfForce, true);
+                m_Owner.SetDrag(m_SkillData.SkillEffects[index].AddSelfDrag);
+                m_Owner.SetGravityScale(m_SkillData.SkillEffects[index].Gravity);
             }
 
             m_SkillEffects[index].Effect(m_SkillSelectors[index]);
@@ -272,7 +271,7 @@ public abstract class SkillBaseDeployer
     protected virtual void OnRemoveEvent() { }
 
     protected readonly BaseRole m_Owner;
-    protected readonly SkillConfigData mSkillData;
+    protected readonly SkillConfigData m_SkillData;
     private readonly List<int> m_ListGroundEffect;
     private readonly int m_SkillId;
     private readonly ISkillSelector[] m_SkillSelectors;

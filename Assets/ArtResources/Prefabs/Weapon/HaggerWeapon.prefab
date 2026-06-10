@@ -56,7 +56,7 @@ MonoBehaviour:
   _timeScale: 1
   _sortingMode: 0
   _sortingLayerName: Default
-  _sortingOrder: 0
+  _sortingOrder: 2
   _zSpace: 0
   _flipX: 0
   _flipY: 0
@@ -89,29 +89,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Drop
-    offestList:
-    - {x: 0, y: -0.031708837}
-    - {x: 0, y: -0.031708837}
-    - {x: 0, y: -0.0021104068}
-    - {x: -0.02656269, y: -0.0036282763}
-    - {x: -0.0022768006, y: 0.032041617}
-    - {x: 0, y: 0.0009253174}
-    - {x: 0.02732163, y: 0.0024431944}
-    - {x: 0.0016768575, y: 0.00004078448}
-    sizeList:
-    - {x: 0.16, y: 0.16922885}
-    - {x: 0.16, y: 0.16922885}
-    - {x: 0.16, y: 0.16771099}
-    - {x: 0.16758934, y: 0.14342509}
-    - {x: 0.14330344, y: 0.16619311}
-    - {x: 0.16303572, y: 0.16467524}
-    - {x: 0.16607146, y: 0.14646083}
-    - {x: 0.16492236, y: 0.16288042}
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets: []
+    defendBoxSizes: []
   - animName: Idle
-    offestList:
-    - {x: -0.0022768006, y: 0.08067064}
-    sizeList:
-    - {x: 0.14330344, y: 0.1661931}
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
+    defendBoxOffsets: []
+    defendBoxSizes: []
 --- !u!1 &6789348053180585881
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +179,8 @@ MeshRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &747528327310350490
 MeshFilter:

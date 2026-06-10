@@ -178,43 +178,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Idle
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16147265}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.16309911, y: 0.32260257}
   - animName: Move
-    offestList:
+    defendBoxOffsets:
     - {x: 0.011815086, y: 0.16836481}
     - {x: 0.011815086, y: 0.16442645}
     - {x: 0.011815079, y: 0.15851893}
     - {x: 0.011815079, y: 0.15851893}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.18082169, y: 0.34426352}
     - {x: 0.18082169, y: 0.3363868}
     - {x: 0.16506825, y: 0.32457176}
     - {x: 0.16506825, y: 0.32457176}
   - animName: Attack1
-    offestList:
+    defendBoxOffsets:
     - {x: 0.05218324, y: 0.15261136}
     - {x: 0.05218324, y: 0.15261136}
     - {x: 0.05218324, y: 0.15261136}
     - {x: 0.05218324, y: 0.15261136}
     - {x: 0.05218324, y: 0.15261136}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.2654963, y: 0.30094156}
     - {x: 0.2654963, y: 0.30094156}
     - {x: 0.2654963, y: 0.30094156}
     - {x: 0.2654963, y: 0.30094156}
     - {x: 0.2654963, y: 0.30094156}
   - animName: Hurt
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.22217447, y: 0.32457176}
     - {x: 0.22217447, y: 0.32457176}
     - {x: 0.22217447, y: 0.32457176}
@@ -222,24 +222,24 @@ MonoBehaviour:
     - {x: 0.22217447, y: 0.32457176}
     - {x: 0.22217447, y: 0.32457176}
   - animName: SmoonUp
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0009845942, y: 0.120119914}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.24580464, y: 0.24383542}
   - animName: SmoonDown
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0019691586, y: 0.06990583}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.3029108, y: 0.14734557}
   - animName: Awaken
-    offestList:
+    defendBoxOffsets:
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.2123285, y: 0.2714039}
     - {x: 0.2123285, y: 0.2714039}
     - {x: 0.2123285, y: 0.2714039}
@@ -247,7 +247,7 @@ MonoBehaviour:
     - {x: 0.2123285, y: 0.2714039}
     - {x: 0.2123285, y: 0.2714039}
   - animName: Dead
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0029537827, y: 0.08172092}
     - {x: 0.0029537827, y: 0.08172092}
     - {x: 0.0029537827, y: 0.08172092}
@@ -257,7 +257,7 @@ MonoBehaviour:
     - {x: 0.0029537827, y: 0.08172092}
     - {x: 0.0029537827, y: 0.08172092}
     - {x: 0.0029537827, y: 0.08172092}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.30487993, y: 0.16703743}
     - {x: 0.30487993, y: 0.16703743}
     - {x: 0.30487993, y: 0.16703743}
@@ -268,12 +268,12 @@ MonoBehaviour:
     - {x: 0.30487993, y: 0.16703743}
     - {x: 0.30487993, y: 0.16703743}
   - animName: Wait1
-    offestList:
+    defendBoxOffsets:
     - {x: 0.0019691736, y: 0.14670384}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.22414365, y: 0.29306483}
   - animName: Wait2
-    offestList:
+    defendBoxOffsets:
     - {x: -0.000000014901161, y: 0.15064219}
-    sizeList:
+    defendBoxSizes:
     - {x: 0.2241436, y: 0.30487996}

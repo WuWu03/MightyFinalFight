@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [System.Serializable]
-public class TriggerDatum
+public class TriggerData
 {
     public string animName;
-    public Vector2[] offestList;
-    public Vector2[] sizeList;
+    public bool useAttackBox;
+    public Vector2[] attackBoxOffsets;
+    public Vector2[] attackBoxSizes;
+    public Vector2[] defendBoxOffsets;
+    public Vector2[] defendBoxSizes;
 }
 
 public class HitTrigger : MonoBehaviour
 {
-    public TriggerDatum GetTriggerData(string animName)
+    public TriggerData GetTriggerData(string animName)
     {
         if (triggerData == null)
         {
@@ -28,5 +31,5 @@ public class HitTrigger : MonoBehaviour
         return null;
     }
 
-    public TriggerDatum[] triggerData = null;
+    public TriggerData[] triggerData = null;
 }

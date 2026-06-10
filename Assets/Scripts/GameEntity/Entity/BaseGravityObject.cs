@@ -8,7 +8,7 @@ public class BaseGravityObject : BaseBoundObject
     private event WuWuFrameworkAction m_OnGroundEvent;
     private bool m_IsAddGroundForce;
     private Rigidbody2D m_Rigidbody2D;
-    
+
     public bool isFloat
     {
         get
@@ -110,6 +110,11 @@ public class BaseGravityObject : BaseBoundObject
 
     public void AddForce(Vector2 force, bool isAddGroundForce = false)
     {
+        if (m_Rigidbody2D.linearVelocityY >= 10f && force.y > 0)
+        {
+            return;
+        }
+
         m_Rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
         m_Rigidbody2D.AddForce(force);
         m_IsAddGroundForce = isAddGroundForce;
