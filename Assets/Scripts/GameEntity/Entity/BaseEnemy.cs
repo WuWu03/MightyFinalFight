@@ -9,7 +9,8 @@ public class BaseEnemy : BaseRole
     private bool m_IsBoss;
     private string[] m_HurtAnim;
     private BaseEnemySkillData m_BaseEnemySkillData;
-    
+    private bool m_HasThrowTriggerEnter = false;
+
     public bool isBoss
     {
         get
@@ -66,7 +67,7 @@ public class BaseEnemy : BaseRole
             Log.LogError("敌人数据为空");
             return;
         }
-        
+
         m_HurtAnim = enemyData.hurtAnims;
         m_HpBarWidth = enemyData.hpBarWdith;
         m_IsBoss = enemyData.isBoss;
@@ -167,6 +168,8 @@ public class BaseEnemy : BaseRole
 
     protected override void OnGroundHurtMsg(HurtStateArg arg)
     {
+        m_HasThrowTriggerEnter = false;
+
         if (!arg.isGroundHurt)
         {
             int dir = arg.attackerPos.x > pos.x ? -1 : 1;
@@ -195,9 +198,9 @@ public class BaseEnemy : BaseRole
             return;
         }
 
-        BaseRole throwTarget = collision.gameObject.GetComponent<BaseRole>();
+        BaseEnemy throwTarget = collision.gameObject.GetComponent<BaseEnemy>();
 
-        if (throwTarget is null || throwTarget.objectType != ObjectType.Enemy || !throwTarget.isBeThrow)
+        if (throwTarget is null || !throwTarget.isBeThrow || throwTarget.m_HasThrowTriggerEnter)
         {
             return;
         }
@@ -237,6 +240,7 @@ public class BaseEnemy : BaseRole
         targetHurt.hurtSound = string.Empty;
         targetHurt.hurtAnim = string.Empty;
         targetHurt.isGroundHurt = true;
+        throwTarget.m_HasThrowTriggerEnter = true;
         throwTarget.HurtState(targetHurt);
         GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnHit02));
     }
