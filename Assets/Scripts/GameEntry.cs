@@ -1,6 +1,6 @@
 using WuWuFramework;
 using WuWuFramework.Resources;
-using WuWuFramework.Audio;
+using WuWuFramework.Sound;
 using WuWuFramework.BehaviourTree;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Download;
@@ -35,7 +35,7 @@ public class GameEntry : WuWuFrameworkEntry
     private static IBehaviourTreeMgr s_BehaviourTreeMgr;
     private static ISoundMgr s_SoundMgr;
     private static IFsmMgr s_FsmMgr;
-    private static IEntityMgr s_EntityMgr;
+    private static IGameEntityMgr s_EntityMgr;
     private static IInputMgr s_InputMgr;
     private static ISceneMgr s_SceneMgr;
     private static ITimerMgr s_TimerMgr;
@@ -184,13 +184,13 @@ public class GameEntry : WuWuFrameworkEntry
         }
     }
 
-    public static IEntityMgr entityMgr
+    public static IGameEntityMgr entityMgr
     {
         get
         {
             if (s_EntityMgr == null)
             {
-                s_EntityMgr = WuWuFrameworkMgr.GetModule<IEntityMgr>();
+                s_EntityMgr = WuWuFrameworkMgr.GetModule<IGameEntityMgr>();
                 s_EntityMgr.SetGameObjectPoolMgr(gameObjectPoolMgr, s_GameEntry);
             }
 
@@ -260,7 +260,7 @@ public class GameEntry : WuWuFrameworkEntry
         HudMgr.Init(manager);
         LoadMgr.Init(manager);
         StoryMgr.Init(manager);
-        CameraMgr.Init(manager);
+        CameraFollowMgr.Init(manager);
     }
 
     protected override void OnStartGame()
@@ -299,7 +299,7 @@ public class GameEntry : WuWuFrameworkEntry
     {
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
-        CameraMgr.instance.Init();
+        CameraFollowMgr.instance.Init();
         uiMgr.Close<VersionView>();
         gameObjectPoolMgr.CheckRelease();
         resourcePoolMgr.CheckRelease();
@@ -312,7 +312,7 @@ public class GameEntry : WuWuFrameworkEntry
 
     protected override void OnExit()
     {
-        CameraMgr.instance.ShutDown();
+        CameraFollowMgr.instance.ShutDown();
         StoryMgr.instance.ShutDown();
         EffectMgr.instance.ShutDown();
         TaskMgr.instance.ShutDown();

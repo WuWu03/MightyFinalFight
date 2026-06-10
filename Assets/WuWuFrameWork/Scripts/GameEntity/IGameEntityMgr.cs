@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace WuWuFramework.GameEntity
 {
-    public interface IEntityMgr
+    public interface IGameEntityMgr
     {
         public int acquireCount {get; }
         public int createCount {get; }

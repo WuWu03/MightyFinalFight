@@ -29,7 +29,7 @@ public class DoBack : Action
         m_TargetPos = Vector2.zero;
         m_TargetPos = m_Owner.pos;
         m_TargetPos.x += m_BackDistance * -m_Owner.dir;
-        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
+        Rect visionRect = CameraFollowMgr.instance.cameraFollow.GetVision();
         m_TargetPos.x = Mathf.Clamp(m_TargetPos.x, visionRect.xMin + m_Owner.bound.width, visionRect.xMax - m_Owner.bound.width);
 
         m_State = BehaviourTreeState.Running;

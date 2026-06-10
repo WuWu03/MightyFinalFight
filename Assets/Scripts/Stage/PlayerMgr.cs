@@ -181,7 +181,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
             }
         }
 
-        CameraMgr.instance.cameraFollow.SetTarget(m_Player.transform);
+        CameraFollowMgr.instance.cameraFollow.SetTarget(m_Player.transform);
         GameEntry.inputMgr.getDirectionEvent += GetDirection;
         GameEntry.inputMgr.getPreConditionEvent += GetPreCondition;
         GameEntry.inputMgr.isRunning = true;
@@ -194,7 +194,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         
         if (life < 1)
         {
-            CameraMgr.instance.cameraFollow.EndFollow();
+            CameraFollowMgr.instance.cameraFollow.EndFollow();
             GameEntry.inputMgr.RemoveAllComboKeyEvent();
 
             m_Player.Release();

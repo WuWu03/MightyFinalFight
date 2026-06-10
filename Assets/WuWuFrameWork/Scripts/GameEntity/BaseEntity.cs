@@ -11,7 +11,7 @@ namespace WuWuFramework.GameEntity
         private string m_AssetPath;
         private GameObject m_Asset;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
-        private IEntityMgr m_EntityMgr;
+        private IGameEntityMgr m_EntityMgr;
         
         public int entityID
         {
@@ -46,7 +46,7 @@ namespace WuWuFramework.GameEntity
         }
 
 
-        public void Init(int entityID, string entityName, IEntityMgr entityMgr, IGameObjectPoolMgr gameObjectPoolMgr)
+        public void Init(int entityID, string entityName, IGameEntityMgr entityMgr, IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_IsAssetLoadComplete = false;
             m_EntityID = entityID;

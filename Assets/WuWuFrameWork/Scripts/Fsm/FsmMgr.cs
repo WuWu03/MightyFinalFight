@@ -1,3 +1,4 @@
+using WuWuFramework.Utils;
 using System.Collections.Generic;
 
 namespace WuWuFramework.Fsm
@@ -5,17 +6,17 @@ namespace WuWuFramework.Fsm
     public class FsmMgr : WuWuFrameworkModule, IFsmMgr
     {
         private readonly Dictionary<object, Fsm> m_Fsms;
-        
+
         public FsmMgr()
         {
             m_Fsms = new();
         }
-        
+
         public int fsmCount
         {
             get { return m_Fsms.Count; }
         }
-        
+
         public override void Shutdown()
         {
             foreach (KeyValuePair<object, Fsm> fsm in m_Fsms)
@@ -77,8 +78,8 @@ namespace WuWuFramework.Fsm
 
             if (m_Fsms.TryGetValue(owner, out Fsm fsm))
             {
-                fsm.Release();
                 m_Fsms.Remove(owner);
+                fsm.Release();
             }
         }
 
@@ -89,7 +90,13 @@ namespace WuWuFramework.Fsm
                 return;
             }
 
-            ReleaseFsm(fsm.owner);
+            if (fsm.owner == null)
+            {
+                throw new WuWuFrameworkException(StringUtil.Append("[", fsm.name, "] 有限状态机持有者为空"));
+            }
+
+            m_Fsms.Remove(fsm.owner);
+            fsm.Release();
         }
     }
 }

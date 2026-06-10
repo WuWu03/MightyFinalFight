@@ -20,7 +20,7 @@ public class DoRunToRoundPos : Action
 
     protected override void OnEnter()
     {
-        Rect visionRect = CameraMgr.instance.cameraFollow.GetVision();
+        Rect visionRect = CameraFollowMgr.instance.cameraFollow.GetVision();
         Vector2 selfPos = m_Owner.pos;
         Vector2 targetPos = PlayerMgr.instance.player.pos;
         float randomY = StageMgr.instance.GetRandomPosY();

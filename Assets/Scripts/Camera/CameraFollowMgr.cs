@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using WuWuFramework;
 
-public class CameraMgr : BaseMgr<CameraMgr>
+public class CameraFollowMgr : BaseMgr<CameraFollowMgr>
 {
     private CameraFollow m_CameraFollow = null;
     public CameraFollow cameraFollow

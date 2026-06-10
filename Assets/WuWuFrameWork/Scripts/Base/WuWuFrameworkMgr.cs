@@ -96,27 +96,20 @@ namespace WuWuFramework
                 }
             }
 
-            string moduleName = StringUtil.Append(interfaceType.Namespace,".", interfaceType.Name.Substring(1));
-            return CreateModule<T>(moduleName);
+            return CreateModule<T>();
         }
 
         /// <summary>
         /// 创建模块。
         /// </summary>
-        private static T CreateModule<T>(string moduleName) where T : class
+        private static T CreateModule<T>() where T : class
         {
-            Type moduleType = Type.GetType(moduleName);
-            
-            if (moduleType == null)
-            {
-                throw new Exception( StringUtil.Append("获取模块 [", moduleName,"] 类型失败"));
-            }
-            
-            T instance = Activator.CreateInstance(moduleType) as T;
+            Type type = typeof(T);
+            T instance = WuWuFrameworkModuleFactory.GetModule<T>();
 
             if (instance == null)
             {
-                throw new Exception(StringUtil.Append("创建模块 [", moduleName, "] 失败"));
+                throw new Exception(StringUtil.Append("创建模块 [", type.FullName, "] 失败"));
             }
 
             if (instance is WuWuFrameworkModule wuwuFrameworkModule)
@@ -145,7 +138,7 @@ namespace WuWuFramework
                 return instance;
             }
 
-            throw new Exception(StringUtil.Append("创建模块 [", moduleName, "] 失败"));
+            throw new Exception(StringUtil.Append("创建模块 [", type.FullName, "] 失败"));
         }
     }
 }

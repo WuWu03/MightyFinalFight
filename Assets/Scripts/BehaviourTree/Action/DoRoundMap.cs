@@ -22,7 +22,7 @@ public class DoRoundMap : Action
         float tirggerSize = m_Owner.bound.width / 2f;
 
         Vector2 pos = m_Owner.pos;
-        Rect vision = CameraMgr.instance.cameraFollow.GetVision();
+        Rect vision = CameraFollowMgr.instance.cameraFollow.GetVision();
         Rect area = StageMgr.instance.GetMoveArea();
 
         Vector2 leftTop = new Vector2(vision.xMin + tirggerSize, area.yMax);

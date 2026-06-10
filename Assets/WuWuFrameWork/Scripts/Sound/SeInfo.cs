@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-namespace WuWuFramework.Audio
+namespace WuWuFramework.Sound
 {
     public class SeInfo
     {

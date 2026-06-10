@@ -301,6 +301,7 @@ namespace WuWuFramework.Fsm
                 kvp.Value.Release(this);
             }
 
+            Debug.Log("fsm释放");
             m_FsmStates.Clear();
             m_Name = string.Empty;
             m_Owner = null;

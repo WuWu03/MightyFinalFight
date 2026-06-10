@@ -12,6 +12,10 @@ namespace WuWuFramework.Camera
         private const string MainCameraName = "MainCamera";
         private Dictionary<string, UnityCamera> m_Cameras = new();
 
+        /// <summary>
+        /// URP下创建全局唯一主像机
+        /// </summary>
+        /// <returns></returns>
         public UnityCamera AddMainCamera()
         {
             if (m_MainCamera != null)
@@ -29,6 +33,10 @@ namespace WuWuFramework.Camera
             return m_MainCamera;
         }
 
+        /// <summary>
+        /// URP下创建全局唯一UI相机
+        /// </summary>
+        /// <param name="camera"></param>
         public void AddUICamera(UnityCamera camera)
         {
             if (m_UICamera != null)
@@ -49,6 +57,12 @@ namespace WuWuFramework.Camera
             uacData.cameraStack.Add(m_UICamera);
         }
 
+        /// <summary>
+        /// URP下创建混合相机
+        /// </summary>
+        /// <param name="cameraName"></param>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public UnityCamera AddCamera(string cameraName)
         {
             if (m_MainCamera == null)
@@ -71,8 +85,11 @@ namespace WuWuFramework.Camera
             return camera;
         }
 
-
-
+        /// <summary>
+        /// 获取主相机
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public UnityCamera GetMainCamera()
         {
             if (m_MainCamera == null)
@@ -83,16 +100,17 @@ namespace WuWuFramework.Camera
             return m_MainCamera;
         }
 
+        /// <summary>
+        /// 获取混合相机
+        /// </summary>
+        /// <param name="cameraName"></param>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public UnityCamera GetCamera(string cameraName)
         {
             if (m_MainCamera == null)
             {
                 throw new WuWuFrameworkException("未找到主摄像机，调用AddMainCamera方法创建主摄像机");
-            }
-
-            if (cameraName == MainCameraName)
-            {
-                return m_MainCamera;
             }
 
             if (!m_Cameras.TryGetValue(cameraName, out UnityCamera camera))
@@ -103,6 +121,12 @@ namespace WuWuFramework.Camera
             return camera;
         }
 
+        /// <summary>
+        /// 移除混合相机
+        /// </summary>
+        /// <param name="cameraName"></param>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public bool RemoveCamera(string cameraName)
         {
             if (cameraName == MainCameraName)

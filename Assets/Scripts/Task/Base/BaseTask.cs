@@ -59,9 +59,9 @@ public abstract class BaseTask : ITask
         {
             PlayerMgr.instance.canControl = false;
             PlayerMgr.instance.SetSpeedZero();
-            CameraMgr.instance.cameraFollow.followMode = CameraFollow.FollowMode.Linear;
-            CameraMgr.instance.cameraFollow.StartFollow(true);
-            float cameraX = CameraMgr.instance.cameraFollow.transform.position.x;
+            CameraFollowMgr.instance.cameraFollow.followMode = CameraFollow.FollowMode.Linear;
+            CameraFollowMgr.instance.cameraFollow.StartFollow(true);
+            float cameraX = CameraFollowMgr.instance.cameraFollow.transform.position.x;
             float playerX = PlayerMgr.instance.player.pos.x;
             bool isDistance = cameraX >= playerX || Mathf.Abs(cameraX - playerX) <= 0f;
 
@@ -69,7 +69,7 @@ public abstract class BaseTask : ITask
             {
                 PlayerMgr.instance.canControl = true;
                 PlayerMgr.instance.RevertSpeed();
-                CameraMgr.instance.cameraFollow.followMode = CameraFollow.FollowMode.Just;
+                CameraFollowMgr.instance.cameraFollow.followMode = CameraFollow.FollowMode.Just;
             }
 
             return isDistance;

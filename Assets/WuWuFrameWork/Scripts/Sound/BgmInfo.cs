@@ -1,4 +1,4 @@
-namespace WuWuFramework.Audio
+namespace WuWuFramework.Sound
 {
     public class BgmInfo : WuWuFrameworkEventArg
     {

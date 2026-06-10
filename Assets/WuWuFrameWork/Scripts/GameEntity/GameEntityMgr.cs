@@ -6,7 +6,7 @@ using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.GameEntity
 {
-    public class EntityMgr : WuWuFrameworkModule, IEntityMgr
+    public class GameEntityMgr : WuWuFrameworkModule, IGameEntityMgr
     {
         private readonly List<BaseEntity> m_UsingEntities;
         private readonly List<BaseEntity> m_TempEntities;
@@ -18,7 +18,7 @@ namespace WuWuFramework.GameEntity
         private int m_ReleaseCount;
         private int m_DestroyCount;
         
-        public EntityMgr()
+        public GameEntityMgr()
         {
             m_UsingEntities = new List<BaseEntity>();
             m_TempEntities =  new List<BaseEntity>();

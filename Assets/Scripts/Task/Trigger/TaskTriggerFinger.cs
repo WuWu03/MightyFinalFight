@@ -6,7 +6,7 @@ public class TaskTriggerFinger : BaseTaskTrigger
 
     public override void Trigger()
     {
-        Rect vision = CameraMgr.instance.cameraFollow.GetVision();
+        Rect vision = CameraFollowMgr.instance.cameraFollow.GetVision();
         Vector2 pos = new Vector2(vision.xMax - 0.4f, vision.yMax - 0.5f);
         EffectMgr.instance.PlayDBEffect("Go.prefab", pos, 3, 0.5f);
         Complete();

@@ -2,7 +2,7 @@ using WuWuFramework.Event;
 using WuWuFramework.Pool;
 using UnityEngine;
 
-namespace WuWuFramework.Audio
+namespace WuWuFramework.Sound
 {
     public interface ISoundMgr
     {
