@@ -1,12 +1,15 @@
-
 /*
- * @Desc: Level.xlsx数据表
- * @Date: 2024-06-06 11:09:24
+ * @Desc: Level.xlsx 数据表，SheetName: Level
+ * @Date: 2026-06-29 15:07:52
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
+
 using WuWuFramework;
 using WuWuFramework.ConfigData;
+using LitJson;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class LevelConfigData : BaseConfigData
@@ -68,36 +71,34 @@ public class LevelConfigData : BaseConfigData
 
 	public LevelConfigData Clone()
 	{
-		LevelConfigData levelConfigData = new()
-        {
-            roleId = this.roleId,
-            level = this.level,
-            hpValue = this.hpValue,
-            attackValue = this.attackValue,
-            defenseValue = this.defenseValue,
-            exp = this.exp,
-            attackSpeed = this.attackSpeed,
-            criticalValue = this.criticalValue,
-            moveSpeed = this.moveSpeed,
-            jumpForce = this.jumpForce,
-            hpBarWidth = this.hpBarWidth
-        };
-        return levelConfigData;
+		LevelConfigData levelConfigData = new LevelConfigData();
+		levelConfigData.roleId = this.roleId;
+		levelConfigData.level = this.level;
+		levelConfigData.hpValue = this.hpValue;
+		levelConfigData.attackValue = this.attackValue;
+		levelConfigData.defenseValue = this.defenseValue;
+		levelConfigData.exp = this.exp;
+		levelConfigData.attackSpeed = this.attackSpeed;
+		levelConfigData.criticalValue = this.criticalValue;
+		levelConfigData.moveSpeed = this.moveSpeed;
+		levelConfigData.jumpForce = this.jumpForce;
+		levelConfigData.hpBarWidth = this.hpBarWidth;
+		return levelConfigData;
 	}
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.GetFieldValue("id").ToInt();
-		this.roleId = parser.GetFieldValue("roleId").ToInt();
-		this.level = parser.GetFieldValue("level").ToInt();
-		this.hpValue = parser.GetFieldValue("hpValue").ToInt();
-		this.attackValue = parser.GetFieldValue("attackValue").ToInt();
-		this.defenseValue = parser.GetFieldValue("defenseValue").ToInt();
-		this.exp = parser.GetFieldValue("exp").ToInt();
-		this.attackSpeed = parser.GetFieldValue("attackSpeed").ToFloat();
-		this.criticalValue = parser.GetFieldValue("criticalValue").ToInt();
-		this.moveSpeed = parser.GetFieldValue("moveSpeed").ToFloat();
-		this.jumpForce = parser.GetFieldValue("jumpForce").ToVector2();
-		this.hpBarWidth = parser.GetFieldValue("hpBarWidth").ToFloat();
+		this.id = parser.ReadInt();
+		this.roleId = parser.ReadInt();
+		this.level = parser.ReadInt();
+		this.hpValue = parser.ReadInt();
+		this.attackValue = parser.ReadInt();
+		this.defenseValue = parser.ReadInt();
+		this.exp = parser.ReadInt();
+		this.attackSpeed = parser.ReadFloat();
+		this.criticalValue = parser.ReadInt();
+		this.moveSpeed = parser.ReadFloat();
+		this.jumpForce = parser.ReadVector2();
+		this.hpBarWidth = parser.ReadFloat();
 	}
 }

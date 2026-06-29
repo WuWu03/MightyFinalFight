@@ -80,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &7130511618238151272
 MeshFilter:
@@ -178,11 +179,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Idle
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0014922172, y: 0.19130799}
     defendBoxSizes:
     - {x: 0.18527332, y: 0.3816206}
   - animName: Move
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.013630182, y: 0.1845486}
     - {x: 0.035835385, y: 0.19016103}
@@ -196,6 +203,9 @@ MonoBehaviour:
     - {x: 0.18355888, y: 0.3855591}
     - {x: 0.18355888, y: 0.3855591}
   - animName: Attack1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0104325265, y: 0.1843641}
     - {x: 0.06846519, y: 0.18558739}
@@ -207,6 +217,9 @@ MonoBehaviour:
     - {x: 0.32265106, y: 0.37322184}
     - {x: 0.32265106, y: 0.37322184}
   - animName: Hurt
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.008846998, y: 0.1920895}
     - {x: -0.008846998, y: 0.1920895}
@@ -222,16 +235,25 @@ MonoBehaviour:
     - {x: 0.21163487, y: 0.3838333}
     - {x: 0.21163487, y: 0.3838333}
   - animName: SmoonUp
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0012885183, y: 0.14455722}
     defendBoxSizes:
     - {x: 0.26296517, y: 0.2856731}
   - animName: SmoonDown
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0, y: 0.114747226}
     defendBoxSizes:
     - {x: 0.35682845, y: 0.2325803}
   - animName: Awaken
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.010755718, y: 0.15400577}
     - {x: 0.010755718, y: 0.15400577}
@@ -247,11 +269,17 @@ MonoBehaviour:
     - {x: 0.21483445, y: 0.30836868}
     - {x: 0.21483445, y: 0.30836868}
   - animName: Defense
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.01254499, y: 0.18612772}
     defendBoxSizes:
     - {x: 0.17588991, y: 0.36526453}
   - animName: Dead
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0, y: 0.10226618}
     - {x: 0, y: 0.10226618}

@@ -64,7 +64,7 @@ public class HudViewPresenter : UIBaseViewPresenter<HudView>
             Color.white : // 绿色为玩家伤害
             Color.red; //红色为敌人伤害
         Vector3 screenPos = GameEntry.cameraMgr.GetMainCamera().WorldToScreenPoint(pos);
-        Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, view.gameObject.GetComponent<RectTransform>(), GameEntry.uiMgr.uiCamera);
+        Vector2 uguiPos = CommonUtil.ScreenPosToUGUIPos(screenPos, view.gameObject.GetComponent<RectTransform>(), GameEntry.uiMgr.uiRoot.uiCamera);
         textRect.localPosition = uguiPos;
         textRect.DOAnchorPos3DY(uguiPos.y + 100f, 2f);
         text.DOFade(0, 2f).OnComplete(() =>

@@ -194,7 +194,7 @@ namespace WuWuFramework.UI
                 m_Transform = m_GameObject.transform;
                 OnInitView(m_GameObject.GetComponent<UIRefRoot>());
                 m_GameObject.SetLayer(LayerName.UI);
-                m_Transform.SetParent(m_UIMgr.GetLayer(settings.layer), false);
+                m_Transform.SetParent(m_UIMgr.uiRoot.GetLayer(settings.layer), false);
             }
 
             m_Presenter.Open(arg);

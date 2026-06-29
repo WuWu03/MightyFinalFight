@@ -104,7 +104,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_UIMgr == null)
             {
                 s_UIMgr = WuWuFrameworkMgr.GetModule<IUIMgr>();
-                s_UIMgr.SetMgr(gameObjectPoolMgr, cameraMgr);
+                s_UIMgr.SetMgr(gameObjectPoolMgr);
             }
 
             return s_UIMgr;
@@ -297,6 +297,8 @@ public class GameEntry : WuWuFrameworkEntry
 
     private void StartGame()
     {
+        StoryConfigData[] d = GameEntry.configDataMgr.Get<StoryConfigData>();
+
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
         CameraFollowMgr.instance.Init();

@@ -1,12 +1,16 @@
 /*
- * @Desc: SceneItem.xlsx数据表
- * @Date: 2024-06-06 11:09:24
+ * @Desc: SceneItem.xlsx 数据表，SheetName: SceneItem
+ * @Date: 2026-06-29 15:07:52
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
 using WuWuFramework;
 using WuWuFramework.ConfigData;
+using LitJson;
+using System;
+using System.Collections;
+using UnityEngine;
 
 public class SceneItemConfigData : BaseConfigData
 {
@@ -48,11 +52,11 @@ public class SceneItemConfigData : BaseConfigData
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.GetFieldValue("id").ToInt();
-		this.name = parser.GetFieldValue("name");
-		this.assetName = parser.GetFieldValue("assetName");
-		this.type = parser.GetFieldValue("type").ToInt();
-		this.value = parser.GetFieldValue("value").ToInt();
-		this.canDrop = parser.GetFieldValue("canDrop").ToBool();
+		this.id = parser.ReadInt();
+		this.name = parser.ReadUTF8String();
+		this.assetName = parser.ReadUTF8String();
+		this.type = parser.ReadInt();
+		this.value = parser.ReadInt();
+		this.canDrop = parser.ReadBool();
 	}
 }

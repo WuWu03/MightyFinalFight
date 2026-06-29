@@ -42,7 +42,7 @@ Camera:
   m_GameObject: {fileID: 97640758282970267}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
+  m_ClearFlags: 4
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -312,6 +312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 97640759967808175}
+  - component: {fileID: 7838916693162060971}
   m_Layer: 5
   m_Name: UIRoot
   m_TagString: Untagged
@@ -337,6 +338,18 @@ Transform:
   - {fileID: 97640759060155514}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7838916693162060971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97640759967808174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58898ecf86627aa47bb46fe4370ca7e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.UIRoot
 --- !u!1 &187469266312525485
 GameObject:
   m_ObjectHideFlags: 0

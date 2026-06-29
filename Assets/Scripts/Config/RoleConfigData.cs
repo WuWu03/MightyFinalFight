@@ -1,11 +1,15 @@
 /*
- * @Desc: Role.xlsx数据表
- * @Date: 2024-06-06 11:09:24
+ * @Desc: Role.xlsx 数据表，SheetName: Role
+ * @Date: 2026-06-29 15:07:52
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
+
 using WuWuFramework;
 using WuWuFramework.ConfigData;
+using LitJson;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class RoleConfigData : BaseConfigData
@@ -132,25 +136,25 @@ public class RoleConfigData : BaseConfigData
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.GetFieldValue("id").ToInt();
-		this.name = parser.GetFieldValue("name");
-		this.assetName = parser.GetFieldValue("assetName");
-		this.hitEffect = parser.GetFieldValue("hitEffect");
-		this.headIcon = parser.GetFieldValue("headIcon");
-		this.attackSpeed = parser.GetFieldValue("attackSpeed").ToFloat();
-		this.moveSpeed = parser.GetFieldValue("moveSpeed").ToFloat();
-		this.jumpForce = parser.GetFieldValue("jumpForce").ToVector2();
-		this.attactIds = parser.GetFieldValue("attactIds").ToIntArray();
-		this.jumpAttackIds = parser.GetFieldValue("jumpAttackIds").ToIntArray();
-		this.catchAttackId = parser.GetFieldValue("catchAttackId").ToInt();
-		this.throwAttackId = parser.GetFieldValue("throwAttackId").ToInt();
-		this.weaponAttackId = parser.GetFieldValue("weaponAttackId").ToInt();
-		this.throwWeaponId = parser.GetFieldValue("throwWeaponId").ToInt();
-		this.skillIds = parser.GetFieldValue("skillIds").ToIntArray();
-		this.weaponId = parser.GetFieldValue("weaponId").ToInt();
-		this.isCatchControl = parser.GetFieldValue("isCatchControl").ToBool();
-		this.behaviourTreeIds = parser.GetFieldValue("behaviourTreeIds").ToIntArray();
-		this.hurtAnims = parser.GetFieldValue("hurtAnims").ToStringArray();
-		this.isBoss = parser.GetFieldValue("isBoss").ToBool();
+		this.id = parser.ReadInt();
+		this.name = parser.ReadUTF8String();
+		this.assetName = parser.ReadUTF8String();
+		this.hitEffect = parser.ReadUTF8String();
+		this.headIcon = parser.ReadUTF8String();
+		this.attackSpeed = parser.ReadFloat();
+		this.moveSpeed = parser.ReadFloat();
+		this.jumpForce = parser.ReadVector2();
+		this.attactIds = parser.ReadIntArray();
+		this.jumpAttackIds = parser.ReadIntArray();
+		this.catchAttackId = parser.ReadInt();
+		this.throwAttackId = parser.ReadInt();
+		this.weaponAttackId = parser.ReadInt();
+		this.throwWeaponId = parser.ReadInt();
+		this.skillIds = parser.ReadIntArray();
+		this.weaponId = parser.ReadInt();
+		this.isCatchControl = parser.ReadBool();
+		this.behaviourTreeIds = parser.ReadIntArray();
+		this.hurtAnims = parser.ReadUTF8StringArray();
+		this.isBoss = parser.ReadBool();
 	}
 }

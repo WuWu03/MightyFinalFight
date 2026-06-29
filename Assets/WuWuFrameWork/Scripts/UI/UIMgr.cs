@@ -1,10 +1,9 @@
-using WuWuFramework.Pool;
-using WuWuFramework.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework.Pool;
+using WuWuFramework.Utils;
 using UnityObject = UnityEngine.Object;
-using WuWuFramework.Camera;
 
 namespace WuWuFramework.UI
 {
@@ -13,19 +12,24 @@ namespace WuWuFramework.UI
     /// </summary>
     public class UIMgr : WuWuFrameworkModule, IUIMgr
     {
-        private readonly Canvas m_UICanvas;
-        private readonly UnityEngine.Camera m_UICamera;
+        private readonly UIRoot m_UIRoot;
         private readonly List<IUIView> m_DelayDestroyViews;
         private readonly List<IUIView> m_AlwaysViews;
         private readonly List<IUIView> m_PopViews;
         private readonly List<IUIView> m_OpenViews;
         private readonly List<IUIView> m_TempViews;
-        private readonly RectTransform[] m_UILayers;
         private IUIView m_CurrPopView;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
-        private ICameraMgr m_CameraMgr;
         private bool m_CanPopView;
         private bool m_IsOpenViewsDirty;
+
+        /// <summary>
+        /// UI根节点
+        /// </summary>
+        public UIRoot uiRoot
+        {
+            get { return m_UIRoot; }
+        }
 
         public UIMgr()
         {
@@ -34,35 +38,7 @@ namespace WuWuFramework.UI
             m_DelayDestroyViews = new();
             m_PopViews = new();
             m_TempViews = new();
-            GameObject uiRoot = GameObject.Find("UIRoot");
-            m_UICanvas = uiRoot.transform.Find("UICanvas").GetOrAddComponent<Canvas>();
-            m_UICamera = uiRoot.transform.Find("UICamera").GetOrAddComponent<UnityEngine.Camera>();
-            WuWuFrameworkMgr.GetModule<ICameraMgr>().AddUICamera(m_UICamera);
-            m_UILayers = new RectTransform[(int)UILayer.Load + 1];
-
-            string[] uiLayerNames = Enum.GetNames(typeof(UILayer));
-            for (int i = 0; i < uiLayerNames.Length; i++)
-            {
-                m_UILayers[i] = m_UICanvas.transform.Find(uiLayerNames[i]).GetComponent<RectTransform>();
-            }
-
-            UnityObject.DontDestroyOnLoad(uiRoot);
-        }
-
-        /// <summary>
-        /// UI画布
-        /// </summary>
-        public Canvas uiCanvas
-        {
-            get { return m_UICanvas; }
-        }
-
-        /// <summary>
-        /// UI相机
-        /// </summary>
-        public UnityEngine.Camera uiCamera
-        {
-            get { return m_UICamera; }
+            m_UIRoot = UnityObject.FindFirstObjectByType<UIRoot>();
         }
 
         /// <summary>
@@ -165,21 +141,9 @@ namespace WuWuFramework.UI
             m_TempViews.Clear();
         }
 
-        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr, ICameraMgr cameraMgr)
+        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_GameObjectPoolMgr = gameObjectPoolMgr;
-            m_CameraMgr = cameraMgr;
-
-        }
-
-        /// <summary>
-        /// 获取层级
-        /// </summary>
-        /// <param name="layer">层级类型</param>
-        /// <returns></returns>
-        public RectTransform GetLayer(UILayer layer)
-        {
-            return m_UILayers[Convert.ToInt32(layer)];
         }
 
         /// <summary>

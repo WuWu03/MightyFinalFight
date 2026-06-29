@@ -147,7 +147,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
             return;
         }
 
-        if (m_CurrTriggerDatum == null)
+        if (m_CurrTriggerData == null)
         {
             return;
         }
@@ -178,10 +178,10 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
             if (GUILayout.Button("粘贴全部"))
             {
-                for (int i = 0; i < m_CurrTriggerDatum.defendBoxOffsets.Length; i++)
+                for (int i = 0; i < m_CurrTriggerData.defendBoxOffsets.Length; i++)
                 {
-                    m_CurrTriggerDatum.defendBoxOffsets[i] = m_CopyOffest;
-                    m_CurrTriggerDatum.defendBoxSizes[i] = m_CopySize;
+                    m_CurrTriggerData.defendBoxOffsets[i] = m_CopyOffest;
+                    m_CurrTriggerData.defendBoxSizes[i] = m_CopySize;
                 }
 
                 m_CurrCollider.size = m_CopySize;
@@ -213,8 +213,8 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
         if (GUILayout.Button("保存设置"))
         {
-            m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
-            m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1] = m_CurrCollider.size;
+            m_CurrTriggerData.defendBoxOffsets[m_CurrAnimFrame - 1] = m_CurrCollider.offset;
+            m_CurrTriggerData.defendBoxSizes[m_CurrAnimFrame - 1] = m_CurrCollider.size;
 
             m_CurrDB.GetComponent<HitTrigger>().triggerData = m_TriggerDatas;
             Component.DestroyImmediate(m_CurrCollider);
@@ -227,14 +227,14 @@ public class CharacterTriggerEditorWindow : EditorWindow
             }
 
             m_CurrCollider = m_CurrGo.GetOrAddComponent<BoxCollider2D>();
-            m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
-            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerData.defendBoxSizes[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerData.defendBoxOffsets[m_CurrAnimFrame - 1];
         }
 
         if (GUILayout.Button("恢复初始"))
         {
-            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
-            m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerData.defendBoxOffsets[m_CurrAnimFrame - 1];
+            m_CurrCollider.size = m_CurrTriggerData.defendBoxSizes[m_CurrAnimFrame - 1];
         }
     }
 
@@ -253,20 +253,20 @@ public class CharacterTriggerEditorWindow : EditorWindow
 
     private void OnItemSelect()
     {
-        m_CurrTriggerDatum = GetTriggerData(m_CurrAnimName);
+        m_CurrTriggerData = GetTriggerData(m_CurrAnimName);
 
-        if (m_CurrTriggerDatum != null)
+        if (m_CurrTriggerData != null)
         {
-            if (m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1] != Vector2.zero)
+            if (m_CurrTriggerData.defendBoxSizes[m_CurrAnimFrame - 1] != Vector2.zero)
             {
-                m_CurrCollider.size = m_CurrTriggerDatum.defendBoxSizes[m_CurrAnimFrame - 1];
+                m_CurrCollider.size = m_CurrTriggerData.defendBoxSizes[m_CurrAnimFrame - 1];
             }
             else
             {
                 m_CurrCollider.size = Vector2.one;
             }
 
-            m_CurrCollider.offset = m_CurrTriggerDatum.defendBoxOffsets[m_CurrAnimFrame - 1];
+            m_CurrCollider.offset = m_CurrTriggerData.defendBoxOffsets[m_CurrAnimFrame - 1];
         }
 
         m_CurrDB.animation.GotoAndStopByFrame(m_CurrAnimName, (uint)(m_CurrAnimFrame - 1));
@@ -289,7 +289,7 @@ public class CharacterTriggerEditorWindow : EditorWindow
     private UnityEngine.Object m_CurrSelectObj = null;
     private UnityArmatureComponent m_CurrDB = null;
     private BoxCollider2D m_CurrCollider = null;
-    private TriggerData m_CurrTriggerDatum = null;
+    private TriggerData m_CurrTriggerData = null;
     private string m_CurrAnimName = string.Empty;
     private Vector2 scroll = Vector2.zero;
     private Vector2 m_CopyOffest = Vector2.zero;

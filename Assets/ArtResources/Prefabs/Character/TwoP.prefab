@@ -80,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &479461243421446383
 MeshFilter:
@@ -178,11 +179,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Idle
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16147265}
     defendBoxSizes:
     - {x: 0.16309911, y: 0.32260257}
   - animName: Move
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.011815086, y: 0.16836481}
     - {x: 0.011815086, y: 0.16442645}
@@ -194,6 +201,9 @@ MonoBehaviour:
     - {x: 0.16506825, y: 0.32457176}
     - {x: 0.16506825, y: 0.32457176}
   - animName: Attack1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.05218324, y: 0.15261136}
     - {x: 0.05218324, y: 0.15261136}
@@ -207,6 +217,9 @@ MonoBehaviour:
     - {x: 0.2654963, y: 0.30094156}
     - {x: 0.2654963, y: 0.30094156}
   - animName: Hurt
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16245724}
     - {x: 0.0009845793, y: 0.16245724}
@@ -222,16 +235,25 @@ MonoBehaviour:
     - {x: 0.22217447, y: 0.32457176}
     - {x: 0.22217447, y: 0.32457176}
   - animName: SmoonUp
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845942, y: 0.120119914}
     defendBoxSizes:
     - {x: 0.24580464, y: 0.24383542}
   - animName: SmoonDown
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0019691586, y: 0.06990583}
     defendBoxSizes:
     - {x: 0.3029108, y: 0.14734557}
   - animName: Awaken
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.015753418, y: 0.13587332}
     - {x: 0.015753418, y: 0.13587332}
@@ -247,6 +269,9 @@ MonoBehaviour:
     - {x: 0.2123285, y: 0.2714039}
     - {x: 0.2123285, y: 0.2714039}
   - animName: Dead
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0029537827, y: 0.08172092}
     - {x: 0.0029537827, y: 0.08172092}
@@ -268,11 +293,17 @@ MonoBehaviour:
     - {x: 0.30487993, y: 0.16703743}
     - {x: 0.30487993, y: 0.16703743}
   - animName: Wait1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0019691736, y: 0.14670384}
     defendBoxSizes:
     - {x: 0.22414365, y: 0.29306483}
   - animName: Wait2
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.000000014901161, y: 0.15064219}
     defendBoxSizes:

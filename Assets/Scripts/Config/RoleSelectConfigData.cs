@@ -1,11 +1,16 @@
 /*
- * @Desc: RoleSelect.xlsx数据表
- * @Date: 2024-06-06 11:09:24
+ * @Desc: RoleSelect.xlsx 数据表，SheetName: RoleSelect
+ * @Date: 2026-06-29 15:07:52
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
+
 using WuWuFramework;
 using WuWuFramework.ConfigData;
+using LitJson;
+using System;
+using System.Collections;
+using UnityEngine;
 
 public class RoleSelectConfigData : BaseConfigData
 {
@@ -71,15 +76,15 @@ public class RoleSelectConfigData : BaseConfigData
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.GetFieldValue("id").ToInt();
-		this.roleId = parser.GetFieldValue("roleId").ToInt();
-		this.name = parser.GetFieldValue("name");
-		this.desc = parser.GetFieldValue("desc");
-		this.headIcon = parser.GetFieldValue("headIcon");
-		this.assetName = parser.GetFieldValue("assetName");
-		this.animName = parser.GetFieldValue("animName");
-		this.soundName = parser.GetFieldValue("soundName");
-		this.showTime = parser.GetFieldValue("showTime").ToFloat();
-		this.animSpeed = parser.GetFieldValue("animSpeed").ToFloat();
+		this.id = parser.ReadInt();
+		this.roleId = parser.ReadInt();
+		this.name = parser.ReadUTF8String();
+		this.desc = parser.ReadUTF8String();
+		this.headIcon = parser.ReadUTF8String();
+		this.assetName = parser.ReadUTF8String();
+		this.animName = parser.ReadUTF8String();
+		this.soundName = parser.ReadUTF8String();
+		this.showTime = parser.ReadFloat();
+		this.animSpeed = parser.ReadFloat();
 	}
 }

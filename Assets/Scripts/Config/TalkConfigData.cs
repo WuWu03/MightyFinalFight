@@ -1,6 +1,6 @@
 /*
- * @Desc: Talk.xlsx数据表
- * @Date: 2024-06-06 11:09:24
+ * @Desc: Talk.xlsx 数据表，SheetName: Talk
+ * @Date: 2026-06-29 15:07:52
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -8,6 +8,9 @@
 using WuWuFramework;
 using WuWuFramework.ConfigData;
 using LitJson;
+using System;
+using System.Collections;
+using UnityEngine;
 
 public class TalkConfigData : BaseConfigData
 {
@@ -55,10 +58,10 @@ public class TalkConfigData : BaseConfigData
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.GetFieldValue("id").ToInt();
-		this.roleId = parser.GetFieldValue("roleId").ToInt();
-		this.content = parser.GetFieldValue("content");
-		this.talkSelect = JsonMapper.ToObject<TalkSelect[]>(parser.GetFieldValue("talkSelect"));
-		this.nextTalkId = parser.GetFieldValue("nextTalkId").ToInt();
+		this.id = parser.ReadInt();
+		this.roleId = parser.ReadInt();
+		this.content = parser.ReadUTF8String();
+		this.talkSelect = JsonMapper.ToObject<TalkSelect[]>(parser.ReadUTF8String());
+		this.nextTalkId = parser.ReadInt();
 	}
 }

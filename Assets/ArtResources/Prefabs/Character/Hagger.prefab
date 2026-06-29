@@ -80,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &4911007044370016022
 MeshFilter:
@@ -169,6 +170,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &4911007044377282606
 MeshFilter:
@@ -268,6 +270,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   triggerData:
   - animName: Attack1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.028553098, y: 0.17427233}
     - {x: 0.071875036, y: 0.1693494}
@@ -277,11 +282,17 @@ MonoBehaviour:
     - {x: 0.34820187, y: 0.3422944}
     - {x: 0.34820187, y: 0.3422944}
   - animName: Idle
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0, y: 0.1762415}
     defendBoxSizes:
     - {x: 0.24383545, y: 0.3560786}
   - animName: Attack2
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.028553098, y: 0.17427233}
     - {x: 0.070890434, y: 0.17427233}
@@ -291,6 +302,9 @@ MonoBehaviour:
     - {x: 0.35017103, y: 0.35214025}
     - {x: 0.35017103, y: 0.35214025}
   - animName: Attack3
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.031506866, y: 0.17427233}
     - {x: 0.070890434, y: 0.17427233}
@@ -308,6 +322,9 @@ MonoBehaviour:
     - {x: 0.35017103, y: 0.35214025}
     - {x: 0.2714039, y: 0.32457173}
   - animName: Attack4
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.000000007450581, y: 0.1949487}
     - {x: 0.0019691885, y: 0.14079627}
@@ -325,6 +342,9 @@ MonoBehaviour:
     - {x: 0.41515398, y: 0.34426352}
     - {x: 0.23202033, y: 0.393493}
   - animName: Move
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.011815041, y: 0.16245726}
     - {x: 0.011815041, y: 0.16245726}
@@ -338,6 +358,9 @@ MonoBehaviour:
     - {x: 0.24383539, y: 0.32063335}
     - {x: 0.24383539, y: 0.32063335}
   - animName: Awaken
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0029537827, y: 0.07679798}
     - {x: -0.0029537827, y: 0.07679798}
@@ -353,11 +376,17 @@ MonoBehaviour:
     - {x: 0.3954622, y: 0.15325323}
     - {x: 0.21429774, y: 0.3206334}
   - animName: Catch
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.053167835, y: 0.16639559}
     defendBoxSizes:
     - {x: 0.26352718, y: 0.33244845}
   - animName: Attack_Weapon
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0059075356, y: 0.20774834}
     - {x: 0.113227785, y: 0.1752569}
@@ -371,6 +400,9 @@ MonoBehaviour:
     - {x: 0.37380123, y: 0.35214025}
     - {x: 0.37380123, y: 0.35214025}
   - animName: Dead
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0029537827, y: 0.07679798}
     - {x: -0.0029537827, y: 0.07679798}
@@ -392,6 +424,9 @@ MonoBehaviour:
     - {x: 0.3954622, y: 0.15325323}
     - {x: 0.3954622, y: 0.15325323}
   - animName: Hurt
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.020676374, y: 0.170334}
     - {x: -0.020676374, y: 0.170334}
@@ -407,26 +442,41 @@ MonoBehaviour:
     - {x: 0.3009416, y: 0.34032515}
     - {x: 0.3009416, y: 0.34032515}
   - animName: Idle_Weapon
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.000000029802322, y: 0.17427233}
     defendBoxSizes:
     - {x: 0.24383539, y: 0.35214025}
   - animName: JumpAttack1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.000000029802322, y: 0.1447346}
     defendBoxSizes:
     - {x: 0.2753423, y: 0.29700324}
   - animName: JumpUp
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.011815041, y: 0.17525692}
     defendBoxSizes:
     - {x: 0.2792806, y: 0.35410944}
   - animName: JumpDown
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.02756849, y: 0.16147268}
     defendBoxSizes:
     - {x: 0.2792806, y: 0.32654095}
   - animName: Knee
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0472603, y: 0.17033397}
     - {x: 0.0472603, y: 0.17033397}
@@ -442,6 +492,9 @@ MonoBehaviour:
     - {x: 0.2517121, y: 0.3403252}
     - {x: 0.2517121, y: 0.3403252}
   - animName: Move_Weapon
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.011815041, y: 0.16245726}
     - {x: 0.011815041, y: 0.16639562}
@@ -455,6 +508,9 @@ MonoBehaviour:
     - {x: 0.24383539, y: 0.32851008}
     - {x: 0.24383539, y: 0.32851008}
   - animName: PickUp
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16048807}
     - {x: 0.0009845793, y: 0.16048807}
@@ -470,6 +526,9 @@ MonoBehaviour:
     - {x: 0.21429774, y: 0.3206334}
     - {x: 0.21429774, y: 0.3206334}
   - animName: Skill1
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845793, y: 0.16048807}
     - {x: 0.0009845793, y: 0.16048807}
@@ -485,6 +544,9 @@ MonoBehaviour:
     - {x: 0.21429774, y: 0.3206334}
     - {x: 0.3836471, y: 0.38167796}
   - animName: Skill2
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.049229488, y: 0.17427233}
     - {x: 0.016737998, y: 0.17427233}
@@ -498,16 +560,25 @@ MonoBehaviour:
     - {x: 0.39546213, y: 0.35607862}
     - {x: 0.39546213, y: 0.35607862}
   - animName: SmoonUp
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0019692034, y: 0.10928941}
     defendBoxSizes:
     - {x: 0.39743134, y: 0.21823615}
   - animName: SmoonDown
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.0029537827, y: 0.07679798}
     defendBoxSizes:
     - {x: 0.3954622, y: 0.15325323}
   - animName: Throw
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.014768809, y: 0.1762415}
     - {x: 0.031506807, y: 0.16245724}
@@ -521,6 +592,9 @@ MonoBehaviour:
     - {x: 0.35017103, y: 0.20642105}
     - {x: 0.35017103, y: 0.20642105}
   - animName: ThrowWeapon
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: -0.006892115, y: 0.21070215}
     - {x: 0.11716615, y: 0.1782107}
@@ -534,11 +608,17 @@ MonoBehaviour:
     - {x: 0.25171214, y: 0.3482019}
     - {x: 0.25171214, y: 0.3482019}
   - animName: JumpAttack2
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.000000029802322, y: 0.1447346}
     defendBoxSizes:
     - {x: 0.2753423, y: 0.29700324}
   - animName: AttackEnd
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0009845942, y: 0.16245723}
     - {x: 0.0009845942, y: 0.16245723}
@@ -554,6 +634,9 @@ MonoBehaviour:
     - {x: 0.21823606, y: 0.32851005}
     - {x: 0.21823606, y: 0.32851005}
   - animName: Move_Catch
+    useAttackBox: 0
+    attackBoxOffsets: []
+    attackBoxSizes: []
     defendBoxOffsets:
     - {x: 0.0541524, y: 0.16147265}
     - {x: 0.058090746, y: 0.16541101}

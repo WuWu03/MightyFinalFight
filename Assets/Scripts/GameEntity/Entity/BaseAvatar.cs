@@ -305,7 +305,7 @@ public abstract class BaseAvatar : BaseGravityObject
     {
         base.OnLoadAssetComplete(go, arg);
         m_Animator = go.GetComponent<UnityArmatureComponent>();
-        m_Animator.sortingOrder = 2;
+        m_Animator.sortingOrder = 3;
         m_HitTrigger = go.GetComponent<HitTrigger>();
 
         if (m_Fsm != null && m_Fsm.HasDefaultState())

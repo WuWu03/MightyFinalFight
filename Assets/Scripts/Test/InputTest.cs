@@ -10,7 +10,9 @@ public class InputTest : MonoBehaviour
     void Start()
     {
         m_InputMgr.inputActionAsset = asset;
-        m_InputMgr.SetCurrScheme("Game");
+        m_InputMgr.SetCurrScheme("KeyBoard");
+        m_InputMgr.AddInputEvent(InputKey.LeftAxis, InputEventCallType.Performed, OnLeftAxis);
+        m_InputMgr.AddInputEvent(InputKey.LT, InputEventCallType.Performed, OnLT);
         //m_InputMgr.AddInputEvent<Vector2>("LeftAxis",OnLeftAxis);
         // m_InputMgr.AddInputEvent<float>("LT", OnLT);
         // m_InputMgr.AddInputEvent("LB",OnLB);
@@ -36,23 +38,14 @@ public class InputTest : MonoBehaviour
         Debug.Log(t);
     }
 
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.A))
-    //     {
-    //         Debug.Log("开始重新绑定");
-    //         action.Disable(); 
-    //         action.PerformInteractiveRebinding(0).OnComplete(operation =>
-    //         {
-    //             action.Enable();
-    //             operation.Dispose();
-    //             Debug.Log("重新绑定");
-    //         }).OnCancel(operation => {
-    //             action.Enable();
-    //             operation.Dispose();
-    //         }).Start();
-    //     }
-    // }
+    void Update()
+    {
+        m_InputMgr.Update();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // m_InputMgr.ReBindInput(InputKey.LeftAxis);
+        }
+    }
     // private void OnInput(InputAction.CallbackContext obj)
     // {
     //     string str = action.GetBindingDisplayString(0);

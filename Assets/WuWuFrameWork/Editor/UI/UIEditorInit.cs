@@ -55,8 +55,8 @@ namespace WuWuFramework.Editor
         {
             SceneView.duringSceneGui -= DuringSceneGUI;
             SceneView.duringSceneGui += DuringSceneGUI;
-            EditorApplication.hierarchyWindowItemOnGUI = null;
-            EditorApplication.hierarchyWindowItemOnGUI = HierarchyWindowItemOnGUI;
+            EditorApplication.hierarchyWindowItemOnGUI -= HierarchyWindowItemOnGUI;
+            EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
             s_CSharpExporter = new CSharpUIScriptsExporter();
         }
 

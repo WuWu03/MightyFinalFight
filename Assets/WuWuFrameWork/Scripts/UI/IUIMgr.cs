@@ -1,16 +1,12 @@
 using System;
 using WuWuFramework.Pool;
-using UnityEngine;
-using WuWuFramework.Camera;
 
 namespace WuWuFramework.UI
 {
     public interface IUIMgr
     {
-        public Canvas uiCanvas { get; }
-        public UnityEngine.Camera uiCamera { get; }
-        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr, ICameraMgr cameraMgr);
-        public RectTransform GetLayer(UILayer layer);
+        public UIRoot uiRoot { get; }
+        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr);
         public IUIView Open(string viewName, object arg = null);
         public T Open<T>(object arg = null) where T : class, IUIView, new();
         public IUIView Open(Type viewType, object arg = null);

@@ -1,11 +1,16 @@
-using WuWuFramework.Serialize;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using WuWuFramework.Serialize;
 
 namespace WuWuFramework.ConfigData
 {
     public class ConfigDataParser : IDisposable
     {
+        private int m_CurrRow = 0;
+        private MemoryStreamEx m_MSE = null;
+
         /// <summary>
         /// 行数
         /// </summary>
@@ -15,17 +20,6 @@ namespace WuWuFramework.ConfigData
         /// 列数
         /// </summary>
         public int column { get; private set; }
-
-        /// <summary>
-        /// 字段名称
-        /// </summary>
-        public string[] fieldName
-        {
-            get
-            {
-                return m_FieldNames;
-            }
-        }
 
         /// <summary>
         /// 是否结束
@@ -48,35 +42,12 @@ namespace WuWuFramework.ConfigData
                 return;
             }
 
-            m_FieldNameDict = new Dictionary<string, int>();
-            byte[] buffer = ZlibHelper.DeCompressBytes(bytes);//1解压缩
-            MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
-            mse.Write(buffer, 0, buffer.Length);
-            mse.Position = 0;
-            row = mse.ReadInt();
-            column = mse.ReadInt();
-            m_Datas = new String[row - 1, column];
-            m_FieldNames = new string[column];
-
-            for (int i = 0; i < row; i++)
-            {
-                for (int j = 0; j < column; j++)
-                {
-                    string str = mse.ReadUTF8String();
-
-                    if (i == 0)//表示读取的是字段
-                    {
-                        m_FieldNames[j] = str;
-                        m_FieldNameDict[str] = j;
-                    }
-                    else//表示读取的是数据
-                    {
-                        m_Datas[i - 1, j] = str;
-                    }
-                }
-            }
-            
-            mse.Release();
+            byte[] buffer = ZlibHelper.DeCompressBytes(bytes);//解压缩
+            m_MSE = new MemoryStreamEx();
+            m_MSE.Write(buffer, 0, buffer.Length);
+            m_MSE.Position = 0;
+            row = m_MSE.ReadInt();
+            column = m_MSE.ReadInt();
         }
 
         /// <summary>
@@ -92,25 +63,301 @@ namespace WuWuFramework.ConfigData
             m_CurrRow++;
         }
 
-        /// <summary>
-        /// 获取字段值
-        /// </summary>
-        /// <returns></returns>
-        public string GetFieldValue(string fieldName)
+        public byte ReadByte()
         {
-            try
-            {
-                if (m_CurrRow < 0 || m_CurrRow >= row)
-                {
-                    return string.Empty;
-                }
+            return (byte)m_MSE.ReadByte();
+        }
 
-                return m_Datas[m_CurrRow, m_FieldNameDict[fieldName]];
-            }
-            catch 
+        public byte[] ReadByteArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            byte[] array = new byte[length];
+
+            for (int i = 0; i < length; i++)
             {
-                return string.Empty;
+                array[i] = (byte)m_MSE.ReadByte();
             }
+
+            return array;
+        }
+
+        public short ReadShort()
+        {
+            return m_MSE.ReadShort();
+        }
+
+        public ushort ReadUShort()
+        {
+            return m_MSE.ReadUShort();
+        }
+
+        public short[] ReadShortArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            short[] array = new short[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadShort();
+            }
+
+            return array;
+        }
+
+        public int ReadInt()
+        {
+            return m_MSE.ReadInt();
+        }
+
+        public int[] ReadIntArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            int[] array = new int[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadInt();
+            }
+
+            return array;
+        }
+
+        public long ReadLong()
+        {
+            return m_MSE.ReadLong();
+        }
+
+        public long[] ReadLongArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            long[] array = new long[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadLong();
+            }
+
+            return array;
+        }
+
+        public float ReadFloat()
+        {
+            return m_MSE.ReadFloat();
+        }
+
+        public float[] ReadFloatArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            float[] array = new float[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadFloat();
+            }
+
+            return array;
+        }
+
+        public double ReadDouble()
+        {
+            return m_MSE.ReadDouble();
+        }
+
+        public double[] ReadDoubleArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            double[] array = new double[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadDouble();
+            }
+
+            return array;
+        }
+
+        public bool ReadBool()
+        {
+            return m_MSE.ReadBool();
+        }
+
+        public bool[] ReadBoolArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            bool[] array = new bool[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadBool();
+            }
+
+            return array;
+        }
+
+        public string ReadUTF8String()
+        {
+            return m_MSE.ReadUTF8String();
+        }
+
+        public string[] ReadUTF8StringArray()
+        {
+            ushort length = m_MSE.ReadUShort();
+            string[] array = new string[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = m_MSE.ReadUTF8String();
+            }
+
+            return array;
+        }
+
+        public Vector2 ReadVector2()
+        {
+            Vector2 vector2 = new(m_MSE.ReadFloat(), m_MSE.ReadFloat());
+            return vector2;
+        }
+
+        public Vector2[] ReadVector2Array()
+        {
+            ushort length = m_MSE.ReadUShort();
+            Vector2[] array = new Vector2[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = new(m_MSE.ReadFloat(), m_MSE.ReadFloat());
+            }
+
+            return array;
+        }
+
+        public Vector3 ReadVector3()
+        {
+            Vector3 vector3 = new(m_MSE.ReadFloat(), m_MSE.ReadFloat(), m_MSE.ReadFloat());
+            return vector3;
+        }
+
+        public Vector3[] ReadVector3Array()
+        {
+            ushort length = m_MSE.ReadUShort();
+            Vector3[] array = new Vector3[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = new(m_MSE.ReadFloat(), m_MSE.ReadFloat(), m_MSE.ReadFloat());
+            }
+
+            return array;
+        }
+
+        public Dictionary<TKey, TValue> ReadDictionary<TKey, TValue>()
+        {
+            ushort length = m_MSE.ReadUShort();
+            Dictionary<TKey, TValue> dictionary = new();
+
+            for (int i = 0; i < length; i++)
+            {
+                TKey key = this.Read<TKey>();
+                TValue value = this.Read<TValue>();
+                dictionary.Add(key, value);
+            }
+
+            return dictionary;
+
+        }
+
+        /// <summary>
+        /// 泛型转换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
+        private T Read<T>()
+        {
+            Type type = typeof(T);
+
+            if (type == typeof(byte))
+            {
+                byte value = this.ReadByte();
+                return Unsafe.As<byte, T>(ref value);
+            }
+            else if (type == typeof(short))
+            {
+                short value = this.ReadShort();
+                return Unsafe.As<short, T>(ref value);
+            }
+            else if (type == typeof(int))
+            {
+                int value = this.ReadInt();
+                return Unsafe.As<int, T>(ref value);
+            }
+            else if (type == typeof(long))
+            {
+                long value = this.ReadLong();
+                return Unsafe.As<long, T>(ref value);
+            }
+            else if (type == typeof(float))
+            {
+                float value = this.ReadFloat();
+                return Unsafe.As<float, T>(ref value);
+            }
+            else if (type == typeof(double))
+            {
+                double value = this.ReadDouble();
+                return Unsafe.As<double, T>(ref value);
+            }
+            else if (type == typeof(bool))
+            {
+                bool value = this.ReadBool();
+                return Unsafe.As<bool, T>(ref value);
+            }
+            else if (type == typeof(string))
+            {
+                string value = this.ReadUTF8String();
+                return Unsafe.As<string, T>(ref value);
+            }
+            else if (type == typeof(byte[]))
+            {
+                byte[] values = this.ReadByteArray();
+                return Unsafe.As<byte[], T>(ref values);
+            }
+            else if (type == typeof(short[]))
+            {
+                short[] values = this.ReadShortArray();
+                return Unsafe.As<short[], T>(ref values);
+            }
+            else if (type == typeof(int[]))
+            {
+                int[] values = this.ReadIntArray();
+                return Unsafe.As<int[], T>(ref values);
+            }
+            else if (type == typeof(long[]))
+            {
+                long[] values = this.ReadLongArray();
+                return Unsafe.As<long[], T>(ref values);
+            }
+            else if (type == typeof(float[]))
+            {
+                float[] values = this.ReadFloatArray();
+                return Unsafe.As<float[], T>(ref values);
+            }
+            else if (type == typeof(double[]))
+            {
+                double[] values = this.ReadDoubleArray();
+                return Unsafe.As<double[], T>(ref values);
+            }
+            else if (type == typeof(bool[]))
+            {
+                bool[] values = this.ReadBoolArray();
+                return Unsafe.As<bool[], T>(ref values);
+            }
+            else if (type == typeof(string[]))
+            {
+                string[] values = this.ReadUTF8StringArray();
+                return Unsafe.As<string[], T>(ref values);
+            }
+
+            throw new WuWuFrameworkException("未找到类型");
         }
 
         /// <summary>
@@ -118,31 +365,7 @@ namespace WuWuFramework.ConfigData
         /// </summary>
         public void Dispose()
         {
-            m_FieldNameDict.Clear();
-            m_FieldNameDict = null;
-
-            m_FieldNames = null;
-            m_Datas = null;
+            m_MSE.Dispose();
         }
-
-        /// <summary>
-        /// 字段名称
-        /// </summary>
-        private string[] m_FieldNames;
-
-        /// <summary>
-        /// 游戏数据
-        /// </summary>
-        private string[,] m_Datas;
-
-        /// <summary>
-        /// 当前行号
-        /// </summary>
-        private int m_CurrRow = 0;
-
-        /// <summary>
-        /// 字段名称字典
-        /// </summary>
-        private Dictionary<string, int> m_FieldNameDict;
     }
 }

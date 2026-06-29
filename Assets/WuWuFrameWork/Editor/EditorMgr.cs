@@ -16,20 +16,22 @@ namespace WuWuFramework.Editor
     public static class EditorMgr
     {
         private const string EditorPrefsKey = "unity_editor_show_main_scene";
-
-        static EditorMgr() { }
+        private static WuWuFrameworkConfigWindowData s_ConfigWindowData = null;
 
         public static WuWuFrameworkConfigWindowData GetWuWuFrameworkConfig()
         {
-            WuWuFrameworkConfigWindowData config = AssetDatabase.LoadAssetAtPath<WuWuFrameworkConfigWindowData>(EditorPathUtil.WuWuFrameWorkConfigWindowDataPath);
-            return config;
+            if (s_ConfigWindowData == null)
+            {
+                s_ConfigWindowData = AssetDatabase.LoadAssetAtPath<WuWuFrameworkConfigWindowData>(EditorPathUtil.WuWuFrameWorkConfigWindowDataPath);
+            }
+
+            return s_ConfigWindowData;
         }
 
         [MenuItem("WuWuFramework/Start Up &1", false, 0)]
         public static void WuWuFrameworkStartUp()
         {
             CreateEntryScript();
-
             Rect rect = new(0, 0, 600, 300);
             EditorWindow window = EditorWindow.GetWindowWithRect<WuWuFrameworkConfigWindow>(rect);
             window.Show();
@@ -132,6 +134,7 @@ namespace WuWuFramework.Editor
         public static void GoToWuWuFrameworkEntryScene()
         {
             WuWuFrameworkConfigWindowData config = GetWuWuFrameworkConfig();
+
             if (config == null || string.IsNullOrEmpty(config.entryScene))
             {
                 return;
@@ -144,22 +147,26 @@ namespace WuWuFramework.Editor
 
             Type[] entryTypes = EditorUtil.GetAssemblyTypes("WuWuFramework.WuWuFrameworkEntry", "WuWuFrameworkEntry");
 
-            if (entryTypes == null || entryTypes.Length < 1)
+            if (entryTypes != null && entryTypes.Length > 0)
             {
-                return;
+                UnityObject entry = UnityObject.FindFirstObjectByType(entryTypes[0], FindObjectsInactive.Include);
+
+                if (entry == null)
+                {
+                    new GameObject(entryTypes[0].Name).AddComponent(entryTypes[0]);
+                }
             }
 
-            GameObject entry = GameObject.Find("GameEntry");
-            if (entry == null)
-            {
-                entry = new GameObject("GameEntry");
-                entry.AddComponent(entryTypes[0]);
-            }
+            Type[] uiRootTypes = EditorUtil.GetAssemblyTypes("WuWuFramework.UI.UIRoot");
 
-            GameObject uiRoot = GameObject.Find("UIRoot");
-            if (uiRoot == null)
+            if (uiRootTypes != null && uiRootTypes.Length > 0)
             {
-                UnityObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.EditorUIRootPath));
+                UnityObject uiRoot = UnityObject.FindFirstObjectByType(uiRootTypes[0], FindObjectsInactive.Include);
+
+                if (uiRoot == null)
+                {
+                    PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(EditorPathUtil.EditorUIRootPath));
+                }
             }
         }
 
