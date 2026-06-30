@@ -21,7 +21,8 @@ public class LanguageLoader : BaseLanguageLoader
             return;
         }
 
-        using ConfigDataParser parser = new(textAsset.bytes);
+        ConfigDataParser parser = ReferencePool.Acquire<ConfigDataParser>();
+        parser.Init(textAsset.bytes);
 
         while (!parser.eof)
         {
@@ -31,6 +32,8 @@ public class LanguageLoader : BaseLanguageLoader
             m_LanguageMap.Add(key, content);
             parser.Next();
         }
+
+        parser.Release();
     }
 
     public override string GetLanguageText(string key)

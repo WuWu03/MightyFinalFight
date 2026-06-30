@@ -102,7 +102,7 @@ namespace WuWuFramework.Net
             try
             {
                 m_Socket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
-                m_ReceiveMse = ReferencePool.Acquire<MemoryStreamEx>();
+                m_ReceiveMse = new();
                 m_IsConnected = true;
                 StartReceive();
                 m_OnConnectSuccessEvent?.Invoke();
@@ -141,9 +141,7 @@ namespace WuWuFramework.Net
                 }
                 
                 m_ReceiveQueue.Clear();
-                m_ReceiveMse.SetLength(0);
-                m_ReceiveMse.Close();
-                m_ReceiveMse.Release();
+                m_ReceiveMse.Dispose();
                 m_ReceiveMse = null;
                 m_OnDisConnectEvent?.Invoke();
             }
@@ -286,14 +284,12 @@ namespace WuWuFramework.Net
                     }
 
                     m_CheckCount++;
-                    MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
+                    
                     byte[] buffer = m_ReceiveQueue.Dequeue();
                     byte[] msgContent = ArrayPool<byte>.instance.Get(buffer.Length - 2);
-                    mse.Write(buffer, 0, buffer.Length);
-                    mse.Position = 0;
+                    using MemoryStreamEx mse = new(buffer);
                     ushort msgCode = mse.ReadUShort();
                     mse.Read(msgContent, 0, msgContent.Length);
-                    mse.Release();
                     m_NetDispatcher.Dispatch(msgCode, msgContent);
                     ArrayPool<byte>.instance.Put(msgContent);
                     ArrayPool<byte>.instance.Put(buffer);

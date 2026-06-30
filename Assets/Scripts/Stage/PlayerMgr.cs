@@ -137,8 +137,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Level = 1;
         m_Exp = 0;
         m_CanCtrl = true;
-        m_RoleConfigData = GameEntry.configDataMgr.Get<RoleConfigData>().GetConfigDataById(m_SelectRoleId);
-        m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().GetSingConfigDataByAttr(StringUtil.Append("{roleId=", m_SelectRoleId.ToString(), ",level=", m_Level.ToString(), "}"));
+        m_RoleConfigData = GameEntry.configDataMgr.Get<RoleConfigData>().Get(m_SelectRoleId);
+        m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().Get(OnLevelDataForEach);
         m_Player = GameEntry.entityMgr.GetEntity<BaseHero>("Player");
         m_Player.SetObjectType(ObjectType.Player);
         m_Player.SetAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleConfigData.assetName));
@@ -215,7 +215,7 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         {
             m_Level++;
             m_Exp -= m_LevelConfigData.exp;
-            m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().GetSingConfigDataByAttr(StringUtil.Append("{roleId=", m_RoleConfigData.id.ToString(), ",level=", m_Level.ToString(), "}"));
+            m_LevelConfigData = GameEntry.configDataMgr.Get<LevelConfigData>().Get(OnLevelDataForEach);
             m_Player.entityAttribute.health = m_LevelConfigData.hpValue;
             m_Player.entityAttribute.maxHealth = m_LevelConfigData.hpValue;
             mainView.SetPlayerHP(m_LevelConfigData.hpValue, m_LevelConfigData.hpValue, m_LevelConfigData.hpBarWidth);
@@ -251,6 +251,11 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
     {
         m_Player.entityAttribute.moveSpeed = m_CurrSpeed;
         m_CurrSpeed = 0f;
+    }
+
+    private bool OnLevelDataForEach(LevelConfigData levelConfigData)
+    {
+        return levelConfigData.roleId == m_SelectRoleId && levelConfigData.level == m_Level;
     }
 
     private float GetDirection()

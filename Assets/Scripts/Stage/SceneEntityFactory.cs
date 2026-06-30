@@ -34,7 +34,7 @@ public static class SceneEntityFactory
             EntityAttribute weaponAttribute = ReferencePool.Acquire<EntityAttribute>();
             weaponAttribute.health = sceneItemConfigData.value;
             weaponAttribute.maxHealth = sceneItemConfigData.value;
-            sceneItemConfigData = GameEntry.configDataMgr.Get<SceneItemConfigData>().GetConfigDataById(PlayerMgr.instance.roleConfigData.weaponId);
+            sceneItemConfigData = GameEntry.configDataMgr.Get<SceneItemConfigData>().Get(PlayerMgr.instance.roleConfigData.weaponId);
             objectType = ObjectType.Weapon;
             sceneItem = GameEntry.entityMgr.GetEntity<Weapon>(sceneItemConfigData.name);
             sceneItem.SetAttribute(weaponAttribute);

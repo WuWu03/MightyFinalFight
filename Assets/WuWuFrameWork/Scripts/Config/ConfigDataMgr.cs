@@ -53,6 +53,7 @@ namespace WuWuFramework.ConfigData
 
         public void RemoveAll()
         {
+            ConfigDataHelper.ClearPredicateCache();
             m_ConfigData.Clear();
         }
 

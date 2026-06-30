@@ -26,7 +26,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
     protected override void OnShow(object arg)
     {
         int talkId = int.Parse(arg.ToString());
-        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
+        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
         view.talkSelectList.SetActiveSelf(false);
         view.talkSelectList.SelectItem(0);
         PlayTalk();
@@ -48,7 +48,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
                     if (m_SelectIndex > -1)
                     {
                         int talkId = m_ConfigData.talkSelect[m_SelectIndex].talkId;
-                        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
+                        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
                         view.talkSelectList.SetActiveSelf(false);
                         PlayTalk();
                     }
@@ -56,7 +56,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
                 else
                 {
                     int talkId = m_ConfigData.nextTalkId;
-                    m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().GetConfigDataById(talkId);
+                    m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
                     PlayTalk();
                 }
             }

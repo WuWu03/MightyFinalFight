@@ -34,7 +34,7 @@ public class StageViewPresenter : UIBaseViewPresenter<StageView>
 
         view.imgMapGo.transform.Find("pos" + stageConfigData.StageIndex).gameObject.SetActiveSelf(true);
         int characterId = PlayerMgr.instance.selectRoleId;
-        m_RoleSelectConfig = GameEntry.configDataMgr.Get<RoleSelectConfigData>().GetConfigDataById(characterId);
+        m_RoleSelectConfig = GameEntry.configDataMgr.Get<RoleSelectConfigData>().Get(characterId);
         GameEntry.gameObjectPoolMgr.GetFromAsset(PathUtil.FormatPath(AssetPathDefine.PrefabPath, m_RoleSelectConfig.assetName), OnLoaded);
         GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStart).UnSubscribeAllOnDestroy(view.gameObject);
     }

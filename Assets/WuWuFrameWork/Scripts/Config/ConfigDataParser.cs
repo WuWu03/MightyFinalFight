@@ -6,7 +6,7 @@ using WuWuFramework.Serialize;
 
 namespace WuWuFramework.ConfigData
 {
-    public class ConfigDataParser : IDisposable
+    public class ConfigDataParser : IReference
     {
         private int m_CurrRow = 0;
         private MemoryStreamEx m_MSE = null;
@@ -32,10 +32,7 @@ namespace WuWuFramework.ConfigData
             }
         }
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        public ConfigDataParser(byte[] bytes)
+        public void Init(byte[] bytes)
         {
             if (bytes == null)
             {
@@ -43,11 +40,10 @@ namespace WuWuFramework.ConfigData
             }
 
             byte[] buffer = ZlibHelper.DeCompressBytes(bytes);//解压缩
-            m_MSE = new MemoryStreamEx();
-            m_MSE.Write(buffer, 0, buffer.Length);
-            m_MSE.Position = 0;
+            m_MSE = new MemoryStreamEx(buffer);
             row = m_MSE.ReadInt();
             column = m_MSE.ReadInt();
+            m_CurrRow = 0;
         }
 
         /// <summary>
@@ -272,6 +268,7 @@ namespace WuWuFramework.ConfigData
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="WuWuFrameworkException"></exception>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private T Read<T>()
         {
             Type type = typeof(T);
@@ -281,91 +278,75 @@ namespace WuWuFramework.ConfigData
                 byte value = this.ReadByte();
                 return Unsafe.As<byte, T>(ref value);
             }
-            else if (type == typeof(short))
+            if (type == typeof(short))
             {
                 short value = this.ReadShort();
                 return Unsafe.As<short, T>(ref value);
             }
-            else if (type == typeof(int))
+            if (type == typeof(int))
             {
                 int value = this.ReadInt();
                 return Unsafe.As<int, T>(ref value);
             }
-            else if (type == typeof(long))
+            if (type == typeof(long))
             {
                 long value = this.ReadLong();
                 return Unsafe.As<long, T>(ref value);
             }
-            else if (type == typeof(float))
+            if (type == typeof(float))
             {
                 float value = this.ReadFloat();
                 return Unsafe.As<float, T>(ref value);
             }
-            else if (type == typeof(double))
+            if (type == typeof(double))
             {
                 double value = this.ReadDouble();
                 return Unsafe.As<double, T>(ref value);
             }
-            else if (type == typeof(bool))
+            if (type == typeof(bool))
             {
                 bool value = this.ReadBool();
                 return Unsafe.As<bool, T>(ref value);
             }
-            else if (type == typeof(string))
+            if (type == typeof(Vector2))
             {
-                string value = this.ReadUTF8String();
-                return Unsafe.As<string, T>(ref value);
+                Vector2 value = this.ReadVector2();
+                return Unsafe.As<Vector2, T>(ref value);
             }
-            else if (type == typeof(byte[]))
+            if (type == typeof(Vector3))
             {
-                byte[] values = this.ReadByteArray();
-                return Unsafe.As<byte[], T>(ref values);
+                Vector3 value = this.ReadVector3();
+                return Unsafe.As<Vector3, T>(ref value);
             }
-            else if (type == typeof(short[]))
-            {
-                short[] values = this.ReadShortArray();
-                return Unsafe.As<short[], T>(ref values);
-            }
-            else if (type == typeof(int[]))
-            {
-                int[] values = this.ReadIntArray();
-                return Unsafe.As<int[], T>(ref values);
-            }
-            else if (type == typeof(long[]))
-            {
-                long[] values = this.ReadLongArray();
-                return Unsafe.As<long[], T>(ref values);
-            }
-            else if (type == typeof(float[]))
-            {
-                float[] values = this.ReadFloatArray();
-                return Unsafe.As<float[], T>(ref values);
-            }
-            else if (type == typeof(double[]))
-            {
-                double[] values = this.ReadDoubleArray();
-                return Unsafe.As<double[], T>(ref values);
-            }
-            else if (type == typeof(bool[]))
-            {
-                bool[] values = this.ReadBoolArray();
-                return Unsafe.As<bool[], T>(ref values);
-            }
-            else if (type == typeof(string[]))
-            {
-                string[] values = this.ReadUTF8StringArray();
-                return Unsafe.As<string[], T>(ref values);
-            }
+
+            //引用类型无需Unsafe，直接强转
+            if (type == typeof(string)) return (T)(object)this.ReadUTF8String();
+            if (type == typeof(byte[])) return (T)(object)this.ReadByteArray();
+            if (type == typeof(short[])) return (T)(object)this.ReadShortArray();
+            if (type == typeof(int[])) return (T)(object)this.ReadIntArray();
+            if (type == typeof(long[])) return (T)(object)this.ReadLongArray();
+            if (type == typeof(float[])) return (T)(object)this.ReadFloatArray();
+            if (type == typeof(double[])) return (T)(object)this.ReadDoubleArray();
+            if (type == typeof(bool[])) return (T)(object)this.ReadBoolArray();
+            if (type == typeof(string[])) return (T)(object)this.ReadUTF8StringArray();
+            if (type == typeof(Vector2[])) return (T)(object)this.ReadVector2Array();
+            if (type == typeof(Vector3[])) return (T)(object)this.ReadVector3Array();
 
             throw new WuWuFrameworkException("未找到类型");
         }
 
-        /// <summary>
-        /// 释放
-        /// </summary>
-        public void Dispose()
+        public void Release()
+        {
+            ReferencePool.Release(this);
+        }
+
+        public void Clear()
         {
             m_MSE.Dispose();
+            m_MSE = null;
+            row = 0;
+            column = 0;
+            m_CurrRow = 0;
         }
     }
 }

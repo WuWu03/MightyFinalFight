@@ -23,9 +23,7 @@ namespace WuWuFramework.BehaviourTree
 
         public void DeSerialize(byte[] buffer)
         {
-            MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
-            mse.Write(buffer, 0, buffer.Length);
-            mse.Position = 0;
+            using MemoryStreamEx mse = new(buffer);
             Queue<BehaviourTreeData> dataQueue = new();
             dataQueue.Enqueue(this);
 
@@ -68,8 +66,6 @@ namespace WuWuFramework.BehaviourTree
                     }
                 }
             }
-            
-            mse.Release();
         }
     }
 }

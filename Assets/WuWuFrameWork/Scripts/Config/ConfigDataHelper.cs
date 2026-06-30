@@ -1,36 +1,39 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using WuWuFramework.Event;
 using WuWuFramework.Resources;
 using WuWuFramework.Utils;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace WuWuFramework.ConfigData
 {
     public static class ConfigDataHelper
     {
-        private static IResourcesMgr m_ResourceMgr;
+        private static IResourcesMgr s_ResourceMgr;
+        private static readonly Dictionary<Type, object> s_PredicateCache = new();
+
         public static void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
-            m_ResourceMgr = resourceMgr;
+            s_ResourceMgr = resourceMgr;
         }
-        
+
         public static T[] LoadConfigData<T>(string filePath) where T : BaseConfigData, new()
         {
-            TextAsset txt = m_ResourceMgr.Load<TextAsset>(filePath);
+            TextAsset txt = s_ResourceMgr.Load<TextAsset>(filePath);
             byte[] bytes = txt.bytes;
-            m_ResourceMgr.Unload(filePath);
+            s_ResourceMgr.Unload(filePath);
 
             if (bytes == null)
             {
                 throw new Exception(StringUtil.Append("读取配置文件失败 : ", filePath));
             }
 
-            using ConfigDataParser parser = new(bytes);
+            ConfigDataParser parser = ReferencePool.Acquire<ConfigDataParser>();
+            parser.Init(bytes);
             T[] data = new T[parser.row - 1];
             int index = 0;
-            
+
             while (!parser.eof)
             {
                 data[index] = new T();
@@ -38,25 +41,27 @@ namespace WuWuFramework.ConfigData
                 parser.Next();
                 index++;
             }
-            
+
+            parser.Release();
             return data;
         }
 
-        public static T GetConfigDataById<T>(this T[] data, int id) where T : BaseConfigData, new()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Get<T>(this T[] data, int id) where T : BaseConfigData, new()
         {
             int left = 0;
-            int right = data.Length;
+            int right = data.Length - 1;
 
-            while (left < right)
+            while (left <= right)
             {
-                int mid = (left + right) / 2;
-                
-                if (data[mid].id == id)
+                int mid = left + ((right - left) >> 1);
+                int currentId = data[mid].id;
+
+                if (currentId == id)
                 {
                     return data[mid];
                 }
-
-                if (id > data[mid].id)
+                else if(currentId < id)
                 {
                     left = mid + 1;
                 }
@@ -66,74 +71,96 @@ namespace WuWuFramework.ConfigData
                 }
             }
 
-            return data[left];
+            // 如果没找到，返回 null
+            return null;
         }
 
-        public static T GetSingConfigDataByAttr<T>(this T[] data, string attr, int index = 0) where T : BaseConfigData, new()
+        public static T Get<T>(this T[] data, WuWuFrameworkFunc<T, bool> predicate) where T : BaseConfigData, new()
         {
-            T[] result = GetConfigDataByAttr(data, attr, true);
-
-            if (result is { Length: > 0 })
+            if (predicate == null)
             {
-                return result[index];
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            foreach (var datum in data)
+            {
+                if (predicate(datum))
+                {
+                    return datum;
+                }
             }
 
             return null;
         }
 
-        public static T[] GetConfigDataByAttr<T>(this T[] data, string attr) where T : BaseConfigData, new()
+        public static void ForEach<T>(this T[] data, WuWuFrameworkFunc<T, bool> predicate, WuWuFrameworkAction<T> onMatch, bool stopOnFirst = false) where T : BaseConfigData, new()
         {
-            return GetConfigDataByAttr<T>(data, attr, false);
-        }
-        
-        private static T[] GetConfigDataByAttr<T>(T[] data, string attr, bool isSingle) where T : BaseConfigData, new()
-        {
-            if (string.IsNullOrEmpty(attr) || !attr.StartsWith("{") || !attr.EndsWith("}"))
+            if (predicate == null)
             {
-                throw new WuWuFrameworkException("查询格式串错误");
+                throw new ArgumentNullException(nameof(predicate));
             }
-            
-            attr = attr.Replace(" ", string.Empty);
-            Match match = Regex.Match(attr, @"((\w)+=(\w)+)");
-            
-            if (match.Success)
+
+            if (onMatch == null)
             {
-                List<T> values = new();
+                throw new ArgumentNullException(nameof(onMatch));
+            }
 
-                foreach (var datum in data)
+            for (int i = 0; i < data.Length; i++)
+            {
+                T datum = data[i];
+
+                if (predicate(datum))
                 {
-                    bool isMatch = true;
-                    Match tempMatch = match;
+                    onMatch(datum);
 
-                    while (tempMatch.Success)
+                    if (stopOnFirst)
                     {
-                        string[] condition = tempMatch.Value.Split("=");
-                        PropertyInfo property = datum.GetType().GetProperty(condition[0]);
-
-                        if (property == null || !property.GetValue(datum).ToString().Equals(condition[1]))
-                        {
-                            isMatch = false;
-                            break;
-                        }
-
-                        tempMatch = tempMatch.NextMatch();
-                    }
-
-                    if (isMatch)
-                    {
-                        values.Add(datum);
-
-                        if (isSingle)
-                        {
-                            break;
-                        }
+                        return;
                     }
                 }
+            }
+        }
 
-                return values.ToArray();
+        public static IList<T> ForEach<T>(this T[] data, WuWuFrameworkFunc<T, bool> predicate) where T : BaseConfigData, new()
+        {
+            IList<T> list = GetPredicateCache<T>(data.Length);
+
+            foreach (var datum in data)
+            {
+                if (predicate(datum))
+                {
+                    list.Add(datum);
+                }
             }
 
-            return null;
+            return list;
+        }
+
+        public static void ClearPredicateCache()
+        {
+            s_PredicateCache.Clear();
+        }
+
+        private static IList<T> GetPredicateCache<T>(int dataLength) where T : BaseConfigData, new()
+        {
+            List<T> result = null;
+            Type type = typeof(T);
+
+            if (!s_PredicateCache.TryGetValue(type, out object list))
+            {
+                list = new List<T>(Mathf.Min(16, dataLength));
+                s_PredicateCache.Add(type, list);
+            }
+
+            result = (List<T>)list;
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            result.Clear();
+            return result;
         }
     }
 }

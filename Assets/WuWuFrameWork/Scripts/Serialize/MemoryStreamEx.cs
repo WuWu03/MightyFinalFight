@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WuWuFramework.Serialize
 {
-    public class MemoryStreamEx : MemoryStream, IReference
+    public class MemoryStreamEx : MemoryStream
     {
         public MemoryStreamEx()
         {
@@ -267,16 +267,5 @@ namespace WuWuFramework.Serialize
         }
 
         #endregion
-
-        public void Release()
-        {
-            ReferencePool.Release(this);
-        }
-
-        public void Clear()
-        {
-            SetLength(0);
-            Position = 0;
-        }
     }
 }

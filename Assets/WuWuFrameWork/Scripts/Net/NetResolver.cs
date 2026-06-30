@@ -22,7 +22,7 @@ namespace WuWuFramework.Net
 
         protected void Send<P>(ushort msgCode, P proto) where P : IExtensible, new()
         {
-            MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
+            using MemoryStreamEx mse = new();
             Serializer.Serialize(mse, proto);
             byte[] buffer = ArrayPool<byte>.instance.Get((int)mse.Length + 6);
             mse.WriteInt((int)mse.Length);
@@ -32,17 +32,13 @@ namespace WuWuFramework.Net
             mse.Position = 0;
             mse.Read(buffer, 6, buffer.Length - 6);
             m_NetMgr.Send(buffer);
-            mse.Release();
             ArrayPool<byte>.instance.Put(buffer);
         }
 
-        protected P Deserialize<P>(byte[] buffer) where P : IExtensible, new()
+        protected O Deserialize<O>(byte[] buffer) where O : IExtensible, new()
         {
-            MemoryStreamEx mse = ReferencePool.Acquire<MemoryStreamEx>();
-            mse.Write(buffer, 0, buffer.Length);
-            mse.Position = 0;
-            P result = Serializer.Deserialize<P>(mse);
-            mse.Release();
+            using MemoryStreamEx mse = new(buffer);
+            O result = Serializer.Deserialize<O>(mse);
             return result;
         }
 
