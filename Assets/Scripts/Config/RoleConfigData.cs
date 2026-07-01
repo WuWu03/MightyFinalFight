@@ -1,16 +1,17 @@
 /*
  * @Desc: Role.xlsx 数据表，SheetName: Role
- * @Date: 2026-06-29 15:07:52
+ * @Date: 2026-07-01 09:58:10
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-using WuWuFramework;
-using WuWuFramework.ConfigData;
 using LitJson;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
 
 public class RoleConfigData : BaseConfigData
 {
@@ -111,50 +112,53 @@ public class RoleConfigData : BaseConfigData
 
 	public RoleConfigData Clone()
 	{
-		RoleConfigData roleConfigData = new RoleConfigData();
-		roleConfigData.name = this.name;
-		roleConfigData.assetName = this.assetName;
-		roleConfigData.hitEffect = this.hitEffect;
-		roleConfigData.headIcon = this.headIcon;
-		roleConfigData.attackSpeed = this.attackSpeed;
-		roleConfigData.moveSpeed = this.moveSpeed;
-		roleConfigData.jumpForce = this.jumpForce;
-		roleConfigData.attactIds = this.attactIds;
-		roleConfigData.jumpAttackIds = this.jumpAttackIds;
-		roleConfigData.catchAttackId = this.catchAttackId;
-		roleConfigData.throwAttackId = this.throwAttackId;
-		roleConfigData.weaponAttackId = this.weaponAttackId;
-		roleConfigData.throwWeaponId = this.throwWeaponId;
-		roleConfigData.skillIds = this.skillIds;
-		roleConfigData.weaponId = this.weaponId;
-		roleConfigData.isCatchControl = this.isCatchControl;
-		roleConfigData.behaviourTreeIds = this.behaviourTreeIds;
-		roleConfigData.hurtAnims = this.hurtAnims;
-		roleConfigData.isBoss = this.isBoss;
+		RoleConfigData roleConfigData = new();
+		{
+			name = this.name;
+			assetName = this.assetName;
+			hitEffect = this.hitEffect;
+			headIcon = this.headIcon;
+			attackSpeed = this.attackSpeed;
+			moveSpeed = this.moveSpeed;
+			jumpForce = this.jumpForce;
+			attactIds = this.attactIds;
+			jumpAttackIds = this.jumpAttackIds;
+			catchAttackId = this.catchAttackId;
+			throwAttackId = this.throwAttackId;
+			weaponAttackId = this.weaponAttackId;
+			throwWeaponId = this.throwWeaponId;
+			skillIds = this.skillIds;
+			weaponId = this.weaponId;
+			isCatchControl = this.isCatchControl;
+			behaviourTreeIds = this.behaviourTreeIds;
+			hurtAnims = this.hurtAnims;
+			isBoss = this.isBoss;
+		}
+
 		return roleConfigData;
 	}
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.ReadInt();
-		this.name = parser.ReadUTF8String();
-		this.assetName = parser.ReadUTF8String();
-		this.hitEffect = parser.ReadUTF8String();
-		this.headIcon = parser.ReadUTF8String();
-		this.attackSpeed = parser.ReadFloat();
-		this.moveSpeed = parser.ReadFloat();
-		this.jumpForce = parser.ReadVector2();
-		this.attactIds = parser.ReadIntArray();
-		this.jumpAttackIds = parser.ReadIntArray();
-		this.catchAttackId = parser.ReadInt();
-		this.throwAttackId = parser.ReadInt();
-		this.weaponAttackId = parser.ReadInt();
-		this.throwWeaponId = parser.ReadInt();
-		this.skillIds = parser.ReadIntArray();
-		this.weaponId = parser.ReadInt();
-		this.isCatchControl = parser.ReadBool();
-		this.behaviourTreeIds = parser.ReadIntArray();
-		this.hurtAnims = parser.ReadUTF8StringArray();
-		this.isBoss = parser.ReadBool();
+		id = parser.Read<int>();
+		name = parser.Read<string>();
+		assetName = parser.Read<string>();
+		hitEffect = parser.Read<string>();
+		headIcon = parser.Read<string>();
+		attackSpeed = parser.Read<float>();
+		moveSpeed = parser.Read<float>();
+		jumpForce = parser.Read<Vector2>();
+		attactIds = parser.Read<int[]>();
+		jumpAttackIds = parser.Read<int[]>();
+		catchAttackId = parser.Read<int>();
+		throwAttackId = parser.Read<int>();
+		weaponAttackId = parser.Read<int>();
+		throwWeaponId = parser.Read<int>();
+		skillIds = parser.Read<int[]>();
+		weaponId = parser.Read<int>();
+		isCatchControl = parser.Read<bool>();
+		behaviourTreeIds = parser.Read<int[]>();
+		hurtAnims = parser.Read<string[]>();
+		isBoss = parser.Read<bool>();
 	}
 }

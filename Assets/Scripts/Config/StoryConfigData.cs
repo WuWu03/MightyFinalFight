@@ -1,6 +1,6 @@
 /*
  * @Desc: Story.xlsx 数据表，SheetName: Story
- * @Date: 2026-06-29 16:40:22
+ * @Date: 2026-07-01 09:58:10
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -10,10 +10,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using WuWuFramework;
 using WuWuFramework.ConfigData;
-using static UnityEngine.Rendering.DebugUI;
 
 public class StoryConfigData : BaseConfigData
 {
@@ -39,20 +37,23 @@ public class StoryConfigData : BaseConfigData
 
     public StoryConfigData Clone()
     {
-        StoryConfigData storyConfigData = new StoryConfigData();
-        storyConfigData.storyId = this.storyId;
-        storyConfigData.track = this.track;
-        storyConfigData.storyContent = this.storyContent;
-        storyConfigData.test = this.test;
+        StoryConfigData storyConfigData = new();
+        {
+            storyId = this.storyId;
+            track = this.track;
+            storyContent = this.storyContent;
+            test = this.test;
+        }
+
         return storyConfigData;
     }
 
     public override void Read(ConfigDataParser parser)
     {
-        this.id = parser.ReadInt();
-        this.storyId = parser.ReadInt();
-        this.track = parser.ReadInt();
-        this.storyContent = parser.ReadUTF8String();
-        this.test = parser.ReadDictionary<int, string>();
+        id = parser.Read<int>();
+        storyId = parser.Read<int>();
+        track = parser.Read<int>();
+        storyContent = parser.Read<string>();
+        test = parser.ReadDictionary<int, string>();
     }
 }

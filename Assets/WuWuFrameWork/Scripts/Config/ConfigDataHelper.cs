@@ -143,7 +143,7 @@ namespace WuWuFramework.ConfigData
 
         private static IList<T> GetPredicateCache<T>(int dataLength) where T : BaseConfigData, new()
         {
-            List<T> result = null;
+            List<T> result;
             Type type = typeof(T);
 
             if (!s_PredicateCache.TryGetValue(type, out object list))

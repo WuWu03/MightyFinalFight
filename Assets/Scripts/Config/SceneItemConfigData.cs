@@ -1,16 +1,17 @@
 /*
  * @Desc: SceneItem.xlsx 数据表，SheetName: SceneItem
- * @Date: 2026-06-29 15:07:52
+ * @Date: 2026-07-01 09:58:10
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-using WuWuFramework;
-using WuWuFramework.ConfigData;
 using LitJson;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
 
 public class SceneItemConfigData : BaseConfigData
 {
@@ -41,22 +42,25 @@ public class SceneItemConfigData : BaseConfigData
 
 	public SceneItemConfigData Clone()
 	{
-		SceneItemConfigData sceneItemConfigData = new SceneItemConfigData();
-		sceneItemConfigData.name = this.name;
-		sceneItemConfigData.assetName = this.assetName;
-		sceneItemConfigData.type = this.type;
-		sceneItemConfigData.value = this.value;
-		sceneItemConfigData.canDrop = this.canDrop;
+		SceneItemConfigData sceneItemConfigData = new();
+		{
+			name = this.name;
+			assetName = this.assetName;
+			type = this.type;
+			value = this.value;
+			canDrop = this.canDrop;
+		}
+
 		return sceneItemConfigData;
 	}
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.ReadInt();
-		this.name = parser.ReadUTF8String();
-		this.assetName = parser.ReadUTF8String();
-		this.type = parser.ReadInt();
-		this.value = parser.ReadInt();
-		this.canDrop = parser.ReadBool();
+		id = parser.Read<int>();
+		name = parser.Read<string>();
+		assetName = parser.Read<string>();
+		type = parser.Read<int>();
+		value = parser.Read<int>();
+		canDrop = parser.Read<bool>();
 	}
 }

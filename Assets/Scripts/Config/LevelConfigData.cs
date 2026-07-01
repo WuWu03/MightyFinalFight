@@ -1,16 +1,17 @@
 /*
  * @Desc: Level.xlsx 数据表，SheetName: Level
- * @Date: 2026-06-29 15:07:52
+ * @Date: 2026-07-01 09:58:10
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
 
-using WuWuFramework;
-using WuWuFramework.ConfigData;
 using LitJson;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework;
+using WuWuFramework.ConfigData;
 
 public class LevelConfigData : BaseConfigData
 {
@@ -71,34 +72,37 @@ public class LevelConfigData : BaseConfigData
 
 	public LevelConfigData Clone()
 	{
-		LevelConfigData levelConfigData = new LevelConfigData();
-		levelConfigData.roleId = this.roleId;
-		levelConfigData.level = this.level;
-		levelConfigData.hpValue = this.hpValue;
-		levelConfigData.attackValue = this.attackValue;
-		levelConfigData.defenseValue = this.defenseValue;
-		levelConfigData.exp = this.exp;
-		levelConfigData.attackSpeed = this.attackSpeed;
-		levelConfigData.criticalValue = this.criticalValue;
-		levelConfigData.moveSpeed = this.moveSpeed;
-		levelConfigData.jumpForce = this.jumpForce;
-		levelConfigData.hpBarWidth = this.hpBarWidth;
+		LevelConfigData levelConfigData = new();
+		{
+			roleId = this.roleId;
+			level = this.level;
+			hpValue = this.hpValue;
+			attackValue = this.attackValue;
+			defenseValue = this.defenseValue;
+			exp = this.exp;
+			attackSpeed = this.attackSpeed;
+			criticalValue = this.criticalValue;
+			moveSpeed = this.moveSpeed;
+			jumpForce = this.jumpForce;
+			hpBarWidth = this.hpBarWidth;
+		}
+
 		return levelConfigData;
 	}
 
 	public override void Read(ConfigDataParser parser)
 	{
-		this.id = parser.ReadInt();
-		this.roleId = parser.ReadInt();
-		this.level = parser.ReadInt();
-		this.hpValue = parser.ReadInt();
-		this.attackValue = parser.ReadInt();
-		this.defenseValue = parser.ReadInt();
-		this.exp = parser.ReadInt();
-		this.attackSpeed = parser.ReadFloat();
-		this.criticalValue = parser.ReadInt();
-		this.moveSpeed = parser.ReadFloat();
-		this.jumpForce = parser.ReadVector2();
-		this.hpBarWidth = parser.ReadFloat();
+		id = parser.Read<int>();
+		roleId = parser.Read<int>();
+		level = parser.Read<int>();
+		hpValue = parser.Read<int>();
+		attackValue = parser.Read<int>();
+		defenseValue = parser.Read<int>();
+		exp = parser.Read<int>();
+		attackSpeed = parser.Read<float>();
+		criticalValue = parser.Read<int>();
+		moveSpeed = parser.Read<float>();
+		jumpForce = parser.Read<Vector2>();
+		hpBarWidth = parser.Read<float>();
 	}
 }

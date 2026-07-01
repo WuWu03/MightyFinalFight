@@ -26,9 +26,9 @@ public class LanguageLoader : BaseLanguageLoader
 
         while (!parser.eof)
         {
-            int id = parser.ReadInt();
-            string key = parser.ReadUTF8String();
-            string content = parser.ReadUTF8String().Replace("\\n", "\n");
+            int id = parser.Read<int>();
+            string key = parser.Read<string>();
+            string content = parser.Read<string>().Replace("\\n", "\n");
             m_LanguageMap.Add(key, content);
             parser.Next();
         }
