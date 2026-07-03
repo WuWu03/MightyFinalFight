@@ -1,14 +1,14 @@
-using WuWuFramework.Resources;
-using WuWuFramework.Utils;
 using System;
 using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine;
+using WuWuFramework.Event;
+using WuWuFramework.Resources;
+using WuWuFramework.Utils;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.Pool
 {
-    public class ResourcePoolMgr : WuWuFrameworkModule,IResourcePoolMgr
+    public class ResourcePoolMgr : WuWuFrameworkModule, IResourcePoolMgr
     {
         private readonly List<string> m_RemoveList;
         private readonly Dictionary<string, PoolObjectInfo> m_LoadedAssets;
@@ -24,7 +24,7 @@ namespace WuWuFramework.Pool
 
         public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
-            
+
         }
 
         public override void Shutdown()
@@ -39,11 +39,11 @@ namespace WuWuFramework.Pool
             m_LoadRequests.Clear();
         }
 
-        public void SetResourceMgr(IResourcesMgr resourceMgr, Transform poolRoot)
+        public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
             m_PoolRoot = new GameObject("ResourcePool").transform;
-            m_PoolRoot.SetParent(poolRoot, false);
+            m_PoolRoot.SetParent(WuWuFrameworkEntry.gameEntryObj.transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
         }
 

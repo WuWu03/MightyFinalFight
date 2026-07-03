@@ -68,13 +68,13 @@ namespace WuWuFramework.Sound
             m_OnBgmFadeCompleteEvent = null;
         }
 
-        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr, Transform root)
+        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr)
         {
             m_ResourcePoolMgr = resourcePoolMgr;
             m_Root = new GameObject("SoundMgr");
             m_BgmAudioSource = m_Root.GetOrAddComponent<AudioSource>();
             m_Root.GetOrAddComponent<AudioListener>();
-            m_Root.transform.SetParent(root, false);
+            m_Root.transform.SetParent(WuWuFrameworkEntry.gameEntryObj.transform, false);
         }
 
         public void PlaySe(string assetPath, float volume = 1)

@@ -350,6 +350,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58898ecf86627aa47bb46fe4370ca7e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.UIRoot
+  uiLayers:
+  - {fileID: 5033596274372249218}
+  - {fileID: 2569871317998247860}
+  - {fileID: 4199420221996832688}
+  - {fileID: 6307415521020595355}
+  - {fileID: 2905475726830568445}
+  - {fileID: 3264887017973166969}
+  - {fileID: 8687905908779254948}
+  - {fileID: 5612585939917178666}
+  - {fileID: 1248546207970342126}
+  - {fileID: 2690477342691044780}
+  uiCanvas: {fileID: 97640758747114206}
+  uiCamera: {fileID: 97640758282970264}
 --- !u!1 &187469266312525485
 GameObject:
   m_ObjectHideFlags: 0

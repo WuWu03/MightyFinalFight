@@ -1,4 +1,3 @@
-using WuWuFramework.Event;
 using UnityEngine.SceneManagement;
 
 namespace WuWuFramework.Scene

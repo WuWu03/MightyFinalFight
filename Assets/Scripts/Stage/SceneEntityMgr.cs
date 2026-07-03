@@ -4,7 +4,7 @@ using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
+public class SceneEntityMgr : Singleton<SceneEntityMgr>
 {
     private List<BaseSceneObject> m_SceneBuildings;
     private List<BaseEnemy> m_Enemies;
@@ -13,7 +13,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
     private List<int> m_DeadEnemies;
     private List<int> m_BreakBarrels;
 
-    protected override void OnAwake()
+    public SceneEntityMgr()
     {
         m_DeadEnemies = new();
         m_BreakBarrels = new();
@@ -25,19 +25,7 @@ public class SceneEntityMgr : BaseMgr<SceneEntityMgr>
 
     protected override void OnShutdown()
     {
-        base.OnShutdown();
         ReleaseAll();
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        m_SceneBuildings = null;
-        m_Enemies = null;
-        m_SceneItems = null;
-        m_Barrels = null;
-        m_DeadEnemies = null;
-        m_BreakBarrels = null;
     }
 
     public void CreateBarrels()

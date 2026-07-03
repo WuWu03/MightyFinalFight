@@ -1,6 +1,5 @@
 using WuWuFramework.Event;
 using WuWuFramework.Pool;
-using UnityEngine;
 
 namespace WuWuFramework.Sound
 {
@@ -8,7 +7,7 @@ namespace WuWuFramework.Sound
     {
         public bool isBgmComplete { get; }
         public event WuWuFrameworkAction onBgmFadeCompleteEvent;
-        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr, Transform root);
+        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr);
         public void PlaySe(string sePath, float volume = 1);
         public void StopAllSes();
         public void SetSePlaySpeed(float speed);

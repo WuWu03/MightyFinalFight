@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.Download
 {

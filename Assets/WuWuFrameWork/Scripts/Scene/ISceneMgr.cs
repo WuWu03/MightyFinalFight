@@ -1,6 +1,6 @@
-using WuWuFramework.Resources;
-using WuWuFramework.Event;
 using UnityEngine.SceneManagement;
+using WuWuFramework.Event;
+using WuWuFramework.Resources;
 
 namespace WuWuFramework.Scene
 {

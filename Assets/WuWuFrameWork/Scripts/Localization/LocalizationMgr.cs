@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using WuWuFramework.Resources;
-using WuWuFramework.Event;
-using WuWuFramework.Utils;
 using UnityEngine;
+using WuWuFramework.Event;
+using WuWuFramework.Resources;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Localization
 {

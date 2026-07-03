@@ -1,15 +1,28 @@
 using WuWuFramework;
 using System.Collections.Generic;
 
-public class TaskMgr : BaseMgr<TaskMgr>
+public class TaskMgr : Singleton<TaskMgr>
 {
-    protected override void OnAwake()
+
+    private int m_CurrTaskIndex = 0;
+    private int m_LastTaskIndex = -1;
+    private List<int> m_FailureIdList = null;
+    private List<BaseTask> m_CurrTaskList = null;
+    private List<BaseTask> m_CompleteTask = null;
+
+    public TaskMgr()
     {
         m_CurrTaskList = new List<BaseTask>();
         m_CompleteTask = new List<BaseTask>();
         m_FailureIdList = new List<int>();
         m_CurrTaskIndex = 0;
         m_LastTaskIndex = -1;
+        MonoBehaviourMgr.instance.updateEvent += Update;
+    }
+
+    protected override void OnShutdown()
+    {
+        MonoBehaviourMgr.instance.updateEvent -= Update;
     }
 
     public void AcceptTask(int id)
@@ -76,10 +89,8 @@ public class TaskMgr : BaseMgr<TaskMgr>
         m_CurrTaskList.Clear();
     }
 
-    protected override void OnUpdate()
+    private void Update(float deltaTime, float unscaledDeltaTime, float time, float AunscaledTime)
     {
-        base.OnUpdate();
-
         if (m_CurrTaskList == null || m_CurrTaskList.Count < 1)
         {
             return;
@@ -168,10 +179,4 @@ public class TaskMgr : BaseMgr<TaskMgr>
             }
         }
     }
-
-    private int m_CurrTaskIndex = 0;
-    private int m_LastTaskIndex = -1;
-    private List<int> m_FailureIdList = null;
-    private List<BaseTask> m_CurrTaskList = null;
-    private List<BaseTask> m_CompleteTask = null;
 }

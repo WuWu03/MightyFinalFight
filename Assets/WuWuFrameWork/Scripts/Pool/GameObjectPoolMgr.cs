@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
+using WuWuFramework.Event;
 using WuWuFramework.Resources;
 using WuWuFramework.Utils;
-using System.Collections.Generic;
-using WuWuFramework.Event;
-using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.Pool
@@ -45,11 +45,11 @@ namespace WuWuFramework.Pool
             m_GameObjectUnloaders.Clear();
         }
 
-        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr, Transform poolRoot)
+        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr)
         {
             m_ResourcePoolMgr = resourcePoolMgr;
             m_PoolRoot = new GameObject("GameObjectPool").transform;
-            m_PoolRoot.SetParent(poolRoot, false);
+            m_PoolRoot.SetParent(WuWuFrameworkEntry.gameEntryObj.transform, false);
             m_PoolRoot.localPosition = new Vector3(9999f, 9999f, 9999f);
         }
 

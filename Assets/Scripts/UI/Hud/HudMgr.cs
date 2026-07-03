@@ -1,9 +1,8 @@
-using WuWuFramework;
-using WuWuFramework.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework;
 
-public class HudMgr : BaseMgr<HudMgr>
+public class HudMgr : Singleton<HudMgr>
 {
     public enum DamageType
     {
@@ -26,27 +25,15 @@ public class HudMgr : BaseMgr<HudMgr>
         }
     }
     
-    protected override void OnAwake()
+    public HudMgr()
     {
-        m_HudArgs = new Queue<HudArg>();
-    }
-
-    protected override void OnUpdate()
-    {
-        
+        m_HudArgs = new();
     }
 
     protected override void OnShutdown()
     {
-        base.OnShutdown();
         GameEntry.uiMgr.Close<HudView>();
         m_HudArgs.Clear();
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        m_HudArgs = null;
     }
 
     public void ShowEnemyDamage(int value, Vector3 pos)

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using WuWuFramework.Pool;
 using UnityEngine;
+using WuWuFramework.Pool;
 
 namespace WuWuFramework.GameEntity
 {
@@ -12,7 +12,7 @@ namespace WuWuFramework.GameEntity
         public int destroyCount{get; }
         public int usingEntityCount{get; }
         public int unUsedEntityCount{get; }
-        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr, Transform poolRoot);
+        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr);
         public T GetEntity<T>(string entityName = null, Transform parent = null) where T : BaseEntity, new();
         public void PutEntities(BaseEntity[] entities);
         public void PutEntity(BaseEntity entity);

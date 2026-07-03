@@ -1,14 +1,13 @@
 using System;
-using WuWuFramework.Resources;
 using WuWuFramework.Event;
-using UnityEngine;
+using WuWuFramework.Resources;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.Pool
 {
     public interface IResourcePoolMgr
     {
-        public void SetResourceMgr(IResourcesMgr resourceMgr,Transform poolRoot);
+        public void SetResourceMgr(IResourcesMgr resourceMgr);
         public void CheckRelease();
         public void Cache<T>(string assetPath) where T : UnityObject;
         public void Cache(string assetPath, Type assetType);

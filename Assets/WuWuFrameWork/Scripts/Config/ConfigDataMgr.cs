@@ -66,7 +66,7 @@ namespace WuWuFramework.ConfigData
             }
         }
 
-        public bool Remove<T>(string fileName = "") where T : BaseConfigData, new()
+        public bool Remove<T>(string fileName = null) where T : BaseConfigData, new()
         {
             string filePath = GetFilePath<T>(fileName);
             return m_ConfigData.Remove(filePath);

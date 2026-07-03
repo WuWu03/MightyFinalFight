@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using WuWuFramework;
 
-public class CameraFollowMgr : BaseMgr<CameraFollowMgr>
+public class CameraFollowMgr : Singleton<CameraFollowMgr>
 {
     private CameraFollow m_CameraFollow = null;
     public CameraFollow cameraFollow
@@ -50,7 +50,6 @@ public class CameraFollowMgr : BaseMgr<CameraFollowMgr>
         camera.farClipPlane = 1000;
         camera.backgroundColor = Color.black;
     }
-
 
     protected override void OnShutdown()
     {

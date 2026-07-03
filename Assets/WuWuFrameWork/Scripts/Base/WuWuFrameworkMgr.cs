@@ -58,6 +58,8 @@ namespace WuWuFramework
         /// </summary>
         public static void Shutdown()
         {
+            BaseSingleton.ShutDownAll();
+
             for (LinkedListNode<WuWuFrameworkModule> current = s_WuWuFrameworkModules.First; current != null; current = current.Next)
             {
                 current.Value.Shutdown();

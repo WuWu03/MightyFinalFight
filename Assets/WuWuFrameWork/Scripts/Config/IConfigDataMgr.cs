@@ -5,9 +5,9 @@ namespace WuWuFramework.ConfigData
     public interface IConfigDataMgr
     {
         void SetResourceMgr(IResourcesMgr resourceMgr);
-        T[] Get<T>(string fileName = "") where T : BaseConfigData, new();
+        T[] Get<T>(string fileName = null) where T : BaseConfigData, new();
         void Cache<T>(string fileName = null) where T : BaseConfigData, new();
-        bool Remove<T>(string fileName = "") where T : BaseConfigData, new();
+        bool Remove<T>(string fileName = null) where T : BaseConfigData, new();
         void RemoveAll();
     }
 }

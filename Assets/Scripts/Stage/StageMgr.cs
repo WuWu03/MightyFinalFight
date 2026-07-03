@@ -6,7 +6,7 @@ using WuWuFramework.Scene;
 using WuWuFramework.Sound;
 using WuWuFramework.Utils;
 
-public class StageMgr : BaseMgr<StageMgr>
+public class StageMgr : Singleton<StageMgr>
 {
     private StageConfigData m_CurrStageData;
     private int m_StageIndex;
@@ -25,6 +25,16 @@ public class StageMgr : BaseMgr<StageMgr>
         {
             return m_StageIndex;
         }
+    }
+
+    public StageMgr()
+    {
+
+    }
+
+    protected override void OnShutdown()
+    {
+
     }
 
     public void StageEnter(int stageId)

@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityCamera = UnityEngine.Camera;
 
 namespace WuWuFramework.Camera

@@ -6,7 +6,7 @@ namespace WuWuFramework.Pool
 {
     public interface IGameObjectPoolMgr
     {
-        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr, Transform poolRoot);
+        public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr);
         public void AddPool(string tag, GameObject obj, int count = 1);
         public void RemovePool(string tag);
         public bool HasPool(string tag);

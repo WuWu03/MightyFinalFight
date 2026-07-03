@@ -6,6 +6,17 @@ namespace WuWuFramework
 {
     public abstract class WuWuFrameworkEntry : MonoBehaviour
     {
+        private static WuWuFrameworkConfig s_Config;
+        private static GameObject s_GameEntryObj;
+
+        public static GameObject gameEntryObj
+        {
+            get
+            {
+                return s_GameEntryObj;
+            }
+        }
+
         public static bool isStartUp
         {
             get
@@ -22,10 +33,10 @@ namespace WuWuFramework
             }
         }
 
-        private static WuWuFrameworkConfig s_Config;
         
         private void Awake()
         {
+            s_GameEntryObj = gameObject;
             MonoBehaviourMgr.Init(gameObject);
             s_Config = UnityEngine.Resources.Load<WuWuFrameworkConfig>(Path.GetFileNameWithoutExtension(PathUtil.WuWuFrameworkConfigDataName));
             DontDestroyOnLoad(gameObject);

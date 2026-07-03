@@ -22,7 +22,6 @@ using WuWuFramework.Camera;
 
 public class GameEntry : WuWuFrameworkEntry
 {
-    private static Transform s_GameEntry;
     private static ILocalizationMgr s_LocalizationMgr;
     private static IResourcesMgr s_ResourceMgr;
     private static IVersionMgr s_VersionMgr;
@@ -118,7 +117,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_GameObjectPoolMgr == null)
             {
                 s_GameObjectPoolMgr = WuWuFrameworkMgr.GetModule<IGameObjectPoolMgr>();
-                s_GameObjectPoolMgr.SetResourcePoolMgr(resourcePoolMgr, s_GameEntry);
+                s_GameObjectPoolMgr.SetResourcePoolMgr(resourcePoolMgr);
             }
 
             return s_GameObjectPoolMgr;
@@ -140,7 +139,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_ResourcePoolMgr == null)
             {
                 s_ResourcePoolMgr = WuWuFrameworkMgr.GetModule<IResourcePoolMgr>();
-                s_ResourcePoolMgr.SetResourceMgr(resourceMgr, s_GameEntry);
+                s_ResourcePoolMgr.SetResourceMgr(resourceMgr);
             }
 
             return s_ResourcePoolMgr;
@@ -168,7 +167,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_SoundMgr == null)
             {
                 s_SoundMgr = WuWuFrameworkMgr.GetModule<ISoundMgr>();
-                s_SoundMgr.SetResourcePoolMgr(resourcePoolMgr, s_GameEntry);
+                s_SoundMgr.SetResourcePoolMgr(resourcePoolMgr);
             }
 
             return s_SoundMgr;
@@ -191,7 +190,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_EntityMgr == null)
             {
                 s_EntityMgr = WuWuFrameworkMgr.GetModule<IGameEntityMgr>();
-                s_EntityMgr.SetGameObjectPoolMgr(gameObjectPoolMgr, s_GameEntry);
+                s_EntityMgr.SetGameObjectPoolMgr(gameObjectPoolMgr);
             }
 
             return s_EntityMgr;
@@ -235,6 +234,7 @@ public class GameEntry : WuWuFrameworkEntry
         get
         {
             s_ConfigDataMgr ??= WuWuFrameworkMgr.GetModule<IConfigDataMgr>();
+            s_ConfigDataMgr.SetResourceMgr(resourceMgr);
             return s_ConfigDataMgr;
         }
     }
@@ -250,17 +250,7 @@ public class GameEntry : WuWuFrameworkEntry
 
     protected override void OnInit(GameObject manager)
     {
-        s_GameEntry = gameObject.transform;
-        ConfigDataHelper.SetResourcesMgr(resourceMgr);
-        EffectMgr.Init(manager);
-        TaskMgr.Init(manager);
-        StageMgr.Init(manager);
-        SceneEntityMgr.Init(manager);
-        PlayerMgr.Init(manager);
-        HudMgr.Init(manager);
-        LoadMgr.Init(manager);
-        StoryMgr.Init(manager);
-        CameraFollowMgr.Init(manager);
+        PlayerMgr.instance.InitInput();
     }
 
     protected override void OnStartGame()

@@ -43,7 +43,7 @@ namespace WuWuFramework.Pool
             pool.Enqueue(array);
         }
         
-        protected override void OnDispose()
+        protected override void OnShutdown()
         {
             m_Pools.Clear();
         }

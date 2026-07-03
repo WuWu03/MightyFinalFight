@@ -1,12 +1,12 @@
+using System.Collections.Generic;
+using UnityEngine;
 using WuWuFramework;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Input;
 using WuWuFramework.Localization;
 using WuWuFramework.Utils;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class PlayerMgr : BaseMgr<PlayerMgr>
+public class PlayerMgr : Singleton<PlayerMgr>
 {
     private RoleConfigData m_RoleConfigData;
     private BaseHero m_Player;
@@ -100,9 +100,18 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         }
     }
 
-    protected override void OnAwake()
+    public PlayerMgr()
     {
-        base.OnAwake();
+        MonoBehaviourMgr.instance.updateEvent += Update;
+    }
+
+    protected override void OnShutdown()
+    {
+        MonoBehaviourMgr.instance.updateEvent -= Update;
+    }
+
+    public void InitInput()
+    {
         GameEntry.inputMgr.SetAxis(AxisType.LeftAxis, KeyCode.D, KeyCode.A, KeyCode.W, KeyCode.S);
         GameEntry.inputMgr.SetKey(KeyType.A, KeyCode.J, false, true);
         GameEntry.inputMgr.SetKey(KeyType.B, KeyCode.K, false, true);
@@ -114,15 +123,6 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.X, AfterTriggerAttack);
         GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.B, AfterTriggerJump);
         GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.Y, AfterTriggerJump);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        m_RoleConfigData = null;
-        m_Player = null;
-        m_LevelConfigData = null;
     }
 
     public void InitPlayer()
@@ -290,10 +290,8 @@ public class PlayerMgr : BaseMgr<PlayerMgr>
         m_Player.Jump(axis, m_RoleConfigData.id != 1002);
     }
 
-    protected override void OnUpdate()
+    private void Update(float deltaTime, float unscaledDeltaTime, float time, float AunscaledTime)
     {
-        base.OnUpdate();
-
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
             m_LanguageIndex++;

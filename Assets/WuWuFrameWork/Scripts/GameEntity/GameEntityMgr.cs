@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using WuWuFramework.Pool;
 using UnityEngine;
+using WuWuFramework.Pool;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.GameEntity
@@ -14,17 +14,17 @@ namespace WuWuFramework.GameEntity
         private Transform m_PoolRoot;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
         private int m_AcquireCount;
-        private int m_CreateCount ;
+        private int m_CreateCount;
         private int m_ReleaseCount;
         private int m_DestroyCount;
-        
+
         public GameEntityMgr()
         {
             m_UsingEntities = new List<BaseEntity>();
-            m_TempEntities =  new List<BaseEntity>();
+            m_TempEntities = new List<BaseEntity>();
             m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
         }
-        
+
         public int acquireCount
         {
             get
@@ -90,11 +90,11 @@ namespace WuWuFramework.GameEntity
             m_DestroyCount = 0;
         }
 
-        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr, Transform poolRoot)
+        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_GameObjectPoolMgr = gameObjectPoolMgr;
             m_PoolRoot = new GameObject("EntityPool").transform;
-            m_PoolRoot.SetParent(poolRoot, false);
+            m_PoolRoot.SetParent(WuWuFrameworkEntry.gameEntryObj.transform, false);
             m_PoolRoot.localPosition = new Vector3(9999, 9999, 9999);
         }
 

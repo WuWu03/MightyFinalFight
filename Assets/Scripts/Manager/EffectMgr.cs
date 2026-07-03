@@ -3,8 +3,18 @@ using WuWuFramework.Event;
 using WuWuFramework.Utils;
 using UnityEngine;
 
-public class EffectMgr : BaseMgr<EffectMgr>
+public class EffectMgr : Singleton<EffectMgr>
 {
+    public EffectMgr()
+    {
+
+    }
+
+    protected override void OnShutdown()
+    {
+
+    }
+
     public DBEffect PlayDBEffect(string effectName, Vector3 pos, float playTime = -1, float speed = 1f, WuWuFrameworkAction playEndCallback = null)
     {
         return PlayEffect<DBEffect>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);

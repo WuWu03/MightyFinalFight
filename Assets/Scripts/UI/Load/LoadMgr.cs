@@ -1,10 +1,8 @@
-using WuWuFramework;
-using WuWuFramework.UI;
 using System.Collections.Generic;
+using WuWuFramework;
 using WuWuFramework.Event;
 
-
-public class LoadMgr : BaseMgr<LoadMgr>
+public class LoadMgr : Singleton<LoadMgr>
 {
     public class FadeArgs : WuWuFrameworkEventArg
     {
@@ -51,22 +49,14 @@ public class LoadMgr : BaseMgr<LoadMgr>
         }
     }
 
-    protected override void OnAwake()
+    public LoadMgr()
     {
-        base.OnAwake();
-        m_QueueFade = new Queue<FadeArgs>();
+        m_QueueFade = new();
     }
 
     protected override void OnShutdown()
     {
-        base.OnShutdown();
         m_QueueFade.Clear();
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        m_QueueFade = null;
     }
 
     public FadeArgs GetFadeInfo()

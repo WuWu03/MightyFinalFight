@@ -1,10 +1,16 @@
-using WuWuFramework;
 using System;
 using System.Collections.Generic;
+using WuWuFramework;
 using WuWuFramework.Event;
 
-public class StoryMgr : BaseMgr<StoryMgr>
+public class StoryMgr : Singleton<StoryMgr>
 {
+    private bool m_IsPause = false;
+    private bool m_IsPlaying = false;
+    private Dictionary<int, Type> m_StoryBuilders = null;
+    private Dictionary<int, List<BaseClip>> m_Stories = null;
+    private event WuWuFrameworkAction m_OnPlayCompleteEvent = null;
+
     public event WuWuFrameworkAction onPlayCompleteEvent
     {
         add
@@ -17,13 +23,14 @@ public class StoryMgr : BaseMgr<StoryMgr>
         }
     }
 
-    protected override void OnAwake()
+    public StoryMgr()
     {
-        m_Storys = new();
         m_StoryBuilders = new();
+        m_Stories = new();
+        MonoBehaviourMgr.instance.updateEvent += OnUpdate;
     }
 
-    protected override void OnUpdate()
+    private void OnUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
     {
         if (!m_IsPlaying)
         {
@@ -32,7 +39,7 @@ public class StoryMgr : BaseMgr<StoryMgr>
 
         bool isComplete = true;
 
-        foreach (KeyValuePair<int, List<BaseClip>> kvp in m_Storys)
+        foreach (KeyValuePair<int, List<BaseClip>> kvp in m_Stories)
         {
             foreach (var clip in kvp.Value)
             {
@@ -57,7 +64,7 @@ public class StoryMgr : BaseMgr<StoryMgr>
 
         if (isComplete)
         {
-            foreach (KeyValuePair<int, List<BaseClip>> kvp in m_Storys)
+            foreach (KeyValuePair<int, List<BaseClip>> kvp in m_Stories)
             {
                 for (int i = kvp.Value.Count - 1; i >= 0; i--)
                 {
@@ -68,7 +75,7 @@ public class StoryMgr : BaseMgr<StoryMgr>
             }
 
             m_IsPlaying = false;
-            m_Storys.Clear();
+            m_Stories.Clear();
             m_OnPlayCompleteEvent?.Invoke();
             m_OnPlayCompleteEvent = null;
         }
@@ -76,12 +83,12 @@ public class StoryMgr : BaseMgr<StoryMgr>
 
     public void Play(int storyId)
     {
-        if (m_Storys.Count > 0)
+        if (m_Stories.Count > 0)
         {
             return;
         }
 
-        m_Storys.Clear();
+        m_Stories.Clear();
 
         if (m_StoryBuilders.TryGetValue(storyId, out Type builderType))
         {
@@ -109,18 +116,19 @@ public class StoryMgr : BaseMgr<StoryMgr>
 
     public void AddClip(int track, BaseClip story)
     {
-        if (!m_Storys.TryGetValue(track, out List<BaseClip> stories))
+        if (!m_Stories.TryGetValue(track, out List<BaseClip> stories))
         {
             stories = new();
-            m_Storys[track] = stories;
+            m_Stories[track] = stories;
         }
 
         stories.Add(story);
     }
 
-    private bool m_IsPause = false;
-    private bool m_IsPlaying = false;
-    private Dictionary<int, Type> m_StoryBuilders = null;
-    private Dictionary<int, List<BaseClip>> m_Storys = null;
-    private event WuWuFrameworkAction m_OnPlayCompleteEvent = null;
+    protected override void OnShutdown()
+    {
+        m_StoryBuilders.Clear();
+        m_Stories.Clear();
+        MonoBehaviourMgr.instance.updateEvent -= OnUpdate;
+    }
 }
