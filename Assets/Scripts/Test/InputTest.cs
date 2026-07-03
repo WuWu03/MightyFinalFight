@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,9 +11,10 @@ public class InputTest : MonoBehaviour
     void Start()
     {
         m_InputMgr.inputActionAsset = asset;
-        m_InputMgr.SetCurrScheme("KeyBoard");
+        m_InputMgr.SetCurrScheme(InputScheme.KeyBoard);
         m_InputMgr.AddInputEvent(InputKey.LeftAxis, InputEventCallType.Performed, OnLeftAxis);
         m_InputMgr.AddInputEvent(InputKey.LT, InputEventCallType.Performed, OnLT);
+        m_InputMgr.inputDeviceChangeEvent += OnDeviceChagne;
         //m_InputMgr.AddInputEvent<Vector2>("LeftAxis",OnLeftAxis);
         // m_InputMgr.AddInputEvent<float>("LT", OnLT);
         // m_InputMgr.AddInputEvent("LB",OnLB);
@@ -21,6 +23,11 @@ public class InputTest : MonoBehaviour
         // action.AddBinding(binding);
         // action.Enable();
         // action.performed += OnInput;
+    }
+
+    private void OnDeviceChagne(InputScheme t)
+    {
+        Debug.Log("当前输入设备 ：" + t.ToString());
     }
 
     private void OnLB()

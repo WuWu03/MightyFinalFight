@@ -46,6 +46,7 @@ namespace WuWuFramework.ConfigData
             return data;
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Get<T>(this T[] data, int id) where T : BaseConfigData, new()
         {

@@ -3,16 +3,44 @@ using System.Collections.Generic;
 
 namespace WuWuFramework
 {
+    /// <summary>
+    /// 引用集合类，用于管理同一类型的引用对象
+    /// </summary>
     public class ReferenceCollection
     {
+        /// <summary>
+        /// 闲置对象队列
+        /// </summary>
         private readonly Queue<IReference> m_ReleasedReferences;
+        /// <summary>
+        /// 对象类型
+        /// </summary>
         private readonly Type m_ReferenceType;
+        /// <summary>
+        /// 引用计数
+        /// </summary>
         private int m_UsingReferenceCount;
+        /// <summary>
+        /// 已经申请的对象数量
+        /// </summary>
         private int m_AcquireReferenceCount;
+        /// <summary>
+        /// 已经添加的闲置对象数量
+        /// </summary>
         private int m_AddReferenceCount;
+        /// <summary>
+        /// 已经释放的对象数量
+        /// </summary>
         private int m_ReleaseReferenceCount;
+        /// <summary>
+        /// 已经移除的闲置对象数量
+        /// </summary>
         private int m_RemoveReferenceCount;
-        
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="type"></param>
         public ReferenceCollection(Type type)
         {
             m_ReferenceType = type;
@@ -72,6 +100,12 @@ namespace WuWuFramework
             }
         }
 
+        /// <summary>
+        /// 申请对象，如果有闲置对象则返回闲置对象，否则创建新的对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public T Acquire<T>() where T : class, IReference, new()
         {
             if (typeof(T) != m_ReferenceType)
@@ -93,6 +127,10 @@ namespace WuWuFramework
             return Activator.CreateInstance<T>();
         }
 
+        /// <summary>
+        /// 申请对象，如果有闲置对象则返回闲置对象，否则创建新的对象
+        /// </summary>
+        /// <returns></returns>
         public IReference Acquire()
         {
             m_UsingReferenceCount++;
@@ -109,6 +147,12 @@ namespace WuWuFramework
             return Activator.CreateInstance(m_ReferenceType) as IReference;
         }
 
+        /// <summary>
+        /// 释放对象，释放后对象会被放入闲置队列中
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <param name="strictCheck"></param>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public void Release(IReference reference, bool strictCheck)
         {
             reference.Clear();
@@ -127,6 +171,12 @@ namespace WuWuFramework
             m_UsingReferenceCount--;
         }
 
+        /// <summary>
+        /// 创建指定数量的对象，并放入闲置队列中
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count"></param>
+        /// <exception cref="WuWuFrameworkException"></exception>
         public void Add<T>(int count) where T : class, IReference, new()
         {
             if (typeof(T) != m_ReferenceType)
@@ -145,6 +195,10 @@ namespace WuWuFramework
             }
         }
 
+        /// <summary>
+        /// 创建指定数量的对象，并放入闲置队列中
+        /// </summary>
+        /// <param name="count"></param>
         public void Add(int count)
         {
             m_AddReferenceCount += count;
@@ -158,6 +212,10 @@ namespace WuWuFramework
             }
         }
 
+        /// <summary>
+        /// 移除指定数量的闲置对象（彻底移除，不会再被使用）
+        /// </summary>
+        /// <param name="count"></param>
         public void Remove(int count)
         {
             lock (m_ReleasedReferences)
@@ -176,6 +234,9 @@ namespace WuWuFramework
             }
         }
 
+        /// <summary>
+        /// 移除所有的闲置对象（彻底移除，不会再被使用）
+        /// </summary>
         public void RemoveAll()
         {
             lock (m_ReleasedReferences)

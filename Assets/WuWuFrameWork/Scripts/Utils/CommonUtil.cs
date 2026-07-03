@@ -5,98 +5,52 @@ namespace WuWuFramework.Utils
 {
     public class CommonUtil
     {
-        /// <summary>
-        /// 获取系统时间
-        /// </summary>
-        public static long GetSystemTime()
-        {
-            TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - new DateTime(1970, 1, 1, 0, 0, 0).Ticks);
-            return (long)ts.TotalMilliseconds;
-        }
 
-        public static Transform FindChild(GameObject parent, string strName)
-        {
-            Transform[] allChildren = parent.GetComponentsInChildren<Transform>(true);
-
-            foreach (Transform child in allChildren)
-            {
-                if (child.gameObject.name.Equals(strName))
-                {
-                    return child;
-                }
-            }
-
-            return null;
-        }
-
-        public static T FindChildComponent<T>(GameObject parent, string strName) where T : Component
-        {
-            Transform[] allChildren = parent.GetComponentsInChildren<Transform>(true);
-
-            foreach (Transform child in allChildren)
-            {
-                if (child.gameObject.name == strName)
-                {
-                    return child.gameObject.GetComponent<T>();
-                }
-            }
-
-            return null;
-        }
-
-        public static void SetPos3(GameObject go, float x, float y, float z)
-        {
-            go.transform.position = new Vector3(x, y, z);
-        }
-
-        public static void SetRot3(GameObject go, float x, float y, float z)
-        {
-            go.transform.rotation = Quaternion.Euler(x, y, z);
-        }
-
-        public static void SetLocalPos3(GameObject go, float x, float y, float z)
-        {
-            go.transform.localPosition = new Vector3(x, y, z);
-        }
-
-        public static void SetLocalRot3(GameObject go, float x, float y, float z)
-        {
-            go.transform.localRotation = Quaternion.Euler(x, y, z);
-        }
-
-        public static void SetScale3(GameObject go, float x, float y, float z)
-        {
-            go.transform.localScale = new Vector3(x, y, z);
-        }
-
-        public static void SetTag(GameObject go, string tag, bool isSetChild = false)
-        {
-            if (isSetChild)
-            {
-                Transform[] childs = go.transform.GetComponentsInChildren<Transform>(true);
-                for (int i = 0; i < childs.Length; i++)
-                {
-                    childs[i].tag = tag;
-                }
-            }
-
-            else
-            {
-                go.tag = tag;
-            }
-        }
 
         public static bool CompareTo(double d1, double d2)
         {
-            double difference = Math.Abs(d1 * 0.0001);
+            double difference = Math.Abs(d1 * 0.0001d);
             return Math.Abs(d1 - d2) <= difference;
         }
 
-        public static string ConvertLongToDateTime(long time)
+        /// <summary>
+        /// 获取当前时间
+        /// </summary>
+        public static long GetCurrTime()
         {
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
-            DateTime dt = startTime.AddSeconds(time);
-            return dt.ToString("yyyy/MM/dd HH:mm");
+            return DateTime.Now.Ticks;
+        }
+
+        /// <summary>
+        /// 获取当前UTC时间
+        /// </summary>
+        public static long GetCurrUTCTime()
+        {
+            return DateTime.UtcNow.Ticks;
+        }
+
+        /// <summary>
+        /// 将给定时间戳转为UTC时间
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static DateTime ConvertToUTCTime(long timeStamp)
+        {
+            DateTime origin = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            return origin.AddMilliseconds(timeStamp);
+        }
+
+        /// <summary>
+        /// 将给定时间戳转为指定时区的时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <param name="zoneId"></param>
+        /// <returns></returns>
+        public static DateTime ConvertToTimeZone(long timeStamp, int zoneId)
+        {
+            TimeZoneInfo timeZone = TimeZoneInfo.GetSystemTimeZones()[zoneId];
+            DateTime time = TimeZoneInfo.ConvertTimeFromUtc(ConvertToUTCTime(timeStamp), timeZone);
+            return time;
         }
 
         public static Vector2 ScreenPosToUGUIPos(Vector2 screenPos, RectTransform rectTrans, UnityEngine.Camera camera)
@@ -151,7 +105,8 @@ namespace WuWuFramework.Utils
             byte b = (byte)(Mathf.Clamp01(color.b) * byte.MaxValue);
             byte a = (byte)(Mathf.Clamp01(color.a) * byte.MaxValue);
 
-            return StringUtil.Append("#", ((r << 24) + (g << 16) + (b << 8) + a).ToString("X"));        }
+            return StringUtil.Append("#", ((r << 24) + (g << 16) + (b << 8) + a).ToString("X"));
+        }
 
 
         /// <summary>
@@ -188,7 +143,7 @@ namespace WuWuFramework.Utils
 
         public static T[] DeleteElement<T>(T[] array, params int[] deletePos)
         {
-            if(array == null)
+            if (array == null)
             {
                 return null;
             }
@@ -201,9 +156,9 @@ namespace WuWuFramework.Utils
             {
                 bool isDelete = false;
 
-                for(int j = 0; j < deletePos.Length; j++)
+                for (int j = 0; j < deletePos.Length; j++)
                 {
-                    if(i == deletePos[j])
+                    if (i == deletePos[j])
                     {
                         isDelete = true;
                         break;

@@ -92,20 +92,42 @@ MonoBehaviour:
     useAttackBox: 0
     attackBoxOffsets: []
     attackBoxSizes: []
-    defendBoxOffsets: []
-    defendBoxSizes: []
+    defendBoxOffsets:
+    - {x: -0.000089176, y: 0.00012515299}
+    - {x: -0.0011194758, y: 0.00046858564}
+    - {x: 0.0002542436, y: -0.00056171045}
+    - {x: -0.00043261424, y: -0.00021827966}
+    - {x: -0.000089176, y: -0.0002182778}
+    - {x: -0.0004326105, y: 0.00012515485}
+    - {x: -0.00043260492, y: 0.00012514926}
+    - {x: -0.0011194758, y: 0.00012515485}
+    - {x: -0.0011194758, y: 0.00012515485}
+    defendBoxSizes:
+    - {x: 0.042463288, y: 0.101772755}
+    - {x: 0.07337206, y: 0.07223768}
+    - {x: 0.10222027, y: 0.0413289}
+    - {x: 0.07062463, y: 0.072237685}
+    - {x: 0.042463288, y: 0.10108589}
+    - {x: 0.07199833, y: 0.08254062}
+    - {x: 0.10222028, y: 0.042702634}
+    - {x: 0.07199835, y: 0.08254062}
+    - {x: 0.07199835, y: 0.08254062}
   - animName: Idle
     useAttackBox: 0
     attackBoxOffsets: []
     attackBoxSizes: []
-    defendBoxOffsets: []
-    defendBoxSizes: []
+    defendBoxOffsets:
+    - {x: 0, y: 0}
+    defendBoxSizes:
+    - {x: 0, y: 0}
   - animName: Hit
     useAttackBox: 0
     attackBoxOffsets: []
     attackBoxSizes: []
-    defendBoxOffsets: []
-    defendBoxSizes: []
+    defendBoxOffsets:
+    - {x: 0, y: 0}
+    defendBoxSizes:
+    - {x: 0, y: 0}
 --- !u!1 &7726975481959592806
 GameObject:
   m_ObjectHideFlags: 0

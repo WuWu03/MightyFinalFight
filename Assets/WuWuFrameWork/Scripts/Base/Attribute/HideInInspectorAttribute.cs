@@ -2,7 +2,10 @@ using UnityEngine;
 
 namespace WuWuFramework
 {
-    public class HideInInspectorExAttribute : PropertyAttribute
+    /// <summary>
+    /// 在Inspector中隐藏属性的自定义属性类。可以通过设置条件来控制属性是否在Inspector中显示。
+    /// </summary>
+    public class HideInInspectorAttribute : PropertyAttribute
     {
         public bool condition
         {
@@ -16,12 +19,12 @@ namespace WuWuFramework
             }
         }
 
-        public HideInInspectorExAttribute()
+        public HideInInspectorAttribute()
         {
             m_Condition = false;
         }
 
-        public HideInInspectorExAttribute(bool condition)
+        public HideInInspectorAttribute(bool condition)
         {
             m_Condition = condition;
         }

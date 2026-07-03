@@ -1,7 +1,7 @@
-using WuWuFramework;
-using WuWuFramework.GameEntity;
-using WuWuFramework.Event;
 using UnityEngine;
+using WuWuFramework;
+using WuWuFramework.Event;
+using WuWuFramework.GameEntity;
 
 public class BaseSceneObject : BaseEntity
 {
@@ -120,7 +120,6 @@ public class BaseSceneObject : BaseEntity
         m_OnReleaseEventHandler?.Invoke(m_EntityId);
         m_Data?.Release();
         m_EntityAttribute?.Release();
-
         m_OnReleaseEventHandler = null;
         m_Data = null;
         m_EntityAttribute = null;

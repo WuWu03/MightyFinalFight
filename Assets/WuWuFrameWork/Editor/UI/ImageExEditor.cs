@@ -31,7 +31,7 @@ namespace WuWuFramework.Editor
                 string assetPath = AssetDatabase.GetAssetPath(m_CurrSprite);
                 string atlasName = Path.GetDirectoryName(assetPath).Replace("\\", "/").Replace(uiSpritesPath, "");
                 string spriteName = Path.GetFileNameWithoutExtension(assetPath);
-                spriteNameProperty.stringValue = PathUtil.FormatPath(atlasName, spriteName, false);
+                spriteNameProperty.stringValue = PathUtil.FormatPath(atlasName, spriteName);
                 serializedObject.ApplyModifiedProperties();
             }
         }

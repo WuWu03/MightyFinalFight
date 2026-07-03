@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using UnityEngine;
 using WuWuFramework;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Localization;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class LanguageLoader : BaseLanguageLoader
 {

@@ -1,11 +1,10 @@
 using System;
+using UnityEngine;
 using WuWuFramework;
-using WuWuFramework.Sound;
-using WuWuFramework.Event;
 using WuWuFramework.Map;
 using WuWuFramework.Scene;
+using WuWuFramework.Sound;
 using WuWuFramework.Utils;
-using UnityEngine;
 
 public class StageMgr : BaseMgr<StageMgr>
 {
@@ -79,7 +78,6 @@ public class StageMgr : BaseMgr<StageMgr>
         GameEntry.soundMgr.ReleaseSeAudioSources();
         GameEntry.gameObjectPoolMgr.CheckRelease();
         GameEntry.resourcePoolMgr.CheckRelease();
-        GameEntry.configDataMgr.RemoveAll();
         ReferencePool.ReleaseAll();
         GC.Collect();
         GameEntry.sceneMgr.loadSceneSuccessEvent += LoadSceneSuccess;

@@ -118,7 +118,7 @@ namespace WuWuFramework.Utils
             AddArg(arg6);
             AddArg(arg7);
 
-            return Append(false, false);
+            return Append(false);
         }
 
         public static string Append(params string[] args)
@@ -133,7 +133,7 @@ namespace WuWuFramework.Utils
                 }
             }
 
-            return Append(false, false);
+            return Append(false);
         }
 
         /// <summary>
@@ -405,7 +405,7 @@ namespace WuWuFramework.Utils
             s_ArgCount = 0;
         }
 
-        public static string Append(bool isPath, bool isLastPath)
+        public static string Append(bool isPath)
         {
             if (s_Args == null || s_Args.Length < 1)
             {
@@ -416,27 +416,25 @@ namespace WuWuFramework.Utils
 
             for (int i = 0; i < s_ArgCount; i++)
             {
-                string arg = s_Args[i].ToString();
+                string currArg = s_Args[i].ToString();
                 bool canAddPath = false;
 
                 if (isPath)
                 {
-                    canAddPath = string.IsNullOrEmpty(Path.GetExtension(arg)) && !arg.EndsWith("/");
+                    currArg = currArg.TrimEnd('/').TrimEnd('\\');
 
-                    if (canAddPath)
+                    if (i == s_ArgCount - 2)
                     {
-                        if (s_ArgCount > 1 && i == s_ArgCount - 2)
-                        {
-                            canAddPath = !s_Args[i + 1].ToString().StartsWith(".");
-                        }
-                        else if (i == s_ArgCount - 1)
-                        {
-                            canAddPath = isLastPath;
-                        }
+                        string lastArg = s_Args[s_ArgCount - 1].ToString();
+                        canAddPath = !lastArg.StartsWith('.');
+                    }
+                    else if (i < s_ArgCount - 1)
+                    {
+                        canAddPath = true;
                     }
                 }
 
-                s_StringBuilder.Append(arg);
+                s_StringBuilder.Append(currArg);
 
                 if (canAddPath)
                 {

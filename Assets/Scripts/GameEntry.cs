@@ -265,6 +265,13 @@ public class GameEntry : WuWuFrameworkEntry
 
     protected override void OnStartGame()
     {
+        configDataMgr.Cache<LevelConfigData>();
+        configDataMgr.Cache<RoleConfigData>();
+        configDataMgr.Cache<RoleSelectConfigData>();
+        configDataMgr.Cache<SceneItemConfigData>();
+        configDataMgr.Cache<StoryConfigData>();
+        configDataMgr.Cache<TalkConfigData>();
+
         LanguageText.SetLocalizationMgr(localizationMgr);
         localizationMgr.SetDefaultLanguage(LanguageType.English);
         localizationMgr.AddLanguageLoader(LanguageType.SimplifiedChinese, new LanguageLoader(PathUtil.FormatPath(config.configDataPath, AssetPathDefine.SimplifiedChinese)));
@@ -297,8 +304,6 @@ public class GameEntry : WuWuFrameworkEntry
 
     private void StartGame()
     {
-        StoryConfigData[] d = GameEntry.configDataMgr.Get<StoryConfigData>();
-
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
         CameraFollowMgr.instance.Init();

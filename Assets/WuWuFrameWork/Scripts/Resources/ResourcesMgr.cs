@@ -60,7 +60,7 @@ namespace WuWuFramework.Resources
                 m_ManifestAssetBundle.Unload(true);
             }
 
-            string maniFestPath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, PathUtil.ManiFestName, false);
+            string maniFestPath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, PathUtil.ManiFestName);
             byte[] maniFestData = File.ReadAllBytes(maniFestPath);
 
             m_ManifestAssetBundle = AssetBundle.LoadFromMemory(maniFestData);

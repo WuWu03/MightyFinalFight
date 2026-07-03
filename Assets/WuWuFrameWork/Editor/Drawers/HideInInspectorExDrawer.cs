@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WuWuFramework
 {
-    [CustomPropertyDrawer(typeof(HideInInspectorExAttribute))]
+    [CustomPropertyDrawer(typeof(HideInInspectorAttribute))]
     public class HideInInspectorExDrawer : PropertyDrawer
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -13,7 +13,7 @@ namespace WuWuFramework
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            GUI.enabled = !(attribute as HideInInspectorExAttribute).condition;
+            GUI.enabled = !(attribute as HideInInspectorAttribute).condition;
             EditorGUI.PropertyField(position, property, label, true);
             GUI.enabled = true;
         }

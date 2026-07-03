@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 using WuWuFramework;
 using WuWuFramework.Event;
 using WuWuFramework.Resources;
@@ -13,28 +12,62 @@ public enum InputKey : byte
     /// <summary>
     /// 左摇杆，触发值类型 Vector2
     /// </summary>
-    LeftAxis = 1,
+    LeftAxis,
     /// <summary>
     /// 右摇杆，触发值类型 Vector2
     /// </summary>
-    RightAxis = 2,
+    RightAxis,
     /// <summary>
     /// 十字键，触发值类型 Vector2
     /// </summary>
-    DPad = 3,
+    DPad,
     /// <summary>
     /// A，无触发值类型
     /// </summary>
-    A = 4,
-    B = 5,
-    X = 6,
-    Y = 7,
-    Start = 8,
-    Select = 9,
-    LB = 10,
-    RB = 11,
-    LT = 12,//LT
-    RT = 13,//RT
+    A,
+    /// <summary>
+    /// B，无触发值类型
+    /// </summary>
+    B,
+    /// <summary>
+    /// X，无触发值类型
+    /// </summary>
+    X,
+    /// <summary>
+    /// Y，无触发值类型
+    /// </summary>
+    Y,
+    /// <summary>
+    /// Start，无触发值类型
+    /// </summary>
+    Start,
+    /// <summary>
+    /// Select，无触发值类型
+    /// </summary>
+    Select,
+    /// <summary>
+    /// LB，无触发值类型
+    /// </summary>
+    LB,
+    /// <summary>
+    /// RB，无触发值类型
+    /// </summary>
+    RB,
+    /// <summary>
+    /// LT，触发值类型 float
+    /// </summary>
+    LT,
+    /// <summary>
+    /// RT，触发值类型 float
+    /// </summary>
+    RT,//RT
+}
+
+public enum InputScheme : byte
+{
+    None,
+    KeyBoard,
+    Xbox
 }
 
 public enum InputEventCallType : byte
@@ -98,12 +131,23 @@ public static class InputHelper
 
     public static bool IsXboxInput()
     {
-        if (Gamepad.current.IsPressed())
-        {
-            Debug.Log(Gamepad.current.description);
-        }
+        bool isActuated = Gamepad.current.IsActuated();
+        bool isXbox = Gamepad.current.description.interfaceName == "XInput" || Gamepad.current.description.interfaceName == "XInputControllerWindows";
+        return isActuated && isXbox;
+    }
 
-        return false;
+    public static bool IsPSInput()
+    {
+        bool isActuated = Gamepad.current.IsActuated();
+        bool isPS = Gamepad.current.description.interfaceName == "DualShock" || Gamepad.current.description.interfaceName == "DualSense";
+        return isActuated && isPS;
+    }
+
+    public static bool IsSwitchInput()
+    {
+        bool isActuated = Gamepad.current.IsActuated();
+        bool isSwitch = Gamepad.current.description.interfaceName == "Nintendo Switch";
+        return isActuated && isSwitch;
     }
 }
 
@@ -328,23 +372,33 @@ public class FloatInputEvent : BaseInputEvent
     }
 }
 
+
+
 public class TestInputMgr
 {
-    public event WuWuFrameworkAction<InputDevice, InputDeviceChange> inputDeviceChangeEvent
+    public event WuWuFrameworkAction<InputScheme> inputDeviceChangeEvent
     {
         add { m_InputDeviceChangeEvent += value; }
         remove { m_InputDeviceChangeEvent -= value; }
     }
 
-    private event WuWuFrameworkAction<InputDevice, InputDeviceChange> m_InputDeviceChangeEvent;
+    public InputScheme currInputScheme
+    {
+        get
+        {
+            return m_CurrInputScheme;
+        }
+    }
+
+    private event WuWuFrameworkAction<InputScheme> m_InputDeviceChangeEvent;
     private InputActionAsset m_InputActionAsset;
     private InputActionMap m_CurrActionMap;
+    private InputScheme m_CurrInputScheme = InputScheme.None;
     private readonly Dictionary<InputKey, BaseInputEvent> m_InputEvents = new();
     private string m_SaveKey = string.Empty;
-    private const string DefaultSchemeName = "Xbox";
-    private const string InputConfigDataName = "InputConfigData";
     private bool m_IsInit = false;
     private IResourcesMgr m_ResourcesMgr;
+    private const string InputConfigDataName = "InputConfigData";
 
     public InputActionAsset inputActionAsset
     {
@@ -357,7 +411,7 @@ public class TestInputMgr
         m_ResourcesMgr = resourceMgr;
     }
 
-    public void SetInputConfig(string saveKey = null)
+    public void InitInput(string saveKey = null, InputScheme inputScheme = InputScheme.KeyBoard)
     {
         m_SaveKey = saveKey;
         string jsonStr = string.IsNullOrEmpty(m_SaveKey) ? null : PlayerPrefs.GetString(saveKey, string.Empty);
@@ -376,19 +430,24 @@ public class TestInputMgr
         if (!m_IsInit)
         {
             m_IsInit = true;
-            InputSystem.onDeviceChange += OnDeviceChange;
-            this.SetCurrScheme(DefaultSchemeName);
+            SetCurrScheme(inputScheme);
         }
     }
 
-    public void SetCurrScheme(string schemeName)
+    public void SetCurrScheme(InputScheme inputScheme)
     {
+        if (m_CurrInputScheme == inputScheme)
+        {
+            return;
+        }
+
         if (m_InputActionAsset is null)
         {
             throw new WuWuFrameworkException("配置文件不存在");
         }
 
-        m_CurrActionMap = m_InputActionAsset.FindActionMap(schemeName);
+        m_CurrInputScheme = inputScheme;
+        m_CurrActionMap = m_InputActionAsset.FindActionMap(inputScheme.ToString());
     }
 
     public void AddInputEvent(InputKey inputKey, InputEventCallType inputEventCallType, WuWuFrameworkAction inputCall)
@@ -451,18 +510,32 @@ public class TestInputMgr
                 Debug.Log(inputAction.bindings[i].isComposite);
             }
         }
-
     }
 
     public void Update()
     {
-        if (InputHelper.IsKeyBoardInput())
-        {
-            // Debug.Log("切换到键盘");
-        }
-        else if (InputHelper.IsXboxInput())
-        {
+        bool isDeviceChanged = false;
 
+        if (InputHelper.IsKeyBoardInput() && m_CurrInputScheme != InputScheme.KeyBoard)
+        {
+            isDeviceChanged = true;
+            SetCurrScheme(InputScheme.KeyBoard);
+        }
+        else if (InputHelper.IsXboxInput() && m_CurrInputScheme != InputScheme.Xbox)
+        {
+            isDeviceChanged = true;
+            SetCurrScheme(InputScheme.Xbox);
+        }
+
+        if (isDeviceChanged)
+        {
+            foreach (KeyValuePair<InputKey, BaseInputEvent> kvp in m_InputEvents)
+            {
+                string actionName = kvp.Key.ToString();
+                CanAddInputEvent(actionName);
+            }
+
+            m_InputDeviceChangeEvent?.Invoke(m_CurrInputScheme);
         }
     }
 
@@ -503,15 +576,13 @@ public class TestInputMgr
             inputAction.Enable();
         }
 
+        inputAction.started -= OnInputStarted;
+        inputAction.performed -= OnInputPerformed;
+        inputAction.canceled -= OnInputCanceled;
         inputAction.started += OnInputStarted;
         inputAction.performed += OnInputPerformed;
         inputAction.canceled += OnInputCanceled;
         return true;
-    }
-
-    private void OnDeviceChange(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
-    {
-
     }
 
     private void OnInputStarted(InputAction.CallbackContext obj)
@@ -521,7 +592,6 @@ public class TestInputMgr
 
     private void OnInputPerformed(InputAction.CallbackContext obj)
     {
-        // Debug.Log(obj.action.bindings.);
         InvokeInputEvent(obj.action, InputEventCallType.Performed);
     }
 

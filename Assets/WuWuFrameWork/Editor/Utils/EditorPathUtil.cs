@@ -1,52 +1,53 @@
-using WuWuFramework.Utils;
+using System;
 using UnityEngine;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Editor
 {
     public class EditorPathUtil
     {
-        public const string ApplicationDataPath = "Assets/";
-        public static readonly string ApplicationDataFullPath = Application.dataPath + "/";
+        public const string ApplicationDataPath = "Assets";
+        public static readonly string ApplicationDataFullPath = Application.dataPath;
 
-        public static readonly string StreamingAssetsPath = ApplicationDataPath + "StreamingAssets/";
-        public static readonly string StreamingAssetsFullPath = ApplicationDataFullPath + "StreamingAssets/";
+        public static readonly string StreamingAssetsPath = ApplicationDataPath + "/StreamingAssets";
+        public static readonly string StreamingAssetsFullPath = ApplicationDataFullPath + "/StreamingAssets";
 
-        public const string EditorUIRootPath = ApplicationDataPath + "WuWuFramework/UI/UIRoot.prefab";
-        public const string EditorUIRootScenePath = ApplicationDataPath + "WuWuFramework/UI/UIRootScene.prefab";
+        public const string EditorUIRootPath = ApplicationDataPath + "/WuWuFramework/UI/UIRoot.prefab";
+        public const string EditorUIRootScenePath = ApplicationDataPath + "/WuWuFramework/UI/UIRootScene.prefab";
 
-        public const string EditorConfigPath = ApplicationDataPath + "Editor/Config/";
-        public static readonly string EditorConfigFullPath = ApplicationDataFullPath + "Editor/Config/";
+        public const string EditorConfigPath = ApplicationDataPath + "/Editor/Config";
+        public static readonly string EditorConfigFullPath = ApplicationDataFullPath + "/Editor/Config";
 
-        public const string EditorResourcesPath = ApplicationDataPath + "Resources/";
-        public static readonly string EditorResourcesFullPath = ApplicationDataFullPath + "Resources/";
+        public const string EditorResourcesPath = ApplicationDataPath + "/Resources/";
+        public static readonly string EditorResourcesFullPath = ApplicationDataFullPath + "/Resources";
 
-        public const string EditorScriptPath = ApplicationDataPath + "Scripts/";
-        public static readonly string EditorScriptFullPath = ApplicationDataFullPath + "Scripts/";
+        public const string EditorScriptPath = ApplicationDataPath + "/Scripts";
+        public static readonly string EditorScriptFullPath = ApplicationDataFullPath + "/Scripts";
 
         public const string BehaviourTreeWindowDataName = "BehaviourTreeWindowData";
         public const string BehaviourTreeWindowDataExtend = ".json";
-        public static readonly string BehaviourTreeWindowDataFullPath = EditorConfigFullPath + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
+        public static readonly string BehaviourTreeWindowDataFullPath = EditorConfigFullPath + "/" + BehaviourTreeWindowDataName + BehaviourTreeWindowDataExtend;
 
         public const string AssetBundleWindowDataName = "AssetBundleWindowData";
         public const string AssetBundleWindowDataExtend = ".asset";
-        public const string AssetBundleWindowDataPath = EditorConfigPath + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
-        public static readonly string AssetBundleWindowDataFullPath = EditorConfigFullPath + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
+        public const string AssetBundleWindowDataPath = EditorConfigPath + "/" + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
+        public static readonly string AssetBundleWindowDataFullPath = EditorConfigFullPath + "/" + AssetBundleWindowDataName + AssetBundleWindowDataExtend;
 
         public const string WuWuFrameWorkConfigWindowDataName = "WuWuFrameWorkConfigWindowData";
         public const string WuWuFrameWorkConfigWindowDataExtend = ".asset";
-        public static readonly string WuWuFrameWorkConfigWindowDataPath = EditorConfigPath + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
-        public static readonly string WuWuFrameWorkConfigWindowDataFullPath = EditorConfigFullPath + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
+        public static readonly string WuWuFrameWorkConfigWindowDataPath = EditorConfigPath + "/" + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
+        public static readonly string WuWuFrameWorkConfigWindowDataFullPath = EditorConfigFullPath + "/" + WuWuFrameWorkConfigWindowDataName + WuWuFrameWorkConfigWindowDataExtend;
 
         public const string InputConfigDataName = "InputConfigData";
         public const string InputConfigDataExtend = ".inputactions";
-        public static readonly string InputConfigDataPath = ApplicationDataPath + "WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
-        public static readonly string InputConfigDataFullPath = ApplicationDataFullPath + "WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
+        public static readonly string InputConfigDataPath = ApplicationDataPath + "/WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
+        public static readonly string InputConfigDataFullPath = ApplicationDataFullPath + "/WuWuFramework/Editor/Input/" + InputConfigDataName + InputConfigDataExtend;
 
-        public static readonly string WuWuFrameworkUIScriptsFullPath = ApplicationDataFullPath + "WuWuFramework/Scripts/UI/";
+        public static readonly string WuWuFrameworkUIScriptsFullPath = ApplicationDataFullPath + "/WuWuFramework/Scripts/UI/";
 
         public const string EntryScriptName = "GameEntry";
         public const string EntryScriptExtend = ".cs";
-        public static readonly string EntryScriptFullPath = EditorScriptFullPath + EntryScriptName + EntryScriptExtend;
+        public static readonly string EntryScriptFullPath = EditorScriptFullPath + "/" + EntryScriptName + EntryScriptExtend;
 
         public const string DefaultAssetsPath = "ArtResources";
         public const string DefaultUIPath = "UI";
@@ -96,11 +97,11 @@ namespace WuWuFramework.Editor
             }
 
             path = path.Replace("\\", "/");
-            path = path.Substring(path.IndexOf("Assets") + 6);
+            path = path[(path.IndexOf("Assets") + 6)..];
 
             if (path.StartsWith("/"))
             {
-                path = path.Substring(1);
+                path = path[1..];
             }
 
             return path;

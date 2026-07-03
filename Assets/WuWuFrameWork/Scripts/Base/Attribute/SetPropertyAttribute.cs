@@ -1,10 +1,10 @@
-// Copyright (c) 2014 Luminary LLC
-// Licensed under The MIT License (See LICENSE for full text)
 using UnityEngine;
 
 public class SetPropertyAttribute : PropertyAttribute
 {
-	public string name 
+    private string m_Name = string.Empty;
+
+    public string name 
 	{
         get 
 		{
@@ -18,6 +18,4 @@ public class SetPropertyAttribute : PropertyAttribute
 	{
 		m_Name = name;
 	}
-
-	private string m_Name = string.Empty;
 }

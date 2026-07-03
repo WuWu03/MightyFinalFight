@@ -8,7 +8,7 @@ namespace WuWuFramework.Editor
     {
         public static void SetName(this UIRef uiRef, string name)
         {
-            UIRefRoot uiRefRoot = uiRef.gameObject.FindComponentInParents<UIRefRoot>();
+            UIRefRoot uiRefRoot = uiRef.gameObject.GetComponentInParents<UIRefRoot>();
 
             if (uiRefRoot == null)
             {

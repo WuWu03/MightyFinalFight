@@ -36,7 +36,8 @@ namespace WuWuFramework.UI
             Load,
         }
 
-        [HideInInspector][SerializeField] private string m_ModuleName = string.Empty;
+        [@HideInInspector]
+        [SerializeField] private string m_ModuleName = string.Empty;
 
         public string moduleName
         {
@@ -51,7 +52,8 @@ namespace WuWuFramework.UI
             }
         }
 
-        [HideInInspector][SerializeField] private string m_PresenterName = string.Empty;
+        [@HideInInspector]
+        [SerializeField] private string m_PresenterName = string.Empty;
         public string presenterName
         {
             get { return m_PresenterName; }
@@ -65,7 +67,8 @@ namespace WuWuFramework.UI
             }
         }
 
-        [HideInInspector][SerializeField] private string m_ViewName = string.Empty;
+        [@HideInInspector]
+        [SerializeField] private string m_ViewName = string.Empty;
 
         public string viewName
         {
@@ -85,9 +88,9 @@ namespace WuWuFramework.UI
         public UIType uiType = UIType.View;
         public float delayDestroyTime = 10;
 
-        [HideInInspector] public string presenterPath;
-        [HideInInspector] public string viewPath;
-        [HideInInspector] public string settingsPath;
+        [@HideInInspector] public string presenterPath;
+        [@HideInInspector] public string viewPath;
+        [@HideInInspector] public string settingsPath;
 
         public void RefreshScriptFolder()
         {

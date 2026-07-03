@@ -1,48 +1,69 @@
 using System;
 using System.Collections.Generic;
+using WuWuFramework.Event;
 using WuWuFramework.Resources;
 using WuWuFramework.Utils;
 
 namespace WuWuFramework.ConfigData
 {
-    public class ConfigDataMgr : WuWuFrameworkModule , IConfigDataMgr
+    public class ConfigDataMgr : WuWuFrameworkModule, IConfigDataMgr
     {
         private readonly Dictionary<string, object> m_ConfigData;
+        private readonly Dictionary<string, WuWuFrameworkFunc<string, BaseConfigData[]>> m_CacheDataCreators = null;
+
         private IResourcesMgr m_ResourceMgr;
-        
+
         public ConfigDataMgr()
         {
             m_ConfigData = new();
+            m_CacheDataCreators = new();
         }
 
         public override void Shutdown()
         {
             RemoveAll();
         }
-        
+
         public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
             ConfigDataHelper.SetResourcesMgr(resourceMgr);
         }
 
-        public T[] Get<T>(string fileName = "") where T : BaseConfigData, new()
+        public T[] Get<T>(string fileName = null) where T : BaseConfigData, new()
         {
             string filePath = GetFilePath<T>(fileName);
-            
+
             if (m_ConfigData.TryGetValue(filePath, out object configData))
             {
                 return configData as T[];
             }
-            
+
             T[] result = ConfigDataHelper.LoadConfigData<T>(filePath);
-            
+
             if (!m_ConfigData.TryAdd(filePath, result))
             {
                 throw new Exception("配置数据已经存在");
             }
 
             return result;
+        }
+
+        public void Cache<T>(string fileName = null) where T : BaseConfigData, new()
+        {
+            string filePath = GetFilePath<T>(fileName);
+
+            if (m_ConfigData.TryGetValue(filePath, out _))
+            {
+                return;
+            }
+
+            T[] result = ConfigDataHelper.LoadConfigData<T>(filePath);
+
+            if (!m_ConfigData.TryAdd(filePath, result))
+            {
+                throw new Exception("配置数据已经存在");
+            }
         }
 
         public bool Remove<T>(string fileName = "") where T : BaseConfigData, new()

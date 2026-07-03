@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace WuWuFramework
 {
+    /// <summary>
+    /// 枚举标签属性，用于为枚举类型或枚举字段添加自定义标签和排序信息，以便在编辑器中显示更友好的名称和顺序。
+    /// </summary>
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
     public class EnumLabelAttribute : PropertyAttribute
     {
