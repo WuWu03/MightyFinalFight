@@ -105,11 +105,6 @@ public class PlayerMgr : Singleton<PlayerMgr>
         MonoBehaviourMgr.instance.updateEvent += Update;
     }
 
-    protected override void OnShutdown()
-    {
-        MonoBehaviourMgr.instance.updateEvent -= Update;
-    }
-
     public void InitInput()
     {
         GameEntry.inputMgr.SetAxis(AxisType.LeftAxis, KeyCode.D, KeyCode.A, KeyCode.W, KeyCode.S);
@@ -251,6 +246,11 @@ public class PlayerMgr : Singleton<PlayerMgr>
     {
         m_Player.entityAttribute.moveSpeed = m_CurrSpeed;
         m_CurrSpeed = 0f;
+    }
+
+    public override void Shutdown()
+    {
+        MonoBehaviourMgr.instance.updateEvent -= Update;
     }
 
     private bool OnLevelDataForEach(LevelConfigData levelConfigData)

@@ -18,13 +18,6 @@ namespace WuWuFramework.GameEntity
         private int m_ReleaseCount;
         private int m_DestroyCount;
 
-        public GameEntityMgr()
-        {
-            m_UsingEntities = new List<BaseEntity>();
-            m_TempEntities = new List<BaseEntity>();
-            m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
-        }
-
         public int acquireCount
         {
             get
@@ -74,20 +67,11 @@ namespace WuWuFramework.GameEntity
             }
         }
 
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        public GameEntityMgr()
         {
-
-        }
-
-        public override void Shutdown()
-        {
-            DestroyAll();
-            m_UsingEntities.Clear();
-            m_DicUnUsedEntity.Clear();
-            m_AcquireCount = 0;
-            m_CreateCount = 0;
-            m_ReleaseCount = 0;
-            m_DestroyCount = 0;
+            m_UsingEntities = new List<BaseEntity>();
+            m_TempEntities = new List<BaseEntity>();
+            m_DicUnUsedEntity = new Dictionary<Type, List<BaseEntity>>();
         }
 
         public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr)
@@ -252,6 +236,17 @@ namespace WuWuFramework.GameEntity
         public bool HasEntity<T>(string entityName) where T : BaseEntity
         {
             return FindEntity<T>(entityName) is not null;
+        }
+
+        public override void Shutdown()
+        {
+            DestroyAll();
+            m_UsingEntities.Clear();
+            m_DicUnUsedEntity.Clear();
+            m_AcquireCount = 0;
+            m_CreateCount = 0;
+            m_ReleaseCount = 0;
+            m_DestroyCount = 0;
         }
 
         private List<BaseEntity> GetUnUsedList(Type type)

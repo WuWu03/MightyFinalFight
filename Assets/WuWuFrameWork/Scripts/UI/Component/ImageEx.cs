@@ -1,4 +1,6 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 using WuWuFramework.Pool;
 using WuWuFramework.Utils;
@@ -10,7 +12,9 @@ namespace WuWuFramework.UI
     public class ImageEx : Image
     {
         [SerializeField] private string m_SpriteName;
-        
+        private string m_CurrAtlasPath;
+        private SpriteAtlas m_CurrSpriteAtlas;
+
         public string spriteName
         {
             get
@@ -21,49 +25,56 @@ namespace WuWuFramework.UI
             {
                 if (m_SpriteName != value)
                 {
-                    SetSprite(value);
+                    m_SpriteName = value;
+                    PutAtlas();
+                    LoadAtlas(m_SpriteName);
                 }
-                
-                m_SpriteName = value;
+            }
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            if (Application.isPlaying && WuWuFrameworkEntry.isStartUp && !string.IsNullOrEmpty(m_SpriteName) && m_CurrSpriteAtlas == null)
+            {
+                LoadAtlas(m_SpriteName);
             }
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            PutSprite(m_SpriteName);
+            PutAtlas();
         }
 
-        private void SetSprite(string spriteName)
+        private void LoadAtlas(string spriteName)
         {
-            if (string.IsNullOrEmpty(spriteName))
+            m_CurrAtlasPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), Path.GetDirectoryName(spriteName), ".spriteatlasv2");
+            WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Get<SpriteAtlas>(m_CurrAtlasPath, OnSpriteAtlasLoaded);
+        }
+
+        private void PutAtlas()
+        {
+            if (m_CurrSpriteAtlas != null)
             {
+                WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Put(m_CurrAtlasPath, m_CurrSpriteAtlas);
+                m_CurrSpriteAtlas = null;
+                m_CurrAtlasPath = null;
+            }
+        }
+
+        private void OnSpriteAtlasLoaded(string assetPath, UnityObject obj, object arg)
+        {
+            m_CurrSpriteAtlas = obj as SpriteAtlas;
+
+            if (m_CurrAtlasPath != assetPath)
+            {
+                PutAtlas();
                 return;
             }
 
-            if (!string.IsNullOrEmpty(this.spriteName))
-            {
-                PutSprite(this.spriteName);
-            }
-
-            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
-            WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Get<Sprite>(spritePath, OnSpriteLoaded);
-        }
-
-        private void PutSprite(string spriteName)
-        {
-            if (string.IsNullOrEmpty(spriteName))
-            {
-                return;
-            }
-            
-            string spritePath = PathUtil.FormatPath(PathUtil.GetUISpritesPath(), spriteName);
-            WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Put(spritePath, sprite);
-        }
-
-        private void OnSpriteLoaded(string assetPath, UnityObject obj, object arg)
-        {
-            overrideSprite = obj as Sprite;
+            overrideSprite = m_CurrSpriteAtlas.GetSprite(Path.GetFileNameWithoutExtension(m_SpriteName));
         }
     }
 }

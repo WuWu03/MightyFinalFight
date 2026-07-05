@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using WuWuFramework.Event;
 using WuWuFramework.Resources;
 using WuWuFramework.Utils;
 
@@ -9,24 +8,14 @@ namespace WuWuFramework.ConfigData
     public class ConfigDataMgr : WuWuFrameworkModule, IConfigDataMgr
     {
         private readonly Dictionary<string, object> m_ConfigData;
-        private readonly Dictionary<string, WuWuFrameworkFunc<string, BaseConfigData[]>> m_CacheDataCreators = null;
-
-        private IResourcesMgr m_ResourceMgr;
 
         public ConfigDataMgr()
         {
             m_ConfigData = new();
-            m_CacheDataCreators = new();
-        }
-
-        public override void Shutdown()
-        {
-            RemoveAll();
         }
 
         public void SetResourceMgr(IResourcesMgr resourceMgr)
         {
-            m_ResourceMgr = resourceMgr;
             ConfigDataHelper.SetResourcesMgr(resourceMgr);
         }
 
@@ -76,6 +65,11 @@ namespace WuWuFramework.ConfigData
         {
             ConfigDataHelper.ClearPredicateCache();
             m_ConfigData.Clear();
+        }
+
+        public override void Shutdown()
+        {
+            RemoveAll();
         }
 
         private string GetFilePath<T>(string fileName) where T : BaseConfigData, new()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 using WuWuFramework.Pool;
 using WuWuFramework.Utils;
 using UnityObject = UnityEngine.Object;
@@ -18,6 +19,7 @@ namespace WuWuFramework.UI
         private readonly List<IUIView> m_PopViews;
         private readonly List<IUIView> m_OpenViews;
         private readonly List<IUIView> m_TempViews;
+        private readonly Dictionary<string, Action<SpriteAtlas>> m_AtlasRequests;
         private IUIView m_CurrPopView;
         private IGameObjectPoolMgr m_GameObjectPoolMgr;
         private bool m_CanPopView;
@@ -28,7 +30,10 @@ namespace WuWuFramework.UI
         /// </summary>
         public UIRoot uiRoot
         {
-            get { return m_UIRoot; }
+            get
+            {
+                return m_UIRoot;
+            }
         }
 
         public UIMgr()
@@ -38,107 +43,10 @@ namespace WuWuFramework.UI
             m_DelayDestroyViews = new();
             m_PopViews = new();
             m_TempViews = new();
+            m_AtlasRequests = new();
             m_UIRoot = UnityObject.FindFirstObjectByType<UIRoot>();
-        }
-
-        /// <summary>
-        /// 每帧更新
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        /// <param name="unscaledDeltaTime"></param>
-        /// <param name="time"></param>
-        /// <param name="unscaledTime"></param>
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            if (m_DelayDestroyViews.Count > 0)
-            {
-                for (int i = m_DelayDestroyViews.Count - 1; i >= 0; i++)
-                {
-                    IUIView view = m_DelayDestroyViews[i];
-                    bool isDelayTimeOut = false;
-
-                    if (view.settings.destroyMode == UIDestroyMode.Delay && view.delayTime > 0f)
-                    {
-                        isDelayTimeOut = Time.unscaledTime - view.delayTime >= view.settings.delayDestroyTime;
-                    }
-
-                    if (!isDelayTimeOut)
-                    {
-                        continue;
-                    }
-
-                    m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
-                    view.Destroy();
-                    m_DelayDestroyViews.Remove(view);
-                    m_PopViews.Remove(view);
-
-                    if (m_CurrPopView == view)
-                    {
-                        m_CurrPopView = null;
-                    }
-                }
-            }
-
-            if (m_AlwaysViews.Count > 1)
-            {
-                IUIView view = m_AlwaysViews[0];
-                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
-                view.Destroy();
-                m_AlwaysViews.Remove(view);
-                m_PopViews.Remove(view);
-
-                if (m_CurrPopView == view)
-                {
-                    m_CurrPopView = null;
-                }
-            }
-
-            if (m_IsOpenViewsDirty)
-            {
-                m_TempViews.Clear();
-                m_TempViews.AddRange(m_OpenViews);
-                m_IsOpenViewsDirty = false;
-            }
-
-            foreach (var view in m_TempViews)
-            {
-                if (view is { isOpen: true })
-                {
-                    view.Update();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 销毁
-        /// </summary>
-        public override void Shutdown()
-        {
-            foreach (var view in m_PopViews)
-            {
-                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
-            }
-
-            foreach (var view in m_OpenViews)
-            {
-                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
-            }
-
-            foreach (var view in m_DelayDestroyViews)
-            {
-                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
-            }
-
-            foreach (var view in m_AlwaysViews)
-            {
-                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
-            }
-
-            m_DelayDestroyViews.Clear();
-            m_AlwaysViews.Clear();
-            m_PopViews.Clear();
-            m_OpenViews.Clear();
-            m_TempViews.Clear();
+            SpriteAtlasManager.atlasRequested += RequestAtlas;
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
         public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr)
@@ -328,6 +236,133 @@ namespace WuWuFramework.UI
                 if (!m_AlwaysViews.Contains(view))
                 {
                     m_AlwaysViews.Add(view);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 框架关闭时清理
+        /// </summary>
+        public override void Shutdown()
+        {
+            foreach (var view in m_PopViews)
+            {
+                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
+            }
+
+            foreach (var view in m_OpenViews)
+            {
+                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
+            }
+
+            foreach (var view in m_DelayDestroyViews)
+            {
+                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
+            }
+
+            foreach (var view in m_AlwaysViews)
+            {
+                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject);
+            }
+
+            m_DelayDestroyViews.Clear();
+            m_AlwaysViews.Clear();
+            m_PopViews.Clear();
+            m_OpenViews.Clear();
+            m_TempViews.Clear();
+            m_AtlasRequests.Clear();
+            SpriteAtlasManager.atlasRequested -= RequestAtlas;
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
+        private void RequestAtlas(string atlasName, Action<SpriteAtlas> callback)
+        {
+            if (!m_AtlasRequests.ContainsKey(atlasName))
+            {
+                m_AtlasRequests.Add(atlasName, callback);
+            }
+
+            string spriteAtalsPath = PathUtil.FormatPath(PathUtil.GetUIAtlasPath(), atlasName, ".spriteatlasv2");
+            WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Get<SpriteAtlas>(spriteAtalsPath, OnSpriteAtlasLoaded);
+        }
+
+        private void OnSpriteAtlasLoaded(string assetPath, UnityObject obj, object arg)
+        {
+            SpriteAtlas spriteAtlas = obj as SpriteAtlas;
+
+            if (m_AtlasRequests.TryGetValue(spriteAtlas.name, out Action<SpriteAtlas> callback))
+            {
+                callback?.Invoke(spriteAtlas);
+                m_AtlasRequests.Remove(spriteAtlas.name);
+                WuWuFrameworkMgr.GetModule<IResourcePoolMgr>().Put(assetPath, obj);
+            }
+        }
+
+        /// <summary>
+        /// 每帧更新
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        /// <param name="unscaledDeltaTime"></param>
+        /// <param name="time"></param>
+        /// <param name="unscaledTime"></param>
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            if (m_DelayDestroyViews.Count > 0)
+            {
+                for (int i = m_DelayDestroyViews.Count - 1; i >= 0; i++)
+                {
+                    IUIView view = m_DelayDestroyViews[i];
+                    bool isDelayTimeOut = false;
+
+                    if (view.settings.destroyMode == UIDestroyMode.Delay && view.delayTime > 0f)
+                    {
+                        isDelayTimeOut = Time.unscaledTime - view.delayTime >= view.settings.delayDestroyTime;
+                    }
+
+                    if (!isDelayTimeOut)
+                    {
+                        continue;
+                    }
+
+                    m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
+                    view.Destroy();
+                    m_DelayDestroyViews.Remove(view);
+                    m_PopViews.Remove(view);
+
+                    if (m_CurrPopView == view)
+                    {
+                        m_CurrPopView = null;
+                    }
+                }
+            }
+
+            if (m_AlwaysViews.Count > 1)
+            {
+                IUIView view = m_AlwaysViews[0];
+                m_GameObjectPoolMgr.Put(view.assetPath, view.gameObject, true);
+                view.Destroy();
+                m_AlwaysViews.Remove(view);
+                m_PopViews.Remove(view);
+
+                if (m_CurrPopView == view)
+                {
+                    m_CurrPopView = null;
+                }
+            }
+
+            if (m_IsOpenViewsDirty)
+            {
+                m_TempViews.Clear();
+                m_TempViews.AddRange(m_OpenViews);
+                m_IsOpenViewsDirty = false;
+            }
+
+            foreach (var view in m_TempViews)
+            {
+                if (view is { isOpen: true })
+                {
+                    view.Update();
                 }
             }
         }

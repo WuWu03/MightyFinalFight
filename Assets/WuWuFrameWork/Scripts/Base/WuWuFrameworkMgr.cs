@@ -9,62 +9,20 @@ namespace WuWuFramework
         private static readonly LinkedList<WuWuFrameworkModule> s_WuWuFrameworkModules = new();
 
         /// <summary>
-        /// 所有模块Update
-        /// </summary>
-        /// <param name="deltaTime">帧间隔（受时间缩放影响）</param>
-        /// <param name="unscaledDeltaTime">帧间隔（不受时间缩放影响）</param>
-        /// <param name="time">当前时间（受时间缩放影响）</param>
-        /// <param name="unscaledTime">当前时间（不受时间缩放影响）</param>
-        public static void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            for (LinkedListNode<WuWuFrameworkModule> current = s_WuWuFrameworkModules.Last; current != null; current = current.Previous)
-            {
-                current.Value.Update(deltaTime, unscaledDeltaTime, time, unscaledTime);
-            }
-        }
-
-        /// <summary>
-        /// 所有模块LateUpdate
-        /// </summary>
-        /// <param name="deltaTime">帧间隔（受时间缩放影响）</param>
-        /// <param name="unscaledDeltaTime">帧间隔（不受时间缩放影响）</param>
-        /// <param name="time">当前时间（受时间缩放影响）</param>
-        /// <param name="unscaledTime">当前时间（不受时间缩放影响）</param>
-        public static void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            for (LinkedListNode<WuWuFrameworkModule> current = s_WuWuFrameworkModules.Last; current != null; current = current.Previous)
-            {
-                current.Value.LateUpdate(deltaTime, unscaledDeltaTime, time, unscaledTime);
-            }
-        }
-        
-        /// <summary>
-        /// 所有模块FixedUpdate
-        /// </summary>
-        /// <param name="fixedDeltaTime">帧间隔（受时间缩放影响）</param>
-        /// <param name="fixedUnscaledDeltaTime">帧间隔（不受时间缩放影响）</param>
-        /// <param name="fixedTime">当前时间（受时间缩放影响）</param>
-        /// <param name="fixedUnscaledTime">当前时间（不受时间缩放影响）</param>
-        public static void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
-        {
-            for (LinkedListNode<WuWuFrameworkModule> current = s_WuWuFrameworkModules.Last; current != null; current = current.Previous)
-            {
-                current.Value.FixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime, fixedTime, fixedUnscaledTime);
-            }
-        }
-        
-        /// <summary>
         /// 关闭并清理所有游戏模块。
         /// </summary>
         public static void Shutdown()
         {
-            BaseSingleton.ShutDownAll();
+            BaseSingleton.ShutdownAll();
 
             for (LinkedListNode<WuWuFrameworkModule> current = s_WuWuFrameworkModules.First; current != null; current = current.Next)
             {
                 current.Value.Shutdown();
             }
 
+#if !UNITY_EDITOR
+            StringUtil.Dispose();
+#endif
             s_WuWuFrameworkModules.Clear();
             ReferencePool.Shutdown();
         }

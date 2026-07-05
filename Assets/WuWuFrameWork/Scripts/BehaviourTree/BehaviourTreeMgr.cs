@@ -1,64 +1,24 @@
-using WuWuFramework.Resources;
-using WuWuFramework.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using WuWuFramework.Resources;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.BehaviourTree
 {
     public class BehaviourTreeMgr : WuWuFrameworkModule, IBehaviourTreeMgr
     {
-        private readonly Dictionary<object,BehaviourTree> m_BehaviourTrees;
+        private readonly Dictionary<object, BehaviourTree> m_BehaviourTrees;
         private readonly List<BehaviourTree> m_PersistentBehaviourTrees;
         private bool m_IsDirty;
         private IResourcesMgr m_ResourceMgr;
-        
+
         public BehaviourTreeMgr()
         {
             m_BehaviourTrees = new();
             m_PersistentBehaviourTrees = new();
-        }
-
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            BuildPersistentTreesIfNeed();
-            
-            foreach (var behaviourTree in m_PersistentBehaviourTrees)
-            {
-                behaviourTree.Update(deltaTime);
-            }
-        }
-
-        public override void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            BuildPersistentTreesIfNeed();
-            
-            foreach (var behaviourTree in m_PersistentBehaviourTrees)
-            {
-                behaviourTree.LateUpdate(deltaTime);
-            }
-        }
-
-        public override void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
-        {
-            BuildPersistentTreesIfNeed();
-
-            foreach (var behaviourTree in m_PersistentBehaviourTrees)
-            {
-                behaviourTree.FixedUpdate(fixedDeltaTime);
-            }
-        }
-
-        public override void Shutdown()
-        {
-            StopAllTrees();
-         
-            foreach (var behaviourTree in m_BehaviourTrees)
-            {
-                behaviourTree.Value.Destroy();
-            }
-            
-            m_PersistentBehaviourTrees.Clear();
-            m_BehaviourTrees.Clear();
+            MonoBehaviourMgr.instance.updateEvent += Update;
+            MonoBehaviourMgr.instance.lateUpdateEvent += LateUpdate;
+            MonoBehaviourMgr.instance.fixedUpdateEvent += FixedUpdate;
         }
 
         public void SetResourceMgr(IResourcesMgr resourceMgr)
@@ -155,15 +115,61 @@ namespace WuWuFramework.BehaviourTree
             }
         }
 
+        public override void Shutdown()
+        {
+            StopAllTrees();
+
+            foreach (var behaviourTree in m_BehaviourTrees)
+            {
+                behaviourTree.Value.Destroy();
+            }
+
+            m_PersistentBehaviourTrees.Clear();
+            m_BehaviourTrees.Clear();
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+            MonoBehaviourMgr.instance.lateUpdateEvent -= LateUpdate;
+            MonoBehaviourMgr.instance.fixedUpdateEvent -= FixedUpdate;
+        }
+
         private void BuildPersistentTreesIfNeed()
         {
             if (!m_IsDirty)
             {
                 return;
             }
-            
+
             m_PersistentBehaviourTrees.Clear();
             m_PersistentBehaviourTrees.AddRange(m_BehaviourTrees.Values);
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            BuildPersistentTreesIfNeed();
+
+            foreach (var behaviourTree in m_PersistentBehaviourTrees)
+            {
+                behaviourTree.Update(deltaTime);
+            }
+        }
+
+        private void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            BuildPersistentTreesIfNeed();
+
+            foreach (var behaviourTree in m_PersistentBehaviourTrees)
+            {
+                behaviourTree.LateUpdate(deltaTime);
+            }
+        }
+
+        private void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
+        {
+            BuildPersistentTreesIfNeed();
+
+            foreach (var behaviourTree in m_PersistentBehaviourTrees)
+            {
+                behaviourTree.FixedUpdate(fixedDeltaTime);
+            }
         }
     }
 }

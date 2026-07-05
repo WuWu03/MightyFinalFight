@@ -17,6 +17,8 @@ public class HudMgr : Singleton<HudMgr>
         public DamageType damageType;
     }
 
+    private Queue<HudArg> m_HudArgs;
+
     public Queue<HudArg> hudArgs
     {
         get
@@ -24,16 +26,10 @@ public class HudMgr : Singleton<HudMgr>
             return m_HudArgs;
         }
     }
-    
+
     public HudMgr()
     {
         m_HudArgs = new();
-    }
-
-    protected override void OnShutdown()
-    {
-        GameEntry.uiMgr.Close<HudView>();
-        m_HudArgs.Clear();
     }
 
     public void ShowEnemyDamage(int value, Vector3 pos)
@@ -47,11 +43,14 @@ public class HudMgr : Singleton<HudMgr>
         m_HudArgs.Enqueue(new HudArg { value = value, pos = pos, damageType = DamageType.Player });
         ShowHud();
     }
-    
+
+    public override void Shutdown()
+    {
+        m_HudArgs.Clear();
+    }
+
     private void ShowHud()
     {
         GameEntry.uiMgr.Open<HudView>();
     }
-
-    private Queue<HudArg> m_HudArgs = null;
 }

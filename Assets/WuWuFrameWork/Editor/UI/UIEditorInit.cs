@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -48,7 +49,7 @@ namespace WuWuFramework.Editor
                 return s_Panel;
             }
         }
-        
+
         private static readonly IUIScriptsExporter s_CSharpExporter;
 
         static UIEditorInit()
@@ -138,7 +139,7 @@ namespace WuWuFramework.Editor
             {
                 return;
             }
-            
+
             RectTransform rect = panel.GetComponent<RectTransform>();
             rect.anchoredPosition = Vector3.zero;
             rect.sizeDelta = Vector2.zero;
@@ -155,7 +156,7 @@ namespace WuWuFramework.Editor
             {
                 return;
             }
-            
+
             RectTransform rect = panel.GetComponent<RectTransform>();
             rect.anchoredPosition = Vector3.zero;
             rect.sizeDelta = Vector2.zero;
@@ -165,7 +166,7 @@ namespace WuWuFramework.Editor
             Object.DestroyImmediate(panel.GetComponent<GraphicRaycaster>());
             Object.DestroyImmediate(panel.GetComponent<Canvas>());
         }
-        
+
         private static void DuringSceneGUI(SceneView scnView)
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode && IsUIScene())
@@ -242,9 +243,27 @@ namespace WuWuFramework.Editor
                 gameObject.name = new string(objName);
             }
 
-            UIRef component = gameObject.GetComponent<UIRef>();
+            ImageEx imageEx = gameObject.GetComponent<ImageEx>();
 
-            if (component == null)
+            if (imageEx == null)
+            {
+                ImageEx childImageEx = gameObject.GetComponentInChildren<ImageEx>();
+
+                if (childImageEx != null && childImageEx.raycastTarget)
+                {
+                    DrawStar(Color.red, selectionRect);
+                    return;
+                }
+            }
+            else if (imageEx.raycastTarget)
+            {
+                DrawStar(Color.red, selectionRect);
+                return;
+            }
+
+            UIRef uiRef = gameObject.GetComponent<UIRef>();
+
+            if (uiRef == null)
             {
                 if (gameObject.GetComponentInChildren<UIRef>() != null)
                 {
@@ -254,7 +273,7 @@ namespace WuWuFramework.Editor
                 return;
             }
 
-            DrawStar(component.isCopyRefStr ? Color.yellow : Color.green, selectionRect);
+            DrawStar(uiRef.isCopyRefStr ? Color.yellow : Color.green, selectionRect);
         }
 
         private static void DrawStar(Color color, Rect rect)
@@ -291,23 +310,19 @@ namespace WuWuFramework.Editor
             uiRef.SetName(obj.name);
         }
 
-        private static bool ExportUIRef()
+
+        private static string ExportUIPrefab(bool exportScripts)
         {
-            if (uiRefSetting == null)
+            if (!CanExport())
             {
-                return false;
+                return null;
             }
 
-            if (string.IsNullOrEmpty(uiRefSetting.viewName) || uiRefSetting.viewName.Contains("/"))
-            {
-                Debug.LogError("界面名字未设置正确");
-                Selection.activeGameObject = uiRefSetting.gameObject;
-                return false;
-            }
-
+            List<UIRef> uiRefs = new();
             GameObject gameObject = GameObject.Find("UIRoot/UICanvas/Panel");
             UIRefRoot[] uiRefRoots = gameObject.GetComponentsInChildren<UIRefRoot>(true);
-            List<UIRef> uiRefs = new();
+
+            Debug.Log(uiRefRoots.Length);
 
             foreach (UIRefRoot uiRefRoot in uiRefRoots)
             {
@@ -315,8 +330,44 @@ namespace WuWuFramework.Editor
             }
 
             EditorUtility.SetDirty(gameObject);
-            s_CSharpExporter.Export(uiRefs.ToArray(), uiRefSetting);
-            return true;
+
+            if (exportScripts)
+            {
+                if (!ExportScripts(uiRefs.ToArray()))
+                {
+                    return null;
+                }
+            }
+
+            string path = WuWuPathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPrefabsPath, s_UIRefSetting.viewName, ".prefab");
+
+            if (File.Exists(path))
+            {
+                if (!EditorUtility.DisplayDialog("存在资源", "已经存在资源 " + path + " 是否替换", "替换", "取消"))
+                {
+                    return null;
+                }
+            }
+
+            GameObject root = GameObject.Find("UIRoot");
+            GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
+            WuWuFileUtil.VerifyDirectory(Path.GetDirectoryName(path));
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out bool isSuccess);
+
+            if (!isSuccess)
+            {
+                return null;
+            }
+
+            UIRef[] components = prefab.GetComponentsInChildren<UIRef>(true);
+
+            foreach (var component in components)
+            {
+                UnityObject.DestroyImmediate(component, true);
+            }
+
+            EditorSceneManager.SaveScene(scene);
+            return path;
         }
 
         private static bool GenUIRefRootObjs(UIRefRoot uiRefRoot, List<UIRef> rootUIRefs)
@@ -403,6 +454,25 @@ namespace WuWuFramework.Editor
             return true;
         }
 
+        private static bool ExportScripts(UIRef[] uiRefs)
+        {
+            if (uiRefSetting == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(uiRefSetting.viewName) || uiRefSetting.viewName.Contains("/"))
+            {
+                Debug.LogError("界面名字未设置正确");
+                Selection.activeGameObject = uiRefSetting.gameObject;
+                return false;
+            }
+
+            s_CSharpExporter.Export(uiRefs, uiRefSetting);
+            return true;
+        }
+
+
         private static bool CopyRefStr()
         {
             if (!CanExport())
@@ -458,52 +528,6 @@ namespace WuWuFramework.Editor
             }
 
             return true;
-        }
-
-        private static string ExportUIPrefab(bool generateCode)
-        {
-            if (!CanExport())
-            {
-                return null;
-            }
-
-            if (generateCode)
-            {
-                if (!ExportUIRef())
-                {
-                    return null;
-                }
-            }
-
-            string path = WuWuPathUtil.FormatPath(EditorMgr.GetWuWuFrameworkConfig().uiPrefabsPath, s_UIRefSetting.viewName, ".prefab");
-
-            if (File.Exists(path))
-            {
-                if (!EditorUtility.DisplayDialog("存在资源", "已经存在资源 " + path + " 是否替换", "替换", "取消"))
-                {
-                    return null;
-                }
-            }
-
-            GameObject root = GameObject.Find("UIRoot");
-            GameObject panel = root.transform.Find("UICanvas/Panel").gameObject;
-            WuWuFileUtil.VerifyDirectory(Path.GetDirectoryName(path));
-            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(panel, path, out bool isSuccess);
-
-            if (!isSuccess)
-            {
-                return null;
-            }
-
-            UIRef[] components = prefab.GetComponentsInChildren<UIRef>(true);
-
-            foreach (var component in components)
-            {
-                UnityObject.DestroyImmediate(component, true);
-            }
-
-            EditorSceneManager.SaveScene(scene);
-            return path;
         }
 
         private static bool IsUIScene()

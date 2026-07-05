@@ -24,6 +24,7 @@ MonoBehaviour:
     - Assets/ArtResources/Materials
     - Assets/ArtResources/Prefabs
     - Assets/ArtResources/Scenes
+    - Assets/ArtResources/UI/Atlas
     - Assets/ArtResources/UI/Prefabs
     - Assets/ConfigData
   - id: 0
@@ -35,7 +36,6 @@ MonoBehaviour:
     assetPaths:
     - Assets/ArtResources/Models
     - Assets/ArtResources/Textures
-    - Assets/ArtResources/UI/Sprites
   - id: 0
     bundleBuildType: 1
     bundleName: ArtResources/Fonts
@@ -55,7 +55,7 @@ MonoBehaviour:
   lockConfig: 1
   platFormIndex: 11
   assetCopyDir: 
-  isCopyAsset: 1
+  isCopyAsset: 0
   listExtendName:
   - .assetbundle
   listPattern:

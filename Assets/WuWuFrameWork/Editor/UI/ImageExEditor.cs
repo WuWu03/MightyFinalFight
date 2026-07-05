@@ -24,12 +24,18 @@ namespace WuWuFramework.Editor
         {
             base.OnInspectorGUI();
             SerializedProperty spriteNameProperty = serializedObject.FindProperty("m_SpriteName");
+
+            if(m_ImageEx.raycastTarget)
+            {
+                EditorGUILayout.HelpBox("Raycast Target is enabled. This may affect UI interaction.", MessageType.Warning);
+            }
+
             if (m_CurrSprite != m_ImageEx.sprite)
             {
                 m_CurrSprite = m_ImageEx.sprite;
                 string uiSpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
                 string assetPath = AssetDatabase.GetAssetPath(m_CurrSprite);
-                string atlasName = Path.GetDirectoryName(assetPath).Replace("\\", "/").Replace(uiSpritesPath, "");
+                string atlasName = Path.GetDirectoryName(assetPath).Replace("\\", "/").Replace(uiSpritesPath, "").TrimStart('/');
                 string spriteName = Path.GetFileNameWithoutExtension(assetPath);
                 spriteNameProperty.stringValue = PathUtil.FormatPath(atlasName, spriteName);
                 serializedObject.ApplyModifiedProperties();

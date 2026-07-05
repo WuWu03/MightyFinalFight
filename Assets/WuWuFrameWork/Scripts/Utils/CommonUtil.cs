@@ -3,13 +3,17 @@ using UnityEngine;
 
 namespace WuWuFramework.Utils
 {
-    public class CommonUtil
+    public static class CommonUtil
     {
-
-
-        public static bool CompareTo(double d1, double d2)
+        /// <summary>
+        /// 比较两个double类型的数值是否相等，允许一定的误差范围
+        /// </summary>
+        /// <param name="d1"></param>
+        /// <param name="d2"></param>
+        /// <returns></returns>
+        public static bool CompareTo(this double d1, double d2)
         {
-            double difference = Math.Abs(d1 * 0.0001d);
+            double difference = 1.0E-9;
             return Math.Abs(d1 - d2) <= difference;
         }
 
@@ -53,6 +57,13 @@ namespace WuWuFramework.Utils
             return time;
         }
 
+        /// <summary>
+        /// 屏幕坐标转UGUI坐标
+        /// </summary>
+        /// <param name="screenPos"></param>
+        /// <param name="rectTrans"></param>
+        /// <param name="camera"></param>
+        /// <returns></returns>
         public static Vector2 ScreenPosToUGUIPos(Vector2 screenPos, RectTransform rectTrans, UnityEngine.Camera camera)
         {
             Vector2 resultPos = Vector2.zero;
@@ -124,6 +135,13 @@ namespace WuWuFramework.Utils
             return new Color(r, g, b, a);
         }
 
+        /// <summary>
+        /// 向数组中添加一个元素
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="newElement"></param>
+        /// <returns></returns>
         public static T[] AddElement<T>(T[] array, T newElement)
         {
             int length = array != null ? array.Length : 0;
@@ -141,6 +159,13 @@ namespace WuWuFramework.Utils
             return newArray;
         }
 
+        /// <summary>
+        /// 移除数组中指定位置的元素
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="deletePos"></param>
+        /// <returns></returns>
         public static T[] DeleteElement<T>(T[] array, params int[] deletePos)
         {
             if (array == null)

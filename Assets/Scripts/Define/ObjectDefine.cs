@@ -42,25 +42,11 @@ public class LayerName
     public const string UI = "UI";
     public const string Map = "Map";
     public const string Unit = "Unit";
-    public const string Bullet = "Bullet";
 }
 
 public class CameraName
 {
-    public const string MainCamera = "MainCamera";
     public const string RoleCamera = "RoleCamera";
-}
-
-public class CameraTag
-{
-    public const string MainCamera = "MainCamera";
-    public const string Untagged = "Untagged";
-}
-
-public class CameraDepth
-{
-    public const int MainCamera = 0;
-    public const int RoleCamera = 1;
 }
 
 public class ConstField

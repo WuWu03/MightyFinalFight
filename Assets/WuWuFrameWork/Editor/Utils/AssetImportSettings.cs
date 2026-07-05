@@ -37,7 +37,7 @@ namespace WuWuFramework.Editor
 
         private bool IsUITexture(string assetPath)
         {
-            string uiAtlasPath = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
+            string uiAtlasPath = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().uiAtlasPath;
             string path = Path.GetDirectoryName(assetPath).Replace(@"\", "/");
             return path.Contains(uiAtlasPath);
         }

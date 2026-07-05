@@ -10,8 +10,8 @@ namespace WuWuFramework.Input
         Keyboard,
         Joystick,
     }
-    
-    public class InputMgr : WuWuFrameworkModule , IInputMgr
+
+    public class InputMgr : WuWuFrameworkModule, IInputMgr
     {
         private event WuWuFrameworkFunc<float> m_GetDirectionEvent;
         private event WuWuFrameworkFunc<int, bool> m_GetPreConditionEvent;
@@ -21,26 +21,15 @@ namespace WuWuFramework.Input
         private readonly Queue<string> m_QueueKeyDown;
         private readonly List<ComboKeyEventArgs> m_ComboKeyEvents;
         private readonly Dictionary<KeyType, List<WuWuFrameworkAction>> m_DicAfterTriggerEvents;
-        
         private float m_CurrDir;
         private float m_KeyDownTimer = -1f;
-        private bool m_IsRunning;
-        private InputDeviceType m_InputDeviceType = InputDeviceType.None;
         private int m_CurrKeyDown = -1;
         private int m_AxisDownIndex = -1;//0 horizontal 1 vertical
         private AxisType m_AxisDownType = AxisType.None;
         private const float KeyDownTime = 0.05f;
-        
-        public InputMgr()
-        {
-            m_DicIsKeyDown = new();
-            m_ComboKeys = new();
-            m_QueueKeyDown = new();
-            m_ComboKeyEvents = new();
-            m_DicAfterTriggerEvents = new();
-            InputHelper.Init();
-        }
-        
+        private bool m_IsRunning = false;
+        private InputDeviceType m_InputDeviceType = InputDeviceType.None;
+
         public event WuWuFrameworkFunc<float> getDirectionEvent
         {
             add
@@ -97,70 +86,17 @@ namespace WuWuFramework.Input
             }
         }
 
-        public override void Shutdown()
+        public InputMgr()
         {
-            InputHelper.Dispose();
-            m_DicIsKeyDown.Clear();
-            m_ComboKeys.Clear();
-            m_QueueKeyDown.Clear();
-            m_ComboKeyEvents.Clear();
-            m_DicAfterTriggerEvents.Clear();
-            m_IsRunning = false;
+            m_DicIsKeyDown = new();
+            m_ComboKeys = new();
+            m_QueueKeyDown = new();
+            m_ComboKeyEvents = new();
+            m_DicAfterTriggerEvents = new();
+            InputHelper.Init();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
-        
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            string[] joystickNames = UnityEngine.Input.GetJoystickNames();
-            bool isConnected = joystickNames.Length > 0 && !string.IsNullOrEmpty(joystickNames[0]);
 
-            if (!isConnected)
-            {
-                if (m_InputDeviceType == InputDeviceType.None)
-                {
-                    m_InputDeviceType = InputDeviceType.Keyboard;
-                    m_InputDeviceChangeEvent?.Invoke();
-                }
-                else if (m_InputDeviceType == InputDeviceType.Joystick && UnityEngine.Input.anyKeyDown)
-                {
-                    m_InputDeviceType = InputDeviceType.Keyboard;
-                    m_InputDeviceChangeEvent?.Invoke();
-                }
-            }
-            else
-            {
-                if (m_InputDeviceType == InputDeviceType.None)
-                {
-                    m_InputDeviceType = InputDeviceType.Joystick;
-                    m_InputDeviceChangeEvent?.Invoke();
-                }
-                else if (m_InputDeviceType == InputDeviceType.Keyboard && AnyJoystickInput())
-                {
-                    m_InputDeviceType = InputDeviceType.Joystick;
-                    m_InputDeviceChangeEvent?.Invoke();
-                }
-            }
-
-            if (m_QueueKeyDown.Count > 0)
-            {
-                lock (m_QueueKeyDown)
-                {
-                    while (m_QueueKeyDown.Count > 0)
-                    {
-                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
-                    }
-                }
-            }
-
-            if (m_AxisDownIndex >= 0)
-            {
-                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
-                m_AxisDownIndex = -1;
-                m_AxisDownType = AxisType.None;
-            }
-
-            CheckCombo();
-        }
-        
         public void SetKey(KeyType keyType, string keyName)
         {
             InputHelper.SetKey(keyType, keyName);
@@ -307,6 +243,18 @@ namespace WuWuFramework.Input
             return GetKeyDown(key, checkKeyBoard);
         }
 
+        public override void Shutdown()
+        {
+            InputHelper.Dispose();
+            m_DicIsKeyDown.Clear();
+            m_ComboKeys.Clear();
+            m_QueueKeyDown.Clear();
+            m_ComboKeyEvents.Clear();
+            m_DicAfterTriggerEvents.Clear();
+            m_IsRunning = false;
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
         private void CheckCombo()
         {
             if (!m_IsRunning || m_ComboKeyEvents == null || m_ComboKeyEvents.Count < 1)
@@ -399,9 +347,9 @@ namespace WuWuFramework.Input
             {
                 return false;
             }
-            
+
             bool isKeyDown = false;
-            
+
             if (GetComboKeyDown(key.keyName, key.keyCode, key.isTurbo))
             {
                 KeyType replaceKeyType = key.replaceKeyType != KeyType.None ? key.replaceKeyType : key.keyType;
@@ -431,7 +379,7 @@ namespace WuWuFramework.Input
                 }
 
                 bool isMatch = IsMatch(comboKeyEvent.keys, m_ComboKeys);
-                
+
                 if (!isMatch || m_GetPreConditionEvent == null || !m_GetPreConditionEvent(comboKeyEvent.eventId))
                 {
                     continue;
@@ -462,7 +410,7 @@ namespace WuWuFramework.Input
 
                 return IsMatch(origin, input, originIndex, inputIndex);
             }
-            
+
             inputIndex++;
             originIndex++;
             return IsMatch(origin, input, originIndex, inputIndex);
@@ -499,7 +447,7 @@ namespace WuWuFramework.Input
 
                 return true;
             }
-            
+
             m_DicIsKeyDown[keyName] = false;
             return false;
         }
@@ -598,6 +546,59 @@ namespace WuWuFramework.Input
             m_KeyDownTimer = -1f;
             m_CurrKeyDown = -1;
             m_CurrDir = 0;
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            string[] joystickNames = UnityEngine.Input.GetJoystickNames();
+            bool isConnected = joystickNames.Length > 0 && !string.IsNullOrEmpty(joystickNames[0]);
+
+            if (!isConnected)
+            {
+                if (m_InputDeviceType == InputDeviceType.None)
+                {
+                    m_InputDeviceType = InputDeviceType.Keyboard;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+                else if (m_InputDeviceType == InputDeviceType.Joystick && UnityEngine.Input.anyKeyDown)
+                {
+                    m_InputDeviceType = InputDeviceType.Keyboard;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+            }
+            else
+            {
+                if (m_InputDeviceType == InputDeviceType.None)
+                {
+                    m_InputDeviceType = InputDeviceType.Joystick;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+                else if (m_InputDeviceType == InputDeviceType.Keyboard && AnyJoystickInput())
+                {
+                    m_InputDeviceType = InputDeviceType.Joystick;
+                    m_InputDeviceChangeEvent?.Invoke();
+                }
+            }
+
+            if (m_QueueKeyDown.Count > 0)
+            {
+                lock (m_QueueKeyDown)
+                {
+                    while (m_QueueKeyDown.Count > 0)
+                    {
+                        m_DicIsKeyDown[m_QueueKeyDown.Dequeue()] = true;
+                    }
+                }
+            }
+
+            if (m_AxisDownIndex >= 0)
+            {
+                InputHelper.SetAxisDown(m_AxisDownType, m_AxisDownIndex, true);
+                m_AxisDownIndex = -1;
+                m_AxisDownType = AxisType.None;
+            }
+
+            CheckCombo();
         }
     }
 }

@@ -3,7 +3,7 @@ using WuWuFramework.Event;
 
 namespace WuWuFramework.Timer
 {
-    public class TimerMgr : WuWuFrameworkModule,ITimerMgr
+    public class TimerMgr : WuWuFrameworkModule, ITimerMgr
     {
         private readonly List<Timer> m_TimerList;
         private readonly Queue<Timer> m_TimerQueue;
@@ -12,16 +12,7 @@ namespace WuWuFramework.Timer
         {
             m_TimerList = new();
             m_TimerQueue = new();
-        }
-        
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            UpdateAllTimers();
-        }
-
-        public override void Shutdown()
-        {
-            CancelAllTimers();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
         public Timer Register(float duration, WuWuFrameworkAction onComplete, WuWuFrameworkAction<float> onUpdate = null, bool isLooped = false, bool useRealTime = false)
@@ -44,7 +35,7 @@ namespace WuWuFramework.Timer
                 timer.Release();
             }
 
-            while(m_TimerQueue.Count > 0)
+            while (m_TimerQueue.Count > 0)
             {
                 m_TimerQueue.Dequeue().Release();
             }
@@ -69,9 +60,15 @@ namespace WuWuFramework.Timer
             }
         }
 
+        public override void Shutdown()
+        {
+            CancelAllTimers();
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
         private void UpdateAllTimers()
         {
-            while(m_TimerQueue.Count > 0)
+            while (m_TimerQueue.Count > 0)
             {
                 m_TimerList.Add(m_TimerQueue.Dequeue());
             }
@@ -90,6 +87,11 @@ namespace WuWuFramework.Timer
                     m_TimerList.Remove(timer);
                 }
             }
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            UpdateAllTimers();
         }
     }
 }

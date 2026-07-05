@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using FileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
+using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
 
 namespace WuWuFramework.Editor
 {
@@ -39,24 +40,24 @@ namespace WuWuFramework.Editor
                 return true;
             }
 
-            FileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
+            WuWuFileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
             BuildPipeline.BuildAssetBundles(EditorPathUtil.StreamingAssetsPath, m_BuildMaps.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, target);
             AssetDatabase.Refresh();
 
             if (config.isCopyAsset && !string.IsNullOrEmpty(config.assetCopyDir))
             {
-                FileUtil.DeleteDirectory(config.assetCopyDir);
-                FileUtil.CopyDirectory(EditorPathUtil.StreamingAssetsPath, config.assetCopyDir);
+                WuWuFileUtil.DeleteDirectory(config.assetCopyDir);
+                WuWuFileUtil.CopyDirectory(EditorPathUtil.StreamingAssetsPath, config.assetCopyDir);
             }
 
             //删除无用ab包
-            FileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
-            FileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
+            WuWuFileUtil.VerifyDirectory(EditorPathUtil.StreamingAssetsFullPath);
+            WuWuFileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
 
             for (int i = 0; i < m_Files.Count; i++)
             {
                 string directoryName = Path.GetDirectoryName(m_Files[i]).Replace("\\", "/") + "/";
-                directoryName = directoryName[directoryName.IndexOf(EditorPathUtil.StreamingAssetsPath)..];
+                directoryName = directoryName[directoryName.IndexOf(EditorPathUtil.StreamingAssetsPath)..].TrimEnd('/');
 
                 if (directoryName.Equals(EditorPathUtil.StreamingAssetsPath))
                 {
@@ -64,7 +65,7 @@ namespace WuWuFramework.Editor
                 }
 
                 int startIndex = m_Files[i].IndexOf(EditorPathUtil.StreamingAssetsPath) + EditorPathUtil.StreamingAssetsPath.Length;
-                string filePath = m_Files[i][startIndex..];
+                string filePath = m_Files[i][startIndex..].TrimStart('/');
 
                 if (filePath.EndsWith(".manifest"))
                 {
@@ -73,7 +74,7 @@ namespace WuWuFramework.Editor
 
                 if (!m_ListBundlePath.Contains(filePath))
                 {
-                    FileUtil.DeleteFile(m_Files[i]);
+                    WuWuFileUtil.DeleteFile(m_Files[i]);
                 }
             }
 
@@ -156,7 +157,7 @@ namespace WuWuFramework.Editor
                 else
                 {
                     List<string> recursiveFiles = new();
-                    FileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
+                    WuWuFileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
 
                     if (recursiveFiles.Count < 1)
                     {
@@ -206,7 +207,7 @@ namespace WuWuFramework.Editor
                 else
                 {
                     List<string> recursiveFiles = new();
-                    FileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
+                    WuWuFileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
 
                     if (recursiveFiles.Count < 1)
                     {
@@ -268,7 +269,7 @@ namespace WuWuFramework.Editor
                 else
                 {
                     List<string> recursiveFiles = new();
-                    FileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
+                    WuWuFileUtil.Recursive(assetPath, pattern, recursiveFiles, listPaths);
 
                     if (recursiveFiles.Count < 1)
                     {
@@ -381,7 +382,8 @@ namespace WuWuFramework.Editor
         /// </summary>
         private void CreateAssetMapFile()
         {
-            string mapFilePath = EditorPathUtil.StreamingAssetsFullPath + EditorMgr.GetWuWuFrameworkConfig().assetMapFileName;
+            WuWuFrameworkConfigWindowData wuwuFrameworkConfigWindowData = EditorMgr.GetWuWuFrameworkConfig();
+            string mapFilePath = WuWuPathUtil.FormatPath(EditorPathUtil.StreamingAssetsFullPath, wuwuFrameworkConfigWindowData.assetMapFileName);
 
             if (File.Exists(mapFilePath))
             {
@@ -393,8 +395,31 @@ namespace WuWuFramework.Editor
 
             foreach (KeyValuePair<string, string> keyValuePair in m_AssetMap)
             {
-                content += keyValuePair.Key + "|" + keyValuePair.Value;
+                string assetPath = keyValuePair.Key;
+                string bundle = keyValuePair.Value;
 
+                //if (Path.GetExtension(assetPath).Equals(".spriteatlas"))
+                //{
+                //    string spritesPath = WuWuPathUtil.FormatPath(wuwuFrameworkConfigWindowData.uiSpritesPath, Path.GetFileNameWithoutExtension(assetPath));
+                //    string[] spriteFiles = WuWuFileUtil.GetFiles(spritesPath);
+
+                //    for (int i = 0; i < spriteFiles.Length; i++) 
+                //    {
+                //        string spritePath = spriteFiles[i];
+                //        spritePath = spritePath[(spritePath.IndexOf("Assets/") + 7)..];
+                //        content += spritePath + "|" + bundle;
+
+                //        if (i < spriteFiles.Length - 1)
+                //        {
+                //            content += "\n";
+                //        }
+                //    }
+                //}
+                //else
+                {
+                    content += assetPath + "|" + bundle;
+                }
+        
                 if (index < m_AssetMap.Count - 1)
                 {
                     content += "\n";
@@ -403,7 +428,7 @@ namespace WuWuFramework.Editor
                 index++;
             }
 
-            FileUtil.CreateTextFile(mapFilePath, content);
+            WuWuFileUtil.CreateTextFile(mapFilePath, content);
         }
 
         /// <summary>
@@ -411,7 +436,7 @@ namespace WuWuFramework.Editor
         /// </summary>
         private void CreateVersionFile()
         {
-            string versionFilePath = EditorPathUtil.StreamingAssetsFullPath + EditorMgr.GetWuWuFrameworkConfig().versionFileName;
+            string versionFilePath = WuWuPathUtil.FormatPath(EditorPathUtil.StreamingAssetsFullPath, EditorMgr.GetWuWuFrameworkConfig().versionFileName);
 
             if (File.Exists(versionFilePath))
             {
@@ -421,15 +446,15 @@ namespace WuWuFramework.Editor
             m_Paths.Clear();
             m_Files.Clear();
 
-            FileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
+            WuWuFileUtil.Recursive(EditorPathUtil.StreamingAssetsFullPath, "*.*", m_Files, m_Paths);
 
             string content = string.Empty;
 
             for (int i = 0; i < m_Files.Count; i++)
             {
-                string md5 = FileUtil.MD5File(m_Files[i]);
+                string md5 = WuWuFileUtil.MD5File(m_Files[i]);
                 string filePath = m_Files[i].Replace(EditorPathUtil.StreamingAssetsFullPath, string.Empty).Replace("\\", "/");
-                string fileSize = FileUtil.GetFileSize(m_Files[i]).ToString();
+                string fileSize = WuWuFileUtil.GetFileSize(m_Files[i]).ToString();
                 //string directory = Path.GetDirectoryName(value).Replace("\\", "/");
                 //string fileName = Path.GetFileNameWithoutExtension(value);
                 //string ext = Path.GetExtension(value);
@@ -442,7 +467,7 @@ namespace WuWuFramework.Editor
                 content += filePath + "|" + md5 + "|" + fileSize + (i < m_Files.Count - 1 ? "\n" : string.Empty);
             }
 
-            FileUtil.CreateTextFile(versionFilePath, content);
+            WuWuFileUtil.CreateTextFile(versionFilePath, content);
         }
 
 

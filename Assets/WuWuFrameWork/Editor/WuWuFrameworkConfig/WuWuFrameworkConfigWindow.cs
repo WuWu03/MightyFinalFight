@@ -68,7 +68,8 @@ namespace WuWuFramework.Editor
 
             DrawField(
                 () => { return m_AssetsFolder == null || m_EditorConfig.assetsPath != m_AssetsPath; },
-                () => {
+                () =>
+                {
                     UnityObject folder = EditorGUILayout.ObjectField("资源根目录", m_AssetsFolder, typeof(DefaultAsset), false);
                     if (folder != m_AssetsFolder)
                     {
@@ -76,7 +77,8 @@ namespace WuWuFramework.Editor
                         m_AssetsPath = WuWuPathUtil.GetAssetPath(AssetDatabase.GetAssetPath(folder));
                     }
                 },
-                () => {
+                () =>
+                {
                     string uiPath = WuWuPathUtil.GetAssetPath(WuWuPathUtil.FormatPath(m_AssetsPath, EditorPathUtil.DefaultUIPath));
                     string uiPrefabsPath = WuWuPathUtil.FormatPath(uiPath, EditorPathUtil.UIPrefabsPath);
                     string uiAtlasPath = WuWuPathUtil.FormatPath(uiPath, EditorPathUtil.UIAtlasPath);
@@ -109,7 +111,8 @@ namespace WuWuFramework.Editor
 
             DrawField(
                 () => { return m_ConfigDataFolder == null || m_EditorConfig.configDataPath != m_ConfigDataPath; },
-                () => {
+                () =>
+                {
                     UnityObject folder = EditorGUILayout.ObjectField("配置文件目录", m_ConfigDataFolder, typeof(DefaultAsset), false);
                     if (folder != m_ConfigDataFolder)
                     {
@@ -117,14 +120,16 @@ namespace WuWuFramework.Editor
                         m_ConfigDataPath = WuWuPathUtil.GetAssetPath(AssetDatabase.GetAssetPath(folder));
                     }
                 },
-                () => {
+                () =>
+                {
                     WuWuFileUtil.VerifyDirectory(WuWuPathUtil.GetAssetFullPath(m_ConfigDataPath));
                     AssetDatabase.Refresh();
                     m_EditorConfig.configDataPath = m_ConfigDataPath;
                 }, 20);
             DrawField(
                 () => { return m_UIScriptsFolder == null || m_EditorConfig.uiScriptsPath != m_UIScriptsPath; },
-                () => {
+                () =>
+                {
                     UnityObject folder = EditorGUILayout.ObjectField("UI脚本目录", m_UIScriptsFolder, typeof(DefaultAsset), false);
                     if (folder != m_UIScriptsFolder)
                     {
@@ -132,7 +137,8 @@ namespace WuWuFramework.Editor
                         m_UIScriptsPath = WuWuPathUtil.GetAssetPath(AssetDatabase.GetAssetPath(folder));
                     }
                 },
-                () => {
+                () =>
+                {
                     WuWuFileUtil.VerifyDirectory(WuWuPathUtil.GetAssetFullPath(m_UIScriptsPath));
                     AssetDatabase.Refresh();
                     m_EditorConfig.uiScriptsPath = m_UIScriptsPath;
@@ -141,7 +147,8 @@ namespace WuWuFramework.Editor
             DrawField(
                 () => { return m_EditorConfig.versionFileName != m_VersionFileName; },
                 () => { m_VersionFileName = EditorGUILayout.TextField("资源版本文件名称", m_VersionFileName); },
-                () => {
+                () =>
+                {
                     if (string.IsNullOrEmpty(m_VersionFileName))
                     {
                         m_VersionFileName = EditorPathUtil.VersionFileDefaultName;
@@ -158,7 +165,8 @@ namespace WuWuFramework.Editor
             DrawField(
                    () => { return m_EditorConfig.assetMapFileName != m_AssetMapFileName; },
                    () => { m_AssetMapFileName = EditorGUILayout.TextField("资源映射文件名称", m_AssetMapFileName); },
-                   () => {
+                   () =>
+                   {
                        if (string.IsNullOrEmpty(m_AssetMapFileName))
                        {
                            m_AssetMapFileName = EditorPathUtil.AssetMapFileDefaultName;
@@ -173,7 +181,8 @@ namespace WuWuFramework.Editor
                    }, 20);
 
             DrawField(
-                () => {
+                () =>
+                {
                     GUI.enabled = false;
                     EditorGUILayout.TextField("打包绝对路径", m_BuildPath);
                     GUI.enabled = true;
@@ -195,7 +204,6 @@ namespace WuWuFramework.Editor
 
             EditorGUILayout.EndScrollView();
             GUILayout.FlexibleSpace();
-
             Color oriColor = GUI.color;
             CheckEntry();
             GUI.color = oriColor;

@@ -338,7 +338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 331937744}
   - component: {fileID: 331937746}
-  - component: {fileID: 331937745}
+  - component: {fileID: 331937747}
   m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
@@ -361,26 +361,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1802636773}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &331937745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331937743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: A
-  m_CancelButton: B
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &331937746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +376,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &331937747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331937743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &589985607
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,13 +437,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: RoundClear
-  m_PresenterName: RoundClearPresenter
+  m_PresenterName: RoundClearViewPresenter
   m_ViewName: RoundClearView
   uiDestroyMode: 1
-  uiLayer: 3
+  uiLayer: 4
   uiType: 1
   delayDestroyTime: 0
-  presenterPath: Assets/Scripts/UI/RoundClear/RoundClear.cs
+  presenterPath: Assets/Scripts/UI/RoundClear/RoundClearViewPresenter.cs
   viewPath: Assets/Scripts/UI/RoundClear/RoundClearView.cs
   settingsPath: Assets/Scripts/UI/RoundClear/RoundClearViewSettings.cs
 --- !u!4 &589985609
@@ -512,7 +523,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtRound
   m_ComponentName: LanguageText
-  m_ComponentFullName: 
+  m_ComponentFullName: WuWuFramework.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -554,8 +565,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -634,7 +644,7 @@ GameObject:
   m_Component:
   - component: {fileID: 607419159}
   - component: {fileID: 607419161}
-  - component: {fileID: 607419160}
+  - component: {fileID: 607419162}
   m_Layer: 0
   m_Name: bottom
   m_TagString: Untagged
@@ -662,36 +672,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 130}
   m_Pivot: {x: 0.5, y: 0}
---- !u!114 &607419160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 607419158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &607419161
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -700,6 +680,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607419158}
   m_CullTransparentMesh: 1
+--- !u!114 &607419162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607419158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b7b3e79a39720b849942883eab9d7e50, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: Common/bg_white
 --- !u!1 &1802636772
 GameObject:
   m_ObjectHideFlags: 0

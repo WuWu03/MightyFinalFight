@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6048182684363101610}
   - component: {fileID: 1664723953791534293}
-  - component: {fileID: 154213353465948433}
+  - component: {fileID: 8597716887643869676}
   m_Layer: 5
   m_Name: imgStar
   m_TagString: Untagged
@@ -45,7 +45,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277064144104424599}
   m_CullTransparentMesh: 1
---- !u!114 &154213353465948433
+--- !u!114 &8597716887643869676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54,14 +54,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 277064144104424599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -75,6 +75,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/star
 --- !u!1 &765919935198762363
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5803337239089378215}
   - component: {fileID: 3842807080644078898}
-  - component: {fileID: 1942036423889751524}
+  - component: {fileID: 4529535982865814671}
   m_Layer: 5
   m_Name: imgLogo
   m_TagString: Untagged
@@ -120,7 +121,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765919935198762363}
   m_CullTransparentMesh: 1
---- !u!114 &1942036423889751524
+--- !u!114 &4529535982865814671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,14 +130,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 765919935198762363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -150,6 +151,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/Title00
 --- !u!1 &1429774893071104742
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1774175395808300970}
   - component: {fileID: 8338734128450627417}
-  - component: {fileID: 243114985213440276}
+  - component: {fileID: 7308126878000739481}
   m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
@@ -195,7 +197,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429774893071104742}
   m_CullTransparentMesh: 1
---- !u!114 &243114985213440276
+--- !u!114 &7308126878000739481
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -204,14 +206,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1429774893071104742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -225,6 +227,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: Common/bg_white
 --- !u!1 &1908560922293780600
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +297,7 @@ MonoBehaviour:
   m_text: SETTING
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -330,6 +332,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -445,8 +448,7 @@ MonoBehaviour:
   m_text: PRESS START
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -481,6 +483,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -537,7 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 751877258636619941}
   - component: {fileID: 5482914375229481862}
-  - component: {fileID: 7408502122245497546}
+  - component: {fileID: 7005866286032249560}
   m_Layer: 5
   m_Name: imgIntro2
   m_TagString: Untagged
@@ -572,7 +575,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3800327768742595253}
   m_CullTransparentMesh: 1
---- !u!114 &7408502122245497546
+--- !u!114 &7005866286032249560
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -581,9 +584,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3800327768742595253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
@@ -594,7 +597,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 1b7d1dddf4c97844cb6ae5a8b173ed27, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -602,6 +605,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/Intro02
 --- !u!1 &5165383598320223616
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1485799739438284139}
   - component: {fileID: 1301459767918890119}
-  - component: {fileID: 1499027443555342099}
+  - component: {fileID: 2464232210501727414}
   m_Layer: 5
   m_Name: imgLogoBG
   m_TagString: Untagged
@@ -647,7 +651,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5165383598320223616}
   m_CullTransparentMesh: 1
---- !u!114 &1499027443555342099
+--- !u!114 &2464232210501727414
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -656,14 +660,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5165383598320223616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -677,6 +681,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/MightyFinalFight
 --- !u!1 &5643735251292426393
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1254583930254903508}
   - component: {fileID: 2689762270011629283}
-  - component: {fileID: 4796573918177934718}
+  - component: {fileID: 8060119540703304866}
   m_Layer: 5
   m_Name: imgRetro
   m_TagString: Untagged
@@ -722,7 +727,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5643735251292426393}
   m_CullTransparentMesh: 1
---- !u!114 &4796573918177934718
+--- !u!114 &8060119540703304866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -731,14 +736,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5643735251292426393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -752,6 +757,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/retro
 --- !u!1 &6592857157102212749
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,16 +821,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 1499027443555342099}
-  - {fileID: 154213353465948433}
-  - {fileID: 4796573918177934718}
-  - {fileID: 1942036423889751524}
+  - {fileID: 2464232210501727414}
+  - {fileID: 8597716887643869676}
+  - {fileID: 8060119540703304866}
+  - {fileID: 4529535982865814671}
   - {fileID: 2715091678729973615}
   - {fileID: 1453141765680347272}
   - {fileID: 3830009329875468787}
-  - {fileID: 3119924326015684009}
-  - {fileID: 5913221809702538543}
-  - {fileID: 7408502122245497546}
+  - {fileID: 7409704002634389128}
+  - {fileID: 7296423834776839335}
+  - {fileID: 7005866286032249560}
   - {fileID: 6775457360098066301}
   - {fileID: 553679700948266900}
 --- !u!223 &7608381935035698715
@@ -938,8 +944,7 @@ MonoBehaviour:
     https://space.bilibili.com/12570963'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -974,6 +979,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1017,7 +1023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4847094213954704843}
   - component: {fileID: 3098188435934823252}
-  - component: {fileID: 5913221809702538543}
+  - component: {fileID: 7296423834776839335}
   m_Layer: 5
   m_Name: imgIntro1
   m_TagString: Untagged
@@ -1052,7 +1058,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8434693799993411242}
   m_CullTransparentMesh: 1
---- !u!114 &5913221809702538543
+--- !u!114 &7296423834776839335
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1061,9 +1067,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8434693799993411242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
@@ -1074,7 +1080,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 737e66a66e64f3c49ab5eb03856cd8db, type: 3}
   m_Type: 0
-  m_PreserveAspect: 1
+  m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1082,6 +1088,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/Intro01
 --- !u!1 &8496382814245726722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,8 +1162,7 @@ MonoBehaviour:
     GO!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1191,6 +1197,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1247,7 +1254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6382666530680222928}
   - component: {fileID: 1351537211728862867}
-  - component: {fileID: 3119924326015684009}
+  - component: {fileID: 7409704002634389128}
   m_Layer: 5
   m_Name: imgCapcom
   m_TagString: Untagged
@@ -1282,7 +1289,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8569957169797148634}
   m_CullTransparentMesh: 1
---- !u!114 &3119924326015684009
+--- !u!114 &7409704002634389128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1291,14 +1298,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8569957169797148634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1312,3 +1319,4 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: TitleView/Capcom

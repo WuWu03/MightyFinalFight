@@ -1,5 +1,5 @@
-using WuWuFramework.Utils;
 using System.Collections.Generic;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Fsm
 {
@@ -7,24 +7,14 @@ namespace WuWuFramework.Fsm
     {
         private readonly Dictionary<object, Fsm> m_Fsms;
 
-        public FsmMgr()
-        {
-            m_Fsms = new();
-        }
-
         public int fsmCount
         {
             get { return m_Fsms.Count; }
         }
 
-        public override void Shutdown()
+        public FsmMgr()
         {
-            foreach (KeyValuePair<object, Fsm> fsm in m_Fsms)
-            {
-                fsm.Value.Release();
-            }
-
-            m_Fsms.Clear();
+            m_Fsms = new();
         }
 
         public Fsm CreateFsm(object owner, string name)
@@ -97,6 +87,16 @@ namespace WuWuFramework.Fsm
 
             m_Fsms.Remove(fsm.owner);
             fsm.Release();
+        }
+
+        public override void Shutdown()
+        {
+            foreach (KeyValuePair<object, Fsm> fsm in m_Fsms)
+            {
+                fsm.Value.Release();
+            }
+
+            m_Fsms.Clear();
         }
     }
 }

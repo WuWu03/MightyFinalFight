@@ -15,12 +15,7 @@ namespace WuWuFramework.Localization
         private IResourcesMgr m_ResourceMgr;
         private event WuWuFrameworkAction m_LanguageChangeEvent;
         
-        public LocalizationMgr()
-        {
-            m_LanguageType = (LanguageType)PlayerPrefs.GetInt(CacheKey, (int)LanguageType.None);
-            m_DicLanguageLoader = new();
-        }
-        
+
         public event WuWuFrameworkAction lanuageChangeEvent
         {
             add
@@ -32,11 +27,11 @@ namespace WuWuFramework.Localization
                 m_LanguageChangeEvent -= value;
             }
         }
-        
-        public override void Shutdown()
+
+        public LocalizationMgr()
         {
-            m_DicLanguageLoader.Clear();
-            m_LanguageChangeEvent = null;
+            m_LanguageType = (LanguageType)PlayerPrefs.GetInt(CacheKey, (int)LanguageType.None);
+            m_DicLanguageLoader = new();
         }
 
         public void SetResourceManager(IResourcesMgr resourceMgr)
@@ -127,6 +122,12 @@ namespace WuWuFramework.Localization
             }
 
             return loader.GetLanguageText(key);
+        }
+
+        public override void Shutdown()
+        {
+            m_DicLanguageLoader.Clear();
+            m_LanguageChangeEvent = null;
         }
     }
 }

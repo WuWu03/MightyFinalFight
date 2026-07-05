@@ -1,8 +1,7 @@
 /*
- * @Desc: Main 模块 MainView 界面数据
+ * @Desc: Main 模块 MainView 界面展示器
  * @Date: 2020-07-22 19:39:11
  * @Author: WuWu
- * @Note: 工具生成，请勿修改
  */
 
 using DG.Tweening;
@@ -24,7 +23,7 @@ public class MainViewPresenter : UIBaseViewPresenter<MainView>
     {
         view.enemyHpBar.SetActiveSelf(false);
         SetPlayerExp(PlayerMgr.instance.exp, PlayerMgr.instance.levelConfigData.exp);
-        SetRound(StageMgr.instance.CurrStageData.StageIndex);
+        SetRound(StageMgr.instance.currStageData.StageIndex);
         SetPlayerLife(PlayerMgr.instance.life);
         SetPlayerHP(PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpValue, PlayerMgr.instance.levelConfigData.hpBarWidth);
         GameEntry.eventMgr.Subscribe<StageEnterStartEvent>(OnStageEnterStartEvent).UnSubscribeAllOnDisable(view.gameObject);
@@ -64,7 +63,7 @@ public class MainViewPresenter : UIBaseViewPresenter<MainView>
     {
         if (item is MainView.LevelListItem levelListItem)
         {
-            int stageIndex = StageMgr.instance.CurrStageData.StageIndex;
+            int stageIndex = StageMgr.instance.currStageData.StageIndex;
             int playerLevel = PlayerMgr.instance.level;
             levelListItem.imgLevel1Go.gameObject.SetActiveSelf(stageIndex == 1 && playerLevel >= item.id);
             levelListItem.imgLevel2Go.gameObject.SetActiveSelf(stageIndex == 2 && playerLevel >= item.id);
@@ -150,7 +149,7 @@ public class MainViewPresenter : UIBaseViewPresenter<MainView>
 
     private void SetColor()
     {
-        Color color = CommonUtil.HexToRGB(StageMgr.instance.CurrStageData.StageColor);
+        Color color = CommonUtil.HexToRGB(StageMgr.instance.currStageData.StageColor);
         view.playerHpBarImage.color = color;
         view.enemyHpBarImage.color = color;
         view.levelList.SetItemCount(5);

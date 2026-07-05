@@ -1,44 +1,17 @@
 using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.Download
 {
     public class DownloadMgr : WuWuFrameworkModule,IDownloadMgr
     {
         private readonly List<DownloadRequest> m_DownloadRequests;
+
         public DownloadMgr()
         {
             m_DownloadRequests = new();
-        }
-
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            if (m_DownloadRequests is { Count: > 0 })
-            {
-                DownloadRequest downloadRequest = m_DownloadRequests[0];
-
-                if (downloadRequest.isDone || downloadRequest.isError)
-                {
-                    RemoveDownload(downloadRequest);
-                }
-                else if (!downloadRequest.isDoing)
-                {
-                    downloadRequest.StartDownload();
-                }
-            }
-        }
-
-        public override void Shutdown()
-        {
-            RemoveAllDownload();
-
-            foreach (var downloadRequest in m_DownloadRequests)
-            {
-                downloadRequest.Release();
-            }
-
-            m_DownloadRequests.Clear();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
         
         public void StartDownload()
@@ -180,11 +153,41 @@ namespace WuWuFramework.Download
             }
         }
 
+        public override void Shutdown()
+        {
+            RemoveAllDownload();
+
+            foreach (var downloadRequest in m_DownloadRequests)
+            {
+                downloadRequest.Release();
+            }
+
+            m_DownloadRequests.Clear();
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
         private void RemoveDownload(DownloadRequest downloadRequest)
         {
             downloadRequest.StopDownload();
             downloadRequest.Release();
             m_DownloadRequests.Remove(downloadRequest);
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            if (m_DownloadRequests is { Count: > 0 })
+            {
+                DownloadRequest downloadRequest = m_DownloadRequests[0];
+
+                if (downloadRequest.isDone || downloadRequest.isError)
+                {
+                    RemoveDownload(downloadRequest);
+                }
+                else if (!downloadRequest.isDoing)
+                {
+                    downloadRequest.StartDownload();
+                }
+            }
         }
     }
 }

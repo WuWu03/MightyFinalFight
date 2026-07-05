@@ -26,26 +26,26 @@ namespace WuWuFramework
                 return m_Instance;
             }
         }
-
-        public override void ShutDown()
-        {
-            OnShutdown();
-        }
-
-        protected abstract void OnShutdown();
     }
 
+
+    /// <summary>
+    /// 单例基类
+    /// </summary>
     public abstract class BaseSingleton
     {
         protected static readonly List<BaseSingleton> s_Objects = new();
 
-        public abstract void ShutDown();
+        public abstract void Shutdown();
 
-        public static void ShutDownAll()
+        /// <summary>
+        /// 释放所有单例对象
+        /// </summary>
+        public static void ShutdownAll()
         {
             for (int i = 0; i < s_Objects.Count; i++)
             {
-                s_Objects[i].ShutDown();
+                s_Objects[i].Shutdown();
             }
 
             s_Objects.Clear();

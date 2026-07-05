@@ -1,5 +1,5 @@
-using WuWuFramework.Event;
 using UnityEngine;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.Input
 {

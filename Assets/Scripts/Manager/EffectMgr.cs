@@ -5,16 +5,6 @@ using UnityEngine;
 
 public class EffectMgr : Singleton<EffectMgr>
 {
-    public EffectMgr()
-    {
-
-    }
-
-    protected override void OnShutdown()
-    {
-
-    }
-
     public DBEffect PlayDBEffect(string effectName, Vector3 pos, float playTime = -1, float speed = 1f, WuWuFrameworkAction playEndCallback = null)
     {
         return PlayEffect<DBEffect>(effectName, null, pos, Vector3.zero, true, true, playTime, speed, playEndCallback);
@@ -58,5 +48,10 @@ public class EffectMgr : Singleton<EffectMgr>
         }
 
         return effect;
+    }
+
+    public override void Shutdown()
+    {
+
     }
 }

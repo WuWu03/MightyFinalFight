@@ -21,43 +21,6 @@ namespace WuWuFramework
             }
         }
 
-
-        /// <summary>
-        /// 模块Update
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        /// <param name="unscaledDeltaTime"></param>
-        /// <param name="time"></param>
-        /// <param name="unscaledTime"></param>
-        public virtual void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-
-        }
-
-        /// <summary>
-        /// 模块LateUpdate
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        /// <param name="unscaledDeltaTime"></param>
-        /// <param name="time"></param>
-        /// <param name="unscaledTime"></param>
-        public virtual void LateUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-
-        }
-
-        /// <summary>
-        /// 模块FixedUpdate
-        /// </summary>
-        /// <param name="fixedDeltaTime"></param>
-        /// <param name="fixedUnscaledDeltaTime"></param>
-        /// <param name="fixedTime"></param>
-        /// <param name="fixedUnscaledTime"></param>
-        public virtual void FixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime, float fixedTime, float fixedUnscaledTime)
-        {
-
-        }
-
         /// <summary>
         /// 关闭模块
         /// </summary>

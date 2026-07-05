@@ -8,6 +8,7 @@ namespace WuWuFramework.UI
         Window1,
         Window2,
         Tips,
+        Talk,
         Guide,
         Message,
         Mask,

@@ -19,13 +19,6 @@ namespace WuWuFramework.Sound
         private IResourcePoolMgr m_ResourcePoolMgr;
         private event WuWuFrameworkAction m_OnBgmFadeCompleteEvent;
 
-        public SoundMgr()
-        {
-            m_WaitToPlayBgms = new();
-            m_PlayingSes = new();
-            m_UnUsedSes = new();
-        }
-
         public bool isBgmComplete
         {
             get
@@ -46,26 +39,12 @@ namespace WuWuFramework.Sound
             }
         }
 
-
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        public SoundMgr()
         {
-            CheckBgm();
-            CheckSe();
-        }
-
-        public override void Shutdown()
-        {
-            StopBgm(true);
-
-            for (int i = m_PlayingSes.Count - 1; i > -1; i--)
-            {
-                PutSe(m_PlayingSes[i]);
-            }
-
-            ReleaseSeAudioSources();
-            m_PlayingSes.Clear();
-            m_IsBgmPause = false;
-            m_OnBgmFadeCompleteEvent = null;
+            m_WaitToPlayBgms = new();
+            m_PlayingSes = new();
+            m_UnUsedSes = new();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
         public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr)
@@ -269,6 +248,23 @@ namespace WuWuFramework.Sound
             m_UnUsedSes.Clear();
         }
 
+        public override void Shutdown()
+        {
+            StopBgm(true);
+
+            for (int i = m_PlayingSes.Count - 1; i > -1; i--)
+            {
+                PutSe(m_PlayingSes[i]);
+            }
+
+            ReleaseSeAudioSources();
+            m_PlayingSes.Clear();
+            m_IsBgmPause = false;
+            m_OnBgmFadeCompleteEvent = null;
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
+
         private void OnBgmFadeComplete()
         {
             m_OnBgmFadeCompleteEvent?.Invoke();
@@ -385,6 +381,12 @@ namespace WuWuFramework.Sound
                     PutSe(m_PlayingSes[i]);
                 }
             }
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            CheckBgm();
+            CheckSe();
         }
     }
 }

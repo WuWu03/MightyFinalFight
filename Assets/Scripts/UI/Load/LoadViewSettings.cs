@@ -1,6 +1,6 @@
 /*
- * @Desc: Load 模块 LoadView 界面组件
- * @Date: 2025-11-26 16:35:53
+ * @Desc: Load 模块 LoadView 视图设置
+ * @Date: 2026-07-04 16:34:06
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */

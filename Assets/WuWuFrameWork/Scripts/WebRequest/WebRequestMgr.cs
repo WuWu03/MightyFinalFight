@@ -1,55 +1,22 @@
 using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine;
 using UnityEngine.Networking;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.WebRequest
 {
-    public class WebRequestMgr : WuWuFrameworkModule,IWebRequestMgr
+    public class WebRequestMgr : WuWuFrameworkModule, IWebRequestMgr
     {
         private readonly List<WebRequest> m_WebRequests;
         private readonly List<WebRequest> m_RemovedWebRequests;
+
         public WebRequestMgr()
         {
             m_WebRequests = new List<WebRequest>();
             m_RemovedWebRequests = new List<WebRequest>();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            if (m_WebRequests is { Count: > 0 })
-            {
-                foreach (WebRequest webRequest in m_WebRequests)
-                {
-                    if (webRequest.isDone || webRequest.isError)
-                    {
-                        m_RemovedWebRequests.Add(webRequest);
-                    }
-                }
-            }
-
-            if (m_RemovedWebRequests is { Count: > 0 })
-            {
-                foreach (WebRequest webRequest in m_RemovedWebRequests)
-                {
-                    RemoveWebRequest(webRequest);
-                }
-                
-                m_RemovedWebRequests.Clear();
-            }
-
-            if (m_WebRequests is { Count: > 0 } && !m_WebRequests[0].isDoing)
-            {
-                m_WebRequests[0].StartRequest();
-            }
-        }
-
-        public override void Shutdown()
-        {
-            RemoveAllWebRequests();
-            m_WebRequests.Clear();
-        }
-        
         public void AddWebRequest(string uri, string tag)
         {
             AddWebRequest(uri, tag, null, null, null);
@@ -136,11 +103,46 @@ namespace WuWuFramework.WebRequest
             }
         }
 
+        public override void Shutdown()
+        {
+            RemoveAllWebRequests();
+            m_WebRequests.Clear();
+        }
+
         private void RemoveWebRequest(WebRequest webRequest)
         {
             webRequest.StopRequest();
             webRequest.Release();
             m_WebRequests.Remove(webRequest);
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            if (m_WebRequests is { Count: > 0 })
+            {
+                foreach (WebRequest webRequest in m_WebRequests)
+                {
+                    if (webRequest.isDone || webRequest.isError)
+                    {
+                        m_RemovedWebRequests.Add(webRequest);
+                    }
+                }
+            }
+
+            if (m_RemovedWebRequests is { Count: > 0 })
+            {
+                foreach (WebRequest webRequest in m_RemovedWebRequests)
+                {
+                    RemoveWebRequest(webRequest);
+                }
+
+                m_RemovedWebRequests.Clear();
+            }
+
+            if (m_WebRequests is { Count: > 0 } && !m_WebRequests[0].isDoing)
+            {
+                m_WebRequests[0].StartRequest();
+            }
         }
     }
 }

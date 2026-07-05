@@ -25,26 +25,6 @@ namespace WuWuFramework.Pool
             m_GameObjectUnloaders = new();
         }
 
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-        }
-
-        /// <summary>
-        /// 释放
-        /// </summary>
-        public override void Shutdown()
-        {
-            foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
-            {
-                kvp.Value.Clear();
-            }
-
-            m_ReleaseKeys.Clear();
-            m_Pools.Clear();
-            m_LoadRequests.Clear();
-            m_GameObjectUnloaders.Clear();
-        }
-
         public void SetResourcePoolMgr(IResourcePoolMgr resourcePoolMgr)
         {
             m_ResourcePoolMgr = resourcePoolMgr;
@@ -173,6 +153,23 @@ namespace WuWuFramework.Pool
                 m_Pools[releaseKey].Clear();
                 m_Pools.Remove(releaseKey);
             }
+        }
+
+
+        /// <summary>
+        /// 释放
+        /// </summary>
+        public override void Shutdown()
+        {
+            foreach (KeyValuePair<string, GameObjectPool> kvp in m_Pools)
+            {
+                kvp.Value.Clear();
+            }
+
+            m_ReleaseKeys.Clear();
+            m_Pools.Clear();
+            m_LoadRequests.Clear();
+            m_GameObjectUnloaders.Clear();
         }
 
         private void AddPool(string tag, GameObject obj, int prefab, bool isFromAsset)

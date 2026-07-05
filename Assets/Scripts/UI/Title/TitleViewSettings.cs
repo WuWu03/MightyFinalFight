@@ -1,6 +1,6 @@
 /*
- * @Desc: Title 模块 TitleView 界面组件
- * @Date: 2025-11-28 10:22:46
+ * @Desc: Title 模块 TitleView 视图设置
+ * @Date: 2026-07-04 17:24:24
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */

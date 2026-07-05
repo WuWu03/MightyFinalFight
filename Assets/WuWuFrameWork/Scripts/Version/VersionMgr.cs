@@ -1,22 +1,21 @@
 using System;
-using WuWuFramework.Download;
-using WuWuFramework.Utils;
-using WuWuFramework.WebRequest;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using WuWuFramework.Event;
 using UnityEngine;
 using UnityEngine.Networking;
+using WuWuFramework.Download;
+using WuWuFramework.Event;
+using WuWuFramework.Utils;
+using WuWuFramework.WebRequest;
 
 namespace WuWuFramework.Version
 {
-    public class VersionMgr : WuWuFrameworkModule,IVersionMgr
+    public class VersionMgr : WuWuFrameworkModule, IVersionMgr
     {
         private readonly WaitForSeconds m_DownloadWait;
         private IDownloadMgr m_DownloadMgr;
         private IWebRequestMgr m_WebRequestMgr;
-        
         private ulong m_CurrDownloadSize;
         private ulong m_DownloadFullSize;
         private int m_CurrDownloadCount;
@@ -25,14 +24,9 @@ namespace WuWuFramework.Version
         private string m_VersionFileContent;
         private string m_DownloadTempFilePath;
         private string m_CheckUri;
-        
-        public VersionMgr()
-        {
-            m_DownloadWait = new WaitForSeconds(0.5f);
-        }
-        
         private event WuWuFrameworkAction<VersionProcessState, string, ulong, ulong> m_OnVersionProcessStateChangedEvent;
-        
+
+
         public event WuWuFrameworkAction<VersionProcessState, string, ulong, ulong> onVersionProcessStateChangedEvent
         {
             add
@@ -45,20 +39,25 @@ namespace WuWuFramework.Version
             }
         }
 
-        public override void Shutdown()
+        public VersionMgr()
         {
-            
+            m_DownloadWait = new WaitForSeconds(0.5f);
         }
 
         public void SetMgr(IDownloadMgr downloadMgr, IWebRequestMgr webRequestMgr)
         {
-            m_DownloadMgr =  downloadMgr;
+            m_DownloadMgr = downloadMgr;
         }
-        
+
         public void SetCheckVersionUri(string uri)
         {
             m_CheckUri = uri;
             Check();
+        }
+
+        public override void Shutdown()
+        {
+
         }
 
         private void Check()
@@ -238,7 +237,7 @@ namespace WuWuFramework.Version
         private bool TryFindVersionInfo(VersionInfo[] versionInfos, string fileName, out VersionInfo result)
         {
             result = default;
-            
+
             if (versionInfos == null || versionInfos.Length == 0 || string.IsNullOrEmpty(fileName))
             {
                 return false;
@@ -252,7 +251,7 @@ namespace WuWuFramework.Version
                     return true;
                 }
             }
-            
+
             return false;
         }
 

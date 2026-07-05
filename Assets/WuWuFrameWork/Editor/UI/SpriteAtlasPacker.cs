@@ -18,6 +18,15 @@ namespace WuWuFramework.Editor
             public int status;
         }
 
+        private bool m_FoldOut = true;
+        private int m_CurrAtlasIndex = -1;
+        private string m_NewAtalsName = string.Empty;
+        private List<Sprite> m_ListSprites = null;
+        private List<SpriteStatus> m_ListSpriteStatus = null;
+        private List<string> m_ListAtalsNames = null;
+        private string[] m_DisplayAtlasNames = null;
+        private List<SpriteAtlas> m_ListAtlas = null;
+
         public SpriteAtlasPacker()
         {
             titleContent = new GUIContent(this.GetType().Name);
@@ -26,12 +35,10 @@ namespace WuWuFramework.Editor
         private void OnEnable()
         {
             position = new Rect(0, 0, 500, 300);
-
             m_ListSprites ??= new List<Sprite>();
             m_ListSpriteStatus ??= new List<SpriteStatus>();
             m_ListAtlas ??= new List<SpriteAtlas>();
             m_ListAtalsNames ??= new List<string>();
-
             m_ListSprites.Clear();
             m_ListSpriteStatus.Clear();
             m_ListAtlas.Clear();
@@ -293,7 +300,7 @@ namespace WuWuFramework.Editor
         private bool CreateNewAtals()
         {
             string atlasPath = EditorMgr.GetWuWuFrameworkConfig().uiAtlasPath;
-            string atlasCreatePath = PathUtil.FormatPath(atlasPath, m_NewAtalsName + ".spriteatlas");
+            string atlasCreatePath = PathUtil.FormatPath(atlasPath, m_NewAtalsName + ".spriteatlasv2");
 
             if (File.Exists(atlasCreatePath))
             {
@@ -311,7 +318,6 @@ namespace WuWuFramework.Editor
             AssetDatabase.CreateAsset(atlas, atlasCreatePath);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
             m_ListAtlas.Add(atlas);
             m_ListAtalsNames.Add(atlas.name);
             m_DisplayAtlasNames = m_ListAtalsNames.ToArray();
@@ -391,7 +397,7 @@ namespace WuWuFramework.Editor
         private SpriteAtlas GetNewSpriteAtlas()
         {
             SpriteAtlas atlas = new();
-            atlas.SetIncludeInBuild(true);
+            atlas.SetIncludeInBuild(false);
             atlas.SetPackingSettings(new SpriteAtlasPackingSettings()
             {
                 enableAlphaDilation = true,
@@ -439,14 +445,5 @@ namespace WuWuFramework.Editor
                 crunchedCompression = false,
             });
         }
-
-        private bool m_FoldOut = true;
-        private int m_CurrAtlasIndex = -1;
-        private string m_NewAtalsName = string.Empty;
-        private List<Sprite> m_ListSprites = null;
-        private List<SpriteStatus> m_ListSpriteStatus = null;
-        private List<string> m_ListAtalsNames = null;
-        private string[] m_DisplayAtlasNames = null;
-        private List<SpriteAtlas> m_ListAtlas = null;
     }
 }

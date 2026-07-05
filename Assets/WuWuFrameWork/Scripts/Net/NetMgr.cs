@@ -8,7 +8,7 @@ using WuWuFramework.Event;
 
 namespace WuWuFramework.Net
 {
-    public class NetMgr : WuWuFrameworkModule , INetMgr
+    public class NetMgr : WuWuFrameworkModule, INetMgr
     {
         private event WuWuFrameworkAction m_OnConnectSuccessEvent;
         private event WuWuFrameworkAction m_OnConnectFailEvent;
@@ -21,17 +21,9 @@ namespace WuWuFramework.Net
         private Socket m_Socket;
         private string m_IP;
         private int m_Port;
-        private bool m_IsConnected;
         private int m_CheckCount;
-        
-        public NetMgr()
-        {
-            m_ReceiveBuffer = new byte[1024 * 512];
-            m_SendQueue = new();
-            m_ReceiveQueue = new();
-            m_NetDispatcher = new();
-        }
-        
+        private bool m_IsConnected;
+
         public event WuWuFrameworkAction onConnectSuccessEvent
         {
             add
@@ -75,22 +67,14 @@ namespace WuWuFramework.Net
                 return m_IsConnected;
             }
         }
-        
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-            if (m_IsConnected)
-            {
-                CheckReceiveBuffer();
-            }
-        }
 
-        public override void Shutdown()
+        public NetMgr()
         {
-            Close();
-            m_NetDispatcher.Dispose();
-            m_OnConnectSuccessEvent = null;
-            m_OnConnectFailEvent = null;
-            m_OnDisConnectEvent = null;
+            m_ReceiveBuffer = new byte[1024 * 512];
+            m_SendQueue = new();
+            m_ReceiveQueue = new();
+            m_NetDispatcher = new();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
         public void Connect(string ip, int port)
@@ -98,7 +82,7 @@ namespace WuWuFramework.Net
             m_IP = ip;
             m_Port = port;
             m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            
+
             try
             {
                 m_Socket.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
@@ -125,21 +109,21 @@ namespace WuWuFramework.Net
             m_CheckCount = 0;
             m_IP = string.Empty;
             m_Port = 0;
-            
+
             try
             {
                 if (m_Socket.Connected)
                 {
                     m_Socket.Shutdown(SocketShutdown.Both);
                 }
-                
+
                 m_Socket.Close();
-                
+
                 lock (m_SendQueue)
                 {
                     m_SendQueue.Clear();
                 }
-                
+
                 m_ReceiveQueue.Clear();
                 m_ReceiveMse.Dispose();
                 m_ReceiveMse = null;
@@ -168,6 +152,16 @@ namespace WuWuFramework.Net
         public void AddReceiveEvent(ushort msgCode, WuWuFrameworkAction<ushort, byte[]> receiveCall)
         {
             m_NetDispatcher.Add(msgCode, receiveCall);
+        }
+
+        public override void Shutdown()
+        {
+            Close();
+            m_NetDispatcher.Dispose();
+            m_OnConnectSuccessEvent = null;
+            m_OnConnectFailEvent = null;
+            m_OnDisConnectEvent = null;
+            MonoBehaviourMgr.instance.updateEvent -= Update;
         }
 
         private void StartReceive()
@@ -244,10 +238,9 @@ namespace WuWuFramework.Net
                     ArrayPool<byte>.instance.Put(remainBuffer);
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Close();
-                throw new WuWuFrameworkException(e.Message);
             }
 
             StartReceive();
@@ -284,7 +277,7 @@ namespace WuWuFramework.Net
                     }
 
                     m_CheckCount++;
-                    
+
                     byte[] buffer = m_ReceiveQueue.Dequeue();
                     byte[] msgContent = ArrayPool<byte>.instance.Get(buffer.Length - 2);
                     using MemoryStreamEx mse = new(buffer);
@@ -301,6 +294,14 @@ namespace WuWuFramework.Net
         {
             m_Socket.EndSend(ir);
             CheckSendBuffer();
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            if (m_IsConnected)
+            {
+                CheckReceiveBuffer();
+            }
         }
     }
 }

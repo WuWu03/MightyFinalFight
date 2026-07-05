@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using UnityEngine;
 using WuWuFramework;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Utils;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class SceneEntityMgr : Singleton<SceneEntityMgr>
 {
@@ -21,11 +21,6 @@ public class SceneEntityMgr : Singleton<SceneEntityMgr>
         m_SceneBuildings = new();
         m_SceneItems = new();
         m_Barrels = new();
-    }
-
-    protected override void OnShutdown()
-    {
-        ReleaseAll();
     }
 
     public void CreateBarrels()
@@ -273,6 +268,11 @@ public class SceneEntityMgr : Singleton<SceneEntityMgr>
     public int GetBreakBarrelsCount()
     {
         return m_BreakBarrels.Count;
+    }
+
+    public override void Shutdown()
+    {
+        ReleaseAll();
     }
 
     private void OnEnemyRelease(int entityId)

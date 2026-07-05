@@ -11,7 +11,7 @@ public class StageMgr : Singleton<StageMgr>
     private StageConfigData m_CurrStageData;
     private int m_StageIndex;
 
-    public StageConfigData CurrStageData
+    public StageConfigData currStageData
     {
         get
         {
@@ -25,16 +25,6 @@ public class StageMgr : Singleton<StageMgr>
         {
             return m_StageIndex;
         }
-    }
-
-    public StageMgr()
-    {
-
-    }
-
-    protected override void OnShutdown()
-    {
-
     }
 
     public void StageEnter(int stageId)
@@ -59,6 +49,11 @@ public class StageMgr : Singleton<StageMgr>
         StageConfigData configData = StaticConfig.StageConfig.GetDataByIndex(m_StageIndex);
         StageEnter(configData);
         m_StageIndex++;
+    }
+
+    public override void Shutdown()
+    {
+
     }
 
     private void StageEnter(StageConfigData configData)

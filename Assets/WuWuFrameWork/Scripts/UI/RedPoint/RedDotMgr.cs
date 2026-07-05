@@ -1,25 +1,16 @@
 using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine.UI;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.UI
 {
     public class RedDotMgr : WuWuFrameworkModule,IRedDotMgr
     {
         private readonly List<RedDot> m_RedDots;
+
         public RedDotMgr()
         {
             m_RedDots = new List<RedDot>();
-        }
-
-        public override void Shutdown()
-        {
-            for (int i = m_RedDots.Count - 1; i >= 0; i--)
-            {
-                m_RedDots[i].Dispose();
-            }
-
-            m_RedDots.Clear();
         }
         
         public void Add(string key, string subKey, string parentKey, RedPointType type)
@@ -114,6 +105,16 @@ namespace WuWuFramework.UI
             }
 
             root.SetState(subKey, state, data);
+        }
+
+        public override void Shutdown()
+        {
+            for (int i = m_RedDots.Count - 1; i >= 0; i--)
+            {
+                m_RedDots[i].Dispose();
+            }
+
+            m_RedDots.Clear();
         }
 
         private RedDot GetRoot(string key)

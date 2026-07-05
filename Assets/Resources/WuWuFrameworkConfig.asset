@@ -15,8 +15,8 @@ MonoBehaviour:
   isCheckVersion: 0
   isLoadFromAssetBundle: 0
   isOpenLog: 1
-  uiPrefabsPath: ArtResources/UI/Prefabs/
-  uiSpritesPath: ArtResources/UI/Sprites/
+  uiPrefabsPath: ArtResources/UI/Prefabs
+  uiAtlasPath: ArtResources/UI/Atlas
   configDataPath: ConfigData/
   versionFileName: Version.txt
   assetMapFileName: AssetMap.txt

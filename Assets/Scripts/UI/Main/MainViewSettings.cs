@@ -1,6 +1,6 @@
 /*
- * @Desc: Main 模块 MainView 界面组件
- * @Date: 2025-11-26 17:06:53
+ * @Desc: Main 模块 MainView 视图设置
+ * @Date: 2026-07-04 18:02:38
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */

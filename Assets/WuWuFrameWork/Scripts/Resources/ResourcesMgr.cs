@@ -1,10 +1,10 @@
-using WuWuFramework.Event;
-using WuWuFramework.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using WuWuFramework.Event;
+using WuWuFramework.Utils;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.Resources
@@ -25,25 +25,6 @@ namespace WuWuFramework.Resources
             m_AssetsMap = new();
             m_AssetBundleLoaders = new();
             InitAssetsMap();
-        }
-
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-
-        }
-
-        public override void Shutdown()
-        {
-            UnloadAll(true);
-            foreach (AssetBundleLoader loader in m_AssetBundleLoaders)
-            {
-                loader.Release();
-            }
-            m_AssetBundleLoaders.Clear();
-            m_ManifestAssetBundle?.Unload(true);
-            m_AssetsMap.Clear();
-            m_ManifestAssetBundle = null;
-            m_Manifest = null;
         }
 
         public void InitAssetsMap()
@@ -167,6 +148,22 @@ namespace WuWuFramework.Resources
             list.Clear();
             m_LoadedAssetBundles.Clear();
             m_LoadRequests.Clear();
+        }
+
+        public override void Shutdown()
+        {
+            UnloadAll(true);
+
+            foreach (AssetBundleLoader loader in m_AssetBundleLoaders)
+            {
+                loader.Release();
+            }
+
+            m_AssetBundleLoaders.Clear();
+            m_ManifestAssetBundle?.Unload(true);
+            m_AssetsMap.Clear();
+            m_ManifestAssetBundle = null;
+            m_Manifest = null;
         }
 
         /// <summary>

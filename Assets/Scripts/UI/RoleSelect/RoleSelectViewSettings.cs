@@ -1,6 +1,6 @@
 /*
- * @Desc: RoleSelect 模块 RoleSelectView 界面组件
- * @Date: 2025-11-26 17:05:58
+ * @Desc: RoleSelect 模块 RoleSelectView 视图设置
+ * @Date: 2026-07-04 19:22:42
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */

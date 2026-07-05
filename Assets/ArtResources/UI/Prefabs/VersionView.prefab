@@ -163,8 +163,7 @@ MonoBehaviour:
   m_text: dddddd
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -199,6 +198,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -255,7 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5510669259012441167}
   - component: {fileID: 5895396949070222938}
-  - component: {fileID: 4402391681861303416}
+  - component: {fileID: 4095685698621462809}
   m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
@@ -290,7 +290,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7851741082867583712}
   m_CullTransparentMesh: 1
---- !u!114 &4402391681861303416
+--- !u!114 &4095685698621462809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,9 +299,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7851741082867583712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 0
@@ -320,3 +320,4 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: Common/bg_white

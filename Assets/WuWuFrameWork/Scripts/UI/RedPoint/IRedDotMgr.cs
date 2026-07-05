@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using WuWuFramework.Event;
 using UnityEngine.UI;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.UI
 {

@@ -27,7 +27,7 @@ QualitySettings:
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
     vSyncCount: 0
     realtimeGICPUUsage: 25
@@ -48,8 +48,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 83c4640da0bf275469c5c72dc83db8d8,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -81,7 +80,7 @@ QualitySettings:
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
     vSyncCount: 0
     realtimeGICPUUsage: 25
@@ -102,8 +101,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 88be5676c448a974992fc06d7699a7dc,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -135,7 +133,7 @@ QualitySettings:
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 0
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
     vSyncCount: 1
     realtimeGICPUUsage: 25
@@ -156,8 +154,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 920cf8b9e955d8a4580d1ac434e8b78c,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -189,7 +186,7 @@ QualitySettings:
     softVegetation: 1
     realtimeReflectionProbes: 1
     billboardsFaceCameraPosition: 1
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
     vSyncCount: 1
     realtimeGICPUUsage: 50
@@ -210,8 +207,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 54ceb5f23375b884185f0da22a0132ca,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -243,7 +239,7 @@ QualitySettings:
     softVegetation: 1
     realtimeReflectionProbes: 1
     billboardsFaceCameraPosition: 1
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
     vSyncCount: 1
     realtimeGICPUUsage: 50
@@ -264,8 +260,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: 811d5aa1673fec6488d5eb1777ca023b,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -288,7 +283,7 @@ QualitySettings:
     shadowCascade2Split: 0.33333334
     shadowCascade4Split: {x: 0.06666667, y: 0.2, z: 0.46666667}
     shadowmaskMode: 1
-    skinWeights: 4
+    skinWeights: 255
     globalTextureMipmapLimit: 0
     textureMipmapLimitSettings: []
     anisotropicTextures: 2
@@ -297,9 +292,9 @@ QualitySettings:
     softVegetation: 1
     realtimeReflectionProbes: 1
     billboardsFaceCameraPosition: 1
-    useLegacyDetailDistribution: 1
+    useLegacyDetailDistribution: 0
     adaptiveVsync: 0
-    vSyncCount: 0
+    vSyncCount: 1
     realtimeGICPUUsage: 100
     adaptiveVsyncExtraA: 0
     adaptiveVsyncExtraB: 0
@@ -318,8 +313,7 @@ QualitySettings:
     asyncUploadBufferSize: 16
     asyncUploadPersistentBuffer: 1
     resolutionScalingFixedDPIFactor: 1
-    customRenderPipeline: {fileID: 11400000, guid: c03a783199141554b9661041524c95c2,
-      type: 2}
+    customRenderPipeline: {fileID: 0}
     terrainQualityOverrides: 0
     terrainPixelError: 1
     terrainDetailDensityScale: 1
@@ -332,8 +326,22 @@ QualitySettings:
     excludedTargetPlatforms: []
   m_TextureMipmapLimitGroupNames: []
   m_PerPlatformDefaultQuality:
-    Android: 0
+    Android: 2
+    EmbeddedLinux: 5
+    GameCoreScarlett: 5
+    GameCoreXboxOne: 5
+    Kepler: 5
+    LinuxHeadlessSimulation: 5
+    Nintendo Switch: 5
     Nintendo Switch 2: 5
-    Server: 0
-    Standalone: 3
-    Windows Store Apps: 0
+    PS4: 5
+    PS5: 5
+    QNX: 5
+    Server: 5
+    Standalone: 5
+    VisionOS: 5
+    WebGL: 3
+    Windows Store Apps: 5
+    XboxOne: 5
+    iPhone: 2
+    tvOS: 2

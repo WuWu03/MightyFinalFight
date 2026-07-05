@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using WuWuFramework.Utils;
 
 public class InputTest : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class InputTest : MonoBehaviour
         // action.AddBinding(binding);
         // action.Enable();
         // action.performed += OnInput;
+        Debug.Log(StringUtil.GetChineseNum((decimal)30332325.33056));
     }
 
     private void OnDeviceChagne(InputScheme t)

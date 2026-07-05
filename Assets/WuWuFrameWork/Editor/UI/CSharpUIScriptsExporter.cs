@@ -109,7 +109,7 @@ namespace WuWuFramework.Editor
 
             string layerName = Enum.GetName(typeof(UIRefSetting.UILayer), setting.uiLayer);
             string destroyModeName = Enum.GetName(typeof(UIRefSetting.UIDestroyMode), setting.uiDestroyMode);
-            string canPopUp = string.Empty;
+            string canPopUp = "false";
             float delayDestroyTime = setting.delayDestroyTime;
 
             if (setting.uiType == UIRefSetting.UIType.View)
@@ -118,7 +118,6 @@ namespace WuWuFramework.Editor
                 {
                     UIRefSetting.UILayer.MainWindow => "true",
                     UIRefSetting.UILayer.Window1 => "true",
-                    UIRefSetting.UILayer.Window2 => "true",
                     _ => "false"
                 };
             }
@@ -161,7 +160,7 @@ namespace WuWuFramework.Editor
             sb.AppendLine("using WuWuFramework.UI;");
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendFormat("public class {0}Presenter : UIBaseViewPresenter<{0}>", setting.viewName);
+            sb.AppendFormat("public class {0} : UIBaseViewPresenter<{0}>", setting.presenterName);
             sb.AppendLine("\r\n{");
             sb.AppendLine("\tprotected override void OnOpen(object arg)");
             sb.AppendLine("\t{");

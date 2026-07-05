@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace WuWuFramework.Pool
 {
+    /// <summary>
+    /// 数组池
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ArrayPool<T> : Singleton<ArrayPool<T>>
     {
         private readonly Dictionary<int, Queue<T[]>> m_Pools;
@@ -11,6 +15,11 @@ namespace WuWuFramework.Pool
             m_Pools = new();
         }
 
+        /// <summary>
+        /// 获取指定长度的数组
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         public T[] Get(int length)
         {
             if (!m_Pools.TryGetValue(length, out Queue<T[]> pool))
@@ -27,6 +36,12 @@ namespace WuWuFramework.Pool
             return new T[length];
         }
 
+
+        /// <summary>
+        /// 回收数组
+        /// </summary>
+        /// <param name="array"></param>
+        /// <exception cref="Exception"></exception>
         public void Put(T[] array)
         {
             if(array == null)
@@ -42,8 +57,11 @@ namespace WuWuFramework.Pool
 
             pool.Enqueue(array);
         }
-        
-        protected override void OnShutdown()
+
+        /// <summary>
+        /// 框架关闭时清空数组池
+        /// </summary>
+        public override void Shutdown()
         {
             m_Pools.Clear();
         }

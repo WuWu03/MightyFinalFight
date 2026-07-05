@@ -33,6 +33,9 @@ public class LoadMgr : Singleton<LoadMgr>
         }
     }
 
+    private bool m_IsFadeComplete = false;
+    private Queue<FadeArgs> m_QueueFade = null;
+
     public bool isComplete
     {
         get
@@ -52,11 +55,6 @@ public class LoadMgr : Singleton<LoadMgr>
     public LoadMgr()
     {
         m_QueueFade = new();
-    }
-
-    protected override void OnShutdown()
-    {
-        m_QueueFade.Clear();
     }
 
     public FadeArgs GetFadeInfo()
@@ -96,6 +94,8 @@ public class LoadMgr : Singleton<LoadMgr>
         GameEntry.uiMgr.Close<LoadView>();
     }
 
-    private bool m_IsFadeComplete = false;
-    private Queue<FadeArgs> m_QueueFade = null;
+    public override void Shutdown()
+    {
+        m_QueueFade.Clear();
+    }
 }

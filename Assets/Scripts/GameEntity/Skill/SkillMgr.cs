@@ -1,6 +1,10 @@
 using WuWuFramework;
 public class SkillMgr
 {
+    private BaseRole m_Owner = null;
+    private SkillBaseDeployer m_CurrSkillDeployer = null;
+    private SkillBaseDeployer[] m_SkillDeployers = null;
+
     public SkillMgr(BaseRole owner, int[] skillIDs)
     {
         m_Owner = owner;
@@ -125,8 +129,4 @@ public class SkillMgr
             m_SkillDeployers[i].RemoveEvent();
         }
     }
-
-    private BaseRole m_Owner = null;
-    private SkillBaseDeployer m_CurrSkillDeployer = null;
-    private SkillBaseDeployer[] m_SkillDeployers = null;
 }

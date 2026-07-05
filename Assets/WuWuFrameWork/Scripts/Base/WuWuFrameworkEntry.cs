@@ -1,6 +1,6 @@
-using WuWuFramework.Utils;
 using System.IO;
 using UnityEngine;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework
 {
@@ -33,7 +33,6 @@ namespace WuWuFramework
             }
         }
 
-        
         private void Awake()
         {
             s_GameEntryObj = gameObject;
@@ -46,21 +45,6 @@ namespace WuWuFramework
         private void Start()
         {
             OnStartGame();
-        }
-
-        private void Update()
-        {
-            WuWuFrameworkMgr.Update(Time.deltaTime, Time.unscaledDeltaTime, Time.time, Time.unscaledTime);
-        }
-        
-        private void LateUpdate()
-        {
-            WuWuFrameworkMgr.LateUpdate(Time.deltaTime, Time.unscaledDeltaTime, Time.time, Time.unscaledTime);
-        }
-        
-        private void FixedUpdate()
-        {
-            WuWuFrameworkMgr.FixedUpdate(Time.fixedDeltaTime, Time.fixedUnscaledDeltaTime, Time.fixedTime, Time.fixedUnscaledTime);
         }
 
         private void OnApplicationQuit()

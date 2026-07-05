@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objects:
-  - {fileID: 7258241494359139110}
+  - {fileID: 7856881213758271282}
 --- !u!223 &7611256099526838473
 Canvas:
   m_ObjectHideFlags: 0
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2306508324247856753}
   - component: {fileID: 7307027031066284414}
-  - component: {fileID: 7258241494359139110}
+  - component: {fileID: 7856881213758271282}
   m_Layer: 0
   m_Name: imgShade
   m_TagString: Untagged
@@ -138,7 +138,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4806389388539459057}
   m_CullTransparentMesh: 0
---- !u!114 &7258241494359139110
+--- !u!114 &7856881213758271282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,14 +147,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4806389388539459057}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -168,3 +168,4 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: Common/bg_white

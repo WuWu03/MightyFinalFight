@@ -1,6 +1,6 @@
 /*
- * @Desc: Load 模块 LoadView 界面组件
- * @Date: 2025-11-26 16:35:53
+ * @Desc: Load 模块 LoadView 视图
+ * @Date: 2026-07-04 16:34:06
  * @Author: WuWu
  * @Note: 工具生成，请勿修改
  */
@@ -12,13 +12,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using WuWuFramework.UI;
 
-public class LoadView : UIBaseView<LoadView, LoadPresenter, LoadViewSettings>
+public class LoadView : UIBaseView<LoadView, LoadViewPresenter, LoadViewSettings>
 {
-    //imgShade,Image
-    public Image imgShade { get; private set; }
+	//imgShade,ImageEx
+	public ImageEx imgShade { get; private set; }
 
-    protected override void OnInitView(UIRefRoot root)
-    {
-        imgShade = root.objects[0] as Image;
-    }
+	protected override void OnInitView(UIRefRoot root)
+	{
+		imgShade = root.objects[0] as ImageEx;
+	}
 }

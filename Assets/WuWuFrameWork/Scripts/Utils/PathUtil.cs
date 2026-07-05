@@ -174,12 +174,11 @@ namespace WuWuFramework.Utils
         /// 获取UI图集路径
         /// </summary>
         /// <returns></returns>
-        public static string GetUISpritesPath()
+        public static string GetUIAtlasPath()
         {
-            return WuWuFrameworkEntry.config.uiSpritesPath;
+            return WuWuFrameworkEntry.config.uiAtlasPath;
         }
 
-#if UNITY_EDITOR
         /// <summary>
         /// 获取资源相对路径，以Assets开头
         /// </summary>
@@ -212,5 +211,4 @@ namespace WuWuFramework.Utils
             return assetIndex < 0 ? FormatPath(AppDataPath, assetPath) : FormatPath(AppDataPath, assetPath[(assetIndex + 7)..]);
         }
     }
-#endif
 }

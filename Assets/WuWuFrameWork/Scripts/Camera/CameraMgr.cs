@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+//using UnityEngine.Rendering.Universal;
 using UnityCamera = UnityEngine.Camera;
 
 namespace WuWuFramework.Camera
@@ -16,7 +16,7 @@ namespace WuWuFramework.Camera
         /// URP下创建全局唯一主像机
         /// </summary>
         /// <returns></returns>
-        public UnityCamera AddMainCamera()
+        public UnityCamera AddMainCamera(string layerName = null)
         {
             if (m_MainCamera != null)
             {
@@ -26,9 +26,18 @@ namespace WuWuFramework.Camera
             m_MainCamera = new GameObject(MainCameraName).GetOrAddComponent<UnityCamera>();
             m_MainCamera.transform.position = Vector3.zero;
             m_MainCamera.tag = MainCameraName;
-            UniversalAdditionalCameraData udcData = m_MainCamera.GetUniversalAdditionalCameraData();
-            udcData.renderType = CameraRenderType.Base;
-            udcData.volumeLayerMask = 0;
+
+            //if (GraphicsSettings.currentRenderPipeline != null)
+            //{
+            //    UniversalAdditionalCameraData udcData = m_MainCamera.GetUniversalAdditionalCameraData();
+            //    udcData.renderType = CameraRenderType.Base;
+            //    udcData.volumeLayerMask = string.IsNullOrEmpty(layerName) ? 0 : LayerMask.GetMask(layerName);
+            //}
+            //else
+            {
+                m_MainCamera.depth = 0;
+            }
+
             Object.DontDestroyOnLoad(m_MainCamera.gameObject);
             return m_MainCamera;
         }
@@ -51,10 +60,13 @@ namespace WuWuFramework.Camera
                 AddMainCamera();
             }
 
-            m_UICamera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
-            UniversalAdditionalCameraData uacData = m_MainCamera.GetUniversalAdditionalCameraData();
-            uacData.cameraStack.Remove(m_UICamera);
-            uacData.cameraStack.Add(m_UICamera);
+            //if (GraphicsSettings.currentRenderPipeline != null)
+            //{
+            //    m_UICamera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
+            //    UniversalAdditionalCameraData udcData = m_MainCamera.GetUniversalAdditionalCameraData();
+            //    udcData.cameraStack.Remove(m_UICamera);
+            //    udcData.cameraStack.Add(m_UICamera);
+            //}
         }
 
         /// <summary>
@@ -63,7 +75,7 @@ namespace WuWuFramework.Camera
         /// <param name="cameraName"></param>
         /// <returns></returns>
         /// <exception cref="WuWuFrameworkException"></exception>
-        public UnityCamera AddCamera(string cameraName)
+        public UnityCamera AddCamera(string cameraName, string layerName = null)
         {
             if (m_MainCamera == null)
             {
@@ -71,14 +83,23 @@ namespace WuWuFramework.Camera
             }
 
             UnityCamera camera = new GameObject(cameraName).GetOrAddComponent<UnityCamera>();
-            camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
-            UniversalAdditionalCameraData uacData = m_MainCamera.GetUniversalAdditionalCameraData();
-            uacData.cameraStack.Add(camera);
 
-            if (m_UICamera != null)
+            //if (GraphicsSettings.currentRenderPipeline != null)
+            //{
+            //    camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
+            //    UniversalAdditionalCameraData udcData = m_MainCamera.GetUniversalAdditionalCameraData();
+            //    udcData.volumeLayerMask = string.IsNullOrEmpty(layerName) ? 0 : LayerMask.GetMask(layerName);
+            //    udcData.cameraStack.Add(camera);
+
+            //    if (m_UICamera != null)
+            //    {
+            //        udcData.cameraStack.Remove(m_UICamera);
+            //        udcData.cameraStack.Add(m_UICamera);
+            //    }
+            //}
+            //else
             {
-                uacData.cameraStack.Remove(m_UICamera);
-                uacData.cameraStack.Add(m_UICamera);
+                camera.depth = m_Cameras.Count + 1;
             }
 
             m_Cameras.Add(cameraName, camera);
@@ -136,7 +157,11 @@ namespace WuWuFramework.Camera
 
             if (m_Cameras.TryGetValue(cameraName, out UnityCamera camera))
             {
-                m_MainCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(camera);
+                //if (GraphicsSettings.currentRenderPipeline != null)
+                //{
+                //    m_MainCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(camera);
+                //}
+
                 Object.Destroy(camera.gameObject);
                 m_Cameras.Remove(cameraName);
                 return true;
@@ -145,6 +170,9 @@ namespace WuWuFramework.Camera
             return false;
         }
 
+        /// <summary>
+        /// 框架关闭时清理相机
+        /// </summary>
         public override void Shutdown()
         {
             m_Cameras.Clear();

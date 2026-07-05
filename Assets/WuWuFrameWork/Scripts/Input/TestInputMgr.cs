@@ -120,6 +120,11 @@ public static class InputHelper
 
     public static bool IsKeyBoardInput()
     {
+        if (Keyboard.current == null)
+        {
+            return false;
+        }
+
         bool isKeyBoardInput = Keyboard.current.anyKey.isPressed;
         bool isMouseLeftButtonInput = Mouse.current.leftButton.isPressed;
         bool isMouseRightButtonInput = Mouse.current.rightButton.isPressed;
@@ -131,6 +136,11 @@ public static class InputHelper
 
     public static bool IsXboxInput()
     {
+        if(Gamepad.current == null)
+        {
+            return false;
+        }
+
         bool isActuated = Gamepad.current.IsActuated();
         bool isXbox = Gamepad.current.description.interfaceName == "XInput" || Gamepad.current.description.interfaceName == "XInputControllerWindows";
         return isActuated && isXbox;
@@ -138,6 +148,11 @@ public static class InputHelper
 
     public static bool IsPSInput()
     {
+        if (Gamepad.current == null)
+        {
+            return false;
+        }
+
         bool isActuated = Gamepad.current.IsActuated();
         bool isPS = Gamepad.current.description.interfaceName == "DualShock" || Gamepad.current.description.interfaceName == "DualSense";
         return isActuated && isPS;
@@ -145,6 +160,11 @@ public static class InputHelper
 
     public static bool IsSwitchInput()
     {
+        if (Gamepad.current == null)
+        {
+            return false;
+        }
+
         bool isActuated = Gamepad.current.IsActuated();
         bool isSwitch = Gamepad.current.description.interfaceName == "Nintendo Switch";
         return isActuated && isSwitch;

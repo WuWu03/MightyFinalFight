@@ -226,7 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472813151}
   - component: {fileID: 472813155}
-  - component: {fileID: 472813154}
+  - component: {fileID: 472813157}
   - component: {fileID: 472813153}
   - component: {fileID: 472813152}
   - component: {fileID: 472813156}
@@ -269,9 +269,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: 4dbb00021f7cd7c46b38ce212b60dd1b, type: 3}
-  - {fileID: 21300000, guid: 71c49b7cbc6798b4faf0cc5a92a321c1, type: 3}
-  - {fileID: 21300000, guid: be29cd68cac09584a8359eb7bfb06aa0, type: 3}
+  - RoleSelectView/SelectFrameP1
+  - RoleSelectView/SelectFrameP2
+  - RoleSelectView/SelectFrameP3
   isLoop: 1
   frameRate: 24
 --- !u!114 &472813153
@@ -294,36 +294,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &472813154
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472813150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4dbb00021f7cd7c46b38ce212b60dd1b, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &472813155
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -353,6 +323,37 @@ MonoBehaviour:
   m_IsListItemVariable: 0
   m_IsList: 0
   m_IsCopyRefStr: 0
+--- !u!114 &472813157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472813150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 4dbb00021f7cd7c46b38ce212b60dd1b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: RoleSelectView/SelectFrameP1
 --- !u!1 &482470323
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +548,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtDesc
   m_ComponentName: LanguageText
-  m_ComponentFullName: GameFrameWork.UI.LanguageText
+  m_ComponentFullName: WuWuFramework.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -589,8 +590,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -767,7 +767,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723186176}
   - component: {fileID: 723186178}
-  - component: {fileID: 723186177}
+  - component: {fileID: 723186179}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -794,7 +794,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &723186177
+--- !u!222 &723186178
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723186175}
+  m_CullTransparentMesh: 0
+--- !u!114 &723186179
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -803,12 +811,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 723186175}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -824,14 +832,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &723186178
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 723186175}
-  m_CullTransparentMesh: 0
+  m_SpriteName: Common/bg_white
 --- !u!1 &767242336
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,7 +889,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: roleSelect
   m_ComponentName: StaticList
-  m_ComponentFullName: GameFrameWork.UI.StaticList
+  m_ComponentFullName: WuWuFramework.UI.StaticList
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 0
@@ -1203,7 +1204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1286206953}
   - component: {fileID: 1286206955}
-  - component: {fileID: 1286206954}
+  - component: {fileID: 1286206956}
   m_Layer: 5
   m_Name: frame (1)
   m_TagString: Untagged
@@ -1231,7 +1232,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1600, y: 759}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1286206954
+--- !u!222 &1286206955
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286206952}
+  m_CullTransparentMesh: 0
+--- !u!114 &1286206956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1240,9 +1249,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1286206952}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
@@ -1254,21 +1263,14 @@ MonoBehaviour:
   m_Sprite: {fileID: 21300000, guid: d24d8a01191944443be2c1d36316d194, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
-  m_FillCenter: 0
+  m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1286206955
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286206952}
-  m_CullTransparentMesh: 0
+  m_SpriteName: Common/Frame
 --- !u!1 &1390185951
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,7 +1281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1390185952}
   - component: {fileID: 1390185954}
-  - component: {fileID: 1390185953}
+  - component: {fileID: 1390185955}
   m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
@@ -1307,7 +1309,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1390185953
+--- !u!222 &1390185954
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390185951}
+  m_CullTransparentMesh: 0
+--- !u!114 &1390185955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1316,11 +1326,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1390185951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.43529415, b: 0.9058824, a: 1}
+  m_Color: {r: 0, g: 0.43529412, b: 0.90588236, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1331,20 +1341,13 @@ MonoBehaviour:
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 1
+  m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 0.65
---- !u!222 &1390185954
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390185951}
-  m_CullTransparentMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: Common/bg_white
 --- !u!1 &1483532948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1483532949}
   - component: {fileID: 1483532951}
-  - component: {fileID: 1483532950}
+  - component: {fileID: 1483532952}
   m_Layer: 5
   m_Name: frame
   m_TagString: Untagged
@@ -1383,7 +1386,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1616, y: 775}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1483532950
+--- !u!222 &1483532951
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483532948}
+  m_CullTransparentMesh: 0
+--- !u!114 &1483532952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1392,9 +1403,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1483532948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 295b99f92aa1495e9b4328b8221c7055, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::WuWuFramework.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
@@ -1406,21 +1417,14 @@ MonoBehaviour:
   m_Sprite: {fileID: 21300000, guid: d24d8a01191944443be2c1d36316d194, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
-  m_FillCenter: 0
+  m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1483532951
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483532948}
-  m_CullTransparentMesh: 0
+  m_SpriteName: Common/Frame
 --- !u!1 &1613183460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,13 +1455,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ModuleName: RoleSelect
-  m_PresenterName: RoleSelectPresenter
+  m_PresenterName: RoleSelectViewPresenter
   m_ViewName: RoleSelectView
   uiDestroyMode: 1
   uiLayer: 3
   uiType: 1
   delayDestroyTime: 0
-  presenterPath: Assets/Scripts/UI/RoleSelect/RoleSelect.cs
+  presenterPath: Assets/Scripts/UI/RoleSelect/RoleSelectViewPresenter.cs
   viewPath: Assets/Scripts/UI/RoleSelect/RoleSelectView.cs
   settingsPath: Assets/Scripts/UI/RoleSelect/RoleSelectViewSettings.cs
 --- !u!4 &1613183462
@@ -1536,7 +1540,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: imgRoleIcon
   m_ComponentName: ImageEx
-  m_ComponentFullName: GameFrameWork.UI.ImageEx
+  m_ComponentFullName: WuWuFramework.UI.ImageEx
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1556,7 +1560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameFrameWork.UI.ImageEx
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1572,6 +1576,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_SpriteName: 
 --- !u!1 &1882403930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,7 +1587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882403931}
   - component: {fileID: 1882403933}
-  - component: {fileID: 1882403932}
+  - component: {fileID: 1882403934}
   m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1605,26 +1610,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 482470324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1882403932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1882403930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: A
-  m_CancelButton: B
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1882403933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1640,6 +1625,37 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &1882403934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882403930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!1 &2043417335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1702,7 +1718,7 @@ MonoBehaviour:
   m_UseDefaultName: 1
   m_RefName: txtName
   m_ComponentName: LanguageText
-  m_ComponentFullName: GameFrameWork.UI.LanguageText
+  m_ComponentFullName: WuWuFramework.UI.LanguageText
   m_Desc: 
   m_IsListItem: 0
   m_IsListItemVariable: 1
@@ -1744,8 +1760,7 @@ MonoBehaviour:
   m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 58331bc793904c048973794ab477a9d5, type: 2}
-  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5,
-    type: 2}
+  m_sharedMaterial: {fileID: -3249162198907346263, guid: 58331bc793904c048973794ab477a9d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

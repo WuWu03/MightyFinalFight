@@ -25,6 +25,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
 
     protected override void OnShow(object arg)
     {
+        Debug.Log("开启对话=====================");
         int talkId = int.Parse(arg.ToString());
         m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
         view.talkSelectList.SetActiveSelf(false);

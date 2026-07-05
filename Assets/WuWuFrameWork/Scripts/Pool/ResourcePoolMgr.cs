@@ -15,28 +15,12 @@ namespace WuWuFramework.Pool
         private readonly Dictionary<string, List<LoadRequest>> m_LoadRequests;
         private IResourcesMgr m_ResourceMgr;
         private Transform m_PoolRoot;
+
         public ResourcePoolMgr()
         {
             m_LoadedAssets = new();
             m_LoadRequests = new();
             m_RemoveList = new();
-        }
-
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
-        {
-
-        }
-
-        public override void Shutdown()
-        {
-            foreach (KeyValuePair<string, PoolObjectInfo> kvp in m_LoadedAssets)
-            {
-                m_ResourceMgr.Unload(kvp.Value.assetPath);
-            }
-
-            m_RemoveList.Clear();
-            m_LoadedAssets.Clear();
-            m_LoadRequests.Clear();
         }
 
         public void SetResourceMgr(IResourcesMgr resourceMgr)
@@ -138,6 +122,18 @@ namespace WuWuFramework.Pool
             info.releaseTime = Time.time;
             info.referenceCount--;
             info.isReleaseImmediate = false;
+        }
+
+        public override void Shutdown()
+        {
+            foreach (KeyValuePair<string, PoolObjectInfo> kvp in m_LoadedAssets)
+            {
+                m_ResourceMgr.Unload(kvp.Value.assetPath);
+            }
+
+            m_RemoveList.Clear();
+            m_LoadedAssets.Clear();
+            m_LoadRequests.Clear();
         }
 
         private void OnLoaded(string assetPath, UnityObject obj, object arg)

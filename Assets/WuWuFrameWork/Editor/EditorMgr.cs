@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using WuWuFramework.UI;
 using UnityObject = UnityEngine.Object;
 using WuWuFileUtil = WuWuFramework.Utils.FileUtil;
 using WuWuPathUtil = WuWuFramework.Utils.PathUtil;
@@ -294,6 +295,14 @@ namespace WuWuFramework.Editor
         {
             BuiltInDemo window = EditorWindow.GetWindow<BuiltInDemo>();
             window.Show();
+        }
+
+        [MenuItem("GameObject/UI (Canvas)/ImageEx", false, 0)]
+        public static void CreateImageEx()
+        {
+            GameObject go = new GameObject("ImageEx");
+            ImageEx imageEx = go.AddComponent<ImageEx>();
+            imageEx.raycastTarget = false;
         }
 
         [MenuItem("WuWuFramework/EditorDemo/SplitView")]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class TaskMgr : Singleton<TaskMgr>
 {
-
     private int m_CurrTaskIndex = 0;
     private int m_LastTaskIndex = -1;
     private List<int> m_FailureIdList = null;
@@ -18,11 +17,6 @@ public class TaskMgr : Singleton<TaskMgr>
         m_CurrTaskIndex = 0;
         m_LastTaskIndex = -1;
         MonoBehaviourMgr.instance.updateEvent += Update;
-    }
-
-    protected override void OnShutdown()
-    {
-        MonoBehaviourMgr.instance.updateEvent -= Update;
     }
 
     public void AcceptTask(int id)
@@ -87,6 +81,11 @@ public class TaskMgr : Singleton<TaskMgr>
     public void GiveupTask()
     {
         m_CurrTaskList.Clear();
+    }
+
+    public override void Shutdown()
+    {
+        MonoBehaviourMgr.instance.updateEvent -= Update;
     }
 
     private void Update(float deltaTime, float unscaledDeltaTime, float time, float AunscaledTime)

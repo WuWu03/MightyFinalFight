@@ -1,75 +1,80 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-public class UIFrameEffect : MonoBehaviour
+using UnityEngine;
+
+namespace WuWuFramework.UI
 {
-    // Start is called before the first frame update
-    public Sprite[] sprites;
-    public bool isLoop = true;
-    public int frameRate = 24;
-    
-    private void Awake()
+    public class UIFrameEffect : MonoBehaviour
     {
-        if(sprites == null || sprites.Length < 1)
+        private bool m_IsPlaying = false;
+        private float m_PreFrameTime = 0;
+        private float m_FrameTimer = 0;
+        private int m_FrameIndex = 0;
+        private ImageEx m_ImgSprite = null;
+
+        public string[] sprites;
+        public bool isLoop = true;
+        public int frameRate = 24;
+
+        private void Awake()
         {
-            return;
-        }
-
-        m_ImgSprite = GetComponent<Image>();
-        m_PreFrameTime = (float)1 / frameRate;
-        m_ImgSprite.sprite = sprites[0];
-    }
-
-    private void OnEnable()
-    {
-        m_FrameIndex = 0;
-        m_FrameTimer = 0;
-        m_ImgSprite.sprite = sprites[0];
-        StartFrame();
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        if (!m_IsPlaying || sprites == null || sprites.Length < 1)
-        {
-            return;
-        }
-
-        if (m_FrameIndex >= sprites.Length - 1)
-        {
-            if (!isLoop)
+            if (sprites == null || sprites.Length < 1)
             {
                 return;
             }
 
-            m_FrameIndex = -1;
+            m_ImgSprite = GetComponent<ImageEx>();
+            m_PreFrameTime = (float)1 / frameRate;
         }
 
-        m_FrameTimer += Time.deltaTime;
-
-        if (m_FrameTimer < m_PreFrameTime)
+        private void Start()
         {
-            return;
+            m_ImgSprite.spriteName = sprites[0];
         }
-        
-        m_FrameTimer = 0;
-        m_FrameIndex++;
-        m_ImgSprite.sprite = sprites[m_FrameIndex];
-    }
 
-    public void StartFrame()
-    {
-        m_IsPlaying = true;
-    }
+        private void OnEnable()
+        {
+            m_FrameIndex = 0;
+            m_FrameTimer = 0;
+            m_ImgSprite.spriteName = sprites[0];
+            StartFrame();
+        }
 
-    public void StopFrame()
-    {
-        m_IsPlaying = false;
-    }
+        private void Update()
+        {
+            if (!m_IsPlaying || sprites == null || sprites.Length < 1)
+            {
+                return;
+            }
 
-    private bool m_IsPlaying = false;
-    private float m_PreFrameTime = 0;
-    private float m_FrameTimer = 0;
-    private int m_FrameIndex = 0;
-    private Image m_ImgSprite = null;
+            if (m_FrameIndex >= sprites.Length - 1)
+            {
+                if (!isLoop)
+                {
+                    return;
+                }
+
+                m_FrameIndex = -1;
+            }
+
+            m_FrameTimer += Time.deltaTime;
+
+            if (m_FrameTimer < m_PreFrameTime)
+            {
+                return;
+            }
+
+            m_FrameTimer = 0;
+            m_FrameIndex++;
+            m_ImgSprite.spriteName = sprites[m_FrameIndex];
+        }
+
+        public void StartFrame()
+        {
+            m_IsPlaying = true;
+        }
+
+        public void StopFrame()
+        {
+            m_IsPlaying = false;
+        }
+    }
 }

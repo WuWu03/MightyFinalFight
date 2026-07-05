@@ -87,7 +87,7 @@ namespace WuWuFramework.Editor
             m_CurrFolderData.isRoot = true;
             m_ThreadFuncs ??= new WuWuFrameworkFunc<ThreadData, long>[ThreadCount];
             m_ThreadFuncResults ??= new IAsyncResult[ThreadCount];
-            m_UISpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiSpritesPath;
+            m_UISpritesPath = EditorMgr.GetWuWuFrameworkConfig().uiAtlasPath;
             m_IsInit = false;
 
             string assetsPath = EditorMgr.GetWuWuFrameworkConfig().assetsPath;

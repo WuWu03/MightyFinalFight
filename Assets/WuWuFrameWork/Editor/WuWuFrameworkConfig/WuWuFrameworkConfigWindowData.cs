@@ -8,6 +8,17 @@ namespace WuWuFramework.Editor
 {
     public class WuWuFrameworkConfigWindowData : ScriptableObject
     {
+        [SerializeField] private bool m_IsCheckVersion = false;
+        [SerializeField] private bool m_IsLoadFromAssetBundle = false;
+        [SerializeField] private bool m_IsOpenLog = false;
+        [SerializeField] private string m_UIPath = string.Empty;
+        [SerializeField] private string m_UIPrefabsPath = string.Empty;
+        [SerializeField] private string m_UIAtlasPath = string.Empty;
+        [SerializeField] private string m_ConfigDataPath = string.Empty;
+        [SerializeField] private string m_VersionFileName = string.Empty;
+        [SerializeField] private string m_AssetMapFileName = string.Empty;
+        [SerializeField] private Color m_LogColor = Color.white;
+
         public bool isCheckVersion
         {
             get
@@ -73,15 +84,15 @@ namespace WuWuFramework.Editor
             }
         }
 
-        public string uiSpritesPath
+        public string uiAtlasPath
         {
             get
             {
-                return m_UISpritesPath;
+                return m_UIAtlasPath;
             }
             set
             {
-                m_UISpritesPath = value;
+                m_UIAtlasPath = value;
                 SaveWuWuFrameworkConfig(this);
             }
         }
@@ -141,7 +152,7 @@ namespace WuWuFramework.Editor
         [SerializeField] public string assetsPath = string.Empty;
         [SerializeField] public string buildPath = string.Empty;
         [SerializeField] public string uiScenesPath = string.Empty;
-        [SerializeField] public string uiAtlasPath = string.Empty;
+        [SerializeField] public string uiSpritesPath = string.Empty;
         [SerializeField] public string uiScriptsPath = string.Empty;
         [SerializeField] public string entryScene = string.Empty;
         [SerializeField] public string languageKeyFilePath = string.Empty;
@@ -169,22 +180,11 @@ namespace WuWuFramework.Editor
             config.isLoadFromAssetBundle = windowData.isLoadFromAssetBundle;
             config.isOpenLog = windowData.isOpenLog;
             config.uiPrefabsPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiPrefabsPath);
-            config.uiSpritesPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiSpritesPath);
+            config.uiAtlasPath = EditorPathUtil.GetPathWithoutAssets(windowData.uiAtlasPath);
             config.configDataPath = EditorPathUtil.GetPathWithoutAssets(windowData.configDataPath);
             config.versionFileName = windowData.versionFileName;
             config.assetMapFileName = windowData.assetMapFileName;
             EditorUtility.SetDirty(config);
         }
-
-        [SerializeField] private bool m_IsCheckVersion = false;
-        [SerializeField] private bool m_IsLoadFromAssetBundle = false;
-        [SerializeField] private bool m_IsOpenLog = false;
-        [SerializeField] private string m_UIPath = string.Empty;
-        [SerializeField] private string m_UIPrefabsPath = string.Empty;
-        [SerializeField] private string m_UISpritesPath = string.Empty;
-        [SerializeField] private string m_ConfigDataPath = string.Empty;
-        [SerializeField] private string m_VersionFileName = string.Empty;
-        [SerializeField] private string m_AssetMapFileName = string.Empty;
-        [SerializeField] private Color m_LogColor = Color.white;
     }
 }

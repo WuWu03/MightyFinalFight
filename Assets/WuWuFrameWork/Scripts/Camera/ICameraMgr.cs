@@ -4,8 +4,8 @@ namespace WuWuFramework.Camera
 {
     public interface ICameraMgr
     {
-        UnityCamera AddMainCamera();
-        UnityCamera AddCamera(string cameraName);
+        UnityCamera AddMainCamera(string layerName = null);
+        UnityCamera AddCamera(string cameraName, string layerName = null);
         UnityCamera GetMainCamera();
         UnityCamera GetCamera(string cameraName);
         bool RemoveCamera(string cameraName);

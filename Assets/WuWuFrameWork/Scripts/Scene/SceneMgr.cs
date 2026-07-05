@@ -1,12 +1,12 @@
-using WuWuFramework.Resources;
-using WuWuFramework.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using WuWuFramework.Event;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WuWuFramework.Event;
+using WuWuFramework.Resources;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Scene
 {
@@ -21,13 +21,7 @@ namespace WuWuFramework.Scene
         private string m_CurrSceneName;
         private IResourcesMgr m_ResourceMgr;
         private AsyncOperation m_AsyncOperation;
-        
-        public SceneMgr()
-        {
-            m_LoadingScenes = new();
-            m_LoadedScenes = new();
-            m_LoadRequests = new();
-        }
+
 
         public event WuWuFrameworkAction<LoadSceneSuccessEventArgs> loadSceneSuccessEvent
         {
@@ -89,34 +83,12 @@ namespace WuWuFramework.Scene
             }
         }
 
-        public override void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        public SceneMgr()
         {
-            if (isLoading)
-            {
-                return;
-            }
-
-            if (m_LoadRequests.Count > 0)
-            {
-                lock (m_LoadRequests)
-                {
-                    LoadSceneRequest request = m_LoadRequests.Dequeue();
-                    InnerLoadSceneAsync(request);
-                }
-            }
-        }
-
-        public override void Shutdown()
-        {
-            while (m_LoadRequests.Count > 0)
-            {
-                m_LoadRequests.Dequeue().Release();
-            }
-
-            m_CurrSceneName = string.Empty;
-            m_LoadingScenes.Clear();
-            m_LoadedScenes.Clear();
-            m_LoadRequests.Clear();
+            m_LoadingScenes = new();
+            m_LoadedScenes = new();
+            m_LoadRequests = new();
+            MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
         public void SetResourceMgr(IResourcesMgr resourceMgr)
@@ -231,6 +203,20 @@ namespace WuWuFramework.Scene
             }
         }
 
+        public override void Shutdown()
+        {
+            while (m_LoadRequests.Count > 0)
+            {
+                m_LoadRequests.Dequeue().Release();
+            }
+
+            m_CurrSceneName = string.Empty;
+            m_LoadingScenes.Clear();
+            m_LoadedScenes.Clear();
+            m_LoadRequests.Clear();
+            MonoBehaviourMgr.instance.updateEvent -= Update;
+        }
+
         private void InnerLoadSceneAsync(LoadSceneRequest request)
         {
             m_LoadingScenes.Add(request.sceneName);
@@ -331,6 +317,23 @@ namespace WuWuFramework.Scene
             m_LoadSceneFailureEvent?.Invoke(failureEventArgs);
             m_LoadSceneFailureEvent = null;
             failureEventArgs.Release();
+        }
+
+        private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
+        {
+            if (isLoading)
+            {
+                return;
+            }
+
+            if (m_LoadRequests.Count > 0)
+            {
+                lock (m_LoadRequests)
+                {
+                    LoadSceneRequest request = m_LoadRequests.Dequeue();
+                    InnerLoadSceneAsync(request);
+                }
+            }
         }
     }
 }

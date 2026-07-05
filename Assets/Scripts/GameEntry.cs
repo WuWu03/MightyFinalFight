@@ -1,7 +1,8 @@
+using System;
+using UnityEngine;
 using WuWuFramework;
-using WuWuFramework.Resources;
-using WuWuFramework.Sound;
 using WuWuFramework.BehaviourTree;
+using WuWuFramework.Camera;
 using WuWuFramework.ConfigData;
 using WuWuFramework.Download;
 using WuWuFramework.Event;
@@ -10,15 +11,14 @@ using WuWuFramework.GameEntity;
 using WuWuFramework.Input;
 using WuWuFramework.Localization;
 using WuWuFramework.Pool;
+using WuWuFramework.Resources;
 using WuWuFramework.Scene;
+using WuWuFramework.Sound;
 using WuWuFramework.Timer;
 using WuWuFramework.UI;
 using WuWuFramework.Utils;
 using WuWuFramework.Version;
 using WuWuFramework.WebRequest;
-using System;
-using UnityEngine;
-using WuWuFramework.Camera;
 
 public class GameEntry : WuWuFrameworkEntry
 {
@@ -309,15 +309,6 @@ public class GameEntry : WuWuFrameworkEntry
 
     protected override void OnExit()
     {
-        CameraFollowMgr.instance.ShutDown();
-        StoryMgr.instance.ShutDown();
-        EffectMgr.instance.ShutDown();
-        TaskMgr.instance.ShutDown();
-        StageMgr.instance.ShutDown();
-        SceneEntityMgr.instance.ShutDown();
-        PlayerMgr.instance.ShutDown();
-        HudMgr.instance.ShutDown();
-        LoadMgr.instance.ShutDown();
         StaticConfig.ShutDown();
     }
 }

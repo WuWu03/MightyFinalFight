@@ -30,6 +30,57 @@ public class StoryMgr : Singleton<StoryMgr>
         MonoBehaviourMgr.instance.updateEvent += OnUpdate;
     }
 
+    public void Play(int storyId)
+    {
+        if (m_Stories.Count > 0)
+        {
+            return;
+        }
+
+        m_Stories.Clear();
+
+        if (m_StoryBuilders.TryGetValue(storyId, out Type builderType))
+        {
+            IStoryBuilder storyBuilder = Activator.CreateInstance(builderType) as IStoryBuilder;
+            storyBuilder?.BuildStory();
+        }
+
+        m_IsPlaying = true;
+    }
+
+    public void Pause()
+    {
+        m_IsPause = true;
+    }
+
+    public void Resume()
+    {
+        m_IsPause = false;
+    }
+
+    public void AddStoryBuilder<T>(int storyId) where T : IStoryBuilder, new()
+    {
+        m_StoryBuilders.Add(storyId, typeof(T));
+    }
+
+    public void AddClip(int track, BaseClip story)
+    {
+        if (!m_Stories.TryGetValue(track, out List<BaseClip> stories))
+        {
+            stories = new();
+            m_Stories[track] = stories;
+        }
+
+        stories.Add(story);
+    }
+
+    public override void Shutdown()
+    {
+        m_StoryBuilders.Clear();
+        m_Stories.Clear();
+        MonoBehaviourMgr.instance.updateEvent -= OnUpdate;
+    }
+
     private void OnUpdate(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
     {
         if (!m_IsPlaying)
@@ -79,56 +130,5 @@ public class StoryMgr : Singleton<StoryMgr>
             m_OnPlayCompleteEvent?.Invoke();
             m_OnPlayCompleteEvent = null;
         }
-    }
-
-    public void Play(int storyId)
-    {
-        if (m_Stories.Count > 0)
-        {
-            return;
-        }
-
-        m_Stories.Clear();
-
-        if (m_StoryBuilders.TryGetValue(storyId, out Type builderType))
-        {
-            IStoryBuilder storyBuilder = Activator.CreateInstance(builderType) as IStoryBuilder;
-            storyBuilder?.BuildStory();
-        }
-
-        m_IsPlaying = true;
-    }
-
-    public void Pause()
-    {
-        m_IsPause = true;
-    }
-
-    public void Resume()
-    {
-        m_IsPause = false;
-    }
-
-    public void AddStoryBuilder<T>(int storyId) where T : IStoryBuilder, new()
-    {
-        m_StoryBuilders.Add(storyId, typeof(T));
-    }
-
-    public void AddClip(int track, BaseClip story)
-    {
-        if (!m_Stories.TryGetValue(track, out List<BaseClip> stories))
-        {
-            stories = new();
-            m_Stories[track] = stories;
-        }
-
-        stories.Add(story);
-    }
-
-    protected override void OnShutdown()
-    {
-        m_StoryBuilders.Clear();
-        m_Stories.Clear();
-        MonoBehaviourMgr.instance.updateEvent -= OnUpdate;
     }
 }
