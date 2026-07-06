@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WuWuFramework.Utils
 {
-    public class FileUtil
+    public static class FileUtil
     {
         /// <summary>
         /// 读取文本文件
@@ -160,6 +160,13 @@ namespace WuWuFramework.Utils
             }
         }
 
+        /// <summary>
+        /// 获取文件
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchParttern"></param>
+        /// <param name="searchOption"></param>
+        /// <returns></returns>
         public static string[] GetFiles(string path, string searchParttern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             if (!Directory.Exists(path))
@@ -185,6 +192,11 @@ namespace WuWuFramework.Utils
             return results.ToArray();
         }
 
+        /// <summary>
+        /// 获取路径
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string[] GetDirectories(string path)
         {
             if (!Directory.Exists(path))
@@ -203,6 +215,11 @@ namespace WuWuFramework.Utils
             return results.ToArray();
         }
 
+        /// <summary>
+        /// 获取文件大小
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public static long GetFileSize(string filePath)
         {
             FileInfo fileInfo = new(filePath);

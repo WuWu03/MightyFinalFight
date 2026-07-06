@@ -36,6 +36,9 @@ namespace WuWuFramework.UI
             }
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public UIMgr()
         {
             m_OpenViews = new();
@@ -49,6 +52,10 @@ namespace WuWuFramework.UI
             MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
+        /// <summary>
+        /// 注入gameObjectPoolMgr依赖
+        /// </summary>
+        /// <param name="gameObjectPoolMgr"></param>
         public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_GameObjectPoolMgr = gameObjectPoolMgr;
@@ -131,11 +138,21 @@ namespace WuWuFramework.UI
             return view;
         }
 
+        /// <summary>
+        /// 获取UI
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T Get<T>() where T : class, IUIView, new()
         {
             return Get(typeof(T)) as T;
         }
 
+        /// <summary>
+        /// 获取UI
+        /// </summary>
+        /// <param name="viewType"></param>
+        /// <returns></returns>
         public IUIView Get(Type viewType)
         {
             if (viewType == null)
@@ -154,42 +171,78 @@ namespace WuWuFramework.UI
             return null;
         }
 
+        /// <summary>
+        /// UI是否打开
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <returns></returns>
         public bool IsOpen(string viewName)
         {
             IUIView view = Get(UIFactory.GetViewType(viewName));
             return view is { isOpen: true };
         }
 
+        /// <summary>
+        /// UI是否打开
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public bool IsOpen<T>() where T : class, IUIView, new()
         {
             IUIView view = Get<T>();
             return view is { isOpen: true };
         }
 
+        /// <summary>
+        /// UI是否打开
+        /// </summary>
+        /// <param name="viewType"></param>
+        /// <returns></returns>
         public bool IsOpen(Type viewType)
         {
             IUIView view = Get(viewType);
             return view is { isOpen: true };
         }
 
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="viewName"></param>
+        /// <param name="isForceDestroy"></param>
         public void Close(string viewName, bool isForceDestroy = false)
         {
             IUIView view = Get(UIFactory.GetViewType(viewName));
             Close(view, isForceDestroy);
         }
 
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="isForceDestroy"></param>
         public void Close<T>(bool isForceDestroy = false) where T : class, IUIView, new()
         {
             IUIView view = Get<T>();
             Close(view, isForceDestroy);
         }
 
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="viewType"></param>
+        /// <param name="isForceDestroy"></param>
         public void Close(Type viewType, bool isForceDestroy = false)
         {
             IUIView view = Get(viewType);
             Close(view, isForceDestroy);
         }
 
+        /// <summary>
+        /// 关闭UI
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="isForceDestroy"></param>
+        /// <param name="checkPopPanel"></param>
         public void Close(IUIView view, bool isForceDestroy = false, bool checkPopView = true)
         {
             if (view == null)
@@ -299,13 +352,6 @@ namespace WuWuFramework.UI
             }
         }
 
-        /// <summary>
-        /// 每帧更新
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        /// <param name="unscaledDeltaTime"></param>
-        /// <param name="time"></param>
-        /// <param name="unscaledTime"></param>
         private void Update(float deltaTime, float unscaledDeltaTime, float time, float unscaledTime)
         {
             if (m_DelayDestroyViews.Count > 0)

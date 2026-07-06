@@ -3,6 +3,7 @@ namespace WuWuFramework.UI
     public interface IUIViewPresenter
     {
         public void SetView(IUIView view);
+        public void SetUIMgr(IUIMgr uiMgr);
         public void Open(object arg);
         public void Update();
         public void Close();

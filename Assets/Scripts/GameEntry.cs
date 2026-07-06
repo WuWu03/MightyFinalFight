@@ -71,7 +71,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_VersionMgr == null)
             {
                 s_VersionMgr = WuWuFrameworkMgr.GetModule<IVersionMgr>();
-                s_VersionMgr.SetMgr(downloadMgr, webRequestMgr);
+                s_VersionMgr.SetMgr(downloadMgr);
             }
 
             return s_VersionMgr;

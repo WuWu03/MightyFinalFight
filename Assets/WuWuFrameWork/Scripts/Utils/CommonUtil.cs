@@ -11,7 +11,7 @@ namespace WuWuFramework.Utils
         /// <param name="d1"></param>
         /// <param name="d2"></param>
         /// <returns></returns>
-        public static bool CompareTo(this double d1, double d2)
+        public static bool CompareTo(double d1, double d2)
         {
             double difference = 1.0E-9;
             return Math.Abs(d1 - d2) <= difference;
@@ -79,31 +79,47 @@ namespace WuWuFramework.Utils
         /// <returns></returns>
         public static int RandomByWeight(int[] weights)
         {
-            if (weights == null || weights.Length < 1)
+            if (weights is not { Length: > 0 })
             {
                 return -1;
             }
 
-            int sum = 0;
+            // 校验并累计，使用 long 避免溢出
+            long sum = 0;
 
             for (int i = 0; i < weights.Length; i++)
             {
-                sum += weights[i];
+                int w = weights[i];
+
+                if (w < 0)
+                {
+                    throw new WuWuFrameworkException("权重数组中不能存在负值");
+                }
+
+                sum += w;
             }
 
-            int random = UnityEngine.Random.Range(1, sum + 1);
-            int sum_temp = 0;
+            if (sum == 0)
+            {
+                return UnityEngine.Random.Range(0, weights.Length);
+            }
+
+            // 生成 [0, sum) 的随机值。用 Random.value * sum 避免 int 上限问题。
+            double r = UnityEngine.Random.value * sum;
+            long acc = 0;
 
             for (int i = 0; i < weights.Length; i++)
             {
-                sum_temp += weights[i];
-                if (random <= sum_temp)
+                acc += weights[i];
+
+                if (r < acc)
                 {
                     return i;
                 }
             }
 
-            return 0;
+            // 理论上不会到这里，但保险返回最后一个索引
+            return weights.Length - 1;
         }
 
         /// <summary>
@@ -115,7 +131,6 @@ namespace WuWuFramework.Utils
             byte g = (byte)(Mathf.Clamp01(color.g) * byte.MaxValue);
             byte b = (byte)(Mathf.Clamp01(color.b) * byte.MaxValue);
             byte a = (byte)(Mathf.Clamp01(color.a) * byte.MaxValue);
-
             return StringUtil.Append("#", ((r << 24) + (g << 16) + (b << 8) + a).ToString("X"));
         }
 
@@ -126,12 +141,10 @@ namespace WuWuFramework.Utils
         public static Color HexToRGB(string hex)
         {
             int hexValue = Convert.ToInt32(hex.Trim().TrimStart('#').PadRight(8, 'F'), 16);
-
             float r = (byte)((hexValue >> 24) & 0xFF) / 255f;
             float g = (byte)((hexValue >> 16) & 0xFF) / 255f;
             float b = (byte)((hexValue >> 8) & 0xFF) / 255f;
             float a = (byte)(hexValue & 0xFF) / 255f;
-
             return new Color(r, g, b, a);
         }
 

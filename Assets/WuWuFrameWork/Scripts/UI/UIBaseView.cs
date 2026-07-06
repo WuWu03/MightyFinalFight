@@ -1,6 +1,6 @@
+using UnityEngine;
 using WuWuFramework.Pool;
 using WuWuFramework.Utils;
-using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
 namespace WuWuFramework.UI
@@ -96,6 +96,7 @@ namespace WuWuFramework.UI
         {
             m_UIMgr = uiMgr;
             m_GameObjectPoolMgr = gameObjectPoolMgr;
+            m_Presenter.SetUIMgr(uiMgr);
         }
 
         public void Open(object arg)

@@ -4,7 +4,7 @@ using UnityEngine.Profiling;
 
 namespace WuWuFramework.Utils
 {
-    public class ProfilerTools
+    public static class ProfilerTools
     {
         /// <summary>
         /// profilter记录的类型，c#层会把数字转成字符串输出
@@ -81,6 +81,7 @@ namespace WuWuFramework.Utils
             }
 
             string profilerName;
+
             if (_map.TryGetValue(type, out profilerName))
             {
                 Profiler.BeginSample(profilerName);

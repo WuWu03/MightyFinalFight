@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Networking;
 using WuWuFramework.Download;
 using WuWuFramework.Event;
 using WuWuFramework.Utils;
-using WuWuFramework.WebRequest;
 
 namespace WuWuFramework.Version
 {
@@ -15,7 +13,6 @@ namespace WuWuFramework.Version
     {
         private readonly WaitForSeconds m_DownloadWait;
         private IDownloadMgr m_DownloadMgr;
-        private IWebRequestMgr m_WebRequestMgr;
         private ulong m_CurrDownloadSize;
         private ulong m_DownloadFullSize;
         private int m_CurrDownloadCount;
@@ -26,7 +23,9 @@ namespace WuWuFramework.Version
         private string m_CheckUri;
         private event WuWuFrameworkAction<VersionProcessState, string, ulong, ulong> m_OnVersionProcessStateChangedEvent;
 
-
+        /// <summary>
+        /// 版本验证进度事件
+        /// </summary>
         public event WuWuFrameworkAction<VersionProcessState, string, ulong, ulong> onVersionProcessStateChangedEvent
         {
             add
@@ -44,11 +43,19 @@ namespace WuWuFramework.Version
             m_DownloadWait = new WaitForSeconds(0.5f);
         }
 
-        public void SetMgr(IDownloadMgr downloadMgr, IWebRequestMgr webRequestMgr)
+        /// <summary>
+        /// 注入DownloadMgr依赖
+        /// </summary>
+        /// <param name="downloadMgr"></param>
+        public void SetMgr(IDownloadMgr downloadMgr)
         {
             m_DownloadMgr = downloadMgr;
         }
 
+        /// <summary>
+        /// 设置版本验证链接
+        /// </summary>
+        /// <param name="uri"></param>
         public void SetCheckVersionUri(string uri)
         {
             m_CheckUri = uri;
@@ -75,17 +82,28 @@ namespace WuWuFramework.Version
             }
 
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersion, string.Empty, 0, 0);
-            m_WebRequestMgr.AddWebRequest(PathUtil.FormatPath(m_CheckUri, WuWuFrameworkEntry.config.versionFileName), "CheckVersionFile", OnRequestVersionFileComplete, OnRequestVersionFileProgress, OnRequestVersionFileError);
+            m_DownloadMgr.AddDownloadText(PathUtil.FormatPath(m_CheckUri, WuWuFrameworkEntry.config.versionFileName), 0, OnRequestVersionFileComplete, OnRequestVersionFileProgress, OnRequestVersionFileError);
         }
 
-        private void OnRequestVersionFileComplete(UnityWebRequest unityWebRequest)
+        private void OnRequestVersionFileComplete(string uri, string text, ulong downloadSize)
         {
-            MonoBehaviourMgr.instance.StartCoroutine(ReadyToDownload(unityWebRequest));
+            MonoBehaviourMgr.instance.StartCoroutine(ReadyToDownload(text));
         }
 
-        private IEnumerator ReadyToDownload(UnityWebRequest unityWebRequest)
+        private void OnRequestVersionFileProgress(string uri, ulong downloadSize, ulong downloadFullSize)
         {
-            if (unityWebRequest == null || unityWebRequest.downloadHandler == null || string.IsNullOrEmpty(unityWebRequest.downloadHandler.text))
+
+        }
+
+        private void OnRequestVersionFileError(string uri, string errorMsg)
+        {
+            m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.Error, errorMsg, 0, 0);
+            throw new Exception(StringUtil.Append("版本验证请求失败，错误信息：", errorMsg));
+        }
+
+        private IEnumerator ReadyToDownload(string text)
+        {
+            if (string.IsNullOrEmpty(text))
             {
                 m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.CheckVersionFileError, string.Empty, 0, 0);
                 throw new Exception("版本文件为空");
@@ -96,7 +114,7 @@ namespace WuWuFramework.Version
             yield return m_DownloadWait;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.VersionAnalyze, string.Empty, 0, 0);
             m_VersionFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, WuWuFrameworkEntry.config.versionFileName);
-            m_VersionFileContent = unityWebRequest.downloadHandler.text.Trim();
+            m_VersionFileContent = text.Trim();
             m_DownloadTempFilePath = PathUtil.FormatPath(PathUtil.runTimeAssetsPath, "VersionMgrDownloadTemp.downloadTemp");
 
             VersionInfo[] newVersionInfos = GetVersionInfos(m_VersionFileContent);
@@ -195,7 +213,7 @@ namespace WuWuFramework.Version
             foreach (VersionInfo versionInfo in downloadInfos)
             {
                 string fileUri = PathUtil.FormatPath(m_CheckUri, versionInfo.fileName);
-                m_DownloadMgr.AddDownloadFile(fileUri, versionInfo.fileName, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
+                m_DownloadMgr.AddDownloadBinaryFile(fileUri, versionInfo.fileMd5, versionInfo.fileSize, OnDownloadComplete, OnDownLoadProgress, OnDownloadError);
             }
         }
 
@@ -255,23 +273,12 @@ namespace WuWuFramework.Version
             return false;
         }
 
-        private void OnRequestVersionFileProgress(float progress)
-        {
-
-        }
-
-        private void OnRequestVersionFileError(string errorMsg)
-        {
-            m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.Error, errorMsg, 0, 0);
-            throw new Exception(StringUtil.Append("版本验证请求失败，错误信息：", errorMsg));
-        }
-
-        private void OnDownloadComplete(string uri, string tag, string version, ulong downloadSize)
+        private void OnDownloadComplete(string uri, string version, ulong downloadSize)
         {
             m_CurrDownloadSize += downloadSize;
             m_CurrDownloadCount++;
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize, m_DownloadFullSize);
-            FileUtil.AppendText(m_DownloadTempFilePath, StringUtil.Append(m_CurrDownloadCount > 1 ? "\n" : string.Empty, tag, "|", version, "|", downloadSize.ToString()));
+            FileUtil.AppendText(m_DownloadTempFilePath, StringUtil.Append(m_CurrDownloadCount > 1 ? "\n" : string.Empty, Path.GetFileName(uri), "|", version, "|", downloadSize.ToString()));
             Log.LogInfo(m_CurrDownloadCount.ToString(), "[", Path.GetFileName(uri), "]下载完成");
 
             if (m_CurrDownloadCount >= m_DownloadFullCount)
@@ -292,13 +299,13 @@ namespace WuWuFramework.Version
             }
         }
 
-        private void OnDownLoadProgress(string uri, string tag, string version, ulong downloadSize, ulong downloadFullSize)
+        private void OnDownLoadProgress(string uri, ulong downloadSize, ulong downloadFullSize)
         {
             Log.LogInfo("开始下载文件 [", Path.GetFileName(uri), "] 进度：", downloadSize.ToString(), "/", downloadFullSize.ToString());
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFiles, uri, m_CurrDownloadSize + downloadSize, m_DownloadFullSize);
         }
 
-        private void OnDownloadError(string uri, string tag, string version, string errorMsg)
+        private void OnDownloadError(string uri, string errorMsg)
         {
             m_OnVersionProcessStateChangedEvent?.Invoke(VersionProcessState.DownloadFilesError, errorMsg, 0, 0);
             throw new Exception(StringUtil.Append("下载文件 [", uri, "] 失败，错误信息：", errorMsg));

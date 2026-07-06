@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
-using WuWuFramework.Event;
 using UnityEngine;
 using UnityEngine.Networking;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.WebRequest
 {
@@ -11,8 +9,10 @@ namespace WuWuFramework.WebRequest
         private WuWuFrameworkAction<UnityWebRequest> m_RequestCompleteEvent;
         private WuWuFrameworkAction<float> m_RequestProgressEvent;
         private WuWuFrameworkAction<string> m_RequestErrorEvent;
+        private UnityWebRequest m_WebRequest;
+        private UnityWebRequestAsyncOperation m_WebRequestAsyncOperation;
+
         public string uri { get; private set; }
-        public string tag { get; private set; }
         public WWWForm postData { get; private set; }
         public bool isDoing { get; private set; }
         public bool isDone { get; private set; }
@@ -54,11 +54,10 @@ namespace WuWuFramework.WebRequest
             }
         }
 
-        public static WebRequest Create(string uri, string tag, WWWForm postData)
+        public static WebRequest Create(string uri, WWWForm postData)
         {
             WebRequest webRequest = ReferencePool.Acquire<WebRequest>();
             webRequest.uri = uri;
-            webRequest.tag = tag;
             webRequest.postData = postData;
             return webRequest;
         }
@@ -70,8 +69,8 @@ namespace WuWuFramework.WebRequest
 
         public void Clear()
         {
+            StopRequest();
             uri = null;
-            tag = null;
             postData = null;
             m_RequestProgressEvent = null;
             m_RequestErrorEvent = null;
@@ -88,7 +87,19 @@ namespace WuWuFramework.WebRequest
             isDoing = true;
             isDone = false;
             isError = false;
-            MonoBehaviourMgr.instance.StartCoroutine(RequestCoroutine());
+            m_WebRequest = postData != null ? UnityWebRequest.Post(uri, postData) : UnityWebRequest.Get(uri);
+
+            if (m_WebRequest == null)
+            {
+                isDoing = false;
+                isDone = false;
+                isError = true;
+                m_RequestErrorEvent?.Invoke("请求失败，请检查链接是否正确");
+                throw new WuWuFrameworkException("请求失败，请检查链接是否正确");
+            }
+
+            m_WebRequest.timeout = 15;
+            m_WebRequestAsyncOperation = m_WebRequest.SendWebRequest();
         }
 
         public void StopRequest()
@@ -98,35 +109,28 @@ namespace WuWuFramework.WebRequest
                 return;
             }
 
-            MonoBehaviourMgr.instance.StopCoroutine(RequestCoroutine());
             isDoing = false;
             isDone = false;
-            isError = true;
+            isError = false;
+            m_WebRequest?.Dispose();
+            m_WebRequest = null;
+            m_WebRequestAsyncOperation = null;
         }
 
-        private IEnumerator RequestCoroutine()
+        public void Update()
         {
-            UnityWebRequest uwr = postData != null ? UnityWebRequest.Post(uri, postData) : UnityWebRequest.Get(uri);
-
-            if (uwr == null)
+            if (m_WebRequest == null || m_WebRequestAsyncOperation == null || !isDoing)
             {
-                isDoing = false;
-                isDone = false;
-                isError = true;
-                m_RequestErrorEvent?.Invoke("请求失败，请检查链接是否正确");
-                throw new Exception("请求失败，请检查链接是否正确");
+                return;
             }
 
-            uwr.timeout = 15;
-            UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = uwr.SendWebRequest();
-
-            while (!unityWebRequestAsyncOperation.isDone)
+            if (!m_WebRequestAsyncOperation.isDone)
             {
-                m_RequestProgressEvent?.Invoke(unityWebRequestAsyncOperation.progress);
-                yield return null;
+                m_RequestProgressEvent?.Invoke(m_WebRequestAsyncOperation.progress);
+                return;
             }
-            
-            switch (uwr.result)
+
+            switch (m_WebRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
                 case UnityWebRequest.Result.ProtocolError:
@@ -134,15 +138,14 @@ namespace WuWuFramework.WebRequest
                     isDoing = false;
                     isDone = false;
                     isError = true;
-                    m_RequestErrorEvent?.Invoke(uwr.error);
+                    m_RequestErrorEvent?.Invoke(m_WebRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
                     m_RequestProgressEvent?.Invoke(1);
-                    yield return null;
+                    m_RequestCompleteEvent?.Invoke(m_WebRequest);
                     isDoing = false;
                     isDone = true;
                     isError = false;
-                    m_RequestCompleteEvent?.Invoke(uwr);
                     break;
             }
         }

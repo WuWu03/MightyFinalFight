@@ -1,34 +1,46 @@
-using System;
-using System.Collections;
-using WuWuFramework.Event;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Video;
+using WuWuFramework.Event;
 
 namespace WuWuFramework.Download
 {
     public class DownloadRequest : IReference
     {
-        private WuWuFrameworkAction<string, string, string, string, ulong> m_OnDownloadScriptCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, ulong> m_OnDownloadBinaryFileCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, Texture2D, ulong> m_OnDownloadTextureCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, AudioClip, ulong> m_OnDownloadAudioClipCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, VideoClip, ulong> m_OnDownloadVideoClipCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, AssetBundle, ulong> m_OnDownloadAssetBundleCompleteEvent;
-        private WuWuFrameworkAction<string, string, string, ulong, ulong> m_OnDownloadProgressEvent;
-        private WuWuFrameworkAction<string, string, string, string> m_OnDownloadErrorEvent;
-        private UnityWebRequest m_UnityWebRequest = null;
-        
+        private WuWuFrameworkAction<string, string, ulong> m_OnDownloadTextCompleteEvent;
+        private WuWuFrameworkAction<string, string, ulong> m_OnDownloadScriptCompleteEvent;
+        private WuWuFrameworkAction<string, string, ulong> m_OnDownloadBinaryFileCompleteEvent;
+        private WuWuFrameworkAction<string, Texture2D, ulong> m_OnDownloadTextureCompleteEvent;
+        private WuWuFrameworkAction<string, AudioClip, ulong> m_OnDownloadAudioClipCompleteEvent;
+        private WuWuFrameworkAction<string, VideoClip, ulong> m_OnDownloadVideoClipCompleteEvent;
+        private WuWuFrameworkAction<string, AssetBundle, ulong> m_OnDownloadAssetBundleCompleteEvent;
+        private WuWuFrameworkAction<string, ulong, ulong> m_OnDownloadProgressEvent;
+        private WuWuFrameworkAction<string, string> m_OnDownloadErrorEvent;
+        private UnityWebRequest m_WebRequest;
+        private UnityWebRequestAsyncOperation m_WebRequestAsyncOperation;
+        private ulong m_StartDownloadLength;
+
         public DownloadType downloadType { get; private set; }
         public string uri { get; private set; }
-        public string tag { get; private set; }
         public string version { get; private set; }
         public ulong downloadSize { get; private set; }
         public bool isDoing { get; private set; }
         public bool isDone { get; private set; }
         public bool isError { get; private set; }
 
-        public event WuWuFrameworkAction<string, string, string, string, ulong> onDownloadScriptCompleteEvent
+        public event WuWuFrameworkAction<string, string, ulong> onDownloadTextCompleteEvent
+        {
+            add
+            {
+                m_OnDownloadTextCompleteEvent += value;
+            }
+            remove
+            {
+                m_OnDownloadTextCompleteEvent -= value;
+            }
+        }
+
+        public event WuWuFrameworkAction<string, string, ulong> onDownloadScriptCompleteEvent
         {
             add
             {
@@ -40,7 +52,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, ulong> onDownloadBinaryFileCompleteEvent
+        public event WuWuFrameworkAction<string, string, ulong> onDownloadBinaryFileCompleteEvent
         {
             add
             {
@@ -52,7 +64,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, Texture2D, ulong> onDownloadTextureCompleteEvent
+        public event WuWuFrameworkAction<string, Texture2D, ulong> onDownloadTextureCompleteEvent
         {
             add
             {
@@ -64,7 +76,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, AudioClip, ulong> onDownloadAudioClipCompleteEvent
+        public event WuWuFrameworkAction<string, AudioClip, ulong> onDownloadAudioClipCompleteEvent
         {
             add
             {
@@ -75,7 +87,7 @@ namespace WuWuFramework.Download
                 m_OnDownloadAudioClipCompleteEvent -= value;
             }
         }
-        public event WuWuFrameworkAction<string, string, string, VideoClip, ulong> onDownloadVideoClipCompleteEvent
+        public event WuWuFrameworkAction<string, VideoClip, ulong> onDownloadVideoClipCompleteEvent
         {
             add
             {
@@ -87,7 +99,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, AssetBundle, ulong> onDownloadAssetBundleCompleteEvent
+        public event WuWuFrameworkAction<string, AssetBundle, ulong> onDownloadAssetBundleCompleteEvent
         {
             add
             {
@@ -99,7 +111,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, ulong, ulong> onDownloadProgressEvent
+        public event WuWuFrameworkAction<string, ulong, ulong> onDownloadProgressEvent
         {
             add
             {
@@ -111,7 +123,7 @@ namespace WuWuFramework.Download
             }
         }
 
-        public event WuWuFrameworkAction<string, string, string, string> onDownloadErrorEvent
+        public event WuWuFrameworkAction<string, string> onDownloadErrorEvent
         {
             add
             {
@@ -123,12 +135,11 @@ namespace WuWuFramework.Download
             }
         }
 
-        public static DownloadRequest Create(DownloadType downloadType, string uri, string tag, string version, ulong downloadSize)
+        public static DownloadRequest Create(DownloadType downloadType, string uri, string version, ulong downloadSize)
         {
             DownloadRequest downloadRequest = ReferencePool.Acquire<DownloadRequest>();
             downloadRequest.downloadType = downloadType;
             downloadRequest.uri = uri;
-            downloadRequest.tag = tag;
             downloadRequest.version = version;
             downloadRequest.downloadSize = downloadSize;
             return downloadRequest;
@@ -141,8 +152,8 @@ namespace WuWuFramework.Download
 
         public void Clear()
         {
+            StopDownload();
             uri = null;
-            tag = null;
             downloadSize = 0;
             isDoing = false;
             isDone = false;
@@ -153,7 +164,6 @@ namespace WuWuFramework.Download
             m_OnDownloadAudioClipCompleteEvent = null;
             m_OnDownloadVideoClipCompleteEvent = null;
             m_OnDownloadAssetBundleCompleteEvent = null;
-            StopDownload();
         }
 
         public void StartDownload()
@@ -166,7 +176,26 @@ namespace WuWuFramework.Download
             isDoing = true;
             isDone = false;
             isError = false;
-            MonoBehaviourMgr.instance.StartCoroutine(DownloadCoroutine());
+
+            m_WebRequest = CreateWebRequest();
+
+            if (m_WebRequest == null)
+            {
+                isDoing = false;
+                isDone = false;
+                isError = true;
+                m_OnDownloadErrorEvent?.Invoke(uri, "请求失败，请检查链接是否正确");
+                throw new WuWuFrameworkException("请求失败，请检查链接是否正确");
+            }
+
+            m_StartDownloadLength = 0;
+
+            if (m_WebRequest.downloadHandler is DownloadHandlerFile downloadHandlerFile)
+            {
+                m_StartDownloadLength = downloadHandlerFile.startDownloadLength;
+            }
+
+            m_WebRequestAsyncOperation = m_WebRequest.SendWebRequest();
         }
 
         public void StopDownload()
@@ -174,61 +203,33 @@ namespace WuWuFramework.Download
             isDoing = false;
             isDone = false;
             isError = false;
-
-            if (m_UnityWebRequest != null)
-            {
-                m_UnityWebRequest.Abort();
-                m_UnityWebRequest.downloadHandler.Dispose();
-                m_UnityWebRequest = null;
-            }
-
-            MonoBehaviourMgr.instance.StopCoroutine(DownloadCoroutine());
+            m_WebRequest?.Dispose();
+            m_WebRequest.downloadHandler?.Dispose();
+            m_WebRequest = null;
+            m_WebRequestAsyncOperation = null;
         }
 
-        private IEnumerator DownloadCoroutine()
+        public void Update()
         {
-            m_UnityWebRequest = CreateWebRequest();
-
-            if (m_UnityWebRequest == null)
+            if (m_WebRequest == null || m_WebRequestAsyncOperation == null || !isDoing)
             {
-                isDoing = false;
-                isDone = false;
-                isError = true;
-                m_OnDownloadErrorEvent?.Invoke(uri, tag, version, "请求失败，请检查链接是否正确");
-                yield break;
+                return;
             }
 
-            ulong startDownloadLength = 0;
-
-            if (m_UnityWebRequest.downloadHandler is DownloadHandlerFile downloadHandlerFile)
+            if (!m_WebRequestAsyncOperation.isDone)
             {
-                startDownloadLength = downloadHandlerFile.startDownloadLength;
+                Log.LogInfo("当前进度：", (m_StartDownloadLength + m_WebRequest.downloadedBytes).ToString());
+                m_OnDownloadProgressEvent?.Invoke(uri, m_StartDownloadLength + m_WebRequest.downloadedBytes, downloadSize);
+                return;
             }
 
-            UnityWebRequestAsyncOperation unityWebRequestAsyncOperation = m_UnityWebRequest.SendWebRequest();
-
-            while (!unityWebRequestAsyncOperation.isDone)
+            if (m_WebRequest.result == UnityWebRequest.Result.ConnectionError || m_WebRequest.result == UnityWebRequest.Result.ProtocolError || m_WebRequest.result == UnityWebRequest.Result.DataProcessingError)
             {
-                try
-                {
-                    Log.LogInfo("当前进度：", (startDownloadLength + m_UnityWebRequest.downloadedBytes).ToString());
-                    m_OnDownloadProgressEvent?.Invoke(uri, tag, version, startDownloadLength + m_UnityWebRequest.downloadedBytes, downloadSize);
-                }
-                catch(Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-
-                yield return null;
+                OnDownloadError(m_WebRequest.error);
             }
-
-            if (m_UnityWebRequest.result == UnityWebRequest.Result.ConnectionError || m_UnityWebRequest.result == UnityWebRequest.Result.ProtocolError || m_UnityWebRequest.result == UnityWebRequest.Result.DataProcessingError)
+            else if (m_WebRequest.result == UnityWebRequest.Result.Success)
             {
-                OnDownloadError(m_UnityWebRequest.error);
-            }
-            else if (m_UnityWebRequest.result == UnityWebRequest.Result.Success)
-            {
-                OnDownloadComplete(downloadType, m_UnityWebRequest);
+                OnDownloadComplete(downloadType, m_WebRequest);
             }
         }
 
@@ -239,11 +240,14 @@ namespace WuWuFramework.Download
 
             switch (downloadType)
             {
+                case DownloadType.Text:
+                    uwr = UnityWebRequest.Get(uri);
+                    break;
                 case DownloadType.AssetBundle:
                     uwr = UnityWebRequestAssetBundle.GetAssetBundle(uri);
                     downloadHandler = new DownloadHandlerAssetBundle(uri, 0);
                     break;
-                case DownloadType.File:
+                case DownloadType.BinaryFile:
                     uwr = UnityWebRequest.Get(uri);
                     downloadHandler = new DownloadHandlerFile(uri, version);
                     uwr.SetRequestHeader("Range", "bytes=" + (downloadHandler as DownloadHandlerFile).startDownloadLength.ToString() + "-");
@@ -282,22 +286,22 @@ namespace WuWuFramework.Download
             isDoing = false;
             isDone = false;
             isError = true;
-            m_OnDownloadErrorEvent?.Invoke(uri, tag, version, errorMessage);
+            m_OnDownloadErrorEvent?.Invoke(uri, errorMessage);
+            throw new WuWuFrameworkException("请求失败，请检查链接是否正确");
         }
 
         private void OnDownloadComplete(DownloadType downloadType, UnityWebRequest uwr)
         {
-            isDoing = false;
-            isDone = true;
-            isError = false;
-
             switch (downloadType)
             {
+                case DownloadType.Text:
+                    OnTextDownloaded(uwr);
+                    break;
                 case DownloadType.AssetBundle:
                     OnAssetBundleDownloaded(uwr);
                     break;
-                case DownloadType.File:
-                    OnFileDownloaded();
+                case DownloadType.BinaryFile:
+                    OnBinaryFileDownloaded();
                     break;
                 case DownloadType.Texture:
                     OnTextureDownloaded(uwr);
@@ -306,40 +310,48 @@ namespace WuWuFramework.Download
                     OnAudioClipDownloaded(uwr);
                     break;
                 case DownloadType.VideoClip:
-                    //m_OnDownloadVideoClipCompleteEvent?.Invoke(DownloadHan.GetContent(uwr));
-                    break;
+                    throw new WuWuFrameworkException("直接使用File类型");
                 case DownloadType.Script:
                     OnScriptDownloaded(uwr);
                     break;
             }
+
+            isDoing = false;
+            isDone = true;
+            isError = false;
         }
 
-        private void OnFileDownloaded()
+        private void OnTextDownloaded(UnityWebRequest uwr)
         {
-            m_OnDownloadBinaryFileCompleteEvent?.Invoke(uri, tag, version, downloadSize);
+            m_OnDownloadTextCompleteEvent?.Invoke(uri, uwr.downloadHandler.text, downloadSize);
+        }
+
+        private void OnBinaryFileDownloaded()
+        {
+            m_OnDownloadBinaryFileCompleteEvent?.Invoke(uri, version, downloadSize);
         }
 
         private void OnAssetBundleDownloaded(UnityWebRequest uwr)
         {
             AssetBundle assetBundle = DownloadHandlerAssetBundle.GetContent(uwr);
-            m_OnDownloadAssetBundleCompleteEvent?.Invoke(uri, tag, version, assetBundle, downloadSize);
+            m_OnDownloadAssetBundleCompleteEvent?.Invoke(uri, assetBundle, downloadSize);
         }
 
         private void OnScriptDownloaded(UnityWebRequest uwr)
         {
-            m_OnDownloadScriptCompleteEvent?.Invoke(uri, tag, version, uwr.downloadHandler.text, downloadSize);
+            m_OnDownloadScriptCompleteEvent?.Invoke(uri, uwr.downloadHandler.text, downloadSize);
         }
 
         private void OnTextureDownloaded(UnityWebRequest uwr)
         {
             Texture2D texture = DownloadHandlerTexture.GetContent(uwr);
-            m_OnDownloadTextureCompleteEvent?.Invoke(uri, tag, version, texture, downloadSize);
+            m_OnDownloadTextureCompleteEvent?.Invoke(uri, texture, downloadSize);
         }
 
         private void OnAudioClipDownloaded(UnityWebRequest uwr)
         {
             AudioClip audioClip = DownloadHandlerAudioClip.GetContent(uwr);
-            m_OnDownloadAudioClipCompleteEvent?.Invoke(uri, tag, version, audioClip, downloadSize);
+            m_OnDownloadAudioClipCompleteEvent?.Invoke(uri, audioClip, downloadSize);
         }
     }
 }

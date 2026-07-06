@@ -3,7 +3,8 @@ namespace WuWuFramework.UI
     public abstract class UIBaseViewPresenter<V> : IUIViewPresenter where V : class, IUIView, new()
     {
         private V m_View;
-        private BaseModel m_Model = null;
+        private BaseModel m_Model;
+        private IUIMgr m_UIMgr;
 
         protected V view
         {
@@ -15,7 +16,12 @@ namespace WuWuFramework.UI
 
         public void SetView(IUIView view)
         {
-           m_View = view as V;
+            m_View = view as V;
+        }
+
+        public void SetUIMgr(IUIMgr uiMgr)
+        {
+            m_UIMgr = uiMgr;
         }
 
         public void Open(object arg)
@@ -48,11 +54,12 @@ namespace WuWuFramework.UI
             OnDestroy();
             m_Model = null;
             m_View = null;
+            m_UIMgr = null;
         }
 
-        protected void CloseSelf()
+        protected void CloseSelf(bool isForceDestroy = false)
         {
-            m_View.Close();
+            m_UIMgr.Close<V>(isForceDestroy);
         }
 
         protected T AddModel<T>() where T : BaseModel, new()
@@ -61,7 +68,7 @@ namespace WuWuFramework.UI
             {
                 T model = MVPModels.GetModel<T>();
 
-                if (model == null) 
+                if (model == null)
                 {
                     model = new T();
                     MVPModels.RegistModel(model);

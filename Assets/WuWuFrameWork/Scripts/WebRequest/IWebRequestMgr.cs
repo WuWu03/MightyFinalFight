@@ -6,21 +6,53 @@ namespace WuWuFramework.WebRequest
 {
     public interface IWebRequestMgr
     {
-        public void AddWebRequest(string uri, string tag);
-        public void AddWebRequest(string uri, string tag, WWWForm postData);
+        /// <summary>
+        /// Get请求
+        /// </summary>
+        /// <param name="uri"></param>
+        public void AddWebRequest(string uri);
 
-        public void AddWebRequest(string uri, string tag,
+        /// <summary>
+        /// Post请求，如果postData为空则进行Get请求
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="postData"></param>
+        public void AddWebRequest(string uri, WWWForm postData);
+
+        /// <summary>
+        /// Get请求
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="onRequestCompleteEvent"></param>
+        /// <param name="onRequestProgressEvent"></param>
+        /// <param name="onRequestErrorEvent"></param>
+        public void AddWebRequest(string uri,
             WuWuFrameworkAction<UnityWebRequest> onRequestCompleteEvent,
             WuWuFrameworkAction<float> onRequestProgressEvent,
             WuWuFrameworkAction<string> onRequestErrorEvent);
 
-        public void AddWebRequest(string uri, string tag, WWWForm postData,
+        /// <summary>
+        /// Post请求，如果postData为空则进行Get请求
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="postData"></param>
+        /// <param name="onRequestCompleteEvent"></param>
+        /// <param name="onRequestProgressEvent"></param>
+        /// <param name="onRequestErrorEvent"></param>
+        public void AddWebRequest(string uri, WWWForm postData,
             WuWuFrameworkAction<UnityWebRequest> onRequestCompleteEvent,
             WuWuFrameworkAction<float> onRequestProgressEvent,
             WuWuFrameworkAction<string> onRequestErrorEvent);
-        public void RemoveWebRequest(string uri, string tag);
-        public void RemoveWebRequestByUrl(string uri);
-        public void RemoveWebRequestByTag(string tag);
+
+        /// <summary>
+        /// 移除Web请求
+        /// </summary>
+        /// <param name="uri"></param>
+        public void RemoveWebRequest(string uri);
+
+        /// <summary>
+        /// 移除所有Web请求
+        /// </summary>
         public void RemoveAllWebRequests();
     }
 }

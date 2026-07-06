@@ -11,7 +11,7 @@ public class StageViewSettings : UIBaseViewSettings
 {
 	public override string prefabName { get { return "StageView.prefab"; } }
 	public override float delayDestroyTime { get { return 0f; } }
-	public override bool canPopUp { get { return true; } }
-	public override UILayer layer { get { return UILayer.Window1; } }
+	public override bool canPopUp { get { return false; } }
+	public override UILayer layer { get { return UILayer.Window2; } }
 	public override UIDestroyMode destroyMode { get { return UIDestroyMode.Immediately; } }
 }

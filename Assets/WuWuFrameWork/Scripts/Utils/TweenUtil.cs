@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace WuWuFramework.Utils
 {
-    public class TweenUtil
+    public static class TweenUtil
     {
         public enum TweenType
         {

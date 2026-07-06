@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WuWuFramework.Utils
 {
-    public class PathUtil
+    public static class PathUtil
     {
         /// <summary>
         /// 应用程序数据路径

@@ -1,12 +1,18 @@
-using WuWuFramework.Utils;
 using System.IO;
 using UnityEngine.Networking;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Download
 {
     public class DownloadHandlerFile : DownloadHandlerScript
     {
+        private ulong m_ContentLength = 0;
+        private int m_ReceivedLength = 0;
+        private string m_DownloadVersionFilePath = string.Empty;
+        private FileStream m_FileStream;
+
         public ulong startDownloadLength { get; private set; }
+
         public DownloadHandlerFile(string uri, string version) : base()
         {
             InitDownloadFile(uri, version);
@@ -119,11 +125,5 @@ namespace WuWuFramework.Download
             FileUtil.CreateBinaryFile(downloadFilePath, null);
             return 0;
         }
-
-
-        private ulong m_ContentLength = 0;
-        private int m_ReceivedLength = 0;
-        private string m_DownloadVersionFilePath = string.Empty;
-        private FileStream m_FileStream;
     }
 }
