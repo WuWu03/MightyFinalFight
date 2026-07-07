@@ -12,13 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1054cc3b99d464d97e0d5aec841a53, type: 3}
   m_Name: WuWuFrameworkConfigWindowData
   m_EditorClassIdentifier: 
-  assetsPath: Assets/ArtResources
-  buildPath: "C:/Users/WuWu/Desktop/\u5C24\u5C14\u54C8"
-  uiScenesPath: Assets/ArtResources/UI/Scenes
-  uiSpritesPath: Assets/ArtResources/UI/Sprites
-  uiScriptsPath: Assets/Scripts/UI/
-  entryScene: Assets/Scenes/Main.unity
-  languageKeyFilePath: Assets/Editor/Config/LanguageKeys.txt
   m_IsCheckVersion: 0
   m_IsLoadFromAssetBundle: 0
   m_IsOpenLog: 1
@@ -29,3 +22,10 @@ MonoBehaviour:
   m_VersionFileName: Version.txt
   m_AssetMapFileName: AssetMap.txt
   m_LogColor: {r: 1, g: 1, b: 1, a: 1}
+  assetsPath: Assets/ArtResources
+  buildPath: "C:/Users/WuWu/Desktop/\u5C24\u5C14\u54C8"
+  uiScenesPath: Assets/ArtResources/UI/Scenes
+  uiSpritesPath: Assets/ArtResources/UI/Sprites
+  uiScriptsPath: Assets/Scripts/UI/
+  entryScene: Assets/Scenes/Main.unity
+  languageKeyFilePath: Assets/Editor/Config/LanguageKeys.txt

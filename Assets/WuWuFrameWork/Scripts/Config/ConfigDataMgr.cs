@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using WuWuFramework.Resources;
 using WuWuFramework.Utils;
@@ -32,7 +31,7 @@ namespace WuWuFramework.ConfigData
 
             if (!m_ConfigData.TryAdd(filePath, result))
             {
-                throw new Exception("配置数据已经存在");
+                throw new WuWuFrameworkException("配置数据已经存在");
             }
 
             return result;
@@ -51,7 +50,7 @@ namespace WuWuFramework.ConfigData
 
             if (!m_ConfigData.TryAdd(filePath, result))
             {
-                throw new Exception("配置数据已经存在");
+                throw new WuWuFrameworkException("配置数据已经存在");
             }
         }
 

@@ -1,9 +1,6 @@
 /obj
 /Logs
 /Library
-/MightyFinalFight.sln
-/Assembly-CSharp-Editor.csproj
-/Assembly-CSharp.csproj
 /UserSettings
 /Temp
 /Packages
@@ -12,5 +9,6 @@
 /temp.unitypackage
 /Assets/StreamingAssets
 /*.csproj
-/MightyFinalFight.slnx
+/*.sln
+/*.slnx
 /.idea
