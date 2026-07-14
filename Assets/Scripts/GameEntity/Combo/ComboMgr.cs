@@ -75,6 +75,11 @@ public class ComboMgr : Singleton<ComboMgr>
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.B, InputEventCallType.Performed, OnBInput);
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.X, InputEventCallType.Performed, OnXInput);
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.Y, InputEventCallType.Performed, OnYInput);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.LeftAxis, InputEventCallType.Performed, OnLeftAxisInput);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.A, InputEventCallType.Performed, OnAInput);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.B, InputEventCallType.Performed, OnBInput);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.X, InputEventCallType.Performed, OnXInput);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.Y, InputEventCallType.Performed, OnYInput);
         MonoBehaviourMgr.instance.updateEvent += Update;
     }
 
@@ -138,6 +143,8 @@ public class ComboMgr : Singleton<ComboMgr>
         m_DicAfterTriggerEvents.Clear();
         m_IsRunning = false;
         m_GetPreConditionEvent = null;
+        GameEntry.inputMgr.keyBoardInputController.RemoveAllInputEvents();
+        GameEntry.inputMgr.xboxInputController.RemoveAllInputEvents();
         MonoBehaviourMgr.instance.updateEvent -= Update;
     }
 
@@ -147,8 +154,6 @@ public class ComboMgr : Singleton<ComboMgr>
 
         if (CheckComboAxis(axis))
         {
-            Debug.Log(axis);
-            Debug.Log(m_ComboKeys.Count);
             m_KeyDownTimer = Time.time;
         }
     }
@@ -157,8 +162,6 @@ public class ComboMgr : Singleton<ComboMgr>
     {
         if (CheckComboKey(ComboKey.A))
         {
-            Debug.Log("A");
-            Debug.Log(m_ComboKeys.Count);
             m_KeyDownTimer = Time.time;
         }
     }

@@ -1,4 +1,4 @@
-
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,7 +9,7 @@ using WuWuPlayerPrefs = WuWuFramework.Serialize.PlayerPrefs;
 
 namespace WuWuFramework.Input
 {
-    public abstract class BaseInputController
+    public abstract class BaseInputController : IDisposable
     {
         private readonly Dictionary<string, BaseInputEvent> m_InputEvents = new();
         private RebindingOperation m_CurrRebindingOperation;
@@ -17,8 +17,7 @@ namespace WuWuFramework.Input
         private int m_CurrRebindingIndex;
         private event WuWuFrameworkAction<InputAction, int> m_RebindingCompleteEvent;
         private event WuWuFrameworkAction m_RebindingCancelEvent;
-
-        public InputActionMap actionMap { get; private set; }
+        private InputActionMap m_ActionMap;
 
         public bool isRebinding
         {
@@ -56,20 +55,20 @@ namespace WuWuFramework.Input
 
         public void SetInputActionAsset(InputActionAsset inputActionAsset)
         {
-            actionMap = inputActionAsset.FindActionMap(inputScheme.ToString());
-            actionMap.Disable();
+            m_ActionMap = inputActionAsset.FindActionMap(inputScheme.ToString());
+            m_ActionMap.Disable();
             int index = 0;
 
-            while (index < actionMap.bindings.Count)
+            while (index < m_ActionMap.bindings.Count)
             {
-                var binding = actionMap.bindings[index];
+                var binding = m_ActionMap.bindings[index];
 
                 if (binding == null || string.IsNullOrEmpty(binding.action))
                 {
                     continue;
                 }
 
-                InputAction action = actionMap.FindAction(binding.action);
+                InputAction action = m_ActionMap.FindAction(binding.action);
 
                 if (action == null)
                 {
@@ -118,18 +117,49 @@ namespace WuWuFramework.Input
 
         public void SaveBindings()
         {
-            for (int i = 0; i < actionMap.bindings.Count; i++)
+            for (int i = 0; i < m_ActionMap.bindings.Count; i++)
             {
-                var binding = actionMap.bindings[i];
+                var binding = m_ActionMap.bindings[i];
                 string key = StringUtil.Append(this.GetType().Name, "_", i.ToString());
                 Debug.Log(key + " : " + binding.overridePath);
                 WuWuPlayerPrefs.SetString(key, binding.overridePath);
             }
         }
 
+        public void Enable()
+        {
+            m_ActionMap?.Enable();
+        }
+
+        public void Disable()
+        {
+            m_ActionMap.Disable();
+        }
+
+        public void RemoveAllInputEvents()
+        {
+            foreach (KeyValuePair<string, BaseInputEvent> keyValuePair in m_InputEvents)
+            {
+                keyValuePair.Value.RemoveAll();
+            }
+
+            m_InputEvents.Clear();
+        }
+
+        public void Dispose()
+        {
+            RemoveAllInputEvents();
+            m_CurrRebindingOperation?.Dispose();
+            m_CurrRebindingOperation = null;
+            m_CurrRebindingInputAction = null;
+            m_RebindingCompleteEvent = null;
+            m_RebindingCancelEvent = null;
+            m_ActionMap = null;
+        }
+
         protected void ReBinding(string keyName)
         {
-            m_CurrRebindingInputAction = actionMap.FindAction(keyName, true) ?? throw new WuWuFrameworkException("按键不存在");
+            m_CurrRebindingInputAction = m_ActionMap.FindAction(keyName, true) ?? throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] [", keyName, "] 输入映射不存在"));
 
             if (m_CurrRebindingInputAction.bindings[0].isComposite)
             {
@@ -159,19 +189,40 @@ namespace WuWuFramework.Input
             return inputEvent;
         }
 
+        protected InputAction GetInputAction(string keyName)
+        {
+            if (m_ActionMap == null)
+            {
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 输入方案不存在"));
+            }
+
+            return m_ActionMap?.FindAction(keyName);
+        }
+
+        protected InputBinding GetInputBinding(string keyName, int bindingIndex)
+        {
+            if (m_ActionMap == null)
+            {
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 输入方案不存在"));
+            }
+
+            InputAction inputAction = m_ActionMap.FindAction(keyName) ?? throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] [", keyName, "] 输入映射不存在"));
+            return inputAction.bindings[bindingIndex];
+        }
+
         protected bool RemoveInputEvent(string keyName)
         {
             return m_InputEvents.Remove(keyName);
         }
 
-        private bool CanAddInputEvent(string actionName)
+        private bool CanAddInputEvent(string keyName)
         {
-            if (actionMap == null)
+            if (m_ActionMap == null)
             {
-                throw new WuWuFrameworkException("输入方案不存在");
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 输入方案不存在"));
             }
 
-            InputAction inputAction = actionMap.FindAction(actionName, true) ?? throw new WuWuFrameworkException("输入映射不存在");
+            InputAction inputAction = m_ActionMap.FindAction(keyName, true) ?? throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] [", keyName, "] 输入映射不存在"));
 
             if (!inputAction.enabled)
             {
@@ -244,8 +295,8 @@ namespace WuWuFramework.Input
 
         private void OnRebindingComplete(RebindingOperation operation)
         {
-            m_CurrRebindingInputAction.Enable();
-            m_CurrRebindingOperation.Dispose();
+            m_CurrRebindingInputAction?.Enable();
+            m_CurrRebindingOperation?.Dispose();
             m_RebindingCompleteEvent?.Invoke(m_CurrRebindingInputAction, m_CurrRebindingIndex);
             m_CurrRebindingOperation = null;
 
@@ -261,8 +312,8 @@ namespace WuWuFramework.Input
 
         private void OnRebindingCancel(RebindingOperation operation)
         {
-            m_CurrRebindingInputAction.Enable();
-            m_CurrRebindingOperation.Dispose();
+            m_CurrRebindingInputAction?.Enable();
+            m_CurrRebindingOperation?.Dispose();
             m_RebindingCancelEvent?.Invoke();
             m_CurrRebindingInputAction = null;
             m_CurrRebindingOperation = null;

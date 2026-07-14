@@ -58,6 +58,13 @@ namespace WuWuFramework.Input
             throw new WuWuFrameworkException(StringUtil.Append("[", this.GetType().Name, "] 事件类型错误，必须是 [WuWuFrameworkAction]"));
         }
 
+        public override void RemoveAll()
+        {
+            m_InputStartedEvent = null;
+            m_InputPerformedEvent = null;
+            m_InputCanceledEvent = null;
+        }
+
         public override void Call(InputEventCallType inputEventCallType)
         {
             switch (inputEventCallType)

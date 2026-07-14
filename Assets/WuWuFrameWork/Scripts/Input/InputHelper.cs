@@ -74,7 +74,7 @@ namespace WuWuFramework.Input
                     return builder.Invoke();
                 }
 
-                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "]平台 [", keyName.ToString(), "] 不存在对应的输入事件"));
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 平台 [", keyName.ToString(), "] 不存在对应的输入事件"));
             }
 
             throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 不存在对应平台"));

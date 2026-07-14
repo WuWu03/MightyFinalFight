@@ -682,7 +682,7 @@
                 {
                     "name": "",
                     "id": "974216b4-45fb-479a-81b7-fe0d20141234",
-                    "path": "<XInputController>/select",
+                    "path": "<XInputController>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -693,7 +693,7 @@
                 {
                     "name": "",
                     "id": "e0760e0f-6076-4b99-980e-6411cddb0ddd",
-                    "path": "<XInputController>/start",
+                    "path": "<XInputController>/select",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

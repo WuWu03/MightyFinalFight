@@ -10,6 +10,8 @@ using WuWuFramework.Input;
 using WuWuFramework.UI;
 using WuWuFramework.Utils;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using System.IO;
 
 public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 {
@@ -22,6 +24,7 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
     {
         GameEntry.inputMgr.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.Start, InputEventCallType.Performed, SkipOrStart);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.Start, InputEventCallType.Performed, SkipOrStart);
     }
 
     protected override void OnShow(object arg)
@@ -47,6 +50,7 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
     {
         GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
         GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.Start, InputEventCallType.Performed, SkipOrStart);
+        GameEntry.inputMgr.xboxInputController.RemoveInputEvent(XboxInputKey.Start, InputEventCallType.Performed, SkipOrStart);
     }
 
     protected override void OnDestroy()
@@ -57,13 +61,21 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
     {
         if (inputScheme == InputScheme.Xbox)
         {
-            view.txtStart.Append("(START)");
-            view.txtSettings.Append("(SELECT)");
+            InputBinding start = GameEntry.inputMgr.xboxInputController.GetInputBinding(XboxInputKey.Start, 0);
+            InputBinding select = GameEntry.inputMgr.xboxInputController.GetInputBinding(XboxInputKey.Select, 0);
+            string startName = string.IsNullOrEmpty(start.overridePath) ? start.path : start.overridePath;
+            string selectName = string.IsNullOrEmpty(select.overridePath) ? select.path : select.overridePath;
+            view.txtStart.Append(StringUtil.Append("(", startName[(startName.LastIndexOf("/") + 1)..], ")"));
+            view.txtSettings.Append(StringUtil.Append("(", selectName[(selectName.LastIndexOf("/") + 1)..], ")"));
         }
         else if (inputScheme == InputScheme.Keyboard)
         {
-            view.txtStart.Append("(G)");
-            view.txtSettings.Append("(H)");
+            InputBinding start = GameEntry.inputMgr.keyBoardInputController.GetInputBinding(KeyboardInputKey.Start, 0);
+            InputBinding select = GameEntry.inputMgr.keyBoardInputController.GetInputBinding(KeyboardInputKey.Select, 0);
+            string startName = string.IsNullOrEmpty(start.overridePath) ? start.path : start.overridePath;
+            string selectName = string.IsNullOrEmpty(select.overridePath) ? select.path : select.overridePath;
+            view.txtStart.Append(StringUtil.Append("(", startName[(startName.LastIndexOf("/") + 1)..], ")"));
+            view.txtSettings.Append(StringUtil.Append("(", selectName[(selectName.LastIndexOf("/") + 1)..], ")"));
         }
     }
 

@@ -9,9 +9,9 @@ namespace WuWuFramework.Input
 {
     public class InputMgr : WuWuFrameworkModule, IInputMgr
     {
-        private Dictionary<InputScheme, BaseInputController> m_InputContollers = new();
+        private Dictionary<InputScheme, BaseInputController> m_InputControllers = new();
         private XboxInputController m_XboxInputController;
-        private KeyboardInputController m_KeyBoardInputController;
+        private KeyboardInputController m_KeyboardInputController;
         private event WuWuFrameworkAction<InputScheme> m_InputDeviceChangeEvent;
         private InputActionAsset m_InputActionAsset;
         private InputScheme m_CurrInputScheme = InputScheme.None;
@@ -42,6 +42,11 @@ namespace WuWuFramework.Input
         {
             get
             {
+                if (m_XboxInputController == null)
+                {
+                    throw new WuWuFrameworkException("XboxInputController不存在，调用AddInputController添加");
+                }
+
                 return m_XboxInputController;
             }
         }
@@ -50,7 +55,12 @@ namespace WuWuFramework.Input
         {
             get
             {
-                return m_KeyBoardInputController;
+                if (m_KeyboardInputController == null)
+                {
+                    throw new WuWuFrameworkException("KeyboardInputController不存在，调用AddInputController添加");
+                }
+
+                return m_KeyboardInputController;
             }
         }
 
@@ -61,41 +71,50 @@ namespace WuWuFramework.Input
 
         public void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
-            string configDataPath = WuWuFrameworkEntry.config.configDataPath;
-            string filePath = PathUtil.FormatPath(configDataPath, InputConfigDataName);
-            byte[] buffer = resourceMgr.Load<TextAsset>(filePath).bytes;
-            string jsonStr = System.Text.Encoding.UTF8.GetString(ZlibHelper.DeCompressBytes(buffer));
-            resourceMgr.Unload(filePath);
-            m_InputActionAsset = InputActionAsset.FromJson(jsonStr);
+            try
+            {
+                string configDataPath = WuWuFrameworkEntry.config.configDataPath;
+                string filePath = PathUtil.FormatPath(configDataPath, InputConfigDataName);
+                byte[] buffer = resourceMgr.Load<TextAsset>(filePath).bytes;
+                string jsonStr = System.Text.Encoding.UTF8.GetString(ZlibHelper.DeCompressBytes(buffer));
+                resourceMgr.Unload(filePath);
+                m_InputActionAsset = InputActionAsset.FromJson(jsonStr);
+            }
+            catch
+            {
+
+            }
         }
 
         public void AddInputController(InputScheme inputScheme)
         {
-            if (m_InputContollers.ContainsKey(inputScheme))
+            if (m_InputControllers.ContainsKey(inputScheme))
             {
                 throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 控制器已存在"));
             }
 
             if (inputScheme == InputScheme.None)
             {
-                throw new WuWuFrameworkException(StringUtil.Append("控制器方案错误 InputScheme.None"));
+                throw new WuWuFrameworkException("控制器方案错误 InputScheme.None");
             }
 
             if (inputScheme == InputScheme.Keyboard)
             {
-                m_KeyBoardInputController = InputHelper.GetInputController(InputScheme.Keyboard, m_InputActionAsset) as KeyboardInputController;
-                m_InputContollers.Add(InputScheme.Keyboard, m_KeyBoardInputController);
+                m_KeyboardInputController = InputHelper.GetInputController(InputScheme.Keyboard, m_InputActionAsset) as KeyboardInputController
+                     ?? throw new WuWuFrameworkException("[KeyboardInputController] 控制器创建失败");
+                m_InputControllers.Add(InputScheme.Keyboard, m_KeyboardInputController);
             }
             else if (inputScheme == InputScheme.Xbox)
             {
-                m_XboxInputController = InputHelper.GetInputController(InputScheme.Xbox, m_InputActionAsset) as XboxInputController;
-                m_InputContollers.Add(InputScheme.Xbox, m_XboxInputController);
+                m_XboxInputController = InputHelper.GetInputController(InputScheme.Xbox, m_InputActionAsset) as XboxInputController
+                    ?? throw new WuWuFrameworkException("[XboxInputController] 控制器创建失败");
+                m_InputControllers.Add(InputScheme.Xbox, m_XboxInputController);
             }
         }
 
         public void Save()
         {
-            m_KeyBoardInputController?.SaveBindings();
+            m_KeyboardInputController?.SaveBindings();
             m_XboxInputController?.SaveBindings();
         }
 
@@ -113,45 +132,58 @@ namespace WuWuFramework.Input
 
             if (m_CurrInputScheme != InputScheme.None)
             {
-                if (m_InputContollers.TryGetValue(m_CurrInputScheme, out BaseInputController oldController))
+                if (m_InputControllers.TryGetValue(m_CurrInputScheme, out BaseInputController oldController))
                 {
-                    oldController.actionMap.Disable();
+                    oldController.Disable();
                 }
                 else
                 {
-                    throw new WuWuFrameworkException(StringUtil.Append("未添加 [", inputScheme.ToString(), "] 控制器"));
+                    throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 控制器不存在，调用AddInputController添加"));
                 }
             }
 
             m_CurrInputScheme = inputScheme;
 
-            if (m_InputContollers.TryGetValue(m_CurrInputScheme, out BaseInputController currController))
+            if (m_InputControllers.TryGetValue(m_CurrInputScheme, out BaseInputController currController))
             {
-                currController.actionMap.Enable();
+                currController.Enable();
             }
             else
             {
-                throw new WuWuFrameworkException(StringUtil.Append("未添加 [", inputScheme.ToString(), "] 控制器"));
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 控制器不存在，调用AddInputController添加"));
             }
         }
 
         public override void Shutdown()
         {
-            m_InputContollers.Clear();
+            foreach (KeyValuePair<InputScheme, BaseInputController> keyValuePair in m_InputControllers)
+            {
+                keyValuePair.Value.Dispose();
+            }
+
+            m_InputControllers.Clear();
+            m_XboxInputController = null;
+            m_KeyboardInputController = null;
             m_InputDeviceChangeEvent = null;
+            m_InputActionAsset = null;
             MonoBehaviourMgr.instance.updateEvent -= Update;
         }
 
         private void Update(float t1, float t2, float t3, float t4)
         {
+            if (m_CurrInputScheme == InputScheme.None)
+            {
+                return;
+            }
+
             bool isDeviceChanged = false;
 
-            if (InputHelper.IsKeyBoardInput() && m_CurrInputScheme != InputScheme.Keyboard)
+            if (m_CurrInputScheme != InputScheme.Keyboard && InputHelper.IsKeyBoardInput())
             {
                 isDeviceChanged = true;
                 SetCurrScheme(InputScheme.Keyboard);
             }
-            else if (InputHelper.IsXboxInput() && m_CurrInputScheme != InputScheme.Xbox)
+            else if (m_CurrInputScheme != InputScheme.Xbox && InputHelper.IsXboxInput())
             {
                 isDeviceChanged = true;
                 SetCurrScheme(InputScheme.Xbox);

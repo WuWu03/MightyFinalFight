@@ -23,6 +23,9 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
         GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, Select);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.xboxInputController.AddInputEvent(XboxInputKey.A, InputEventCallType.Performed, Select);
     }
 
     protected override void OnShow(object arg)
@@ -50,6 +53,9 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
         GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
         GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
         GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, Select);
+        GameEntry.inputMgr.xboxInputController.RemoveInputEvent(XboxInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.xboxInputController.RemoveInputEvent(XboxInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.xboxInputController.RemoveInputEvent(XboxInputKey.A, InputEventCallType.Performed, Select);
     }
 
     protected override void OnDestroy()

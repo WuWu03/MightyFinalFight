@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using WuWuFramework.Event;
 
 namespace WuWuFramework.Input
@@ -101,6 +102,16 @@ namespace WuWuFramework.Input
         public void Rebinding(XboxInputKey inputKey)
         {
             ReBinding(inputKey.ToString());
+        }
+
+        public InputAction GetInputAction(XboxInputKey inputKey)
+        {
+            return GetInputAction(inputKey.ToString());
+        }
+
+        public InputBinding GetInputBinding(XboxInputKey inputKey, int bindingIndex)
+        {
+            return GetInputBinding(inputKey.ToString(), bindingIndex);
         }
     }
 }

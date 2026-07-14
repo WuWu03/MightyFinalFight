@@ -300,6 +300,7 @@ public class GameEntry : WuWuFrameworkEntry
     private void StartGame()
     {
         inputMgr.AddInputController(InputScheme.Keyboard);
+        inputMgr.AddInputController(InputScheme.Xbox);
         inputMgr.SetCurrScheme(InputScheme.Keyboard);
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
