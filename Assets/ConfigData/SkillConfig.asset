@@ -313,7 +313,7 @@ MonoBehaviour:
     EnternalTiggerTime: 0
     EnternalTriggerInterval: 0
     Key:
-      Keys: 0d00000001000000
+      Keys: 0304
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 1
@@ -376,7 +376,7 @@ MonoBehaviour:
     EnternalTiggerTime: 0
     EnternalTriggerInterval: 0
     Key:
-      Keys: 0a00000001000000
+      Keys: 0004
       AddTrigger: 1
     AnimSpeed: 0.7
     AnimTime: 1
@@ -543,7 +543,7 @@ MonoBehaviour:
     EnternalTiggerTime: 0
     EnternalTriggerInterval: 0
     Key:
-      Keys: 0100000002000000
+      Keys: 0405
       AddTrigger: 1
     AnimSpeed: 0.4
     AnimTime: 0

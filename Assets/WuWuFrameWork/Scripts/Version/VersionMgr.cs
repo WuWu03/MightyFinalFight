@@ -47,7 +47,7 @@ namespace WuWuFramework.Version
         /// 注入DownloadMgr依赖
         /// </summary>
         /// <param name="downloadMgr"></param>
-        public void SetMgr(IDownloadMgr downloadMgr)
+        public void SetDownloadMgr(IDownloadMgr downloadMgr)
         {
             m_DownloadMgr = downloadMgr;
         }

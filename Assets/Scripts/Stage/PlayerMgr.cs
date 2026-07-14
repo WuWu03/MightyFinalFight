@@ -84,7 +84,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         set
         {
             m_CanCtrl = value;
-            GameEntry.inputMgr.isRunning = value;
+            ComboMgr.instance.isRunning = value;
         }
     }
 
@@ -105,27 +105,17 @@ public class PlayerMgr : Singleton<PlayerMgr>
         MonoBehaviourMgr.instance.updateEvent += Update;
     }
 
-    public void InitInput()
-    {
-        GameEntry.inputMgr.SetAxis(AxisType.LeftAxis, KeyCode.D, KeyCode.A, KeyCode.W, KeyCode.S);
-        GameEntry.inputMgr.SetKey(KeyType.A, KeyCode.J, false, true);
-        GameEntry.inputMgr.SetKey(KeyType.B, KeyCode.K, false, true);
-        GameEntry.inputMgr.SetKey(KeyType.X, KeyType.A, KeyCode.U, true, true);
-        GameEntry.inputMgr.SetKey(KeyType.Y, KeyType.B, KeyCode.I, true, true);
-        GameEntry.inputMgr.SetKey(KeyType.Start, KeyCode.G, false, false);
-        GameEntry.inputMgr.SetKey(KeyType.Select, KeyCode.H, false, false);
-        GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.A, AfterTriggerAttack);
-        GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.X, AfterTriggerAttack);
-        GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.B, AfterTriggerJump);
-        GameEntry.inputMgr.AddAfterTriggerEvent(KeyType.Y, AfterTriggerJump);
-    }
-
     public void InitPlayer()
     {
         if (m_Player is not null)
         {
             return;
         }
+
+        ComboMgr.instance.AddAfterTriggerEvent(ComboKey.A, AfterTriggerAttack);
+        ComboMgr.instance.AddAfterTriggerEvent(ComboKey.X, AfterTriggerAttack);
+        ComboMgr.instance.AddAfterTriggerEvent(ComboKey.B, AfterTriggerJump);
+        ComboMgr.instance.AddAfterTriggerEvent(ComboKey.Y, AfterTriggerJump);
 
         m_Life = 99;
         m_ContinueCount = 3;
@@ -172,14 +162,13 @@ public class PlayerMgr : Singleton<PlayerMgr>
 
             if (skillData.Key.Keys.Length > 0 && skillData.Key.AddTrigger)
             {
-                GameEntry.inputMgr.AddComboKeyEvent(skillData.Key.Keys, skillData.id, OnComboKeyEvent);
+                ComboMgr.instance.AddComboKeyEvent(skillData.Key.Keys, skillData.id, OnComboKeyEvent);
             }
         }
 
         CameraFollowMgr.instance.cameraFollow.SetTarget(m_Player.transform);
-        GameEntry.inputMgr.getDirectionEvent += GetDirection;
-        GameEntry.inputMgr.getPreConditionEvent += GetPreCondition;
-        GameEntry.inputMgr.isRunning = true;
+        ComboMgr.instance.getPreConditionEvent += GetPreCondition;
+        ComboMgr.instance.isRunning = true;
     }
 
     public void Rebirth(Vector2 rebirthPos)
@@ -190,7 +179,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         if (life < 1)
         {
             CameraFollowMgr.instance.cameraFollow.EndFollow();
-            GameEntry.inputMgr.RemoveAllComboKeyEvent();
+            ComboMgr.instance.RemoveAllComboKeyEvent();
 
             m_Player.Release();
             m_Player = null;
@@ -258,16 +247,6 @@ public class PlayerMgr : Singleton<PlayerMgr>
         return levelConfigData.roleId == m_SelectRoleId && levelConfigData.level == m_Level;
     }
 
-    private float GetDirection()
-    {
-        if (m_Player is null)
-        {
-            return 1;
-        }
-
-        return m_Player.dir;
-    }
-
     private void AfterTriggerAttack()
     {
         if (m_Player is null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0 || !m_CanCtrl)
@@ -275,7 +254,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
             return;
         }
 
-        Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis, true);
+        Vector2 axis = ComboMgr.instance.currLeftAxis;
         m_Player.Attack(axis);
     }
 
@@ -286,12 +265,50 @@ public class PlayerMgr : Singleton<PlayerMgr>
             return;
         }
 
-        Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis, true);
+        Vector2 axis = ComboMgr.instance.currLeftAxis;
         m_Player.Jump(axis, m_RoleConfigData.id != 1002);
     }
 
+    private void CheckPlayerMove()
+    {
+        if (m_Player is null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0)
+        {
+            return;
+        }
+
+        if (!m_CanCtrl)
+        {
+            m_Player.Move(Vector2.zero);
+            return;
+        }
+
+        if (m_Player.canMove)
+        {
+            Vector2 axis = ComboMgr.instance.currLeftAxis;
+            axis.y *= 0.8f;
+            m_Player.Move(axis);
+        }
+    }
+
+    private bool GetPreCondition(int id)
+    {
+        SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
+        bool a = SkillUtil.CheckStatus(skillData.SkillPrevConditions, m_Player);
+        return a;
+    }
+
+    private void OnComboKeyEvent(int id, bool isTrigger)
+    {
+        m_Player.DeploySkill(id);
+    }
+
+    private int m_LanguageIndex;
+    private bool m_IsStopBehaviour;
+
     private void Update(float deltaTime, float unscaledDeltaTime, float time, float AunscaledTime)
     {
+        CheckPlayerMove();
+
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
             m_LanguageIndex++;
@@ -313,26 +330,6 @@ public class PlayerMgr : Singleton<PlayerMgr>
             {
                 GameEntry.localizationMgr.ChangeLanguage(LanguageType.Japanese);
             }
-        }
-
-        if (m_Player is null || !m_Player.isAssetLoadComplete || m_Player.entityAttribute.health <= 0)
-        {
-            return;
-        }
-
-        if (!m_CanCtrl)
-        {
-            m_Player.Move(Vector2.zero);
-            return;
-        }
-
-        if (m_Player.canMove)
-        {
-            Vector2 leftAxis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis, true);
-            Vector2 crossAxis = GameEntry.inputMgr.GetAxis(AxisType.CrossAxis, true);
-            Vector2 axis = leftAxis != Vector2.zero ? leftAxis : crossAxis;
-            axis.y *= 0.8f;
-            m_Player.Move(axis);
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -397,20 +394,5 @@ public class PlayerMgr : Singleton<PlayerMgr>
         {
             m_Player.HurtState(new HurtStateArg() { attackerDir = 1, attackerId = 10011, attackValue = 9999, isSwoon = false });
         }
-    }
-
-    private int m_LanguageIndex;
-    private bool m_IsStopBehaviour;
-
-    private bool GetPreCondition(int id)
-    {
-        SkillConfigData skillData = StaticConfig.SkillConfig.GetData(id);
-        bool a = SkillUtil.CheckStatus(skillData.SkillPrevConditions, m_Player);
-        return a;
-    }
-
-    private void OnComboKeyEvent(int id, bool isTrigger)
-    {
-        m_Player.DeploySkill(id);
     }
 }

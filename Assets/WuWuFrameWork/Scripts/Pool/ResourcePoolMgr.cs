@@ -23,7 +23,7 @@ namespace WuWuFramework.Pool
             m_RemoveList = new();
         }
 
-        public void SetResourceMgr(IResourcesMgr resourceMgr)
+        public void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
             m_PoolRoot = new GameObject("ResourcePool").transform;

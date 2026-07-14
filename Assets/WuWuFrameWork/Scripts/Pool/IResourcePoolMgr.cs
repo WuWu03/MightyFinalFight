@@ -7,7 +7,7 @@ namespace WuWuFramework.Pool
 {
     public interface IResourcePoolMgr
     {
-        public void SetResourceMgr(IResourcesMgr resourceMgr);
+        public void SetResourcesMgr(IResourcesMgr resourceMgr);
         public void CheckRelease();
         public void Cache<T>(string assetPath) where T : UnityObject;
         public void Cache(string assetPath, Type assetType);

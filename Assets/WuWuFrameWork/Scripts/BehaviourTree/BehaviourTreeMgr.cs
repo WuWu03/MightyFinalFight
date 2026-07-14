@@ -21,7 +21,7 @@ namespace WuWuFramework.BehaviourTree
             MonoBehaviourMgr.instance.fixedUpdateEvent += FixedUpdate;
         }
 
-        public void SetResourceMgr(IResourcesMgr resourceMgr)
+        public void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }

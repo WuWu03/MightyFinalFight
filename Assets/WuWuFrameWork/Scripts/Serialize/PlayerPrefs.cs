@@ -5,45 +5,76 @@ namespace WuWuFramework.Serialize
 {
     public static class PlayerPrefs
     {
-        public static string GetPlayerPrefsSaveKey()
+        private const string SAVE_KEY_NAME = "WuWuFramework_PlayerPrefs_Save_Key";
+
+        public static string GetSaveKeyStr()
         {
-            return UnityEngine.PlayerPrefs.GetString(playerPrefsSaveKey, string.Empty);
+            return GetString(SAVE_KEY_NAME);
         }
 
-        public static List<string> GetPlayerPrefsSaveKeyList()
+        public static List<string> GetSaveKeys()
         {
-            string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(playerPrefsSaveKey, string.Empty);
+            string playerPrefsSave = GetString(SAVE_KEY_NAME);
 
-            if(!string.IsNullOrEmpty(playerPrefsSave))
+            if (!string.IsNullOrEmpty(playerPrefsSave))
             {
-                List<string> playerPrefsSaveKeyList = new();
-                string[] keys = playerPrefsSave.Split('_');
-                playerPrefsSaveKeyList.AddRange(keys);
-
-                return playerPrefsSaveKeyList;
+                List<string> playerPrefsSaveKeys = new();
+                string[] keys = playerPrefsSave.Split("@WuWu@");
+                playerPrefsSaveKeys.AddRange(keys);
+                return playerPrefsSaveKeys;
             }
 
             return null;
         }
 
+        public static int GetInt(string key)
+        {
+            return string.IsNullOrEmpty(key) ? 0 : UnityEngine.PlayerPrefs.GetInt(key, 0);
+        }
+
         public static void SetInt(string key, int value)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new WuWuFrameworkException("PlayerPrefs SetInt Key值为空");
+            }
+
             UnityEngine.PlayerPrefs.SetInt(key, value);
 #if UNITY_EDITOR
             AddSaveKey(key);
 #endif
         }
 
+        public static string GetString(string key)
+        {
+            return string.IsNullOrEmpty(key) ? string.Empty : UnityEngine.PlayerPrefs.GetString(key, string.Empty);
+        }
+
         public static void SetString(string key, string value)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new WuWuFrameworkException("PlayerPrefs SetString Key值为空");
+            }
+
             UnityEngine.PlayerPrefs.SetString(key, value);
 #if UNITY_EDITOR
             AddSaveKey(key);
 #endif
         }
 
+        public static float GetFloat(string key)
+        {
+            return string.IsNullOrEmpty(key) ? 0 : UnityEngine.PlayerPrefs.GetFloat(key, 0);
+        }
+
         public static void SetFloat(string key, float value)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new WuWuFrameworkException("PlayerPrefs SetFloat Key值为空");
+            }
+
             UnityEngine.PlayerPrefs.SetFloat(key, value);
 #if UNITY_EDITOR
             AddSaveKey(key);
@@ -62,26 +93,26 @@ namespace WuWuFramework.Serialize
         {
             UnityEngine.PlayerPrefs.DeleteAll();
 #if UNITY_EDITOR
-            UnityEngine.PlayerPrefs.DeleteKey(playerPrefsSaveKey);
+            UnityEngine.PlayerPrefs.DeleteKey(SAVE_KEY_NAME);
 #endif
         }
 
         private static void AddSaveKey(string key)
         {
-            string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(playerPrefsSaveKey, string.Empty);
+            string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(SAVE_KEY_NAME, string.Empty);
             bool isNullOrEmpty = string.IsNullOrEmpty(playerPrefsSave);
 
             if (isNullOrEmpty || !playerPrefsSave.Contains(key))
             {
-                playerPrefsSave += isNullOrEmpty ? key : "_" + key;
-                UnityEngine.PlayerPrefs.SetString(playerPrefsSaveKey, playerPrefsSave);
+                playerPrefsSave += isNullOrEmpty ? key : "@WuWu@" + key;
+                UnityEngine.PlayerPrefs.SetString(SAVE_KEY_NAME, playerPrefsSave);
             }
         }
 
         private static void DeleteSaveKey(string key)
         {
-            string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(playerPrefsSaveKey, string.Empty);
-            
+            string playerPrefsSave = UnityEngine.PlayerPrefs.GetString(SAVE_KEY_NAME, string.Empty);
+
             if (!string.IsNullOrEmpty(playerPrefsSave))
             {
                 int index = playerPrefsSave.IndexOf(key, StringComparison.Ordinal);
@@ -99,10 +130,8 @@ namespace WuWuFramework.Serialize
                     return;
                 }
 
-                UnityEngine.PlayerPrefs.SetString(playerPrefsSaveKey, playerPrefsSave);
+                UnityEngine.PlayerPrefs.SetString(SAVE_KEY_NAME, playerPrefsSave);
             }
         }
-
-        private const string playerPrefsSaveKey = "WuWuFramework_PlayerPrefs_Save_Key";
     }
 }

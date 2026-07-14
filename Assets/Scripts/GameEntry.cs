@@ -23,7 +23,7 @@ using WuWuFramework.WebRequest;
 public class GameEntry : WuWuFrameworkEntry
 {
     private static ILocalizationMgr s_LocalizationMgr;
-    private static IResourcesMgr s_ResourceMgr;
+    private static IResourcesMgr s_ResourcesMgr;
     private static IVersionMgr s_VersionMgr;
     private static IDownloadMgr s_DownloadMgr;
     private static IWebRequestMgr s_WebRequestMgr;
@@ -59,8 +59,8 @@ public class GameEntry : WuWuFrameworkEntry
     {
         get
         {
-            s_ResourceMgr ??= WuWuFrameworkMgr.GetModule<IResourcesMgr>();
-            return s_ResourceMgr;
+            s_ResourcesMgr ??= WuWuFrameworkMgr.GetModule<IResourcesMgr>();
+            return s_ResourcesMgr;
         }
     }
 
@@ -71,7 +71,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_VersionMgr == null)
             {
                 s_VersionMgr = WuWuFrameworkMgr.GetModule<IVersionMgr>();
-                s_VersionMgr.SetMgr(downloadMgr);
+                s_VersionMgr.SetDownloadMgr(downloadMgr);
             }
 
             return s_VersionMgr;
@@ -103,7 +103,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_UIMgr == null)
             {
                 s_UIMgr = WuWuFrameworkMgr.GetModule<IUIMgr>();
-                s_UIMgr.SetMgr(gameObjectPoolMgr);
+                s_UIMgr.SetGameObjectPoolMgr(gameObjectPoolMgr);
             }
 
             return s_UIMgr;
@@ -139,7 +139,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_ResourcePoolMgr == null)
             {
                 s_ResourcePoolMgr = WuWuFrameworkMgr.GetModule<IResourcePoolMgr>();
-                s_ResourcePoolMgr.SetResourceMgr(resourceMgr);
+                s_ResourcePoolMgr.SetResourcesMgr(resourceMgr);
             }
 
             return s_ResourcePoolMgr;
@@ -153,7 +153,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_BehaviourTreeMgr == null)
             {
                 s_BehaviourTreeMgr = WuWuFrameworkMgr.GetModule<IBehaviourTreeMgr>();
-                s_BehaviourTreeMgr.SetResourceMgr(resourceMgr);
+                s_BehaviourTreeMgr.SetResourcesMgr(resourceMgr);
             }
 
             return s_BehaviourTreeMgr;
@@ -201,7 +201,12 @@ public class GameEntry : WuWuFrameworkEntry
     {
         get
         {
-            s_InputMgr ??= WuWuFrameworkMgr.GetModule<IInputMgr>();
+            if (s_InputMgr == null)
+            {
+                s_InputMgr = WuWuFrameworkMgr.GetModule<IInputMgr>();
+                s_InputMgr.SetResourcesMgr(s_ResourcesMgr);
+            }
+            
             return s_InputMgr;
         }
     }
@@ -213,7 +218,7 @@ public class GameEntry : WuWuFrameworkEntry
             if (s_SceneMgr == null)
             {
                 s_SceneMgr = WuWuFrameworkMgr.GetModule<ISceneMgr>();
-                s_SceneMgr.SetResourceMgr(resourceMgr);
+                s_SceneMgr.SetResourcesMgr(resourceMgr);
             }
 
             return s_SceneMgr;
@@ -234,7 +239,7 @@ public class GameEntry : WuWuFrameworkEntry
         get
         {
             s_ConfigDataMgr ??= WuWuFrameworkMgr.GetModule<IConfigDataMgr>();
-            s_ConfigDataMgr.SetResourceMgr(resourceMgr);
+            s_ConfigDataMgr.SetResourcesMgr(resourceMgr);
             return s_ConfigDataMgr;
         }
     }
@@ -250,7 +255,7 @@ public class GameEntry : WuWuFrameworkEntry
 
     protected override void OnInit(GameObject manager)
     {
-        PlayerMgr.instance.InitInput();
+
     }
 
     protected override void OnStartGame()
@@ -294,6 +299,8 @@ public class GameEntry : WuWuFrameworkEntry
 
     private void StartGame()
     {
+        inputMgr.AddInputController(InputScheme.Keyboard);
+        inputMgr.SetCurrScheme(InputScheme.Keyboard);
         versionMgr.onVersionProcessStateChangedEvent -= OnVersionProcessStateChanged;
         localizationMgr.ReloadLanguage();
         CameraFollowMgr.instance.Init();

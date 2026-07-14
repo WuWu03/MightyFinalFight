@@ -4,7 +4,7 @@ namespace WuWuFramework.BehaviourTree
 {
     public interface IBehaviourTreeMgr
     {
-        public void SetResourceMgr(IResourcesMgr  resourceMgr);
+        public void SetResourcesMgr(IResourcesMgr  resourceMgr);
         public void AddBehaviourTree(object owner, string dataName);
         public void RemoveBehaviourTree(object owner);
         public void StartAllTrees();

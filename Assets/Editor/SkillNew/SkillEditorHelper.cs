@@ -153,7 +153,7 @@ namespace SkillNew
                 skillName = name,
                 skillKey = new()
                 {
-                    keys = Array.Empty<KeyType>(),
+                    keys = Array.Empty<ComboKey>(),
                 },
                 dicSkillSelectors = new(),
                 dicSkillEvents = new(),

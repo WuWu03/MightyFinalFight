@@ -3,7 +3,7 @@
     "name": "InputConfigData",
     "maps": [
         {
-            "name": "KeyBoard",
+            "name": "Keyboard",
             "id": "2d98cbd8-f01e-4139-ac3c-1c28fed3f1a0",
             "actions": [
                 {
@@ -11,7 +11,7 @@
                     "type": "PassThrough",
                     "id": "945ef807-3a2a-4a96-93af-0ec9e412b96c",
                     "expectedControlType": "Stick",
-                    "processors": "StickDeadzone",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -40,7 +40,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "B",
@@ -183,7 +183,7 @@
                 {
                     "name": "2D Vector",
                     "id": "20b7686d-7db6-4324-bc9f-0357bf36e9d3",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

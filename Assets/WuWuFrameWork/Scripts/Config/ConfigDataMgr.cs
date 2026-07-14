@@ -13,7 +13,7 @@ namespace WuWuFramework.ConfigData
             m_ConfigData = new();
         }
 
-        public void SetResourceMgr(IResourcesMgr resourceMgr)
+        public void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
             ConfigDataHelper.SetResourcesMgr(resourceMgr);
         }

@@ -1,11 +1,18 @@
-using WuWuFramework.Utils;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using WuWuFramework.Utils;
 
 public static class SkillEditorHelper
 {
+    private static int m_CurrSelectIndex = 0;
+    private static string[] m_ShowNames = null;
+    private static GUIStyle m_IndexLabelStyle = null;
+    private static GUIStyle m_SelectButtonOnStyle = null;
+    private static GUIStyle m_SelectButtonStyle = null;
+    private static SkillConfig m_SkillConfig = null;
+
     public static SkillConfigData CurrConfigData
     {
         get
@@ -139,7 +146,7 @@ public static class SkillEditorHelper
         SkillConfigData skillConfigData = new SkillConfigData();
         skillConfigData.Name = name;
         skillConfigData.Key = new SkillConfigData.SkillKey();
-        skillConfigData.Key.Keys = new WuWuFramework.Input.KeyType[0];
+        skillConfigData.Key.Keys = new ComboKey[0];
         skillConfigData.SkillPrevConditions = new SkillConfigData.SkillPrevCondition[0];
         skillConfigData.SkillEffects = new SkillConfigData.SkillEffect[0];
         m_SkillConfig.AddData(skillConfigData);
@@ -205,11 +212,4 @@ public static class SkillEditorHelper
     {
         m_SkillConfig = null;
     }
-
-    private static int m_CurrSelectIndex = 0;
-    private static string[] m_ShowNames = null;
-    private static GUIStyle m_IndexLabelStyle = null;
-    private static GUIStyle m_SelectButtonOnStyle = null;
-    private static GUIStyle m_SelectButtonStyle = null;
-    private static SkillConfig m_SkillConfig = null;
 }

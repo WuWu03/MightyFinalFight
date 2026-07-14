@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using WuWuFramework.Serialize;
 using UnityEditor;
 using UnityEngine;
+using WuWuFramework.Serialize;
 using static SkillEditorConfigData;
 
 namespace SkillNew
@@ -13,14 +13,14 @@ namespace SkillNew
         private readonly List<SkillEventType> m_SkillEventTypes;
         private readonly List<bool> m_SkillEventContinuous;
         private readonly List<int> m_ListSkillEventNextSkill;
-        private readonly List<WuWuFramework.Input.KeyType> m_ListKey;
+        private readonly List<ComboKey> m_ListKey;
         private int m_SkillFrameCount;
         private int m_CurrFrame;
         private Vector2 m_ScrollPos = Vector2.zero;
         
         public SkillConfigGUI(EditorWindow window) : base(window)
         {
-            m_ListKey = new List<WuWuFramework.Input.KeyType>();
+            m_ListKey = new List<ComboKey>();
             m_SkillEventTypes = new List<SkillEventType>();
             m_SkillEventContinuous = new List<bool>();
             m_ListSkillEventNextSkill = new List<int>();
@@ -237,7 +237,7 @@ namespace SkillNew
                     for (int i = 0; i < SkillEditorHelper.CurrConfigData.skillKey.keys.Length; i++)
                     {
                         EditorGUILayout.BeginHorizontal();
-                        SkillEditorHelper.CurrConfigData.skillKey.keys[i] = (WuWuFramework.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.skillKey.keys[i]);
+                        SkillEditorHelper.CurrConfigData.skillKey.keys[i] = (ComboKey)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.skillKey.keys[i]);
                         if (GUILayout.Button("x", GUILayout.Width(20)))
                         {
                             removeKeyIndex = i;
@@ -249,7 +249,7 @@ namespace SkillNew
 
                 if (GUILayout.Button("增加按键"))
                 {
-                    m_ListKey.Add(WuWuFramework.Input.KeyType.A);
+                    m_ListKey.Add(ComboKey.A);
                     SkillEditorHelper.CurrConfigData.skillKey.keys = m_ListKey.ToArray();
                 }
 

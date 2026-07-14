@@ -7,7 +7,7 @@ namespace WuWuFramework.Editor
     {
         private void OnEnable()
         {
-            m_ListInputKeys = Serialize.PlayerPrefs.GetPlayerPrefsSaveKeyList();
+            m_ListInputKeys = Serialize.PlayerPrefs.GetSaveKeys();
             m_ListDeleteKeys = new List<string>();
         }
 

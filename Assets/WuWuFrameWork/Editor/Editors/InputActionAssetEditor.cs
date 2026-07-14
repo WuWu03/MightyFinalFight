@@ -27,7 +27,7 @@ public class InputActionAssetEditor : Editor
             string configDataPath = WuWuFramework.Editor.EditorMgr.GetWuWuFrameworkConfig().configDataPath;
             string configDataFullPath = WuWuFramework.Utils.PathUtil.GetAssetFullPath(configDataPath);
             string filePath = WuWuFramework.Utils.PathUtil.FormatPath(configDataFullPath, fileName);
-            WuWuFramework.Utils.FileUtil.CreateBinaryFile(filePath, jsonBuffer);
+            WuWuFramework.Utils.FileUtil.CreateBinaryFile(filePath, ZlibHelper.CompressBytes(jsonBuffer));
             AssetDatabase.Refresh();
         }
     }

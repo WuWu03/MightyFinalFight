@@ -21,6 +21,8 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
     {
         view.talkSelectList.itemUpdateEvent += OnItemUpdateEvent;
         view.talkSelectList.itemSelectEvent += OnItemSelectEvent;
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, ConfirmTalk);
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, SelectTalk);
     }
 
     protected override void OnShow(object arg)
@@ -35,52 +37,7 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
 
     protected override void OnUpdate()
     {
-        if (GameEntry.inputMgr.GetKeyDown(KeyType.A))
-        {
-            if (!m_IsComplete)
-            {
-                view.txtContent.DOKill();
-                OnTalkAnimComplete();
-            }
-            else
-            {
-                if (m_ConfigData.talkSelect is { Length: > 0 })
-                {
-                    if (m_SelectIndex > -1)
-                    {
-                        int talkId = m_ConfigData.talkSelect[m_SelectIndex].talkId;
-                        m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
-                        view.talkSelectList.SetActiveSelf(false);
-                        PlayTalk();
-                    }
-                }
-                else
-                {
-                    int talkId = m_ConfigData.nextTalkId;
-                    m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
-                    PlayTalk();
-                }
-            }
 
-            return;
-        }
-
-        if (m_IsComplete)
-        {
-            if (m_ConfigData.talkSelect is { Length: > 0 })
-            {
-                Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis);
-
-                if (axis.x > 0)
-                {
-                    SelectNext();
-                }
-                else if (axis.x < 0)
-                {
-                    SelectPrevious();
-                }
-            }
-        }
     }
 
     protected override void OnHide()
@@ -99,6 +56,54 @@ public class TalkViewPresenter : UIBaseViewPresenter<TalkView>
     {
         view.talkSelectList.itemUpdateEvent -= OnItemUpdateEvent;
         view.talkSelectList.itemSelectEvent -= OnItemSelectEvent;
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, ConfirmTalk);
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, SelectTalk);
+    }
+
+    private void ConfirmTalk()
+    {
+        if (!m_IsComplete)
+        {
+            view.txtContent.DOKill();
+            OnTalkAnimComplete();
+        }
+        else
+        {
+            if (m_ConfigData.talkSelect is { Length: > 0 })
+            {
+                if (m_SelectIndex > -1)
+                {
+                    int talkId = m_ConfigData.talkSelect[m_SelectIndex].talkId;
+                    m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
+                    view.talkSelectList.SetActiveSelf(false);
+                    PlayTalk();
+                }
+            }
+            else
+            {
+                int talkId = m_ConfigData.nextTalkId;
+                m_ConfigData = GameEntry.configDataMgr.Get<TalkConfigData>().Get(talkId);
+                PlayTalk();
+            }
+        }
+    }
+
+    private void SelectTalk(Vector2 axis)
+    {
+        if (m_IsComplete)
+        {
+            if (m_ConfigData.talkSelect is { Length: > 0 })
+            {
+                if (axis.x > 0)
+                {
+                    SelectNext();
+                }
+                else if (axis.x < 0)
+                {
+                    SelectPrevious();
+                }
+            }
+        }
     }
 
     private void PlayTalk()

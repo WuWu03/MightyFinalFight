@@ -91,7 +91,7 @@ namespace WuWuFramework.Scene
             MonoBehaviourMgr.instance.updateEvent += Update;
         }
 
-        public void SetResourceMgr(IResourcesMgr resourceMgr)
+        public void SetResourcesMgr(IResourcesMgr resourceMgr)
         {
             m_ResourceMgr = resourceMgr;
         }

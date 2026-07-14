@@ -56,7 +56,7 @@ namespace WuWuFramework.UI
         /// 注入gameObjectPoolMgr依赖
         /// </summary>
         /// <param name="gameObjectPoolMgr"></param>
-        public void SetMgr(IGameObjectPoolMgr gameObjectPoolMgr)
+        public void SetGameObjectPoolMgr(IGameObjectPoolMgr gameObjectPoolMgr)
         {
             m_GameObjectPoolMgr = gameObjectPoolMgr;
         }

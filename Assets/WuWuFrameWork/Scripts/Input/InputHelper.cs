@@ -1,284 +1,157 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using WuWuFramework.Event;
+using WuWuFramework.Utils;
 
 namespace WuWuFramework.Input
 {
-    public enum KeyType
+    public enum InputScheme : byte
     {
-        A = 1,
-        B = 2,
-        X = 3,
-        Y = 4,
-        Start = 5,
-        Select = 6,
-        LB = 7,
-        RB = 8,
-        None = 9,
-        Up = 10,
-        Down = 11,
-        Left = 12,
-        Right = 13,
+        None,
+        Keyboard,
+        Xbox
     }
 
-    public enum AxisType
+    public enum InputEventCallType : byte
     {
-        LeftAxis = 1,//左摇杆
-        RightAxis = 2,//右摇杆
-        CrossAxis = 3,//十字键
-        LTRTAxis = 4,//LT,RT
-        None = 5,//
+        Started,
+        Performed,
+        Canceled
     }
 
     public static class InputHelper
     {
-        public static void Init()
+        private static readonly Dictionary<InputScheme, Dictionary<string, WuWuFrameworkFunc<BaseInputEvent>>> s_InputEventFactories = new()
         {
-            m_Axis = new AxisArgs[(int)AxisType.None - 1];
-            m_Keys = new KeyArgs[(int)KeyType.None - 1];
-            m_AxisDown = new bool[((int)AxisType.None - 1) * 2];
-            m_KeyDown = new bool[(int)KeyType.None - 1];
-            AddAxis(AxisType.LeftAxis, "Horizontal", "Vertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
-            AddAxis(AxisType.RightAxis, "SubHorizontal", "SubVertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
-            AddAxis(AxisType.CrossAxis, "CrossHorizontal", "CrossVertical", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
-            AddAxis(AxisType.LTRTAxis, "LTRT", "LTRT", KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None);
-            AddKey(KeyType.A, "A", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.B, "B", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.X, "X", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.Y, "Y", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.LB, "LB", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.RB, "RB", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.Select, "Select", KeyType.None, KeyCode.None, false, false);
-            AddKey(KeyType.Start, "Start", KeyType.None, KeyCode.None, false, false);
-        }
-
-        public static AxisArgs GetAxis(AxisType axisType)
-        {
-            int index = (int)axisType - 1;
-
-            if (index < 0 || index > m_Axis.Length)
+            [InputScheme.Xbox] = new()
             {
-                return null;
+                [XboxInputKey.LeftAxis.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [XboxInputKey.RightAxis.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [XboxInputKey.DPad.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [XboxInputKey.A.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.B.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.X.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.Y.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.Start.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.Select.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.LB.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.RB.ToString()] = GetInputEvent<VoidInputEvent>,
+                [XboxInputKey.LT.ToString()] = GetInputEvent<FloatInputEvent>,
+                [XboxInputKey.RT.ToString()] = GetInputEvent<FloatInputEvent>,
+            },
+
+            [InputScheme.Keyboard] = new()
+            {
+                [KeyboardInputKey.LeftAxis.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [KeyboardInputKey.RightAxis.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [KeyboardInputKey.DPad.ToString()] = GetInputEvent<Vector2InputEvent>,
+                [KeyboardInputKey.A.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.B.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.X.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.Y.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.Start.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.Select.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.LB.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.RB.ToString()] = GetInputEvent<VoidInputEvent>,
+                [KeyboardInputKey.LT.ToString()] = GetInputEvent<FloatInputEvent>,
+                [KeyboardInputKey.RT.ToString()] = GetInputEvent<FloatInputEvent>,
             }
+        };
 
-            return m_Axis[index];
-        }
-
-        public static void SetAxis(AxisType axisType, string horizontal, string vertical)
+        private static readonly Dictionary<InputScheme, WuWuFrameworkFunc<InputActionAsset, BaseInputController>> s_InputContollerFactories = new()
         {
-            AxisArgs axisArgs = GetAxis(axisType);
+            [InputScheme.Xbox] = GetInputController<XboxInputController>,
+            [InputScheme.Keyboard] = GetInputController<KeyboardInputController>,
+        };
 
-            if (axisArgs == null)
+        public static BaseInputEvent GetInputEvent(InputScheme inputScheme, string keyName)
+        {
+            if (s_InputEventFactories.TryGetValue(inputScheme, out var factory))
             {
-                return;
-            }
-
-            axisArgs.horizontal = horizontal;
-            axisArgs.vertical = vertical;
-        }
-
-        public static void SetAxis(AxisType axisType, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
-        {
-            AxisArgs axisArgs = GetAxis(axisType);
-
-            if (axisArgs == null)
-            {
-                return;
-            }
-
-            axisArgs.keyCodeHorizontalPositive = keyCodeHorizontalPositive;
-            axisArgs.keyCodeHorizontalNegative = keyCodeHorizontalNegative;
-            axisArgs.keyCodeVerticalPositive = keyCodeVerticalPositive;
-            axisArgs.keyCodeVerticalNegative = keyCodeVerticalNegative;
-        }
-
-        public static void SetAxis(AxisType axisType, string horizontal, string vertical, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
-        {
-            AxisArgs axisArgs = GetAxis(axisType);
-
-            if (axisArgs == null)
-            {
-                return;
-            }
-
-            axisArgs.horizontal = horizontal;
-            axisArgs.vertical = vertical;
-            axisArgs.keyCodeHorizontalPositive = keyCodeHorizontalPositive;
-            axisArgs.keyCodeHorizontalNegative = keyCodeHorizontalNegative;
-            axisArgs.keyCodeVerticalPositive = keyCodeVerticalPositive;
-            axisArgs.keyCodeVerticalNegative = keyCodeVerticalNegative;
-        }
-
-        public static KeyArgs GetKey(KeyType keyType)
-        {
-            int index = (int)keyType - 1;
-
-            if (index < 0 || index > m_Keys.Length)
-            {
-                return null;
-            }
-
-            return m_Keys[index];
-        }
-
-        public static void SetKey(KeyType keyType, string keyName)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.keyName = keyName;
-        }
-
-        public static void SetKey(KeyType keyType, KeyCode keyCode)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.keyCode = keyCode;
-        }
-
-        public static void SetKey(KeyType keyType, KeyCode keyCode, bool isTurbo, bool isCheckCombo)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.keyCode = keyCode;
-            keyArgs.isTurbo = isTurbo;
-            keyArgs.isCheckCombo = isCheckCombo;
-        }
-
-        public static void SetKey(KeyType keyType, KeyType replaceKeyType, bool isTurbo, bool isCheckCombo)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.replaceKeyType = replaceKeyType;
-            keyArgs.isTurbo = isTurbo;
-            keyArgs.isCheckCombo = isCheckCombo;
-        }
-
-        public static void SetKey(KeyType keyType, KeyType replaceKeyType,KeyCode keyCode, bool isTurbo, bool isCheckCombo)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.replaceKeyType = replaceKeyType;
-            keyArgs.keyCode = keyCode;
-            keyArgs.isTurbo = isTurbo;
-            keyArgs.isCheckCombo = isCheckCombo;
-        }
-
-        public static void SetKey(KeyType keyType, string keyName, KeyType replaceKeyType, KeyCode keyCode, bool isTurbo, bool isCheckCombo)
-        {
-            KeyArgs keyArgs = GetKey(keyType);
-
-            if (keyArgs == null)
-            {
-                return;
-            }
-
-            keyArgs.keyName = keyName;
-            keyArgs.replaceKeyType = replaceKeyType;
-            keyArgs.keyCode = keyCode;
-            keyArgs.isTurbo = isTurbo;
-            keyArgs.isCheckCombo = isCheckCombo;
-        }
-
-        public static KeyArgs[] GetAllKeys()
-        {
-            return m_Keys;
-        }
-
-        public static AxisArgs[] GetAllAxis()
-        {
-            return m_Axis;
-        }
-
-        public static void SetAxisDown(AxisType axisType, int axisIndex, bool value)
-        {
-            int index = ((int)axisType - 1) * 2 + axisIndex;
-            m_AxisDown[index] = value;
-        }
-
-        public static bool GetAxisDown(AxisType axisType, int axisIndex)
-        {
-            int index = ((int)axisType - 1) * 2 + axisIndex;
-            return m_AxisDown[index];
-        }
-
-        public static void SetKeyDown(KeyType keyType, bool value)
-        {
-            int index = (int)keyType - 1;
-            m_KeyDown[index] = value;
-        }
-
-        public static bool GetKeyDown(KeyType keyType)
-        {
-            int index = (int)keyType - 1;
-            return m_KeyDown[index];
-        }
-
-        public static void Dispose()
-        {
-            for (int i = 0; i < m_Axis.Length; i++)
-            {
-                if (m_Axis[i] == null)
+                if (factory.TryGetValue(keyName, out var builder))
                 {
-                    continue;
+                    return builder.Invoke();
                 }
 
-                m_Axis[i].Release();
+                throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "]平台 [", keyName.ToString(), "] 不存在对应的输入事件"));
             }
 
-            for (int i = 0; i < m_Keys.Length; i++)
+            throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 不存在对应平台"));
+        }
+
+        public static BaseInputController GetInputController(InputScheme inputScheme, InputActionAsset inputActionAsset)
+        {
+            if (s_InputContollerFactories.TryGetValue(inputScheme, out var builder))
             {
-                if (m_Keys[i] == null)
-                {
-                    continue;
-                }
-
-                m_Keys[i].Release();
+                return builder.Invoke(inputActionAsset);
             }
 
-            m_Axis = null;
-            m_Keys = null;
-            m_AxisDown = null;
-            m_KeyDown = null;
+            throw new WuWuFrameworkException(StringUtil.Append("[", inputScheme.ToString(), "] 不存在对应平台"));
         }
 
-        private static void AddAxis(AxisType axisType, string horizontal, string vertical, KeyCode keyCodeHorizontalPositive, KeyCode keyCodeHorizontalNegative, KeyCode keyCodeVerticalPositive, KeyCode keyCodeVerticalNegative)
+        public static bool IsKeyBoardInput()
         {
-            int index = (int)axisType - 1;
-            m_Axis[index] = AxisArgs.Create(horizontal, vertical, keyCodeHorizontalPositive, keyCodeHorizontalNegative, keyCodeVerticalPositive, keyCodeVerticalNegative);
+            if (Keyboard.current == null)
+            {
+                return false;
+            }
+
+            bool isKeyBoardInput = Keyboard.current.anyKey.isPressed;
+            bool isMouseLeftButtonInput = Mouse.current.leftButton.isPressed;
+            bool isMouseRightButtonInput = Mouse.current.rightButton.isPressed;
+            bool isMouseMiddleButtonInput = Mouse.current.middleButton.isPressed;
+            bool isMouseScrollInput = Mouse.current.scroll.ReadValue() != Vector2.zero;
+            bool isMouseDeltaInput = Mouse.current.delta.ReadValue() != Vector2.zero;
+            return isKeyBoardInput || isMouseLeftButtonInput || isMouseRightButtonInput || isMouseMiddleButtonInput || isMouseScrollInput || isMouseDeltaInput;
         }
 
-        private static void AddKey(KeyType keyType, string keyName, KeyType replaceKeyType, UnityEngine.KeyCode keyCode, bool isTurbo, bool isCheckCombo)
+        public static bool IsXboxInput()
         {
-            int index = (int)keyType - 1;
-            m_Keys[index] = KeyArgs.Create(keyName, keyType, replaceKeyType, keyCode, isTurbo, isCheckCombo);
+            if (Gamepad.current == null)
+            {
+                return false;
+            }
+
+            bool isActuated = Gamepad.current.IsActuated();
+            bool isXbox = Gamepad.current.description.interfaceName == "XInput" || Gamepad.current.description.interfaceName == "XInputControllerWindows";
+            return isActuated && isXbox;
         }
 
-        private static bool[] m_AxisDown = null;
-        private static bool[] m_KeyDown = null;
-        private static AxisArgs[] m_Axis = null;
-        private static KeyArgs[] m_Keys = null;
+        public static bool IsPSInput()
+        {
+            if (Gamepad.current == null)
+            {
+                return false;
+            }
+
+            bool isActuated = Gamepad.current.IsActuated();
+            bool isPS = Gamepad.current.description.interfaceName == "DualShock" || Gamepad.current.description.interfaceName == "DualSense";
+            return isActuated && isPS;
+        }
+
+        public static bool IsSwitchInput()
+        {
+            if (Gamepad.current == null)
+            {
+                return false;
+            }
+
+            bool isActuated = Gamepad.current.IsActuated();
+            bool isSwitch = Gamepad.current.description.interfaceName == "Nintendo Switch";
+            return isActuated && isSwitch;
+        }
+
+        private static T GetInputEvent<T>() where T : BaseInputEvent, new()
+        {
+            return new T();
+        }
+
+        private static T GetInputController<T>(InputActionAsset inputActionAsset) where T : BaseInputController, new()
+        {
+            T result = new();
+            result.SetInputActionAsset(inputActionAsset);
+            return result;
+        }
     }
 }

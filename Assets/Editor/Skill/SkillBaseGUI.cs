@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class SkillBaseGUI : SkillGUI
 {
+    private int m_CurrId = 0;
+    private int m_CurrLevel = 0;
+    private string m_CurrName = string.Empty;
+    private string m_CurrAnimName = string.Empty;
+    private string m_CurrHurtSound = string.Empty;
+    private float m_EnternalTriggerTime = 0;
+    private float m_AnimSpeed = 0;
+    private int m_AnimTime = 0;
+    private int m_Exp = 0;
+    private List<ComboKey> m_ListKey = null;
+    private Vector2 m_ScrollPos = Vector2.zero;
+
     public SkillBaseGUI(EditorWindow window) : base(window)
     {
-        m_ListKey = new List<WuWuFramework.Input.KeyType>();
+        m_ListKey = new List<ComboKey>();
     }
 
     protected override void OnUpdateData()
@@ -194,7 +206,7 @@ public class SkillBaseGUI : SkillGUI
             for (int i = 0; i < SkillEditorHelper.CurrConfigData.Key.Keys.Length; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                SkillEditorHelper.CurrConfigData.Key.Keys[i] = (WuWuFramework.Input.KeyType)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.Key.Keys[i]);
+                SkillEditorHelper.CurrConfigData.Key.Keys[i] = (ComboKey)EditorGUILayout.EnumPopup(SkillEditorHelper.CurrConfigData.Key.Keys[i]);
                 if (GUILayout.Button("x", GUILayout.Width(20)))
                 {
                     removeKeyIndex = i;
@@ -212,7 +224,7 @@ public class SkillBaseGUI : SkillGUI
 
             if (GUILayout.Button("增加按键"))
             {
-                m_ListKey.Add(WuWuFramework.Input.KeyType.A);
+                m_ListKey.Add(ComboKey.A);
                 SkillEditorHelper.CurrConfigData.Key.Keys = m_ListKey.ToArray();
             }
 
@@ -232,16 +244,4 @@ public class SkillBaseGUI : SkillGUI
 
         EditorGUILayout.EndScrollView();
     }
-
-    private int m_CurrId = 0;
-    private int m_CurrLevel = 0;
-    private string m_CurrName = string.Empty;
-    private string m_CurrAnimName = string.Empty;
-    private string m_CurrHurtSound = string.Empty;
-    private float m_EnternalTriggerTime = 0;
-    private float m_AnimSpeed = 0;
-    private int m_AnimTime = 0;
-    private int m_Exp = 0;
-    private List<WuWuFramework.Input.KeyType> m_ListKey = null;
-    private Vector2 m_ScrollPos = Vector2.zero;
 }

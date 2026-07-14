@@ -101,17 +101,9 @@ namespace WuWuFramework.UI
 
         protected abstract void OnOpen(object arg);
         protected abstract void OnShow(object arg);
-        protected abstract void OnHide();
         protected abstract void OnUpdate();
+        protected abstract void OnHide();
         protected abstract void OnClose();
         protected abstract void OnDestroy();
-        protected virtual void OnJoyStickUp() { }
-        protected virtual void OnJoyStickLeft() { }
-        protected virtual void OnJoyStickDown() { }
-        protected virtual void OnJoyStickRight() { }
-        protected virtual void OnButtonA() { }
-        protected virtual void OnButtonB() { }
-        protected virtual void OnButtonX() { }
-        protected virtual void OnButtonY() { }
     }
 }

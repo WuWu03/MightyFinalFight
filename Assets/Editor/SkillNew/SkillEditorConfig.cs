@@ -61,7 +61,7 @@ public class SkillEditorConfigData : BaseScriptableConfigData
     [Serializable]
     public class SkillKey
     {
-        public WuWuFramework.Input.KeyType[] keys;
+        public ComboKey[] keys;
         public bool addTrigger;
     }
 

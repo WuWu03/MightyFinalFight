@@ -119,7 +119,7 @@ public class SkillConfigData : BaseScriptableConfigData
     [Serializable]
     public class SkillKey
     {
-        public WuWuFramework.Input.KeyType[] Keys;
+        public ComboKey[] Keys;
         public bool AddTrigger;
     }
 

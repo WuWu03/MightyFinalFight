@@ -20,12 +20,12 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 
     protected override void OnOpen(object arg)
     {
+        GameEntry.inputMgr.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.Start, InputEventCallType.Performed, SkipOrStart);
     }
 
     protected override void OnShow(object arg)
     {
-        GameEntry.inputMgr.inputDeviceChangeEvent += OnInputDeviceChangeEvent;
-        OnInputDeviceChangeEvent();
         m_AnimSequence = DOTween.Sequence();
         TitleAnim();
         OpeningAnim();
@@ -33,54 +33,55 @@ public class TitleViewPresenter : UIBaseViewPresenter<TitleView>
 
     protected override void OnUpdate()
     {
-        if (m_CanSkipOpening)
-        {
-            if (GameEntry.inputMgr.GetKeyDown(KeyType.Start))
-            {
-                view.txtIntroTmp.DOKill(true);
-                m_AnimSequence.Kill();
-                m_AnimSequence = DOTween.Sequence();
-                StartAnim();
-                m_CanSkipOpening = false;
-            }
-        }
 
-        if (m_CanStart)
-        {
-            if (GameEntry.inputMgr.GetKeyDown(KeyType.Start))
-            {
-                m_CanStart = false;
-                StartGame();
-            }
-        }
     }
 
     protected override void OnHide()
     {
         m_AnimSequence.Kill();
         m_AnimSequence = null;
-        GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
+
     }
 
     protected override void OnClose()
     {
+        GameEntry.inputMgr.inputDeviceChangeEvent -= OnInputDeviceChangeEvent;
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.Start, InputEventCallType.Performed, SkipOrStart);
     }
 
     protected override void OnDestroy()
     {
     }
 
-    private void OnInputDeviceChangeEvent()
+    private void OnInputDeviceChangeEvent(InputScheme inputScheme)
     {
-        if (GameEntry.inputMgr.inputDeviceType == InputDeviceType.Joystick)
+        if (inputScheme == InputScheme.Xbox)
         {
             view.txtStart.Append("(START)");
             view.txtSettings.Append("(SELECT)");
         }
-        else if (GameEntry.inputMgr.inputDeviceType == InputDeviceType.Keyboard)
+        else if (inputScheme == InputScheme.Keyboard)
         {
             view.txtStart.Append("(G)");
             view.txtSettings.Append("(H)");
+        }
+    }
+
+    private void SkipOrStart()
+    {
+        if (m_CanSkipOpening)
+        {
+            view.txtIntroTmp.DOKill(true);
+            m_AnimSequence.Kill();
+            m_AnimSequence = DOTween.Sequence();
+            StartAnim();
+            m_CanSkipOpening = false;
+        }
+
+        if (m_CanStart)
+        {
+            m_CanStart = false;
+            StartGame();
         }
     }
 

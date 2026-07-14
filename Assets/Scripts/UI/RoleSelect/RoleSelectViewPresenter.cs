@@ -15,10 +15,14 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
     private bool m_HasSelect;
     private int m_CurrSelectIndex = -1;
     private RoleSelectConfigData[] m_RoleSelectConfigData;
+
     protected override void OnOpen(object arg)
     {
         view.roleSelectList.itemUpdateEvent += OnItemUpdate;
         view.roleSelectList.itemSelectEvent += OnItemSelect;
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.keyBoardInputController.AddInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, Select);
     }
 
     protected override void OnShow(object arg)
@@ -33,42 +37,7 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
 
     protected override void OnUpdate()
     {
-        if (m_HasSelect)
-        {
-            return;
-        }
 
-        Vector2 axis = GameEntry.inputMgr.GetAxis(AxisType.LeftAxis);
-
-        if (axis.y != 0)
-        {
-            if (axis.y < 0)
-            {
-                m_CurrSelectIndex++;
-            }
-            else
-            {
-                m_CurrSelectIndex--;
-            }
-
-            if (m_CurrSelectIndex >= m_RoleSelectConfigData.Length)
-            {
-                m_CurrSelectIndex = 0;
-            }
-            else if (m_CurrSelectIndex < 0)
-            {
-                m_CurrSelectIndex = m_RoleSelectConfigData.Length - 1;
-            }
-
-            view.roleSelectList.SelectItem(m_CurrSelectIndex);
-            GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
-        }
-
-        if (m_CurrSelectIndex != -1 && (GameEntry.inputMgr.GetKeyDown(KeyType.A, true) || GameEntry.inputMgr.GetKeyDown(KeyType.X, true)))
-        {
-            m_HasSelect = true;
-            EnterStage();
-        }
     }
 
     protected override void OnHide()
@@ -78,7 +47,9 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
 
     protected override void OnClose()
     {
-
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.LeftAxis, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.DPad, InputEventCallType.Performed, ChangeSelect);
+        GameEntry.inputMgr.keyBoardInputController.RemoveInputEvent(KeyboardInputKey.A, InputEventCallType.Performed, Select);
     }
 
     protected override void OnDestroy()
@@ -113,6 +84,48 @@ public class RoleSelectViewPresenter : UIBaseViewPresenter<RoleSelectView>
         m_HasSelect = false;
         GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Start), false);
         GameEntry.soundMgr.PlayBgm(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.BgmCharacter_Loop), true);
+    }
+
+
+    private void ChangeSelect(Vector2 axis)
+    {
+        float y = axis.y;
+
+        if (m_HasSelect || y == 0)
+        {
+            return;
+        }
+
+        if (y < 0)
+        {
+            m_CurrSelectIndex++;
+        }
+        else
+        {
+            m_CurrSelectIndex--;
+        }
+
+        if (m_CurrSelectIndex >= m_RoleSelectConfigData.Length)
+        {
+            m_CurrSelectIndex = 0;
+        }
+        else if (m_CurrSelectIndex < 0)
+        {
+            m_CurrSelectIndex = m_RoleSelectConfigData.Length - 1;
+        }
+
+        view.roleSelectList.SelectItem(m_CurrSelectIndex);
+        GameEntry.soundMgr.PlaySe(PathUtil.FormatPath(AssetPathDefine.AudioClipPath, SoundName.OnSelect));
+    }
+
+
+    private void Select()
+    {
+        if (m_CurrSelectIndex != -1)
+        {
+            m_HasSelect = true;
+            EnterStage();
+        }
     }
 
     private void EnterStage()
